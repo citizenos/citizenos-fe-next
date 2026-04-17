@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ConfigStore } from '../state/config.store';
+import { ConfigStore } from '../../state/config.store';
 
 @Component({
   selector: 'app-shell',

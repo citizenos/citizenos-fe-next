@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { UserStore } from '../../state/user.store';
+import { UserStore } from '../../core/state/user.store';
 
 @Component({
   selector: 'app-dashboard',
