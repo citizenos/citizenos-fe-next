@@ -32,17 +32,17 @@ import * as webeid from '@web-eid/web-eid-library/web-eid';
           @if (!challengeID()) {
             <form [formGroup]="mobileIdForm" (ngSubmit)="onMobileSubmit()">
               <cos-input 
-                [placeholder]="'COMPONENTS.MOBILE_ID_LOGIN_FORM.LBL_PID' | translate"
+                [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PID' | translate"
                 [hasError]="mobileIdForm.controls.pid.touched && mobileIdForm.controls.pid.invalid"
               >
-                <input type="text" formControlName="pid" [placeholder]="'COMPONENTS.MOBILE_ID_LOGIN_FORM.LBL_PID' | translate">
+                <input type="text" formControlName="pid" [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PID' | translate">
               </cos-input>
 
               <cos-input 
-                [placeholder]="'COMPONENTS.MOBILE_ID_LOGIN_FORM.LBL_PHONE' | translate"
+                [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PHONE' | translate"
                 [hasError]="mobileIdForm.controls.phoneNumber.touched && mobileIdForm.controls.phoneNumber.invalid"
               >
-                <input type="text" formControlName="phoneNumber" [placeholder]="'COMPONENTS.MOBILE_ID_LOGIN_FORM.LBL_PHONE' | translate">
+                <input type="text" formControlName="phoneNumber" [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PHONE' | translate">
               </cos-input>
 
               <div class="form-actions">
@@ -53,7 +53,7 @@ import * as webeid from '@web-eid/web-eid-library/web-eid';
                   [isLoading]="userStore.isLoading()" 
                   [isDisabled]="mobileIdForm.invalid"
                 >
-                  {{ 'COMPONENTS.MOBILE_ID_LOGIN_FORM.BTN_AUTHENTICATE' | translate }}
+                  {{ 'MODALS.LOGIN_ESTEID_BTN_AUTHENTICATE_MID' | translate }}
                 </cos-button>
               </div>
             </form>
@@ -83,7 +83,7 @@ import * as webeid from '@web-eid/web-eid-library/web-eid';
               [isLoading]="isLoadingIdCard()" 
               (click)="authIdCard()"
             >
-              {{ 'COMPONENTS.ID_CARD_LOGIN_FORM.BTN_LOGIN' | translate }}
+              {{ 'MODALS.LOGIN_ESTEID_BTN_LOG_IN_ID' | translate }}
             </cos-button>
           </div>
         </div>

@@ -2414,7 +2414,11 @@
     },
     "LOGIN": {
       "BTN_BACK": "Back to dashboard",
-      "LOGIN_TITLE": "Log in to Citizen OS"
+      "LOGIN_TITLE": "Log in to Citizen OS",
+      "SMART_ID_TITLE": "Smart-ID login",
+      "ESTEID_TITLE": "Estonian ID login",
+      "MOBILE_ID_TITLE": "Mobile-ID",
+      "ID_CARD_TITLE": "ID-card"
     },
     "MY": {
       "LBL_GROUPS_COUNT": "Groups: {{count}}",

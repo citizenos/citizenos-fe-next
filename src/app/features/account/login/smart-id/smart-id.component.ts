@@ -26,11 +26,11 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
       @if (!challengeID()) {
         <form [formGroup]="smartIdForm" (ngSubmit)="onSubmit()">
           <cos-input 
-            [placeholder]="'COMPONENTS.SMART_ID_LOGIN_FORM.LBL_PID' | translate"
+            [placeholder]="'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_PLACEHOLDER_PID' | translate"
             [hasError]="smartIdForm.controls.pid.touched && smartIdForm.controls.pid.invalid"
             [errorMessage]="'Invalid Personal ID (11 digits)'"
           >
-            <input type="text" formControlName="pid" [placeholder]="'COMPONENTS.SMART_ID_LOGIN_FORM.LBL_PID' | translate">
+            <input type="text" formControlName="pid" [placeholder]="'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_PLACEHOLDER_PID' | translate">
           </cos-input>
 
           <div class="form-actions">
@@ -41,7 +41,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
               [isLoading]="userStore.isLoading()" 
               [isDisabled]="smartIdForm.invalid"
             >
-              {{ 'COMPONENTS.SMART_ID_LOGIN_FORM.BTN_AUTHENTICATE' | translate }}
+              {{ 'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_BTN_AUTHENTICATE_SID' | translate }}
             </cos-button>
           </div>
         </form>

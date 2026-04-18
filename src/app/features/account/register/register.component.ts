@@ -8,6 +8,8 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { UserService } from '../../../core/services/user.service';
+import { SmartIdComponent } from '../login/smart-id/smart-id.component';
+import { EstEidComponent } from '../login/esteid/esteid.component';
 
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password');
@@ -28,12 +30,14 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
     TranslateModule,
     ButtonComponent,
     InputComponent,
-    IconComponent
+    IconComponent,
+    SmartIdComponent,
+    EstEidComponent
   ],
   template: `
     <div id="register_wrap">
       <nav class="nav-back">
-        <cos-button variant="light" size="md" [routerLink]="['/']" icon="arrow-left">
+        <cos-button variant="light" size="md" [routerLink]="['/']" icon="arrow-left" (click)="selectedMethod.set('default')">
           <span translate="VIEWS.REGISTER.BTN_BACK"></span>
         </cos-button>
       </nav>
@@ -41,118 +45,124 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
       <h1 class="main_heading" translate="VIEWS.REGISTER.REGISTER_TITLE"></h1>
       <p class="description" translate="VIEWS.REGISTER.REGISTER_DESCRIPTION"></p>
 
-      <div class="auth-methods">
-        <div class="icons_wrap">
-          <button class="login_icon" (click)="doLoginPartner('facebook')" aria-label="Facebook Registration">
-            <cos-icon name="facebook" [size]="20"></cos-icon>
-          </button>
-          <button class="login_icon" (click)="doLoginPartner('google')" aria-label="Google Registration">
-            <cos-icon name="google" [size]="32"></cos-icon>
-          </button>
-          <button class="login_icon" (click)="doLoginPartner('smartid')" aria-label="Smart-ID Registration">
-            <cos-icon name="smart-id" [size]="32"></cos-icon>
-          </button>
-          <button class="login_icon" (click)="doLoginPartner('esteid')" aria-label="Estonian ID Registration">
-            <cos-icon name="est-id" [size]="32"></cos-icon>
-          </button>
-        </div>
-
-        <div class="separator">
-           <span translate="VIEWS.REGISTER.REGISTER_OR"></span>
-        </div>
-
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-          @if (error()) {
-            <div class="error-banner" role="alert">
-              <cos-icon name="close" [size]="16"></cos-icon>
-              <span>{{ error() }}</span>
-            </div>
-          }
-
-          <cos-input 
-            [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_NAME' | translate"
-            [hasError]="registerForm.controls.name.touched && registerForm.controls.name.invalid"
-            [errorMessage]="'COMPONENTS.REGISTER_FORM.ERROR_NAME' | translate"
-          >
-            <input type="text" formControlName="name" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_NAME' | translate">
-          </cos-input>
-
-          <cos-input 
-            [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_EMAIL' | translate"
-            [hasError]="registerForm.controls.email.touched && registerForm.controls.email.invalid"
-            [errorMessage]="'COMPONENTS.REGISTER_FORM.ERROR_EMAIL' | translate"
-          >
-            <input type="email" formControlName="email" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_EMAIL' | translate">
-          </cos-input>
-
-          <cos-input 
-            [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_COMPANY' | translate"
-            [hasError]="registerForm.controls.company.touched && registerForm.controls.company.invalid"
-          >
-            <input type="text" formControlName="company" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_COMPANY' | translate">
-          </cos-input>
-
-          <cos-input 
-            [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD' | translate"
-            [hasError]="registerForm.controls.password.touched && registerForm.controls.password.invalid"
-            [errorMessage]="'Password must be at least 8 characters'"
-          >
-            <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD' | translate">
-            <button type="button" class="view_password" (click)="togglePassword()">
-               <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
+      @if (selectedMethod() === 'default') {
+        <div class="auth-methods">
+          <div class="icons_wrap">
+            <button class="login_icon" (click)="doLoginPartner('facebook')" aria-label="Facebook Registration">
+              <cos-icon name="facebook" [size]="20"></cos-icon>
             </button>
-          </cos-input>
-
-          <cos-input 
-            [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate"
-            [hasError]="(registerForm.controls.passwordConfirm.touched && registerForm.controls.passwordConfirm.invalid) || registerForm.hasError('passwordMismatch')"
-            [errorMessage]="registerForm.hasError('passwordMismatch') ? 'Passwords do not match' : ''"
-          >
-            <input [type]="showPasswordConfirm() ? 'text' : 'password'" formControlName="passwordConfirm" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate">
-            <button type="button" class="view_password" (click)="togglePasswordConfirm()">
-               <cos-icon [name]="showPasswordConfirm() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
+            <button class="login_icon" (click)="doLoginPartner('google')" aria-label="Google Registration">
+              <cos-icon name="google" [size]="32"></cos-icon>
             </button>
-          </cos-input>
-
-          <div class="checkbox_wrap" [class.error]="registerForm.controls.agreeToTerms.touched && registerForm.controls.agreeToTerms.invalid">
-            <label class="checkbox">
-              <input type="checkbox" formControlName="agreeToTerms">
-              <span class="checkmark"></span>
-            </label>
-            <div class="checkbox_description">
-              <span translate="COMPONENTS.REGISTER_FORM.LBL_TERMS_AND_CONDITIONS_DESCRIPTION"></span>
-              <a class="bold" href="#" target="_blank" translate="COMPONENTS.REGISTER_FORM.PRIVACY_POLICY_LNK_TERMS_OF_USE"></a>
-              <a class="bold" href="#" target="_blank" translate="COMPONENTS.REGISTER_FORM.PRIVACY_POLICY_LNK_PRIVACY_POLICY"></a>
-            </div>
+            <button class="login_icon" (click)="selectedMethod.set('smartid')" aria-label="Smart-ID Registration">
+              <cos-icon name="smart-id" [size]="32"></cos-icon>
+            </button>
+            <button class="login_icon" (click)="selectedMethod.set('esteid')" aria-label="Estonian ID Registration">
+              <cos-icon name="est-id" [size]="32"></cos-icon>
+            </button>
           </div>
 
-          <div class="checkbox_wrap">
-            <label class="checkbox">
-              <input type="checkbox" formControlName="showInSearch">
-              <span class="checkmark"></span>
-            </label>
-            <div class="checkbox_description">
-               <span translate="COMPONENTS.REGISTER_FORM.LBL_SHOW_IN_SEARCH_DESCRIPTION"></span>
-            </div>
+          <div class="separator">
+             <span translate="VIEWS.REGISTER.REGISTER_OR"></span>
           </div>
 
-          <div class="form-actions">
-            <cos-button 
-              type="submit" 
-              variant="primary"
-              size="lg"
-              [isLoading]="userStore.isLoading()" 
-              [isDisabled]="registerForm.invalid"
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            @if (error()) {
+              <div class="error-banner" role="alert">
+                <cos-icon name="close" [size]="16"></cos-icon>
+                <span>{{ error() }}</span>
+              </div>
+            }
+
+            <cos-input 
+              [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_NAME' | translate"
+              [hasError]="registerForm.controls.name.touched && registerForm.controls.name.invalid"
+              [errorMessage]="'COMPONENTS.REGISTER_FORM.ERROR_NAME' | translate"
             >
-              {{ 'COMPONENTS.REGISTER_FORM.BTN_SAVE' | translate }}
-            </cos-button>
-          </div>
-        </form>
+              <input type="text" formControlName="name" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_NAME' | translate">
+            </cos-input>
 
-        <footer class="register-footer">
-          <a [routerLink]="['..', 'login']" translate="COMPONENTS.REGISTER_FORM.HAVE_AN_ACCOUNT"></a>
-        </footer>
-      </div>
+            <cos-input 
+              [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_EMAIL' | translate"
+              [hasError]="registerForm.controls.email.touched && registerForm.controls.email.invalid"
+              [errorMessage]="'COMPONENTS.REGISTER_FORM.ERROR_EMAIL' | translate"
+            >
+              <input type="email" formControlName="email" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_EMAIL' | translate">
+            </cos-input>
+
+            <cos-input 
+              [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_COMPANY' | translate"
+              [hasError]="registerForm.controls.company.touched && registerForm.controls.company.invalid"
+            >
+              <input type="text" formControlName="company" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_COMPANY' | translate">
+            </cos-input>
+
+            <cos-input 
+              [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD' | translate"
+              [hasError]="registerForm.controls.password.touched && registerForm.controls.password.invalid"
+              [errorMessage]="'Password must be at least 8 characters'"
+            >
+              <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD' | translate">
+              <button type="button" class="view_password" (click)="togglePassword()">
+                 <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
+              </button>
+            </cos-input>
+
+            <cos-input 
+              [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate"
+              [hasError]="(registerForm.controls.passwordConfirm.touched && registerForm.controls.passwordConfirm.invalid) || registerForm.hasError('passwordMismatch')"
+              [errorMessage]="registerForm.hasError('passwordMismatch') ? 'Passwords do not match' : ''"
+            >
+              <input [type]="showPasswordConfirm() ? 'text' : 'password'" formControlName="passwordConfirm" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate">
+              <button type="button" class="view_password" (click)="togglePasswordConfirm()">
+                 <cos-icon [name]="showPasswordConfirm() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
+              </button>
+            </cos-input>
+
+            <div class="checkbox_wrap" [class.error]="registerForm.controls.agreeToTerms.touched && registerForm.controls.agreeToTerms.invalid">
+              <label class="checkbox">
+                <input type="checkbox" formControlName="agreeToTerms">
+                <span class="checkmark"></span>
+              </label>
+              <div class="checkbox_description">
+                <span translate="COMPONENTS.REGISTER_FORM.LBL_TERMS_AND_CONDITIONS_DESCRIPTION"></span>
+                <a class="bold" href="#" target="_blank" translate="COMPONENTS.REGISTER_FORM.PRIVACY_POLICY_LNK_TERMS_OF_USE"></a>
+                <a class="bold" href="#" target="_blank" translate="COMPONENTS.REGISTER_FORM.PRIVACY_POLICY_LNK_PRIVACY_POLICY"></a>
+              </div>
+            </div>
+
+            <div class="checkbox_wrap">
+              <label class="checkbox">
+                <input type="checkbox" formControlName="showInSearch">
+                <span class="checkmark"></span>
+              </label>
+              <div class="checkbox_description">
+                 <span translate="COMPONENTS.REGISTER_FORM.LBL_SHOW_IN_SEARCH_DESCRIPTION"></span>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <cos-button 
+                type="submit" 
+                variant="primary"
+                size="lg"
+                [isLoading]="userStore.isLoading()" 
+                [isDisabled]="registerForm.invalid"
+              >
+                {{ 'COMPONENTS.REGISTER_FORM.BTN_SAVE' | translate }}
+              </cos-button>
+            </div>
+          </form>
+
+          <footer class="register-footer">
+            <a [routerLink]="['..', 'login']" translate="COMPONENTS.REGISTER_FORM.HAVE_AN_ACCOUNT"></a>
+          </footer>
+        </div>
+      } @else if (selectedMethod() === 'smartid') {
+        <app-smart-id></app-smart-id>
+      } @else if (selectedMethod() === 'esteid') {
+        <app-esteid></app-esteid>
+      }
     </div>
   `,
   styles: [`
@@ -363,6 +373,7 @@ export class RegisterComponent {
   private userService = inject(UserService);
   userStore = inject(UserStore);
 
+  selectedMethod = signal<'default' | 'smartid' | 'esteid'>('default');
   error = signal<string | null>(null);
   showPassword = signal<boolean>(false);
   showPasswordConfirm = signal<boolean>(false);
