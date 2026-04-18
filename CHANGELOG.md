@@ -7,7 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Initial scaffolding for Angular 21 migration project.
-- Zoneless Change Detection pattern integration.
-- `vitest` testing framework integration.
+- Comprehensive Registration form with validation (Company, Confirm Password, Terms, Show in Search).
+- Password visibility toggle (eye/eye-off) for password fields.
+- Social login integration (Facebook, Google, Smart-ID, Estonian ID) via partner URL flow.
+- Custom `InputComponent` support for legacy floating labels and Noto Sans typography.
+- Standardized `ButtonComponent` variants and sizes aligned with legacy design system.
+- `JSONPointerCompiler` support for resolving legacy `@:` translation string references.
+
+### Changed
+- Refactored `InputComponent` to use `ViewEncapsulation.None` for precise native input styling.
+- Global typography updated to Noto Sans across the application.
+- Standardized flexbox alignment for action buttons.
+- Migrated initial scaffolding to Angular 21 Zoneless patterns.
+- Vitest testing framework integration.
 - Standard project documentation files (`AGENTS.md`, `README.md`, `CHANGELOG.md`).

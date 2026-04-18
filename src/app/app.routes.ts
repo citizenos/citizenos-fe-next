@@ -19,8 +19,8 @@ export const routes: Routes = [
       { path: '', component: HomeComponent },
       { path: 'dashboard', canActivate: [authGuard], component: DashboardComponent },
       
-      // Feature lazy loading (will add these features later)
-      // { path: 'account', loadChildren: () => import('./features/account/account.routes').then(m => m.ACCOUNT_ROUTES) },
+      // Feature lazy loading
+      { path: 'account', loadChildren: () => import('./features/account/account.routes').then(m => m.ACCOUNT_ROUTES) },
       // { path: 'topics', loadChildren: () => import('./features/topics/topics.routes').then(m => m.TOPICS_ROUTES) },
       
       // Error pages

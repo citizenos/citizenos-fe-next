@@ -1,0 +1,132 @@
+:host {
+  display: inline-block;
+}
+
+button {
+  background: none;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  padding: 8px 24px;
+  min-height: 48px;
+  min-width: 48px;
+  font-size: 16px;
+  line-height: 32px;
+  width: 100%;
+  gap: 8px;
+  
+  .btn-content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 100%;
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    filter: grayscale(0.5);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+}
+
+/* Variants */
+.primary {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  &:hover:not(:disabled) {
+    background-color: var(--color-link);
+  }
+}
+
+.secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-link);
+  border: none;
+  &:hover:not(:disabled) {
+    background-color: var(--color-primary);
+    color: white;
+  }
+}
+
+.ghost {
+  background: none;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  &:hover:not(:disabled) {
+    background-color: var(--color-surface-contrast);
+    border-color: var(--color-link);
+    color: var(--color-link);
+  }
+}
+
+.light {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  border: none;
+  &:hover:not(:disabled) {
+    color: var(--color-link);
+  }
+}
+
+.danger {
+  background-color: var(--color-danger);
+  color: white;
+  border: none;
+  &:hover:not(:disabled) {
+     opacity: 0.9;
+  }
+}
+
+/* Sizes */
+.btn-sm {
+  padding: 0 12px;
+  min-height: 32px;
+  font-size: 14px;
+  line-height: 16px;
+  border-radius: 32px;
+}
+
+.btn-md {
+  padding: 0 16px;
+  min-height: 40px;
+  font-size: 14px;
+  line-height: 16px;
+  border-radius: 40px;
+}
+
+.btn-lg {
+  padding: 8px 24px;
+  min-height: 48px;
+  font-size: 16px;
+  line-height: 32px;
+  border-radius: 48px;
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: rotation 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
