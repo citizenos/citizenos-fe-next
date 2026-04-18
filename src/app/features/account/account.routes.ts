@@ -1,8 +1,14 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
+import { AccountLayoutComponent } from './components/account-layout/account-layout.component';
 
 export const ACCOUNT_ROUTES: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'register', loadComponent: () => import('./register/register.component').then(m => m.RegisterComponent) },
-  { path: '', redirectTo: 'login', pathMatch: 'full' }
+  {
+    path: '',
+    component: AccountLayoutComponent,
+    children: [
+      { path: 'login', loadComponent: () => import('./login/login.component').then(m => m.LoginComponent) },
+      { path: 'signup', loadComponent: () => import('./register/register.component').then(m => m.RegisterComponent) },
+      { path: '', redirectTo: 'login', pathMatch: 'full' }
+    ]
+  }
 ];

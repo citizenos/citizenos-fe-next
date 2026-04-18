@@ -13,21 +13,29 @@ export const routes: Routes = [
   // The main layout wrapping all localized routes
   {
     path: ':lang',
-    component: ShellComponent,
     resolve: { language: languageResolver },
     children: [
-      { path: '', component: HomeComponent },
-      { path: 'dashboard', canActivate: [authGuard], component: DashboardComponent },
+      // Account routes - these skip the main Shell layout
+      { 
+        path: 'account', 
+        loadChildren: () => import('./features/account/account.routes').then(m => m.ACCOUNT_ROUTES) 
+      },
       
-      // Feature lazy loading
-      { path: 'account', loadChildren: () => import('./features/account/account.routes').then(m => m.ACCOUNT_ROUTES) },
-      // { path: 'topics', loadChildren: () => import('./features/topics/topics.routes').then(m => m.TOPICS_ROUTES) },
-      
-      // Error pages
-      { path: '401', component: PageNotFoundComponent }, // Replace with PageUnauthorizedComponent
-      { path: '404', component: PageNotFoundComponent },
-      { path: 'error/401', redirectTo: '401' },
-      { path: 'error/404', redirectTo: '404' }
+      // Main Application Shell
+      {
+        path: '',
+        component: ShellComponent,
+        children: [
+          { path: '', component: HomeComponent },
+          { path: 'dashboard', canActivate: [authGuard], component: DashboardComponent },
+          
+          // Error pages
+          { path: '401', component: PageNotFoundComponent },
+          { path: '404', component: PageNotFoundComponent },
+          { path: 'error/401', redirectTo: '401' },
+          { path: 'error/404', redirectTo: '404' }
+        ]
+      }
     ]
   },
   

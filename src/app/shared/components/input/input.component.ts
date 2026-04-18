@@ -53,11 +53,11 @@ import { CommonModule } from '@angular/common';
     .cos_input_placeholder {
       display: none;
       position: absolute;
-      font-size: 11px;
-      line-height: 14px;
+      font-size: 12px;
+      line-height: 16px;
       top: 4px;
       left: 16px;
-      color: var(--color-text-muted);
+      color: #727C84;
       z-index: 2;
       pointer-events: none;
       font-family: 'Noto Sans', sans-serif;

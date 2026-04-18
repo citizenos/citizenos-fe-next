@@ -22,9 +22,9 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
   selector: 'app-register',
   standalone: true,
   imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
-    RouterModule, 
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
     TranslateModule,
     ButtonComponent,
     InputComponent,
@@ -33,8 +33,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
   template: `
     <div id="register_wrap">
       <nav class="nav-back">
-        <cos-button variant="light" size="md" [routerLink]="['/']">
-          <cos-icon name="arrow-left" [size]="20"></cos-icon>
+        <cos-button variant="light" size="md" [routerLink]="['/']" icon="arrow-left">
           <span translate="VIEWS.REGISTER.BTN_BACK"></span>
         </cos-button>
       </nav>
@@ -160,31 +159,30 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
     #register_wrap {
       display: flex;
       flex-direction: column;
-      gap: 24px;
-      padding: 40px var(--spacing-md);
+      gap: 40px;
+      padding: 0;
       width: 100%;
-      max-width: 400px;
-      margin: 0 auto;
     }
 
     .nav-back {
-      align-self: flex-start;
-      margin-left: -12px;
-      margin-bottom: 8px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .main_heading {
-      font-size: 28px;
-      font-weight: 600;
+      font-size: 32px;
+      font-weight: 700;
       line-height: 1.25;
-      text-align: center;
-      margin: 0;
-      color: var(--color-text);
+      text-align: left;
+      margin: 8px 0 0 0;
+      color: var(--cos-color-text);
     }
 
     .description {
-      text-align: center;
-      color: var(--color-text-muted);
+      text-align: left;
+      color: var(--cos-color-text-muted);
       font-size: 14px;
       margin-top: -12px;
       margin-bottom: 24px;
@@ -193,7 +191,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
     .icons_wrap {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 16px;
       margin-bottom: 24px;
     }
@@ -250,8 +248,8 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
 
     .checkbox_wrap {
       display: flex;
-      gap: 16px;
-      margin-bottom: 16px;
+      gap: 12px;
+      margin-bottom: 24px;
       align-items: flex-start;
 
       &.error .checkmark {
@@ -290,8 +288,8 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
           content: "";
           position: absolute;
           display: none;
-          left: 8px;
-          top: 4px;
+          left: 7.5px;
+          top: 3.5px;
           width: 5px;
           height: 10px;
           border: solid white;
@@ -315,15 +313,18 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
     }
 
     .checkbox_description {
-      font-size: 13px;
-      line-height: 1.4;
+      font-size: 14px;
+      line-height: 20px;
       color: var(--color-text-muted);
+      margin-top: 2px;
+      padding-left: 16px;
       
       .bold {
         font-weight: 600;
         color: var(--color-link);
         text-decoration: none;
-        margin-left: 4px;
+        margin-left: 0;
+        display: inline;
       }
     }
 
@@ -341,6 +342,11 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
 
     .form-actions {
        margin-top: 24px;
+       width: 100%;
+
+       cos-button {
+        width:100%;
+      }
     }
 
     .register-footer {
@@ -380,7 +386,7 @@ export class RegisterComponent {
   }
 
   doLoginPartner(partnerId: string) {
-     window.location.href = this.userService.getPartnerLoginUrl(partnerId);
+    window.location.href = this.userService.getPartnerLoginUrl(partnerId);
   }
 
   async onSubmit() {

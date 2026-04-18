@@ -13,9 +13,9 @@ import { UserService } from '../../../core/services/user.service';
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
-    RouterModule, 
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
     TranslateModule,
     ButtonComponent,
     InputComponent,
@@ -24,8 +24,7 @@ import { UserService } from '../../../core/services/user.service';
   template: `
     <div id="login_wrap">
       <nav class="nav-back">
-        <cos-button variant="light" size="md" [routerLink]="['/']">
-          <cos-icon name="arrow-left" [size]="20"></cos-icon>
+        <cos-button variant="light" size="md" [routerLink]="['/']" icon="arrow-left">
           <span translate="VIEWS.LOGIN.BTN_BACK"></span>
         </cos-button>
       </nav>
@@ -97,7 +96,7 @@ import { UserService } from '../../../core/services/user.service';
         </form>
 
         <footer class="login-footer">
-          <a [routerLink]="['..', 'register']" translate="COMPONENTS.LOGIN_FORM.LOGIN_LNK_NO_ACCOUNT_REGISTER"></a>
+          <a [routerLink]="['..', 'signup']" translate="COMPONENTS.LOGIN_FORM.LOGIN_LNK_NO_ACCOUNT_REGISTER"></a>
         </footer>
       </div>
     </div>
@@ -106,31 +105,31 @@ import { UserService } from '../../../core/services/user.service';
     #login_wrap {
       display: flex;
       flex-direction: column;
-      gap: 24px;
-      padding: 40px var(--spacing-md);
+      gap: 40px;
+      padding: 0;
       width: 100%;
-      max-width: 400px;
-      margin: 0 auto;
     }
 
     .nav-back {
-      align-self: flex-start;
-      margin-left: -12px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .main_heading {
-      font-size: 28px;
-      font-weight: 600;
+      font-size: 32px;
+      font-weight: 700;
       line-height: 1.25;
-      text-align: center;
+      text-align: left;
       margin: 0;
-      color: var(--color-text);
+      color: var(--cos-color-text);
     }
 
     .icons_wrap {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 16px;
       margin-bottom: 24px;
     }
@@ -191,15 +190,18 @@ import { UserService } from '../../../core/services/user.service';
       a { color: var(--color-link); text-decoration: none; }
     }
 
-    .toggle-password {
+    .view_password {
       position: absolute;
       right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
       background: none;
       border: none;
+      padding: 4px;
       cursor: pointer;
       color: var(--color-text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
     }
 
     .login-footer {
@@ -207,6 +209,14 @@ import { UserService } from '../../../core/services/user.service';
       text-align: center;
       font-size: 14px;
       a { color: var(--color-link); text-decoration: none; font-weight: 600; }
+    }
+    
+    .form-actions {
+      width: 100%;
+
+      cos-button {
+        width:100%;
+      }
     }
   `]
 })
