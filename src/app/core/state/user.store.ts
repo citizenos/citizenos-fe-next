@@ -90,7 +90,7 @@ export const UserStore = signalStore(
         try {
           const res = await firstValueFrom(userService.loginMobiilIdInit(pid, phoneNumber));
           patchState(store, { isLoading: false });
-          return res;
+          return res.data;
         } catch (error) {
           patchState(store, { isLoading: false });
           throw error;
@@ -106,7 +106,7 @@ export const UserStore = signalStore(
         try {
           const res = await firstValueFrom(userService.loginSmartIdInit(pid, countryCode));
           patchState(store, { isLoading: false });
-          return res;
+          return res.data;
         } catch (error) {
           patchState(store, { isLoading: false });
           throw error;

@@ -6,7 +6,14 @@ export const ACCOUNT_ROUTES: Routes = [
     path: '',
     component: AccountLayoutComponent,
     children: [
-      { path: 'login', loadComponent: () => import('./login/login.component').then(m => m.LoginComponent) },
+      { 
+        path: 'login',
+        children: [
+          { path: '', loadComponent: () => import('./login/login.component').then(m => m.LoginComponent) },
+          { path: 'estid', loadComponent: () => import('./login/esteid/esteid.component').then(m => m.EstEidComponent) },
+          { path: 'smartid', loadComponent: () => import('./login/smart-id/smart-id.component').then(m => m.SmartIdComponent) }
+        ]
+      },
       { path: 'signup', loadComponent: () => import('./register/register.component').then(m => m.RegisterComponent) },
       { path: 'profile', loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent) },
       { path: 'password/forgot', loadComponent: () => import('./password-forgot/password-forgot.component').then(m => m.PasswordForgotComponent) },

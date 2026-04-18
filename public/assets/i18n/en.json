@@ -92,6 +92,9 @@
     "EXTRA_INFO_TOUR_BTN_START": "Start tour"
   },
   "COMPONENTS": {
+    "ID_CARD_LOGIN_FORM": {
+      "TXT_INSTRUCTION": "Please insert your ID-card into the reader and click \"Authenticate with ID-card\""
+    },
     "ACCESSIBILITY": {
       "MODAL_HEADING": "@:DEFAULT.NAV.LNK_ACCESSIBILITY",
       "HEADING_CONTRAST": "Contrast",

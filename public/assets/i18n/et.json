@@ -92,6 +92,9 @@
     "EXTRA_INFO_TOUR_BTN_START": "Alusta tuuriga"
   },
   "COMPONENTS": {
+    "ID_CARD_LOGIN_FORM": {
+      "TXT_INSTRUCTION": "Sisesta ID-kaart lugejasse ning vajuta nupule \"Tuvasta end ID-kaardiga\""
+    },
     "ACCESSIBILITY": {
       "MODAL_HEADING": "@:DEFAULT.NAV.LNK_ACCESSIBILITY",
       "HEADING_CONTRAST": "Kontrastsus",
