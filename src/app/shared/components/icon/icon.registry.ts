@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-export type IconName = 'check' | 'chevron-down' | 'close' | 'plus' | 'search' | 'user' | 'bell' | 'facebook' | 'google' | 'smart-id' | 'est-id' | 'arrow-left' | 'eye' | 'eye-off';
+export type IconName = 'check' | 'chevron-down' | 'close' | 'plus' | 'search' | 'user' | 'bell' | 'facebook' | 'google' | 'smart-id' | 'est-id' | 'arrow-left' | 'eye' | 'eye-off' | 'spinner';
 
 interface IconData {
   content: string;
@@ -58,6 +58,10 @@ export class IconRegistryService {
     [
       'eye-off',
       { content: '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' }
+    ],
+    [
+      'spinner',
+      { content: '<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' }
     ]
   ]);
 

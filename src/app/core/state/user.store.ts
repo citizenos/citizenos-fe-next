@@ -61,6 +61,71 @@ export const UserStore = signalStore(
           patchState(store, { isLoading: false });
           throw error;
         }
+      },
+
+      async sendPasswordReset(email: string) {
+        patchState(store, { isLoading: true });
+        try {
+          await firstValueFrom(userService.sendPasswordReset(email));
+          patchState(store, { isLoading: false });
+        } catch (error) {
+          patchState(store, { isLoading: false });
+          throw error;
+        }
+      },
+
+      async resetPassword(password: string, token: string) {
+        patchState(store, { isLoading: true });
+        try {
+          await firstValueFrom(userService.resetPassword(password, token));
+          patchState(store, { isLoading: false });
+        } catch (error) {
+          patchState(store, { isLoading: false });
+          throw error;
+        }
+      },
+
+      async loginMobiilIdInit(pid: string, phoneNumber: string) {
+        patchState(store, { isLoading: true });
+        try {
+          const res = await firstValueFrom(userService.loginMobiilIdInit(pid, phoneNumber));
+          patchState(store, { isLoading: false });
+          return res;
+        } catch (error) {
+          patchState(store, { isLoading: false });
+          throw error;
+        }
+      },
+
+      async loginMobiilIdStatus(token: string) {
+        return firstValueFrom(userService.loginMobiilIdStatus(token));
+      },
+
+      async loginSmartIdInit(pid: string, countryCode: string) {
+        patchState(store, { isLoading: true });
+        try {
+          const res = await firstValueFrom(userService.loginSmartIdInit(pid, countryCode));
+          patchState(store, { isLoading: false });
+          return res;
+        } catch (error) {
+          patchState(store, { isLoading: false });
+          throw error;
+        }
+      },
+
+      async loginSmartIdStatus(token: string) {
+        return firstValueFrom(userService.loginSmartIdStatus(token));
+      },
+
+      async loginIdCard(data: any) {
+        patchState(store, { isLoading: true });
+        try {
+          await firstValueFrom(userService.loginIdCard(data));
+          await this.checkStatus();
+        } catch (error) {
+          patchState(store, { isLoading: false });
+          throw error;
+        }
       }
     };
   }),

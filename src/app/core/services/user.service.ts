@@ -51,4 +51,38 @@ export class UserService {
     }
     return url;
   }
+
+  sendPasswordReset(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/auth/password/reset/send`, { email });
+  }
+
+  resetPassword(password: string, passwordResetToken: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/auth/password/reset`, {
+      password,
+      passwordResetToken
+    });
+  }
+
+  // Mobiil-ID
+  loginMobiilIdInit(pid: string, phoneNumber: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/auth/mobile/init`, { pid, phoneNumber });
+  }
+
+  loginMobiilIdStatus(token: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/auth/mobile/status`, { params: { token } });
+  }
+
+  // Smart-ID
+  loginSmartIdInit(pid: string, countryCode: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/auth/smartid/init`, { pid, countryCode });
+  }
+
+  loginSmartIdStatus(token: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/auth/smartid/status`, { params: { token } });
+  }
+
+  // ID-card
+  loginIdCard(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/auth/id`, data);
+  }
 }

@@ -8,6 +8,8 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { UserService } from '../../../core/services/user.service';
+import { SmartIdComponent } from './smart-id/smart-id.component';
+import { EstEidComponent } from './esteid/esteid.component';
 
 @Component({
   selector: 'app-login',
@@ -19,86 +21,94 @@ import { UserService } from '../../../core/services/user.service';
     TranslateModule,
     ButtonComponent,
     InputComponent,
-    IconComponent
+    IconComponent,
+    SmartIdComponent,
+    EstEidComponent
   ],
   template: `
     <div id="login_wrap">
       <nav class="nav-back">
-        <cos-button variant="light" size="md" [routerLink]="['/']" icon="arrow-left">
+        <cos-button variant="light" size="md" [routerLink]="['/']" icon="arrow-left" (click)="selectedMethod.set('default')">
           <span translate="VIEWS.LOGIN.BTN_BACK"></span>
         </cos-button>
       </nav>
 
       <h1 class="main_heading" translate="VIEWS.LOGIN.LOGIN_TITLE"></h1>
 
-      <div class="auth-methods">
-        <div class="icons_wrap">
-          <button class="login_icon" (click)="doLoginPartner('facebook')" aria-label="Facebook Login">
-            <cos-icon name="facebook" [size]="20"></cos-icon>
-          </button>
-          <button class="login_icon" (click)="doLoginPartner('google')" aria-label="Google Login">
-            <cos-icon name="google" [size]="32"></cos-icon>
-          </button>
-          <button class="login_icon" (click)="doLoginPartner('smartid')" aria-label="Smart-ID Login">
-            <cos-icon name="smart-id" [size]="32"></cos-icon>
-          </button>
-          <button class="login_icon" (click)="doLoginPartner('esteid')" aria-label="Estonian ID Login">
-            <cos-icon name="est-id" [size]="32"></cos-icon>
-          </button>
-        </div>
-
-        <div class="separator">
-           <span translate="COMPONENTS.LOGIN_FORM.LOGIN_OR"></span>
-        </div>
-
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          @if (error()) {
-            <div class="error-banner" role="alert">
-              <cos-icon name="close" [size]="16"></cos-icon>
-              <span>{{ error() }}</span>
-            </div>
-          }
-
-          <cos-input 
-            [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate"
-            [hasError]="loginForm.controls.email.touched && loginForm.controls.email.invalid"
-            [errorMessage]="'Invalid email address'"
-          >
-            <input type="email" formControlName="email" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate">
-          </cos-input>
-
-          <cos-input 
-            [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate"
-            [hasError]="loginForm.controls.password.touched && loginForm.controls.password.invalid"
-            [errorMessage]="'Password is required'"
-          >
-            <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate">
-            <button type="button" class="view_password" (click)="togglePassword()">
-               <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
+      @if (selectedMethod() === 'default') {
+        <div class="auth-methods">
+          <div class="icons_wrap">
+            <button class="login_icon" (click)="doLoginPartner('facebook')" aria-label="Facebook Login">
+              <cos-icon name="facebook" [size]="20"></cos-icon>
             </button>
-          </cos-input>
-
-          <div class="forgot-password">
-            <a [routerLink]="['..', 'password', 'forgot']" translate="COMPONENTS.LOGIN_FORM.LOGIN_LNK_FORGOT_PASSWORD"></a>
+            <button class="login_icon" (click)="doLoginPartner('google')" aria-label="Google Login">
+              <cos-icon name="google" [size]="32"></cos-icon>
+            </button>
+            <button class="login_icon" (click)="selectedMethod.set('smartid')" aria-label="Smart-ID Login">
+              <cos-icon name="smart-id" [size]="32"></cos-icon>
+            </button>
+            <button class="login_icon" (click)="selectedMethod.set('esteid')" aria-label="Estonian ID Login">
+              <cos-icon name="est-id" [size]="32"></cos-icon>
+            </button>
           </div>
 
-          <div class="form-actions">
-            <cos-button 
-              type="submit" 
-              variant="primary"
-              size="lg"
-              [isLoading]="userStore.isLoading()" 
-              [isDisabled]="loginForm.invalid"
+          <div class="separator">
+             <span translate="COMPONENTS.LOGIN_FORM.LOGIN_OR"></span>
+          </div>
+
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            @if (error()) {
+              <div class="error-banner" role="alert">
+                <cos-icon name="close" [size]="16"></cos-icon>
+                <span>{{ error() }}</span>
+              </div>
+            }
+
+            <cos-input 
+              [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate"
+              [hasError]="loginForm.controls.email.touched && loginForm.controls.email.invalid"
+              [errorMessage]="'Invalid email address'"
             >
-              {{ 'COMPONENTS.LOGIN_FORM.LOGIN_BTN_LOGIN' | translate }}
-            </cos-button>
-          </div>
-        </form>
+              <input type="email" formControlName="email" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate">
+            </cos-input>
 
-        <footer class="login-footer">
-          <a [routerLink]="['..', 'signup']" translate="COMPONENTS.LOGIN_FORM.LOGIN_LNK_NO_ACCOUNT_REGISTER"></a>
-        </footer>
-      </div>
+            <cos-input 
+              [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate"
+              [hasError]="loginForm.controls.password.touched && loginForm.controls.password.invalid"
+              [errorMessage]="'Password is required'"
+            >
+              <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate">
+              <button type="button" class="view_password" (click)="togglePassword()">
+                 <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
+              </button>
+            </cos-input>
+
+            <div class="forgot-password">
+              <a [routerLink]="['..', 'password', 'forgot']" translate="COMPONENTS.LOGIN_FORM.LOGIN_LNK_FORGOT_PASSWORD"></a>
+            </div>
+
+            <div class="form-actions">
+              <cos-button 
+                type="submit" 
+                variant="primary"
+                size="lg"
+                [isLoading]="userStore.isLoading()" 
+                [isDisabled]="loginForm.invalid"
+              >
+                {{ 'COMPONENTS.LOGIN_FORM.LOGIN_BTN_LOGIN' | translate }}
+              </cos-button>
+            </div>
+          </form>
+
+          <footer class="login-footer">
+            <a [routerLink]="['..', 'signup']" translate="COMPONENTS.LOGIN_FORM.LOGIN_LNK_NO_ACCOUNT_REGISTER"></a>
+          </footer>
+        </div>
+      } @else if (selectedMethod() === 'smartid') {
+        <app-smart-id></app-smart-id>
+      } @else if (selectedMethod() === 'esteid') {
+        <app-esteid></app-esteid>
+      }
     </div>
   `,
   styles: [`
@@ -226,6 +236,7 @@ export class LoginComponent {
   private userService = inject(UserService);
   userStore = inject(UserStore);
 
+  selectedMethod = signal<'default' | 'smartid' | 'esteid'>('default');
   showPassword = signal(false);
   error = signal<string | null>(null);
 
