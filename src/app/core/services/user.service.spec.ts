@@ -57,4 +57,37 @@ describe('UserService', () => {
     expect(req.request.body).toEqual(mockData);
     req.flush({ data: { success: true } });
   });
+
+  it('should call update profile', () => {
+    const params = { name: 'New Name', company: 'New Company' };
+    service.update(params).subscribe();
+    const req = httpMock.expectOne('https://dev.api.citizenos.com:3003/api/users/self');
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual({ ...params, redirectSuccess: 'http://localhost:3000/' });
+    req.flush({ data: { success: true } });
+  });
+
+  it('should call updateLanguage', () => {
+    service.updateLanguage('et').subscribe();
+    const req = httpMock.expectOne('https://dev.api.citizenos.com:3003/api/users/self');
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual({ language: 'et' });
+    req.flush({ data: { success: true } });
+  });
+
+  it('should call deleteUser', () => {
+    service.deleteUser().subscribe();
+    const req = httpMock.expectOne('https://dev.api.citizenos.com:3003/api/users/self');
+    expect(req.request.method).toBe('DELETE');
+    req.flush({ data: { success: true } });
+  });
+
+  it('should call uploadUserImage', () => {
+    const file = new File([''], 'test.png', { type: 'image/png' });
+    service.uploadUserImage(file).subscribe();
+    const req = httpMock.expectOne('https://dev.api.citizenos.com:3003/api/users/self/upload');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body.get('file')).toBe(file);
+    req.flush({ data: { imageUrl: 'some-url' } });
+  });
 });

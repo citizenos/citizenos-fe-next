@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigStore } from '../state/config.store';
 import { map, Observable } from 'rxjs';
 import { User } from '../interfaces/user';
+import { UploadService } from './upload.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { User } from '../interfaces/user';
 export class UserService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
+  private uploadService = inject(UploadService);
 
   private get apiUrl() {
     return this.configStore.api.baseUrl();
@@ -84,5 +86,34 @@ export class UserService {
   // ID-card
   loginIdCard(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/api/auth/id`, data);
+  }
+
+  update(params: {
+    name?: string;
+    email?: string;
+    password?: string;
+    company?: string;
+    imageUrl?: string;
+    preferences?: any;
+    language?: string;
+    newPassword?: string;
+  }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/api/users/self`, {
+      ...params,
+      redirectSuccess: window.location.origin + '/'
+    }, { withCredentials: true });
+  }
+
+  updateLanguage(language: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/api/users/self`, { language }, { withCredentials: true });
+  }
+
+  deleteUser(): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/api/users/self`, { withCredentials: true });
+  }
+
+  uploadUserImage(file: File): Observable<any> {
+    const path = `${this.apiUrl}/api/users/self/upload`;
+    return this.uploadService.upload(path, file);
   }
 }

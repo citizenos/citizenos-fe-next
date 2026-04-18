@@ -126,6 +126,28 @@ export const UserStore = signalStore(
           patchState(store, { isLoading: false });
           throw error;
         }
+      },
+
+      async updateProfile(params: any) {
+        patchState(store, { isLoading: true });
+        try {
+          await firstValueFrom(userService.update(params));
+          await this.checkStatus();
+        } catch (error) {
+          patchState(store, { isLoading: false });
+          throw error;
+        }
+      },
+
+      async deleteAccount() {
+        patchState(store, { isLoading: true });
+        try {
+          await firstValueFrom(userService.deleteUser());
+          patchState(store, { user: null, isAuthenticated: false, isLoading: false });
+        } catch (error) {
+          patchState(store, { isLoading: false });
+          throw error;
+        }
       }
     };
   }),

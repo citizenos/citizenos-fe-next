@@ -4,6 +4,11 @@ export interface User {
   email: string | null;
   language: string;
   imageUrl?: string;
+  company?: string;
+  preferences?: {
+    showInSearch?: boolean;
+    notifications?: any;
+  };
   loggedIn?: boolean;
 }
 

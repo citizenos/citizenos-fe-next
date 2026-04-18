@@ -1,0 +1,149 @@
+<div class="profile-container">
+  <header class="profile-header">
+    <h1 class="profile-title" translate="VIEWS.ACCOUNT.HEADING"></h1>
+    <button class="logout-btn" (click)="store.logout()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 2C4.34315 2 3 3.34315 3 5V19C3 20.6569 4.34315 22 6 22L17 22V20L6 20C5.44772 20 5 19.5523 5 19L5 5C5 4.44772 5.44772 4 6 4L17 4V2L6 2Z" fill="currentColor"/>
+        <path d="M10 13H17.4139L15.2069 15.207L16.6211 16.6212L21.2425 11.9998L16.6211 7.37842L15.2069 8.79263L17.4142 11H10V13Z" fill="currentColor"/>
+      </svg>
+      <span translate="VIEWS.ACCOUNT.BTN_LOG_OUT"></span>
+    </button>
+  </header>
+
+  <nav class="profile-tabs">
+    <button class="tab-item" [class.active]="activeTab() === 'profile'" (click)="selectTab('profile')" translate="VIEWS.ACCOUNT.TAB_PROFILE"></button>
+    <button class="tab-item" [class.active]="activeTab() === 'notifications'" (click)="selectTab('notifications')" translate="VIEWS.ACCOUNT.TAB_NOTIFICATIONS"></button>
+  </nav>
+
+  <main class="profile-content">
+    @if (activeTab() === 'profile') {
+      <div id="profile_settings" class="profile_area_section">
+        <div id="profile_image_area">
+          <div id="profile_image_wrap">
+             @if (store.user()?.imageUrl) {
+               <img id="profile_image" [src]="store.user()?.imageUrl" alt="Profile avatar">
+             } @else {
+               <div class="profile-initials">
+                 {{ store.user()?.name?.charAt(0) || '?' }}
+               </div>
+             }
+          </div>
+          <input type="file" id="profile_image_input" hidden (change)="fileUpload($event)">
+          <button class="link-btn" (click)="triggerUploadImage()" translate="VIEWS.ACCOUNT.UPLOAD_AVATAR"></button>
+        </div>
+
+        <div id="profile_data_area">
+          <h2 class="section-title" translate="VIEWS.ACCOUNT.HEADING_ACCOUNT_DETAILS"></h2>
+          <form (submit)="doUpdateProfile(); $event.preventDefault()">
+            <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_NAME' | translate" [hasError]="!!errors.name" [errorMessage]="errors.name">
+              <input name="name" [(ngModel)]="form.name" required>
+            </cos-input>
+
+            <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_COMPANY' | translate" [hasError]="!!errors.company" [errorMessage]="errors.company">
+              <input name="company" [(ngModel)]="form.company">
+            </cos-input>
+
+            <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_EMAIL' | translate" [hasError]="!!errors.email" [errorMessage]="errors.email">
+              <input name="email" [(ngModel)]="form.email" required type="email">
+            </cos-input>
+
+            <button type="button" class="link-btn" (click)="toggleResetPassword()" translate="VIEWS.ACCOUNT.RESET_PASSWORD"></button>
+
+            @if (resetPasswordMode()) {
+              <div class="password-reset-section">
+                <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_NEW_PASSWORD' | translate" [hasError]="!!errors.newPassword" [errorMessage]="errors.newPassword">
+                  <input type="password" name="newPassword" [(ngModel)]="form.newPassword">
+                </cos-input>
+                <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_PASSWORD_CONFIRM' | translate">
+                  <input type="password" name="passwordConfirm" [(ngModel)]="form.passwordConfirm">
+                </cos-input>
+              </div>
+            }
+
+            @if (form.email !== store.user()?.email || resetPasswordMode()) {
+              <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_PASSWORD' | translate" [hasError]="!!errors.password" [errorMessage]="errors.password">
+                <input type="password" name="password" [(ngModel)]="form.password" required>
+              </cos-input>
+            }
+
+            <button type="submit" class="btn-primary" translate="VIEWS.ACCOUNT.BTN_SAVE" [disabled]="store.isLoading()"></button>
+          </form>
+
+          <h2 class="section-title" translate="VIEWS.ACCOUNT.TAB_PREFERENCES"></h2>
+          
+          <div class="preference-box">
+            <label class="preference-label" translate="VIEWS.ACCOUNT.LBL_PROFILE_LANGUAEG"></label>
+            <p class="preference-desc" translate="VIEWS.ACCOUNT.LBL_PROFILE_LANGUAEG_DESCRIPTION"></p>
+            <cos-dropdown>
+              <div selection>{{ languages[form.language] || form.language }}</div>
+              <div options>
+                @for (lang of languages | keyvalue; track lang.key) {
+                  <div class="option" (click)="setProfileLanguage(lang.key)">{{ lang.value }}</div>
+                }
+              </div>
+            </cos-dropdown>
+          </div>
+
+          <div class="preference-box">
+            <div class="preference-header">
+              <div>
+                <label class="preference-label" translate="VIEWS.ACCOUNT.LBL_SHOW_IN_SEARCH"></label>
+                <p class="preference-desc" translate="VIEWS.ACCOUNT.LBL_SHOW_IN_SEARCH_DESCRIPTION"></p>
+              </div>
+              <cos-toggle [model]="form.preferences.showInSearch" (toggleClick)="form.preferences.showInSearch = $event"></cos-toggle>
+            </div>
+          </div>
+
+          <div class="preference-box">
+            <label class="preference-label" translate="VIEWS.ACCOUNT.LBL_LINKS_TITLE"></label>
+            <p class="preference-desc" translate="VIEWS.ACCOUNT.LBL_LINKS_DESCRIPTION"></p>
+            <cos-terms-links></cos-terms-links>
+          </div>
+
+          <div class="preference-box">
+            <label class="preference-label" translate="VIEWS.ACCOUNT.LBL_DELETE_ACCOUNT"></label>
+            <p class="preference-desc" translate="VIEWS.ACCOUNT.LBL_DELETE_ACCOUNT_DESCRIPTION"></p>
+            <button class="delete-link" (click)="doDeleteAccount()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 9H11V17H9V9Z" fill="currentColor" />
+                <path d="M15 9H13V17H15V9Z" fill="currentColor" />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M17 5V4C17 2.89543 16.1046 2 15 2H9C7.89543 2 7 2.89543 7 4V5H4C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H5V18C5 19.6569 6.34315 21 8 21H16C17.6569 21 19 19.6569 19 18V7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H17ZM15 4H9V5H15V4ZM17 7H7V18C7 18.5523 7.44772 19 8 19H16C16.5523 19 17 18.5523 17 18V7Z" fill="currentColor" />
+              </svg>
+              <span translate="VIEWS.ACCOUNT.LNK_DELETE"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    } @else if (activeTab() === 'notifications') {
+      <div class="notifications-section">
+        <h2 class="section-title" translate="VIEWS.ACCOUNT.NOTIFICATIONS_HEADING"></h2>
+        
+        <div class="notification-filters">
+          <div class="search-input">
+             <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_SEARCH' | translate">
+               <input [(ngModel)]="topicSearch" (ngModelChange)="searchTopics()">
+             </cos-input>
+          </div>
+        </div>
+
+        <div class="topic-list">
+          <div class="list-header">
+            <div class="cell" translate="VIEWS.ACCOUNT.TABLE_HEADER_TOPIC"></div>
+            <div class="cell" translate="VIEWS.ACCOUNT.TABLE_HEADER_NOTIFICATIONS"></div>
+          </div>
+          
+          @for (topic of topicNotificationService.items$ | async; track topic.topicId) {
+            <div class="topic-row">
+              <div class="cell topic-title">
+                <a [routerLink]="['/topics', topic.topicId]" target="_blank">{{ topic.title }}</a>
+              </div>
+              <div class="cell topic-actions">
+                <cos-toggle [model]="topic.allowNotifications" (toggleClick)="toggleTopicNotifications(topic)"></cos-toggle>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </main>
+</div>
