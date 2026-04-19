@@ -1,0 +1,56 @@
+$breakpoint-tablet: 1024px;
+$breakpoint-mobile: 576px;
+
+:host {
+  display: contents;
+}
+
+.tablet_show,
+.mobile_show {
+  display: none;
+}
+
+.tablet_hidden,
+.mobile_hidden {
+  display: flex;
+}
+
+@media (max-width: $breakpoint-tablet) {
+  button.btn_medium_activity {
+    background: none;
+    border-radius: 40px;
+
+    &:hover {
+      background: var(--color-background);
+      color: var(--color-link);
+    }
+
+    span {
+      display: none;
+    }
+  }
+
+  .tablet_show {
+    display: flex;
+  }
+
+  .tablet_hidden {
+    display: none;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .mobile_show {
+    display: flex;
+  }
+
+  .mobile_hidden {
+    display: none;
+  }
+}
+
+.btn_medium_activity_new {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

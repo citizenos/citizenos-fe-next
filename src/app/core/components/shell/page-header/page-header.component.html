@@ -1,0 +1,20 @@
+<div id="user_info_area">
+  @if (userStore.user(); as user) {
+    <div class="profile_photo">
+      @if (user.imageUrl) {
+        <img [src]="user.imageUrl" [alt]="user.name" />
+      } @else {
+        <cos-initials [name]="user.name" />
+      }
+    </div>
+    <div class="small_heading">
+      <span [innerHTML]="'VIEWS.DASHBOARD.HEADER_WELCOME' | translate: { user: user }"></span><span>🥳</span>
+    </div>
+  }
+</div>
+<div id="buttons_area">
+  <button id="show_search" class="btn_medium_close icon">
+    <cos-icon name="search" [size]="24" />
+  </button>
+  <cos-activities-button />
+</div>

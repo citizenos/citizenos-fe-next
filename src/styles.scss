@@ -29,6 +29,119 @@ a {
   }
 }
 
+/* Button base */
+%btn-medium-base {
+  padding: 0 16px;
+  gap: 16px;
+  max-height: 40px;
+  min-height: 40px;
+  min-width: 40px;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+  span {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  &.icon svg {
+    position: absolute;
+  }
+}
+
+.btn_medium_close {
+  @extend %btn-medium-base;
+  background: var(--color-surfaces);
+  color: var(--color-text);
+
+  &:hover, &.active {
+    background: var(--color-dialog-contrast);
+  }
+}
+
+.btn_medium_activity {
+  @extend %btn-medium-base;
+  background: var(--color-warn-background);
+  color: var(--color-text);
+
+  &:hover, &.active {
+    background: var(--color-info-background);
+  }
+
+  .btn_medium_activity_new {
+    margin-right: -16px;
+  }
+
+  &:hover .btn_medium_activity_new {
+    background-color: var(--color-info);
+  }
+}
+
+.btn_medium_nav {
+  @extend %btn-medium-base;
+  background: none;
+  color: var(--color-text);
+
+  &:hover, &.active {
+    background: var(--color-background);
+    color: var(--color-link);
+
+    path { fill: var(--color-link); }
+  }
+}
+
+.btn_medium_submit {
+  @extend %btn-medium-base;
+  background: var(--color-primary);
+  color: white;
+
+  path { fill: white; }
+
+  &:hover, &.active {
+    background: var(--color-primary-hover);
+  }
+}
+
+.btn_big_submit {
+  padding: 8px 24px;
+  gap: 8px;
+  max-height: 48px;
+  min-height: 48px;
+  min-width: 48px;
+  border-radius: 48px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 32px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: var(--color-primary);
+  color: white;
+  transition: background 0.2s ease-in-out;
+
+  &:hover {
+    background: var(--color-primary-hover);
+  }
+}
+
+/* Typography utilities */
+.small_heading {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+
 /* CDK Dialog overlay */
 .cos-dialog-backdrop {
   background: rgba(0, 0, 0, 0.45);
