@@ -5,37 +5,14 @@ import { DialogRef, DialogCloseDirective } from '../../../../shared/dialog';
 import { UserStore } from '../../../state/user.store';
 import { UserService } from '../../../services/user.service';
 import { firstValueFrom } from 'rxjs';
+import { SELECTED_LANGUAGES } from '../../../constants/languages';
 
-const LANGUAGES: Record<string, string> = {
-  et: 'Eesti',
-  en: 'English',
-  ru: 'Русский',
-  fi: 'Suomi',
-  pl: 'Polski',
-  de: 'Deutsch',
-  fr: 'Français',
-  uk: 'Українська',
-  lt: 'Lietuvių',
-  lv: 'Latviešu',
-  cs: 'Čeština',
-  sl: 'Slovenščina',
-  hu: 'Magyar',
-  bg: 'Български',
-  ca: 'Català',
-  es: 'Español',
-  hr: 'Hrvatski',
-  it: 'Italiano',
-  nl: 'Nederlands',
-  ro: 'Română',
-  sk: 'Slovenčina',
-  sv: 'Svenska',
-  tr: 'Türkçe',
-};
+import { IconComponent } from '../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'cos-language-select',
   standalone: true,
-  imports: [DialogCloseDirective, TranslateModule],
+  imports: [DialogCloseDirective, TranslateModule, IconComponent],
   template: `
     <div class="dialog_wrap">
       <div class="dialog">
@@ -67,10 +44,11 @@ const LANGUAGES: Record<string, string> = {
         <div class="dialog_info_wrap">
           <div class="dialog_info">
             <a href="https://citizenos.com/get-involved/volunteer-translator" target="_blank" class="help_us_box">
-              <span>{{ 'MODALS.LANGUAGES_MODAL_HELP_US_TRANSLATE' | translate }}</span>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M14.5467 6.31262C14.1471 5.89579 13.4991 5.89579 13.0994 6.31262C12.6997 6.72945 12.6997 7.40527 13.0994 7.8221L16.0816 11H6C5.43478 11 5 11.4108 5 12.0003C5 12.5897 5.43478 12.9824 6 12.9824H16.0816L13.0994 16.1779C12.6997 16.5947 12.6997 17.2705 13.0994 17.6874C13.4991 18.1042 14.1471 18.1042 14.5467 17.6874L20 12L14.5467 6.31262Z" fill="currentColor"/>
-              </svg>
+              <div class="help_us_left">
+                <cos-icon name="translation" [size]="48"></cos-icon>
+                <span class="help_us_text">{{ 'MODALS.LANGUAGES_MODAL_HELP_US_TRANSLATE' | translate }}</span>
+              </div>
+              <cos-icon name="arrow-next" [size]="24" class="arrow_icon"></cos-icon>
             </a>
           </div>
         </div>
@@ -81,8 +59,8 @@ const LANGUAGES: Record<string, string> = {
     .dialog_wrap {
       background: var(--color-surfaces);
       border-radius: var(--radius-md);
-      width: 400px;
-      max-width: 90vw;
+      width: 560px;
+      margin: auto; // Center in panel
       max-height: 80vh;
       display: flex;
       flex-direction: column;
@@ -123,28 +101,30 @@ const LANGUAGES: Record<string, string> = {
     }
 
     .language_list {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 32px;
+      padding: 8px 0;
     }
 
     .language_item {
       display: block;
       width: 100%;
       text-align: left;
-      padding: 10px 12px;
+      padding: 12px 16px;
       background: none;
       border: none;
       border-radius: var(--radius-sm);
       cursor: pointer;
-      font-size: 14px;
-      color: var(--color-text);
-      font-family: var(--font-family-base);
+      font-size: 16px;
+      color: var(--color-link);
+      font-family: inherit;
 
-      &:hover { background: var(--color-surface-hover); }
+      &:hover { color: var(--color-link-hover); }
       &.active {
         color: var(--color-primary);
         font-weight: 600;
+        pointer-events: none;
       }
     }
 
@@ -157,12 +137,34 @@ const LANGUAGES: Record<string, string> = {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      color: var(--color-link);
+      gap: 16px;
+      padding: 12px 16px;
+      background: var(--color-surface-contrast);
+      border-radius: var(--radius-md);
       text-decoration: none;
-      font-size: 14px;
+      color: var(--color-text);
+      transition: background var(--transition-fast);
 
-      &:hover { text-decoration: underline; }
+      &:hover {
+        background: var(--color-surface-hover);
+      }
+
+      .help_us_left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .help_us_text {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+
+      .arrow_icon {
+        color: var(--color-text);
+        opacity: 0.8;
+      }
     }
   `]
 })
@@ -173,7 +175,7 @@ export class LanguageSelectComponent {
   private readonly userStore = inject(UserStore);
   private readonly userService = inject(UserService);
 
-  readonly languageEntries = Object.entries(LANGUAGES).map(([key, value]) => ({ key, value }));
+  readonly languageEntries = Object.entries(SELECTED_LANGUAGES).map(([key, value]) => ({ key, value }));
 
   async switchLanguage(lang: string) {
     this.translate.use(lang);

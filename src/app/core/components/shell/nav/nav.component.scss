@@ -128,9 +128,6 @@ $mobile-breakpoint: 560px;
 
 .nav_scroll {
   flex: 1;
-  overflow-y: auto;
-  overflow-x: visible; // Allow horizontal overflow for dropdowns
-  overflow-x: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -228,9 +225,9 @@ $mobile-breakpoint: 560px;
     background: none;
     border: none;
     padding: 0;
-    font-size: 13px; // Legacy dropdown was 13px, but user asked for 14px in plan? 
+    font-size: 13px; // Legacy dropdown was 13px, but user asked for 14px in plan?
     // Request said: "actually used scss variable and was 14p for the profile info language dropdown"
-    font-size: var(--font-size-base); 
+    font-size: var(--font-size-base);
     color: var(--color-link);
     font-weight: 500;
 
@@ -343,25 +340,29 @@ $mobile-breakpoint: 560px;
   text-align: left;
 
   .icon_wrap {
-    width: 16px;
-    height: 16px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    color: var(--color-text-muted);
+    flex-shrink: 0;
 
-    svg { width: 16px; height: 16px; fill: currentColor; }
+    cos-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
     .orange_dot {
       position: absolute;
-      top: -2px;
-      right: -2px;
-      width: 6px;
-      height: 6px;
+      top: 6px;
+      right: 6px;
+      width: 8px;
+      height: 8px;
       background: var(--color-warning);
       border-radius: 50%;
-      border: 1px solid var(--color-surfaces);
+      border: 2px solid var(--color-surfaces);
     }
   }
 
@@ -397,31 +398,45 @@ $mobile-breakpoint: 560px;
 
 // Footer
 .nav_footer {
-  padding: 24px 16px;
+  padding: 32px 0; // Legacy padding
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 16px;
 
   .social_links {
     display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: center;
+    padding: 0;
     gap: 16px;
+    height: 48px;
 
     .footer_icon {
-      color: var(--color-text-muted);
-      transition: color var(--transition-fast);
-      &:hover { color: var(--color-link); }
-      svg { width: 16px; height: 16px; }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: opacity var(--transition-fast);
+
+      &:hover { opacity: 0.8; }
+
+      // Icons already have background in registry
+      cos-icon { display: block; }
     }
   }
 
   .empowered_by {
-    font-size: 13px; // Legacy hashtag was 13px
+    font-size: 13px;
     color: var(--color-text-muted);
     font-weight: 400;
     text-align: center;
-    .hashtag { color: var(--color-text); }
+    .hashtag {
+      color: var(--color-text-muted);
+      opacity: 0.7;
+    }
   }
 }
 

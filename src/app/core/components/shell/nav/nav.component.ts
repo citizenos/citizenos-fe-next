@@ -10,14 +10,8 @@ import { InitialsComponent } from '../../../../shared/components/initials/initia
 import { LogoComponent } from '../../../../shared/components/logo/logo.component';
 import { LanguageSelectComponent } from '../language-select/language-select.component';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
-const LANG_LABELS: Record<string, string> = {
-  et: 'Eesti', en: 'English', ru: 'Русский', fi: 'Suomi',
-  pl: 'Polski', de: 'Deutsch', fr: 'Français', uk: 'Українська',
-  lt: 'Lietuvių', lv: 'Latviešu', cs: 'Čeština', sl: 'Slovenščina',
-  hu: 'Magyar', bg: 'Български', ca: 'Català', es: 'Español',
-  hr: 'Hrvatski', it: 'Italiano', nl: 'Nederlands', ro: 'Română',
-  sk: 'Slovenčina', sv: 'Svenska', tr: 'Türkçe',
-};
+import { SELECTED_LANGUAGES } from '../../../constants/languages';
+
 
 @Component({
   selector: 'cos-nav',
@@ -157,11 +151,11 @@ const LANG_LABELS: Record<string, string> = {
           <!-- Public nav links -->
           <div class="nav_items_wrap">
             <a class="nav_item" routerLinkActive="active" [routerLink]="['/', translate.currentLang, 'public', 'topics']" (click)="closeNav()">
-              <cos-icon name="globe" class="nav_icon"></cos-icon>
+              <cos-icon name="public-topic" class="nav_icon"></cos-icon>
               <span>{{ 'DEFAULT.NAV.LNK_PUBLIC_TOPICS' | translate }}</span>
             </a>
             <a class="nav_item" routerLinkActive="active" [routerLink]="['/', translate.currentLang, 'public', 'groups']" (click)="closeNav()">
-              <cos-icon name="groups" class="nav_icon"></cos-icon>
+              <cos-icon name="public-groups" class="nav_icon"></cos-icon>
               <span>{{ 'DEFAULT.NAV.LNK_PUBLIC_GROUPS' | translate }}</span>
             </a>
           </div>
@@ -249,7 +243,7 @@ export class NavComponent {
   }
 
   get currentLanguageLabel(): string {
-    return LANG_LABELS[this.translate.currentLang] ?? this.translate.currentLang.toUpperCase();
+    return SELECTED_LANGUAGES[this.translate.currentLang] ?? this.translate.currentLang.toUpperCase();
   }
 
   toggleNav() {
