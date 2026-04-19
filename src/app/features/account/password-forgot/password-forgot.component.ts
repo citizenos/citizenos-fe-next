@@ -24,7 +24,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
     <div id="password_forgot_wrap">
       <nav class="nav-back">
         <cos-button variant="light" size="md" [routerLink]="['..', 'login']" icon="arrow-left">
-          <span translate="VIEWS.PASSWORD_FORGOT.BTN_BACK"></span>
+          <span translate="VIEWS.LOGIN.BTN_BACK_LOGIN"></span>
         </cos-button>
       </nav>
 
@@ -33,14 +33,15 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
       @if (success()) {
         <div class="success-banner" role="alert">
           <cos-icon name="check" [size]="16"></cos-icon>
-          <span translate="COMPONENTS.PASSWORD_FORGOT_FORM.MSG_SUCCESS_EMAIL_SENT"></span>
+          <span translate="MSG_INFO_PASSWORD_RECOVERY_EMAIL_SENT"></span>
         </div>
-        <p class="success-text" translate="COMPONENTS.PASSWORD_FORGOT_FORM.TXT_EMAIL_SENT"></p>
-        <cos-button variant="primary" size="lg" [routerLink]="['..', 'login']">
-           {{ 'COMPONENTS.PASSWORD_FORGOT_FORM.BTN_BACK_TO_LOGIN' | translate }}
-        </cos-button>
+        <div class="form-actions">
+          <cos-button variant="primary" size="lg" [routerLink]="['..', 'login']">
+             {{ 'VIEWS.LOGIN.BTN_BACK_LOGIN' | translate }}
+          </cos-button>
+        </div>
       } @else {
-        <p class="instruction-text" translate="COMPONENTS.PASSWORD_FORGOT_FORM.TXT_INSTRUCTION"></p>
+        <p class="instruction-text" translate="VIEWS.PASSWORD_FORGOT.PASSWORD_FORGOT_DESCRIPTION"></p>
 
         <form [formGroup]="forgotForm" (ngSubmit)="onSubmit()">
           @if (error()) {
@@ -51,11 +52,11 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
           }
 
           <cos-input 
-            [placeholder]="'COMPONENTS.PASSWORD_FORGOT_FORM.LBL_EMAIL' | translate"
+            [placeholder]="'COMPONENTS.PASSWORD_FORGOT.PLACEHOLDER_EMAIL' | translate"
             [hasError]="forgotForm.controls.email.touched && forgotForm.controls.email.invalid"
-            [errorMessage]="'Invalid email address'"
+            [errorMessage]="'COMPONENTS.PASSWORD_FORGOT.ERROR_INVALID_EMAIL' | translate"
           >
-            <input type="email" formControlName="email" [placeholder]="'COMPONENTS.PASSWORD_FORGOT_FORM.LBL_EMAIL' | translate">
+            <input type="email" formControlName="email" [placeholder]="'COMPONENTS.PASSWORD_FORGOT.PLACEHOLDER_EMAIL' | translate">
           </cos-input>
 
           <div class="form-actions">
@@ -66,7 +67,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
               [isLoading]="userStore.isLoading()" 
               [isDisabled]="forgotForm.invalid"
             >
-              {{ 'COMPONENTS.PASSWORD_FORGOT_FORM.BTN_SEND' | translate }}
+              {{ 'COMPONENTS.PASSWORD_FORGOT.SEND_RESET' | translate }}
             </cos-button>
           </div>
         </form>
@@ -152,7 +153,7 @@ export class PasswordForgotComponent {
         await this.userStore.sendPasswordReset(email!);
         this.success.set(true);
       } catch (err: any) {
-        this.error.set('Failed to send reset link. Please check the email address.');
+        this.error.set(err.error?.status?.message || 'Failed to send reset link.');
       }
     }
   }
