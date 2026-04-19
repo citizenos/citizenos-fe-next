@@ -93,7 +93,7 @@ $mobile-breakpoint: 560px;
   border-right: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  // Removed overflow: hidden to allow dropdowns to overlap main content
   font-size: var(--font-size-base); // 14px
 
   @media (max-width: $tablet-breakpoint) {
@@ -129,6 +129,7 @@ $mobile-breakpoint: 560px;
 .nav_scroll {
   flex: 1;
   overflow-y: auto;
+  overflow-x: visible; // Allow horizontal overflow for dropdowns
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
@@ -243,39 +244,80 @@ $mobile-breakpoint: 560px;
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  width: 180px;
+  width: 220px; // Slightly wider for icons and email
   background: var(--color-surfaces);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 100;
+  box-shadow: 0 12px 24px rgba(44, 59, 71, 0.15);
+  z-index: 1000; // Ensure it stays on top
+
+  .separator {
+    height: 1px;
+    background: var(--color-border);
+    margin: 4px 0;
+  }
 
   .logged_in_as {
-    padding: 12px;
-    font-size: var(--font-size-base);
-    color: var(--color-text-muted);
-    line-height: 1.4;
-    .bold { font-weight: 600; color: var(--color-text); display: block; margin-top: 2px; }
-  }
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--color-surface-hover);
 
-  .separator { height: 1px; background: var(--color-border); }
+    .logged_in_icon {
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+    }
+
+    .logged_in_text {
+      min-width: 0;
+
+      .label {
+        font-size: 11px;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--color-text-muted);
+      }
+
+      .email {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--color-text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
 
   .dropdown_option {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
     width: 100%;
-    padding: 10px 12px;
-    font-size: var(--font-size-base);
-    color: var(--color-text);
-    text-decoration: none;
-    background: none;
     border: none;
+    background: none;
     text-align: left;
+    text-decoration: none;
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+    font-weight: 500;
     cursor: pointer;
+    transition: background var(--transition-fast);
 
     &:hover { background: var(--color-surface-hover); }
-    &.logout { color: var(--color-error); }
+
+    cos-icon { color: var(--color-text-muted); }
+
+    &.logout {
+      color: var(--color-error, #f44336);
+      cos-icon { color: inherit; }
+    }
   }
 }
+
 
 // Nav items
 .nav_items_wrap {
