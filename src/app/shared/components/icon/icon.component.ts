@@ -36,7 +36,7 @@ export class IconComponent {
 
   name = input.required<IconName>();
   size = input<string | number>(24);
-  
+
   widthAttr = computed(() => typeof this.size() === 'number' ? this.size() : null);
   heightAttr = computed(() => typeof this.size() === 'number' ? this.size() : null);
 
@@ -47,6 +47,7 @@ export class IconComponent {
 
   viewBox = computed(() => {
     const data = this.registry.getIcon(this.name());
+    console.log(data)
     return data?.viewBox || '0 0 24 24';
   });
 }

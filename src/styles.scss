@@ -28,3 +28,30 @@ a {
     text-decoration: underline;
   }
 }
+
+/* CDK Dialog overlay */
+.cos-dialog-backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+.cos-dialog-panel {
+  width: 100%;
+  max-width: 560px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Tooltip */
+.cos-tooltip-box {
+  position: absolute;
+  z-index: 9999;
+  background: var(--color-primary);
+  color: white;
+  font-size: 13px;
+  line-height: 18px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  max-width: 280px;
+  pointer-events: none;
+  white-space: normal;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

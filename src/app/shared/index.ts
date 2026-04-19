@@ -1,4 +1,5 @@
 // Components
+export { LogoComponent } from './components/logo/logo.component';
 export { ButtonComponent, type ButtonVariant, type ButtonSize } from './components/button/button.component';
 export { DropdownComponent } from './components/dropdown/dropdown.component';
 export { IconComponent } from './components/icon/icon.component';

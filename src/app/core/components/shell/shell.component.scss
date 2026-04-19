@@ -1,22 +1,19 @@
+$nav-width: 200px;
+$tablet-breakpoint: 1024px;
+$mobile-bar-height: 56px;
+
 #content_root {
   display: flex;
-  flex-direction: column;
   min-height: 100vh;
 }
 
 #content {
   flex: 1;
-  padding: 1rem;
-}
+  margin-left: $nav-width;
+  min-width: 0;
 
-nav {
-  padding: 1rem;
-  background-color: #f5f5f5;
-  border-bottom: 1px solid #ddd;
-}
-
-.dark-theme nav {
-  background-color: #333;
-  color: #fff;
-  border-bottom: 1px solid #222;
+  @media (max-width: $tablet-breakpoint) {
+    margin-left: 0;
+    padding-top: 0;
+  }
 }
