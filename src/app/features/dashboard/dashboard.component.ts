@@ -13,6 +13,7 @@ import { CreateMenuComponent } from '../../shared/components/create-menu/create-
 import { TopicCardComponent } from '../../shared/components/topic-card/topic-card.component';
 import { GroupCardComponent } from '../../shared/components/group-card/group-card.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
+import { DashboardListSectionComponent } from '../../shared/components/dashboard-list-section/dashboard-list-section.component';
 import { PageHeaderComponent } from '../../core/components/shell/page-header/page-header.component';
 import { News } from '../../core/interfaces/news';
 
@@ -20,7 +21,7 @@ import { News } from '../../core/interfaces/news';
   selector: 'app-dashboard',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, DatePipe, TranslateModule, CreateMenuComponent, TopicCardComponent, GroupCardComponent, IconComponent, PageHeaderComponent],
+  imports: [RouterLink, DatePipe, TranslateModule, CreateMenuComponent, TopicCardComponent, GroupCardComponent, IconComponent, PageHeaderComponent, DashboardListSectionComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })

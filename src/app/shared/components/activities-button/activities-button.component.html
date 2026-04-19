@@ -1,4 +1,4 @@
-<button class="bold" [class.btn_medium_activity]="true" (click)="activate.emit()">
+<button class="bold" [class.btn_medium_activity]="true" (click)="open()">
   @if (!groupId() && !topicId()) {
     <span>{{ 'VIEWS.DASHBOARD.BTN_GLOBAL_ACTIVITIES' | translate }}</span>
   } @else if (groupId()) {

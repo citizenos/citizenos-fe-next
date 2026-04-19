@@ -35,15 +35,6 @@ $breakpoint-mobile: 576px;
     padding: 0;
   }
 
-  .view_more_button {
-    display: none;
-
-    @media (max-width: $breakpoint-mobile) {
-      display: flex;
-      margin-top: $padding-standard;
-    }
-  }
-
   .no_engagements {
     display: flex;
     flex-direction: column;
@@ -300,32 +291,6 @@ $breakpoint-mobile: 576px;
     }
   }
 
-  .dashboard_section {
-    display: flex;
-    flex-direction: column;
-
-    @media (max-width: $breakpoint-mobile) {
-      padding: 0 8px;
-
-      &.items_list_section {
-        .section_content {
-          margin-right: -8px;
-        }
-      }
-    }
-
-    .section_content {
-      display: flex;
-      flex-direction: row;
-      overflow-x: scroll;
-      gap: $gap-standard;
-      padding: $padding-standard 0;
-
-      @media (max-width: $breakpoint-mobile) {
-        padding: $gap-standard 0;
-      }
-    }
-  }
 }
 
 .mobile_show {

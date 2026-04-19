@@ -1,10 +1,10 @@
-import { Component, ChangeDetectionStrategy, inject, input, Output, EventEmitter } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, ChangeDetectionStrategy, inject, input } from '@angular/core';
+import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivityService } from '../../../core/services/activity.service';
+import { ActivityFeedState } from '../../../core/state/activity-feed.state';
 import { UserStore } from '../../../core/state/user.store';
 import { switchMap, of } from 'rxjs';
-import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'cos-activities-button',
@@ -18,19 +18,22 @@ export class ActivitiesButtonComponent {
   groupId = input<string>();
   topicId = input<string>();
 
-  @Output() activate = new EventEmitter<void>();
-
   private activityService = inject(ActivityService);
+  private feedState = inject(ActivityFeedState);
   private userStore = inject(UserStore);
 
   readonly unreadCount = toSignal(
     toObservable(this.userStore.isAuthenticated).pipe(
       switchMap(authenticated =>
         authenticated
-          ? this.activityService.getUnreadCount({ groupId: this.groupId(), topicId: this.topicId() })
+          ? this.activityService.unreadCount$({ groupId: this.groupId(), topicId: this.topicId() })
           : of(0)
       )
     ),
     { initialValue: 0 }
   );
+
+  open(): void {
+    this.feedState.toggle({ groupId: this.groupId(), topicId: this.topicId() });
+  }
 }

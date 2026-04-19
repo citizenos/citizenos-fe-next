@@ -1,0 +1,24 @@
+@if (feedState.isOpen()) {
+  <div class="overlay" (click)="close()"></div>
+}
+
+<div id="activity_feed" [class.open]="feedState.isOpen()" (scroll)="onScroll($event)">
+  <div class="feed_heading_wrap">
+    <div class="small_heading">
+      {{ 'COMPONENTS.ACTIVITY_FEED.HEADING_' + feedType.toUpperCase() | translate }}
+    </div>
+    <button class="btn_medium_close icon" (click)="close()">
+      <cos-icon name="close" [size]="24" />
+    </button>
+  </div>
+
+  <div id="results_area">
+    @for (group of activities(); track group.referer) {
+      <cos-activity-item [activityGroup]="group" />
+    } @empty {
+      @if (feedState.isOpen()) {
+        <div class="empty_state">{{ 'COMPONENTS.ACTIVITY_FEED.NO_ACTIVITIES' | translate }}</div>
+      }
+    }
+  </div>
+</div>

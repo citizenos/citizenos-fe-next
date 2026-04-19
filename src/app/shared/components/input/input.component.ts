@@ -1,4 +1,4 @@
-import { Component, ContentChild, ElementRef, AfterContentChecked, input, signal, ViewEncapsulation } from '@angular/core';
+import { Component, ContentChild, ElementRef, AfterContentChecked, input, signal, ViewEncapsulation, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -116,8 +116,7 @@ export class InputComponent implements AfterContentChecked {
   errorMessage = input<string>('');
   
   showPlaceholder = signal<boolean>(false);
-
-  constructor(private el: ElementRef) {}
+  private el = inject(ElementRef);
 
   ngAfterContentChecked() {
     const inputEl = this.el.nativeElement.querySelector('input, textarea');

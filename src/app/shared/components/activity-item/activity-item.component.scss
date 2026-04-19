@@ -1,0 +1,51 @@
+.activity_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--color-surfaces);
+  text-decoration: none;
+  color: var(--color-text);
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    background: var(--color-secondary);
+  }
+}
+
+#new_activity {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.activity_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.activity_icon {
+  display: flex;
+  align-items: center;
+}
+
+.date {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.activity_content {
+  font-size: 13px;
+  line-height: 18px;
+
+  i {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+}
