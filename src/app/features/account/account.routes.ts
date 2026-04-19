@@ -15,7 +15,6 @@ export const ACCOUNT_ROUTES: Routes = [
         ]
       },
       { path: 'signup', loadComponent: () => import('./register/register.component').then(m => m.RegisterComponent) },
-      { path: 'profile', loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent) },
       { path: 'password/forgot', loadComponent: () => import('./password-forgot/password-forgot.component').then(m => m.PasswordForgotComponent) },
       { path: 'password/reset/:passwordResetCode', loadComponent: () => import('./password-reset/password-reset.component').then(m => m.PasswordResetComponent) },
       { path: '', redirectTo: 'login', pathMatch: 'full' }

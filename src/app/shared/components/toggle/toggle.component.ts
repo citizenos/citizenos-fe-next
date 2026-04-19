@@ -27,7 +27,7 @@ import { CommonModule } from '@angular/common';
     .toggle-track {
       width: 40px;
       height: 20px;
-      background: var(--color-border);
+      background: var(--color-danger);
       border-radius: 10px;
       position: relative;
       transition: background 0.2s;
@@ -56,6 +56,7 @@ import { CommonModule } from '@angular/common';
     .toggle-text {
       font-size: 14px;
       color: var(--color-text);
+      font-weight: 600;
     }
   `],
   encapsulation: ViewEncapsulation.None

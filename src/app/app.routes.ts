@@ -16,11 +16,6 @@ export const routes: Routes = [
     resolve: { language: languageResolver },
     children: [
       // Account routes - these skip the main Shell layout
-      { 
-        path: 'account', 
-        loadChildren: () => import('./features/account/account.routes').then(m => m.ACCOUNT_ROUTES) 
-      },
-      
       // Main Application Shell
       {
         path: '',
@@ -28,6 +23,7 @@ export const routes: Routes = [
         children: [
           { path: '', component: HomeComponent },
           { path: 'dashboard', canActivate: [authGuard], component: DashboardComponent },
+          { path: 'account', pathMatch: 'full', canActivate: [authGuard], loadComponent: () => import('./features/account/profile/profile.component').then(m => m.ProfileComponent) },
           
           // Error pages
           { path: '401', component: PageNotFoundComponent },
@@ -35,7 +31,13 @@ export const routes: Routes = [
           { path: 'error/401', redirectTo: '401' },
           { path: 'error/404', redirectTo: '404' }
         ]
-      }
+      },
+
+      // Account routes (login, signup) - these skip the main Shell layout
+      { 
+        path: 'account', 
+        loadChildren: () => import('./features/account/account.routes').then(m => m.ACCOUNT_ROUTES) 
+      },
     ]
   },
   

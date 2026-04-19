@@ -1,5 +1,5 @@
-import { Component, inject, signal, computed, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, computed, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { CommonModule, KeyValuePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
@@ -10,8 +10,12 @@ import { ToggleComponent } from '../../../shared/components/toggle/toggle.compon
 import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { TermsLinksComponent } from '../../../shared/components/terms-links/terms-links.component';
-import { Subject, takeUntil, map, Observable, firstValueFrom } from 'rxjs';
-import { RouterLink } from '@angular/router';
+import { Subject, takeUntil, firstValueFrom } from 'rxjs';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { DialogService } from '../../../shared/dialog/dialog.service';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { InitialsComponent } from '../../../shared/components/initials/initials.component';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 type ProfileTab = 'profile' | 'notifications';
 
@@ -27,20 +31,28 @@ type ProfileTab = 'profile' | 'notifications';
     DropdownComponent,
     InputComponent,
     RouterLink,
-    TermsLinksComponent
+    TermsLinksComponent,
+    KeyValuePipe,
+    InitialsComponent,
+    PaginationComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
+  @ViewChild('imageUpload') fileInput?: ElementRef;
+
   store = inject(UserStore);
   configStore = inject(ConfigStore);
   userService = inject(UserService);
   topicNotificationService = inject(TopicNotificationService);
   translate = inject(TranslateService);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  dialog = inject(DialogService);
 
   activeTab = signal<ProfileTab>('profile');
-  
+
   form = {
     name: '',
     email: '',
@@ -49,6 +61,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     password: '',
     newPassword: '',
     passwordConfirm: '',
+    imageUrl: '',
     preferences: {
       showInSearch: false
     }
@@ -57,10 +70,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   errors: any = {};
   resetPasswordMode = signal<boolean>(false);
   topicSearch = signal<string>('');
-  
+  imageFile: File | null = null;
+  tmpImageUrl: string | null = null;
+
   languages: { [key: string]: string } = {
     en: 'English',
-    ee: 'Eesti',
+    et: 'Eesti',
     ru: 'Русский'
   };
 
@@ -74,8 +89,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.form.email = user.email || '';
       this.form.company = user.company || '';
       this.form.language = user.language;
+      this.form.imageUrl = user.imageUrl || '';
       this.form.preferences.showInSearch = user.preferences?.showInSearch || false;
     }
+
+    // Handle tab fragments
+    this.route.fragment.pipe(takeUntil(this.destroy$)).subscribe(fragment => {
+      if (fragment === 'notifications') {
+        this.activeTab.set('notifications');
+      } else {
+        this.activeTab.set('profile');
+      }
+    });
+
+    // Load initial notification topics
+    // this.topicNotificationService.loadItems(); // Removed as it is protected and items$ is already initialized
   }
 
   ngOnDestroy() {
@@ -84,7 +112,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   selectTab(tab: ProfileTab) {
-    this.activeTab.set(tab);
+    this.router.navigate([], { fragment: tab });
   }
 
   toggleResetPassword() {
@@ -98,7 +126,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       email: this.form.email,
       company: this.form.company,
       language: this.form.language,
-      preferences: this.form.preferences
+      preferences: this.form.preferences,
+      imageUrl: this.form.imageUrl
     };
 
     if (this.resetPasswordMode()) {
@@ -110,31 +139,61 @@ export class ProfileComponent implements OnInit, OnDestroy {
       params.newPassword = this.form.newPassword;
     }
 
+    if (this.imageFile) {
+      try {
+        const res = await firstValueFrom(this.userService.uploadUserImage(this.imageFile));
+        params.imageUrl = res.imageUrl; // The legacy component used res.link, but UserStore expects res.imageUrl or similar based on its logic. Let's check service.
+      } catch (err) {
+        console.error('Image upload failed', err);
+      }
+    }
+
     try {
       await this.store.updateProfile(params);
       this.resetPasswordMode.set(false);
       this.form.password = '';
       this.form.newPassword = '';
       this.form.passwordConfirm = '';
+      this.imageFile = null;
+      this.tmpImageUrl = null;
     } catch (err: any) {
       this.errors = err.error?.errors || { general: 'ERRORS.GENERAL' };
     }
   }
 
   async doDeleteAccount() {
-    if (confirm(this.translate.instant('VIEWS.ACCOUNT.CONFIRM_DELETE'))) {
-      try {
-        await this.store.deleteAccount();
-        // Redirect will happen via auth guard or manual navigation if needed
-      } catch (err) {
-        console.error('Failed to delete account', err);
+    const deleteDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        level: 'delete',
+        heading: 'MODALS.USER_DELETE_CONFIRM_HEADING',
+        title: 'MODALS.USER_DELETE_CONFIRM_TXT_ARE_YOU_SURE',
+        description: 'MODALS.USER_DELETE_CONFIRM_TXT_NO_UNDO',
+        points: ['MODALS.USER_DELETE_CONFIRM_TXT_USER_DELETED', 'MODALS.USER_DELETE_CONFIRM_TXT_KEEP_DATA_ANONYMOUSLY'],
+        confirmBtn: 'MODALS.USER_DELETE_CONFIRM_YES',
+        closeBtn: 'MODALS.USER_DELETE_CONFIRM_NO'
       }
-    }
+    });
+
+    deleteDialog.afterClosed().subscribe(async (result) => {
+      if (result === true) {
+        try {
+          await this.store.deleteAccount();
+          this.router.navigate(['/']);
+        } catch (err) {
+          console.error('Failed to delete account', err);
+        }
+      }
+    });
   }
 
-  setProfileLanguage(lang: string) {
+  async setProfileLanguage(lang: string) {
     this.form.language = lang;
     this.configStore.setLanguage(lang);
+    try {
+      await this.store.updateProfile({ language: lang });
+    } catch (err) {
+      console.error('Failed to update language', err);
+    }
   }
 
   searchTopics() {
@@ -142,29 +201,84 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   toggleTopicNotifications(topic: any) {
-    this.topicNotificationService.update(topic.topicId, {
-      allowNotifications: !topic.allowNotifications
-    }).subscribe();
+    if (!topic.allowNotifications) {
+      const removeDialog = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          level: 'delete',
+          heading: 'MODALS.REMOVE_TOPIC_NOTIFICATIONS_CONFIRM_TITLE',
+          title: 'MODALS.REMOVE_TOPIC_NOTIFICATIONS_CONFIRM_ARE_YOU_SURE',
+          confirmBtn: 'MODALS.REMOVE_TOPIC_NOTIFICATIONS_CONFIRM_YES',
+          closeBtn: 'MODALS.REMOVE_TOPIC_NOTIFICATIONS_CONFIRM_NO'
+        }
+      });
+
+      removeDialog.afterClosed().subscribe((result) => {
+        if (result === true) {
+          this.topicNotificationService.delete(topic.topicId).pipe(takeUntil(this.destroy$)).subscribe();
+        } else {
+          topic.allowNotifications = true;
+        }
+      });
+    } else {
+      this.topicNotificationService.update(topic.topicId, {
+        allowNotifications: true
+      }).pipe(takeUntil(this.destroy$)).subscribe();
+    }
   }
 
   triggerUploadImage() {
-    const input = document.getElementById('profile_image_input') as HTMLInputElement;
-    input.click();
+    this.fileInput?.nativeElement.click();
   }
 
   async fileUpload(event: any) {
     const file = event.target.files[0];
     if (file) {
-      try {
-        await this.store.updateProfile({ imageUrl: await this.uploadImage(file) });
-      } catch (err) {
-        console.error('Image upload failed', err);
-      }
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const resized = await this.resizeImage(reader.result as string);
+        this.tmpImageUrl = resized.imageUrl;
+        this.imageFile = resized.file;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
-  private async uploadImage(file: File): Promise<string> {
-    const res = await firstValueFrom(this.userService.uploadUserImage(file));
-    return res.imageUrl;
+  private resizeImage(imageURL: string): Promise<{ file: File, imageUrl: string }> {
+    return new Promise((resolve) => {
+      const image = new Image();
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 320;
+        canvas.height = 320;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, 320, 320);
+        }
+        const data = canvas.toDataURL('image/jpeg', 1);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const file = new File([blob], 'profileimage.jpg', { type: 'image/jpeg' });
+            resolve({ file, imageUrl: data });
+          }
+        }, 'image/jpeg');
+      };
+      image.src = imageURL;
+    });
+  }
+
+  async deleteUserImage() {
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = null;
+    }
+    this.form.imageUrl = '';
+    this.imageFile = null;
+    this.tmpImageUrl = null;
+    
+    try {
+      await this.store.updateProfile({ imageUrl: '' });
+    } catch (err) {
+      console.error('Failed to delete image', err);
+    }
   }
 }

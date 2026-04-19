@@ -81,7 +81,7 @@ const LANG_LABELS: Record<string, string> = {
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M8 1V15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
-              <span>{{ 'COMPONENTS.CREATE.BTN' | translate }}</span>
+              <span>{{ 'DEFAULT.NAV.BTN_CREATE' | translate }}</span>
             </button>
             @if (showCreateMenu()) {
               <div class="nav_create_menu">
@@ -90,8 +90,8 @@ const LANG_LABELS: Record<string, string> = {
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M19.5 9L14.25 3H6C5.17157 3 4.49999 3.66866 4.5 4.49709L4.50008 19.2273C4.50008 20.2023 5.36055 21 6.22897 21H17.9211C18.7895 21 19.5 20.2023 19.5 19.2273V9ZM13.5001 4.5V9H17.25L13.5001 4.5ZM12.0001 4.5H6L6.00008 19.2273C6.00008 19.2647 6.01779 19.3374 6.09563 19.4147C6.13234 19.4512 6.17061 19.4756 6.20106 19.4891C6.21881 19.497 6.22963 19.4994 6.23301 19.5H17.8975C17.9021 19.4962 17.9083 19.4903 17.9161 19.4816C17.9546 19.4383 18 19.3513 18 19.2273V10.5H12.0001V4.5Z" fill="currentColor"/>
                   </svg>
                   <div>
-                    <div class="item_title">{{ 'COMPONENTS.CREATE.TITLE_TOPIC' | translate }}</div>
-                    <div class="item_desc">{{ 'COMPONENTS.CREATE.DESC_TOPIC' | translate }}</div>
+                    <div class="item_title">{{ 'COMPONENTS.CREATE.TITLE_DISCUSSION' | translate }}</div>
+                    <div class="item_desc">{{ 'COMPONENTS.CREATE.DESC_DISCUSSION' | translate }}</div>
                   </div>
                 </a>
                 <a class="create_menu_item" [routerLink]="['/', translate.currentLang, 'groups', 'create']" (click)="closeCreateMenu()">
