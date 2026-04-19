@@ -94,6 +94,7 @@ $mobile-breakpoint: 560px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  font-size: var(--font-size-base); // 14px
 
   @media (max-width: $tablet-breakpoint) {
     width: 280px;
@@ -129,6 +130,8 @@ $mobile-breakpoint: 560px;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 // Create button & menu
@@ -149,12 +152,11 @@ $mobile-breakpoint: 560px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px; // Legacy big submit was 16px
   font-weight: 600;
   transition: all var(--transition-fast);
 
   &:hover { background: var(--color-primary-dark); }
-  &.active { border-radius: 20px 20px 0 0; }
 }
 
 .nav_create_menu {
@@ -206,7 +208,7 @@ $mobile-breakpoint: 560px;
   }
 
   .user_name {
-    font-size: 13px;
+    font-size: var(--font-size-base); // 14px
     font-weight: 600;
     color: var(--color-text);
     white-space: nowrap;
@@ -225,7 +227,9 @@ $mobile-breakpoint: 560px;
     background: none;
     border: none;
     padding: 0;
-    font-size: 11px;
+    font-size: 13px; // Legacy dropdown was 13px, but user asked for 14px in plan? 
+    // Request said: "actually used scss variable and was 14p for the profile info language dropdown"
+    font-size: var(--font-size-base); 
     color: var(--color-link);
     font-weight: 500;
 
@@ -248,7 +252,7 @@ $mobile-breakpoint: 560px;
 
   .logged_in_as {
     padding: 12px;
-    font-size: 11px;
+    font-size: var(--font-size-base);
     color: var(--color-text-muted);
     line-height: 1.4;
     .bold { font-weight: 600; color: var(--color-text); display: block; margin-top: 2px; }
@@ -260,7 +264,7 @@ $mobile-breakpoint: 560px;
     display: block;
     width: 100%;
     padding: 10px 12px;
-    font-size: 13px;
+    font-size: var(--font-size-base);
     color: var(--color-text);
     text-decoration: none;
     background: none;
@@ -283,27 +287,52 @@ $mobile-breakpoint: 560px;
   align-items: center;
   gap: 12px;
   width: 100%;
-  height: 40px;
+  min-height: 40px;
   padding: 0 12px;
+  border: none;
+  background: none;
   border-radius: var(--radius-sm);
   color: var(--color-text);
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--font-size-base); // 14px
   font-weight: 500;
+  cursor: pointer;
   transition: all var(--transition-fast);
+  text-align: left;
 
-  svg { width: 18px; height: 18px; fill: currentColor; opacity: 0.7; }
+  .icon_wrap {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: var(--color-text-muted);
+
+    svg { width: 16px; height: 16px; fill: currentColor; }
+
+    .orange_dot {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 6px;
+      height: 6px;
+      background: var(--color-warning);
+      border-radius: 50%;
+      border: 1px solid var(--color-surfaces);
+    }
+  }
 
   &:hover {
     background: var(--color-surface-hover);
-    color: var(--color-primary);
-    svg { opacity: 1; }
+    color: var(--color-link);
+    .icon_wrap { color: var(--color-link); }
   }
 
   &.active {
     color: var(--color-primary);
     font-weight: 700;
-    svg { opacity: 1; }
+    .icon_wrap { color: var(--color-primary); opacity: 1; }
   }
 }
 
@@ -322,79 +351,40 @@ $mobile-breakpoint: 560px;
     border: none;
     cursor: pointer;
   }
-
-  .btn_big_submit_ghost {
-    height: 40px;
-    border-radius: 20px;
-    background: transparent;
-    color: var(--color-primary);
-    font-weight: 600;
-    border: 1px solid var(--color-primary);
-    cursor: pointer;
-  }
 }
 
 // Footer
 .nav_footer {
-  padding: 16px;
-  border-top: 1px solid var(--color-border);
-  background: var(--color-surface-subtle);
-
-  .footer_links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 12px;
-    margin-bottom: 16px;
-
-    .footer_link_btn {
-      background: none;
-      border: none;
-      padding: 0;
-      font-size: 12px;
-      color: var(--color-text-muted);
-      text-decoration: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-
-      &:hover { color: var(--color-text); text-decoration: underline; }
-
-      &.help_link {
-        position: relative;
-        .orange_dot {
-          width: 6px;
-          height: 6px;
-          background: #ff9800;
-          border-radius: 50%;
-        }
-      }
-    }
-  }
+  padding: 24px 16px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
   .social_links {
     display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
+    justify-content: center;
+    gap: 16px;
 
     .footer_icon {
       color: var(--color-text-muted);
       transition: color var(--transition-fast);
-      &:hover { color: var(--color-primary); }
-      svg { width: 18px; height: 18px; }
+      &:hover { color: var(--color-link); }
+      svg { width: 16px; height: 16px; }
     }
   }
 
   .empowered_by {
-    font-size: 11px;
+    font-size: 13px; // Legacy hashtag was 13px
     color: var(--color-text-muted);
-    font-weight: 600;
-    .hashtag { color: var(--color-primary); }
+    font-weight: 400;
+    text-align: center;
+    .hashtag { color: var(--color-text); }
   }
 }
 
 .line_separator {
   height: 1px;
   background: var(--color-border);
-  margin: 4px 0;
+  margin: 8px 16px;
 }
