@@ -1,45 +1,66 @@
+.create_menu_container {
+  background: var(--color-surfaces);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: 0 12px 32px rgba(44, 59, 71, 0.2);
+  padding: 12px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.create_menu_heading {
+  padding: 12px 16px;
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-text);
+}
+
 .create_menu_item {
   display: flex;
   cursor: pointer;
   flex-direction: row;
-  padding: 8px;
+  padding: 12px 16px;
   justify-content: space-between;
   text-decoration: none;
   color: var(--color-text);
+  transition: background var(--transition-fast);
+  border-radius: var(--radius-md);
 
   &:hover {
-    background: var(--color-secondary);
-    border-radius: 8px;
+    background: var(--color-surface-hover);
   }
 
   .left_wrap {
     display: flex;
-    gap: 8px;
+    gap: 12px;
   }
 
   .icon_wrap {
     width: 32px;
     height: 32px;
-    border-radius: 40px;
+    border-radius: 50%;
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
   }
 
   .item_text_wrap {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 0px;
-    gap: 8px;
+    gap: 4px;
 
     .item_title {
       font-family: "Noto Sans";
       font-style: normal;
       font-weight: 600;
-      font-size: 16px;
-      line-height: 24px;
+      font-size: 14px;
+      line-height: 20px;
       color: var(--color-text);
     }
 
@@ -47,22 +68,21 @@
       font-family: "Noto Sans";
       font-style: normal;
       font-weight: 400;
-      font-size: 13px;
+      font-size: 12px;
       line-height: 16px;
-      color: var(--color-text);
+      color: var(--color-text-muted);
     }
   }
 
   .icon_item {
     display: flex;
-    margin-top: 6px;
+    align-items: center;
+    color: var(--color-text-muted);
   }
 }
 
 .line_separator {
-  margin-top: 8px;
-  margin-bottom: 8px;
-  width: 160px;
+  margin: 8px 16px;
   height: 1px;
-  background: var(--color-secondary);
+  background: var(--color-border);
 }
