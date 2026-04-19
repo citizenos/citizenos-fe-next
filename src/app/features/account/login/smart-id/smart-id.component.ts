@@ -24,15 +24,14 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
   template: `
     <div id="login_wrap">
       <nav class="nav-back">
-        <cos-button variant="light" size="md" [routerLink]="['/account/login']" icon="arrow-left" (click)="cancel()">
-          <span translate="VIEWS.LOGIN.BTN_BACK"></span>
+        <cos-button variant="light" size="md" [routerLink]="['../']" icon="arrow-left" (click)="cancel()">
+          <span translate="VIEWS.LOGIN.BTN_BACK_LOGIN"></span>
         </cos-button>
       </nav>
 
       <div class="smartid-login">
         <div class="section-header">
           <cos-icon name="smart-id" [size]="32" class="method-icon"></cos-icon>
-          <h3 translate="VIEWS.LOGIN.SMART_ID_TITLE"></h3>
         </div>
 
         @if (!challengeID()) {
@@ -44,23 +43,23 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
               </div>
             }
 
-            <cos-input 
-              [placeholder]="'MODALS.LOGIN_SMARTID_PLACEHOLDER_PID' | translate"
-              [hasError]="smartIdForm.controls.pid.touched && smartIdForm.controls.pid.invalid"
-            >
-              <input type="text" formControlName="pid" [placeholder]="'MODALS.LOGIN_SMARTID_PLACEHOLDER_PID' | translate">
-            </cos-input>
+                <cos-input 
+                  [placeholder]="'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_PLACEHOLDER_PID' | translate"
+                  [hasError]="smartIdForm.controls.pid.touched && smartIdForm.controls.pid.invalid"
+                >
+                  <input type="text" formControlName="pid" [placeholder]="'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_PLACEHOLDER_PID' | translate">
+                </cos-input>
 
             <div class="form-actions">
-              <cos-button 
-                type="submit" 
-                variant="primary"
-                size="lg"
-                [isLoading]="userStore.isLoading()" 
-                [isDisabled]="smartIdForm.invalid"
-              >
-                {{ 'MODALS.LOGIN_SMARTID_BTN_AUTHENTICATE' | translate }}
-              </cos-button>
+                <cos-button 
+                  type="submit" 
+                  variant="primary"
+                  size="lg"
+                  [isLoading]="userStore.isLoading()" 
+                  [isDisabled]="smartIdForm.invalid"
+                >
+                  {{ 'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_BTN_AUTHENTICATE_SID' | translate }}
+                </cos-button>
             </div>
           </form>
         } @else {
@@ -119,7 +118,6 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
     }
 
     .method-icon {
-      color: var(--color-primary);
     }
 
     .challenge-container {

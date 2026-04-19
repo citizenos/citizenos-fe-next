@@ -10,8 +10,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   template: `
     <svg
       [innerHTML]="safeSvgContent()"
-      [attr.width]="size()"
-      [attr.height]="size()"
+      [attr.width]="widthAttr()"
+      [attr.height]="heightAttr()"
       [attr.viewBox]="viewBox()"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -37,6 +37,9 @@ export class IconComponent {
   name = input.required<IconName>();
   size = input<string | number>(24);
   
+  widthAttr = computed(() => typeof this.size() === 'number' ? this.size() : null);
+  heightAttr = computed(() => typeof this.size() === 'number' ? this.size() : null);
+
   safeSvgContent = computed(() => {
     const data = this.registry.getIcon(this.name());
     return data ? this.sanitizer.bypassSecurityTrustHtml(data.content) : '';

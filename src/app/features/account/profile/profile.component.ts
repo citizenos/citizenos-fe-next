@@ -26,7 +26,8 @@ type ProfileTab = 'profile' | 'notifications';
     ToggleComponent,
     DropdownComponent,
     InputComponent,
-    RouterLink
+    RouterLink,
+    TermsLinksComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'

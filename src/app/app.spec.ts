@@ -1,6 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 import { provideRouter } from '@angular/router';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { MockIconComponent } from './shared/testing/mocks';
+import { IconComponent } from './shared/components/icon/icon.component';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -9,7 +12,12 @@ describe('App', () => {
       providers: [
         provideRouter([])
       ]
-    }).compileComponents();
+    })
+    .overrideComponent(App, {
+      remove: { imports: [IconComponent] },
+      add: { imports: [MockIconComponent] }
+    })
+    .compileComponents();
   });
 
   it('should create the app', () => {

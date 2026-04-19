@@ -8,8 +8,8 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [CommonModule, TranslateModule],
   template: `
     <div class="terms-links">
-      <a href="https://citizenos.com/terms/" target="_blank" translate="VIEWS.ACCOUNT.LNK_TERMS">Terms of Service</a>
-      <a href="https://citizenos.com/privacy/" target="_blank" translate="VIEWS.ACCOUNT.LNK_PRIVACY">Privacy Policy</a>
+      <a href="https://citizenos.com/terms/" target="_blank" translate="VIEWS.ACCOUNT.LNK_TERMS"></a>
+      <a href="https://citizenos.com/privacy/" target="_blank" translate="VIEWS.ACCOUNT.LNK_PRIVACY"></a>
     </div>
   `,
   styles: [`

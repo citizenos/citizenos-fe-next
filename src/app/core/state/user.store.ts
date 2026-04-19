@@ -101,7 +101,7 @@ export const UserStore = signalStore(
         return firstValueFrom(userService.loginMobiilIdStatus(token));
       },
 
-      async loginSmartIdInit(pid: string, countryCode: string) {
+      async loginSmartIdInit(pid: string, countryCode: string = 'EE') {
         patchState(store, { isLoading: true });
         try {
           const res = await firstValueFrom(userService.loginSmartIdInit(pid, countryCode));
