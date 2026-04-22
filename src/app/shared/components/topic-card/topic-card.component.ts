@@ -86,7 +86,7 @@ import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM6.44444 12L12.6667 5.82456L11.5 4.66667L6.44444 9.68421L4.5 7.75439L3.33333 8.91228L6.44444 12Z" fill="white"/>
                 </svg>
-                <div class="bold" [translate]="'COMPONENTS.TOPICBOX.HEADER_VOTING'" [translateParams]="{target: topic().members?.users?.count || 0, value: topic().vote?.votersCount || 0}"></div>
+                <div class="bold" [translate]="'COMPONENTS.TOPICBOX.HEADER_VOTING'" [translateParams]="{target: topic().members.users.count || 0, value: topic().vote?.votersCount || 0}"></div>
               }
               @case ('followUp') {
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -170,7 +170,7 @@ import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
               <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99999 8.00016C9.84094 8.00016 11.3333 6.50778 11.3333 4.66683C11.3333 2.82588 9.84094 1.3335 7.99999 1.3335C6.15904 1.3335 4.66666 2.82588 4.66666 4.66683C4.66666 6.50778 6.15904 8.00016 7.99999 8.00016Z" fill="currentColor"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M4 11.6295C4 9.99307 5.19391 8.6665 6.66667 8.6665H9.33333C10.8061 8.6665 12 9.99307 12 11.6295V15.3332H4V11.6295Z" fill="currentColor"/>
             </svg>
-            <span>{{ topic().members?.users?.count ?? 0 }}</span>
+            <span>{{ topic().members.users.count ?? 0 }}</span>
           </div>
           <div class="last_edit">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">

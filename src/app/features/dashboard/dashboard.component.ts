@@ -36,8 +36,8 @@ export class DashboardComponent {
 
   readonly showCreate = signal(false);
 
-  readonly myTopics = toSignal(this.userTopicService.loadItems(), { initialValue: [] });
-  readonly publicTopics = toSignal(this.publicTopicService.loadItems(), { initialValue: [] });
+  readonly myTopics = toSignal(this.userTopicService.items$, { initialValue: [] });
+  readonly publicTopics = toSignal(this.publicTopicService.items$, { initialValue: [] });
   readonly myGroups = toSignal(this.userGroupService.loadItems(), { initialValue: [] });
   readonly publicGroups = toSignal(this.publicGroupService.loadItems(), { initialValue: [] });
 

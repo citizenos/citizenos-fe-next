@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';
 import { ItemsListService, ListParams } from './items-list.service';
+import { Topic } from '../interfaces/topic';
 
 export interface PublicTopicParams extends ListParams {
   statuses?: string[];
@@ -42,5 +43,12 @@ export class PublicTopicService extends ItemsListService {
       `${this.apiUrl}/api/topics`,
       { withCredentials: true, params: httpParams }
     ).pipe(map(res => ({ rows: res.data?.rows ?? [], countTotal: res.data?.count ?? 0 })));
+  }
+
+  getPreview(limit: number): Observable<Topic[]> {
+    return this.http.get<ApiResponse<{ rows: Topic[] }>>(
+      `${this.apiUrl}/api/topics`,
+      { withCredentials: true, params: { limit } }
+    ).pipe(map(res => res.data?.rows ?? []));
   }
 }
