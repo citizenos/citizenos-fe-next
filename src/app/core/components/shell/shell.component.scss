@@ -5,6 +5,13 @@ $mobile-bar-height: 56px;
 #content_root {
   display: flex;
   min-height: 100vh;
+  flex-direction: row;
+
+  @media (max-width: $tablet-breakpoint) {
+    width: 100%;
+    left: 0;
+    flex-direction: column;
+  }
 }
 
 #content {
