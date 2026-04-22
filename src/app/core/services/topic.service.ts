@@ -73,7 +73,9 @@ export class TopicService {
   }
 
   get(id: string, params?: { [key: string]: string | boolean }): Observable<Topic> {
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${id}`);
+    const path = this.userStore.isAuthenticated()
+      ? this.getAbsoluteUrlApi(`/api/users/self/topics/${id}`)
+      : this.getAbsoluteUrlApi(`/api/topics/${id}`);
     return this.http.get<ApiResponse<Topic>>(path, { withCredentials: true, params, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }

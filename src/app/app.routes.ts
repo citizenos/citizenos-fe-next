@@ -26,8 +26,10 @@ export const routes: Routes = [
           { path: 'account', pathMatch: 'full', canActivate: [authGuard], loadComponent: () => import('./features/account/profile/profile.component').then(m => m.ProfileComponent) },
 
           // Topics
-          { path: 'topics', canActivate: [authGuard], loadComponent: () => import('./features/topics/my-topics/my-topics.component').then(m => m.MyTopicsComponent) },
-          { path: 'topics/public', loadComponent: () => import('./features/topics/public-topics/public-topics.component').then(m => m.PublicTopicsComponent) },
+          { 
+            path: 'topics', 
+            loadChildren: () => import('./features/topics/topics.routes').then(m => m.TOPICS_ROUTES) 
+          },
 
           // Error pages
           { path: '401', component: PageNotFoundComponent },

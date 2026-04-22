@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { switchMap, combineLatest, map, BehaviorSubject } from 'rxjs';
+import { switchMap, combineLatest, map, BehaviorSubject, of } from 'rxjs';
 
 import { TopicService } from '../../../core/services/topic.service';
 import { TopicIdeationService } from '../../../core/services/topic-ideation.service';
@@ -69,14 +69,20 @@ export class TopicViewComponent implements OnInit, OnDestroy {
 
   constructor() {
     combineLatest([this.route.params, this.route.queryParams])
-      .pipe(takeUntilDestroyed())
-      .subscribe(([params, queryParams]) => {
-        if (params['topicId']) {
-          this.topicId = params['topicId'];
-          this.topicService.loadTopic(this.topicId).subscribe((topic: any) => {
-            this.topic.set(topic);
-            this.loadRelatedData(topic);
-          });
+      .pipe(
+        takeUntilDestroyed(),
+        switchMap(([params, queryParams]) => {
+          if (params['topicId']) {
+            this.topicId = params['topicId'];
+            return this.topicService.loadTopic(this.topicId);
+          }
+          return of(null);
+        })
+      )
+      .subscribe((topic: any) => {
+        if (topic) {
+          this.topic.set(topic);
+          this.loadRelatedData(topic);
         }
       });
   }
