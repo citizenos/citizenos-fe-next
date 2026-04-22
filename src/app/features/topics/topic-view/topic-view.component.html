@@ -1,0 +1,108 @@
+@if (topic()) {
+<div id="topic_wrap_root">
+  <div id="topic_view" class="content_wrap">
+    
+    <app-topic-header 
+      [topic]="topic()!"
+      [navigation]="navigation()"
+      [appTopicNotificationSettings]="appTopicNotificationSettings"
+      (toggleFavourite)="toggleFavourite($event)"
+      (leaveTopic)="leaveTopic($event)"
+      (inviteEditors)="inviteEditors($event)"
+      (duplicateTopic)="duplicateTopic($event)"
+      (addGroupsDialog)="addGroupsDialog($event)"
+      (closeTopic)="closeTopic($event)"
+      (deleteTopic)="deleteTopic($event)" />
+      
+    <div class="content_area_wrap">
+      
+      <div class="content_area_left">
+        <app-topic-content 
+          [topic]="topic()!"
+          [tabTablet]="tabTablet()" />
+          
+        <!-- Mobile/Tablet Tabs -->
+        @if (wWidth <= 1024) {
+          <div id="tabs_tablet" class="topic_tabs tablet tabs_wrap tablet_show">
+            <a class="topic_tab" (click)="tabTablet.set('')" [ngClass]="{ active: !tabTablet() }">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 4C7 3.44772 7.44772 3 8 3H18.1716C18.4368 3 18.6911 3.10536 18.8787 3.29289L24.7071 9.12132L25.4142 8.41421L24.7071 9.12132C24.8946 9.30886 25 9.56321 25 9.82843V28C25 28.5523 24.5523 29 24 29H8C7.44772 29 7 28.5523 7 28V4Z" fill="white" stroke="#2C3B47" stroke-width="2" />
+                <path d="M17 2.5L25.5 11H18C17.4477 11 17 10.5523 17 10V2.5Z" fill="#2C3B47" />
+                <rect x="11" y="18" width="10" height="1" rx="0.5" fill="#4D5C6A" />
+                <rect x="11" y="15" width="10" height="1" rx="0.5" fill="#4D5C6A" />
+                <rect x="11" y="21" width="10" height="1" rx="0.5" fill="#4D5C6A" />
+                <rect x="11" y="24" width="6" height="1" rx="0.5" fill="#4D5C6A" />
+              </svg>
+            </a>
+            
+            <a class="topic_tab" (click)="tabTablet.set('discussion')" [ngClass]="{ active: tabTablet() === 'discussion', disabled: topic()?.status === 'draft' || topic()?.status === 'inProgress' }">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21.9997 17.7634C22.0238 17.7288 22.0469 17.6928 22.0707 17.6591C22.6751 16.7608 22.9985 15.703 22.9997 14.6203C23.0097 11.5172 20.3916 9 17.1541 9C14.3304 9 11.9747 10.9216 11.4229 13.4725C11.3401 13.8506 11.2982 14.2364 11.2979 14.6234C11.2979 17.7297 13.8154 20.3144 17.0529 20.3144C17.5675 20.3144 18.261 20.1597 18.6413 20.0553C19.0216 19.9509 19.3985 19.8131 19.496 19.7759C19.5935 19.7387 19.746 19.7006 19.8675 19.7356L22.2869 20.435C22.3082 20.4413 22.3307 20.4418 22.3523 20.4365C22.3738 20.4312 22.3935 20.4202 22.4095 20.4048C22.4254 20.3893 22.4369 20.3699 22.4428 20.3485C22.4487 20.3271 22.4488 20.3046 22.4432 20.2831L21.8894 18.1741C21.851 18.0178 21.846 17.9884 21.9997 17.7634Z" fill="white" stroke="#2C3B47" stroke-width="2" />
+              </svg>
+            </a>
+          </div>
+        }
+
+        <!-- TAB CONTENT GOES HERE -->
+        <!-- discussion component -->
+        @if (!tabSelected() || tabSelected() === 'discussion') {
+          <div [ngClass]="{ hidden: wWidth <= 1024 && tabTablet() !== 'discussion' }">
+             <!-- <topic-discussion [topic]="topic()"></topic-discussion> -->
+             <div style="font-style: italic; color: #666; margin-top: 24px; padding: 24px; text-align: center;">Discussion Component Area</div>
+          </div>
+        }
+
+        @if (tabSelected() === 'ideation') {
+          <div [ngClass]="{ hidden: wWidth <= 1024 && tabTablet() !== 'ideation' }">
+             <div style="font-style: italic; color: #666; margin-top: 24px; padding: 24px; text-align: center;">Ideation Component Area</div>
+          </div>
+        }
+
+        @if (tabSelected() === 'voting') {
+          <div [ngClass]="{ hidden: wWidth <= 1024 && tabTablet() !== 'voting' }">
+             <div style="font-style: italic; color: #666; margin-top: 24px; padding: 24px; text-align: center;">Voting Component Area</div>
+          </div>
+        }
+
+        @if (tabSelected() === 'followUp') {
+          <div [ngClass]="{ hidden: wWidth <= 1024 && tabTablet() !== 'followUp' }">
+             <div style="font-style: italic; color: #666; margin-top: 24px; padding: 24px; text-align: center;">Follow Up Component Area</div>
+          </div>
+        }
+
+      </div>
+      
+      @if (wWidth > 1024 || !tabTablet()) {
+        <div class="content_area_right">
+          
+          <app-topic-info-sidebar 
+            [topic]="topic()!"
+            [groups]="groups()"
+            [attachments]="attachments()"
+            [appTopicNotificationSettings]="appTopicNotificationSettings"
+            (toggleFavourite)="toggleFavourite($event)"
+            (leaveTopic)="leaveTopic($event)"
+            (inviteEditors)="inviteEditors($event)"
+            (duplicateTopic)="duplicateTopic($event)"
+            (addGroupsDialog)="addGroupsDialog($event)"
+            (closeTopic)="closeTopic($event)"
+            (deleteTopic)="deleteTopic($event)"
+            (downloadAttachment)="downloadAttachment($event)" />
+
+          <app-topic-state-items 
+            [topic]="topic()!"
+            [ideation]="ideation()"
+            [vote]="vote()"
+            [eventCount]="eventsCount()"
+            (navigateTab)="selectTab($event)"
+            (startDiscussion)="startDiscussion($event)"
+            (startVote)="startVote($event)"
+            (sendToFollowUp)="sendToFollowUp($event)" />
+
+        </div>
+      }
+
+    </div>
+  </div>
+</div>
+}

@@ -1,0 +1,105 @@
+
+
+.info_section {
+  background: var(--color-white);
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+  .info_items_wrap {
+    margin-bottom: 24px;
+
+    .info_header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      .info_title {
+        font-weight: 500;
+        font-size: 16px;
+        color: var(--color-text-main);
+      }
+
+      .button_dropdown {
+        position: relative;
+        cursor: pointer;
+
+        .manage_link {
+          color: var(--color-primary);
+          text-decoration: underline;
+        }
+
+        .options {
+          display: none;
+          position: absolute;
+          right: 0;
+          top: 100%;
+          background: var(--color-white);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          border-radius: 8px;
+          z-index: 10;
+          min-width: 200px;
+          padding: 8px 0;
+
+          .option {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--color-text-main);
+
+            &:hover {
+              background: var(--color-background-hover);
+            }
+
+            &.error_text {
+              color: var(--color-error);
+            }
+          }
+
+          .line_separator {
+            height: 1px;
+            background: var(--color-border);
+            margin: 4px 0;
+          }
+        }
+
+        &:hover .options, &:focus-within .options {
+          display: block; // basic hover drop down
+        }
+      }
+    }
+
+    .info_title {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--color-text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+    }
+
+    .info_items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+
+      .info_item {
+        font-size: 14px;
+        color: var(--color-text-second);
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+      }
+    }
+  }
+}

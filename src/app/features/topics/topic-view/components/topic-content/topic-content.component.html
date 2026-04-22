@@ -1,0 +1,47 @@
+<div class="topic_content_wrap">
+  <div class="topic_image">
+    @if (topic().imageUrl) {
+      <img [src]="topic().imageUrl + '?' + topic().updatedAt" />
+    }
+    
+    @if (!topic().permission.level || topic().permission.level !== 'none') {
+      <div class="permissions_lable tablet_show" [translate]="
+        topic().permission.level !== 'read'
+          ? ('TXT_TOPIC_LEVELS_' + (topic().permission.level | uppercase))
+          : 'VIEWS.TOPICS_TOPICID.LBL_JOINED'
+      "></div>
+    }
+  </div>
+
+  <div id="topic_text_wrap" #topicText [@readMore]="readMore() ? 'open' : 'closed'">
+    <div class="topic_title" [ngClass]="{ tablet_tab_open: !!tabTablet() }">
+      <div class="main_heading" [innerHTML]="topic().title"></div>
+    </div>
+    
+    @if (topic().intro && !tabTablet()) {
+      <div class="topic_intro" [innerHTML]="topic().intro"></div>
+    }
+    
+    @if (!tabTablet()) {
+      <div class="topic_content" [innerHTML]="getSafeHtml(topic().description)"></div>
+    }
+    
+    @if (readMoreButton() && !tabTablet()) {
+      <div class="button_wrap" [ngClass]="{ open: readMore() }">
+        <button class="btn_medium_secondary" (click)="toggleReadMore()">
+          @if (!readMore()) {
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17 10L12 15L7 10" stroke="#1168A8" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span translate="VIEWS.TOPICS_TOPICID.BTN_READ_MORE"></span>
+          } @else {
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17 15L12 10L7 15" stroke="#1168A8" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span translate="VIEWS.TOPICS_TOPICID.BTN_READ_LESS"></span>
+          }
+        </button>
+      </div>
+    }
+  </div>
+</div>

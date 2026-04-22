@@ -7,6 +7,11 @@
   color: var(--color-text);
 }
 
+* {
+    box-sizing: border-box;
+    font-family: Noto Sans, sans-serif;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -110,7 +115,7 @@ a {
   }
 }
 
-.btn_big_submit {
+%btn-big-base {
   padding: 8px 24px;
   gap: 8px;
   max-height: 48px;
@@ -120,18 +125,58 @@ a {
   font-weight: 600;
   font-size: 16px;
   line-height: 32px;
-  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.btn_big_submit {
+  @extend %btn-big-base;
+  border: none;
   background: var(--color-primary);
   color: white;
-  transition: background 0.2s ease-in-out;
 
   &:hover {
     background: var(--color-primary-hover);
   }
+}
+
+.btn_big_submit_ghost {
+  @extend %btn-big-base;
+  background: none;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+
+  &:hover {
+    border-color: var(--color-primary-hover);
+    color: var(--color-primary-hover);
+  }
+}
+
+.btn_medium_discussion {
+  @extend %btn-medium-base;
+  background: var(--color-discussion);
+  color: var(--color-surfaces);
+  border: none;
+  path { fill: var(--color-surfaces); }
+}
+
+.btn_medium_ideation {
+  @extend %btn-medium-base;
+  background: var(--color-ideation);
+  color: var(--color-surfaces);
+  border: none;
+  path { fill: var(--color-surfaces); }
+}
+
+.btn_medium_voting {
+  @extend %btn-medium-base;
+  background: var(--color-voting);
+  color: var(--color-surfaces);
+  border: none;
+  path { fill: var(--color-surfaces); }
 }
 
 /* Typography utilities */
@@ -170,4 +215,35 @@ a {
   pointer-events: none;
   white-space: normal;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.page_content {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.main_heading {
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.medium_heading {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.small_heading {
+  font-size: 18px;
+  line-height: 24px;
 }

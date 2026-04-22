@@ -1,0 +1,300 @@
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, exhaustMap, shareReplay, switchMap, map, of, take, Subject } from 'rxjs';
+import { Router } from '@angular/router';
+
+import { Topic } from '../interfaces/topic';
+import { ApiResponse } from '../interfaces/api-response';
+import { ConfigStore } from '../state/config.store';
+import { UserStore } from '../state/user.store';
+import { DialogService } from '../../shared/dialog/dialog.service';
+import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TopicService {
+  private http = inject(HttpClient);
+  private configStore = inject(ConfigStore);
+  private userStore = inject(UserStore);
+  private dialog = inject(DialogService);
+  private router = inject(Router);
+
+  public readonly CATEGORIES = {
+    agriculture: "agriculture", animal_protection: "animal_protection",
+    arts: "arts", business: "business", civil_society: "civil_society",
+    communities: "communities", culture: "culture", defence: "defence",
+    democracy: "democracy", diversity: "diversity", education: "education",
+    entertainment: "entertainment", environment: "environment", equality: "equality",
+    health: "health", human_rights: "human_rights", legal: "legal", media: "media",
+    migration: "migration", politics: "politics", public_transportation: "public_transportation",
+    religion: "religion", science: "science", social_welfare: "social_welfare",
+    sports: "sports", taxes: "taxes", technology: "technology",
+    urban_development: "urban_development", work: "work", youth: "youth",
+  };
+
+  public readonly STATUSES = {
+    draft: 'draft',
+    ideation: 'ideation',
+    inProgress: 'inProgress',
+    voting: 'voting',
+    followUp: 'followUp',
+    closed: 'closed'
+  };
+
+  public readonly VISIBILITY = {
+    public: 'public',
+    private: 'private'
+  };
+
+  public readonly LEVELS = {
+    read: 'read',
+    edit: 'edit',
+    admin: 'admin'
+  };
+
+  CATEGORIES_COUNT_MAX = 3;
+
+  public loadTopic$ = new Subject<void>();
+
+  private get apiUrl() {
+    return this.configStore.api.baseUrl();
+  }
+
+  loadTopic(id: string, params?: { [key: string]: string | boolean }): Observable<Topic> {
+    return this.loadTopic$.pipe(
+      exhaustMap(() => this.get(id, params)),
+      shareReplay(1)
+    );
+  }
+
+  reloadTopic(): void {
+    this.loadTopic$.next();
+  }
+
+  get(id: string, params?: { [key: string]: string | boolean }): Observable<Topic> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${id}`);
+    return this.http.get<ApiResponse<Topic>>(path, { withCredentials: true, params, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
+  }
+
+  count(): Observable<number> {
+    const path = this.getAbsoluteUrlApi('/api/users/self/topics/count');
+    return this.http.get<ApiResponse<number>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
+  }
+
+  save(data: any): Observable<Topic> {
+    const path = this.getAbsoluteUrlApi('/api/users/self/topics');
+    return this.http.post<ApiResponse<Topic>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
+  }
+
+  readDescription(id: string, rev?: string): Observable<Topic> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${id}/description`);
+    const params: any = rev ? { rev } : {};
+    return this.http.get<ApiResponse<Topic>>(path, { withCredentials: true, params, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
+  }
+
+  update(data: any): Observable<Topic> {
+    const updateFields = ['visibility', 'status', 'categories', 'endsAt', 'hashtag', 'imageUrl', 'title', 'intro', 'contact', 'country', 'language'];
+    const sendData: any = {};
+
+    updateFields.forEach((field) => {
+      if (field in data) {
+        sendData[field] = data[field];
+      }
+    });
+
+    const topicId = data.id || data.topicId;
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}`);
+
+    return this.http.put<ApiResponse<Topic>>(path, sendData, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
+  }
+
+  revert(topicId: string, rev: number): Observable<Topic> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/revert`);
+    return this.http.post<ApiResponse<Topic>>(path, { rev }, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
+  }
+
+  patch(data: any): Observable<Topic> {
+    const updateFields = ['title', 'visibility', 'status', 'categories', 'endsAt', 'hashtag', 'imageUrl', 'intro', 'contact', 'country', 'language'];
+    const sendData: any = {};
+
+    updateFields.forEach((field) => {
+      if (field in data) {
+        sendData[field] = data[field];
+      }
+    });
+
+    const topicId = data.id || data.topicId;
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}`);
+
+    return this.http.patch<ApiResponse<Topic>>(path, sendData, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
+  }
+
+  delete(data: any): Observable<any> {
+    const topicId = data.id || data.topicId;
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}`);
+    return this.http.delete<ApiResponse<any>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
+  }
+
+  duplicate(data: any): Observable<Topic> {
+    const topicId = data.topicId || data.id;
+    const payload = { ...data, topicId };
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/duplicate`);
+    
+    return this.http.post<ApiResponse<Topic>>(path, payload, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
+  }
+
+  addToFavourites(topicId: string): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/favourite`);
+    return this.http.post<ApiResponse<any>>(path, {}, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  removeFromFavourites(topicId: string): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/favourite`);
+    return this.http.delete<ApiResponse<any>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  getDownloadUrl(topicId: string): string {
+    return this.getAbsoluteUrlApi(`/api/topics/${topicId}/download`);
+  }
+
+  toggleFavourite(topic: Topic) {
+    if (!topic.favourite) {
+      return this.addToFavourites(topic.id).pipe(take(1)).subscribe(() => {
+        topic.favourite = true;
+      });
+    } else {
+      return this.removeFromFavourites(topic.id).pipe(take(1)).subscribe(() => {
+        topic.favourite = false;
+      });
+    }
+  }
+
+  isPrivate(topic: Topic): boolean {
+    return topic && topic.visibility === this.VISIBILITY.private;
+  }
+
+  canUpdate(topic: Topic): boolean {
+    return topic?.permission && topic.permission.level === this.LEVELS.admin && topic.status !== this.STATUSES.closed;
+  }
+
+  canEdit(topic: Topic): boolean {
+    return topic && [this.LEVELS.admin, this.LEVELS.edit].indexOf(topic.permission.level) > -1 && topic.status !== this.STATUSES.closed;
+  }
+
+  canEditDescription(topic: Topic): boolean {
+    return this.canEdit(topic) && [this.STATUSES.ideation, this.STATUSES.inProgress, this.STATUSES.draft].indexOf(topic.status) > -1;
+  }
+
+  canDelete(topic: Topic): boolean {
+    return topic && topic.permission?.level === this.LEVELS.admin;
+  }
+
+  canSendToFollowUp(topic: Topic): boolean {
+    return this.canUpdate(topic) && !!topic.voteId && topic.status !== this.STATUSES.followUp;
+  }
+
+  canSendToVote(topic: Topic): boolean {
+    return this.canUpdate(topic) && [this.STATUSES.voting, this.STATUSES.followUp, this.STATUSES.closed].indexOf(topic.status) < 0;
+  }
+
+  canLeave(): boolean {
+    return this.userStore.isAuthenticated();
+  }
+
+  canShare(topic: Topic): boolean {
+    return topic && (!this.isPrivate(topic) || this.canUpdate(topic));
+  }
+
+  changeState(topic: Topic, state: keyof typeof this.STATUSES, stateSuccess?: string) {
+    const templates: any = {
+      closed: {
+        level: 'delete',
+        heading: 'MODALS.TOPIC_CLOSE_CONFIRM_HEADING_CLOSE_TOPIC',
+        title: 'MODALS.TOPIC_CLOSE_CONFIRM_TXT_ARE_YOU_SURE',
+        description: 'MODALS.TOPIC_CLOSE_CONFIRM_TXT_NO_UNDO',
+        points: ['MODALS.TOPIC_CLOSE_CONFIRM_TXT_NO_EDIT', 'MODALS.TOPIC_CLOSE_CONFIRM_TXT_NO_VOTE'],
+        closeBtn: 'MODALS.TOPIC_CLOSE_CONFIRM_BTN_NO',
+        confirmBtn: 'MODALS.TOPIC_CLOSE_CONFIRM_BTN_YES'
+      },
+      vote: {
+        heading: 'MODALS.TOPIC_SEND_TO_VOTE_CONFIRM_HEADING',
+        title: 'MODALS.TOPIC_SEND_TO_VOTE_CONFIRM_TXT_ARE_YOU_SURE',
+        description: 'MODALS.USER_DELETE_CONFIRM_TXT_NO_UNDO',
+        points: ['MODALS.TOPIC_SEND_TO_VOTE_CONFIRM_TXT_NO_EDIT'],
+        confirmBtn: 'MODALS.TOPIC_SEND_TO_VOTE_CONFIRM_BTN_YES',
+        closeBtn: 'MODALS.TOPIC_SEND_TO_VOTE_CONFIRM_BTN_NO'
+      }
+    };
+
+    if (templates[state]) {
+      const confirm = this.dialog.open(ConfirmDialogComponent, {
+        data: templates[state]
+      });
+      confirm.afterClosed().subscribe((res) => {
+        if (res === true) {
+          this.executeChangeState(topic, state);
+        }
+      });
+    } else {
+      this.executeChangeState(topic, state);
+    }
+  }
+
+  private executeChangeState(topic: Topic, state: string) {
+    this.patch({ id: topic.id, status: this.STATUSES[state as keyof typeof this.STATUSES] })
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          if (state === 'voting' && !topic.voteId && !topic.vote) {
+            this.router.navigate(['/topics', topic.id, 'votes', 'create']);
+          }
+          this.reloadTopic();
+          if (state === 'followUp') {
+            this.router.navigate(['/topics', topic.id], { fragment: 'followUp' });
+          }
+          this.dialog.closeAll();
+        },
+        error: (err) => console.error(err)
+      });
+  }
+
+  doDeleteTopic(topic: Topic, redirect: string[]) {
+    const deleteDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        level: 'delete',
+        heading: 'MODALS.TOPIC_DELETE_CONFIRM_HEADING',
+        title: 'MODALS.TOPIC_DELETE_CONFIRM_TXT_ARE_YOU_SURE',
+        description: 'MODALS.TOPIC_DELETE_CONFIRM_TXT_NO_UNDO',
+        points: ['MODALS.TOPIC_DELETE_CONFIRM_TXT_TOPIC_DELETED', 'MODALS.TOPIC_DELETE_CONFIRM_TXT_DISCUSSION_DELETED', 'MODALS.TOPIC_DELETE_CONFIRM_TXT_TOPIC_REMOVED_FROM_GROUPS'],
+        confirmBtn: 'MODALS.TOPIC_DELETE_CONFIRM_YES',
+        closeBtn: 'MODALS.TOPIC_DELETE_CONFIRM_NO'
+      }
+    });
+
+    deleteDialog.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.delete(topic)
+          .pipe(take(1))
+          .subscribe(() => {
+            this.router.navigate(redirect);
+          });
+      }
+    });
+  }
+
+  private getAbsoluteUrlApi(path: string): string {
+    return `${this.apiUrl}${path}`;
+  }
+}

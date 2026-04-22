@@ -1,0 +1,114 @@
+
+
+#page_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 5;
+  background: var(--color-white);
+
+  #user_info_area {
+    display: flex;
+    align-items: center;
+
+    .navigation_title {
+      font-weight: 500;
+      color: var(--color-text-main);
+      padding-top: 4px;
+      margin-left: 8px;
+    }
+  }
+
+  #buttons_area {
+    display: flex;
+    align-items: center;
+
+    .permissions_lable {
+      // @include permissions_lable();
+      margin-right: 16px;
+    }
+
+    .btn_medium_close {
+      margin-left: 8px;
+
+      &.like_active {
+        background: var(--color-background-hover);
+      }
+    }
+
+    #tablet_actions {
+      display: inline-block;
+      position: relative;
+
+      .options {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background: var(--color-white);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        z-index: 10;
+        min-width: 200px;
+        padding: 8px 0;
+
+        .option {
+          display: flex;
+          align-items: center;
+          padding: 8px 16px;
+          border: none;
+          background: none;
+          width: 100%;
+          text-align: left;
+          cursor: pointer;
+          font-size: 14px;
+          color: var(--color-text-main);
+
+          &:hover {
+            background: var(--color-background-hover);
+          }
+
+          .icon_wrap {
+            margin-right: 12px;
+            display: flex;
+          }
+
+          &.error_text {
+            color: var(--color-error);
+          }
+        }
+
+        .line_separator {
+          height: 1px;
+          background: var(--color-border);
+          margin: 4px 0;
+        }
+      }
+
+      &:focus-within .options,
+      &:hover .options {
+        display: block; // basic hover-dropdown support
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  #page_header {
+    #user_info_area {
+      .navigation_title {
+        display: none;
+      }
+    }
+    #buttons_area {
+      #tablet_actions {
+        display: none;
+      }
+      .permissions_lable {
+        display: none;
+      }
+    }
+  }
+}

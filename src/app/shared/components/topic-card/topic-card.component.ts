@@ -170,7 +170,7 @@ import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
               <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99999 8.00016C9.84094 8.00016 11.3333 6.50778 11.3333 4.66683C11.3333 2.82588 9.84094 1.3335 7.99999 1.3335C6.15904 1.3335 4.66666 2.82588 4.66666 4.66683C4.66666 6.50778 6.15904 8.00016 7.99999 8.00016Z" fill="currentColor"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M4 11.6295C4 9.99307 5.19391 8.6665 6.66667 8.6665H9.33333C10.8061 8.6665 12 9.99307 12 11.6295V15.3332H4V11.6295Z" fill="currentColor"/>
             </svg>
-            <span>{{ topic().members.users.count ?? 0 }}</span>
+            <span>{{ topic().members.users.count || 0 }}</span>
           </div>
           <div class="last_edit">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
