@@ -1,12 +1,21 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';
-import { Topic } from '../interfaces/topic';
+import { ItemsListService, ListParams } from './items-list.service';
+
+export interface PublicTopicParams extends ListParams {
+  statuses?: string[];
+  categories?: string[];
+  country?: string;
+  language?: string;
+  favourite?: boolean | string;
+  showModerated?: boolean | string;
+}
 
 @Injectable({ providedIn: 'root' })
-export class PublicTopicService {
+export class PublicTopicService extends ItemsListService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
 
@@ -14,10 +23,24 @@ export class PublicTopicService {
     return this.configStore.api.baseUrl();
   }
 
-  loadItems(limit = 26): Observable<Topic[]> {
-    return this.http.get<ApiResponse<{ rows: Topic[] }>>(
+  override getItems(params: PublicTopicParams): Observable<any> {
+    let httpParams = new HttpParams()
+      .set('limit', String(params.limit))
+      .set('offset', String(params.offset ?? 0));
+
+    if (params.statuses?.length) httpParams = httpParams.set('statuses', params.statuses.join(','));
+    if (params.categories?.length) httpParams = httpParams.set('categories', params.categories.join(','));
+    if (params.country) httpParams = httpParams.set('country', params.country);
+    if (params.language) httpParams = httpParams.set('language', params.language);
+    if (params.favourite != null) httpParams = httpParams.set('favourite', String(params.favourite));
+    if (params.showModerated != null) httpParams = httpParams.set('showModerated', String(params.showModerated));
+    if (params.orderBy) httpParams = httpParams.set('orderBy', params.orderBy);
+    if (params.order) httpParams = httpParams.set('order', params.order);
+    if (params.search) httpParams = httpParams.set('search', params.search);
+
+    return this.http.get<ApiResponse<{ rows: any[]; count: number }>>(
       `${this.apiUrl}/api/topics`,
-      { withCredentials: true, params: { limit, offset: 0 } }
-    ).pipe(map(res => res.data?.rows ?? []));
+      { withCredentials: true, params: httpParams }
+    ).pipe(map(res => ({ rows: res.data?.rows ?? [], countTotal: res.data?.count ?? 0 })));
   }
 }

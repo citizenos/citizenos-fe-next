@@ -1,3 +1,18 @@
+export interface TopicReport {
+  id: string;
+  type: string | null;
+  text: string | null;
+  moderatedReasonType: string | null;
+  moderatedReasonText: string | null;
+}
+
+export interface TopicVote {
+  id: string;
+  votersCount: number;
+  type: string;
+  [key: string]: unknown;
+}
+
 export interface Topic {
   id: string;
   title: string | null;
@@ -18,13 +33,15 @@ export interface Topic {
   lastActivity: string | null;
   country: string | null;
   language: string | null;
-  members: any;
+  members: { users: { count: number }; groups: { count: number } };
   voteId: string | null;
+  vote?: TopicVote;
   ideationId?: string | null;
   discussionId: string | null;
-  comments: any;
+  comments: { count: number } | null;
   padUrl: any;
   favourite?: boolean | null;
   imageUrl: string | null;
   authors: any[];
+  report?: TopicReport;
 }

@@ -1,66 +1,490 @@
-import { Component, ChangeDetectionStrategy, input, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  input,
+  output,
+  inject,
+  computed,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Topic } from '../../../core/interfaces/topic';
+import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 
 @Component({
   selector: 'cos-topic-card',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, TranslateModule],
+  imports: [RouterLink, TranslateModule, DatePipe, TimeAgoPipe],
   template: `
-    <a class="topic_card" [routerLink]="['/', translate.currentLang, 'topics', topic().id]">
-      <div class="topic_image" [style.background-image]="topic().imageUrl ? 'url(' + topic().imageUrl + ')' : ''"></div>
-      <div class="topic_body">
-        <div class="topic_title">{{ topic().title || ('TOPIC.NO_TITLE' | translate) }}</div>
-        <div class="topic_status">{{ topic().status }}</div>
+    <!-- Remove from group overlay -->
+    @if (removable()) {
+      <div class="remove_wrap">
+        <button class="btn_medium_submit" (click)="removeFromGroup($event)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 9H11V17H9L9 9Z" fill="white"/>
+            <path d="M15 9H13V17H15V9Z" fill="white"/>
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M17 5V4C17 2.89543 16.1046 2 15 2L9 2C7.89543 2 7 2.89543 7 4L7 5H4C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H5L5 18C5 19.6569 6.34315 21 8 21L16 21C17.6569 21 19 19.6569 19 18L19 7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5L17 5ZM15 4L9 4V5L15 5V4ZM17 7L7 7L7 18C7 18.5523 7.44772 19 8 19L16 19C16.5523 19 17 18.5523 17 18V7Z"
+              fill="white"/>
+          </svg>
+          <span translate="COMPONENTS.TOPICBOX.BTN_REMOVE_FROM_GROUP"></span>
+        </button>
+      </div>
+    }
+
+    <a
+      class="topic"
+      [class.moderated]="topic().report"
+      [class.disabled]="removable()"
+      [routerLink]="topicLink()"
+    >
+      <!-- Moderation overlay -->
+      @if (topic().report) {
+        <div class="moderated_topic">
+          <div class="notification">
+            <div>
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <rect width="40" height="40" rx="20" fill="#F39129"/>
+                <path d="M19.0645 8C18.4876 8 18.0304 8.48668 18.0664 9.06238L18.9414 23.0624C18.9743 23.5894 19.4114 24 19.9395 24H20.0605C20.5886 24 21.0257 23.5894 21.0586 23.0624L21.9336 9.06238C21.9696 8.48668 21.5124 8 20.9355 8H19.0645Z" fill="white"/>
+                <path d="M20 31C21.1046 31 22 30.1046 22 29C22 27.8954 21.1046 27 20 27C18.8954 27 18 27.8954 18 29C18 30.1046 18.8954 31 20 31Z" fill="white"/>
+              </svg>
+            </div>
+            <div class="notification_title" translate="COMPONENTS.TOPICBOX.NOTIFICATION_TITLE"></div>
+          </div>
+        </div>
+      }
+
+      <!-- Status header -->
+      <div
+        class="topic_header"
+        [class.draft]="topic().status === 'draft'"
+        [class.discussion]="topic().status === 'inProgress'"
+        [class.voting]="topic().status === 'voting'"
+        [class.follow_up]="topic().status === 'followUp'"
+        [class.ideation]="topic().status === 'ideation'"
+        [class.closed]="topic().status === 'closed'"
+      >
+        <div class="progress" [style.width.%]="progressWidth()">
+          <div class="header_content">
+            @switch (topic().status) {
+              @case ('draft') {
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M8.8143 4.18517L11.8147 7.18569L5.29947 13.7012L2.62438 13.9965C2.26626 14.0361 1.96369 13.7333 2.00354 13.3752L2.30118 10.6981L8.8143 4.18517ZM13.6704 3.73845L12.2616 2.3296C11.8222 1.89013 11.1095 1.89013 10.67 2.3296L9.34467 3.65501L12.3451 6.65553L13.6704 5.33011C14.1099 4.89042 14.1099 4.17791 13.6704 3.73845Z" fill="currentColor"/>
+                </svg>
+                <div class="bold" [translate]="'COMPONENTS.TOPICBOX.HEADER_DRAFT'" [translateParams]="{value: topic().comments?.count || 0}"></div>
+              }
+              @case ('inProgress') {
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M14 9.76344C14.0241 9.72875 14.0472 9.69281 14.071 9.65906C14.6754 8.76079 14.9988 7.70299 15 6.62031C15.01 3.51719 12.3919 1 9.15441 1C6.33066 1 3.97503 2.92156 3.42316 5.4725C3.34037 5.85056 3.29846 6.23642 3.29816 6.62344C3.29816 9.72969 5.81566 12.3144 9.05316 12.3144C9.56784 12.3144 10.2613 12.1597 10.6416 12.0553C11.0219 11.9509 11.3988 11.8131 11.4963 11.7759C11.5938 11.7387 11.7463 11.7006 11.8678 11.7356L14.2872 12.435C14.3085 12.4413 14.3311 12.4418 14.3526 12.4365C14.3741 12.4312 14.3939 12.4202 14.4098 12.4048C14.4257 12.3893 14.4372 12.3699 14.4431 12.3485C14.449 12.3271 14.4491 12.3046 14.4435 12.2831L13.8897 10.1741C13.8513 10.0178 13.8463 9.98844 14 9.76344Z" fill="white"/>
+                  <path d="M9.76691 12.9809C9.52643 13.0193 9.28353 13.0407 9.04004 13.0449C7.7141 13.0449 6.46191 12.6949 5.44629 12.0387C4.79661 11.6399 4.23267 11.116 3.78722 10.4974C2.97222 9.4171 2.52785 8.04398 2.52785 6.6071C2.52785 6.50929 2.53129 6.41523 2.53472 6.32085C2.53596 6.29302 2.5286 6.26548 2.51363 6.24198C2.49867 6.21848 2.47683 6.20016 2.45109 6.1895C2.42534 6.17885 2.39695 6.17639 2.36975 6.18244C2.34256 6.1885 2.31789 6.20278 2.2991 6.22335C1.55083 7.04207 1.09849 8.08791 1.01431 9.19386C0.930138 10.2998 1.21898 11.4021 1.83472 12.3246C1.91191 12.4424 1.95566 12.5334 1.94222 12.594L1.50191 14.8521C1.49785 14.8736 1.49949 14.8957 1.50666 14.9164C1.51384 14.937 1.5263 14.9554 1.5428 14.9697C1.55931 14.9841 1.57928 14.9938 1.60073 14.998C1.62218 15.0022 1.64435 15.0007 1.66504 14.9937L3.79004 14.2362C3.85448 14.2107 3.92331 14.1982 3.9926 14.1994C4.06188 14.2005 4.13025 14.2154 4.19378 14.243C4.82972 14.493 5.53316 14.6468 6.2366 14.6468C7.5906 14.6512 8.89485 14.1368 9.88129 13.2093C9.90165 13.1894 9.91518 13.1636 9.9199 13.1356C9.92463 13.1075 9.92031 13.0787 9.90758 13.0533C9.89485 13.0278 9.87436 13.0071 9.84907 12.9941C9.82378 12.9811 9.79501 12.9764 9.76691 12.9809Z" fill="white"/>
+                </svg>
+                <div class="bold" [translate]="'COMPONENTS.TOPICBOX.HEADER_DISCUSSION'" [translateParams]="{value: topic().comments?.count || 0}"></div>
+              }
+              @case ('voting') {
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM6.44444 12L12.6667 5.82456L11.5 4.66667L6.44444 9.68421L4.5 7.75439L3.33333 8.91228L6.44444 12Z" fill="white"/>
+                </svg>
+                <div class="bold" [translate]="'COMPONENTS.TOPICBOX.HEADER_VOTING'" [translateParams]="{target: topic().members?.users?.count || 0, value: topic().vote?.votersCount || 0}"></div>
+              }
+              @case ('followUp') {
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <rect width="16" height="16" rx="8" fill="white"/>
+                  <path d="M9.26218 5.01961L9.06663 4H4.66663V12.6667H5.6444V9.09804H8.38218L8.57774 10.1176H12V5.01961H9.26218Z" fill="#DA7AB1"/>
+                </svg>
+                <div class="bold" translate="COMPONENTS.TOPICBOX.HEADER_FOLLOW_UP" [translateParams]="{value: 0}"></div>
+              }
+              @case ('ideation') {
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM6.44444 12L12.6667 5.82456L11.5 4.66667L6.44444 9.68421L4.5 7.75439L3.33333 8.91228L6.44444 12Z" fill="white"/>
+                </svg>
+                <div class="bold" translate="COMPONENTS.TOPICBOX.HEADER_IDEATION" [translateParams]="{value: 0}"></div>
+              }
+              @case ('closed') {
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM6.44444 12L12.6667 5.82456L11.5 4.66667L6.44444 9.68421L4.5 7.75439L3.33333 8.91228L6.44444 12Z" fill="white"/>
+                </svg>
+                <div class="bold" translate="COMPONENTS.TOPICBOX.HEADER_CLOSED"></div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Image -->
+      <div class="image">
+        <div class="image_overlay"></div>
+        @if (topic().imageUrl) {
+          <img [src]="topic().imageUrl" [alt]="topic().title || ''" loading="lazy">
+        } @else {
+          @if (['inProgress', 'voting', 'ideation', 'followUp'].includes(topic().status)) {
+            <div class="no_image" [class.discussion]="topic().status === 'inProgress'" [class.voting]="topic().status === 'voting'" [class.ideation]="topic().status === 'ideation'" [class.follow_up]="topic().status === 'followUp'"></div>
+          } @else {
+            <div class="no_image">
+              <svg width="37" height="41" viewBox="0 0 37 41" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M29.307 5.5918C30.9953 5.5918 32.3766 7.08292 32.3766 8.90541V32.1007C32.3766 33.9232 30.9953 35.4143 29.307 35.4143H7.81962C6.13133 35.4143 4.75 33.9232 4.75 32.1007V8.90541C4.75 7.08292 6.13133 5.5918 7.81962 5.5918H29.307ZM17.0285 27.9752L13.1915 22.9882L7.81962 30.4439H29.307L22.4003 20.503L17.0285 27.9752Z" fill="#4D5C6A"/>
+              </svg>
+            </div>
+          }
+        }
+      </div>
+
+      <!-- Content -->
+      <div class="topic_content">
+        <svg class="svg">
+          <clipPath id="topic-clip-path" clipPathUnits="objectBoundingBox">
+            <path d="M0.829,0.305 C0.86,0.407,0.921,0.5,1,0.5 V0.5 C0.982,0.753,0.685,1,0.5,1 C0.309,1,0.009,0.765,0,0.5 V0.5 C0.079,0.5,0.14,0.407,0.171,0.305 C0.225,0.126,0.352,0,0.5,0 C0.648,0,0.775,0.126,0.829,0.305"/>
+          </clipPath>
+        </svg>
+        <div class="icon_area">
+          @if (topic().favourite) {
+            <div class="topic_icon">
+              <div class="clipped">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12.5812 15.1863L12 14.7711L11.4188 15.1863L6 19.0568V6C6 5.44772 6.44772 5 7 5H17C17.5523 5 18 5.44772 18 6V19.0568L12.5812 15.1863Z" fill="#2C3B47" stroke="#2C3B47" stroke-width="2"/>
+                </svg>
+              </div>
+            </div>
+          }
+          @if (topic().visibility === 'private') {
+            <div class="topic_icon">
+              <div class="clipped">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8 9V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V9H17C18.1046 9 19 9.89543 19 11V17C19 18.1046 18.1046 19 17 19H7C5.89543 19 5 18.1046 5 17V11C5 9.89543 5.89543 9 7 9H8ZM14 7V9H10V7C10 5.89543 10.8954 5 12 5C13.1046 5 14 5.89543 14 7ZM11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13V15C13 15.5523 12.5523 16 12 16C11.4477 16 11 15.5523 11 15V13Z" fill="#2C3B47"/>
+                </svg>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="date">{{ topic().createdAt | date:'y-MM-dd' }}</div>
+        <div class="topic_title" [innerHTML]="topic().title || ('TOPIC.NO_TITLE' | translate)"></div>
+      </div>
+
+      <!-- Footer -->
+      <div class="topic_footer">
+        <div class="line_separator"></div>
+        <div class="data_wrap">
+          <div class="participants_count">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99999 8.00016C9.84094 8.00016 11.3333 6.50778 11.3333 4.66683C11.3333 2.82588 9.84094 1.3335 7.99999 1.3335C6.15904 1.3335 4.66666 2.82588 4.66666 4.66683C4.66666 6.50778 6.15904 8.00016 7.99999 8.00016Z" fill="currentColor"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M4 11.6295C4 9.99307 5.19391 8.6665 6.66667 8.6665H9.33333C10.8061 8.6665 12 9.99307 12 11.6295V15.3332H4V11.6295Z" fill="currentColor"/>
+            </svg>
+            <span>{{ topic().members?.users?.count ?? 0 }}</span>
+          </div>
+          <div class="last_edit">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.51592 10.5893C2.08608 8.1127 2.93461 4.94595 5.41116 3.51611C7.88771 2.08627 11.0545 2.9348 12.4843 5.41135C13.9141 7.8879 13.0656 11.0547 10.5891 12.4845C9.77102 12.9568 8.87985 13.18 8.00069 13.1792C7.58647 13.1788 7.25037 13.5143 7.24997 13.9285C7.24957 14.3427 7.58504 14.6788 7.99925 14.6792C9.13512 14.6803 10.2865 14.3912 11.3391 13.7835C14.533 11.9395 15.6274 7.85534 13.7833 4.66135C11.9393 1.46736 7.85515 0.373023 4.66116 2.21707C1.46717 4.06112 0.372828 8.14526 2.21688 11.3393C2.2329 11.367 2.25043 11.3933 2.2693 11.4182L0.511719 12.433L4.50545 13.5031L5.57556 9.50936L3.5581 10.6741C3.54599 10.6454 3.53194 10.617 3.51592 10.5893ZM8 4.25036C8.41421 4.25036 8.75 4.58614 8.75 5.00036V7.25036H10C10.4142 7.25036 10.75 7.58614 10.75 8.00036C10.75 8.41457 10.4142 8.75036 10 8.75036H7.25V5.00036C7.25 4.58614 7.58579 4.25036 8 4.25036Z" fill="currentColor"/>
+            </svg>
+            <span>{{ topic().lastActivity | timeAgo }}</span>
+          </div>
+        </div>
       </div>
     </a>
   `,
   styles: [`
-    :host { display: contents; }
-    .topic_card {
+    :host {
+      display: contents;
+      position: relative;
+    }
+
+    .remove_wrap {
+      position: absolute;
+      z-index: 9;
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 16px;
+
+      button {
+        z-index: 99;
+        gap: 8px;
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        background: var(--color-primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        font-size: 14px;
+        font-family: var(--font-family-base);
+      }
+    }
+
+    .topic {
       display: flex;
       flex-direction: column;
-      min-width: 200px;
-      max-width: 240px;
-      background: var(--color-surfaces);
+      width: 280px;
+      height: 408px;
       border-radius: 16px;
-      overflow: hidden;
+      background-color: var(--color-surfaces);
+      position: relative;
+      transition: box-shadow 0.3s ease-in-out;
       text-decoration: none;
       color: var(--color-text);
       flex-shrink: 0;
+
+      &.moderated:hover .image .image_overlay { display: none; }
+
+      &:hover {
+        text-decoration: none;
+        box-shadow: 0 8px 20px rgba(220, 231, 240, 0.3), 0 12px 16px rgba(50, 85, 112, 0.1);
+
+        .image .image_overlay {
+          visibility: visible;
+          opacity: 0.4;
+        }
+
+        .topic_title { color: var(--color-link); }
+      }
     }
-    .topic_image {
+
+    .moderated_topic {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.85);
+      border-radius: 16px;
+
+      .notification {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 24px;
+        text-align: center;
+      }
+
+      .notification_title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--color-text);
+      }
+    }
+
+    .topic_header {
+      position: relative;
+      display: flex;
+      border-radius: 16px 16px 0 0;
+      height: 40px;
       width: 100%;
-      height: 120px;
-      background: var(--color-surface-contrast);
-      background-size: cover;
-      background-position: center;
+      align-items: center;
+      overflow: hidden;
+      background-color: var(--color-border);
+
+      &.draft { background-color: var(--color-border); }
+      &.discussion { background-color: var(--color-discussion, #5086a4); }
+      &.voting { background-color: var(--color-voting-disabled, #aac7d6); }
+      &.follow_up { background-color: var(--color-follow-up-disabled, #eabcd4); }
+      &.ideation { background-color: var(--color-ideation-disabled, #aad6c6); }
+      &.closed { background-color: var(--color-argument-info, #8fa8bb); }
+
+      .progress {
+        position: relative;
+        display: flex;
+        height: 40px;
+        align-items: center;
+
+        &:not([style]) { width: 100%; }
+      }
+
+      &.draft .progress { background-color: var(--color-border); width: 100%; }
+      &.discussion .progress { background-color: var(--color-discussion, #5086a4); width: 100%; }
+      &.voting .progress { background-color: var(--color-voting, #1e6890); }
+      &.follow_up .progress { background-color: var(--color-follow-up, #c8619a); }
+      &.ideation .progress { background-color: var(--color-ideation, #3aaa8a); }
+      &.closed .progress { background-color: var(--color-argument-info, #8fa8bb); width: 100%; }
+
+      .header_content {
+        display: flex;
+        position: absolute;
+        width: 280px;
+        padding: 12px;
+        gap: 8px;
+        align-items: center;
+        color: var(--color-surfaces);
+        white-space: nowrap;
+
+        .bold { font-weight: 600; font-size: 13px; }
+      }
+
+      &.draft .header_content {
+        color: var(--color-text);
+        svg path { fill: var(--color-text); }
+      }
     }
-    .topic_body {
-      padding: 12px 16px;
+
+    .image {
+      display: flex;
+      width: 100%;
+      height: 168px;
+      position: relative;
+
+      .no_image {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-border);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        &.discussion { background-image: url('/assets/imgs/no_image_discussion.svg'); }
+        &.voting { background-image: url('/assets/imgs/no_image_voting.svg'); }
+        &.ideation { background-image: url('/assets/imgs/no_image_ideation.svg'); }
+        &.follow_up { background-image: url('/assets/imgs/no_image_follow_up.svg'); }
+      }
+
+      .image_overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 9;
+        background-color: rgba(17, 104, 168, 1);
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity 0.2s linear;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .topic_content {
+      position: relative;
+      padding: 24px 24px 0;
+      color: var(--color-text);
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 8px;
+      overflow: visible;
+
+      .svg {
+        position: absolute;
+        width: 0;
+        height: 0;
+      }
+
+      .icon_area {
+        display: flex;
+        align-items: flex-end;
+        position: absolute;
+        right: 4px;
+        top: -20px;
+
+        .topic_icon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 56px;
+          height: 40px;
+
+          .clipped {
+            width: 100%;
+            height: 40px;
+            background: var(--color-surfaces);
+            background-size: cover;
+            -webkit-clip-path: url(#topic-clip-path);
+            clip-path: url(#topic-clip-path);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      }
+
+      .date {
+        color: var(--color-border-active);
+        font-size: 13px;
+        line-height: 16px;
+      }
+
+      .topic_title {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 24px;
+        max-height: 72px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow-wrap: break-word;
+        -webkit-line-clamp: 3;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+      }
     }
-    .topic_title {
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 20px;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
-    .topic_status {
-      font-size: 12px;
-      color: var(--color-text-muted);
-      text-transform: capitalize;
+
+    .topic_footer {
+      padding: 0 24px 24px;
+      color: var(--color-text);
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+
+      .line_separator {
+        width: 100%;
+        height: 1px;
+        background: var(--color-border);
+      }
+
+      .data_wrap {
+        display: flex;
+        padding: 16px 0 0;
+        justify-content: space-between;
+
+        .participants_count,
+        .last_edit {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+          font-size: 13px;
+          line-height: 16px;
+          color: var(--color-border-active);
+        }
+      }
     }
   `]
 })
 export class TopicCardComponent {
   topic = input.required<Topic>();
-  translate = inject(TranslateService);
+  removable = input<boolean>(false);
+  remove = output<string>();
+
+  private translate = inject(TranslateService);
+
+  topicLink = computed(() => {
+    const t = this.topic();
+    const lang = this.translate.currentLang;
+    let fragment = 'discussion';
+    if (t.status === 'draft') fragment = 'info';
+    else if (t.status === 'ideation') fragment = 'ideation';
+    else if (t.status === 'voting') fragment = 'voting';
+    else if (t.status === 'followUp') fragment = 'followUp';
+    return ['/', lang, 'topics', t.id];
+  });
+
+  progressWidth = computed(() => {
+    const t = this.topic();
+    if (t.status === 'voting' && t.vote && t.members?.users?.count) {
+      return Math.floor((t.vote.votersCount / t.members.users.count) * 100);
+    }
+    return 100;
+  });
+
+  removeFromGroup(event: MouseEvent) {
+    event.stopPropagation();
+    this.remove.emit(this.topic().id);
+  }
 }
