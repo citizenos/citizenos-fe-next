@@ -4,13 +4,13 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
-
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Topic } from '../../../../../core/interfaces/topic';
 
 @Component({
   selector: 'app-topic-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, TranslateModule],
+  imports: [CommonModule, RouterModule, TranslateModule, IconComponent],
   templateUrl: './topic-header.component.html',
   styleUrls: ['./topic-header.component.scss']
 })

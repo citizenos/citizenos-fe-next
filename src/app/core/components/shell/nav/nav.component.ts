@@ -59,13 +59,13 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
       <div id="mobile_nav_wrap">
         <div id="tablet_nav" [class.hidden]="showCreateMenu()">
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" (click)="closeNav()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.8375 3.60105C11.5329 3.10434 12.4671 3.10434 13.1625 3.60105L19.1625 7.88676C19.6881 8.26219 20 8.86833 20 9.51423V18.9996C20 20.1042 19.1046 20.9996 18 20.9996H13V14.9996H11V20.9996H6C4.89543 20.9996 4 20.1042 4 18.9996V9.51423C4 8.86833 4.31193 8.26219 4.83752 7.88676L10.8375 3.60105ZM18 9.51423L12 5.22852L6 9.51423V18.9996H9V12.9996H15V18.9996H18V9.51423Z" fill="#2C3B47" /></svg>
+            <cos-icon name="home"></cos-icon>
           </a>
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" (click)="closeNav()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 19H18V10.139L13.0577 5L6 5V19ZM6 3C4.89543 3 4 3.89543 4 5V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V10.139C20 9.62207 19.7999 9.12522 19.4415 8.75264L14.4992 3.61364C14.1222 3.22157 13.6017 3 13.0577 3H6Z" fill="#2C3B47" /><path fill-rule="evenodd" clip-rule="evenodd" d="M11 5H13V10H18V12H11V5Z" fill="#2C3B47" /></svg>
+            <cos-icon name="topic"></cos-icon>
           </a>
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" (click)="closeNav()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M14 7C14 9.76142 11.7614 12 9 12C6.23858 12 4 9.76142 4 7C4 4.23858 6.23858 2 9 2C11.7614 2 14 4.23858 14 7ZM12 7C12 8.65685 10.6569 10 9 10C7.34315 10 6 8.65685 6 7C6 5.34315 7.34315 4 9 4C10.6569 4 12 5.34315 12 7Z" fill="#2C3B47" /><path d="M15 4C16.3708 4 18 4.98236 18 7C18 9.01764 16.3708 10 15 10V12C17.1492 12 20 10.4224 20 7C20 3.57764 17.1492 2 15 2V4Z" fill="#2C3B47" /><path d="M16 13H17C19.2091 13 21 14.7909 21 17V21H19V17C19 15.8954 18.1046 15 17 15H16V13Z" fill="#2C3B47" /><path d="M7 13C4.79086 13 3 14.7909 3 17V21H5V17C5 15.8954 5.89543 15 7 15H11C12.1046 15 13 15.8954 13 17V21H15V17C15 14.7909 13.2091 13 11 13H7Z" fill="#2C3B47" /></svg>
+            <cos-icon name="groups"></cos-icon>
           </a>
           <a id="tablet_create" class="btn_nav_create icon" (click)="toggleCreateMenu()">
             @if (!showCreateMenu()) {
@@ -75,18 +75,18 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
             }
           </a>
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'topics']"  routerLinkActive="active" (click)="closeNav()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#2C3B47" stroke-width="2" /><path d="M10.2308 6.8125V5.8125H9.23077V6.8125H10.2308ZM10.2308 9.625V10.625C10.7831 10.625 11.2308 10.1773 11.2308 9.625H10.2308ZM7 9.625V8.625H6V9.625H7ZM13 4V4.8125H15V4H13ZM12 5.8125H10.2308V7.8125H12V5.8125ZM9.23077 6.8125V9.625H11.2308V6.8125H9.23077ZM10.2308 8.625H7V10.625H10.2308V8.625ZM6 9.625V12H8V9.625H6ZM13 4.8125C13 5.36478 12.5523 5.8125 12 5.8125V7.8125C13.6569 7.8125 15 6.46935 15 4.8125H13Z" fill="#2C3B47" /><path d="M4 9L9.5 14.5V16.25C9.5 16.8023 9.94772 17.25 10.5 17.25H11V20" stroke="#2C3B47" stroke-width="2" /><path d="M14.6667 17H13.6667V18H14.6667V17ZM14.6667 13H15.6667C15.6667 12.4477 15.219 12 14.6667 12V13ZM16 16H14.6667V18H16V16ZM15.6667 17V13H13.6667V17H15.6667ZM14.6667 12H8V14H14.6667V12ZM19 19C19 17.3431 17.6569 16 16 16V18C16.5523 18 17 18.4477 17 19H19Z" fill="#2C3B47" /></svg>
+            <cos-icon name="public-topic"></cos-icon>
           </a>
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'groups']"  routerLinkActive="active" (click)="closeNav()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_1034_98590)"><circle cx="12" cy="12" r="4" stroke="#2C3B47" stroke-width="2" /><circle cx="19.5" cy="4.5" r="1.5" stroke="#2C3B47" stroke-width="2" /><circle cx="12" cy="2" r="2" fill="#2C3B47" /><circle cx="12" cy="22" r="2" fill="#2C3B47" /><circle cx="2" cy="12" r="2" fill="#2C3B47" /><circle cx="22" cy="12" r="2" fill="#2C3B47" /><circle cx="19.5" cy="19.5" r="1.5" stroke="#2C3B47" stroke-width="2" /><circle cx="4.5" cy="4.5" r="1.5" stroke="#2C3B47" stroke-width="2" /><circle cx="4.5" cy="19.5" r="1.5" stroke="#2C3B47" stroke-width="2" /></g><defs><clipPath id="clip0_1034_98590"><rect width="24" height="24" fill="white" /></clipPath></defs></svg>
+            <cos-icon name="public-groups"></cos-icon>
           </a>
         </div>
         <div id="mobile_nav" [class.hidden]="showCreateMenu()">
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" (click)="closeNav()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.8375 3.60105C11.5329 3.10434 12.4671 3.10434 13.1625 3.60105L19.1625 7.88676C19.6881 8.26219 20 8.86833 20 9.51423V18.9996C20 20.1042 19.1046 20.9996 18 20.9996H13V14.9996H11V20.9996H6C4.89543 20.9996 4 20.1042 4 18.9996V9.51423C4 8.86833 4.31193 8.26219 4.83752 7.88676L10.8375 3.60105ZM18 9.51423L12 5.22852L6 9.51423V18.9996H9V12.9996H15V18.9996H18V9.51423Z" fill="#2C3B47" /></svg>
+            <cos-icon name="home"></cos-icon>
           </a>
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" (click)="closeNav()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 19H18V10.139L13.0577 5L6 5V19ZM6 3C4.89543 3 4 3.89543 4 5V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V10.139C20 9.62207 19.7999 9.12522 19.4415 8.75264L14.4992 3.61364C14.1222 3.22157 13.6017 3 13.0577 3H6Z" fill="#2C3B47" /><path fill-rule="evenodd" clip-rule="evenodd" d="M11 5H13V10H18V12H11V5Z" fill="#2C3B47" /></svg>
+            <cos-icon name="topic"></cos-icon>
           </a>
           <a id="mobile_create" class="btn_nav_create icon" (click)="toggleCreateMenu()">
             @if (!showCreateMenu()) {
@@ -96,7 +96,7 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
             }
           </a>
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" (click)="closeNav()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M14 7C14 9.76142 11.7614 12 9 12C6.23858 12 4 9.76142 4 7C4 4.23858 6.23858 2 9 2C11.7614 2 14 4.23858 14 7ZM12 7C12 8.65685 10.6569 10 9 10C7.34315 10 6 8.65685 6 7C6 5.34315 7.34315 4 9 4C10.6569 4 12 5.34315 12 7Z" fill="#2C3B47" /><path d="M15 4C16.3708 4 18 4.98236 18 7C18 9.01764 16.3708 10 15 10V12C17.1492 12 20 10.4224 20 7C20 3.57764 17.1492 2 15 2V4Z" fill="#2C3B47" /><path d="M16 13H17C19.2091 13 21 14.7909 21 17V21H19V17C19 15.8954 18.1046 15 17 15H16V13Z" fill="#2C3B47" /><path d="M7 13C4.79086 13 3 14.7909 3 17V21H5V17C5 15.8954 5.89543 15 7 15H11C12.1046 15 13 15.8954 13 17V21H15V17C15 14.7909 13.2091 13 11 13H7Z" fill="#2C3B47" /></svg>
+            <cos-icon name="groups"></cos-icon>
           </a>
         </div>
       </div>
