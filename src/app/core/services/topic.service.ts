@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, exhaustMap, shareReplay, switchMap, map, of, take, Subject } from 'rxjs';
+import { Observable, exhaustMap, shareReplay, switchMap, map, of, take, Subject, startWith } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { Topic } from '../interfaces/topic';
@@ -63,7 +63,8 @@ export class TopicService {
 
   loadTopic(id: string, params?: { [key: string]: string | boolean }): Observable<Topic> {
     return this.loadTopic$.pipe(
-      exhaustMap(() => this.get(id, params)),
+      startWith(void 0),
+      switchMap(() => this.get(id, params)),
       shareReplay(1)
     );
   }

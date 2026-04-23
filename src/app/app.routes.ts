@@ -23,6 +23,19 @@ export const routes: Routes = [
         children: [
           { path: '', component: HomeComponent },
           { path: 'dashboard', canActivate: [authGuard], component: DashboardComponent },
+          {
+            path: 'my',
+            canActivate: [authGuard],
+            children: [
+              { path: 'topics', loadComponent: () => import('./features/topics/my-topics/my-topics.component').then(m => m.MyTopicsComponent) },
+            ]
+          },
+          {
+            path: 'public',
+            children: [
+              { path: 'topics', loadComponent: () => import('./features/topics/public-topics/public-topics.component').then(m => m.PublicTopicsComponent) },
+            ]
+          },
           { path: 'account', pathMatch: 'full', canActivate: [authGuard], loadComponent: () => import('./features/account/profile/profile.component').then(m => m.ProfileComponent) },
 
           // Topics

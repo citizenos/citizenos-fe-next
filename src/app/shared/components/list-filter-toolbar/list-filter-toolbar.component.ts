@@ -1,5 +1,4 @@
 import { Component, input, output, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { DropdownComponent } from '../dropdown/dropdown.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -18,7 +17,7 @@ export interface FilterConfig {
 @Component({
   selector: 'app-list-filter-toolbar',
   standalone: true,
-  imports: [CommonModule, DropdownComponent, TranslateModule],
+  imports: [DropdownComponent, TranslateModule],
   template: `
     <div class="list-filter-toolbar" role="toolbar" aria-label="List Filters">
       @for (filter of filters(); track filter.key) {

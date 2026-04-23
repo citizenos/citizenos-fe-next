@@ -14,6 +14,7 @@ import { SearchInputComponent } from '../../../shared/components/search-input/se
 import { ListFilterToolbarComponent, FilterConfig } from '../../../shared/components/list-filter-toolbar/list-filter-toolbar.component';
 import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { CreateMenuComponent } from '../../../shared/components/create-menu/create-menu.component';
+import { PageListHeaderComponent } from '../../../shared/components/page-list-header/page-list-header.component';
 import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.constants';
 
 @Component({
@@ -28,20 +29,14 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
     ListFilterToolbarComponent,
     ActivitiesButtonComponent,
     CreateMenuComponent,
+    PageListHeaderComponent,
   ],
   template: `
     <div class="page_content">
-      <div id="page_header">
-        <div class="small_heading" translate="VIEWS.MY_TOPICS.HEADER"></div>
-        <div class="buttons_area">
-          <button class="icon_btn" (click)="showSearch.update(v => !v)" aria-label="Search">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M14.1922 15.6064C13.0236 16.4816 11.5723 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10C17 11.5723 16.4816 13.0236 15.6064 14.1922L19.7071 18.2929C20.0976 18.6834 20.0976 19.3166 19.7071 19.7071C19.3166 20.0976 18.6834 20.0976 18.2929 19.7071L14.1922 15.6064ZM15 10C15 12.7614 12.7614 15 10 15C7.23858 15 5 12.7614 5 10C5 7.23858 7.23858 5 10 5C12.7614 5 15 7.23858 15 10Z" fill="#727C84"/>
-            </svg>
-          </button>
-          <cos-activities-button></cos-activities-button>
-        </div>
-      </div>
+      <app-page-list-header (searchToggle)="showSearch.update(v => !v)">
+        <span title translate="VIEWS.MY_TOPICS.HEADER"></span>
+        <cos-activities-button activities></cos-activities-button>
+      </app-page-list-header>
 
       @if (showSearch()) {
         <div class="search_row">
@@ -58,17 +53,13 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
         (filterChange)="onFilterChange($event)"
       ></app-list-filter-toolbar>
 
-      <div class="topics_list">
-        @if (topics().length === 0) {
+      <div class="topics_grid">
+        @for (topic of topics(); track topic.id) {
+          <cos-topic-card [topic]="topic"></cos-topic-card>
+        } @empty {
           <div class="no_topics">
             <div class="no_topics_heading" translate="VIEWS.MY_TOPICS.HEADING_YOUR_ENGAGEMENTS_NONE"></div>
             <cos-create-menu></cos-create-menu>
-          </div>
-        } @else {
-          <div class="topics_grid">
-            @for (topic of topics(); track topic.id) {
-              <cos-topic-card [topic]="topic"></cos-topic-card>
-            }
           </div>
         }
       </div>
@@ -87,42 +78,13 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
       margin: 0 auto;
     }
 
-    #page_header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .small_heading {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--color-text);
-    }
-
-    .buttons_area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .icon_btn {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      transition: background var(--transition-fast);
-      &:hover { background: var(--color-border); }
-    }
-
     .search_row { margin-bottom: 16px; }
 
-    .topics_list { display: flex; flex-direction: column; gap: 24px; }
+    .topics_grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
 
     .no_topics {
       display: flex;
@@ -130,6 +92,7 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
       align-items: center;
       gap: 24px;
       padding: 60px 0;
+      width: 100%;
     }
 
     .no_topics_heading {
@@ -137,12 +100,6 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
       font-weight: 600;
       color: var(--color-text);
       text-align: center;
-    }
-
-    .topics_grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
     }
   `]
 })

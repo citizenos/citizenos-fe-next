@@ -1,7 +1,7 @@
 import { Component, input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 
@@ -31,6 +31,7 @@ export class TopicHeaderComponent {
 
   userStore = inject(UserStore);
   topicService = inject(TopicService);
+  translate = inject(TranslateService);
   
   mobileActions = false;
 

@@ -505,7 +505,7 @@
       </div>
 
       <div class="view_more_button">
-        <a class="btn_medium_submit" [routerLink]="['/public/topics']" [innerHTML]="'VIEWS.HOME.BTN_VIEW_ALL_TOPICS' | translate"></a>
+        <a class="btn_medium_submit" [routerLink]="['/', translate.currentLang, 'public', 'topics']" [innerHTML]="'VIEWS.HOME.BTN_VIEW_ALL_TOPICS' | translate"></a>
       </div>
     </div>
   }

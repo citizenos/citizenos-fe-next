@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, inject, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { switchMap, combineLatest, map, BehaviorSubject, of } from 'rxjs';
+import { switchMap, combineLatest, map, BehaviorSubject, of, tap, catchError } from 'rxjs';
 
 import { TopicService } from '../../../core/services/topic.service';
 import { TopicIdeationService } from '../../../core/services/topic-ideation.service';
@@ -42,6 +42,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   topicEventService = inject(TopicEventService);
   topicVoteService = inject(TopicVoteService);
   userStore = inject(UserStore);
+  translate = inject(TranslateService);
 
   topic = signal<Topic | null>(null);
   ideation = signal<any>(null);
@@ -57,7 +58,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   
   wWidth = window.innerWidth;
   
-  navigation = signal({
+  navigation = signal<{title: string, link: any[]}>({
     title: 'VIEWS.TOPIC.TITLE',
     link: ['/']
   });
@@ -74,7 +75,16 @@ export class TopicViewComponent implements OnInit, OnDestroy {
         switchMap(([params, queryParams]) => {
           if (params['topicId']) {
             this.topicId = params['topicId'];
-            return this.topicService.loadTopic(this.topicId);
+            this.navigation.set({
+              title: 'VIEWS.TOPIC.TITLE',
+              link: ['/', this.translate.currentLang, 'my', 'topics']
+            });
+            return this.topicService.loadTopic(this.topicId).pipe(
+              catchError((err) => {
+                console.error('Error loading topic:', err);
+                return of(null);
+              })
+            );
           }
           return of(null);
         })
@@ -132,7 +142,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
 
   startVote(topic: Topic) {
     if (this.topicService.canUpdate(topic)) {
-      this.router.navigate(['/topics', topic.id, 'votes', 'create']);
+      this.router.navigate(['/', this.translate.currentLang, 'topics', topic.id, 'votes', 'create']);
     }
   }
 
@@ -175,7 +185,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   }
 
   deleteTopic(topic: Topic) {
-    this.topicService.doDeleteTopic(topic, ['/']);
+    this.topicService.doDeleteTopic(topic, ['/', this.translate.currentLang, 'my', 'topics']);
   }
   
   downloadAttachment(attachment: any) {

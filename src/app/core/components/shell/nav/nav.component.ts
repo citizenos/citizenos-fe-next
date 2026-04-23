@@ -201,6 +201,12 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
             <div class="line_separator"></div>
           }
 
+          @if (!userStore.isAuthenticated()) {
+            <div class="big_button_wrap">
+              <button class="btn_big_submit" [routerLink]="['/', translate.currentLang, 'account', 'login']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
+              <button class="btn_big_submit_ghost" [routerLink]="['/', translate.currentLang, 'account', 'signup']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
+            </div>
+          }
           <!-- Public nav links -->
           <div class="nav_items_wrap">
             <a class="nav_item" routerLinkActive="active" [routerLink]="['/', translate.currentLang, 'public', 'topics']" (click)="closeNav()">
@@ -213,12 +219,6 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
             </a>
           </div>
 
-          @if (!userStore.isAuthenticated()) {
-            <div class="big_button_wrap">
-              <button class="btn_big_submit" [routerLink]="['/', translate.currentLang, 'account', 'login']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
-              <button class="btn_big_submit_ghost" [routerLink]="['/', translate.currentLang, 'account', 'signup']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
-            </div>
-          }
 
           <div class="line_separator"></div>
 

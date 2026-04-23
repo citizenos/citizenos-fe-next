@@ -44,10 +44,8 @@ export class DashboardComponent {
   private readonly allNews = toSignal(
     this.newsService.get().pipe(
       map((items: News[]) => items.map(item => {
-        const el = document.createElement('div');
-        el.innerHTML = item.content;
-        const img = el.querySelector('img');
-        return img ? { ...item, imageUrl: img.src } : item;
+        const match = item.content.match(/<img[^>]+src="([^"]+)"/);
+        return match ? { ...item, imageUrl: match[1] } : item;
       }))
     ),
     { initialValue: [] }

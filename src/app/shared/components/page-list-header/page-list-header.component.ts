@@ -1,11 +1,10 @@
 import { Component, output, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-page-list-header',
   standalone: true,
-  imports: [CommonModule, IconComponent],
+  imports: [IconComponent],
   template: `
     <div id="page_header" class="page-list-header">
       <div class="small_heading">
