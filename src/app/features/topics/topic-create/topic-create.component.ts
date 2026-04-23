@@ -54,41 +54,39 @@ import { AnyPipe } from '../../../shared/pipes/any.pipe';
           </div>
         }
 
-        @if (currentStep() === 'info') {
-          <cos-step-topic-info
-            [topic]="topic() | any"
-            (topicUpdate)="onTopicUpdate($any($event))"
-            (imageFileUpdate)="onImageFileUpdate($any($event))"
-            (next)="transitionToSettings()"
-          ></cos-step-topic-info>
+        @switch (currentStep()) {
+          @case ('info') {
+            <cos-step-topic-info
+              [topic]="topic() | any"
+              (topicUpdate)="onTopicUpdate($any($event))"
+              (imageFileUpdate)="onImageFileUpdate($any($event))"
+              (next)="transitionToSettings()"
+            ></cos-step-topic-info>
+          }
+          @case ('settings') {
+            <cos-step-topic-settings
+              [topic]="topic() | any"
+              (topicUpdate)="onTopicUpdate($any($event))"
+              (next)="currentStep.set('discussion')"
+              (previous)="currentStep.set('info')"
+            ></cos-step-topic-settings>
+          }
+          @case ('discussion') {
+            <cos-step-topic-discussion
+              [topic]="topic() | any"
+              (topicUpdate)="onTopicUpdate($any($event))"
+              (next)="currentStep.set('preview')"
+              (previous)="currentStep.set('settings')"
+            ></cos-step-topic-discussion>
+          }
+          @case ('preview') {
+            <cos-step-topic-preview
+              [topic]="topic() | any"
+              (previous)="currentStep.set('discussion')"
+              (save)="publishTopic()"
+            ></cos-step-topic-preview>
+          }
         }
-
-        @if (currentStep() === 'settings') {
-          <cos-step-topic-settings
-            [topic]="topic() | any"
-            (topicUpdate)="onTopicUpdate($any($event))"
-            (next)="currentStep.set('discussion')"
-            (previous)="currentStep.set('info')"
-          ></cos-step-topic-settings>
-        }
-
-        @if (currentStep() === 'discussion') {
-          <cos-step-topic-discussion
-            [topic]="topic() | any"
-            (topicUpdate)="onTopicUpdate($any($event))"
-            (next)="currentStep.set('preview')"
-            (previous)="currentStep.set('settings')"
-          ></cos-step-topic-discussion>
-        }
-
-        @if (currentStep() === 'preview') {
-          <cos-step-topic-preview
-            [topic]="topic() | any"
-            (previous)="currentStep.set('discussion')"
-            (save)="publishTopic()"
-          ></cos-step-topic-preview>
-        }
-
       </div>
     </div>
   `,

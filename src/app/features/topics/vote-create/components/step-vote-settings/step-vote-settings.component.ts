@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,8 +15,8 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
       <div class="form-group">
         <label translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTING_QUESTION"></label>
         <textarea
-          [(ngModel)]="vote.question"
-          (ngModelChange)="onUpdate()"
+          [ngModel]="vote().question"
+          (ngModelChange)="onUpdate({question: $event})"
           [placeholder]="'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_QUESTION_PLACEHOLDER' | translate"
           rows="3"
         ></textarea>
@@ -26,12 +26,12 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
         <label translate="COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM"></label>
         <div class="toggle-group">
           <button
-            [class.active]="vote.type === 'regular'"
+            [class.active]="vote().type === 'regular'"
             (click)="setType('regular')"
             translate="COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_REGULAR"
           ></button>
           <button
-            [class.active]="vote.type === 'multiple'"
+            [class.active]="vote().type === 'multiple'"
             (click)="setType('multiple')"
             translate="COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_MULTIPLE"
           ></button>
@@ -41,7 +41,7 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
       <div class="options-section">
         <h3 translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEFINE_VOTE_ANSWERS"></h3>
 
-        @if (vote.type === 'regular') {
+        @if (vote().type === 'regular') {
           <div class="predefined-options">
             @for (opt of predefined; track opt) {
               <div class="option-row">
@@ -52,11 +52,11 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
           </div>
         } @else {
           <div class="custom-options">
-            @for (opt of vote.options; track $index) {
+            @for (opt of vote().options || []; track $index) {
               <div class="option-row">
                 <input
-                  [(ngModel)]="opt.value"
-                  (ngModelChange)="onUpdate()"
+                  [ngModel]="opt.value"
+                  (ngModelChange)="updateOption($index, $event)"
                   [placeholder]="'COMPONENTS.TOPIC_VOTE_CREATE.PLACEHOLDER_ENTER_A_POSSIBLE_ANSWER' | translate"
                 >
                 <button (click)="removeOption($index)" class="btn-remove" title="Remove option">×</button>
@@ -71,7 +71,7 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
         <div class="settings-left">
           <div class="form-group">
             <label translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS"></label>
-            <select [(ngModel)]="vote.authType" (ngModelChange)="onUpdate()">
+            <select [ngModel]="vote().authType" (ngModelChange)="onUpdate({authType: $event})">
               <option value="soft" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_AUTH_SOFT_ID"></option>
               <option value="hard" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_AUTH_HARD_ID"></option>
             </select>
@@ -79,7 +79,7 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
 
           <div class="form-group">
             <label class="checkbox-label">
-              <input type="checkbox" [(ngModel)]="vote.delegationIsAllowed" (ngModelChange)="onUpdate()">
+              <input type="checkbox" [ngModel]="vote().delegationIsAllowed" (ngModelChange)="onUpdate({delegationIsAllowed: $event})">
               <span translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_DELEGATION"></span>
             </label>
           </div>
@@ -124,64 +124,73 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
   `]
 })
 export class StepVoteSettingsComponent {
-  @Input() vote!: Vote;
-  @Output() voteUpdate = new EventEmitter<Partial<Vote>>();
-  @Output() next = new EventEmitter<void>();
-  @Output() previous = new EventEmitter<void>();
+  vote = input.required<Partial<Vote>>();
+  voteUpdate = output<Partial<Vote>>();
+  next = output<void>();
+  previous = output<void>();
 
   predefined = ['Yes', 'No', 'Neutral', 'Veto'];
 
   setType(type: 'regular' | 'multiple') {
-    this.vote.type = type;
-    if (type === 'regular' && this.vote.options.length === 0) {
-      this.vote.options = [{ value: 'Yes' }, { value: 'No' }];
+    const updates: Partial<Vote> = { type };
+    let options = [...(this.vote().options || [])];
+    if (type === 'regular' && options.length === 0) {
+      options = [{ value: 'Yes' }, { value: 'No' }];
     } else if (type === 'multiple') {
-      this.vote.options = this.vote.options.filter(o => !this.predefined.includes(o.value));
-      if (this.vote.options.length === 0) {
-        this.vote.options = [{ value: '' }, { value: '' }];
+      options = options.filter(o => !this.predefined.includes(o.value));
+      if (options.length === 0) {
+        options = [{ value: '' }, { value: '' }];
       }
     }
-    this.onUpdate();
+    updates.options = options;
+    this.onUpdate(updates);
   }
 
   isPredefinedSelected(val: string): boolean {
-    return this.vote.options.some(o => o.value === val);
+    return (this.vote().options || []).some(o => o.value === val);
   }
 
   togglePredefined(val: string) {
-    const index = this.vote.options.findIndex(o => o.value === val);
+    let options = [...(this.vote().options || [])];
+    const index = options.findIndex(o => o.value === val);
     if (index > -1) {
-      this.vote.options.splice(index, 1);
+      options.splice(index, 1);
     } else {
-      this.vote.options.push({ value: val });
+      options.push({ value: val });
     }
-    this.onUpdate();
+    this.onUpdate({ options });
   }
 
   addOption() {
-    this.vote.options.push({ value: '' });
-    this.onUpdate();
+    const options = [...(this.vote().options || []), { value: '' }];
+    this.onUpdate({ options });
+  }
+
+  updateOption(index: number, value: string) {
+    const options = [...(this.vote().options || [])];
+    options[index] = { ...options[index], value };
+    this.onUpdate({ options });
   }
 
   removeOption(index: number) {
-    this.vote.options.splice(index, 1);
-    this.onUpdate();
+    const options = [...(this.vote().options || [])];
+    options.splice(index, 1);
+    this.onUpdate({ options });
   }
 
   getVoteDeadlineDate(): Date | null {
-    return this.vote.endsAt ? new Date(this.vote.endsAt) : null;
+    return this.vote().endsAt ? new Date(this.vote().endsAt!) : null;
   }
 
   onDeadlineChange(date: Date | null) {
-    this.vote.endsAt = date ? date.toISOString() : null;
-    this.onUpdate();
+    this.onUpdate({ endsAt: date ? date.toISOString() : null });
   }
 
-  onUpdate() {
-    this.voteUpdate.emit(this.vote);
+  onUpdate(updates: Partial<Vote>) {
+    this.voteUpdate.emit({ ...this.vote(), ...updates });
   }
 
   isValid(): boolean {
-    return !!this.vote.question && this.vote.options.filter(o => !!o.value).length >= 2;
+    return !!this.vote().question && (this.vote().options || []).filter(o => !!o.value).length >= 2;
   }
 }
