@@ -1,5 +1,5 @@
 import { Component, signal, inject, computed, ChangeDetectionStrategy, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TopicService } from '../../../core/services/topic.service';
@@ -20,7 +20,6 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
   selector: 'cos-topic-create',
   standalone: true,
   imports: [
-    CommonModule,
     TranslateModule,
     StepNavigatorComponent,
     DomainIconComponent,

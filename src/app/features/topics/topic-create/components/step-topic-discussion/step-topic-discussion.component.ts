@@ -1,5 +1,6 @@
-import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { MemberEditorsPanelComponent } from '../../../../../shared/components/member-editors-panel/member-editors-panel.component';
 import { EtherpadDirective } from '../../../../../shared/directives/etherpad.directive';
@@ -81,6 +82,8 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
   `]
 })
 export class StepTopicDiscussionComponent {
+  private router = inject(Router);
+
   topic = input<Partial<Topic>>({
     title: '',
     description: ''
@@ -90,6 +93,9 @@ export class StepTopicDiscussionComponent {
   previous = output<void>();
 
   onInviteEditors() {
-    console.log('Invite editors clicked');
+    const topicId = this.topic().id;
+    if (topicId) {
+      this.router.navigate(['/topics', topicId, 'members']);
+    }
   }
 }

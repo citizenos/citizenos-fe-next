@@ -41,9 +41,15 @@ export const routes: Routes = [
           { path: 'account', pathMatch: 'full', canActivate: [authGuard], loadComponent: () => import('./features/account/profile/profile.component').then(m => m.ProfileComponent) },
 
           // Topics
-          { 
-            path: 'topics', 
-            loadChildren: () => import('./features/topics/topics.routes').then(m => m.TOPICS_ROUTES) 
+          {
+            path: 'topics',
+            loadChildren: () => import('./features/topics/topics.routes').then(m => m.TOPICS_ROUTES)
+          },
+
+          // Groups
+          {
+            path: 'groups/:groupId',
+            loadComponent: () => import('./features/groups/group-detail/group-detail.component').then(m => m.GroupDetailComponent)
           },
 
           // Error pages

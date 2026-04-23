@@ -1,0 +1,162 @@
+<div class="overlay" dialogClose></div>
+<div class="dialog_wrap">
+  <div class="dialog">
+    <div class="dialog_header">
+      <div class="header_text">
+        <div class="title" translate="COMPONENTS.GROUP_SETTINGS.HEADING"></div>
+        <div class="dialog_close">
+          <a class="btn_dialog_close icon" dialogClose>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z" fill="#2C3B47"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog_tabs_wrap">
+      <a class="dialog_tab" [class.active]="activeTab() === 'info'" (click)="activeTab.set('info')" translate="COMPONENTS.GROUP_SETTINGS.TAB_INFO"></a>
+      <a class="dialog_tab" [class.active]="activeTab() === 'settings'" (click)="activeTab.set('settings')" translate="COMPONENTS.GROUP_SETTINGS.TAB_SETTINGS"></a>
+    </div>
+
+    <div class="dialog_content">
+
+      <!-- INFO TAB -->
+      @if (activeTab() === 'info') {
+        <div class="content_section">
+          <div class="section_content_wrap">
+            <div translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_NAME_DESC"></div>
+            <div class="input_wrap" [class.error]="errors()?.name">
+              <input
+                [placeholder]="'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_NAME' | translate"
+                [ngModel]="group().name"
+                (ngModelChange)="group.update(g => ({ ...g, name: $event }))"
+              />
+              @if (errors()?.name) {
+                <span class="error_label" [translate]="errors().name"></span>
+              }
+            </div>
+
+            <div translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_DESCRIPTION_DESC" [translateParams]="{descriptionLength: descriptionLength}"></div>
+            <div class="input_wrap">
+              <textarea
+                rows="5"
+                [placeholder]="'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_DESCRIPTION' | translate"
+                [maxlength]="descriptionLength"
+                [ngModel]="group().description"
+                (ngModelChange)="group.update(g => ({ ...g, description: $event }))"
+              ></textarea>
+            </div>
+
+            <div translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_CHOOSE_IMAGE_DESC"></div>
+
+            @if (!group().imageUrl && !uploadedImageUrl()) {
+              <div id="image_input_area">
+                <div class="bold" translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_LBL_DROP_IMAGE"></div>
+                <label class="btn_medium_secondary" translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_BTN_CHOOSE_IMAGE">
+                  <input type="file" accept="image/*" (change)="onFileChange($event)" style="display:none" />
+                </label>
+              </div>
+            }
+
+            @if (group().imageUrl || uploadedImageUrl()) {
+              <div id="image_area">
+                <div id="image_wrap">
+                  <img [src]="uploadedImageUrl() || group().imageUrl" alt="" />
+                </div>
+                <a class="icon_link" (click)="removeImage()">
+                  <span class="bold" translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_BTN_REMOVE_IMAGE"></span>
+                  <cos-icon name="trash" [size]="24"></cos-icon>
+                </a>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="content_section">
+          <div class="section_content_wrap">
+            <div class="small_heading" translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_HEADING_CONTACT_EMAIL"></div>
+            <div translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_CONTACT_EMAIL_DESC"></div>
+            <div class="input_wrap">
+              <input
+                [placeholder]="'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_CONTACT_EMAIL' | translate"
+                [ngModel]="group().contact"
+                (ngModelChange)="group.update(g => ({ ...g, contact: $event }))"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="content_section">
+          <div class="section_content_wrap">
+            <div class="small_heading" translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_HEADING_RULES_OF_CONDUCT"></div>
+            <div translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_RULES_OF_CONDUCT_DESC"></div>
+
+            @for (rule of rules(); track $index) {
+              <div class="rule_input input_wrap">
+                <input
+                  [placeholder]="'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_RULES_OF_CONDUCT_RULE' | translate: { number: $index + 1 }"
+                  [ngModel]="rule.rule"
+                  (ngModelChange)="updateRule($index, $event)"
+                />
+                <button (click)="removeRule($index)">
+                  <cos-icon name="trash" [size]="16"></cos-icon>
+                </button>
+              </div>
+            }
+
+            <button class="btn_medium_secondary add_rule" (click)="addRule()">
+              <cos-icon name="plus" [size]="24"></cos-icon>
+              <span translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_BTN_ADD_NEW_RULE"></span>
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- SETTINGS TAB -->
+      @if (activeTab() === 'settings') {
+        <div class="content_section">
+          <div class="section_content_wrap">
+            <div translate="COMPONENTS.GROUP_SETTINGS.SETTINGS_HEADING_LOCALITY"></div>
+            <div translate="COMPONENTS.GROUP_SETTINGS.SETTINGS_LOCALITY_SELECT_DESC"></div>
+
+            <cos-dropdown>
+              <div selection>
+                @if (!group().country) {
+                  <span translate="COMPONENTS.GROUP_SETTINGS.SETTINGS_COUNTRY_SELECT"></span>
+                } @else {
+                  <span>{{ group().country }}</span>
+                }
+              </div>
+              <div options>
+                @for (country of countries; track country.iso2) {
+                  <div class="option" (click)="group.update(g => ({ ...g, country: country.name }))">{{ country.name }}</div>
+                }
+              </div>
+            </cos-dropdown>
+
+            <cos-dropdown>
+              <div selection>
+                @if (!group().language) {
+                  <span translate="COMPONENTS.GROUP_SETTINGS.SETTINGS_LANGUAGE_SELECT"></span>
+                } @else {
+                  <span>{{ group().language }}</span>
+                }
+              </div>
+              <div options>
+                @for (lang of languages; track lang.code) {
+                  <div class="option" (click)="group.update(g => ({ ...g, language: lang.name }))">{{ lang.name }}</div>
+                }
+              </div>
+            </cos-dropdown>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="dialog_footer with_buttons">
+      <a dialogClose translate="COMPONENTS.GROUP_SETTINGS.LNK_CANCEL"></a>
+      <button class="btn_medium_submit" (click)="save()" translate="COMPONENTS.GROUP_SETTINGS.BTN_SAVE"></button>
+    </div>
+  </div>
+</div>

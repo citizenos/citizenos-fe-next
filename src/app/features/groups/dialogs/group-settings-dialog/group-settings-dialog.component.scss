@@ -1,0 +1,97 @@
+@use "mixins";
+
+.dialog {
+  max-width: 560px;
+
+  .dialog_content {
+    padding: 24px;
+    gap: 24px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+#image_input_area {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 160px;
+  border: 2px dashed var(--color-border);
+  border-radius: 16px;
+}
+
+#image_area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  #image_wrap {
+    border-radius: 80px;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+
+    img {
+      height: inherit;
+      width: inherit;
+      display: flex;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+  }
+}
+
+.rule_input {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  button {
+    display: flex;
+    position: absolute;
+    right: 8px;
+    height: 32px;
+    width: 32px;
+    top: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  input { padding-right: 48px; }
+}
+
+.add_rule {
+  width: fit-content;
+}
+
+.input_wrap {
+  width: 100%;
+
+  input, textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-family-base);
+    font-size: 14px;
+    background: var(--color-surfaces);
+    color: var(--color-text);
+    resize: vertical;
+
+    &::placeholder { color: var(--color-text-muted); }
+    &:focus { outline: none; border-color: var(--color-primary); }
+  }
+
+  &.error input { border-color: var(--color-error); }
+
+  .error_label {
+    font-size: 12px;
+    color: var(--color-error);
+    margin-top: 4px;
+    display: block;
+  }
+}

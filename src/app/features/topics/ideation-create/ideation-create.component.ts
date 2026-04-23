@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, inject, ChangeDetectionStrategy, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../core/services/topic.service';
@@ -20,7 +20,6 @@ import { StepTopicPreviewComponent } from '../topic-create/components/step-topic
   selector: 'cos-ideation-create',
   standalone: true,
   imports: [
-    CommonModule,
     TranslateModule,
     StepNavigatorComponent,
     DomainIconComponent,

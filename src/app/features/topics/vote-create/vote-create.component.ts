@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../core/services/topic.service';
@@ -12,8 +12,6 @@ import { DomainIconComponent } from '../../../shared/components/domain-icon/doma
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { StepTopicInfoComponent } from '../topic-create/components/step-topic-info/step-topic-info.component';
 import { StepTopicSettingsComponent } from '../topic-create/components/step-topic-settings/step-topic-settings.component';
-import { StepVoteTypeComponent } from './components/step-vote-type/step-vote-type.component';
-import { StepVoteOptionsComponent } from './components/step-vote-options/step-vote-options.component';
 import { StepVoteSettingsComponent } from './components/step-vote-settings/step-vote-settings.component';
 import { StepTopicPreviewComponent } from '../topic-create/components/step-topic-preview/step-topic-preview.component';
 
@@ -21,15 +19,12 @@ import { StepTopicPreviewComponent } from '../topic-create/components/step-topic
   selector: 'cos-vote-create',
   standalone: true,
   imports: [
-    CommonModule,
     TranslateModule,
     StepNavigatorComponent,
     DomainIconComponent,
     ButtonComponent,
     StepTopicInfoComponent,
     StepTopicSettingsComponent,
-    StepVoteTypeComponent,
-    StepVoteOptionsComponent,
     StepVoteSettingsComponent,
     StepTopicPreviewComponent
   ],

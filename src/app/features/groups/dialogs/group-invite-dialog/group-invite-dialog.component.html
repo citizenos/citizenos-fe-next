@@ -1,0 +1,149 @@
+<div class="overlay" dialogClose></div>
+<div class="dialog_wrap">
+  <div class="dialog">
+    <div class="dialog_header">
+      <div class="header_text">
+        <h4 class="title" translate="COMPONENTS.GROUP_INVITE_DIALOG.HEADING"></h4>
+        <a class="btn_dialog_close icon" dialogClose>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z" fill="#2C3B47"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="dialog_tabs_wrap">
+      <a class="dialog_tab" [class.active]="activeTab() === 'invite'" (click)="activeTab.set('invite')" translate="COMPONENTS.GROUP_INVITE_DIALOG.TAB_INVITE"></a>
+      <a class="dialog_tab" [class.active]="activeTab() === 'share'" (click)="activeTab.set('share')" translate="COMPONENTS.GROUP_INVITE_DIALOG.TAB_SHARE"></a>
+    </div>
+
+    <div class="dialog_content">
+
+      <!-- INVITE TAB -->
+      @if (activeTab() === 'invite') {
+        <div class="content_section">
+          <div class="section_content_wrap">
+            <div class="bold" translate="COMPONENTS.GROUP_INVITE.MESSAGE_DESC"></div>
+            <textarea
+              class="invite_textarea"
+              rows="3"
+              [placeholder]="'COMPONENTS.GROUP_INVITE.MESSAGE_PLACEHOLDER' | translate"
+              [maxlength]="inviteMessageMaxLength"
+              [ngModel]="inviteMessage()"
+              (ngModelChange)="inviteMessage.set($event)"
+            ></textarea>
+            <div class="char_limit">{{ inviteMessage().length }}/{{ inviteMessageMaxLength }}</div>
+
+            <div class="bold" translate="COMPONENTS.GROUP_INVITE.EMAIL_DESC"></div>
+
+            <cos-typeahead
+              [placeholder]="'COMPONENTS.GROUP_INVITE.PLACEHOLDER_SEARCH' | translate"
+              [items]="searchResults()"
+              (search)="onSearch($event)"
+              (select)="addMember($event)"
+              (enter)="addEmail($event)"
+            >
+              @for (user of searchResults(); track user.userId) {
+                <div class="typeahead-item" (mousedown)="addMember(user)">{{ user.name }}</div>
+              }
+            </cos-typeahead>
+
+            @if (invalidEmails().length) {
+              <div class="invalid_section">
+                <div class="bold error_text" translate="COMPONENTS.GROUP_INVITE.INVALID_EMAILS_HEADER"></div>
+                @for (email of invalidEmails(); track $index) {
+                  <div class="invalid_row">
+                    <span>{{ email }}</span>
+                    <button (click)="removeInvalid($index)"><cos-icon name="x" [size]="16"></cos-icon></button>
+                  </div>
+                }
+              </div>
+            }
+
+            @if (pendingUsers().length) {
+              <div class="level_row">
+                <span translate="COMPONENTS.GROUP_INVITE.LBL_ALL_LEVEL"></span>
+                <cos-dropdown>
+                  <div selection>{{ 'TXT_GROUP_LEVELS_' + selectedLevel().toUpperCase() | translate }}</div>
+                  <div options>
+                    @for (level of LEVELS; track level) {
+                      <div class="option" (click)="updateAllLevels(level)">{{ 'TXT_GROUP_LEVELS_' + level.toUpperCase() | translate }}</div>
+                    }
+                  </div>
+                </cos-dropdown>
+              </div>
+
+              <div class="members_list">
+                @for (user of pendingUsers(); track user.userId) {
+                  <div class="member_row">
+                    <span class="member_name">{{ user.name }}</span>
+                    <cos-dropdown>
+                      <div selection>{{ 'TXT_GROUP_LEVELS_' + user.level.toUpperCase() | translate }}</div>
+                      <div options>
+                        @for (level of LEVELS; track level) {
+                          <div class="option" (click)="updateLevel(user, level)">{{ 'TXT_GROUP_LEVELS_' + level.toUpperCase() | translate }}</div>
+                        }
+                      </div>
+                    </cos-dropdown>
+                    <button class="remove_btn" (click)="removeMember(user)"><cos-icon name="x" [size]="16"></cos-icon></button>
+                  </div>
+                }
+              </div>
+            }
+
+            @if (noUsersSelected()) {
+              <div class="inline_error" translate="COMPONENTS.GROUP_INVITE_DIALOG.NO_USERS_SELECTED"></div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- SHARE TAB -->
+      @if (activeTab() === 'share') {
+        <div class="content_section">
+          <div class="section_content_wrap">
+            <div class="bold" translate="COMPONENTS.GROUP_SHARE.GENERATE_LINK"></div>
+
+            <div class="share_url_row">
+              <input id="invite_group_url_input" [value]="joinUrl()" readonly [placeholder]="'COMPONENTS.GROUP_SHARE.PLACEHOLDER_CREATE_NEW_LINK' | translate" />
+              <button class="icon_btn" (click)="generateToken()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M17 12L19 12C19 10.207 18.317 8.417 16.95 7.05C14.455 4.556 10.547 4.338 7.805 6.395C7.363 6.727 6.734 6.734 6.343 6.343C5.953 5.953 5.95 5.314 6.381 4.969C9.914 2.138 15.088 2.36 18.364 5.636C20.121 7.393 21 9.698 21 12L23 12L20 16L17 12Z" fill="#2C3B47"/>
+                  <path d="M5 12C5 13.793 5.683 15.583 7.05 16.95C9.544 19.444 13.453 19.663 16.195 17.605C16.637 17.273 17.266 17.266 17.657 17.657C18.047 18.047 18.05 18.686 17.619 19.031C14.085 21.863 8.912 21.64 5.636 18.364C3.879 16.607 3 14.302 3 12H1L4 8L7 12L5 12Z" fill="#2C3B47"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="level_row">
+              <span class="bold" translate="COMPONENTS.GROUP_SHARE.LBL_ACCESS_LEVEL"></span>
+              <cos-dropdown>
+                <div selection>{{ 'TXT_GROUP_LEVELS_' + join().level.toUpperCase() | translate }}</div>
+                <div options>
+                  @for (level of LEVELS; track level) {
+                    <div class="option" (click)="updateJoinLevel(level)">{{ 'TXT_GROUP_LEVELS_' + level.toUpperCase() | translate }}</div>
+                  }
+                </div>
+              </cos-dropdown>
+            </div>
+
+            <button class="btn_medium_secondary" (click)="copyLink()" translate="COMPONENTS.GROUP_SHARE.COPY_LINK"></button>
+
+            @if (copySuccess()) {
+              <div class="inline_success" translate="COMPONENTS.GROUP_SHARE.MSG_LINK_COPIED"></div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="dialog_footer with_buttons">
+      <div></div>
+      <div class="button_row">
+        <a dialogClose translate="COMPONENTS.GROUP_INVITE_DIALOG.LNK_CANCEL"></a>
+        @if (activeTab() === 'invite') {
+          <button class="btn_medium_submit" (click)="invite()" translate="COMPONENTS.GROUP_INVITE_DIALOG.BTN_SAVE"></button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
