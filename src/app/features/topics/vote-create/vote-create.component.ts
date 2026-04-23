@@ -12,6 +12,8 @@ import { StepTopicInfoComponent } from '../topic-create/components/step-topic-in
 import { StepTopicSettingsComponent } from '../topic-create/components/step-topic-settings/step-topic-settings.component';
 import { StepVoteSettingsComponent } from './components/step-vote-settings/step-vote-settings.component';
 import { StepTopicPreviewComponent } from '../topic-create/components/step-topic-preview/step-topic-preview.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
 
 @Component({
   selector: 'cos-vote-create',
@@ -23,19 +25,16 @@ import { StepTopicPreviewComponent } from '../topic-create/components/step-topic
     StepTopicInfoComponent,
     StepTopicSettingsComponent,
     StepVoteSettingsComponent,
-    StepTopicPreviewComponent
+    StepTopicPreviewComponent,
+    ButtonComponent,
+    DomainIconComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="wizard-container">
       <div class="create-header">
         <h1 class="create_heading">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="40" height="40" rx="20" fill="#5AB467" />
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M20 10C14.48 10 10 14.48 10 20C10 25.52 14.48 30 20 30C25.52 30 30 25.52 30 20C30 14.48 25.52 10 20 10ZM18.0556 25L25.8333 17.2807L24.375 15.8333L18.0556 22.1053L15.625 19.693L14.1667 21.1404L18.0556 25Z"
-              fill="white" />
-          </svg>
+          <cos-domain-icon type="vote"></cos-domain-icon>
           <span class="small_heading" translate="VIEWS.VOTE_CREATE.HEADING"></span>
         </h1>
         <cos-step-navigator
@@ -44,7 +43,9 @@ import { StepTopicPreviewComponent } from '../topic-create/components/step-topic
           (stepChange)="onStepChange($event)"
         >
           <div actions>
-            <ng-content select="[actions]"></ng-content>
+            <cos-button variant="secondary" (clicked)="saveAsDraft()">
+              {{ 'VIEWS.TOPIC_CREATE.BTN_SAVE_DRAFT' | translate }}
+            </cos-button>
           </div>
         </cos-step-navigator>
       </div>

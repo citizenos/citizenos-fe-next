@@ -9,10 +9,8 @@ import { NotificationService } from '../../../core/services/notification.service
 import { Topic } from '../../../core/interfaces/topic';
 import { Ideation } from '../../../core/interfaces/ideation';
 import { StepNavigatorComponent, StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
+import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
 import { StepTopicInfoComponent } from '../topic-create/components/step-topic-info/step-topic-info.component';
-import { StepTopicSettingsComponent } from '../topic-create/components/step-topic-settings/step-topic-settings.component';
-import { StepIdeationSettingsComponent } from './components/step-ideation-settings/step-ideation-settings.component';
-import { StepTopicPreviewComponent } from '../topic-create/components/step-topic-preview/step-topic-preview.component';
 
 @Component({
   selector: 'cos-ideation-create',
@@ -21,22 +19,19 @@ import { StepTopicPreviewComponent } from '../topic-create/components/step-topic
     CommonModule,
     TranslateModule,
     StepNavigatorComponent,
+    DomainIconComponent,
     StepTopicInfoComponent,
     StepTopicSettingsComponent,
     StepIdeationSettingsComponent,
-    StepTopicPreviewComponent
+    StepTopicPreviewComponent,
+    ButtonComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="wizard-container">
       <div class="create-header">
         <h1 class="create_heading">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="40" height="40" rx="20" fill="#E4B722" />
-            <path
-              d="M20 10C16.14 10 13 13.14 13 17C13 19.38 14.19 21.47 16 22.72V26C16 26.55 16.45 27 17 27H23C23.55 27 24 26.55 24 26V22.72C25.81 21.47 27 19.38 27 17C27 13.14 23.86 10 20 10ZM17.5 30C17.5 30.55 17.95 31 18.5 31H21.5C22.05 31 22.5 30.55 22.5 30V29H17.5V30Z"
-              fill="white" />
-          </svg>
+          <cos-domain-icon type="ideation"></cos-domain-icon>
           <span class="small_heading" translate="VIEWS.IDEATION_CREATE.HEADING"></span>
         </h1>
         <cos-step-navigator
@@ -45,7 +40,9 @@ import { StepTopicPreviewComponent } from '../topic-create/components/step-topic
           (stepChange)="onStepChange($event)"
         >
           <div actions>
-            <button class="btn-save-draft" (click)="saveAsDraft()" translate="VIEWS.TOPIC_CREATE.BTN_SAVE_DRAFT"></button>
+            <cos-button variant="secondary" (clicked)="saveAsDraft()">
+              {{ 'VIEWS.TOPIC_CREATE.BTN_SAVE_DRAFT' | translate }}
+            </cos-button>
           </div>
         </cos-step-navigator>
       </div>

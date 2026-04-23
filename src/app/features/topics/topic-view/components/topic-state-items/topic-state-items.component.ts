@@ -8,11 +8,12 @@ import { TopicVoteService } from '../../../../../core/services/topic-vote.servic
 import { UserStore } from '../../../../../core/state/user.store';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { DomainIconComponent } from '../../../../../shared/components/domain-icon/domain-icon.component';
 
 @Component({
   selector: 'app-topic-state-items',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, DomainIconComponent],
   templateUrl: './topic-state-items.component.html',
   styleUrls: ['./topic-state-items.component.scss']
 })

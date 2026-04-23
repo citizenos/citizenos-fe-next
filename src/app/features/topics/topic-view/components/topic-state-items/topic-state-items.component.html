@@ -61,10 +61,7 @@
       
       @if (topic().status === STATUSES.ideation && !argumentCount.value.total) {
         <div class="icon_wrap">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="16" fill="#1168A8" />
-            <path fill="white" d="M21.9997 17.7634C22.0238 17.7288 22.0469 17.6928 22.0707 17.6591C22.6751 16.7608 22.9985 15.703 22.9997 14.6203C23.0097 11.5172 20.3916 9 17.1541 9C14.3304 9 11.9747 10.9216 11.4229 13.4725C11.3401 13.8506 11.2982 14.2364 11.2979 14.6234C11.2979 17.7297 13.8154 20.3144 17.0529 20.3144C17.5675 20.3144 18.261 20.1597 18.6413 20.0553C19.0216 19.9509 19.3985 19.8131 19.496 19.7759C19.5935 19.7387 19.746 19.7006 19.8675 19.7356L22.2869 20.435L21.8894 18.1741C21.851 18.0178 21.846 17.9884 21.9997 17.7634Z"/>
-          </svg>
+          <cos-domain-icon type="topic" [size]="32"></cos-domain-icon>
         </div>
         <div class="state_item_text">
           @if (topic().permission.level === topicService.LEVELS.admin) {
@@ -125,9 +122,7 @@
       @if (!topic().voteId) {
         <div class="icon_wrap">
            <!-- Hand icon indicating vote -->
-           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM6.44444 12L12.6667 5.82456L11.5 4.66667L6.44444 9.68421L4.5 7.75439L3.33333 8.91228L6.44444 12Z" fill="white" />
-          </svg>
+           <cos-domain-icon type="vote" [size]="16"></cos-domain-icon>
         </div>
         <div class="state_item_text">
           @if (topic().permission.level === topicService.LEVELS.admin) {
@@ -162,10 +157,7 @@
   <div class="state_item follow-up" [ngClass]="{ empty: topic().status !== STATUSES.followUp }" (click)="topic().status !== STATUSES.followUp && canUpdate(topic()) ? sendToFollowUp.emit(topic()) : navigateTab.emit('followUp')">
     @if (topic().status !== STATUSES.followUp) {
       <div class="icon_wrap">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="32" height="32" rx="16" fill="#E3A8CC" />
-          <path d="M17.8933 11.5294L17.6 10H11V23H12.4667V17.6471H16.5733L16.8667 19.1765H22V11.5294H17.8933Z" fill="white" />
-        </svg>
+        <cos-domain-icon type="follow-up" [size]="32"></cos-domain-icon>
       </div>
       <div class="state_item_text">
         @if (topic().permission.level !== topicService.LEVELS.admin) {

@@ -7,12 +7,14 @@ import { UploadService } from '../../../core/services/upload.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { Topic } from '../../../core/interfaces/topic';
 import { StepNavigatorComponent, StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
+import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
 import { StepTopicInfoComponent } from './components/step-topic-info/step-topic-info.component';
 import { StepTopicSettingsComponent } from './components/step-topic-settings/step-topic-settings.component';
 import { StepTopicDiscussionComponent } from './components/step-topic-discussion/step-topic-discussion.component';
 import { StepTopicPreviewComponent } from './components/step-topic-preview/step-topic-preview.component';
 import { switchMap, tap, of, catchError } from 'rxjs';
 import { AnyPipe } from '../../../shared/pipes/any.pipe';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-topic-create',
@@ -21,30 +23,33 @@ import { AnyPipe } from '../../../shared/pipes/any.pipe';
     CommonModule,
     TranslateModule,
     StepNavigatorComponent,
+    DomainIconComponent,
     StepTopicInfoComponent,
     StepTopicSettingsComponent,
     StepTopicDiscussionComponent,
     StepTopicPreviewComponent,
-    AnyPipe
+    AnyPipe,
+    ButtonComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="topic-create-container">
       <div class="create-header">
         <h1 class="create_heading">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="40" height="40" rx="20" fill="#1168A8" />
-            <path
-              d="M11 20C11 14.4772 15.4772 10 21 10C26.5228 10 31 14.4772 31 20C31 25.5228 26.5228 30 21 30C19.7891 30 18.6315 29.7844 17.5619 29.3888L13 31V26.4381C11.7709 24.6983 11 22.502 11 20Z"
-              fill="white" />
-          </svg>
+          <cos-domain-icon type="topic"></cos-domain-icon>
           <span class="small_heading" translate="VIEWS.TOPIC_CREATE.HEADING"></span>
         </h1>
         <cos-step-navigator
           [steps]="steps"
           [currentStep]="currentStep()"
           (stepChange)="onStepChange($event)"
-        ></cos-step-navigator>
+        >
+          <div actions>
+            <cos-button variant="secondary" (clicked)="saveAsDraft()">
+              {{ 'VIEWS.TOPIC_CREATE.BTN_SAVE_DRAFT' | translate }}
+            </cos-button>
+          </div>
+        </cos-step-navigator>
       </div>
 
       <div class="create-content">
@@ -203,6 +208,22 @@ export class TopicCreateComponent {
     ).subscribe(() => {
       this.isLoading.set(false);
       this.currentStep.set('settings');
+    });
+  }
+
+  saveAsDraft() {
+    this.isLoading.set(true);
+    this.topicService.save(this.topic()).subscribe({
+      next: (savedTopic) => {
+        this.topic.set(savedTopic);
+        this.isLoading.set(false);
+        this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
+        this.router.navigate(['/topics', savedTopic.id]);
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
+      }
     });
   }
 
