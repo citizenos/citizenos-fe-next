@@ -1,11 +1,12 @@
 import { Component, inject, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { IconComponent } from '../icon/icon.component';
 import { NotificationService, type Notification } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'cos-notifications',
   standalone: true,
-  imports: [TranslateModule],
+  imports: [TranslateModule, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
@@ -53,9 +54,7 @@ import { NotificationService, type Notification } from '../../../core/services/n
             (click)="dismiss(n.id)"
             aria-label="Dismiss"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M6.7 5.3a1 1 0 00-1.4 1.4L10.6 12l-5.3 5.3a1 1 0 001.4 1.4L12 13.4l5.3 5.3a1 1 0 001.4-1.4L13.4 12l5.3-5.3a1 1 0 00-1.4-1.4L12 10.6 6.7 5.3z" fill="currentColor"/>
-            </svg>
+            <cos-icon name="close" [size]="20"></cos-icon>
           </button>
         </div>
       }

@@ -1,18 +1,16 @@
-import { Component, input, output, signal, HostListener, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, signal, HostListener, ViewEncapsulation } from '@angular/core';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'cos-dropdown',
   standalone: true,
-  imports: [CommonModule],
+  imports: [IconComponent],
   template: `
     <div class="dropdown-wrapper" [class.open]="isOpen()">
       <div class="dropdown-selection" (click)="toggle()">
         <ng-content select="[selection]"></ng-content>
         <div class="dropdown-arrow">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17 10L12 15L7 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
+          <cos-icon name="chevron-down"></cos-icon>
         </div>
       </div>
       @if (isOpen()) {

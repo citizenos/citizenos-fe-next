@@ -1,11 +1,12 @@
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, inject, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'cos-create-menu',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, TranslateModule],
+  imports: [RouterLink, RouterLinkActive, TranslateModule, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
@@ -28,9 +29,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
           </div>
         </div>
         <div class="icon_item icon_arrow_right">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 7L15 12L10 17" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
-          </svg>
+          <cos-icon name="chevron-right"></cos-icon>
         </div>
       </div>
 
@@ -53,9 +52,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
           </div>
         </div>
         <div class="icon_item icon_arrow_right">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 7L15 12L10 17" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
-          </svg>
+          <cos-icon name="chevron-right"></cos-icon>
         </div>
       </div>
 
@@ -75,9 +72,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
           </div>
         </div>
         <div class="icon_item icon_arrow_right">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 7L15 12L10 17" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
-          </svg>
+          <cos-icon name="chevron-right"></cos-icon>
         </div>
       </div>
 
@@ -108,9 +103,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
           </div>
         </div>
         <div class="icon_item icon_arrow_right">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 7L15 12L10 17" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
-          </svg>
+          <cos-icon name="chevron-right"></cos-icon>
         </div>
       </div>
     </div>

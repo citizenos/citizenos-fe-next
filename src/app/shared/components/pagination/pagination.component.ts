@@ -1,10 +1,12 @@
 import { Component, input, output, computed, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'cos-pagination',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  imports: [IconComponent],
   template: `
     @if (totalPages() > 1) {
       <div class="pagination">
@@ -14,9 +16,7 @@ import { Component, input, output, computed, ChangeDetectionStrategy, ViewEncaps
           (click)="prev()"
           aria-label="Previous page"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M10.4533 6.31262C10.8529 5.89579 11.5009 5.89579 11.9006 6.31262C12.3003 6.72945 12.3003 7.40527 11.9006 7.8221L8.91837 11L19 11C19.5652 11 20 11.4108 20 12.0003C20 12.5897 19.5652 12.9824 19 12.9824L8.91837 12.9824L11.9006 16.1779C12.3003 16.5947 12.3003 17.2705 11.9006 17.6874C11.5009 18.1042 10.8529 18.1042 10.4533 17.6874L5 12L10.4533 6.31262Z" fill="currentColor"/>
-          </svg>
+          <cos-icon name="arrow-left"></cos-icon>
         </button>
 
         @for (p of pages(); track p) {
@@ -33,9 +33,7 @@ import { Component, input, output, computed, ChangeDetectionStrategy, ViewEncaps
           (click)="next()"
           aria-label="Next page"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M14.5467 6.31262C14.1471 5.89579 13.4991 5.89579 13.0994 6.31262C12.6997 6.72945 12.6997 7.40527 13.0994 7.8221L16.0816 11H6C5.43478 11 5 11.4108 5 12.0003C5 12.5897 5.43478 12.9824 6 12.9824H16.0816L13.0994 16.1779C12.6997 16.5947 12.6997 17.2705 13.0994 17.6874C13.4991 18.1042 14.1471 18.1042 14.5467 17.6874L20 12L14.5467 6.31262Z" fill="currentColor"/>
-          </svg>
+          <cos-icon name="arrow-right"></cos-icon>
         </button>
       </div>
     }
