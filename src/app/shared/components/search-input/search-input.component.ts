@@ -1,5 +1,4 @@
-import { Component, input, output, model, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, input, model, ViewEncapsulation } from '@angular/core';
 import { InputComponent } from '../input/input.component';
 import { IconComponent } from '../icon/icon.component';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-search-input',
   standalone: true,
-  imports: [CommonModule, InputComponent, IconComponent, FormsModule],
+  imports: [InputComponent, IconComponent, FormsModule],
   template: `
     <div class="search-input-wrapper">
       <div class="search-icon">

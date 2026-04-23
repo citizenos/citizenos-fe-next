@@ -1,34 +1,28 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'cos-terms-links',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [TranslateModule, IconComponent],
   template: `
     <ul class="links_wrapper">
       <li>
         <a class="link" href="https://citizenos.com/legal/api/" target="_blank">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 12V14L19 11.5L15 9V11H6V12H15Z" fill="#2C3B47" />
-          </svg>
+          <cos-icon name="arrow-next"></cos-icon>
           <span translate="MODALS.PRIVACY_POLICY_LNK_TERMS_OF_USE"></span>
         </a>
       </li>
       <li>
         <a class="link" href="https://citizenos.com/legal/privacy/" target="_blank">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 12V14L19 11.5L15 9V11H6V12H15Z" fill="#2C3B47" />
-          </svg>
+          <cos-icon name="arrow-next"></cos-icon>
           <span translate="MODALS.PRIVACY_POLICY_LNK_PRIVACY_POLICY"></span>
         </a>
       </li>
       <li>
         <a class="link" href="https://citizenos.com/legal/statute/" target="_blank">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 12V14L19 11.5L15 9V11H6V12H15Z" fill="#2C3B47" />
-          </svg>
+          <cos-icon name="arrow-next"></cos-icon>
           <span translate="MODALS.PRIVACY_POLICY_LNK_ARTICLES_OF_ASSOCIATION"></span>
         </a>
       </li>

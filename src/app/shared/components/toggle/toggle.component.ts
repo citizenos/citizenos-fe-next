@@ -1,10 +1,9 @@
 import { Component, input, output, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'cos-toggle',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="toggle-container" [class.on]="model()" (click)="toggle()">
       <div class="toggle-track">

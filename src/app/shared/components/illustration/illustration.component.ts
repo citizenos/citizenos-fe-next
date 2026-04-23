@@ -1,10 +1,9 @@
 import { Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'cos-illustration',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="illustration-container">
       <img [src]="imagePath()" [alt]="altText()" class="illustration-image">

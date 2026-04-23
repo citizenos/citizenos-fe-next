@@ -1,12 +1,11 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { IconName, IconRegistryService } from './icon.registry';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'cos-icon',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <svg
       [innerHTML]="safeSvgContent()"

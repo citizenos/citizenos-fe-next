@@ -1,10 +1,10 @@
 import { Component, ContentChild, ElementRef, AfterContentChecked, input, signal, ViewEncapsulation, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'cos-input',
   standalone: true,
-  imports: [CommonModule],
+  imports: [IconComponent],
   template: `
     <div class="input-container" [class.has-error]="hasError()">
       <div class="input-wrapper">
@@ -13,9 +13,7 @@ import { CommonModule } from '@angular/common';
       </div>
       @if (hasError() && errorMessage()) {
         <span class="error-message" role="alert">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.89438 1.78863C8.52586 1.05158 7.47405 1.05158 7.10553 1.78863L0.723562 14.5526C0.391112 15.2175 0.874608 15.9998 1.61799 15.9998H14.3819C15.1253 15.9998 15.6088 15.2175 15.2763 14.5526L8.89438 1.78863ZM6.99996 6.99977C6.99996 6.44749 7.44767 5.99977 7.99996 5.99977C8.55224 5.99977 8.99996 6.44749 8.99996 6.99977V9.99977C8.99996 10.5521 8.55224 10.9998 7.99996 10.9998C7.44767 10.9998 6.99996 10.5521 6.99996 9.99977V6.99977ZM6.99996 12.9998C6.99996 12.4475 7.44767 11.9998 7.99996 11.9998C8.55224 11.9998 8.99996 12.4475 8.99996 12.9998C8.99996 13.5521 8.55224 13.9998 7.99996 13.9998C7.44767 13.9998 6.99996 13.5521 6.99996 12.9998Z" fill="currentColor"/>
-          </svg>
+          <cos-icon name="warning" [size]="14"></cos-icon>
           {{ errorMessage() }}
         </span>
       }
@@ -105,7 +103,7 @@ import { CommonModule } from '@angular/common';
       align-items: center;
       gap: 4px;
 
-      svg { flex-shrink: 0; }
+      cos-icon { flex-shrink: 0; }
     }
   `],
   encapsulation: ViewEncapsulation.None

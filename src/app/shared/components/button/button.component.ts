@@ -1,5 +1,4 @@
 import { Component, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { IconName } from '../icon/icon.registry';
 
@@ -9,7 +8,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 @Component({
   selector: 'cos-button',
   standalone: true,
-  imports: [CommonModule, IconComponent],
+  imports: [IconComponent],
   template: `
     <button
       [type]="type()"
@@ -19,7 +18,9 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
       [class]="'btn-' + variant() + ' btn-' + size()"
       (click)="onClick($event)"
     >
-      <cos-icon *ngIf="icon() && !isLoading()" [name]="icon()!" [size]="iconSize()"></cos-icon>
+      @if (icon() && !isLoading()) {
+        <cos-icon [name]="icon()!" [size]="iconSize()"></cos-icon>
+      }
       
       @if (isLoading()) {
         <span class="spinner" aria-hidden="true"></span>
