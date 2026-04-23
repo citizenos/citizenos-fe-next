@@ -1,4 +1,10 @@
-import { vi } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+(globalThis as any).ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+(globalThis as any).HTMLElement.prototype.scrollIntoView = vi.fn();
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TopicContentComponent } from './topic-content.component';
 import { TranslateModule } from '@ngx-translate/core';

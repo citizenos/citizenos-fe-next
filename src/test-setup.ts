@@ -11,10 +11,16 @@ getTestBed().initTestEnvironment(
   platformBrowserTesting(),
 );
 
-// Ensure zoneless change detection matches production config so
-// signal inputs (input.required) behave identically in tests.
+// ... production config
 beforeEach(() => {
   getTestBed().configureTestingModule({
     providers: [provideZonelessChangeDetection()],
   });
 });
+
+// Mock ResizeObserver
+(globalThis as any).ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './profile.component';
 import { UserStore } from '../../../core/state/user.store';
 import { TopicNotificationService } from '../../../core/services/topic-notification.service';
@@ -8,7 +9,7 @@ import { DialogService } from '../../../shared/dialog/dialog.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, BehaviorSubject } from 'rxjs';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA, Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({ selector: 'cos-initials', standalone: true, template: '' })
@@ -27,7 +28,7 @@ class MockToggleComponent { @Input() model = false; @Input() textOn = ''; @Input
 class MockDropdownComponent {}
 
 @Component({ selector: 'cos-input', standalone: true, template: '<ng-content></ng-content>' })
-class MockInputComponent { @Input() placeholder = ''; }
+class MockInputComponent { @Input() placeholder = ''; @Input() hasError = false; }
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent { @Input() name = ''; }
@@ -105,7 +106,10 @@ describe('ProfileComponent', () => {
           MockDropdownComponent,
           MockInputComponent,
           MockIconComponent,
-          TranslateModule
+          TranslateModule,
+          CommonModule,
+          FormsModule,
+          ReactiveFormsModule
         ]
       }
     })

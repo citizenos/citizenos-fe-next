@@ -33,6 +33,8 @@ describe('NavComponent', () => {
 
     fixture = TestBed.createComponent(NavComponent);
     component = fixture.componentInstance;
+    const translateService = TestBed.inject(TranslateService);
+    translateService.use('en');
     fixture.detectChanges();
   });
 

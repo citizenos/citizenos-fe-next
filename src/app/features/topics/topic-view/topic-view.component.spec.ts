@@ -1,10 +1,16 @@
-import { vi } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+(globalThis as any).ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TopicViewComponent } from './topic-view.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideRouter, ActivatedRoute } from '@angular/router';
 import { of, BehaviorSubject } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { TopicService } from '../../../core/services/topic.service';
 import { TopicIdeationService } from '../../../core/services/topic-ideation.service';
@@ -58,6 +64,7 @@ describe('TopicViewComponent', () => {
       ],
       providers: [
         provideRouter([]),
+        provideAnimationsAsync(),
         { provide: ActivatedRoute, useValue: activatedRouteStub },
         { provide: TopicService, useValue: mockTopicService }
       ]

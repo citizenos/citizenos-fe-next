@@ -1,9 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { CreateMenuComponent } from './create-menu.component';
-import { of } from 'rxjs';
+
+(globalThis as any).ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
 
 describe('CreateMenuComponent', () => {
   let fixture: ComponentFixture<CreateMenuComponent>;
@@ -11,24 +16,15 @@ describe('CreateMenuComponent', () => {
   let translateServiceMock: any;
 
   beforeEach(async () => {
-    translateServiceMock = {
-      currentLang: 'en',
-      get: vi.fn().mockImplementation((key: string) => of(key)),
-      onLangChange: of({ lang: 'en', translations: {} }),
-      onTranslationChange: of({ lang: 'en', translations: {} }),
-      onDefaultLangChange: of({ lang: 'en', translations: {} }),
-      getTranslation: vi.fn().mockReturnValue(of({})),
-      use: vi.fn().mockReturnValue(of({})),
-      instant: vi.fn().mockImplementation((key: string) => key)
-    };
-
     await TestBed.configureTestingModule({
-      imports: [CreateMenuComponent],
+      imports: [CreateMenuComponent, TranslateModule.forRoot()],
       providers: [
-        provideRouter([]),
-        { provide: TranslateService, useValue: translateServiceMock }
+        provideRouter([])
       ]
     }).compileComponents();
+
+    const translate = TestBed.inject(TranslateService);
+    translate.use('en');
 
     fixture = TestBed.createComponent(CreateMenuComponent);
     component = fixture.componentInstance;

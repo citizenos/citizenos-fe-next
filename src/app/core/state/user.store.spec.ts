@@ -98,6 +98,12 @@ describe('UserStore', () => {
     expect(req.request.body).toEqual(authResponse);
     
     req.flush({ status: { code: 200 } });
+    
+    await new Promise(resolve => setTimeout(resolve, 0)); // Wait for second request to be triggered
+    
+    const statusReq = httpMock.expectOne((r) => r.url.includes('/api/auth/status'));
+    statusReq.flush({ data: null });
+    
     await promise;
   });
 });

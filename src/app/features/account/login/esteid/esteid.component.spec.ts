@@ -8,6 +8,10 @@ import { of } from 'rxjs';
 import * as webeid from '@web-eid/web-eid-library/web-eid';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { MockButtonComponent, MockInputComponent, MockIconComponent } from '../../../../shared/testing/mocks';
+
+vi.mock('@web-eid/web-eid-library/web-eid', () => ({
+  authenticate: vi.fn()
+}));
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
@@ -83,17 +87,17 @@ describe('EstEidComponent', () => {
   });
 
   it('should call authIdCard', async () => {
-    const authenticateSpy = vi.spyOn(webeid, 'authenticate').mockResolvedValue({ response: 'test' } as any);
+    (webeid.authenticate as any).mockResolvedValue({ response: 'test' });
     mockUserStore.loginIdCard.mockResolvedValue(undefined);
 
     await component.authIdCard();
 
-    expect(authenticateSpy).toHaveBeenCalled();
+    expect(webeid.authenticate).toHaveBeenCalled();
     expect(mockUserStore.loginIdCard).toHaveBeenCalledWith({ response: 'test' });
   });
 
   it('should handle ID-card authentication error', async () => {
-    vi.spyOn(webeid, 'authenticate').mockRejectedValue(new Error('Auth failed'));
+    (webeid.authenticate as any).mockRejectedValue(new Error('Auth failed'));
 
     await component.authIdCard();
 
