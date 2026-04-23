@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
 
   stats = toSignal(this.homeService.getStats());
   topics = toSignal(this.topicService.getPreview(this.getLimit()));
-  groups = toSignal(this.groupService.loadItems(this.getLimit()));
+  groups = toSignal(this.groupService.getPreview(this.getLimit()));
 
   ngOnInit() {
     if (this.userStore.isAuthenticated()) {

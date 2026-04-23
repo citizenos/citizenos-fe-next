@@ -28,12 +28,14 @@ export const routes: Routes = [
             canActivate: [authGuard],
             children: [
               { path: 'topics', loadComponent: () => import('./features/topics/my-topics/my-topics.component').then(m => m.MyTopicsComponent) },
+              { path: 'groups', loadComponent: () => import('./features/groups/my-groups/my-groups.component').then(m => m.MyGroupsComponent) },
             ]
           },
           {
             path: 'public',
             children: [
               { path: 'topics', loadComponent: () => import('./features/topics/public-topics/public-topics.component').then(m => m.PublicTopicsComponent) },
+              { path: 'groups', loadComponent: () => import('./features/groups/public-groups/public-groups.component').then(m => m.PublicGroupsComponent) },
             ]
           },
           { path: 'account', pathMatch: 'full', canActivate: [authGuard], loadComponent: () => import('./features/account/profile/profile.component').then(m => m.ProfileComponent) },

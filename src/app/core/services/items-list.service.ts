@@ -1,5 +1,5 @@
 import { Injectable, signal, Signal, computed } from '@angular/core';
-import { BehaviorSubject, shareReplay, switchMap, map, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, shareReplay, switchMap, map, combineLatest, Observable, debounceTime } from 'rxjs';
 
 export interface ListParams {
   page: number;
@@ -40,6 +40,7 @@ export abstract class ItemsListService {
 
   protected loadItems(): Observable<any[]> {
     return combineLatest([this.page, this.params]).pipe(
+      debounceTime(0),
       switchMap(([page, paramsValue]) => {
         const offset = (page - 1) * paramsValue.limit;
         return this.getItems({ ...paramsValue, offset, page });

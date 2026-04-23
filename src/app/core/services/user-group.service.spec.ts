@@ -1,0 +1,84 @@
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
+import { UserGroupService } from './user-group.service';
+import { ConfigStore } from '../state/config.store';
+import { TranslateModule } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
+
+describe('UserGroupService', () => {
+  let service: UserGroupService;
+  let httpMock: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        UserGroupService,
+        ConfigStore,
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
+    });
+    service = TestBed.inject(UserGroupService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+
+  it('should fetch groups with default params', async () => {
+    const promise = firstValueFrom(service.items$);
+
+    // Wait for the debounceTime(0)
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    const req = httpMock.expectOne((request) => request.url.endsWith('/api/users/self/groups'));
+    expect(req.request.params.get('limit')).toBe('10');
+    expect(req.request.params.get('offset')).toBe('0');
+    req.flush({ data: { rows: [{ id: '1', name: 'Test Group' }], count: 1 } });
+    
+    const groups = await promise;
+    expect(groups.length).toBe(1);
+    expect(groups[0].name).toBe('Test Group');
+  });
+
+  it('should apply filters', async () => {
+    // Start observing items
+    const promise1 = firstValueFrom(service.items$);
+    await new Promise(resolve => setTimeout(resolve, 0));
+    const initialReq = httpMock.expectOne((request) => request.url.endsWith('/api/users/self/groups'));
+    initialReq.flush({ data: { rows: [], count: 0 } });
+    await promise1;
+
+    service.setParam('visibility' as any, 'private');
+    service.setParam('search' as any, 'query');
+    
+    const promise2 = firstValueFrom(service.items$);
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    // Only one request should be sent for both param changes due to debounceTime(0)
+    const req = httpMock.expectOne((request) => 
+        request.url.endsWith('/api/users/self/groups') && 
+        request.params.get('visibility') === 'private' &&
+        request.params.get('search') === 'query'
+    );
+    req.flush({ data: { rows: [], count: 0 } });
+    await promise2;
+  });
+
+  it('should getPreview with specific limit', async () => {
+    const promise = firstValueFrom(service.getPreview(5));
+    
+    const req = httpMock.expectOne((request) => request.url.endsWith('/api/users/self/groups') && request.params.get('limit') === '5');
+    req.flush({ data: { rows: [{ id: '1', name: 'Preview Group' }] } });
+
+    const groups = await promise;
+    expect(groups.length).toBe(1);
+  });
+});

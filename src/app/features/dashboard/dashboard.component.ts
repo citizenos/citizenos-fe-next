@@ -38,8 +38,8 @@ export class DashboardComponent {
 
   readonly myTopics = toSignal(this.userTopicService.items$, { initialValue: [] });
   readonly publicTopics = toSignal(this.publicTopicService.items$, { initialValue: [] });
-  readonly myGroups = toSignal(this.userGroupService.loadItems(), { initialValue: [] });
-  readonly publicGroups = toSignal(this.publicGroupService.loadItems(), { initialValue: [] });
+  readonly myGroups = toSignal(this.userGroupService.getPreview(8), { initialValue: [] });
+  readonly publicGroups = toSignal(this.publicGroupService.getPreview(8), { initialValue: [] });
 
   private readonly allNews = toSignal(
     this.newsService.get().pipe(
