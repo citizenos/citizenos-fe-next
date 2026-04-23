@@ -5,6 +5,7 @@ import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';
 import { Group } from '../interfaces/group';
 import { ItemsListService, ListParams } from './items-list.service';
+import { UploadService } from './upload.service';
 
 export interface UserGroupParams extends ListParams {
   visibility?: string;
@@ -18,6 +19,7 @@ export interface UserGroupParams extends ListParams {
 export class UserGroupService extends ItemsListService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
+  private uploadService = inject(UploadService);
 
   private get apiUrl() {
     return this.configStore.api.baseUrl();
@@ -48,5 +50,17 @@ export class UserGroupService extends ItemsListService {
       `${this.apiUrl}/api/users/self/groups`,
       { withCredentials: true, params: { limit } }
     ).pipe(map(res => res.data?.rows ?? []));
+  }
+
+  save(data: Partial<Group>): Observable<Group> {
+    return this.http.post<ApiResponse<Group>>(
+      `${this.apiUrl}/api/users/self/groups`,
+      data,
+      { withCredentials: true }
+    ).pipe(map(res => res.data!));
+  }
+
+  uploadGroupImage(file: File, groupId: string): Observable<any> {
+    return this.uploadService.upload(`${this.apiUrl}/api/users/self/groups/${groupId}/image`, file);
   }
 }
