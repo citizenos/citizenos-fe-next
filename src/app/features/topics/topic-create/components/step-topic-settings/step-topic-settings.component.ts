@@ -3,11 +3,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicSettingsPanelComponent } from '../../../../../shared/components/topic-settings-panel/topic-settings-panel.component';
 import { AnyPipe } from '../../../../../shared/pipes/any.pipe';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-step-topic-settings',
   standalone: true,
-  imports: [TranslateModule, TopicSettingsPanelComponent, AnyPipe],
+  imports: [TranslateModule, TopicSettingsPanelComponent, AnyPipe, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="step-container">
@@ -20,16 +21,18 @@ import { AnyPipe } from '../../../../../shared/pipes/any.pipe';
       ></cos-topic-settings-panel>
 
       <div class="actions">
-        <button
-          class="btn-secondary"
-          (click)="previous.emit()"
-          translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL"
-        ></button>
-        <button
-          class="btn-primary"
-          (click)="next.emit()"
-          translate="VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE"
-        ></button>
+        <cos-button
+          variant="secondary"
+          (clicked)="previous.emit()"
+        >
+          {{ 'VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL' | translate }}
+        </cos-button>
+        <cos-button
+          variant="primary"
+          (clicked)="next.emit()"
+        >
+          {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE' | translate }}
+        </cos-button>
       </div>
     </div>
   `,

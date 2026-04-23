@@ -1,0 +1,160 @@
+@use "mixins";
+
+.create_content_section {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--color-surfaces);
+  border-radius: 16px;
+  width: 100%;
+  padding: 24px;
+  gap: 16px;
+
+  @include mixins.mobile {
+    padding: 16px;
+  }
+
+  .number_wrap {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+    display: flex;
+    border-radius: 20px;
+    background-color: var(--color-secondary);
+    font-weight: 600;
+  }
+
+  .section_content_wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+
+    .header_wrap {
+      display: flex;
+      gap: 0;
+      flex-direction: column;
+
+      @include mixins.mobile {
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+
+    cos-input,
+    input,
+    textarea {
+      width: 100%;
+    }
+
+    .row_wrap {
+      display: flex;
+      gap: 16px;
+
+      @include mixins.mobile {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .locality-dropdown {
+        width: 100%;
+      }
+
+      .radio_wrap {
+        width: 100%;
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        padding: 16px;
+        cursor: pointer;
+        transition: border-color 0.2s;
+
+        &.active {
+          border-color: var(--color-link);
+          color: var(--color-link);
+          
+          .radio {
+            border-color: var(--color-link);
+            &:after {
+              display: block;
+            }
+          }
+        }
+
+        .radio_box {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          cursor: pointer;
+
+          input {
+            display: none;
+          }
+
+          .radio {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--color-border);
+            border-radius: 50%;
+            position: relative;
+            flex-shrink: 0;
+            margin-top: 3px;
+
+            &:after {
+              content: "";
+              display: none;
+              position: absolute;
+              width: 10px;
+              height: 10px;
+              background: var(--color-link);
+              border-radius: 50%;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+            }
+          }
+        }
+
+        .radio_text_wrap {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+
+          .radio_lable {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-text);
+          }
+
+          .radio_description {
+            font-size: 14px;
+            color: var(--color-text-muted);
+          }
+        }
+      }
+    }
+
+    .rule_input_row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      
+      cos-input {
+        flex: 1;
+      }
+      
+      button {
+        margin-top: 8px;
+      }
+    }
+
+    .add_rule {
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}

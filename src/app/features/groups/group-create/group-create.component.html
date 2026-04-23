@@ -1,0 +1,76 @@
+<div class="page_content">
+  <div id="create_heading">
+    <div class="small_heading" translate="VIEWS.GROUP_CREATE.HEADING"></div>
+  </div>
+
+  <div id="create_tabs">
+    <a class="create_tab" [class.active]="currentStep() === 'info'" (click)="setStep('info')">
+      1.<span class="tab_text" translate="VIEWS.GROUP_CREATE.CREATE_TAB_1"></span>
+    </a>
+    <a class="create_tab" [class.active]="currentStep() === 'settings'" (click)="setStep('settings')">
+      2.<span class="tab_text" translate="VIEWS.GROUP_CREATE.CREATE_TAB_2"></span>
+    </a>
+    <a class="create_tab" [class.active]="currentStep() === 'add_topics'" (click)="setStep('add_topics')">
+      3.<span class="tab_text" translate="VIEWS.GROUP_CREATE.CREATE_TAB_3"></span>
+    </a>
+    <a class="create_tab" [class.active]="currentStep() === 'invite'" (click)="setStep('invite')">
+      4.<span class="tab_text" translate="VIEWS.GROUP_CREATE.CREATE_TAB_4"></span>
+    </a>
+  </div>
+
+  <div id="create_content_wrap">
+    <div id="form_area">
+      <div class="create_content">
+        @if (currentStep() === 'info') {
+          <cos-step-info 
+            [group]="group()" 
+            (groupUpdate)="updateGroup($event)"
+            (imageFileUpdate)="updateImageFile($event)">
+          </cos-step-info>
+        } @else if (currentStep() === 'settings') {
+          <cos-step-settings 
+            [group]="group()" 
+            (groupUpdate)="updateGroup($event)">
+          </cos-step-settings>
+        } @else if (currentStep() === 'add_topics') {
+          <cos-step-topics 
+            [group]="group()" 
+            (groupUpdate)="updateGroup($event)">
+          </cos-step-topics>
+        } @else if (currentStep() === 'invite') {
+          <cos-step-invite 
+            [group]="group()" 
+            (groupUpdate)="updateGroup($event)">
+          </cos-step-invite>
+        }
+      </div>
+
+      <div id="create_footer">
+        <div class="items_row">
+          <div id="close_create">
+            <button class="btn_medium_submit_ghost icon" (click)="cancel()">
+              <cos-icon name="close"></cos-icon>
+            </button>
+          </div>
+          <div id="navigate_create">
+            @if (currentStep() !== 'info') {
+              <button class="btn_medium_submit_ghost icon" (click)="previousStep()">
+                <cos-icon name="arrow-left"></cos-icon>
+              </button>
+            }
+            <button class="btn_medium_submit" (click)="nextStep()">
+              <span class="btn_text mobile_hidden" 
+                [translate]="currentStep() !== 'invite' ? 'VIEWS.GROUP_CREATE.FOOTER_BTN_CONTINUE' : 'VIEWS.GROUP_CREATE.FOOTER_BTN_CREATE'">
+              </span>
+              <cos-icon class="mobile_show" name="arrow-right"></cos-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="help_wrap">
+      <cos-group-create-help [step]="currentStep()"></cos-group-create-help>
+    </div>
+  </div>
+</div>

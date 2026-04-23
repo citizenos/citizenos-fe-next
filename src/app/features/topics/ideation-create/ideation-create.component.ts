@@ -10,7 +10,11 @@ import { Topic } from '../../../core/interfaces/topic';
 import { Ideation } from '../../../core/interfaces/ideation';
 import { StepNavigatorComponent, StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
 import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { StepTopicInfoComponent } from '../topic-create/components/step-topic-info/step-topic-info.component';
+import { StepTopicSettingsComponent } from '../topic-create/components/step-topic-settings/step-topic-settings.component';
+import { StepIdeationSettingsComponent } from './components/step-ideation-settings/step-ideation-settings.component';
+import { StepTopicPreviewComponent } from '../topic-create/components/step-topic-preview/step-topic-preview.component';
 
 @Component({
   selector: 'cos-ideation-create',
@@ -20,11 +24,11 @@ import { StepTopicInfoComponent } from '../topic-create/components/step-topic-in
     TranslateModule,
     StepNavigatorComponent,
     DomainIconComponent,
+    ButtonComponent,
     StepTopicInfoComponent,
     StepTopicSettingsComponent,
     StepIdeationSettingsComponent,
-    StepTopicPreviewComponent,
-    ButtonComponent
+    StepTopicPreviewComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

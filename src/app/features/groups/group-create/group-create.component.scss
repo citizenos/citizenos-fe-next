@@ -1,0 +1,158 @@
+@use "mixins";
+
+#create_heading {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+
+  @include mixins.tablet {
+    padding: 8px;
+    background-color: var(--color-surfaces);
+    border-radius: 16px 16px 0 0;
+  }
+}
+
+#create_tabs {
+  display: flex;
+  background-color: var(--color-surfaces);
+  width: 100%;
+  padding: 0 16px;
+  border-radius: 16px;
+
+  @include mixins.tablet {
+    border-radius: 0;
+    margin-top: -16px;
+    padding: 0 8px;
+  }
+  @include mixins.mobile {
+    justify-content: space-between;
+  }
+  .create_tab {
+    padding: 27px 56px;
+    color: var(--color-text);
+    gap: 8px;
+    display: flex;
+    cursor: pointer;
+    @include mixins.tablet {
+      padding: 12px 38px;
+    }
+
+    @include mixins.mobile {
+      padding: 12px 24px;
+    }
+
+    &.active {
+      border-bottom: 2px solid var(--color-link);
+      font-weight: 600;
+    }
+
+    .tab_text {
+      @include mixins.tablet {
+        display: none;
+      }
+    }
+  }
+}
+
+#create_content_wrap {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 100%;
+  gap: 32px;
+  margin-bottom: 24px;
+  justify-content: center;
+
+  @include mixins.tablet {
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  @include mixins.mobile {
+    padding: 0 8px;
+  }
+}
+
+#form_area {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 872px;
+  gap: 32px;
+  position: relative;
+  justify-content: space-between;
+
+  @include mixins.tablet {
+    max-width: 100%;
+  }
+
+  .create_content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @include mixins.mobile {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+#create_footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: space-between;
+  background-color: var(--color-surfaces);
+  border-radius: 16px;
+  padding: 12px 16px;
+
+  @include mixins.tablet {
+    border-radius: 0 0 16px 16px;
+  }
+
+  @include mixins.mobile {
+    border-radius: 16px 16px 0 0;
+    position: fixed;
+    bottom: 56px;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 0px -8px 20px 0px rgba(220, 231, 240, 0.1),
+      0px -12px 16px 0px rgba(50, 85, 112, 0.04);
+  }
+
+  .items_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  #navigate_create {
+    display: flex;
+    gap: 16px;
+  }
+}
+
+#help_wrap {
+  display: flex;
+  min-width: 288px;
+  @include mixins.tablet {
+    width: 100%;
+  }
+}
+
+.page_content {
+  gap: 16px;
+  padding: 16px 24px 0px 24px;
+
+  @include mixins.tablet {
+    margin: 60px 0;
+    padding: 8px 16px 0 16px;
+  }
+
+  @include mixins.mobile {
+    padding: 0;
+  }
+}

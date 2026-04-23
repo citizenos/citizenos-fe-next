@@ -4,34 +4,38 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { ImageUploadComponent } from '../../../../../shared/components/image-upload/image-upload.component';
+import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+
 @Component({
   selector: 'cos-step-topic-info',
   standalone: true,
-  imports: [FormsModule, TranslateModule, ImageUploadComponent],
+  imports: [FormsModule, TranslateModule, ImageUploadComponent, InputComponent, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="step-container">
       <div class="form-section">
         <label translate="VIEWS.TOPIC_CREATE.TITLE_HEADING"></label>
-        <input
-          type="text"
-          [ngModel]="topic().title"
-          (ngModelChange)="onUpdate({title: $event})"
-          [placeholder]="'VIEWS.TOPIC_CREATE.TITLE_HEADING' | translate"
-          class="title-input"
-          id="topic_title"
-        />
+        <cos-input [placeholder]="'VIEWS.TOPIC_CREATE.TITLE_HEADING' | translate">
+          <input
+            type="text"
+            [ngModel]="topic().title"
+            (ngModelChange)="onUpdate({title: $event})"
+            id="topic_title"
+          />
+        </cos-input>
       </div>
 
       <div class="form-section">
         <label translate="VIEWS.TOPIC_CREATE.TITLE_INTRO"></label>
-        <textarea
-          [ngModel]="topic().intro"
-          (ngModelChange)="onUpdate({intro: $event})"
-          [placeholder]="'VIEWS.TOPIC_CREATE.TITLE_INTRO_TEXT' | translate"
-          class="intro-input"
-          rows="3"
-        ></textarea>
+        <cos-input [placeholder]="'VIEWS.TOPIC_CREATE.TITLE_INTRO_TEXT' | translate">
+          <textarea
+            [ngModel]="topic().intro"
+            (ngModelChange)="onUpdate({intro: $event})"
+            rows="3"
+            maxlength="500"
+          ></textarea>
+        </cos-input>
         <div class="char-count">{{ (topic().intro?.length || 0) }}/500</div>
       </div>
 
@@ -45,73 +49,21 @@ import { ImageUploadComponent } from '../../../../../shared/components/image-upl
       </div>
 
       <div class="actions">
-        <button
-          class="btn-primary"
-          [disabled]="!topic().title"
-          (click)="next.emit()"
-          translate="VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE"
-        ></button>
+        <cos-button
+          variant="primary"
+          [isDisabled]="!topic().title"
+          (clicked)="next.emit()"
+        >
+          {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE' | translate }}
+        </cos-button>
       </div>
     </div>
   `,
   styles: [`
-    .step-container {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .form-section {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-
-      label {
-        font-weight: 600;
-        font-size: 14px;
-      }
-    }
-
-    .title-input {
-      font-size: 20px;
-      font-weight: 500;
-      padding: 12px;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      &:focus { border-color: var(--color-primary); outline: none; }
-    }
-
-    .intro-input {
-      font-size: 16px;
-      padding: 12px;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      resize: vertical;
-      &:focus { border-color: var(--color-primary); outline: none; }
-    }
-
-    .char-count {
-      align-self: flex-end;
-      font-size: 12px;
-      color: var(--color-text-muted);
-    }
-
-    .actions {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 20px;
-    }
-
-    .btn-primary {
-      padding: 12px 32px;
-      background: var(--color-primary);
-      color: white;
-      border: none;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      cursor: pointer;
-      &:disabled { opacity: 0.5; cursor: not-allowed; }
-    }
+    .step-container { display: flex; flex-direction: column; gap: 24px; }
+    .form-section { display: flex; flex-direction: column; gap: 8px; label { font-weight: 600; font-size: 14px; } }
+    .char-count { align-self: flex-end; font-size: 12px; color: var(--color-text-muted); }
+    .actions { display: flex; justify-content: flex-end; margin-top: 20px; }
   `]
 })
 export class StepTopicInfoComponent {

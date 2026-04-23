@@ -8,12 +8,14 @@ import { NotificationService } from '../../../core/services/notification.service
 import { Topic } from '../../../core/interfaces/topic';
 import { Vote } from '../../../core/interfaces/vote';
 import { StepNavigatorComponent, StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
+import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { StepTopicInfoComponent } from '../topic-create/components/step-topic-info/step-topic-info.component';
 import { StepTopicSettingsComponent } from '../topic-create/components/step-topic-settings/step-topic-settings.component';
+import { StepVoteTypeComponent } from './components/step-vote-type/step-vote-type.component';
+import { StepVoteOptionsComponent } from './components/step-vote-options/step-vote-options.component';
 import { StepVoteSettingsComponent } from './components/step-vote-settings/step-vote-settings.component';
 import { StepTopicPreviewComponent } from '../topic-create/components/step-topic-preview/step-topic-preview.component';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
-import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
 
 @Component({
   selector: 'cos-vote-create',
@@ -22,12 +24,14 @@ import { DomainIconComponent } from '../../../shared/components/domain-icon/doma
     CommonModule,
     TranslateModule,
     StepNavigatorComponent,
+    DomainIconComponent,
+    ButtonComponent,
     StepTopicInfoComponent,
     StepTopicSettingsComponent,
+    StepVoteTypeComponent,
+    StepVoteOptionsComponent,
     StepVoteSettingsComponent,
-    StepTopicPreviewComponent,
-    ButtonComponent,
-    DomainIconComponent
+    StepTopicPreviewComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

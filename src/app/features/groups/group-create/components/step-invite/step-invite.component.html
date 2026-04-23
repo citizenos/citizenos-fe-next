@@ -1,0 +1,83 @@
+<div class="create_content_section">
+  <div class="number_wrap mobile_hidden">
+    <div>1</div>
+  </div>
+  <div class="section_content_wrap">
+    <div class="header_wrap">
+      <div class="number_wrap mobile_show">
+        <div>1</div>
+      </div>
+      <div class="small_heading" translate="VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS"></div>
+      <div class="mobile_hidden" translate="VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS_DESC"></div>
+    </div>
+    <div class="mobile_show" translate="VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS_DESC"></div>
+
+    <div class="search-container">
+      <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_SEARCH_USERS' | translate">
+        <input 
+          [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_SEARCH_USERS' | translate"
+          [ngModel]="searchString()"
+          (ngModelChange)="onSearch($event)">
+        <cos-icon name="search"></cos-icon>
+      </cos-input>
+
+      @if (searchResults().length > 0) {
+        <div class="search-results">
+          @for (user of searchResults(); track user.id) {
+            <div class="search-item" (click)="addUser(user)">
+              <div class="user-info">
+                <span class="user-name">{{user.name}}</span>
+                <span class="user-email">{{user.email}}</span>
+              </div>
+              <cos-icon name="plus" size="16"></cos-icon>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="selected-users">
+      <div class="small_heading" translate="VIEWS.GROUP_CREATE.INVITE_SELECTED_USERS"></div>
+      @for (user of selectedUsers(); track (user.id || user.email)) {
+        <div class="selected-item">
+          <div class="user-info">
+            <span class="user-name">{{user.name}}</span>
+            <span class="user-email">{{user.email}}</span>
+          </div>
+          <div class="actions">
+            <!-- Level selection can be added here if needed, legacy uses a dropdown -->
+            <button class="btn_medium_submit_ghost icon" (click)="removeUser(user)">
+              <cos-icon name="trash"></cos-icon>
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-selection" translate="VIEWS.GROUP_CREATE.INVITE_NO_USERS"></div>
+      }
+    </div>
+  </div>
+</div>
+
+<div class="create_content_section">
+  <div class="number_wrap mobile_hidden">
+    <div>2</div>
+  </div>
+  <div class="section_content_wrap">
+    <div class="header_wrap">
+      <div class="number_wrap mobile_show">
+        <div>2</div>
+      </div>
+      <div class="small_heading" translate="VIEWS.GROUP_CREATE.INVITE_HEADING_MESSAGE"></div>
+    </div>
+    
+    <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_MESSAGE' | translate">
+      <textarea 
+        [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_MESSAGE' | translate"
+        rows="4"
+        [ngModel]="inviteMessage()"
+        (ngModelChange)="onMessageChange($event)"
+        maxlength="250">
+      </textarea>
+    </cos-input>
+  </div>
+</div>

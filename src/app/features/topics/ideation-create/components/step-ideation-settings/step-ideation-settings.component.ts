@@ -4,22 +4,25 @@ import { FormsModule } from '@angular/forms';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { Topic } from '../../../../../core/interfaces/topic';
 
+import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+
 @Component({
   selector: 'cos-step-ideation-settings',
   standalone: true,
-  imports: [TranslateModule, FormsModule],
+  imports: [TranslateModule, FormsModule, InputComponent, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="step-container">
       <div class="form-section">
         <label translate="VIEWS.IDEATION_CREATE.SETTINGS_HEADING_IDEATION_QUESTION"></label>
-        <textarea
-          class="form-control"
-          [(ngModel)]="ideation().question"
-          (ngModelChange)="onIdeationUpdate()"
-          [placeholder]="'VIEWS.IDEATION_CREATE.SETTINGS_IDEATION_QUESTION_PLACEHOLDER' | translate"
-          rows="3"
-        ></textarea>
+        <cos-input [placeholder]="'VIEWS.IDEATION_CREATE.SETTINGS_IDEATION_QUESTION_PLACEHOLDER' | translate">
+          <textarea
+            [(ngModel)]="ideation().question"
+            (ngModelChange)="onIdeationUpdate()"
+            rows="3"
+          ></textarea>
+        </cos-input>
       </div>
 
       <div class="settings-grid">
@@ -51,17 +54,19 @@ import { Topic } from '../../../../../core/interfaces/topic';
       </div>
 
       <div class="actions">
-        <button
-          class="btn-secondary"
-          (click)="previous.emit()"
-          translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL"
-        ></button>
-        <button
-          class="btn-primary"
-          [disabled]="!ideation().question"
-          (click)="next.emit()"
-          translate="VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE"
-        ></button>
+        <cos-button
+          variant="secondary"
+          (clicked)="previous.emit()"
+        >
+          {{ 'VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL' | translate }}
+        </cos-button>
+        <cos-button
+          variant="primary"
+          [isDisabled]="!ideation().question"
+          (clicked)="next.emit()"
+        >
+          {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE' | translate }}
+        </cos-button>
       </div>
     </div>
   `,

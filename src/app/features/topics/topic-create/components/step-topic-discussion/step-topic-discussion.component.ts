@@ -4,11 +4,12 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { MemberEditorsPanelComponent } from '../../../../../shared/components/member-editors-panel/member-editors-panel.component';
 import { EtherpadDirective } from '../../../../../shared/directives/etherpad.directive';
 import { AnyPipe } from '../../../../../shared/pipes/any.pipe';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-step-topic-discussion',
   standalone: true,
-  imports: [TranslateModule, MemberEditorsPanelComponent, AnyPipe, EtherpadDirective],
+  imports: [TranslateModule, MemberEditorsPanelComponent, AnyPipe, EtherpadDirective, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="step-container">
@@ -35,16 +36,18 @@ import { AnyPipe } from '../../../../../shared/pipes/any.pipe';
       ></cos-member-editors-panel>
 
       <div class="actions">
-        <button
-          class="btn-secondary"
-          (click)="previous.emit()"
-          translate="VIEWS.TOPIC_CREATE.BTN_PREVIOUS"
-        ></button>
-        <button
-          class="btn-primary"
-          (click)="next.emit()"
-          translate="VIEWS.TOPIC_CREATE.BTN_NEXT"
-        ></button>
+        <cos-button
+          variant="secondary"
+          (clicked)="previous.emit()"
+        >
+          {{ 'VIEWS.TOPIC_CREATE.BTN_PREVIOUS' | translate }}
+        </cos-button>
+        <cos-button
+          variant="primary"
+          (clicked)="next.emit()"
+        >
+          {{ 'VIEWS.TOPIC_CREATE.BTN_NEXT' | translate }}
+        </cos-button>
       </div>
     </div>
   `,

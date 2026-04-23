@@ -1,0 +1,67 @@
+<div class="create_content_section">
+  <div class="number_wrap mobile_hidden">
+    <div>1</div>
+  </div>
+  <div class="section_content_wrap">
+    <div class="header_wrap">
+      <div class="number_wrap mobile_show">
+        <div>1</div>
+      </div>
+      <div class="small_heading" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_HEADING_GENERAL_NAME"></div>
+      <div class="mobile_hidden" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_NAME_DESC"></div>
+    </div>
+    <div class="mobile_show" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_NAME_DESC"></div>
+    
+    <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_NAME' | translate">
+      <input 
+        id="groupName" 
+        [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_NAME' | translate"
+        [ngModel]="group().name"
+        (ngModelChange)="onNameChange($event)">
+    </cos-input>
+  </div>
+</div>
+
+<div class="create_content_section">
+  <div class="number_wrap mobile_hidden">
+    <div>2</div>
+  </div>
+  <div class="section_content_wrap">
+    <div class="header_wrap">
+      <div class="number_wrap mobile_show">
+        <div>2</div>
+      </div>
+      <div class="small_heading" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_HEADING_GENERAL_INFO"></div>
+    </div>
+    <div translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_DESCRIPTION_DESC" [translateParams]="{descriptionLength: descriptionLength}"></div>
+    
+    <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_DESCRIPTION' | translate">
+      <textarea 
+        id="groupDescription"
+        [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_DESCRIPTION' | translate" 
+        rows="5"
+        [ngModel]="group().description"
+        (ngModelChange)="onDescriptionChange($event)"
+        [maxlength]="descriptionLength">
+      </textarea>
+    </cos-input>
+
+    <div translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_CHOOSE_IMAGE_DESC"></div>
+    
+    @if (!group().imageUrl && !tmpImageUrl()) {
+      <div id="image_input_area" (drop)="fileDropped($event)" (dragover)="onDragOver($event)">
+        <div class="bold" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_LBL_DROP_IMAGE"></div>
+        <input type="file" #imageUpload (change)="fileUpload()" style="display: none" />
+        <button class="btn_medium_secondary" (click)="uploadImage()" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_BTN_CHOOSE_IMAGE"></button>
+      </div>
+    } @else {
+      <div id="image_area">
+        <div id="image_wrap">
+          <img [src]="group().imageUrl || tmpImageUrl()" />
+        </div>
+        <button class="btn_medium_secondary" (click)="uploadImage()" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_BTN_CHOOSE_IMAGE"></button>
+        <input type="file" #imageUpload (change)="fileUpload()" style="display: none" />
+      </div>
+    }
+  </div>
+</div>

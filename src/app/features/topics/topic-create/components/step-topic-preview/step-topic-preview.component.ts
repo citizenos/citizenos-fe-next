@@ -5,11 +5,12 @@ import { TopicPreviewComponent } from '../../../../../shared/components/topic-pr
 import { AnyPipe } from '../../../../../shared/pipes/any.pipe';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { Vote } from '../../../../../core/interfaces/vote';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-step-topic-preview',
   standalone: true,
-  imports: [TranslateModule, TopicPreviewComponent, AnyPipe],
+  imports: [TranslateModule, TopicPreviewComponent, AnyPipe, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="step-container">
@@ -22,16 +23,18 @@ import { Vote } from '../../../../../core/interfaces/vote';
       </div>
 
       <div class="actions">
-        <button
-          class="btn-secondary"
-          (click)="previous.emit()"
-          translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL"
-        ></button>
-        <button
-          class="btn-success"
-          (click)="save.emit()"
-          translate="VIEWS.TOPIC_CREATE.FOOTER_BTN_CREATE"
-        ></button>
+        <cos-button
+          variant="secondary"
+          (clicked)="previous.emit()"
+        >
+          {{ 'VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL' | translate }}
+        </cos-button>
+        <cos-button
+          variant="success"
+          (clicked)="save.emit()"
+        >
+          {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CREATE' | translate }}
+        </cos-button>
       </div>
     </div>
   `,

@@ -1,0 +1,138 @@
+<div class="create_content_section">
+  <div class="number_wrap mobile_hidden">
+    <div>1</div>
+  </div>
+  <div class="section_content_wrap">
+    <div class="header_wrap">
+      <div class="number_wrap mobile_show">
+        <div>1</div>
+      </div>
+      <div class="small_heading" translate="VIEWS.GROUP_CREATE.SETTINGS_HEADING_VISIBILITY"></div>
+      <div class="mobile_hidden" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_DESC"></div>
+    </div>
+    <div class="mobile_show" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_DESC"></div>
+
+    <div class="row_wrap">
+      <div class="radio_wrap" [class.active]="group().visibility === 'private'" (click)="updateVisibility('private')">
+        <label class="radio_box">
+          <input type="radio" [checked]="group().visibility === 'private'" name="visibility">
+          <span class="radio"></span>
+          <div class="radio_text_wrap">
+            <div class="radio_lable" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PRIVATE"></div>
+            <div class="radio_description" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PRIVATE_DESC"></div>
+          </div>
+        </label>
+      </div>
+
+      <div class="radio_wrap" [class.active]="group().visibility === 'public'" (click)="updateVisibility('public')">
+        <label class="radio_box">
+          <input type="radio" [checked]="group().visibility === 'public'" name="visibility">
+          <span class="radio"></span>
+          <div class="radio_text_wrap">
+            <div class="radio_lable" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PUBLIC"></div>
+            <div class="radio_description" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PUBLIC_DESC"></div>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="create_content_section">
+  <div class="number_wrap mobile_hidden">
+    <div>2</div>
+  </div>
+  <div class="section_content_wrap">
+    <div class="header_wrap">
+      <div class="number_wrap mobile_show">
+        <div>2</div>
+      </div>
+      <div class="small_heading" translate="VIEWS.GROUP_CREATE.SETTINGS_HEADING_LOCALITY"></div>
+      <div class="mobile_hidden" translate="VIEWS.GROUP_CREATE.SETTINGS_LOCALITY_SELECT_DESC"></div>
+    </div>
+    <div class="mobile_show" translate="VIEWS.GROUP_CREATE.SETTINGS_LOCALITY_SELECT_DESC"></div>
+    
+    <div class="row_wrap">
+      <cos-dropdown class="locality-dropdown">
+        <div selection>
+          <span [translate]="group().country ? '' : 'VIEWS.GROUP_CREATE.SETTINGS_COUNTRY_SELECT'">{{group().country}}</span>
+        </div>
+        <div options>
+          @for (country of countries; track country.iso2) {
+            <div class="option" (click)="updateCountry(country.name)">{{country.name}}</div>
+          }
+        </div>
+      </cos-dropdown>
+
+      <cos-dropdown class="locality-dropdown">
+        <div selection>
+          <span [translate]="group().language ? '' : 'VIEWS.GROUP_CREATE.SETTINGS_LANGUAGE_SELECT'">{{group().language}}</span>
+        </div>
+        <div options>
+          @for (language of languages; track language.code) {
+            <div class="option" (click)="updateLanguage(language.name)">{{language.name}}</div>
+          }
+        </div>
+      </cos-dropdown>
+    </div>
+  </div>
+</div>
+
+<div class="create_content_section">
+  <div class="number_wrap mobile_hidden">
+    <div>3</div>
+  </div>
+  <div class="section_content_wrap">
+    <div class="header_wrap">
+      <div class="number_wrap mobile_show">
+        <div>3</div>
+      </div>
+      <div class="small_heading" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_HEADING_CONTACT_EMAIL"></div>
+      <div class="mobile_hidden" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_CONTACT_EMAIL_DESC"></div>
+    </div>
+    <div class="mobile_show" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_CONTACT_EMAIL_DESC"></div>
+    
+    <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_CONTACT_EMAIL' | translate">
+      <input 
+        id="groupContact"
+        [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_CONTACT_EMAIL' | translate"
+        [ngModel]="group().contact"
+        (ngModelChange)="updateContact($event)">
+    </cos-input>
+  </div>
+</div>
+
+<div class="create_content_section">
+  <div class="number_wrap mobile_hidden">
+    <div>4</div>
+  </div>
+  <div class="section_content_wrap">
+    <div class="header_wrap">
+      <div class="number_wrap mobile_show">
+        <div>4</div>
+      </div>
+      <div class="small_heading" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_HEADING_RULES_OF_CONDUCT"></div>
+      <div class="mobile_hidden" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_RULES_OF_CONDUCT_DESC"></div>
+    </div>
+    <div class="mobile_show" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_RULES_OF_CONDUCT_DESC"></div>
+
+    @for (rule of rules(); track $index) {
+      <div class="rule_input_row">
+        <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_RULES_OF_CONDUCT_RULE' | translate:{number: $index + 1}">
+          <input
+            [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_RULES_OF_CONDUCT_RULE' | translate: {number: $index + 1}"
+            [ngModel]="rule.rule"
+            (ngModelChange)="onRuleChange($index, $event)">
+        </cos-input>
+        <button class="btn_medium_submit_ghost icon" (click)="removeRule($index)">
+          <cos-icon name="trash"></cos-icon>
+        </button>
+      </div>
+    }
+    
+    <button class="btn_medium_secondary add_rule" (click)="addRule()">
+      <cos-icon name="plus" size="24"></cos-icon>
+      <span translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_BTN_ADD_NEW_RULE"></span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+@use "mixins";
+
+.create_help {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surfaces);
+  border-radius: 16px;
+  width: 100%;
+  padding: 24px;
+  gap: 24px;
+  height: fit-content;
+  position: sticky;
+  top: 24px;
+
+  @include mixins.tablet {
+    position: static;
+    border-radius: 0;
+  }
+
+  .help_illustration {
+    display: flex;
+    justify-content: center;
+    background: var(--color-secondary);
+    border-radius: 16px;
+    padding: 16px;
+    min-height: 80px;
+
+    @include mixins.tablet {
+      display: none;
+    }
+  }
+
+  .help_content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .small_heading {
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+
+  .help_footer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--color-text-muted);
+
+    a {
+      color: var(--color-link);
+      font-weight: 600;
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

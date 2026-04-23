@@ -1,0 +1,50 @@
+<div class="create_content_section">
+  <div class="number_wrap mobile_hidden">
+    <div>1</div>
+  </div>
+  <div class="section_content_wrap">
+    <div class="header_wrap">
+      <div class="number_wrap mobile_show">
+        <div>1</div>
+      </div>
+      <div class="small_heading" translate="VIEWS.GROUP_CREATE.ADD_TOPICS_HEADING"></div>
+      <div class="mobile_hidden" translate="VIEWS.GROUP_CREATE.ADD_TOPICS_DESC"></div>
+    </div>
+    <div class="mobile_show" translate="VIEWS.GROUP_CREATE.ADD_TOPICS_DESC"></div>
+
+    <div class="search-container">
+      <cos-input [placeholder]="'VIEWS.GROUP_CREATE.ADD_TOPICS_INPUT_SEARCH' | translate">
+        <input 
+          [placeholder]="'VIEWS.GROUP_CREATE.ADD_TOPICS_INPUT_SEARCH' | translate"
+          [ngModel]="searchString()"
+          (ngModelChange)="onSearch($event)">
+        <cos-icon name="search"></cos-icon>
+      </cos-input>
+
+      @if (searchResults().length > 0) {
+        <div class="search-results">
+          @for (topic of searchResults(); track topic.id) {
+            <div class="search-item" (click)="addTopic(topic)">
+              <span class="topic-title">{{topic.title}}</span>
+              <cos-icon name="plus" size="16"></cos-icon>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="selected-topics">
+      <div class="small_heading" translate="VIEWS.GROUP_CREATE.ADD_TOPICS_SELECTED"></div>
+      @for (topic of selectedTopics(); track topic.id) {
+        <div class="selected-item">
+          <span class="topic-title">{{topic.title}}</span>
+          <button class="btn_medium_submit_ghost icon" (click)="removeTopic(topic)">
+            <cos-icon name="trash"></cos-icon>
+          </button>
+        </div>
+      } @empty {
+        <div class="empty-selection" translate="VIEWS.GROUP_CREATE.ADD_TOPICS_NO_TOPICS"></div>
+      }
+    </div>
+  </div>
+</div>
