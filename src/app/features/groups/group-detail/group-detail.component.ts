@@ -23,6 +23,13 @@ import { GroupMemberUserService, GroupMember } from '../../../core/services/grou
 import { UserStore } from '../../../core/state/user.store';
 import { Group } from '../../../core/interfaces/group';
 import { Topic } from '../../../core/interfaces/topic';
+import { DialogService } from '../../../shared/dialog/dialog.service';
+import { GroupSettingsDialogComponent } from '../dialogs/group-settings-dialog/group-settings-dialog.component';
+import { GroupInviteDialogComponent } from '../dialogs/group-invite-dialog/group-invite-dialog.component';
+import { GroupAddTopicsDialogComponent } from '../dialogs/group-add-topics-dialog/group-add-topics-dialog.component';
+import { GroupRequestTopicsDialogComponent } from '../dialogs/group-request-topics-dialog/group-request-topics-dialog.component';
+import { TopicRequestsDialogComponent } from '../dialogs/topic-requests-dialog/topic-requests-dialog.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 import { InitialsComponent } from '../../../shared/components/initials/initials.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
@@ -61,8 +68,10 @@ export class GroupDetailComponent {
   private groupMemberTopicService = inject(GroupMemberTopicService);
   private groupMemberUserService = inject(GroupMemberUserService);
   userStore = inject(UserStore);
+  private dialogService = inject(DialogService);
 
   TOPIC_STATUSES = ['draft', 'ideation', 'inProgress', 'voting', 'followUp', 'closed'];
+  MEMBER_LEVELS = this.groupMemberUserService.LEVELS;
   TOPIC_LIMIT = 12;
   MEMBER_LIMIT = 20;
 
@@ -79,6 +88,7 @@ export class GroupDetailComponent {
   moreInfo = signal(false);
   removeTopics = signal(false);
   groupActionsOpen = signal(false);
+  activeMemberMenuId = signal<string | null>(null);
 
   topicVisibilityFilter = signal('');
   topicStatusFilter = signal('');
@@ -113,6 +123,9 @@ export class GroupDetailComponent {
     const target = event.target as HTMLElement;
     if (!target.closest('.group_actions_dropdown')) {
       this.groupActionsOpen.set(false);
+    }
+    if (!target.closest('.member_actions')) {
+      this.activeMemberMenuId.set(null);
     }
   }
 
@@ -262,9 +275,73 @@ export class GroupDetailComponent {
     });
   }
 
+  openSettings() {
+    const g = this.group();
+    if (!g) return;
+    this.dialogService.open(GroupSettingsDialogComponent, { data: { group: g } })
+      .afterClosed().subscribe(updated => { if (updated) this.group.set(updated as Group); });
+  }
+
+  openInvite() {
+    const g = this.group();
+    if (!g) return;
+    this.dialogService.open(GroupInviteDialogComponent, { data: { group: g } });
+  }
+
+  openAddTopics() {
+    const g = this.group();
+    if (!g) return;
+    this.dialogService.open(GroupAddTopicsDialogComponent, { data: { group: g } })
+      .afterClosed().subscribe(saved => { if (saved) this.fetchTopics(0); });
+  }
+
+  openRequestTopics() {
+    const g = this.group();
+    if (!g) return;
+    this.dialogService.open(GroupRequestTopicsDialogComponent, { data: { group: g } });
+  }
+
+  openTopicRequests() {
+    const g = this.group();
+    if (!g) return;
+    this.dialogService.open(TopicRequestsDialogComponent, { data: { group: g } })
+      .afterClosed().subscribe(() => this.fetchTopics(0));
+  }
+
   removeTopicFromGroup(topicId: string) {
     this.groupMemberTopicService.removeTopicFromGroup(this.groupId(), topicId).subscribe(() => {
       this.fetchTopics((this.topicsPage() - 1) * this.TOPIC_LIMIT);
+    });
+  }
+
+  updateMemberLevel(member: GroupMember, level: string) {
+    if (member.level === level) return;
+    const oldLevel = member.level;
+    this.members.update(list => list.map(m => m.id === member.id ? { ...m, level } : m));
+    const userId = member.userId ?? member.id;
+    this.groupMemberUserService.updateLevel(this.groupId(), userId, level).subscribe({
+      error: () => {
+        this.members.update(list => list.map(m => m.id === member.id ? { ...m, level: oldLevel } : m));
+      }
+    });
+  }
+
+  confirmRemoveMember(member: GroupMember) {
+    this.dialogService.open(ConfirmDialogComponent, {
+      data: {
+        level: 'delete',
+        heading: 'MODALS.TOPIC_MEMBER_USER_DELETE_CONFIRM_HEADING',
+        title: 'MODALS.TOPIC_MEMBER_USER_DELETE_CONFIRM_TXT_ARE_YOU_SURE',
+        confirmBtn: 'MODALS.TOPIC_MEMBER_USER_DELETE_CONFIRM_YES',
+        closeBtn: 'MODALS.TOPIC_MEMBER_USER_DELETE_CONFIRM_NO',
+      }
+    }).afterClosed().subscribe(result => {
+      if (result === true) {
+        const userId = member.userId ?? member.id;
+        this.groupMemberUserService.removeMember(this.groupId(), userId).subscribe(() => {
+          this.fetchMembers((this.membersPage() - 1) * this.MEMBER_LIMIT);
+        });
+      }
     });
   }
 }

@@ -14,7 +14,7 @@
 
     <div class="search-container">
       <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_SEARCH_USERS' | translate">
-        <input 
+        <input
           [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_SEARCH_USERS' | translate"
           [ngModel]="searchString()"
           (ngModelChange)="onSearch($event)">
@@ -45,7 +45,18 @@
             <span class="user-email">{{user.email}}</span>
           </div>
           <div class="actions">
-            <!-- Level selection can be added here if needed, legacy uses a dropdown -->
+            <cos-dropdown class="level-dropdown">
+              <div selection>
+                <span [translate]="'TXT_GROUP_LEVELS_' + (user.level || 'read').toUpperCase()"></span>
+              </div>
+              <div options>
+                @for (level of LEVELS; track level) {
+                  <div class="option" (click)="updateLevel(user, level)">
+                    <span [translate]="'TXT_GROUP_LEVELS_' + level.toUpperCase()"></span>
+                  </div>
+                }
+              </div>
+            </cos-dropdown>
             <button class="btn_medium_submit_ghost icon" (click)="removeUser(user)">
               <cos-icon name="trash"></cos-icon>
             </button>
@@ -69,9 +80,9 @@
       </div>
       <div class="small_heading" translate="VIEWS.GROUP_CREATE.INVITE_HEADING_MESSAGE"></div>
     </div>
-    
+
     <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_MESSAGE' | translate">
-      <textarea 
+      <textarea
         [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_MESSAGE' | translate"
         rows="4"
         [ngModel]="inviteMessage()"

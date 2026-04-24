@@ -1,5 +1,5 @@
-import { Component, input, Output, EventEmitter, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, input, output, inject, computed, ChangeDetectionStrategy } from '@angular/core';
+import { NgClass, DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -13,7 +13,8 @@ import { DomainIconComponent } from '../../../../../shared/components/domain-ico
 @Component({
   selector: 'app-topic-state-items',
   standalone: true,
-  imports: [CommonModule, TranslateModule, DomainIconComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgClass, DatePipe, TranslateModule, DomainIconComponent],
   templateUrl: './topic-state-items.component.html',
   styleUrls: ['./topic-state-items.component.scss']
 })
@@ -33,10 +34,10 @@ export class TopicStateItemsComponent {
   topicVoteService = inject(TopicVoteService);
   userStore = inject(UserStore);
 
-  @Output() navigateTab = new EventEmitter<string>();
-  @Output() startDiscussion = new EventEmitter<Topic>();
-  @Output() startVote = new EventEmitter<Topic>();
-  @Output() sendToFollowUp = new EventEmitter<Topic>();
+  navigateTab = output<string>();
+  startDiscussion = output<Topic>();
+  startVote = output<Topic>();
+  sendToFollowUp = output<Topic>();
 
   argumentCount = this.topicArgumentService.count;
 

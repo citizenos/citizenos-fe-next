@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, inject, signal, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, inject, signal, HostListener, ChangeDetectionStrategy } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -15,20 +15,23 @@ import { TopicHeaderComponent } from './components/topic-header/topic-header.com
 import { TopicContentComponent } from './components/topic-content/topic-content.component';
 import { TopicInfoSidebarComponent } from './components/topic-info-sidebar/topic-info-sidebar.component';
 import { TopicStateItemsComponent } from './components/topic-state-items/topic-state-items.component';
+import { TopicIdeationComponent } from './components/topic-ideation/topic-ideation.component';
 
 import { Topic } from '../../../core/interfaces/topic';
 
 @Component({
   selector: 'app-topic-view',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
+    NgClass,
     RouterModule,
     TranslateModule,
     TopicHeaderComponent,
     TopicContentComponent,
     TopicInfoSidebarComponent,
-    TopicStateItemsComponent
+    TopicStateItemsComponent,
+    TopicIdeationComponent,
   ],
   templateUrl: './topic-view.component.html',
   styleUrls: ['./topic-view.component.scss']

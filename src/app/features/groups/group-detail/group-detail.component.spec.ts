@@ -4,9 +4,10 @@ import { runInInjectionContext, EnvironmentInjector } from '@angular/core';
 import { GroupDetailComponent } from './group-detail.component';
 import { GroupDetailService } from '../../../core/services/group-detail.service';
 import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
-import { GroupMemberUserService } from '../../../core/services/group-member-user.service';
+import { GroupMemberUserService, GroupMember } from '../../../core/services/group-member-user.service';
 import { UserStore } from '../../../core/state/user.store';
-import { of, Subject } from 'rxjs';
+import { DialogService } from '../../../shared/dialog/dialog.service';
+import { of, Subject, throwError } from 'rxjs';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
@@ -61,6 +62,8 @@ const mockTopicService = {
 
 const mockMemberService = {
   loadMembers: vi.fn().mockReturnValue(of({ rows: [], count: 0 })),
+  updateLevel: vi.fn().mockReturnValue(of({})),
+  removeMember: vi.fn().mockReturnValue(of({})),
   LEVELS: ['read', 'admin'],
 };
 
@@ -68,6 +71,9 @@ const mockUserStore = {
   isAuthenticated: vi.fn().mockReturnValue(false),
   user: vi.fn().mockReturnValue(null),
 };
+
+const mockDialogRef = { afterClosed: vi.fn().mockReturnValue(of(false)) };
+const mockDialogService = { open: vi.fn().mockReturnValue(mockDialogRef) };
 
 describe('GroupDetailComponent', () => {
   let injector: EnvironmentInjector;
@@ -83,6 +89,7 @@ describe('GroupDetailComponent', () => {
         { provide: GroupMemberTopicService, useValue: mockTopicService },
         { provide: GroupMemberUserService, useValue: mockMemberService },
         { provide: UserStore, useValue: mockUserStore },
+        { provide: DialogService, useValue: mockDialogService },
       ],
     });
     injector = TestBed.inject(EnvironmentInjector);
@@ -170,5 +177,59 @@ describe('GroupDetailComponent', () => {
     const comp = makeComp();
     paramsSubject.next({ groupId: 'group1' });
     expect(mockGroupDetailService.loadGroup).toHaveBeenCalledWith('group1');
+  });
+
+  it('updateMemberLevel optimistically updates member level', () => {
+    const member: GroupMember = { id: 'u1', name: 'Alice', level: 'read' };
+    const comp = makeComp();
+    comp.groupId.set('group1');
+    comp.members.set([member]);
+    comp.updateMemberLevel(member, 'admin');
+    expect(comp.members()[0].level).toBe('admin');
+    expect(mockMemberService.updateLevel).toHaveBeenCalledWith('group1', 'u1', 'admin');
+  });
+
+  it('updateMemberLevel reverts on error', () => {
+    mockMemberService.updateLevel.mockReturnValueOnce(throwError(() => new Error('fail')));
+    const member: GroupMember = { id: 'u1', name: 'Alice', level: 'read' };
+    const comp = makeComp();
+    comp.groupId.set('group1');
+    comp.members.set([member]);
+    comp.updateMemberLevel(member, 'admin');
+    expect(comp.members()[0].level).toBe('read');
+  });
+
+  it('updateMemberLevel is a no-op when level unchanged', () => {
+    const member: GroupMember = { id: 'u1', name: 'Alice', level: 'admin' };
+    const comp = makeComp();
+    comp.groupId.set('group1');
+    comp.members.set([member]);
+    comp.updateMemberLevel(member, 'admin');
+    expect(mockMemberService.updateLevel).not.toHaveBeenCalled();
+  });
+
+  it('confirmRemoveMember opens confirm dialog', () => {
+    const member: GroupMember = { id: 'u1', name: 'Alice', level: 'read' };
+    const comp = makeComp();
+    comp.confirmRemoveMember(member);
+    expect(mockDialogService.open).toHaveBeenCalled();
+  });
+
+  it('confirmRemoveMember calls removeMember when confirmed', () => {
+    mockDialogRef.afterClosed.mockReturnValueOnce(of(true));
+    const member: GroupMember = { id: 'u1', name: 'Alice', level: 'read' };
+    const comp = makeComp();
+    comp.groupId.set('group1');
+    comp.confirmRemoveMember(member);
+    expect(mockMemberService.removeMember).toHaveBeenCalledWith('group1', 'u1');
+  });
+
+  it('confirmRemoveMember uses userId when present', () => {
+    mockDialogRef.afterClosed.mockReturnValueOnce(of(true));
+    const member: GroupMember = { id: 'u1', userId: 'user-guid', name: 'Alice', level: 'read' };
+    const comp = makeComp();
+    comp.groupId.set('group1');
+    comp.confirmRemoveMember(member);
+    expect(mockMemberService.removeMember).toHaveBeenCalledWith('group1', 'user-guid');
   });
 });

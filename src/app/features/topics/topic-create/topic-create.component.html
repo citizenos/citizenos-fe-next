@@ -1,0 +1,75 @@
+<div class="topic-create-container">
+  <div class="create-header">
+    <h1 class="create_heading">
+      <cos-domain-icon type="topic"></cos-domain-icon>
+      <span class="small_heading" translate="VIEWS.TOPIC_CREATE.HEADING"></span>
+    </h1>
+    <cos-step-navigator
+      [steps]="steps"
+      [currentStep]="currentStep()"
+      (stepChange)="onStepChange($event)"
+    >
+      <div actions>
+        <cos-button variant="secondary" (clicked)="saveAsDraft()">
+          {{ 'VIEWS.TOPIC_CREATE.BTN_SAVE_DRAFT' | translate }}
+        </cos-button>
+      </div>
+    </cos-step-navigator>
+  </div>
+
+  <div class="create-body">
+    <div class="create-content">
+      @if (isLoading()) {
+        <div class="loading-overlay">
+          <div class="loader"></div>
+        </div>
+      }
+
+      @switch (currentStep()) {
+        @case ('info') {
+          <cos-step-topic-info
+            [topic]="topic() | any"
+            (topicUpdate)="onTopicUpdate($any($event))"
+            (imageFileUpdate)="onImageFileUpdate($any($event))"
+            (next)="transitionToSettings()"
+          ></cos-step-topic-info>
+        }
+        @case ('settings') {
+          <cos-step-topic-settings
+            [topic]="topic() | any"
+            (topicUpdate)="onTopicUpdate($any($event))"
+            (next)="currentStep.set('discussion')"
+            (previous)="currentStep.set('info')"
+          ></cos-step-topic-settings>
+        }
+        @case ('discussion') {
+          <cos-step-topic-discussion
+            [discussion]="discussion()"
+            (discussionChange)="discussion.set($event)"
+            (next)="transitionToPreview()"
+            (previous)="currentStep.set('settings')"
+          ></cos-step-topic-discussion>
+        }
+        @case ('preview') {
+          <cos-step-topic-preview
+            [topic]="topic() | any"
+            (previous)="currentStep.set('discussion')"
+            (save)="publishTopic()"
+          ></cos-step-topic-preview>
+        }
+      }
+    </div>
+
+    @if (currentStep() !== 'preview') {
+      <div class="create-sidebar">
+        <div class="sidebar-block">
+          <cos-member-editors-panel
+            [members]="members()"
+            [invites]="invites()"
+            (inviteEditors)="inviteEditors()"
+          ></cos-member-editors-panel>
+        </div>
+      </div>
+    }
+  </div>
+</div>

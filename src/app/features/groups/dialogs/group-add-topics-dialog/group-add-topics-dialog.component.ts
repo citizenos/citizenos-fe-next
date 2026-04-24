@@ -28,8 +28,6 @@ export class GroupAddTopicsDialogComponent {
   private dialogRef = inject(DialogRef);
   private groupMemberTopicService = inject(GroupMemberTopicService);
   private searchService = inject(SearchService);
-  private notification = inject(NotificationService);
-
   group = this.data.group;
   LEVELS = LEVELS;
 

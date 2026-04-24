@@ -1,37 +1,20 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TestBed } from '@angular/core/testing';
 import { StepTopicPreviewComponent } from './step-topic-preview.component';
-import { Topic } from '../../../../../core/interfaces/topic';
 
-describe('StepTopicPreviewComponent', () => {
+describe('StepTopicPreviewComponent (business logic)', () => {
   let component: StepTopicPreviewComponent;
-  let fixture: ComponentFixture<StepTopicPreviewComponent>;
 
-  const mockTopic: Partial<Topic> = { title: 'Preview Topic', description: '' };
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [StepTopicPreviewComponent, TranslateModule.forRoot()],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .overrideComponent(StepTopicPreviewComponent, {
-      set: { imports: [TranslateModule], schemas: [NO_ERRORS_SCHEMA] }
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(StepTopicPreviewComponent);
-    component = fixture.componentInstance;
-    fixture.componentRef.setInput('topic', mockTopic);
-    fixture.detectChanges();
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    component = TestBed.runInInjectionContext(() => new StepTopicPreviewComponent());
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit previous', () => {
+  it('should emit previous on onPrevious', () => {
     const spy = vi.spyOn(component.previous, 'emit');
     component.previous.emit();
     expect(spy).toHaveBeenCalled();

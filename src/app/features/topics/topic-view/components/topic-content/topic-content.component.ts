@@ -1,5 +1,5 @@
-import { Component, input, signal, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, input, signal, ViewChild, ElementRef, AfterViewInit, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
+import { NgClass, UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -9,7 +9,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 @Component({
   selector: 'app-topic-content',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgClass, UpperCasePipe, TranslateModule],
   templateUrl: './topic-content.component.html',
   styleUrls: ['./topic-content.component.scss'],
   animations: [
@@ -27,17 +28,17 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   ]
 })
 export class TopicContentComponent implements AfterViewInit, OnDestroy {
+  private sanitizer = inject(DomSanitizer);
+
   topic = input.required<Topic>();
-  tabTablet = input<string>(''); // Determines if we are hiding content due to tablet layout
-  
+  tabTablet = input<string>('');
+
   @ViewChild('topicText') topicTextEl?: ElementRef<HTMLElement>;
-  
+
   readMoreButton = signal(false);
   readMore = signal(false);
 
   private resizeObserver?: ResizeObserver;
-
-  constructor(private sanitizer: DomSanitizer) {}
 
   ngAfterViewInit() {
     if (this.topicTextEl?.nativeElement) {

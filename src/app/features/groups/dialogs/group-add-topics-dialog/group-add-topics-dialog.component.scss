@@ -1,0 +1,54 @@
+@use "mixins";
+
+.dialog { max-width: 560px; }
+
+.dialog_content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.topics_list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.topic_row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--color-surface-contrast);
+
+  .topic_title {
+    flex: 1;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.remove_btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-muted);
+
+  &:hover { color: var(--color-error); }
+}
+
+.inline_error {
+  padding: 12px 16px;
+  background: #fef2f2;
+  color: var(--color-error);
+  border-radius: 8px;
+  font-size: 14px;
+}

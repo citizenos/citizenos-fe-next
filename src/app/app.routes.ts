@@ -28,6 +28,7 @@ export const routes: Routes = [
             canActivate: [authGuard],
             children: [
               { path: 'topics', loadComponent: () => import('./features/topics/my-topics/my-topics.component').then(m => m.MyTopicsComponent) },
+              { path: 'groups/create', loadComponent: () => import('./features/groups/group-create/group-create.component').then(m => m.GroupCreateComponent) },
               { path: 'groups', loadComponent: () => import('./features/groups/my-groups/my-groups.component').then(m => m.MyGroupsComponent) },
             ]
           },

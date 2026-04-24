@@ -1,5 +1,6 @@
-import { Component, inject, signal, computed, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
-import { CommonModule, KeyValuePipe } from '@angular/common';
+import { Component, inject, signal, computed, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, PLATFORM_ID, DestroyRef } from '@angular/core';
+import { isPlatformBrowser, KeyValuePipe, AsyncPipe, UpperCasePipe } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
@@ -10,7 +11,7 @@ import { ToggleComponent } from '../../../shared/components/toggle/toggle.compon
 import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { TermsLinksComponent } from '../../../shared/components/terms-links/terms-links.component';
-import { Subject, takeUntil, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -22,8 +23,8 @@ type ProfileTab = 'profile' | 'notifications';
 @Component({
   selector: 'app-profile',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
@@ -33,13 +34,15 @@ type ProfileTab = 'profile' | 'notifications';
     RouterLink,
     TermsLinksComponent,
     KeyValuePipe,
+    AsyncPipe,
+    UpperCasePipe,
     InitialsComponent,
     PaginationComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit {
   @ViewChild('imageUpload') fileInput?: ElementRef;
 
   store = inject(UserStore);
@@ -50,6 +53,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   route = inject(ActivatedRoute);
   router = inject(Router);
   dialog = inject(DialogService);
+  private platformId = inject(PLATFORM_ID);
+  private destroyRef = inject(DestroyRef);
 
   activeTab = signal<ProfileTab>('profile');
 
@@ -79,8 +84,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     ru: 'Русский'
   };
 
-  private destroy$ = new Subject<void>();
-
   ngOnInit() {
     // Initialize form with user data
     const user = this.store.user();
@@ -94,7 +97,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     // Handle tab fragments
-    this.route.fragment.pipe(takeUntil(this.destroy$)).subscribe(fragment => {
+    this.route.fragment.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(fragment => {
       if (fragment === 'notifications') {
         this.activeTab.set('notifications');
       } else {
@@ -104,11 +107,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     // Load initial notification topics
     // this.topicNotificationService.loadItems(); // Removed as it is protected and items$ is already initialized
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   selectTab(tab: ProfileTab) {
@@ -214,7 +212,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
       removeDialog.afterClosed().subscribe((result) => {
         if (result === true) {
-          this.topicNotificationService.delete(topic.topicId).pipe(takeUntil(this.destroy$)).subscribe();
+          this.topicNotificationService.delete(topic.topicId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
         } else {
           topic.allowNotifications = true;
         }
@@ -222,7 +220,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     } else {
       this.topicNotificationService.update(topic.topicId, {
         allowNotifications: true
-      }).pipe(takeUntil(this.destroy$)).subscribe();
+      }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
     }
   }
 
@@ -245,6 +243,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private resizeImage(imageURL: string): Promise<{ file: File, imageUrl: string }> {
     return new Promise((resolve) => {
+      if (!isPlatformBrowser(this.platformId)) {
+        resolve({ file: new File([], 'profileimage.jpg'), imageUrl: '' });
+        return;
+      }
       const image = new Image();
       image.onload = () => {
         const canvas = document.createElement('canvas');

@@ -1,5 +1,5 @@
-import { Component, input, Output, EventEmitter, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
+import { NgClass, UpperCasePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -10,7 +10,8 @@ import { Topic } from '../../../../../core/interfaces/topic';
 @Component({
   selector: 'app-topic-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, TranslateModule, IconComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgClass, UpperCasePipe, RouterModule, TranslateModule, IconComponent],
   templateUrl: './topic-header.component.html',
   styleUrls: ['./topic-header.component.scss']
 })
@@ -18,21 +19,21 @@ export class TopicHeaderComponent {
   topic = input.required<Topic>();
   navigation = input.required<{title: string, link: string[]}>();
   appTopicNotificationSettings = input<() => void>();
-  
-  @Output() joinTopic = new EventEmitter<Topic>();
-  @Output() toggleFavourite = new EventEmitter<Topic>();
-  @Output() leaveTopic = new EventEmitter<Topic>();
-  @Output() inviteEditors = new EventEmitter<Topic>();
-  @Output() duplicateTopic = new EventEmitter<Topic>();
-  @Output() addGroupsDialog = new EventEmitter<Topic>();
-  @Output() reportReasonDialog = new EventEmitter<Topic>();
-  @Output() closeTopic = new EventEmitter<Topic>();
-  @Output() deleteTopic = new EventEmitter<Topic>();
+
+  joinTopic = output<Topic>();
+  toggleFavourite = output<Topic>();
+  leaveTopic = output<Topic>();
+  inviteEditors = output<Topic>();
+  duplicateTopic = output<Topic>();
+  addGroupsDialog = output<Topic>();
+  reportReasonDialog = output<Topic>();
+  closeTopic = output<Topic>();
+  deleteTopic = output<Topic>();
 
   userStore = inject(UserStore);
   topicService = inject(TopicService);
   translate = inject(TranslateService);
-  
+
   mobileActions = false;
 
   get isLoggedIn() {

@@ -19,9 +19,10 @@ import { TypeaheadComponent } from '../../../../shared/components/typeahead/type
 import { Group } from '../../../../core/interfaces/group';
 import { UserStore } from '../../../../core/state/user.store';
 import { of, switchMap, take } from 'rxjs';
-import { isEmail } from 'validator';
 
 const EMAIL_SEPARATOR = /[;,\s]/ig;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+function isEmail(s: string) { return EMAIL_RE.test(s.trim()); }
 
 @Component({
   selector: 'cos-group-invite-dialog',

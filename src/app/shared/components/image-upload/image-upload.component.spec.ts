@@ -52,9 +52,8 @@ describe('ImageUploadComponent', () => {
   });
 
   it('should prevent default on dragover', () => {
-    const event = new DragEvent('dragover');
-    const preventSpy = vi.spyOn(event, 'preventDefault');
+    const event = { preventDefault: vi.fn(), stopPropagation: vi.fn() } as unknown as DragEvent;
     component.onDragOver(event);
-    expect(preventSpy).toHaveBeenCalled();
+    expect(event.preventDefault).toHaveBeenCalled();
   });
 });

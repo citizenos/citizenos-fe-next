@@ -1,21 +1,28 @@
-import { Component, input, output, signal, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  input,
+  output,
+  signal,
+  OnInit,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Group } from '../../../../../core/interfaces/group';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 
 @Component({
   selector: 'cos-step-info',
   standalone: true,
-  imports: [
-    FormsModule,
-    TranslateModule,
-    InputComponent
-  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormsModule, TranslateModule, IconComponent, InputComponent],
   templateUrl: './step-info.component.html',
-  styleUrl: './step-info.component.scss'
+  styleUrl: './step-info.component.scss',
 })
-export class StepInfoComponent {
+export class StepInfoComponent implements OnInit {
   group = input.required<Partial<Group>>();
   groupUpdate = output<Partial<Group>>();
   imageFileUpdate = output<File | null>();
@@ -23,7 +30,17 @@ export class StepInfoComponent {
   @ViewChild('imageUpload') imageUpload?: ElementRef<HTMLInputElement>;
 
   tmpImageUrl = signal<string | null>(null);
+  rules = signal<{ rule: string }[]>([]);
   descriptionLength = 1000;
+
+  ngOnInit() {
+    const g = this.group();
+    if (g.rules?.length) {
+      this.rules.set(g.rules.map(r => ({ rule: r })));
+    } else {
+      this.rules.set([{ rule: '' }, { rule: '' }, { rule: '' }]);
+    }
+  }
 
   onNameChange(name: string) {
     this.groupUpdate.emit({ name });
@@ -33,6 +50,29 @@ export class StepInfoComponent {
     this.groupUpdate.emit({ description });
   }
 
+  updateContact(contact: string) {
+    this.groupUpdate.emit({ contact });
+  }
+
+  addRule() {
+    this.rules.update(r => [...r, { rule: '' }]);
+    this.emitRules();
+  }
+
+  removeRule(index: number) {
+    this.rules.update(r => r.filter((_, i) => i !== index));
+    this.emitRules();
+  }
+
+  onRuleChange(index: number, value: string) {
+    this.rules.update(r => r.map((item, i) => i === index ? { rule: value } : item));
+    this.emitRules();
+  }
+
+  private emitRules() {
+    this.groupUpdate.emit({ rules: this.rules().map(r => r.rule).filter(r => r.length > 0) });
+  }
+
   uploadImage() {
     this.imageUpload?.nativeElement.click();
   }
@@ -40,8 +80,7 @@ export class StepInfoComponent {
   fileUpload() {
     const files = this.imageUpload?.nativeElement.files;
     if (files && files.length > 0) {
-      const file = files[0];
-      this.handleFile(file);
+      this.handleFile(files[0]);
     }
   }
 
@@ -49,8 +88,7 @@ export class StepInfoComponent {
     event.preventDefault();
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
-      const file = files[0];
-      this.handleFile(file);
+      this.handleFile(files[0]);
     }
   }
 
@@ -58,12 +96,16 @@ export class StepInfoComponent {
     event.preventDefault();
   }
 
+  removeImage() {
+    this.tmpImageUrl.set(null);
+    this.imageFileUpdate.emit(null);
+    if (this.imageUpload) this.imageUpload.nativeElement.value = '';
+  }
+
   private handleFile(file: File) {
     this.imageFileUpdate.emit(file);
     const reader = new FileReader();
-    reader.onload = () => {
-      this.tmpImageUrl.set(reader.result as string);
-    };
+    reader.onload = () => this.tmpImageUrl.set(reader.result as string);
     reader.readAsDataURL(file);
   }
 }

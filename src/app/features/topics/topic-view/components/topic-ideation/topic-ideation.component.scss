@@ -1,0 +1,71 @@
+.ideation_wrap {
+  padding: 24px 0;
+}
+
+.ideation_header {
+  margin-bottom: 24px;
+
+  .header_section {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .question {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2C3B47;
+    flex: 1;
+  }
+
+  .ideation_deadline {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #4D5C6A;
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.ideation_toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+
+  app-search-input {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .filters_wrap {
+    display: flex;
+    gap: 8px;
+  }
+
+  .filter_select {
+    padding: 8px 12px;
+    border: 1px solid #C9D4DB;
+    border-radius: 4px;
+    background: white;
+    font-size: 14px;
+    color: #2C3B47;
+    cursor: pointer;
+  }
+}
+
+.ideas_list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loading,
+.empty_state {
+  text-align: center;
+  padding: 40px;
+  color: #4D5C6A;
+  font-size: 14px;
+}

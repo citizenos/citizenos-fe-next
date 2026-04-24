@@ -6,9 +6,9 @@ import { TopicService } from '../../../core/services/topic.service';
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { of } from 'rxjs';
-
+import { Vote } from '../../../core/interfaces/vote';
 const mockTopic = { id: 'topic-1', title: 'Test', visibility: 'private', status: 'draft', categories: [] };
-const mockVote = { id: 'vote-1', question: '', type: 'regular', authType: 'soft', options: [], delegationIsAllowed: false, autoClose: [], endsAt: null };
+const mockVote: Partial<Vote> = { id: 'vote-1', question: '', type: 'regular', authType: 'soft', options: [], delegationIsAllowed: false, autoClose: [], endsAt: null };
 const mockTopicService = { save: vi.fn(), patch: vi.fn(), loadTopic: vi.fn() };
 const mockVoteService = { save: vi.fn(), update: vi.fn(), get: vi.fn() };
 const mockNotificationService = { success: vi.fn(), showRaw: vi.fn() };
@@ -27,7 +27,7 @@ describe('VoteCreateComponent (business logic)', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        provideRouter([]),
+        provideRouter([{ path: 'topics/:id', component: class { } }]),
         { provide: TopicService, useValue: mockTopicService },
         { provide: TopicVoteService, useValue: mockVoteService },
         { provide: NotificationService, useValue: mockNotificationService },

@@ -1,0 +1,121 @@
+.create_content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.create_content_block {
+  background: var(--color-surfaces);
+  border-radius: 16px;
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid var(--color-border);
+
+  &.open {
+    background: var(--color-surfaces);
+  }
+
+  &.active {
+    border-color: var(--color-link);
+  }
+
+  .block_title_wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    min-height: 24px;
+
+    .block_title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .counter_wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--color-text-muted);
+
+      .error {
+        color: var(--color-danger);
+      }
+    }
+  }
+
+  .block_content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    #title_input {
+      border: none;
+      padding: 8px 0;
+      width: 100%;
+      font-size: 24px;
+      line-height: 28px;
+      font-weight: 600;
+      background: transparent;
+      color: var(--color-text);
+      outline: none;
+
+      &::placeholder {
+        color: var(--color-text-muted);
+      }
+    }
+
+    #intro_input {
+      border: none;
+      padding: 8px 0;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+      background: transparent;
+      color: var(--color-text);
+      outline: none;
+      resize: vertical;
+
+      &::placeholder {
+        color: var(--color-text-muted);
+      }
+    }
+  }
+
+  .btn_medium_close {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--color-link);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.image_content {
+  padding-top: 16px;
+}
+
+iframe {
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}

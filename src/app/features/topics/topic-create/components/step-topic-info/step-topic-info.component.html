@@ -1,0 +1,117 @@
+<div class="create_content">
+  <!-- Header Image Block -->
+  <div class="create_content_block discussion" [class.open]="block().headerImage">
+    <div class="block_title_wrap" (click)="toggleBlock('headerImage')">
+      <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_HEADER_IMAGE"></div>
+      @if (!block().headerImage) {
+        <cos-icon name="upload" [size]="24"></cos-icon>
+      }
+      @if (block().headerImage && (topic().imageUrl)) {
+        <button class="btn_medium_close bold" (click)="deleteTopicImage(); $event.stopPropagation();">
+          <span class="link" translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_REMOVE"></span>
+          <cos-icon name="trash" [size]="20"></cos-icon>
+        </button>
+      } @else if (block().headerImage) {
+        <button class="btn_medium_close bold" (click)="toggleBlock('headerImage'); $event.stopPropagation();">
+          <span class="link" translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL"></span>
+          <cos-icon name="close" [size]="20"></cos-icon>
+        </button>
+      }
+    </div>
+
+    @if (block().headerImage) {
+      <div class="block_content image_content">
+        <cos-image-upload
+          [imageUrl]="topic().imageUrl || null"
+          (imageFileChange)="onImageChange($event)"
+          (imageRemoved)="deleteTopicImage()"
+        ></cos-image-upload>
+      </div>
+    }
+  </div>
+
+  <!-- Title Block -->
+  <div class="create_content_block discussion" [class.active]="block().title" [class.open]="block().title">
+    <div class="block_title_wrap" (click)="toggleBlock('title')">
+      <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_HEADING"></div>
+      <div class="counter_wrap">
+        <div class="char_counter">{{ (topic().title?.length || 0) }}/{{ titleLimit }}</div>
+        @if (!topic().title) {
+          <cos-icon name="warning" [size]="16" class="error"></cos-icon>
+        }
+      </div>
+    </div>
+    @if (block().title || topic().title) {
+      <div class="block_content">
+        <input
+          #topicTitle
+          id="title_input"
+          type="text"
+          placeholder="..."
+          [ngModel]="topic().title"
+          (ngModelChange)="onUpdate({title: $event})"
+          [maxlength]="titleLimit"
+        />
+      </div>
+    }
+  </div>
+
+  <!-- Intro Block -->
+  <div class="create_content_block discussion" [class.active]="block().intro" [class.open]="block().intro">
+    <div class="block_title_wrap" (click)="toggleBlock('intro')">
+      <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_INTRO">
+        <!-- Tooltip could go here if needed -->
+      </div>
+      <div class="counter_wrap">
+        <div class="char_counter">{{ (topic().intro?.length || 0) }}/{{ introLimit }}</div>
+      </div>
+    </div>
+    @if (block().intro || topic().intro) {
+      <div class="block_content">
+        <textarea
+          #topicIntro
+          id="intro_input"
+          placeholder="..."
+          [ngModel]="topic().intro"
+          (ngModelChange)="onUpdate({intro: $event})"
+          [maxlength]="introLimit"
+          rows="3"
+        ></textarea>
+      </div>
+    }
+  </div>
+
+  <!-- Description Block -->
+  <div class="create_content_block discussion" [class.active]="block().description" [class.open]="block().description">
+    <div class="block_title_wrap" (click)="toggleBlock('description')">
+      <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_DESCRIPTION"></div>
+      <div class="counter_wrap">
+        @if (!topic().description) {
+           <cos-icon name="warning" [size]="16" class="error"></cos-icon>
+        }
+      </div>
+    </div>
+    @if (block().description) {
+      <div class="block_content description">
+        <iframe
+          cosEtherpad
+          frameborder="0"
+          scrolling="no"
+          [src]="sanitizeURL()"
+          width="100%"
+          height="600"
+        ></iframe>
+      </div>
+    }
+  </div>
+
+  <div class="actions">
+    <cos-button
+      variant="primary"
+      [isDisabled]="!topic().title || !topic().description"
+      (clicked)="next.emit()"
+    >
+      {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE' | translate }}
+    </cos-button>
+  </div>
+</div>

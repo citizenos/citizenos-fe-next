@@ -115,6 +115,10 @@
           display: flex;
           align-items: center;
           gap: 8px;
+
+          .level-dropdown {
+            min-width: 100px;
+          }
         }
       }
 

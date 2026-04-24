@@ -29,7 +29,7 @@ describe('IdeationCreateComponent (business logic)', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        provideRouter([]),
+        provideRouter([{ path: 'topics/:id', component: class { } }]),
         { provide: TopicService, useValue: mockTopicService },
         { provide: TopicIdeationService, useValue: mockIdeationService },
         { provide: UploadService, useValue: mockUploadService },

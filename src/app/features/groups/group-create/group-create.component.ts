@@ -1,11 +1,18 @@
-import { Component, signal, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  inject,
+  computed,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { switchMap, of, forkJoin, last, map, take, Observable } from 'rxjs';
 import { Group } from '../../../core/interfaces/group';
 import { UserGroupService } from '../../../core/services/user-group.service';
+import { GroupInviteUserService } from '../../../core/services/group-invite-user.service';
+import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { UserStore } from '../../../core/state/user.store';
 import { StepInfoComponent } from './components/step-info/step-info.component';
 import { StepSettingsComponent } from './components/step-settings/step-settings.component';
 import { StepTopicsComponent } from './components/step-topics/step-topics.component';
@@ -18,23 +25,24 @@ export type GroupCreateStep = 'info' | 'settings' | 'add_topics' | 'invite';
 @Component({
   selector: 'cos-group-create',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     TranslateModule,
     StepInfoComponent,
     StepSettingsComponent,
     StepTopicsComponent,
     StepInviteComponent,
     GroupCreateHelpComponent,
-    IconComponent
+    IconComponent,
   ],
   templateUrl: './group-create.component.html',
-  styleUrl: './group-create.component.scss'
+  styleUrl: './group-create.component.scss',
 })
 export class GroupCreateComponent {
   private userGroupService = inject(UserGroupService);
+  private groupInviteUserService = inject(GroupInviteUserService);
+  private groupMemberTopicService = inject(GroupMemberTopicService);
   private notificationService = inject(NotificationService);
-  private userStore = inject(UserStore);
   private router = inject(Router);
   private translate = inject(TranslateService);
 
@@ -45,8 +53,8 @@ export class GroupCreateComponent {
     visibility: 'private',
     members: {
       users: [],
-      topics: { rows: [], count: 0 }
-    }
+      topics: { rows: [], count: 0 },
+    },
   });
 
   imageFile = signal<File | null>(null);
@@ -84,30 +92,69 @@ export class GroupCreateComponent {
   }
 
   cancel() {
-    this.router.navigate(['/groups']);
+    this.router.navigate(['/', this.translate.currentLang, 'my', 'groups']);
   }
 
-  async createGroup() {
-    try {
-      const groupData = this.group();
-      if (!groupData.name) {
-        this.notificationService.error('VIEWS.GROUP_CREATE.ERROR_NAME_REQUIRED');
-        return;
-      }
-
-      const createdGroup = await this.userGroupService.save(groupData).toPromise();
-      
-      if (createdGroup && this.imageFile()) {
-        await this.userGroupService.uploadGroupImage(this.imageFile()!, createdGroup.id).toPromise();
-      }
-
-      this.notificationService.success('VIEWS.GROUP_CREATE.SUCCESS_CREATED');
-      if (createdGroup) {
-        this.router.navigate(['/groups', createdGroup.id]);
-      }
-    } catch (error) {
-      console.error('Error creating group:', error);
-      this.notificationService.error('VIEWS.GROUP_CREATE.ERROR_FAILED');
+  createGroup() {
+    const groupData = this.group();
+    if (!groupData.name?.trim()) {
+      this.notificationService.error('VIEWS.GROUP_CREATE.ERROR_NAME_REQUIRED');
+      return;
     }
+
+    const payload: Partial<Group> = {
+      name: groupData.name,
+      description: groupData.description,
+      visibility: groupData.visibility,
+      country: groupData.country ?? undefined,
+      language: groupData.language ?? undefined,
+      contact: groupData.contact ?? undefined,
+      rules: groupData.rules ?? [],
+    };
+
+    const imageFile = this.imageFile();
+
+    this.userGroupService.save(payload).pipe(
+      switchMap(created => {
+        if (!imageFile) return of(created);
+        return this.userGroupService.uploadGroupImage(imageFile, created.id).pipe(
+          last(),
+          map(() => created)
+        );
+      }),
+      switchMap(created => {
+        const users: any[] = groupData.members?.users ?? [];
+        const topics: any[] = groupData.members?.topics?.rows ?? [];
+        const obs$: Observable<any>[] = [];
+
+        if (users.length) {
+          obs$.push(this.groupInviteUserService.invite(created.id, users.map(u => ({
+            userId: u.userId ?? u.id,
+            level: u.level ?? 'read',
+            inviteMessage: groupData.inviteMessage ?? undefined,
+          }))));
+        }
+
+        for (const topic of topics) {
+          obs$.push(this.groupMemberTopicService.addTopic(
+            created.id, topic.id, topic.permission?.level ?? 'read'
+          ));
+        }
+
+        return obs$.length ? forkJoin(obs$).pipe(map(() => created)) : of(created);
+      }),
+      take(1)
+    ).subscribe({
+      next: created => {
+        this.notificationService.success(
+          'VIEWS.GROUP_CREATE.NOTIFICATION_SUCCESS_MESSAGE',
+          'VIEWS.GROUP_CREATE.NOTIFICATION_SUCCESS_TITLE'
+        );
+        this.router.navigate(['/', this.translate.currentLang, 'groups', created.id]);
+      },
+      error: () => {
+        this.notificationService.error('VIEWS.GROUP_CREATE.ERROR_FAILED');
+      },
+    });
   }
 }

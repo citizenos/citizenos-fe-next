@@ -570,7 +570,59 @@
 
     .level {
       flex: 2 2 0;
-      justify-content: center;
+      justify-content: space-between;
+      align-items: center;
+
+      .member_actions {
+        position: relative;
+
+        .options {
+          position: absolute;
+          right: 0;
+          top: 100%;
+          z-index: 10;
+          background: var(--color-surfaces);
+          border: 1px solid var(--color-border);
+          border-radius: 12px;
+          padding: 8px 0;
+          width: max-content;
+          min-width: 200px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+          .option {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--color-text);
+            gap: 8px;
+
+            &:hover {
+              background: var(--color-surface-contrast);
+            }
+
+            &.error_text {
+              color: var(--color-error);
+            }
+
+            .icon_wrap {
+              display: flex;
+              flex-shrink: 0;
+            }
+          }
+
+          .line_separator {
+            height: 1px;
+            background: var(--color-border);
+            margin: 4px 0;
+          }
+        }
+      }
     }
   }
 }

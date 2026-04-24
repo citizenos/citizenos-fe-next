@@ -1,0 +1,34 @@
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { ApiResponse } from '../interfaces/api-response';
+import { Discussion, DiscussionData } from '../interfaces/discussion';
+import { ConfigStore } from '../state/config.store';
+
+@Injectable({ providedIn: 'root' })
+export class TopicDiscussionService {
+  private http = inject(HttpClient);
+  private configStore = inject(ConfigStore);
+
+  private base(topicId: string): string {
+    return `${this.configStore.api.baseUrl()}/api/users/self/topics/${topicId}/discussions`;
+  }
+
+  get(topicId: string, discussionId: string): Observable<Discussion> {
+    return this.http
+      .get<ApiResponse<Discussion>>(`${this.base(topicId)}/${discussionId}`, { withCredentials: true })
+      .pipe(map(r => r.data!));
+  }
+
+  create(topicId: string, payload: DiscussionData): Observable<Discussion> {
+    return this.http
+      .post<ApiResponse<Discussion>>(this.base(topicId), payload, { withCredentials: true })
+      .pipe(map(r => r.data!));
+  }
+
+  update(topicId: string, discussionId: string, payload: DiscussionData): Observable<Discussion> {
+    return this.http
+      .put<ApiResponse<Discussion>>(`${this.base(topicId)}/${discussionId}`, payload, { withCredentials: true })
+      .pipe(map(r => r.data!));
+  }
+}

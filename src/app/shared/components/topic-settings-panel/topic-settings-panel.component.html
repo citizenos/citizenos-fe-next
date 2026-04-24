@@ -1,0 +1,165 @@
+<div class="settings-panel">
+  <!-- Visibility -->
+  <div class="create_content_block" [class.active]="activeBlock === 'visibility'" (click)="activeBlock = 'visibility'">
+    <div class="create_content_block_header">
+      <div class="create_content_block_icon">
+        <cos-icon name="eye" [size]="24"></cos-icon>
+      </div>
+      <div class="create_content_block_title">
+        <h3 translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_VISIBILITY"></h3>
+        <p translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_DESC"></p>
+      </div>
+    </div>
+    <div class="create_content_block_content">
+      <div class="visibility-options">
+        <div
+          class="radio-option"
+          [class.active]="visibility() === 'private'"
+          (click)="setVisibility('private')"
+        >
+          <label class="radio-box">
+            <input type="radio" [checked]="visibility() === 'private'" name="visibility" value="private">
+            <span class="radio-indicator"></span>
+            <span class="radio-label" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PRIVATE"></span>
+          </label>
+          <p class="radio-description" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PRIVATE_DESC"></p>
+        </div>
+        <div
+          class="radio-option"
+          [class.active]="visibility() === 'public'"
+          (click)="setVisibility('public')"
+        >
+          <label class="radio-box">
+            <input type="radio" [checked]="visibility() === 'public'" name="visibility" value="public">
+            <span class="radio-indicator"></span>
+            <span class="radio-label" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PUBLIC"></span>
+          </label>
+          <p class="radio-description" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PUBLIC_DESC"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <div class="create_content_block" [class.active]="activeBlock === 'categories'" (click)="activeBlock = 'categories'">
+    <div class="create_content_block_header">
+      <div class="create_content_block_icon">
+        <cos-icon name="tags" [size]="24"></cos-icon>
+      </div>
+      <div class="create_content_block_title">
+        <h3 translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_CATEGORY"></h3>
+        <p translate="VIEWS.TOPIC_CREATE.SETTINGS_CATEGORY_SELECT_DESC"></p>
+      </div>
+    </div>
+    <div class="create_content_block_content">
+      <cos-dropdown>
+        <div selection translate="VIEWS.TOPIC_CREATE.SETTINGS_CATEGORY_SELECT"></div>
+        <div options>
+          @for (category of categoryKeys; track category) {
+            <div class="option" (click)="toggleCategory(category)">
+              {{ 'TXT_TOPIC_CATEGORY_' + category | uppercase | translate }}
+            </div>
+          }
+        </div>
+      </cos-dropdown>
+
+      <div class="selected-categories">
+        @for (cat of categories(); track cat) {
+          <a class="category-chip" (click)="toggleCategory(cat)">
+            <span>{{ 'TXT_TOPIC_CATEGORY_' + cat | uppercase | translate }}</span>
+            <cos-icon name="close" [size]="16"></cos-icon>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Locality -->
+  <div class="create_content_block" [class.active]="activeBlock === 'locality'" (click)="activeBlock = 'locality'">
+    <div class="create_content_block_header">
+      <div class="create_content_block_icon">
+        <cos-icon name="globe" [size]="24"></cos-icon>
+      </div>
+      <div class="create_content_block_title">
+        <h3 translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_LOCALITY"></h3>
+        <p translate="VIEWS.TOPIC_CREATE.SETTINGS_LOCALITY_SELECT_DESC"></p>
+      </div>
+    </div>
+    <div class="create_content_block_content">
+      <div class="locality-row">
+        <div class="dropdown-group">
+          <label translate="VIEWS.TOPIC_CREATE.SETTINGS_COUNTRY_SELECT"></label>
+          <cos-dropdown>
+            <div selection>
+              {{ country() || ('VIEWS.TOPIC_CREATE.SETTINGS_COUNTRY_SELECT' | translate) }}
+            </div>
+            <div options>
+              @for (c of countries; track c.name) {
+                <div class="option" (click)="onCountryChange(c.name)">{{ c.name }}</div>
+              }
+            </div>
+          </cos-dropdown>
+        </div>
+
+        <div class="dropdown-group">
+          <label translate="VIEWS.TOPIC_CREATE.SETTINGS_LANGUAGE_SELECT"></label>
+          <cos-dropdown>
+            <div selection>
+              {{ language() || ('VIEWS.TOPIC_CREATE.SETTINGS_LANGUAGE_SELECT' | translate) }}
+            </div>
+            <div options>
+              @for (l of languages; track l.name) {
+                <div class="option" (click)="onLanguageChange(l.name)">{{ l.name }}</div>
+              }
+            </div>
+          </cos-dropdown>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Groups -->
+  <div class="create_content_block" [class.active]="activeBlock === 'groups'" (click)="activeBlock = 'groups'">
+    <div class="create_content_block_header">
+      <div class="create_content_block_icon">
+        <cos-icon name="users" [size]="24"></cos-icon>
+      </div>
+      <div class="create_content_block_title">
+        <h3 translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_ADD_TO_GROUP"></h3>
+        <p translate="VIEWS.TOPIC_CREATE.SETTINGS_ADD_TO_GROUP_DESC"></p>
+      </div>
+    </div>
+    <div class="create_content_block_content">
+      @if (availableGroups().length) {
+        <cos-dropdown>
+          <div selection translate="VIEWS.TOPIC_CREATE.SETTINGS_GROUP_SELECT"></div>
+          <div options>
+            @for (group of availableGroups(); track group.id) {
+              @if (!isGroupAdded(group)) {
+                <div class="option" (click)="addGroup(group)">{{ group.name }}</div>
+              }
+            }
+          </div>
+        </cos-dropdown>
+
+        @if (addedGroups().length) {
+          <div class="group-list">
+            @for (group of addedGroups(); track group.id) {
+              <div class="group-row">
+                <span class="group-name">{{ group.name }}</span>
+                <button class="remove-group-btn" (click)="removeGroup(group)">
+                  <cos-icon name="close" [size]="16"></cos-icon>
+                </button>
+              </div>
+            }
+          </div>
+        }
+      } @else {
+        <div class="no-groups">
+          <p translate="VIEWS.TOPIC_CREATE.NO_GROUPS_HEADING"></p>
+          <p translate="VIEWS.TOPIC_CREATE.NO_GROUPS_DESCRIPTION"></p>
+        </div>
+      }
+    </div>
+  </div>
+</div>

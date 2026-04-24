@@ -38,10 +38,8 @@
 
             <cos-typeahead
               [placeholder]="'COMPONENTS.GROUP_INVITE.PLACEHOLDER_SEARCH' | translate"
-              [items]="searchResults()"
               (search)="onSearch($event)"
-              (select)="addMember($event)"
-              (enter)="addEmail($event)"
+              (enterAction)="addEmail($event.text)"
             >
               @for (user of searchResults(); track user.userId) {
                 <div class="typeahead-item" (mousedown)="addMember(user)">{{ user.name }}</div>
@@ -54,7 +52,7 @@
                 @for (email of invalidEmails(); track $index) {
                   <div class="invalid_row">
                     <span>{{ email }}</span>
-                    <button (click)="removeInvalid($index)"><cos-icon name="x" [size]="16"></cos-icon></button>
+                    <button (click)="removeInvalid($index)"><cos-icon name="close" [size]="16"></cos-icon></button>
                   </div>
                 }
               </div>
@@ -85,7 +83,7 @@
                         }
                       </div>
                     </cos-dropdown>
-                    <button class="remove_btn" (click)="removeMember(user)"><cos-icon name="x" [size]="16"></cos-icon></button>
+                    <button class="remove_btn" (click)="removeMember(user)"><cos-icon name="close" [size]="16"></cos-icon></button>
                   </div>
                 }
               </div>

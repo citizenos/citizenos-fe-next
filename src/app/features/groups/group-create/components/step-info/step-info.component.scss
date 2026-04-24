@@ -96,3 +96,27 @@
 .bold {
   font-weight: 600;
 }
+
+.rule_input_row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+
+  cos-input { flex: 1; }
+  button { margin-top: 8px; }
+}
+
+.add_rule {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon_link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--color-link);
+}

@@ -1,0 +1,100 @@
+<div class="idea" [class.draft]="isDraft()" [class.moderated]="idea().report?.id">
+  @if (idea().report?.id || idea().deletedAt) {
+    <div class="deleted_idea_wrap">
+      <div class="deleted_idea_content_wrap">
+        <cos-icon name="warning" size="40" />
+
+        @if (idea().deletedReasonType && idea().deletedReasonText) {
+          <div class="bold" [innerHTML]="'COMPONENTS.IDEABOX.IDEA_FOUND_INAPPRIOPRIATE_BY' | translate:{usersFullName: idea().deletedBy?.name}"></div>
+        } @else if (idea().deletedBy?.id === idea().author?.id) {
+          <div class="bold" [innerHTML]="'COMPONENTS.IDEABOX.IDEA_AUTHOR_REMOVED_IDEA' | translate"></div>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="idea_header">
+    <div class="idea_header_left">
+      @if (!isDraft()) {
+        @if (idea().author) {
+          <div class="avatar">
+            @if (idea().author?.imageUrl) {
+              <img [src]="idea().author!.imageUrl" [alt]="idea().author!.name" />
+            } @else {
+              <div class="profile_image_filler">
+                <cos-initials [name]="idea().author!.name || ''" />
+              </div>
+            }
+          </div>
+          <div class="vertical_line_separator"></div>
+        }
+
+        <div class="like_wrap" [class.selected]="idea().votes.up.selected">
+          <button class="btn_idea_like" [class.disabled]="!canVote()" (click)="vote(1)">
+            @if (!idea().votes.up.selected) {
+              <cos-icon name="thumbs-up" />
+            } @else {
+              <cos-icon name="thumbs-up" />
+            }
+          </button>
+          <span class="like_counter_wrap" (click)="showReactions()">{{ idea().votes.up.count }}</span>
+        </div>
+
+        @if (userStore.user()) {
+          <div class="vertical_line_separator"></div>
+          <button class="btn_small_plain" (click)="$event.preventDefault(); $event.stopPropagation(); toggleFavourite()">
+            @if (!idea().favourite) {
+              <cos-icon name="heart" />
+            } @else {
+              <cos-icon name="heart" />
+            }
+          </button>
+        }
+      } @else {
+        <div class="draft_label">
+            <cos-icon name="edit" />
+          <span translate="COMPONENTS.IDEABOX.IDEA_DRAFT"></span>
+        </div>
+      }
+    </div>
+
+    @if (userStore.user()) {
+      <div class="idea_header_right">
+        <div class="dropdown button_dropdown">
+          <button class="btn_small_plain icon">
+              <cos-icon name="more-vertical" />
+          </button>
+          <div class="options button_options">
+            @if (!isDraft()) {
+              <button class="option" (click)="toggleFavourite()">
+                <span>{{ (idea().favourite ? 'COMPONENTS.IDEABOX.OPTION_UNFAVOURITE' : 'COMPONENTS.IDEABOX.OPTION_FAVOURITE') | translate }}</span>
+              </button>
+            }
+
+            @if (canEditIdea()) {
+              @if (!isDraft()) {
+                <div class="line_separator"></div>
+              }
+              <button class="option error_text" (click)="confirmDelete()">
+                <span translate="COMPONENTS.IDEABOX.OPTION_REMOVE"></span>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="idea_content">
+    <div class="statement" [innerHTML]="idea().statement || ('COMPONENTS.IDEABOX.UNTITLED_IDEA' | translate)"></div>
+  </div>
+
+  <div class="idea_footer">
+    @if (!isDraft()) {
+      <div class="date">{{ idea().createdAt | date:'y-MM-dd HH:mm' }}</div>
+      <div class="replies_count">{{ 'COMPONENTS.IDEABOX.REPLIES' | translate:{ count: idea().replies?.count ?? 0 } }}</div>
+    } @else {
+      <div class="date">{{ 'COMPONENTS.IDEABOX.DRAFT_UPDATED_AT' | translate:{ date: (idea().updatedAt | date:'y-MM-dd HH:mm') } }}</div>
+    }
+  </div>
+</div>

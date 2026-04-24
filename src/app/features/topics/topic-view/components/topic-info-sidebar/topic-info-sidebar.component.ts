@@ -1,5 +1,4 @@
-import { Component, input, Output, EventEmitter, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -10,7 +9,8 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 @Component({
   selector: 'app-topic-info-sidebar',
   standalone: true,
-  imports: [CommonModule, TranslateModule, RouterModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslateModule, RouterModule],
   templateUrl: './topic-info-sidebar.component.html',
   styleUrls: ['./topic-info-sidebar.component.scss'],
   animations: [
@@ -39,14 +39,14 @@ export class TopicInfoSidebarComponent {
   
   appTopicNotificationSettings = input<() => void>();
   
-  @Output() toggleFavourite = new EventEmitter<Topic>();
-  @Output() leaveTopic = new EventEmitter<Topic>();
-  @Output() inviteEditors = new EventEmitter<Topic>();
-  @Output() duplicateTopic = new EventEmitter<Topic>();
-  @Output() addGroupsDialog = new EventEmitter<Topic>();
-  @Output() closeTopic = new EventEmitter<Topic>();
-  @Output() deleteTopic = new EventEmitter<Topic>();
-  @Output() downloadAttachment = new EventEmitter<any>();
+  toggleFavourite = output<Topic>();
+  leaveTopic = output<Topic>();
+  inviteEditors = output<Topic>();
+  duplicateTopic = output<Topic>();
+  addGroupsDialog = output<Topic>();
+  closeTopic = output<Topic>();
+  deleteTopic = output<Topic>();
+  downloadAttachment = output<any>();
 
   topicService = inject(TopicService);
   userStore = inject(UserStore);

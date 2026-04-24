@@ -1,0 +1,51 @@
+<div class="dialog_header">
+  <div class="header_text">
+    <h4 class="title" [translate]="'MODALS.TOPIC_IDEA_REACTIONS_HEADING'"></h4>
+    <div class="dialog_close">
+      <button class="btn_dialog_close icon" (click)="close()">
+        <cos-icon name="close" />
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="dialog_content">
+  <div class="content_section">
+    <div class="section_content_wrap table_section">
+      @for (member of voteItems(); track $index) {
+        <div class="row_list">
+          <div class="row_cell">
+            <div class="profile_image_wrap">
+              @if (member.imageUrl) {
+                <img class="profile_image" [src]="member.imageUrl">
+              } @else {
+                <div class="profile_image_filler">
+                  <cos-initials class="table_cell" [name]="member.name" />
+                </div>
+              }
+            </div>
+            <span class="user_name" [innerHTML]="member.name"></span>
+          </div>
+          <div class="row_cell">
+            @if (member.vote === 'down') {
+              <cos-icon name="thumbs-down" />
+            } @else if (member.vote === 'up') {
+              <cos-icon name="thumbs-up" />
+            }
+          </div>
+        </div>
+      } @empty {
+        <div [translate]="'MODALS.TOPIC_IDEA_REACTIONS_NO_REACTIONS_YET'"></div>
+      }
+    </div>
+  </div>
+</div>
+
+@if (totalPages() > 1) {
+  <div class="dialog_content no_footer">
+    <div class="info_row">
+      <cos-pagination class="pagination" (select)="loadPage($event)"
+        [totalPages]="totalPages()" [page]="page()" />
+    </div>
+  </div>
+}

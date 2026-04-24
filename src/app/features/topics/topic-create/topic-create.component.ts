@@ -1,18 +1,24 @@
-import { Component, signal, inject, computed, ChangeDetectionStrategy, effect } from '@angular/core';
+import { Component, signal, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TopicService } from '../../../core/services/topic.service';
 import { UploadService } from '../../../core/services/upload.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
+import { TopicInviteUserService } from '../../../core/services/topic-invite-user.service';
+import { TopicDiscussionService } from '../../../core/services/topic-discussion.service';
 import { Topic } from '../../../core/interfaces/topic';
+import { DiscussionData } from '../../../core/interfaces/discussion';
 import { StepNavigatorComponent, StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
 import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
 import { StepTopicInfoComponent } from './components/step-topic-info/step-topic-info.component';
 import { StepTopicSettingsComponent } from './components/step-topic-settings/step-topic-settings.component';
 import { StepTopicDiscussionComponent } from './components/step-topic-discussion/step-topic-discussion.component';
 import { StepTopicPreviewComponent } from './components/step-topic-preview/step-topic-preview.component';
-import { switchMap, tap, of, catchError } from 'rxjs';
+import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
+import { switchMap, of, catchError, BehaviorSubject, forkJoin } from 'rxjs';
 import { AnyPipe } from '../../../shared/pipes/any.pipe';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 
@@ -27,120 +33,20 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
     StepTopicSettingsComponent,
     StepTopicDiscussionComponent,
     StepTopicPreviewComponent,
+    MemberEditorsPanelComponent,
     AnyPipe,
     ButtonComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div class="topic-create-container">
-      <div class="create-header">
-        <h1 class="create_heading">
-          <cos-domain-icon type="topic"></cos-domain-icon>
-          <span class="small_heading" translate="VIEWS.TOPIC_CREATE.HEADING"></span>
-        </h1>
-        <cos-step-navigator
-          [steps]="steps"
-          [currentStep]="currentStep()"
-          (stepChange)="onStepChange($event)"
-        >
-          <div actions>
-            <cos-button variant="secondary" (clicked)="saveAsDraft()">
-              {{ 'VIEWS.TOPIC_CREATE.BTN_SAVE_DRAFT' | translate }}
-            </cos-button>
-          </div>
-        </cos-step-navigator>
-      </div>
-
-      <div class="create-content">
-        @if (isLoading()) {
-          <div class="loading-overlay">
-            <div class="loader"></div>
-          </div>
-        }
-
-        @switch (currentStep()) {
-          @case ('info') {
-            <cos-step-topic-info
-              [topic]="topic() | any"
-              (topicUpdate)="onTopicUpdate($any($event))"
-              (imageFileUpdate)="onImageFileUpdate($any($event))"
-              (next)="transitionToSettings()"
-            ></cos-step-topic-info>
-          }
-          @case ('settings') {
-            <cos-step-topic-settings
-              [topic]="topic() | any"
-              (topicUpdate)="onTopicUpdate($any($event))"
-              (next)="currentStep.set('discussion')"
-              (previous)="currentStep.set('info')"
-            ></cos-step-topic-settings>
-          }
-          @case ('discussion') {
-            <cos-step-topic-discussion
-              [topic]="topic() | any"
-              (topicUpdate)="onTopicUpdate($any($event))"
-              (next)="currentStep.set('preview')"
-              (previous)="currentStep.set('settings')"
-            ></cos-step-topic-discussion>
-          }
-          @case ('preview') {
-            <cos-step-topic-preview
-              [topic]="topic() | any"
-              (previous)="currentStep.set('discussion')"
-              (save)="publishTopic()"
-            ></cos-step-topic-preview>
-          }
-        }
-      </div>
-    </div>
-  `,
-  styles: [`
-    .topic-create-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-
-    .create-header {
-      margin-bottom: 40px;
-      .create_heading {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 24px;
-
-        .small_heading {
-          font-size: 18px;
-          font-weight: 700;
-          color: var(--color-text);
-        }
-      }
-    }
-
-    .create-content {
-      position: relative;
-      background: var(--color-surfaces);
-      border-radius: var(--radius-lg);
-      padding: 32px;
-      box-shadow: var(--shadow-sm);
-      min-height: 400px;
-    }
-
-    .loading-overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(255,255,255,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      border-radius: var(--radius-lg);
-    }
-  `]
+  templateUrl: './topic-create.component.html',
+  styleUrl: './topic-create.component.scss'
 })
-export class TopicCreateComponent {
+export class TopicCreateComponent implements OnInit {
   private topicService = inject(TopicService);
   private uploadService = inject(UploadService);
+  private memberUserService = inject(TopicMemberUserService);
+  private inviteUserService = inject(TopicInviteUserService);
+  private discussionService = inject(TopicDiscussionService);
   private notification = inject(NotificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -154,9 +60,34 @@ export class TopicCreateComponent {
     status: 'draft'
   });
 
+  discussion = signal<DiscussionData>({ question: '', deadline: null });
   imageFile = signal<File | null>(null);
   isLoading = signal(false);
   currentStep = signal('info');
+
+  private reloadMembers$ = new BehaviorSubject<void>(void 0);
+
+  members = toSignal(
+    this.reloadMembers$.pipe(
+      switchMap(() => {
+        const id = this.topic().id;
+        if (id) return this.memberUserService.loadItems(id);
+        return of([]);
+      })
+    ),
+    { initialValue: [] }
+  );
+
+  invites = toSignal(
+    this.reloadMembers$.pipe(
+      switchMap(() => {
+        const id = this.topic().id;
+        if (id) return this.inviteUserService.loadItems(id);
+        return of([]);
+      })
+    ),
+    { initialValue: [] }
+  );
 
   steps: StepConfig[] = [
     { key: 'info', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_1', icon: 'edit' },
@@ -164,6 +95,30 @@ export class TopicCreateComponent {
     { key: 'discussion', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_3', icon: 'comment' },
     { key: 'preview', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_4', icon: 'eye' }
   ];
+
+  ngOnInit() {
+    const topicId = this.route.snapshot.paramMap.get('topicId');
+    if (!topicId) return;
+
+    this.isLoading.set(true);
+    this.topicService.get(topicId).subscribe({
+      next: (topic) => {
+        this.topic.set(topic);
+        this.reloadMembers$.next();
+        if (topic.discussionId) {
+          this.discussionService.get(topicId, topic.discussionId).subscribe({
+            next: (d) => this.discussion.set({ question: d.question, deadline: d.deadline }),
+            error: () => {}
+          });
+        }
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_LOAD_FAILED');
+      }
+    });
+  }
 
   onStepChange(step: string) {
     if (this.canNavigateTo(step)) {
@@ -178,6 +133,9 @@ export class TopicCreateComponent {
 
   onTopicUpdate(updates: Partial<Topic>) {
     this.topic.update(t => ({ ...t, ...updates }));
+    if (updates.id) {
+      this.reloadMembers$.next();
+    }
   }
 
   onImageFileUpdate(file: File | null) {
@@ -194,25 +152,69 @@ export class TopicCreateComponent {
     this.topicService.save(this.topic()).pipe(
       switchMap((newTopic: Topic) => {
         this.topic.set(newTopic);
+        this.reloadMembers$.next();
         if (this.imageFile()) {
           const path = `/api/users/self/topics/${newTopic.id}/image`;
           return this.uploadService.upload(path, this.imageFile()!);
         }
         return of(null);
       }),
-      catchError(err => {
+      catchError(() => {
         this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
-        throw err;
+        this.isLoading.set(false);
+        return of(null);
       })
-    ).subscribe(() => {
+    ).subscribe((result) => {
+      if (result !== null || !this.imageFile()) {
+        this.isLoading.set(false);
+        this.onStepChange('settings');
+      }
+    });
+  }
+
+  transitionToPreview() {
+    const t = this.topic();
+    const disc = this.discussion();
+
+    if (!t.id || !disc.question) {
+      this.currentStep.set('preview');
+      return;
+    }
+
+    this.isLoading.set(true);
+    const save$ = t.discussionId
+      ? this.discussionService.update(t.id, t.discussionId, disc)
+      : this.discussionService.create(t.id, disc);
+
+    save$.pipe(catchError(() => of(null))).subscribe((d) => {
+      if (d) this.topic.update(current => ({ ...current, discussionId: d.id }));
       this.isLoading.set(false);
-      this.currentStep.set('settings');
+      this.currentStep.set('preview');
     });
   }
 
   saveAsDraft() {
+    const t = this.topic();
+    if (!t.id) {
+      this.isLoading.set(true);
+      this.topicService.save(t).subscribe({
+        next: (savedTopic) => {
+          this.topic.set(savedTopic);
+          this.reloadMembers$.next();
+          this.isLoading.set(false);
+          this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
+          this.router.navigate(['/topics', savedTopic.id]);
+        },
+        error: () => {
+          this.isLoading.set(false);
+          this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
+        }
+      });
+      return;
+    }
+
     this.isLoading.set(true);
-    this.topicService.save(this.topic()).subscribe({
+    this.topicService.patch(t).subscribe({
       next: (savedTopic) => {
         this.topic.set(savedTopic);
         this.isLoading.set(false);
@@ -228,18 +230,42 @@ export class TopicCreateComponent {
 
   publishTopic() {
     this.isLoading.set(true);
-    const data = { ...this.topic(), status: 'inProgress' };
-    this.topicService.save(data).subscribe({
-      next: (savedTopic) => {
-        this.isLoading.set(false);
-        this.notification.showRaw('success', 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');
-        this.router.navigate(['/topics', savedTopic.id]);
-      },
-      error: () => {
+    const t = this.topic();
+    const disc = this.discussion();
+
+    const topicSave$ = t.id
+      ? this.topicService.patch({ ...t, status: 'inProgress' })
+      : this.topicService.save({ ...t, status: 'inProgress' });
+
+    topicSave$.pipe(
+      switchMap((savedTopic) => {
+        this.topic.set(savedTopic);
+        if (!disc.question) return of(savedTopic);
+        const discSave$ = savedTopic.discussionId
+          ? this.discussionService.update(savedTopic.id, savedTopic.discussionId, disc)
+          : this.discussionService.create(savedTopic.id, disc);
+        return forkJoin({ topic: of(savedTopic), discussion: discSave$.pipe(catchError(() => of(null))) });
+      }),
+      catchError(() => {
         this.isLoading.set(false);
         this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_PUBLISH_FAILED');
-      }
+        return of(null);
+      })
+    ).subscribe((result) => {
+      if (!result) return;
+      const savedTopic = (result as any).topic ?? result as Topic;
+      this.isLoading.set(false);
+      this.notification.showRaw('success', 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');
+      this.router.navigate(['/topics', savedTopic.id]);
     });
   }
-}
 
+  inviteEditors() {
+    const topicId = this.topic().id;
+    if (topicId) {
+      this.router.navigate(['/topics', topicId, 'settings']);
+    } else {
+      this.notification.showRaw('info', 'VIEWS.TOPIC_CREATE.SAVE_FIRST_TO_INVITE');
+    }
+  }
+}

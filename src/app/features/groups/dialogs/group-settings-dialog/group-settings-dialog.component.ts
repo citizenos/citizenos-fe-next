@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { DIALOG_DATA } from '../../../../shared/dialog/dialog-tokens';
@@ -28,6 +29,7 @@ export class GroupSettingsDialogComponent {
   private data = inject<GroupSettingsDialogData>(DIALOG_DATA);
   private dialogRef = inject(DialogRef);
   private groupDetailService = inject(GroupDetailService);
+  private platformId = inject(PLATFORM_ID);
   private countryService = inject(CountryService);
   private languageService = inject(LanguageService);
 
@@ -96,6 +98,10 @@ export class GroupSettingsDialogComponent {
 
   private resizeImage(file: File): Promise<{ file: File; imageUrl: string }> {
     return new Promise(resolve => {
+      if (!isPlatformBrowser(this.platformId)) {
+        resolve({ file, imageUrl: '' });
+        return;
+      }
       const reader = new FileReader();
       reader.onload = () => {
         const img = new Image();

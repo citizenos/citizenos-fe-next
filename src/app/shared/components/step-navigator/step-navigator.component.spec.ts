@@ -1,5 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { Component, ComponentRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { StepNavigatorComponent, StepConfig } from './step-navigator.component';
@@ -11,7 +11,6 @@ const mockSteps: StepConfig[] = [
   { key: 'preview', label: 'STEP_3', icon: 'eye' },
 ];
 
-// Host wrapper provides required inputs via template binding, avoiding NG0950
 @Component({
   standalone: true,
   imports: [StepNavigatorComponent, TranslateModule],
@@ -34,27 +33,30 @@ describe('StepNavigatorComponent', () => {
 
     hostFixture = TestBed.createComponent(TestHostComponent);
     hostComponent = hostFixture.componentInstance;
-    hostFixture.detectChanges();
-    component = hostFixture.debugElement.query(By.directive(StepNavigatorComponent)).componentInstance;
+    // detectChanges is called per-test so we can set initial state first
   });
 
   it('should create', () => {
+    hostFixture.detectChanges();
+    component = hostFixture.debugElement.query(By.directive(StepNavigatorComponent)).componentInstance;
     expect(component).toBeTruthy();
   });
 
   it('should render all steps', () => {
+    hostFixture.detectChanges();
     const tabs = hostFixture.nativeElement.querySelectorAll('.step-tab');
     expect(tabs.length).toBe(3);
   });
 
   it('should mark current step as active', () => {
+    hostFixture.detectChanges();
     const tabs = hostFixture.nativeElement.querySelectorAll('.step-tab');
     expect(tabs[0].classList.contains('active')).toBe(true);
     expect(tabs[1].classList.contains('active')).toBe(false);
   });
 
   it('should mark previous steps as completed', () => {
-    hostComponent.currentStep = 'settings';
+    hostComponent.currentStep = 'settings'; // set BEFORE first detectChanges
     hostFixture.detectChanges();
     const tabs = hostFixture.nativeElement.querySelectorAll('.step-tab');
     expect(tabs[0].classList.contains('completed')).toBe(true);
@@ -63,6 +65,8 @@ describe('StepNavigatorComponent', () => {
   });
 
   it('should emit stepChange on click', () => {
+    hostFixture.detectChanges();
+    component = hostFixture.debugElement.query(By.directive(StepNavigatorComponent)).componentInstance;
     const emitSpy = vi.spyOn(component.stepChange, 'emit');
     const tabs = hostFixture.nativeElement.querySelectorAll('.step-tab');
     tabs[1].click();
@@ -70,6 +74,7 @@ describe('StepNavigatorComponent', () => {
   });
 
   it('should display step numbers', () => {
+    hostFixture.detectChanges();
     const numbers = hostFixture.nativeElement.querySelectorAll('.step-number');
     expect(numbers[0].textContent.trim()).toBe('1.');
     expect(numbers[1].textContent.trim()).toBe('2.');

@@ -74,7 +74,7 @@
               }
               @if (isLoggedIn() && !isAdmin()) {
                 <div class="line_separator"></div>
-                <button class="option" (click)="groupActionsOpen.set(false)">
+                <button class="option" (click)="openRequestTopics(); groupActionsOpen.set(false)">
                   <div class="icon_wrap">
                     <cos-icon name="plus" [size]="16"></cos-icon>
                   </div>
@@ -83,7 +83,7 @@
               }
               @if (canShare()) {
                 <div class="line_separator"></div>
-                <div class="option" (click)="groupActionsOpen.set(false)">
+                <div class="option" (click)="openInvite(); groupActionsOpen.set(false)">
                   <div class="icon_wrap">
                     <cos-icon name="users" [size]="16"></cos-icon>
                   </div>
@@ -92,14 +92,14 @@
               }
               @if (isLoggedIn() && isAdmin()) {
                 <div class="line_separator"></div>
-                <div class="option" (click)="groupActionsOpen.set(false)">
+                <div class="option" (click)="openAddTopics(); groupActionsOpen.set(false)">
                   <div class="icon_wrap">
                     <cos-icon name="plus" [size]="16"></cos-icon>
                   </div>
                   <span translate="VIEWS.GROUP.BTN_OPTION_ADD_TOPICS"></span>
                 </div>
                 <div class="line_separator"></div>
-                <div class="option" (click)="groupActionsOpen.set(false)">
+                <div class="option" (click)="openSettings(); groupActionsOpen.set(false)">
                   <div class="icon_wrap">
                     <cos-icon name="edit" [size]="16"></cos-icon>
                   </div>
@@ -340,7 +340,7 @@
       <!-- Topics tab: create/manage button -->
       @if (tabSelected() === 'topics') {
         @if (isLoggedIn() && !isAdmin()) {
-          <button class="btn_medium_submit mobile_hidden" (click)="null">
+          <button class="btn_medium_submit mobile_hidden" (click)="openRequestTopics()">
             <svg width="25" height="24" viewBox="0 0 25 24" fill="none">
               <path d="M12.5 20C11.9711 20 11.5423 19.5712 11.5423 19.0423L11.5423 12.9577L5.45775 12.9577C4.9288 12.9577 4.5 12.5289 4.5 12C4.5 11.4711 4.9288 11.0423 5.45775 11.0423H11.5423V4.95775C11.5423 4.4288 11.9711 4 12.5 4C13.0289 4 13.4577 4.4288 13.4577 4.95775L13.4577 11.0423L19.5423 11.0423C20.0712 11.0423 20.5 11.4711 20.5 12C20.5 12.5289 20.0712 12.9577 19.5423 12.9577H13.4577V19.0423C13.4577 19.5712 13.0289 20 12.5 20Z" fill="white"/>
             </svg>
@@ -348,7 +348,7 @@
           </button>
         }
         @if (isLoggedIn() && isAdmin()) {
-          <button class="btn_medium_close mobile_hidden" (click)="null">
+          <button class="btn_medium_close mobile_hidden" (click)="openTopicRequests()">
             <cos-icon name="more-vertical" [size]="24"></cos-icon>
             <span translate="VIEWS.GROUP.BTN_MANAGE_TOPICS"></span>
           </button>
@@ -357,7 +357,7 @@
 
       <!-- Members tab: manage button -->
       @if (tabSelected() === 'members' && (isLoggedIn() && (group.visibility === 'public' || isAdmin()))) {
-        <button class="btn_medium_close mobile_hidden" (click)="null">
+        <button class="btn_medium_close mobile_hidden" (click)="openInvite()">
           <cos-icon name="more-vertical" [size]="24"></cos-icon>
           <span translate="VIEWS.GROUP.BTN_MANAGE_MEMBERS"></span>
         </button>
@@ -500,6 +500,32 @@
             </div>
             <div class="level">
               <span [translate]="'TXT_GROUP_LEVELS_' + member.level.toUpperCase()"></span>
+              @if (isAdmin()) {
+                <div class="member_actions" (click)="$event.stopPropagation()">
+                  <button class="btn_medium_close icon" (click)="activeMemberMenuId.set(activeMemberMenuId() === member.id ? null : member.id)">
+                    <cos-icon name="more-vertical" [size]="24"></cos-icon>
+                  </button>
+                  @if (activeMemberMenuId() === member.id) {
+                    <div class="options">
+                      @for (level of MEMBER_LEVELS; track level) {
+                        <button class="option" (click)="updateMemberLevel(member, level); activeMemberMenuId.set(null)">
+                          <div class="icon_wrap">
+                            <cos-icon name="settings" [size]="16"></cos-icon>
+                          </div>
+                          <span [innerHTML]="'COMPONENTS.GROUP_MEMBER_USER.SET_MEMBER_PERMISSIONS' | translate:{level: ('TXT_GROUP_LEVELS_' + level.toUpperCase()) | translate}"></span>
+                        </button>
+                        <div class="line_separator"></div>
+                      }
+                      <button class="option error_text" (click)="confirmRemoveMember(member); activeMemberMenuId.set(null)">
+                        <div class="icon_wrap">
+                          <cos-icon name="trash" [size]="16"></cos-icon>
+                        </div>
+                        <span translate="COMPONENTS.GROUP_MEMBER_USER.BTN_REMOVE"></span>
+                      </button>
+                    </div>
+                  }
+                </div>
+              }
             </div>
           </div>
         } @empty {
