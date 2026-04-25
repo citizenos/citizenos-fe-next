@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -15,6 +16,7 @@ import { GroupCardComponent } from '../../shared/components/group-card/group-car
 @Component({
   selector: 'app-home',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   imports: [
@@ -32,9 +34,10 @@ export class HomeComponent implements OnInit {
   private topicService = inject(PublicTopicService);
   private groupService = inject(PublicGroupService);
   private homeService = inject(HomeService);
+  private platformId = inject(PLATFORM_ID);
 
   private getLimit() {
-    return window.innerWidth < 560 ? 3 : 8;
+    return isPlatformBrowser(this.platformId) && window.innerWidth < 560 ? 3 : 8;
   }
 
   stats = toSignal(this.homeService.getStats());

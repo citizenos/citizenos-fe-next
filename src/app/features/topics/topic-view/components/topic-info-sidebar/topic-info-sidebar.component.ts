@@ -4,13 +4,14 @@ import { RouterModule } from '@angular/router';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { Topic } from '../../../../../core/interfaces/topic';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-topic-info-sidebar',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, RouterModule],
+  imports: [TranslateModule, RouterModule, IconComponent],
   templateUrl: './topic-info-sidebar.component.html',
   styleUrls: ['./topic-info-sidebar.component.scss'],
   animations: [

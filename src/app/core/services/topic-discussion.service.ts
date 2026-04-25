@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, EMPTY } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response';
 import { Discussion, DiscussionData } from '../interfaces/discussion';
 import { ConfigStore } from '../state/config.store';
@@ -15,18 +15,27 @@ export class TopicDiscussionService {
   }
 
   get(topicId: string, discussionId: string): Observable<Discussion> {
+    if (!topicId || !discussionId || topicId === 'undefined' || discussionId === 'undefined') {
+      return EMPTY;
+    }
     return this.http
       .get<ApiResponse<Discussion>>(`${this.base(topicId)}/${discussionId}`, { withCredentials: true })
       .pipe(map(r => r.data!));
   }
 
   create(topicId: string, payload: DiscussionData): Observable<Discussion> {
+    if (!topicId || topicId === 'undefined') {
+       return EMPTY;
+    }
     return this.http
       .post<ApiResponse<Discussion>>(this.base(topicId), payload, { withCredentials: true })
       .pipe(map(r => r.data!));
   }
 
   update(topicId: string, discussionId: string, payload: DiscussionData): Observable<Discussion> {
+    if (!topicId || !discussionId || topicId === 'undefined' || discussionId === 'undefined') {
+      return EMPTY;
+    }
     return this.http
       .put<ApiResponse<Discussion>>(`${this.base(topicId)}/${discussionId}`, payload, { withCredentials: true })
       .pipe(map(r => r.data!));

@@ -28,6 +28,30 @@ export class TopicIdeationService extends ItemsListService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
   private topicService = inject(TopicService);
+  public readonly IDEA_REPORT_TYPES = {
+    obscene: 'obscene',
+    spam: 'spam',
+    hate: 'hate',
+    duplicate: 'duplicate',
+    other: 'other'
+  };
+
+  public readonly COMMENT_TYPES = {
+    reply: 'reply'
+  };
+
+  public readonly COMMENT_TYPES_MAXLENGTH = {
+    reply: 2048
+  };
+
+  public readonly COMMENT_REPORT_TYPES = {
+    abuse: 'abuse',
+    obscene: 'obscene',
+    spam: 'spam',
+    hate: 'hate',
+    duplicate: 'duplicate',
+    other: 'other'
+  };
 
   readonly STATUSES = this.topicService.STATUSES;
 
@@ -182,6 +206,118 @@ export class TopicIdeationService extends ItemsListService {
   reportIdea(data: { topicId: string; ideationId: string; ideaId: string; type: string; text?: string }): Observable<any> {
     const { topicId, ideationId, ideaId, ...body } = data;
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/reports`);
+    return this.http.post<ApiResponse<any>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  // --- Folder methods ---
+
+  getFolders(params: { topicId: string; ideationId: string; [key: string]: any }): Observable<{ rows: any[]; count: any }> {
+    const { topicId, ideationId, ...rest } = params;
+    let httpParams = new HttpParams();
+    Object.entries(rest).forEach(([k, v]) => {
+      if (v !== null && v !== undefined) httpParams = httpParams.set(k, String(v));
+    });
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/ideations/${ideationId}/folders`);
+    return this.http.get<ApiResponse<any>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
+      .pipe(map(res => ({ rows: res.data?.rows ?? [], count: res.data?.count ?? 0 })));
+  }
+
+  getFolder(params: { topicId: string; ideationId: string; folderId: string }): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations/${params.ideationId}/folders/${params.folderId}`);
+    return this.http.get<ApiResponse<any>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  createFolder(data: { topicId: string; ideationId: string; name: string; description?: string }): Observable<any> {
+    const { topicId, ideationId, ...body } = data;
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/ideations/${ideationId}/folders`);
+    return this.http.post<ApiResponse<any>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  updateFolder(data: { topicId: string; ideationId: string; folderId: string; name?: string; description?: string }): Observable<any> {
+    const { topicId, ideationId, folderId, ...body } = data;
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/ideations/${ideationId}/folders/${folderId}`);
+    return this.http.put<ApiResponse<any>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  deleteFolder(params: { topicId: string; ideationId: string; folderId: string }): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations/${params.ideationId}/folders/${params.folderId}`);
+    return this.http.delete<ApiResponse<any>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  addIdeaToFolder(params: { topicId: string; ideationId: string; folderId: string }, ideaIds: string[] | string): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations/${params.ideationId}/folders/${params.folderId}/ideas`);
+    const body = Array.isArray(ideaIds) ? ideaIds.map(id => ({ id })) : [{ id: ideaIds }];
+    return this.http.post<ApiResponse<any>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  removeIdeaFromFolder(params: { topicId: string; ideationId: string; folderId: string; ideaId: string }): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations/${params.ideationId}/folders/${params.folderId}/ideas/${params.ideaId}`);
+    return this.http.delete<ApiResponse<any>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  addFoldersToIdea(params: { topicId: string; ideationId: string; ideaId: string }, folderIds: string[] | string): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations/${params.ideationId}/ideas/${params.ideaId}/folders`);
+    const body = Array.isArray(folderIds) ? folderIds.map(id => ({ id })) : [{ id: folderIds }];
+    return this.http.post<ApiResponse<any>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  getIdeaFolders(params: { topicId: string; ideationId: string; ideaId: string }): Observable<{ rows: any[]; count: any }> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations/${params.ideationId}/ideas/${params.ideaId}/folders`);
+    return this.http.get<ApiResponse<any>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => ({ rows: res.data?.rows ?? [], count: res.data?.count ?? 0 })));
+  }
+
+  // --- Idea Comment (Reply) methods ---
+
+  getIdeaComments(params: { topicId: string; ideationId: string; ideaId: string; [key: string]: any }): Observable<{ rows: any[]; count: any }> {
+    const { topicId, ideationId, ideaId, ...rest } = params;
+    let httpParams = new HttpParams();
+    Object.entries(rest).forEach(([k, v]) => {
+      if (v !== null && v !== undefined) httpParams = httpParams.set(k, String(v));
+    });
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/comments`);
+    return this.http.get<ApiResponse<any>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
+      .pipe(map(res => ({ rows: res.data?.rows ?? [], count: res.data?.count ?? 0 })));
+  }
+
+  saveIdeaComment(data: { topicId: string; ideationId: string; ideaId: string; [key: string]: any }): Observable<any> {
+    const { topicId, ideationId, ideaId, ...body } = data;
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/comments`);
+    return this.http.post<ApiResponse<any>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  updateIdeaComment(data: { topicId: string; ideationId: string; ideaId: string; commentId: string; [key: string]: any }): Observable<any> {
+    const { topicId, ideationId, ideaId, commentId, ...body } = data;
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/comments/${commentId}`);
+    return this.http.put<ApiResponse<any>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  deleteIdeaComment(params: { topicId: string; ideationId: string; ideaId: string; commentId: string }): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations/${params.ideationId}/ideas/${params.ideaId}/comments/${params.commentId}`);
+    return this.http.delete<ApiResponse<any>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  voteIdeaComment(params: { topicId: string; ideationId: string; ideaId: string; commentId: string; value: number }): Observable<any> {
+    const { topicId, ideationId, ideaId, commentId, value } = params;
+    const path = this.getAbsoluteUrlApi(`/api/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/comments/${commentId}/votes`);
+    return this.http.post<ApiResponse<any>>(path, { value }, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data));
+  }
+
+  reportIdeaComment(data: { topicId: string; ideationId: string; ideaId: string; commentId: string; type: string; text?: string }): Observable<any> {
+    const { topicId, ideationId, ideaId, commentId, ...body } = data;
+    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/comments/${commentId}/reports`);
     return this.http.post<ApiResponse<any>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }

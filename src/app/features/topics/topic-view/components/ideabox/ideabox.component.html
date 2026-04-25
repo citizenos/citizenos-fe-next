@@ -60,13 +60,14 @@
 
     @if (userStore.user()) {
       <div class="idea_header_right">
-        <div class="dropdown button_dropdown">
-          <button class="btn_small_plain icon">
-              <cos-icon name="more-vertical" />
-          </button>
-          <div class="options button_options">
+        <cos-dropdown class="button_dropdown">
+           <button selection class="btn_small_plain icon">
+               <cos-icon name="more-vertical" />
+           </button>
+           <div options>
             @if (!isDraft()) {
               <button class="option" (click)="toggleFavourite()">
+                <cos-icon name="heart" size="16"/>
                 <span>{{ (idea().favourite ? 'COMPONENTS.IDEABOX.OPTION_UNFAVOURITE' : 'COMPONENTS.IDEABOX.OPTION_FAVOURITE') | translate }}</span>
               </button>
             }
@@ -76,11 +77,12 @@
                 <div class="line_separator"></div>
               }
               <button class="option error_text" (click)="confirmDelete()">
+                <cos-icon name="trash" size="16"/>
                 <span translate="COMPONENTS.IDEABOX.OPTION_REMOVE"></span>
               </button>
             }
           </div>
-        </div>
+        </cos-dropdown>
       </div>
     }
   </div>
@@ -92,9 +94,44 @@
   <div class="idea_footer">
     @if (!isDraft()) {
       <div class="date">{{ idea().createdAt | date:'y-MM-dd HH:mm' }}</div>
-      <div class="replies_count">{{ 'COMPONENTS.IDEABOX.REPLIES' | translate:{ count: idea().replies?.count ?? 0 } }}</div>
+      <div class="replies_count" (click)="toggleReplies()">
+        {{ 'COMPONENTS.IDEABOX.REPLIES' | translate:{ count: idea().replies?.count ?? 0 } }}
+      </div>
     } @else {
       <div class="date">{{ 'COMPONENTS.IDEABOX.DRAFT_UPDATED_AT' | translate:{ date: (idea().updatedAt | date:'y-MM-dd HH:mm') } }}</div>
     }
   </div>
+
+  @if (showReplies()) {
+    <div class="replies_section">
+        @if (userStore.isAuthenticated()) {
+            <div class="reply_form_toggle" (click)="showReplyInput.set(!showReplyInput())">
+                <cos-icon name="edit" size="16"></cos-icon>
+                <span translate="COMPONENTS.IDEA_REPLY.BTN_REPLY"></span>
+            </div>
+            @if (showReplyInput()) {
+                <app-idea-reply-form
+                    [topicId]="topic().id"
+                    [ideationId]="ideation().id"
+                    [ideaId]="idea().id"
+                    (showReplyChange)="showReplyInput.set($event)"
+                    (showRepliesChange)="loadReplies()">
+                </app-idea-reply-form>
+            }
+        }
+
+        <div class="replies_list">
+            @for (reply of replies(); track reply.id) {
+                <app-idea-reply
+                    [argument]="reply"
+                    [topicId]="topic().id"
+                    [ideationId]="ideation().id"
+                    [ideaId]="idea().id">
+                </app-idea-reply>
+            } @empty {
+                <div class="no_replies" translate="COMPONENTS.IDEABOX.NO_REPLIES"></div>
+            }
+        </div>
+    </div>
+  }
 </div>

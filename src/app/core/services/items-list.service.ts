@@ -1,5 +1,5 @@
 import { Injectable, signal, Signal, computed } from '@angular/core';
-import { BehaviorSubject, shareReplay, switchMap, map, combineLatest, Observable, debounceTime } from 'rxjs';
+import { BehaviorSubject, shareReplay, switchMap, map, combineLatest, Observable, debounceTime, tap, catchError } from 'rxjs';
 
 export interface ListParams {
   page: number;
@@ -14,8 +14,8 @@ export interface ListParams {
 @Injectable({
   providedIn: 'root'
 })
-export abstract class ItemsListService {
-  protected defaultParams: ListParams = {
+export abstract class ItemsListService<T extends ListParams = ListParams> {
+  protected defaultParams: T = {
     page: 1,
     offset: 0,
     limit: 10,
@@ -23,14 +23,15 @@ export abstract class ItemsListService {
     orderBy: null,
     sourcePartnerId: null,
     search: null
-  };
+  } as T;
 
-  params = new BehaviorSubject<ListParams>({ ...this.defaultParams });
+  params = new BehaviorSubject<T>({ ...this.defaultParams });
   page = new BehaviorSubject<number>(1);
   
   countTotal = new BehaviorSubject<number>(0);
   totalPages = new BehaviorSubject<number>(1);
   hasMore = new BehaviorSubject<boolean>(false);
+  isLoading$ = new BehaviorSubject<boolean>(false);
 
   items$: Observable<any[]>;
 
@@ -38,12 +39,19 @@ export abstract class ItemsListService {
     this.items$ = this.loadItems();
   }
 
-  protected loadItems(): Observable<any[]> {
+  public loadItems(): Observable<any[]> {
     return combineLatest([this.page, this.params]).pipe(
       debounceTime(0),
       switchMap(([page, paramsValue]) => {
+        this.isLoading$.next(true);
         const offset = (page - 1) * paramsValue.limit;
-        return this.getItems({ ...paramsValue, offset, page });
+        return this.getItems({ ...paramsValue, offset, page }).pipe(
+          tap(() => this.isLoading$.next(false)),
+          catchError((err) => {
+            this.isLoading$.next(false);
+            throw err;
+          })
+        );
       }),
       map((res: any) => {
         const count = res.countTotal || res.count || 0;
@@ -63,7 +71,7 @@ export abstract class ItemsListService {
 
   abstract getItems(params: ListParams): Observable<any>;
 
-  setParam(param: keyof ListParams, value: any) {
+  setParam(param: keyof T, value: any) {
     const current = this.params.value;
     this.params.next({ ...current, [param]: value });
     this.page.next(1); // Reset to first page on param change

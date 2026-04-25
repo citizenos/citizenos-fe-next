@@ -17,7 +17,7 @@ export interface TopicArgumentParams extends ListParams {
 @Injectable({
   providedIn: 'root'
 })
-export class TopicArgumentService extends ItemsListService {
+export class TopicArgumentService extends ItemsListService<TopicArgumentParams> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
 
@@ -87,6 +87,9 @@ export class TopicArgumentService extends ItemsListService {
       }
     });
 
+    if (!params.topicId || !params.discussionId) {
+      return EMPTY;
+    }
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/discussions/${params.discussionId}/comments`);
     return this.http.get<ApiResponse<any>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' });
   }

@@ -28,7 +28,8 @@ describe('UserStore', () => {
     httpMock = TestBed.inject(HttpTestingController);
     store = TestBed.inject(UserStore);
 
-    // Handle initial checkStatus() call from withHooks onInit
+    // Call initial checkStatus() manually as we removed onInit hook
+    store.checkStatus();
     const req = httpMock.expectOne('https://dev.api.citizenos.com:3003/api/auth/status');
     req.flush({ data: null });
   });

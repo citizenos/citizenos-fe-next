@@ -1,1 +1,47 @@
-<div></div>
+<div class="info_section">
+  <div class="info_items_wrap">
+    <div class="info_header">
+      <div class="info_title" translate="VIEWS.TOPIC_INFO.HEADING_INFORMATION"></div>
+    </div>
+    
+    <!-- Attachments -->
+    <div class="info_title" (click)="showAttachments = !showAttachments">
+      <span translate="VIEWS.TOPIC_INFO.LBL_ATTACHMENTS"></span>
+      <span class="icon">
+        <cos-icon [name]="showAttachments ? 'chevron-up' : 'chevron-down'" size="16"></cos-icon>
+      </span>
+    </div>
+    @if (showAttachments) {
+      <div class="info_items">
+        @for (attachment of attachments(); track attachment.id) {
+          <a class="info_item" (click)="onDownloadAttachment($event, attachment)">
+            <cos-icon name="download" size="14"></cos-icon>
+            {{ attachment.name }}
+          </a>
+        } @empty {
+          <div class="info_item" translate="VIEWS.TOPIC_INFO.NO_ATTACHMENTS"></div>
+        }
+      </div>
+    }
+
+    <!-- Groups -->
+    <div class="info_title" (click)="showGroups = !showGroups">
+      <span translate="VIEWS.TOPIC_INFO.LBL_GROUPS"></span>
+      <span class="icon">
+        <cos-icon [name]="showGroups ? 'chevron-up' : 'chevron-down'" size="16"></cos-icon>
+      </span>
+    </div>
+    @if (showGroups) {
+      <div class="info_items">
+        @for (group of groups(); track group.id) {
+          <a class="info_item" [routerLink]="['/', 'groups', group.id]">
+            <cos-icon name="groups" size="14"></cos-icon>
+            {{ group.name }}
+          </a>
+        } @empty {
+          <div class="info_item" translate="VIEWS.TOPIC_INFO.NO_GROUPS"></div>
+        }
+      </div>
+    }
+  </div>
+</div>

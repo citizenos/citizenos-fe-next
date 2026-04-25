@@ -1,4 +1,5 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection, provideAppInitializer, inject } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService, TranslateLoader, provideTranslateCompiler, TranslateCompiler } from '@ngx-translate/core';
@@ -6,15 +7,21 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { routes } from './app.routes';
 import { JSONPointerCompiler } from './core/translate/json-pointer.compiler';
+import { UserStore } from './core/state/user.store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimationsAsync(),
     provideZonelessChangeDetection(),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withFetch()),
     provideTranslateService({ defaultLanguage: 'en' }),
     provideTranslateHttpLoader(),
-    provideTranslateCompiler(JSONPointerCompiler)
+    provideTranslateCompiler(JSONPointerCompiler),
+    provideAppInitializer(() => {
+      const userStore = inject(UserStore);
+      return userStore.checkStatus();
+    })
   ]
 };

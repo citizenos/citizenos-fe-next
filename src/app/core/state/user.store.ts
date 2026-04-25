@@ -150,10 +150,5 @@ export const UserStore = signalStore(
         }
       }
     };
-  }),
-  withHooks({
-    onInit(store) {
-      store.checkStatus();
-    }
   })
 );

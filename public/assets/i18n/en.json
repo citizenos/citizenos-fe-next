@@ -2833,6 +2833,11 @@
       "NOTIFICATION_SUCCESS_TITLE": "Topic successfully updated",
       "NOTIFICATION_SUCCESS_MESSAGE": "You have successfully updated your topic!"
     },
+    "TOPIC_INFO": {
+      "HEADING_INFORMATION": "Information",
+      "LBL_ATTACHMENTS": "Attachments",
+      "LBL_GROUPS": "Groups"
+    },
     "TOPICS_TOPICID": {
       "BTN_ACTIVITIES": "Topic activity",
       "LBL_JOINED": "Joined topic",

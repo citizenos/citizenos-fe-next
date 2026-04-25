@@ -1,0 +1,129 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.5 [39m[90m/home/ilmar/citizenos/citizenos-fe-next[39m
+
+[90mstderr[2m | src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts[2m > [22m[2mIdeaReportComponent[2m > [22m[2mshould create
+[22m[39mNG0303: Can't bind to 'placeholder' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'placeholder' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'placeholder' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'placeholder' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'hasError' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'hasError' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'errorMessage' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'errorMessage' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'name' since it isn't a known property of 'cos-initials' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-initials' is an Angular component and it has the 'name' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-initials' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+[90mstderr[2m | src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts[2m > [22m[2mIdeaReportComponent[2m > [22m[2mshould validate form
+[22m[39mNG0303: Can't bind to 'placeholder' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'placeholder' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'placeholder' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'placeholder' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'hasError' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'hasError' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'errorMessage' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'errorMessage' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'name' since it isn't a known property of 'cos-initials' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-initials' is an Angular component and it has the 'name' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-initials' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+[90mstderr[2m | src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts[2m > [22m[2mIdeaReportComponent[2m > [22m[2mshould call service on doReport
+[22m[39mNG0303: Can't bind to 'placeholder' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'placeholder' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'placeholder' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'placeholder' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'hasError' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'hasError' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'errorMessage' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'errorMessage' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'name' since it isn't a known property of 'cos-initials' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-initials' is an Angular component and it has the 'name' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-initials' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+[90mstderr[2m | src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts[2m > [22m[2mIdeaReportComponent[2m > [22m[2mshould handle error on doReport
+[22m[39mNG0303: Can't bind to 'placeholder' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'placeholder' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'placeholder' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'placeholder' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'hasError' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'hasError' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'errorMessage' since it isn't a known property of 'cos-input' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-input' is an Angular component and it has the 'errorMessage' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-input' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+NG0303: Can't bind to 'name' since it isn't a known property of 'cos-initials' (used in the 'IdeaReportComponent' component template).
+1. If 'cos-initials' is an Angular component and it has the 'name' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-initials' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+ [31m❯[39m src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts [2m([22m[2m4 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 142[2mms[22m[39m
+[31m     [31m×[31m should create[39m[32m 105[2mms[22m[39m
+[31m     [31m×[31m should validate form[39m[32m 14[2mms[22m[39m
+[31m     [31m×[31m should call service on doReport[39m[32m 12[2mms[22m[39m
+[31m     [31m×[31m should handle error on doReport[39m[32m 11[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 4 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts[2m > [22mIdeaReportComponent[2m > [22mshould create
+[41m[1m FAIL [22m[49m src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts[2m > [22mIdeaReportComponent[2m > [22mshould validate form
+[41m[1m FAIL [22m[49m src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts[2m > [22mIdeaReportComponent[2m > [22mshould call service on doReport
+[41m[1m FAIL [22m[49m src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts[2m > [22mIdeaReportComponent[2m > [22mshould handle error on doReport
+[31m[1mError[22m: NG0950: Input is required but no value is available yet. Find more at https://v21.angular.dev/errors/NG0950[39m
+[90m [2m❯[22m IconComponent.inputValueFn [as name] ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/authoring/input/input_signal.ts:[2m137:12[22m[39m
+[36m [2m❯[22m Object.computation src/app/shared/components/icon/icon.component.ts:[2m43:45[22m[39m
+    [90m 41|[39m
+    [90m 42|[39m   safeSvgContent [33m=[39m [34mcomputed[39m(() [33m=>[39m {
+    [90m 43|[39m     [35mconst[39m data [33m=[39m [35mthis[39m[33m.[39mregistry[33m.[39m[34mgetIcon[39m([35mthis[39m[33m.[39m[34mname[39m())[33m;[39m
+    [90m   |[39m                                             [31m^[39m
+    [90m 44|[39m     return data ? this.sanitizer.bypassSecurityTrustHtml(data.content)…
+    [90m 45|[39m   })[33m;[39m
+[90m [2m❯[22m computation ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/primitives/signals/src/computed.ts:[2m147:24[22m[39m
+[90m [2m❯[22m producerRecomputeValue ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/primitives/signals/src/graph.ts:[2m318:7[22m[39m
+[90m [2m❯[22m producerUpdateValueVersion ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/primitives/signals/src/computed.ts:[2m72:4[22m[39m
+[90m [2m❯[22m IconComponent_Template ng:/IconComponent.js:[2m12:45[22m[39m
+[90m [2m❯[22m templateFn ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:[2m109:4[22m[39m
+[90m [2m❯[22m executeTemplate ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:[2m232:6[22m[39m
+[90m [2m❯[22m refreshView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:[2m497:4[22m[39m
+[90m [2m❯[22m detectChangesInView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:[2m445:2[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[90m (4)[39m
+[2m   Start at [22m 16:18:33
+[2m   Duration [22m 1.29s[2m (transform 94ms, setup 114ms, import 168ms, tests 142ms, environment 249ms)[22m
+

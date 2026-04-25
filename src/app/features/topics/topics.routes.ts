@@ -40,7 +40,13 @@ export const TOPICS_ROUTES: Routes = [
   {
     path: ':topicId',
     children: [
-      { path: '', loadComponent: () => import('./topic-view/topic-view.component').then(m => m.TopicViewComponent) }
+      { path: '', loadComponent: () => import('./topic-view/topic-view.component').then(m => m.TopicViewComponent) },
+      {
+        path: 'votes',
+        children: [
+          { path: ':voteId', loadComponent: () => import('./vote-create/vote-create.component').then(m => m.VoteCreateComponent) }
+        ]
+      }
     ]
   }
 ];

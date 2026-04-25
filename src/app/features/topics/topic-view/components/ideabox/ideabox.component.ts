@@ -1,4 +1,4 @@
-import { Component, input, output, inject } from '@angular/core';
+import { Component, input, output, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,11 +15,15 @@ import { IdeaReactionsComponent } from '../idea-reactions/idea-reactions.compone
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
+import { IdeaReplyComponent } from '../idea-reply/idea-reply.component';
+import { IdeaReplyFormComponent } from '../idea-reply-form/idea-reply-form.component';
+import { CommonModule } from '@angular/common';
+import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-ideabox',
   standalone: true,
-  imports: [DatePipe, TranslateModule, RouterModule, InitialsComponent, IconComponent],
+  imports: [CommonModule, DatePipe, TranslateModule, RouterModule, InitialsComponent, IconComponent, IdeaReplyComponent, IdeaReplyFormComponent, DropdownComponent],
   templateUrl: './ideabox.component.html',
   styleUrls: ['./ideabox.component.scss'],
 })
@@ -37,6 +41,9 @@ export class IdeaboxComponent {
   userStore = inject(UserStore);
 
   IdeaStatus = IdeaStatus;
+  showReplies = signal(false);
+  showReplyInput = signal(false);
+  replies = signal<any[]>([]);
 
   isDraft() {
     return this.idea().status === IdeaStatus.draft;
@@ -117,6 +124,23 @@ export class IdeaboxComponent {
           this.ideaDeleted.emit(this.idea());
         });
       }
+    });
+  }
+
+  toggleReplies() {
+    this.showReplies.set(!this.showReplies());
+    if (this.showReplies() && !this.replies().length) {
+      this.loadReplies();
+    }
+  }
+
+  loadReplies() {
+    this.ideationService.getIdeaComments({
+      topicId: this.topic().id,
+      ideationId: this.ideation().id,
+      ideaId: this.idea().id
+    }).subscribe(res => {
+      this.replies.set(res.rows);
     });
   }
 }

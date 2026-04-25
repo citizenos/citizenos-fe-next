@@ -13,7 +13,6 @@ import { CreateMenuComponent } from '../../shared/components/create-menu/create-
 import { TopicCardComponent } from '../../shared/components/topic-card/topic-card.component';
 import { GroupCardComponent } from '../../shared/components/group-card/group-card.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
-import { DashboardListSectionComponent } from '../../shared/components/dashboard-list-section/dashboard-list-section.component';
 import { PageHeaderComponent } from '../../core/components/shell/page-header/page-header.component';
 import { News } from '../../core/interfaces/news';
 
@@ -21,7 +20,7 @@ import { News } from '../../core/interfaces/news';
   selector: 'app-dashboard',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, DatePipe, TranslateModule, CreateMenuComponent, TopicCardComponent, GroupCardComponent, IconComponent, PageHeaderComponent, DashboardListSectionComponent],
+  imports: [RouterLink, DatePipe, TranslateModule, CreateMenuComponent, TopicCardComponent, GroupCardComponent, IconComponent, PageHeaderComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
@@ -36,16 +35,18 @@ export class DashboardComponent {
 
   readonly showCreate = signal(false);
 
-  readonly myTopics = toSignal(this.userTopicService.items$, { initialValue: [] });
-  readonly publicTopics = toSignal(this.publicTopicService.items$, { initialValue: [] });
-  readonly myGroups = toSignal(this.userGroupService.getPreview(8), { initialValue: [] });
-  readonly publicGroups = toSignal(this.publicGroupService.getPreview(8), { initialValue: [] });
+  readonly myTopics = toSignal(this.userTopicService.loadItems(), { initialValue: [] });
+  readonly publicTopics = toSignal(this.publicTopicService.loadItems(), { initialValue: [] });
+  readonly myGroups = toSignal(this.userGroupService.loadItems(), { initialValue: [] });
+  readonly publicGroups = toSignal(this.publicGroupService.loadItems(), { initialValue: [] });
 
   private readonly allNews = toSignal(
     this.newsService.get().pipe(
       map((items: News[]) => items.map(item => {
-        const match = item.content.match(/<img[^>]+src="([^"]+)"/);
-        return match ? { ...item, imageUrl: match[1] } : item;
+        const el = document.createElement('div');
+        el.innerHTML = item.content;
+        const img = el.querySelector('img');
+        return img ? { ...item, imageUrl: img.src } : item;
       }))
     ),
     { initialValue: [] }

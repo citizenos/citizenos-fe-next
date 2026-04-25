@@ -144,6 +144,50 @@
   justify-content: space-between;
   font-size: 13px;
   color: #4D5C6A;
+
+  .replies_count {
+    cursor: pointer;
+    font-weight: 600;
+    color: #2563EB;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.replies_section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #E8EEF2;
+}
+
+.reply_form_toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: #2563EB;
+  font-weight: 600;
+  margin-bottom: 16px;
+  font-size: 14px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.replies_list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.no_replies {
+  font-style: italic;
+  color: #9CA3AF;
+  text-align: center;
+  padding: 12px;
 }
 
 .button_dropdown {

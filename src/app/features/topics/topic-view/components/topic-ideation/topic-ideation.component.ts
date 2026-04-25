@@ -1,8 +1,9 @@
-import { Component, input, inject, signal, OnInit, effect } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, input, inject, signal, effect, computed, ChangeDetectionStrategy, PLATFORM_ID } from '@angular/core';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
+import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
-import { switchMap, map, BehaviorSubject, combineLatest, take } from 'rxjs';
+import { switchMap, map, take } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -16,12 +17,15 @@ import { SearchInputComponent } from '../../../../../shared/components/search-in
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
+import { ListFilterToolbarComponent, FilterConfig } from '../../../../../shared/components/list-filter-toolbar/list-filter-toolbar.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 const PAGE_SIZE = 15;
 
 @Component({
   selector: 'app-topic-ideation',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,
     TranslateModule,
@@ -30,17 +34,20 @@ const PAGE_SIZE = 15;
     AddIdeaComponent,
     SearchInputComponent,
     PaginationComponent,
+    ListFilterToolbarComponent,
+    IconComponent
   ],
   templateUrl: './topic-ideation.component.html',
   styleUrls: ['./topic-ideation.component.scss'],
 })
-export class TopicIdeationComponent implements OnInit {
+export class TopicIdeationComponent {
   topic = input.required<Topic>();
   ideation = input.required<Ideation>();
 
   private ideationService = inject(TopicIdeationService);
   private topicService = inject(TopicService);
   private dialogService = inject(DialogService);
+  private platformId = inject(PLATFORM_ID);
   userStore = inject(UserStore);
 
   ideas = signal<Idea[]>([]);
@@ -49,65 +56,78 @@ export class TopicIdeationComponent implements OnInit {
   showAddIdea = signal(false);
   currentPage = signal(1);
   searchValue = signal('');
-
-  searchFilter = new BehaviorSubject('');
-  typeFilter = new BehaviorSubject('');
-  orderFilter = new BehaviorSubject('');
-  page = new BehaviorSubject(1);
+  selectedOrder = signal('');
+  selectedType = signal('');
+  private refreshTrigger = signal(0);
 
   Math = Math;
 
   ORDER_OPTIONS = [
-    { value: '', label: 'COMPONENTS.TOPIC_IDEATION.ORDER_NEWEST' },
+    { value: 'all', label: 'COMPONENTS.TOPIC_IDEATION.ORDER_NEWEST' },
     { value: 'rating', label: 'COMPONENTS.TOPIC_IDEATION.ORDER_RATING' },
     { value: 'popularity', label: 'COMPONENTS.TOPIC_IDEATION.ORDER_POPULARITY' },
   ];
 
   TYPE_OPTIONS = [
-    { value: '', label: 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' },
+    { value: 'all', label: 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' },
     { value: 'favourite', label: 'COMPONENTS.TOPIC_IDEATION.FILTER_FAVOURITE' },
     { value: 'iCreated', label: 'COMPONENTS.TOPIC_IDEATION.FILTER_MY_IDEAS' },
   ];
 
-  selectedOrder = signal('');
-  selectedType = signal('');
+  filterConfig = computed<FilterConfig[]>(() => [
+    {
+      key: 'type',
+      placeholder: 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL',
+      selectedValue: this.selectedType(),
+      items: this.TYPE_OPTIONS.map(o => ({ title: o.label, value: o.value }))
+    },
+    {
+      key: 'order',
+      placeholder: 'COMPONENTS.TOPIC_IDEATION.ORDER_NEWEST',
+      selectedValue: this.selectedOrder(),
+      items: this.ORDER_OPTIONS.map(o => ({ title: o.label, value: o.value }))
+    }
+  ]);
+
+  private queryParams = computed(() => ({
+    search: this.searchValue(),
+    type: this.selectedType(),
+    order: this.selectedOrder(),
+    page: this.currentPage(),
+    _v: this.refreshTrigger(),
+  }));
 
   constructor() {
-    effect(() => {
-      const val = this.searchValue();
-      this.searchFilter.next(val);
-      this.currentPage.set(1);
-      this.page.next(1);
+    toObservable(this.queryParams).pipe(
+      takeUntilDestroyed(),
+      switchMap(({ search, type, order, page }) => {
+        if (!this.topic()?.id || !this.ideation()?.id) return [];
+        this.loading.set(true);
+        const params: Record<string, any> = {
+          topicId: this.topic().id,
+          ideationId: this.ideation().id,
+          limit: PAGE_SIZE,
+          offset: (page - 1) * PAGE_SIZE,
+        };
+        if (search) params['search'] = search;
+        if (order) { params['orderBy'] = order; params['order'] = 'desc'; }
+        if (type === 'favourite') params['favourite'] = true;
+        else if (type === 'iCreated') params['authorId'] = this.userStore.user()?.id;
+        return this.ideationService.getIdeas(params as any).pipe(
+          map(res => { this.loading.set(false); return res; })
+        );
+      })
+    ).subscribe(res => {
+      const sorted = [...res.rows].sort(a => a.status === IdeaStatus.draft ? -1 : 1);
+      this.ideas.set(sorted);
+      this.ideasCount.set(typeof res.count === 'number' ? res.count : (res.count?.total ?? 0));
     });
-  }
 
-  ngOnInit() {
-    combineLatest([this.searchFilter, this.typeFilter, this.orderFilter, this.page])
-      .pipe(
-        switchMap(([search, type, order, page]) => {
-          this.loading.set(true);
-          const params: Record<string, any> = {
-            topicId: this.topic().id,
-            ideationId: this.ideation().id,
-            limit: PAGE_SIZE,
-            offset: (page - 1) * PAGE_SIZE,
-          };
-          if (search) params['search'] = search;
-          if (order) { params['orderBy'] = order; params['order'] = 'desc'; }
-          if (type === 'favourite') params['favourite'] = true;
-          else if (type === 'iCreated') params['authorId'] = this.userStore.user()?.id;
-          return this.ideationService.getIdeas(params as any);
-        }),
-        map(res => {
-          this.loading.set(false);
-          return res;
-        })
-      )
-      .subscribe(res => {
-        const sorted = [...res.rows].sort(a => a.status === IdeaStatus.draft ? -1 : 1);
-        this.ideas.set(sorted);
-        this.ideasCount.set(typeof res.count === 'number' ? res.count : (res.count?.total ?? 0));
-      });
+    // Reset page when search changes
+    effect(() => {
+      this.searchValue();
+      this.currentPage.set(1);
+    });
   }
 
   canUpdate() {
@@ -132,21 +152,22 @@ export class TopicIdeationComponent implements OnInit {
 
   setOrder(value: string) {
     this.selectedOrder.set(value);
-    this.orderFilter.next(value);
     this.currentPage.set(1);
-    this.page.next(1);
   }
 
   setType(value: string) {
     this.selectedType.set(value);
-    this.typeFilter.next(value);
     this.currentPage.set(1);
-    this.page.next(1);
+  }
+
+  onFilterChange(event: { key: string, value: string }) {
+    const val = event.value === 'all' ? '' : event.value;
+    if (event.key === 'type') this.setType(val);
+    if (event.key === 'order') this.setOrder(val);
   }
 
   onPageChange(p: number) {
     this.currentPage.set(p);
-    this.page.next(p);
   }
 
   onIdeaDeleted(idea: Idea) {
@@ -160,13 +181,15 @@ export class TopicIdeationComponent implements OnInit {
 
   onIdeaAdded(idea: Idea) {
     this.showAddIdea.set(false);
-    this.page.next(1);
-    this.searchFilter.next(this.searchFilter.value);
+    this.currentPage.set(1);
+    this.refreshTrigger.update(n => n + 1);
   }
 
   exportIdeas() {
-    const url = this.ideationService.downloadIdeas(this.topic().id, this.ideation().id);
-    window.open(url);
+    if (isPlatformBrowser(this.platformId)) {
+      const url = this.ideationService.downloadIdeas(this.topic().id, this.ideation().id);
+      window.open(url);
+    }
   }
 
   closeIdeation() {

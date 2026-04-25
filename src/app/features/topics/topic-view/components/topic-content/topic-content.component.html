@@ -1,17 +1,17 @@
 <div class="topic_content_wrap">
-  <div class="topic_image">
-    @if (topic().imageUrl) {
-      <img [src]="topic().imageUrl + '?' + topic().updatedAt" />
-    }
-    
-    @if (!topic().permission.level || topic().permission.level !== 'none') {
-      <div class="permissions_lable tablet_show" [translate]="
-        topic().permission.level !== 'read'
-          ? ('TXT_TOPIC_LEVELS_' + (topic().permission.level | uppercase))
-          : 'VIEWS.TOPICS_TOPICID.LBL_JOINED'
-      "></div>
-    }
-  </div>
+  @if (topic().imageUrl) {
+    <div class="topic_image">
+        <img [src]="topic().imageUrl + '?' + topic().updatedAt" />
+      
+      @if (!topic().permission.level || topic().permission.level !== 'none') {
+        <div class="permissions_lable tablet_show" [translate]="
+          topic().permission.level !== 'read'
+            ? ('TXT_TOPIC_LEVELS_' + (topic().permission.level | uppercase))
+            : 'VIEWS.TOPICS_TOPICID.LBL_JOINED'
+        "></div>
+      }
+    </div>
+  }
 
   <div id="topic_text_wrap" #topicText [@readMore]="readMore() ? 'open' : 'closed'">
     <div class="topic_title" [ngClass]="{ tablet_tab_open: !!tabTablet() }">

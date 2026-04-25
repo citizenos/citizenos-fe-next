@@ -1,5 +1,5 @@
-import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
-import { NgClass, UpperCasePipe } from '@angular/common';
+import { Component, input, output, inject, ChangeDetectionStrategy, computed } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -11,7 +11,7 @@ import { Topic } from '../../../../../core/interfaces/topic';
   selector: 'app-topic-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, UpperCasePipe, RouterModule, TranslateModule, IconComponent],
+  imports: [UpperCasePipe, RouterModule, TranslateModule, IconComponent],
   templateUrl: './topic-header.component.html',
   styleUrls: ['./topic-header.component.scss']
 })
@@ -36,9 +36,7 @@ export class TopicHeaderComponent {
 
   mobileActions = false;
 
-  get isLoggedIn() {
-    return this.userStore.isAuthenticated();
-  }
+  isLoggedIn = computed(() => this.userStore.isAuthenticated());
 
   onJoin() {
     this.joinTopic.emit(this.topic());
