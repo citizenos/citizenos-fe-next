@@ -21,7 +21,8 @@ describe('TopicInfoSidebarComponent', () => {
     STATUSES: { closed: 'closed' },
     VISIBILITY: { public: 'public' },
     canDelete: vi.fn().mockReturnValue(true),
-    canEdit: vi.fn().mockReturnValue(true)
+    canEdit: vi.fn().mockReturnValue(true),
+    canUpdate: vi.fn().mockReturnValue(true)
   };
 
   beforeEach(async () => {
@@ -52,29 +53,18 @@ describe('TopicInfoSidebarComponent', () => {
       language: 'et',
       categories: ['environment'],
       permission: { level: 'admin' },
-      favourite: false
+      favourite: false,
+      members: { users: { count: 0 } }
     });
     
     componentRef.setInput('attachments', []);
     componentRef.setInput('groups', []);
+    componentRef.setInput('members', []);
     
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should display creator name (currently empty skeleton)', () => {
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toBe('');
-  });
-
-  it('should toggle options (currently empty skeleton)', () => {
-    expect(component.showAttachments).toBeFalsy();
-    component.showAttachments = true;
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toBe('');
   });
 });

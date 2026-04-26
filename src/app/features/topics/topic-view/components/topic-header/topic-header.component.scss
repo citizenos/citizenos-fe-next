@@ -1,13 +1,32 @@
-
-
 #page_header {
+  padding: 16px 0 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
   position: relative;
   z-index: 5;
   background: var(--color-white);
+
+  @media (max-width: 1024px) {
+    margin-bottom: -16px !important;
+  }
+  @media (max-width: 768px) {
+    h3 {
+      display: none;
+    }
+  }
+
+  .dropdown {
+    .options {
+      position: absolute;
+      width: max-content;
+      min-width: max-content;
+    }
+  }
+
+  activities-button {
+    display: none;
+  }
 
   #user_info_area {
     display: flex;
@@ -26,13 +45,11 @@
     align-items: center;
 
     .permissions_lable {
-      // @include permissions_lable();
       margin-right: 16px;
     }
 
     .btn_medium_close {
       margin-left: 8px;
-
       &.like_active {
         background: var(--color-background-hover);
       }
@@ -51,7 +68,8 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         z-index: 10;
-        min-width: 200px;
+        min-width: max-content;
+        width: max-content;
         padding: 8px 0;
 
         .option {
@@ -89,22 +107,43 @@
 
       &:focus-within .options,
       &:hover .options {
-        display: block; // basic hover-dropdown support
+        display: block;
       }
     }
   }
-}
 
-@media (max-width: 1024px) {
-  #page_header {
+  @media (max-width: 1024px) {
+    background-color: var(--color-surfaces);
+    border-radius: 16px 16px 0 0;
+    margin: 0;
+    padding: 8px;
+    height: 56px;
+    align-items: center;
+    vertical-align: middle;
+    margin-bottom: -14px;
+
     #user_info_area {
       .navigation_title {
         display: none;
       }
     }
+
+    activities-button {
+      display: flex;
+    }
+
     #buttons_area {
-      #tablet_actions {
+      display: flex;
+
+      .btn_medium_activity {
+        display: none !important;
+      }
+      #join_button,
+      #leave_button {
         display: none;
+      }
+      #tablet_actions {
+        display: inline-block;
       }
       .permissions_lable {
         display: none;
