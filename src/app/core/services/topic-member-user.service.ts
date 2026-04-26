@@ -26,6 +26,13 @@ export class TopicMemberUserService {
     ).pipe(map(res => res.data ?? []));
   }
 
+  query(params: { topicId: string; search?: string }): Observable<{ rows: TopicMemberUser[] }> {
+    return this.http.get<ApiResponse<{ rows: TopicMemberUser[] }>>(
+      `${this.baseUrl}/api/users/self/topics/${params.topicId}/members/users`,
+      { withCredentials: true, params: params.search ? { search: params.search } : {} }
+    ).pipe(map(res => res.data ?? { rows: [] }));
+  }
+
   update(topicId: string, userId: string, level: string): Observable<any> {
     return this.http.put<ApiResponse<any>>(
       `${this.baseUrl}/api/users/self/topics/${topicId}/members/users/${userId}`,

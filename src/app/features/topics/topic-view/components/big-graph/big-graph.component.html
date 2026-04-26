@@ -1,0 +1,15 @@
+<div class="big_graph">
+  @for (option of sortedOptions(); track option.id; let i = $index) {
+    <div class="graph_item">
+      <div class="graph_bar" [class.active]="option.winner" [style.width]="getVoteValuePercentage(option.voteCount)"></div>
+      <div class="grap_item_info">
+        <span class="bold">{{ option.voteCount || 0 }}</span>
+        <span>•</span>
+        <span [translate]="'VIEWS.TOPICS_TOPICID.VOTE_LBL_OPTION_' + i" [translateParams]="{ default: option.value }"></span>
+        @if (option.selected) {
+          <div class="your_vote" translate="VIEWS.TOPICS_TOPICID.VOTE_LBL_YOUR_VOTE"></div>
+        }
+      </div>
+    </div>
+  }
+</div>

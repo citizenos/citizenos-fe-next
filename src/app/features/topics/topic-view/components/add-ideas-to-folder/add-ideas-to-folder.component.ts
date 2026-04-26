@@ -66,7 +66,7 @@ interface IdeationFolderDialogData {
                           </label>
                           <div class="statement" [innerHTML]="idea.statement"></div>
                         </div>
-                        <div class="votes">{{ idea.votes?.up?.count || 0 }}</div>
+                        <div class="votes">{{ idea.votes.up.count || 0 }}</div>
                       </div>
                     }
                   </div>
