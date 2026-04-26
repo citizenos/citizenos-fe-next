@@ -165,7 +165,7 @@
   <!-- Attachments -->
   <div class="info_items_wrap">
     <div class="info_title" (click)="showAttachments = !showAttachments">
-      <span translate="VIEWS.TOPIC_INFO.LBL_ATTACHMENTS"></span>
+      <span translate="VIEWS.TOPICS_TOPICID.SECTION_INFO_TITLE_ATTACHMENTS"></span>
       <span class="icon">
         <cos-icon [name]="showAttachments ? 'chevron-up' : 'chevron-down'" size="16"></cos-icon>
       </span>
@@ -178,7 +178,7 @@
             {{ attachment.name }}
           </a>
         } @empty {
-          <div class="info_item" translate="VIEWS.TOPIC_INFO.NO_ATTACHMENTS"></div>
+          <div class="info_item" translate="VIEWS.TOPICS_TOPICID.SECTION_INFO_NO_ATTACHMENTS"></div>
         }
       </div>
     }
@@ -187,7 +187,7 @@
   <!-- Groups -->
   <div class="info_items_wrap">
     <div class="info_title" (click)="showGroups = !showGroups">
-      <span translate="VIEWS.TOPIC_INFO.LBL_GROUPS"></span>
+      <span translate="VIEWS.TOPICS_TOPICID.SECTION_INFO_TITLE_GROUPS"></span>
       <span class="icon">
         <cos-icon [name]="showGroups ? 'chevron-up' : 'chevron-down'" size="16"></cos-icon>
       </span>
@@ -200,7 +200,7 @@
             {{ group.name }}
           </a>
         } @empty {
-          <div class="info_item" translate="VIEWS.TOPIC_INFO.NO_GROUPS"></div>
+          <div class="info_item" translate="VIEWS.TOPICS_TOPICID.SECTION_INFO_NO_GROUPS"></div>
         }
       </div>
     }

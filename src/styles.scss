@@ -179,6 +179,42 @@ a {
   path { fill: var(--color-surfaces); }
 }
 
+.btn_medium_secondary {
+  @extend %btn-medium-base;
+  background: var(--color-surface-contrast);
+  color: var(--color-text-main);
+  border: none;
+
+  &:hover, &.active {
+    background: var(--color-background-hover);
+  }
+}
+
+.btn_small_close {
+  @extend %btn-medium-base;
+  max-height: 32px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: var(--color-surfaces);
+  color: var(--color-text);
+
+  &:hover, &.active {
+    background: var(--color-surface-contrast);
+  }
+
+  &.btn_small {
+    padding: 0 16px;
+  }
+
+  &.icon {
+    padding: 0;
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
 /* Typography utilities */
 .small_heading {
   font-size: 18px;
