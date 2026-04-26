@@ -5,11 +5,12 @@
 } @else if (topic()) {
 <div id="topic_wrap_root">
   <div id="topic_view" class="content_wrap">
-    
-    <app-topic-header 
+
+    <app-topic-header
       [topic]="topic()!"
       [navigation]="navigation()"
       [appTopicNotificationSettings]="appTopicNotificationSettings"
+      (joinTopic)="joinTopic($event)"
       (toggleFavourite)="toggleFavourite($event)"
       (leaveTopic)="leaveTopic($event)"
       (inviteEditors)="inviteEditors($event)"
@@ -17,21 +18,20 @@
       (addGroupsDialog)="addGroupsDialog($event)"
       (closeTopic)="closeTopic($event)"
       (deleteTopic)="deleteTopic($event)" />
-      
+
     <div class="content_area_wrap">
-      
+
       <div class="content_area_left">
-        <app-topic-content 
+        <app-topic-content
           [topic]="topic()!"
           [tabTablet]="tabTablet()" />
-          
+
         <!-- Mobile/Tablet Tabs -->
-        @if (wWidth <= 1024) {
+        @if (wWidth() <= 1024) {
           <div id="tabs_tablet" class="topic_tabs tablet tabs_wrap tablet_show">
             <a class="topic_tab" (click)="tabTablet.set('')" [class.active]="!tabTablet()">
               <cos-icon name="topic" [size]="32"></cos-icon>
             </a>
-            
             <a class="topic_tab" (click)="tabTablet.set('discussion')" [class.active]="tabTablet() === 'discussion'" [class.disabled]="topic()?.status === 'draft' || topic()?.status === 'inProgress'">
               <cos-icon name="comment" [size]="32"></cos-icon>
             </a>
@@ -60,41 +60,116 @@
           }
         </div>
 
-        <!-- TAB CONTENT GOES HERE -->
-        <!-- discussion component -->
+        <!-- Discussion tab -->
         @if (!tabSelected() || tabSelected() === 'discussion') {
-          <div [ngClass]="{ hidden: wWidth <= 1024 && tabTablet() !== 'discussion' }">
+          <div [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'discussion' }">
             <cos-topic-discussion [topic]="topic()!"></cos-topic-discussion>
           </div>
         }
 
+        <!-- Ideation tab -->
         @if (tabSelected() === 'ideation' && ideation()) {
-          <div [ngClass]="{ hidden: wWidth <= 1024 && tabTablet() !== 'ideation' }">
+          <div [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'ideation' }">
             <app-topic-ideation [topic]="topic()!" [ideation]="ideation()!" />
           </div>
         }
 
+        <!-- Voting tab -->
         @if (tabSelected() === 'voting') {
-          <div [ngClass]="{ hidden: wWidth <= 1024 && tabTablet() !== 'voting' }">
-             <div style="font-style: italic; color: #666; margin-top: 24px; padding: 24px; text-align: center;">Voting Component Area</div>
+          <div class="vote_wrap" [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'voting' }">
+            @if (!topic()?.voteId) {
+              <div class="topic_feature_section voting">
+                <div class="no_feature_yet">
+                  <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip_voting)">
+                      <rect width="96" height="96" rx="48" fill="white"/>
+                      <path d="M60.4741 84.8165L33.9747 87.5576L34.5735 98.5014L60.4741 98.5014L60.4741 84.8165Z" fill="#5C9CD0"/>
+                      <path d="M39.426 73.0151C39.5735 75.6403 39.847 80 39.847 80L55.7464 78.1781C55.7464 78.1781 55.0377 71.6809 57.1247 69.2952C57.4164 68.9617 57.734 68.6141 58.0625 68.2546C60.0836 66.0426 62.5181 63.3781 61.9031 60.7461C61.188 57.6862 55.7332 56.5701 55.7332 56.5701L57.5454 38.1548C57.6222 37.3983 57.3872 36.6431 56.8917 36.0541C56.3963 35.4651 55.6807 35.0903 54.9013 35.0116C54.1676 34.9469 53.4359 35.1552 52.8545 35.5942C52.2731 36.0332 51.8854 36.6701 51.7698 37.3759L49.9372 47.3073C49.9372 47.3073 49.2501 44.0056 47.2133 43.8671C45.1764 43.7286 43.9381 45.5234 43.5256 47.9962C42.9343 46.6963 41.9339 46.17 40.9594 46.4954L40.8798 46.2683C40.8798 46.2683 40.8724 46.3611 40.8593 46.5318C39.8666 46.9164 38.7753 47.761 38.8743 50.475C37.9455 49.4105 37.0625 48.7395 36.1955 48.9294L36.1113 48.687C36.1113 48.687 36.1102 48.7806 36.1087 48.9513C35.9414 48.9992 35.7747 49.0798 35.6083 49.1965C34.5519 49.9373 33.9007 53.5686 34.0124 55.5409C34.0291 55.8357 34.0298 56.2681 34.0307 56.79C34.0356 59.7597 34.0454 65.6267 37.0307 65.5227C37.1332 65.8435 37.3363 66.3302 37.5829 66.9211C38.2775 68.5858 39.3171 71.0776 39.426 73.0151Z" fill="#F8E1B8"/>
+                    </g>
+                    <defs><clipPath id="clip_voting"><rect width="96" height="96" rx="48" fill="white"/></clipPath></defs>
+                  </svg>
+                  <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_VOTING_HEADING"></div>
+                  @if (topicService.canDelete(topic()!) && topic()?.status !== STATUSES.followUp && topic()?.status !== STATUSES.closed) {
+                    <div class="button">
+                      <button class="btn_medium_submit animate" (click)="startVote(topic()!)">
+                        <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12.5 20C11.9711 20 11.5423 19.5712 11.5423 19.0423L11.5423 12.9577L5.45775 12.9577C4.9288 12.9577 4.5 12.5289 4.5 12C4.5 11.4711 4.9288 11.0423 5.45775 11.0423H11.5423V4.95775C11.5423 4.4288 11.9711 4 12.5 4C13.0289 4 13.4577 4.4288 13.4577 4.95775L13.4577 11.0423L19.5423 11.0423C20.0712 11.0423 20.5 11.4711 20.5 12C20.5 12.5289 20.0712 12.9577 19.5423 12.9577H13.4577V19.0423C13.4577 19.5712 13.0289 20 12.5 20Z" fill="white"/>
+                        </svg>
+                        <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_BTN_ADD"></span>
+                      </button>
+                    </div>
+                  }
+                  <div class="no_feature_description">
+                    <div class="description_text">
+                      <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_HEADING"></div>
+                      <div>
+                        <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_BEFORE"></span><br/><br/>
+                        <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_AFTER"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+            @if (topic()?.voteId && vote()) {
+              <!-- TopicVoteCastComponent not yet migrated -->
+            }
           </div>
         }
 
+        <!-- Follow-up tab -->
         @if (tabSelected() === 'followUp') {
-          <div [ngClass]="{ hidden: wWidth <= 1024 && tabTablet() !== 'followUp' }">
-             <div style="font-style: italic; color: #666; margin-top: 24px; padding: 24px; text-align: center;">Follow Up Component Area</div>
+          <div class="follow_up_wrap" [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'followUp' }">
+            @if (eventsCount() === 0 && (!topicService.canUpdate(topic()!) || topic()?.status !== STATUSES.followUp)) {
+              <div class="topic_feature_section follow_up">
+                <div class="no_feature_yet">
+                  <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip_followup)">
+                      <rect width="96" height="96" rx="48" fill="white"/>
+                      <path d="M60.4741 84.8165L33.9747 87.5576L34.5735 98.5014L60.4741 98.5014L60.4741 84.8165Z" fill="#5C9CD0"/>
+                      <path d="M39.426 73.0151C39.5735 75.6403 39.847 80 39.847 80L55.7464 78.1781C55.7464 78.1781 55.0377 71.6809 57.1247 69.2952C57.4164 68.9617 57.734 68.6141 58.0625 68.2546C60.0836 66.0426 62.5181 63.3781 61.9031 60.7461C61.188 57.6862 55.7332 56.5701 55.7332 56.5701L57.5454 38.1548C57.6222 37.3983 57.3872 36.6431 56.8917 36.0541C56.3963 35.4651 55.6807 35.0903 54.9013 35.0116C54.1676 34.9469 53.4359 35.1552 52.8545 35.5942C52.2731 36.0332 51.8854 36.6701 51.7698 37.3759L49.9372 47.3073C49.9372 47.3073 49.2501 44.0056 47.2133 43.8671C45.1764 43.7286 43.9381 45.5234 43.5256 47.9962C42.9343 46.6963 41.9339 46.17 40.9594 46.4954L40.8798 46.2683C40.8798 46.2683 40.8724 46.3611 40.8593 46.5318C39.8666 46.9164 38.7753 47.761 38.8743 50.475C37.9455 49.4105 37.0625 48.7395 36.1955 48.9294L36.1113 48.687C36.1113 48.687 36.1102 48.7806 36.1087 48.9513C35.9414 48.9992 35.7747 49.0798 35.6083 49.1965C34.5519 49.9373 33.9007 53.5686 34.0124 55.5409C34.0291 55.8357 34.0298 56.2681 34.0307 56.79C34.0356 59.7597 34.0454 65.6267 37.0307 65.5227C37.1332 65.8435 37.3363 66.3302 37.5829 66.9211C38.2775 68.5858 39.3171 71.0776 39.426 73.0151Z" fill="#F8E1B8"/>
+                    </g>
+                    <defs><clipPath id="clip_followup"><rect width="96" height="96" rx="48" fill="white"/></clipPath></defs>
+                  </svg>
+                  <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_UP_HEADING"></div>
+                  @if (topicService.canDelete(topic()!) && topic()?.status !== STATUSES.closed) {
+                    <div class="button">
+                      <button class="btn_medium_submit animate" (click)="sendToFollowUp(topic()!)">
+                        <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12.5 20C11.9711 20 11.5423 19.5712 11.5423 19.0423L11.5423 12.9577L5.45775 12.9577C4.9288 12.9577 4.5 12.5289 4.5 12C4.5 11.4711 4.9288 11.0423 5.45775 11.0423H11.5423V4.95775C11.5423 4.4288 11.9711 4 12.5 4C13.0289 4 13.4577 4.4288 13.4577 4.95775L13.4577 11.0423L19.5423 11.0423C20.0712 11.0423 20.5 11.4711 20.5 12C20.5 12.5289 20.0712 12.9577 19.5423 12.9577H13.4577V19.0423C13.4577 19.5712 13.0289 20 12.5 20Z" fill="white"/>
+                        </svg>
+                        <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_BTN_ADD"></span>
+                      </button>
+                    </div>
+                  }
+                  <div class="no_feature_description">
+                    <div class="description_text">
+                      <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_HEADING"></div>
+                      <div>
+                        <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_BEFORE"></span><br/><br/>
+                        <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_AFTER"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+            @if (eventsCount() > 0 || (topic()?.status === STATUSES.followUp && topicService.canUpdate(topic()!))) {
+              <!-- TopicMilestonesComponent not yet migrated -->
+            }
           </div>
         }
 
       </div>
-      
-      @if (wWidth > 1024 || !tabTablet()) {
+
+      @if (wWidth() > 1024 || !tabTablet()) {
         <div class="content_area_right">
-          
-          <app-topic-info-sidebar 
+
+          <app-topic-info-sidebar
             [topic]="topic()!"
             [groups]="groups()"
             [attachments]="attachments()"
+            [members]="members()"
             [appTopicNotificationSettings]="appTopicNotificationSettings"
             (toggleFavourite)="toggleFavourite($event)"
             (leaveTopic)="leaveTopic($event)"
@@ -103,9 +178,10 @@
             (addGroupsDialog)="addGroupsDialog($event)"
             (closeTopic)="closeTopic($event)"
             (deleteTopic)="deleteTopic($event)"
+            (inviteMembers)="inviteMembers($event)"
             (downloadAttachment)="downloadAttachment($event)" />
 
-          <app-topic-state-items 
+          <app-topic-state-items
             [topic]="topic()!"
             [ideation]="ideation()"
             [vote]="vote()"

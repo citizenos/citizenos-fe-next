@@ -15,6 +15,7 @@ import {
   catchError,
   EMPTY,
   debounceTime,
+  forkJoin,
 } from 'rxjs';
 
 import { GroupDetailService } from '../../../core/services/group-detail.service';
@@ -30,6 +31,8 @@ import { GroupAddTopicsDialogComponent } from '../dialogs/group-add-topics-dialo
 import { GroupRequestTopicsDialogComponent } from '../dialogs/group-request-topics-dialog/group-request-topics-dialog.component';
 import { TopicRequestsDialogComponent } from '../dialogs/topic-requests-dialog/topic-requests-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { countries } from '../../../core/constants/countries';
+import { languages } from '../../../core/constants/all-languages';
 
 import { InitialsComponent } from '../../../shared/components/initials/initials.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
@@ -93,8 +96,13 @@ export class GroupDetailComponent {
   topicVisibilityFilter = signal('');
   topicStatusFilter = signal('');
   topicOrderFilter = signal('');
+  topicCountryFilter = signal('');
+  topicLanguageFilter = signal('');
   topicSearch = signal('');
   memberSearch = signal('');
+
+  sortedCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
+  sortedLanguages = [...languages].sort((a, b) => a.name.localeCompare(b.name));
 
   isLoggedIn = computed(() => this.userStore.isAuthenticated());
   isAdmin = computed(() => this.group() ? this.groupDetailService.canUpdate(this.group()!) : false);
@@ -111,6 +119,8 @@ export class GroupDetailComponent {
     visibility: this.topicVisibilityFilter(),
     status: this.topicStatusFilter(),
     orderBy: this.topicOrderFilter(),
+    country: this.topicCountryFilter(),
+    language: this.topicLanguageFilter(),
     search: this.topicSearch(),
   })));
 
@@ -178,6 +188,8 @@ export class GroupDetailComponent {
       statuses: status ? [status] : undefined,
       orderBy: orderBy || undefined,
       order: orderBy ? 'desc' : undefined,
+      country: this.topicCountryFilter() || undefined,
+      language: this.topicLanguageFilter() || undefined,
       search: this.topicSearch() || undefined,
       include: ['event'],
     }).subscribe(result => {
@@ -202,6 +214,8 @@ export class GroupDetailComponent {
     this.topicVisibilityFilter.set('');
     this.topicStatusFilter.set('');
     this.topicOrderFilter.set('');
+    this.topicCountryFilter.set('');
+    this.topicLanguageFilter.set('');
     this.topicSearch.set('');
     this.memberSearch.set('');
     this.topicsPage.set(1);
@@ -222,6 +236,14 @@ export class GroupDetailComponent {
 
   setOrderBy(value: string) {
     this.topicOrderFilter.set(value);
+  }
+
+  setCountry(value: string) {
+    this.topicCountryFilter.set(value);
+  }
+
+  setLanguage(value: string) {
+    this.topicLanguageFilter.set(value);
   }
 
   onTopicSearch(value: string) {
@@ -341,6 +363,66 @@ export class GroupDetailComponent {
         this.groupMemberUserService.removeMember(this.groupId(), userId).subscribe(() => {
           this.fetchMembers((this.membersPage() - 1) * this.MEMBER_LIMIT);
         });
+      }
+    });
+  }
+
+  setAllRights(level: string) {
+    const groupId = this.groupId();
+    const members = this.members();
+    const admin = this.userStore.user();
+    const saveObservables = members
+      .filter(member => member.level !== level && member.userId !== admin?.id)
+      .map(member => this.groupMemberUserService.updateLevel(groupId, member.userId || member.id, level));
+
+    if (saveObservables.length) {
+      forkJoin(saveObservables).subscribe(() => this.fetchMembers(0));
+    }
+  }
+
+  removeAllMembers() {
+    this.dialogService.open(ConfirmDialogComponent, {
+      data: {
+        level: 'delete',
+        heading: 'MODALS.GROUP_DELETE_ALL_MEMBERS_CONFIRM_HEADING',
+        title: 'MODALS.GROUP_DELETE_ALL_MEMBERS_CONFIRM_TXT_ARE_YOU_SURE',
+        confirmBtn: 'MODALS.GROUP_DELETE_ALL_MEMBERS_CONFIRM_YES',
+        closeBtn: 'MODALS.GROUP_DELETE_ALL_MEMBERS_CONFIRM_NO',
+      }
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        const groupId = this.groupId();
+        const members = this.members();
+        const admin = this.userStore.user();
+        const saveObservables = members
+          .filter(member => member.userId !== admin?.id)
+          .map(member => this.groupMemberUserService.removeMember(groupId, member.userId || member.id));
+
+        if (saveObservables.length) {
+          forkJoin(saveObservables).subscribe(() => this.fetchMembers(0));
+        }
+      }
+    });
+  }
+
+  removeAllTopics() {
+    this.dialogService.open(ConfirmDialogComponent, {
+      data: {
+        level: 'delete',
+        heading: 'MODALS.GROUP_DELETE_ALL_TOPICS_CONFIRM_HEADING',
+        title: 'MODALS.GROUP_DELETE_ALL_TOPICS_CONFIRM_TXT_ARE_YOU_SURE',
+        confirmBtn: 'MODALS.GROUP_DELETE_ALL_TOPICS_CONFIRM_YES',
+        closeBtn: 'MODALS.GROUP_DELETE_ALL_TOPICS_CONFIRM_NO',
+      }
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        const groupId = this.groupId();
+        const topics = this.topics();
+        const saveObservables = topics.map(topic => this.groupMemberTopicService.removeTopicFromGroup(groupId, topic.id));
+
+        if (saveObservables.length) {
+          forkJoin(saveObservables).subscribe(() => this.fetchTopics(0));
+        }
       }
     });
   }

@@ -37,9 +37,10 @@ export class TopicInfoSidebarComponent {
   topic = input.required<Topic>();
   attachments = input<any[]>([]);
   groups = input<any[]>([]);
-  
+  members = input<any[]>([]);
+
   appTopicNotificationSettings = input<() => void>();
-  
+
   toggleFavourite = output<Topic>();
   leaveTopic = output<Topic>();
   inviteEditors = output<Topic>();
@@ -47,6 +48,7 @@ export class TopicInfoSidebarComponent {
   addGroupsDialog = output<Topic>();
   closeTopic = output<Topic>();
   deleteTopic = output<Topic>();
+  inviteMembers = output<Topic>();
   downloadAttachment = output<any>();
 
   topicService = inject(TopicService);
@@ -54,8 +56,8 @@ export class TopicInfoSidebarComponent {
 
   showAttachments = false;
   showGroups = false;
-  showCategories = false;
-  
+  manageOpen = false;
+
   get isLoggedIn() {
     return this.userStore.isAuthenticated();
   }

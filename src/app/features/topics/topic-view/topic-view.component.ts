@@ -1,16 +1,18 @@
 import { Component, OnInit, OnDestroy, inject, signal, HostListener, ChangeDetectionStrategy, PLATFORM_ID, computed, DestroyRef } from '@angular/core';
-import { NgClass, isPlatformBrowser, DatePipe } from '@angular/common';
+import { NgClass, isPlatformBrowser } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { takeUntilDestroyed, toSignal, toObservable } from '@angular/core/rxjs-interop';
-import { switchMap, combineLatest, map, of, tap, catchError, startWith, filter } from 'rxjs';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { switchMap, combineLatest, map, of, tap, catchError, startWith, take } from 'rxjs';
 
 import { TopicService } from '../../../core/services/topic.service';
 import { TopicIdeationService } from '../../../core/services/topic-ideation.service';
 import { TopicEventService } from '../../../core/services/topic-event.service';
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
+import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
 import { UserStore } from '../../../core/state/user.store';
 import { DialogService } from '../../../shared/dialog/dialog.service';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 
 import { TopicHeaderComponent } from './components/topic-header/topic-header.component';
@@ -44,11 +46,12 @@ import { Topic } from '../../../core/interfaces/topic';
 export class TopicViewComponent implements OnInit, OnDestroy {
   route = inject(ActivatedRoute);
   router = inject(Router);
-  
+
   topicService = inject(TopicService);
   topicIdeationService = inject(TopicIdeationService);
   topicEventService = inject(TopicEventService);
   topicVoteService = inject(TopicVoteService);
+  topicMemberUserService = inject(TopicMemberUserService);
   userStore = inject(UserStore);
   translate = inject(TranslateService);
   private dialogService = inject(DialogService);
@@ -63,13 +66,14 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   eventsCount = signal<number>(0);
   attachments = signal<any[]>([]);
   groups = signal<any[]>([]);
+  members = signal<any[]>([]);
 
   topicId = '';
-  
+
   tabSelected = signal<string | null>(null);
   tabTablet = signal<string>('');
-  
-  wWidth = isPlatformBrowser(this.platformId) ? window.innerWidth : 1280;
+
+  wWidth = signal<number>(isPlatformBrowser(this.platformId) ? window.innerWidth : 1280);
 
   navigation = signal<{title: string, link: any[]}>({
     title: 'DEFAULT.NAV.HEADING_TOPICS',
@@ -79,7 +83,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   @HostListener('window:resize')
   onResize() {
     if (isPlatformBrowser(this.platformId)) {
-      this.wWidth = window.innerWidth;
+      this.wWidth.set(window.innerWidth);
     }
   }
 
@@ -142,36 +146,95 @@ export class TopicViewComponent implements OnInit, OnDestroy {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((ideation: any) => this.ideation.set(ideation));
     }
-    
+
     if (topic.voteId) {
       this.topicVoteService.get({ topicId: topic.id, voteId: topic.voteId })
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((vote: any) => this.vote.set(vote));
     }
 
-    if (topic.status === this.topicService.STATUSES.followUp) {
+    if (topic.status === this.topicService.STATUSES.followUp || topic.status === this.topicService.STATUSES.closed) {
       this.topicEventService.query({ topicId: topic.id })
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
-          next: (res: any) => {
-            this.eventsCount.set(res.count || 0);
-          },
-          error: (err: any) => console.log(err)
+          next: (res: any) => this.eventsCount.set(res.count || 0),
+          error: () => {}
         });
+    }
+
+    this.topicService.loadGroups(topic.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (groups: any[]) => {
+          this.groups.set(groups);
+          this.updateNavigation(topic, groups);
+        },
+        error: () => {}
+      });
+
+    this.topicService.loadAttachments(topic.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (attachments: any[]) => this.attachments.set(attachments),
+        error: () => {}
+      });
+
+    this.topicMemberUserService.loadItems(topic.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (members: any[]) => this.members.set(members),
+        error: () => {}
+      });
+  }
+
+  private updateNavigation(topic: Topic, groups: any[]) {
+    const isPrivate = topic.visibility === this.topicService.VISIBILITY.private;
+    if (groups.length > 1) {
+      this.navigation.set({
+        title: isPrivate ? 'VIEWS.GROUP.HEADING_BACK_TO_MY_GROUPS' : 'VIEWS.GROUP.HEADING_BACK_TO_PUBLIC_GROUPS',
+        link: ['/', this.translate.currentLang, isPrivate ? 'my' : 'public', 'groups']
+      });
+    } else if (groups.length === 1) {
+      this.navigation.set({
+        title: this.translate.instant('VIEWS.GROUP.HEADING_BACK_TO_GROUP', { title: groups[0].name }),
+        link: ['/', this.translate.currentLang, 'groups', groups[0].id]
+      });
+    } else {
+      this.navigation.set({
+        title: isPrivate ? 'VIEWS.TOPICS_TOPICID.HEADING_BACK_TO_MY_TOPICS' : 'VIEWS.TOPICS_TOPICID.HEADING_BACK_TO_PUBLIC_TOPICS',
+        link: ['/', this.translate.currentLang, isPrivate ? 'my' : 'public', 'topics']
+      });
     }
   }
 
   selectTab(tab: string) {
     this.tabSelected.set(tab);
-    if (this.wWidth <= 1024) {
+    if (this.wWidth() <= 1024) {
       this.tabTablet.set(tab);
     }
   }
 
+  joinTopic(topic: Topic) {
+    this.topicService.joinPublic(topic.id)
+      .pipe(take(1))
+      .subscribe({
+        next: (res: any) => {
+          topic.permission.level = res.userLevel;
+          this.topicService.reloadTopic();
+        },
+        error: (err: any) => console.error('Failed to join topic', err)
+      });
+  }
+
   startDiscussion(topic: Topic) {
-    if (this.topicService.canUpdate(topic)) {
-      this.topicService.changeState(topic, 'inProgress', 'VIEWS.TOPICS_TOPICID.MSG_DISCUSSION_STARTED');
-    }
+    if (!this.topicService.canUpdate(topic)) return;
+    import('../topic-create/components/step-topic-discussion/step-topic-discussion.component').then(m => {
+      this.dialogService.open(m.StepTopicDiscussionComponent, { data: { topic } })
+        .afterClosed()
+        .subscribe((created: any) => {
+          if (created) this.topicService.reloadTopic();
+        });
+    });
   }
 
   startVote(topic: Topic) {
@@ -186,39 +249,79 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   }
 
   sendToFollowUp(topic: Topic) {
-    if (this.topicService.canUpdate(topic)) {
-      this.topicService.changeState(topic, 'followUp');
-    }
+    if (!this.topicService.canUpdate(topic)) return;
+    this.topicService.changeState(topic, 'followUp');
   }
 
-  appTopicNotificationSettings() {
-    console.log('Open Notification Settings Dialog'); // Replace with actual dialog
-  }
+  appTopicNotificationSettings() {}
 
   toggleFavourite(topic: Topic) {
     this.topicService.toggleFavourite(topic);
   }
 
   leaveTopic(topic: Topic) {
-    // Replicate dialog logic
+    const leaveDialog = this.dialogService.open(ConfirmDialogComponent, {
+      data: {
+        level: 'delete',
+        heading: 'MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_HEADING',
+        description: 'MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_TXT_ARE_YOU_SURE',
+        points: ['MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_TXT_LEAVING_TOPIC_DESC'],
+        confirmBtn: 'MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_BTN_YES',
+        closeBtn: 'MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_BTN_NO'
+      }
+    });
+    leaveDialog.afterClosed().subscribe((result: any) => {
+      if (result === true) {
+        this.topicMemberUserService.delete(topic.id, this.userStore.user()!.id)
+          .pipe(take(1))
+          .subscribe(() => {
+            this.router.navigate(['/', this.translate.currentLang, 'my', 'topics']);
+          });
+      }
+    });
   }
 
   inviteEditors(topic: Topic) {
-    // Replicate dialog logic
+    // InviteEditorsComponent not yet migrated — tracked in separate issue
   }
-  
+
+  inviteMembers(topic: Topic) {
+    // TopicInviteDialogComponent not yet migrated — tracked in separate issue
+  }
+
   duplicateTopic(topic: Topic) {
-    // Replicate duplicate logic
+    const confirm = this.dialogService.open(ConfirmDialogComponent, {
+      data: {
+        level: 'info',
+        heading: 'VIEWS.TOPICS_TOPICID.OPTION_DUPLICATE_TOPIC',
+        description: 'MODALS.TOPIC_DUPLICATE_CONFIRM_TXT_ARE_YOU_SURE',
+        confirmBtn: 'MODALS.TOPIC_DUPLICATE_CONFIRM_BTN_YES',
+        closeBtn: 'MODALS.TOPIC_DUPLICATE_CONFIRM_BTN_NO'
+      }
+    });
+    confirm.afterClosed().subscribe((result: any) => {
+      if (result === true) {
+        this.topicService.duplicate(topic)
+          .pipe(take(1))
+          .subscribe((duplicate: Topic) => {
+            const path: string[] = ['/', 'topics'];
+            if (topic.status === 'voting') path.push('vote');
+            else if (topic.status === 'ideation') path.push('ideation');
+            path.push('edit', duplicate.id);
+            this.router.navigate(path, { replaceUrl: true });
+          });
+      }
+    });
   }
-  
+
   addGroupsDialog(topic: Topic) {
-    // Replicate dialog logic
+    // TopicAddGroupsDialogComponent not yet migrated — tracked in separate issue
   }
-  
+
   reportReasonDialog(topic: Topic) {
-    // Replicate dialog logic
+    // TopicReportReasonComponent not yet migrated — tracked in separate issue
   }
-  
+
   closeTopic(topic: Topic) {
     this.topicService.changeState(topic, 'closed');
   }
@@ -226,8 +329,13 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   deleteTopic(topic: Topic) {
     this.topicService.doDeleteTopic(topic, ['/', this.translate.currentLang, 'my', 'topics']);
   }
-  
+
   downloadAttachment(attachment: any) {
-    // Add logic
+    if (attachment.source === 'upload') {
+      const url = `${this.topicService['apiUrl']}/api/users/self/topics/${this.topicId}/attachments/${attachment.id}/download`;
+      window.open(url, '_blank');
+    } else {
+      window.open(attachment.link, '_blank');
+    }
   }
 }

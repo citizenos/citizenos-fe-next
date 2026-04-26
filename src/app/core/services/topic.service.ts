@@ -297,6 +297,27 @@ export class TopicService {
     });
   }
 
+  joinPublic(topicId: string): Observable<any> {
+    return this.http.post<ApiResponse<any>>(
+      this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/join`),
+      {}, { withCredentials: true }
+    ).pipe(map(res => res.data));
+  }
+
+  loadGroups(topicId: string): Observable<any[]> {
+    return this.http.get<ApiResponse<any>>(
+      this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/members/groups`),
+      { withCredentials: true }
+    ).pipe(map(res => res.data?.rows ?? []));
+  }
+
+  loadAttachments(topicId: string): Observable<any[]> {
+    return this.http.get<ApiResponse<any>>(
+      this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/attachments`),
+      { withCredentials: true }
+    ).pipe(map(res => res.data?.rows ?? []));
+  }
+
   private getAbsoluteUrlApi(path: string): string {
     return `${this.apiUrl}${path}`;
   }
