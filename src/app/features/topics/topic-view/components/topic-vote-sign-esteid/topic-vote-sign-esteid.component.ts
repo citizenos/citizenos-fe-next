@@ -2,6 +2,7 @@ import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/cor
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { interval, switchMap, takeWhile, take, map, catchError, of } from 'rxjs';
+import { UpperCasePipe } from '@angular/common';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
@@ -15,7 +16,7 @@ declare let hwcrypto: any;
   selector: 'app-topic-vote-sign-esteid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective],
+  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe],
   templateUrl: './topic-vote-sign-esteid.component.html'
 })
 export class TopicVoteSignEsteidComponent {

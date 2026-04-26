@@ -22,28 +22,6 @@
 }
 
 #topic_view {
-  .topic_tabs {
-    display: flex;
-    gap: 32px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid var(--color-border);
-    
-    .topic_tab {
-      padding: 12px 0;
-      cursor: pointer;
-      font-weight: 500;
-      color: var(--color-text-muted);
-      border-bottom: 2px solid transparent;
-      transition: color .15s, border-color .15s;
-      
-      &:hover { color: var(--color-primary); }
-      &.active {
-        color: var(--color-primary);
-        border-bottom-color: var(--color-primary);
-      }
-    }
-  }
-
   .content_area_wrap {
     display: flex;
     flex-direction: row;
@@ -54,10 +32,6 @@
     .content_area_left {
       flex: 1;
       min-width: 0;
-
-      .topic_tabs.tablet {
-        display: none;
-      }
 
       .topic_feature_section {
         border-radius: 16px;
@@ -99,53 +73,108 @@
   }
 }
 
-@media (max-width: 1024px) {
-  #topic_view {
-    .content_area_wrap {
-      flex-direction: column;
 
-      .content_area_left {
-        width: 100%;
 
-        .topic_tabs.tablet {
-          display: flex;
-          z-index: 999999;
-          position: fixed;
-          left: 0;
-          bottom: 0;
-          width: 100%;
-          padding: 0;
-          margin-bottom: 0;
-          justify-content: space-between;
-          background-color: var(--color-surfaces);
-          border-radius: 16px 16px 0 0;
-          box-shadow: 0px -8px 20px 0px rgba(220, 231, 240, 0.1);
-          border-bottom: none;
+.topic_tabs {
+  display: flex;
+  background-color: var(--color-surfaces);
+  width: 100%;
+  border-radius: 16px;
+  padding: 0px 16px;
+  gap: 32px;
+  margin-bottom: 24px;
 
-          .topic_tab {
-            width: 100%;
-            justify-content: center;
-            display: flex;
-            align-items: center;
-            padding: 12px 0;
-            cursor: pointer;
-            border-bottom: none;
+  @media (max-width: 1024px) {
+    display: none;
+  }
 
-            &.active {
-              background-color: var(--color-blue-100);
-            }
-            &.active.discussion {
-              background-color: var(--color-discussion);
-            }
-          }
-        }
+  &.tablet {
+    display: none;
+    z-index: 999999;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 0;
+    justify-content: space-between;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0px -8px 20px 0px rgba(220, 231, 240, 0.1);
+
+    @media (max-width: 1024px) {
+      display: flex;
+    }
+
+    .topic_tab {
+      .active {
+        background-color: var(--color-blue-100);
+        border-bottom: none;
       }
-
-      .content_area_right {
-        width: 100%;
-        position: static;
-        top: 0;
+      &.discussion.active {
+        background-color: var(--color-discussion);
+        color: var(--color-surfaces);
+        rect { fill: var(--color-blue-100); }
+        path { fill: var(--color-discussion); }
       }
+      &.voting.active {
+        background-color: var(--color-voting);
+        color: var(--color-surfaces);
+        rect { fill: var(--color-dialog-voting-contrast); }
+        path { fill: var(--color-voting); }
+      }
+      &.ideation.active {
+        background-color: var(--color-ideation);
+        color: var(--color-surfaces);
+      }
+      &.follow_up.active {
+        background-color: var(--color-follow-up);
+        color: var(--color-surfaces);
+        rect { fill: var(--color-dialog-follow-up); }
+        path { fill: var(--color-follow-up); }
+      }
+    }
+  }
+}
+
+.topic_tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 19px 24px;
+  color: var(--color-text);
+  cursor: pointer;
+
+  @media (max-width: 1024px) {
+    padding: 12px 38px;
+    width: 100%;
+    justify-content: center;
+  }
+  @media (max-width: 768px) {
+    padding: 12px 0;
+  }
+
+  &.active {
+    font-weight: 600;
+    border-bottom: 2px solid var(--color-discussion);
+
+    @media (max-width: 1024px) {
+      background-color: var(--color-blue-100);
+      border-bottom: none;
+    }
+
+    &.ideation {
+      border-bottom: 2px solid var(--color-ideation);
+      @media (max-width: 1024px) { border-bottom: none; }
+    }
+
+    &.voting {
+      border-bottom: 2px solid var(--color-voting);
+      @media (max-width: 1024px) { border-bottom: none; }
+    }
+
+    &.follow_up {
+      border-bottom: 2px solid var(--color-follow-up);
+      @media (max-width: 1024px) { border-bottom: none; }
     }
   }
 }

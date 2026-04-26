@@ -35,6 +35,7 @@ export class TopicHeaderComponent {
   translate = inject(TranslateService);
 
   mobileActions = false;
+  tabletActionsOpen = false;
 
   isLoggedIn = computed(() => this.userStore.isAuthenticated());
 

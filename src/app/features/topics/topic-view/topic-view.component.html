@@ -32,7 +32,7 @@
             <a class="topic_tab" (click)="tabTablet.set('')" [class.active]="!tabTablet()">
               <cos-icon name="topic" [size]="32"></cos-icon>
             </a>
-            <a class="topic_tab" (click)="tabTablet.set('discussion')" [class.active]="tabTablet() === 'discussion'" [class.disabled]="topic()?.status === 'draft' || topic()?.status === 'inProgress'">
+            <a class="topic_tab discussion" (click)="tabTablet.set('discussion')" [class.active]="tabTablet() === 'discussion'" [class.disabled]="topic()?.status === 'draft' || topic()?.status === 'inProgress'">
               <cos-icon name="comment" [size]="32"></cos-icon>
             </a>
           </div>
@@ -41,21 +41,25 @@
         <!-- Desktop Tabs -->
         <div class="topic_tabs mobile_hidden">
           @if (topic()?.ideationId || topic()?.status === STATUSES.ideation) {
-            <a class="topic_tab" (click)="selectTab('ideation')" [class.active]="tabSelected() === 'ideation'">
-              <span translate="VIEWS.TOPICS_TOPICID.TAB_IDEATION"></span>
+            <a class="topic_tab ideation" (click)="selectTab('ideation')" [class.active]="tabSelected() === 'ideation'">
+              <cos-icon name="idea" size="20"></cos-icon>
+              <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_IDEATION"></span>
             </a>
           }
-          <a class="topic_tab" (click)="selectTab('discussion')" [class.active]="tabSelected() === 'discussion' || !tabSelected()">
-            <span translate="VIEWS.TOPICS_TOPICID.TAB_DISCUSSION"></span>
+          <a class="topic_tab discussion" (click)="selectTab('discussion')" [class.active]="tabSelected() === 'discussion' || !tabSelected()">
+            <cos-icon name="comment" size="20"></cos-icon>
+            <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_DISCUSSION"></span>
           </a>
           @if (topic()?.voteId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress, STATUSES.voting].includes(topic()?.status || '')) {
-            <a class="topic_tab" (click)="selectTab('voting')" [class.active]="tabSelected() === 'voting'">
-              <span translate="VIEWS.TOPICS_TOPICID.TAB_VOTING"></span>
+            <a class="topic_tab voting" (click)="selectTab('voting')" [class.active]="tabSelected() === 'voting'">
+              <cos-icon name="check-box" size="20"></cos-icon>
+              <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_VOTING"></span>
             </a>
           }
           @if (topic()?.status === STATUSES.followUp || topic()?.status === STATUSES.closed) {
-            <a class="topic_tab" (click)="selectTab('followUp')" [class.active]="tabSelected() === 'followUp'">
-              <span translate="VIEWS.TOPICS_TOPICID.TAB_ACTION"></span>
+            <a class="topic_tab follow_up" (click)="selectTab('followUp')" [class.active]="tabSelected() === 'followUp'">
+              <cos-icon name="arrow-next" size="20"></cos-icon>
+              <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_ACTION"></span>
             </a>
           }
         </div>

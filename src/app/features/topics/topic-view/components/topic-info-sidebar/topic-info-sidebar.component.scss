@@ -126,7 +126,7 @@
           }
         }
 
-        &:hover .options, &:focus-within .options {
+        &:hover .options, &:focus-within .options, &.open .options {
           display: block; // basic hover drop down
         }
       }

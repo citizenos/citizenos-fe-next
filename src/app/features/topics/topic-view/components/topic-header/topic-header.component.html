@@ -44,16 +44,16 @@
       </svg>
     </button>
 
-    <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden">
+    <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" [class.open]="tabletActionsOpen" (click)="tabletActionsOpen = !tabletActionsOpen">
       <!-- TODO: cosDropdown equivalent directive, for now we will use standard CSS hover or click state -->
       <button class="btn_medium_close icon">
         <cos-icon name="more-vertical"></cos-icon>
       </button>
 
-      <div class="options">
+      <div class="options" (click)="$event.stopPropagation()">
         <!-- Replicated dropdown options -->
         @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {
-          <button (click)="leaveTopic.emit(topic())" class="option">
+          <button (click)="leaveTopic.emit(topic()); tabletActionsOpen = false" class="option">
             <div class="icon_wrap">
               <cos-icon name="leave" [size]="16"></cos-icon>
             </div>
@@ -63,7 +63,7 @@
 
         @if (isLoggedIn()) {
           <div class="line_separator"></div>
-          <button class="option" (click)="onToggleFavourite()">
+          <button class="option" (click)="onToggleFavourite(); tabletActionsOpen = false">
             <div class="icon_wrap">
               @if (topic().favourite) {
                 <cos-icon name="favourite-filled" [size]="16"></cos-icon>
@@ -92,7 +92,7 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="inviteEditors.emit(topic())">
+          <button class="option" (click)="inviteEditors.emit(topic()); tabletActionsOpen = false">
             <div class="icon_wrap">
               <cos-icon name="invite" [size]="16"></cos-icon>
             </div>
@@ -132,12 +132,9 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic())) {
           <div class="line_separator"></div>
-          <button class="option" (click)="duplicateTopic.emit(topic())">
+          <button class="option" (click)="duplicateTopic.emit(topic()); tabletActionsOpen = false">
             <div class="icon_wrap">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 5H11V14H2V5Z" fill="#2C3B47"/>
-                <path d="M4 2V4H12V12H14V2H4Z" fill="#2C3B47"/>
-              </svg>
+              <cos-icon name="copy" [size]="16"></cos-icon>
             </div>
             <span translate="VIEWS.TOPICS_TOPICID.OPTION_DUPLICATE_TOPIC"></span>
           </button>
@@ -145,13 +142,9 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="addGroupsDialog.emit(topic())">
+          <button class="option" (click)="addGroupsDialog.emit(topic()); tabletActionsOpen = false">
             <div class="icon_wrap">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 13C1 14 2 14 2 14H10C10 14 11 14 11 13C11 12 10 9 6 9C2 9 1 12 1 13Z" fill="#2C3B47"/>
-                <path d="M8.12132 7.12132C7.55871 7.68393 6.79565 8 6 8C5.20435 8 4.44129 7.68393 3.87868 7.12132C3.31607 6.55871 3 5.79565 3 5C3 4.20435 3.31607 3.44129 3.87868 2.87868C4.44129 2.31607 5.20435 2 6 2C6.79565 2 7.55871 2.31607 8.12132 2.87868C8.68393 3.44129 9 4.20435 9 5C9 5.79565 8.68393 6.55871 8.12132 7.12132Z" fill="#2C3B47"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.99984 5.00004C9.99984 6.08068 9.57131 7.06124 8.87491 7.78104C9.22902 7.9243 9.61061 8 10 8C10.7956 8 11.5587 7.68393 12.1213 7.12132C12.6839 6.55871 13 5.79565 13 5C13 4.20435 12.6839 3.44129 12.1213 2.87868C11.5587 2.31607 10.7956 2 10 2C9.61059 2 9.22898 2.07571 8.87486 2.21898C9.57129 2.93879 9.99984 3.91937 9.99984 5.00004ZM5 13C5 14 6 14 6 14H10C10 14 11 14 11 13C11 12.1936 10.3496 10.0864 8 9.30092C5.65035 10.0864 5 12.1936 5 13Z" fill="#2C3B47"/>
-              </svg>
+              <cos-icon name="plus" [size]="16"></cos-icon>
             </div>
             <span translate="VIEWS.TOPICS_TOPICID.OPTION_ADD_TO_GROUP"></span>
           </button>
@@ -169,7 +162,7 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="closeTopic.emit(topic())">
+          <button class="option" (click)="closeTopic.emit(topic()); tabletActionsOpen = false">
             <div class="icon_wrap">
               <cos-icon name="check-box" [size]="16"></cos-icon>
             </div>
@@ -179,7 +172,7 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic())) {
           <div class="line_separator"></div>
-          <button class="option error_text" (click)="deleteTopic.emit(topic())">
+          <button class="option error_text" (click)="deleteTopic.emit(topic()); tabletActionsOpen = false">
             <div class="icon_wrap">
               <cos-icon name="trash" [size]="16"></cos-icon>
             </div>

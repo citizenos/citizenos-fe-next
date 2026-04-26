@@ -49,7 +49,7 @@
                 <span translate="COMPONENTS.TOPIC_VOTE_CAST.OPT_CLOSE_VOTING"></span>
               </div>
             }
-            @if (!vote().reminderSent && topic().members?.users?.count > 1 && !hasVoteEndedExpired()) {
+            @if (!vote().reminderSent && (topic().members.users.count || 0) > 1 && !hasVoteEndedExpired()) {
               <div class="line_separator"></div>
               <div class="option" (click)="sendVoteReminder()">
                 <div class="icon_wrap">
@@ -72,7 +72,7 @@
           <div class="title" translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_DEADLINE"></div>
           <div class="data_item">
             <span class="bold">{{vote().endsAt | date:'y-MM-dd HH:mm'}}</span>
-            @if (canUpdate() && !hasVoteEndedExpired() && topic().members?.users?.count > 1 && !vote().reminderSent) {
+            @if (canUpdate() && !hasVoteEndedExpired() && (topic().members.users.count || 0) > 1 && !vote().reminderSent) {
               <a (click)="sendVoteReminder()" translate="COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER"></a>
             }
           </div>
@@ -234,13 +234,13 @@
                 <circle r="20" cx="24" cy="24" fill="transparent" stroke="#e0e0e0" stroke-width="5px"></circle>
                 <circle r="20" cx="24" cy="24" fill="transparent" stroke="#60e6a8" stroke-width="5px"
                   [attr.stroke-dasharray]="voteGraphDasharray()"
-                  [attr.stroke-dashoffset]="voteGraphDashOffset(((vote().votersCount || 0) / topic().members?.users?.count) * 100)">
+                  [attr.stroke-dashoffset]="voteGraphDashOffset(((vote().votersCount || 0) / (topic().members.users.count || 1)) * 100)">
                 </circle>
               </svg>
             </div>
             <div class="text_area">
               <div><span translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES"></span> <span class="bold">{{vote().votersCount || 0}}</span></div>
-              @if (canUpdate() && !hasVoteEndedExpired() && topic().members?.users?.count > 1 && !vote().reminderSent) {
+              @if (canUpdate() && !hasVoteEndedExpired() && (topic().members.users.count || 0) > 1 && !vote().reminderSent) {
                 <a (click)="sendVoteReminder()" translate="COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER"></a>
               }
             </div>
@@ -388,7 +388,7 @@
                 <circle r="20" cx="24" cy="24" fill="transparent" stroke="#e0e0e0" stroke-width="5px"></circle>
                 <circle r="20" cx="24" cy="24" fill="transparent" stroke="#60e6a8" stroke-width="5px"
                   [attr.stroke-dasharray]="voteGraphDasharray()"
-                  [attr.stroke-dashoffset]="voteGraphDashOffset(((vote().votersCount || 0) / topic().members?.users?.count) * 100)">
+                  [attr.stroke-dashoffset]="voteGraphDashOffset(((vote().votersCount || 0) / (topic().members.users.count || 1)) * 100)">
                 </circle>
               </svg>
             </div>
