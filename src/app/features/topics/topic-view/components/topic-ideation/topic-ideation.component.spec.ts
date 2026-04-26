@@ -54,7 +54,6 @@ describe('TopicIdeationComponent', () => {
       const comp = new TopicIdeationComponent();
       (comp as any).topic = vi.fn().mockReturnValue(mockTopic);
       (comp as any).ideation = vi.fn().mockReturnValue(mockIdeation);
-      comp.ngOnInit();
       return comp;
     });
   }

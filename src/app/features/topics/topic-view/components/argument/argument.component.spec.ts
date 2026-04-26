@@ -48,10 +48,10 @@ describe('ArgumentComponent', () => {
     });
 
     component = TestBed.runInInjectionContext(() => new ArgumentComponent());
-    component.argument = () => ({ ...mockArgument });
-    component.topicId = () => 'topic-1';
-    component.discussionId = () => 'disc-1';
-    component.root = () => null;
+    (component as any).argument = vi.fn().mockReturnValue({ ...mockArgument });
+    (component as any).topicId = vi.fn().mockReturnValue('topic-1');
+    (component as any).discussionId = vi.fn().mockReturnValue('disc-1');
+    (component as any).root = vi.fn().mockReturnValue(null);
     component.ngOnInit();
   });
 
