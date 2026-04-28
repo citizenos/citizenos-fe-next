@@ -25,4 +25,18 @@ export class GroupInviteUserService {
       invites, { withCredentials: true }
     ).pipe(map(r => r.data));
   }
+
+  updateInvite(groupId: string, inviteId: string, level: string): Observable<any> {
+    return this.http.put<ApiResponse<any>>(
+      `${this.baseUrl}/api/users/self/groups/${groupId}/invites/users/${inviteId}`,
+      { level }, { withCredentials: true }
+    ).pipe(map(r => r.data));
+  }
+
+  deleteInvite(groupId: string, inviteId: string): Observable<any> {
+    return this.http.delete(
+      `${this.baseUrl}/api/users/self/groups/${groupId}/invites/users/${inviteId}`,
+      { withCredentials: true }
+    );
+  }
 }

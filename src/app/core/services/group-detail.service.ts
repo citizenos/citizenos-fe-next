@@ -73,4 +73,8 @@ export class GroupDetailService {
   canUpdate(group: Group): boolean {
     return !!(group.permission?.level === 'admin' || group.userLevel === 'admin');
   }
+
+  canShare(group: Group): boolean {
+    return !!(group && (group.visibility !== 'private' || this.canUpdate(group)));
+  }
 }
