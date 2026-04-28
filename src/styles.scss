@@ -1,5 +1,6 @@
 /* Global styles */
 @use 'styles/tokens.scss';
+@use 'styles/mixins';
 
 :root {
   font-family: var(--font-family-base);
@@ -284,8 +285,9 @@ a {
   line-height: 24px;
 }
 
+/* The CDK backdrop handles the visual background; .overlay is click-outside handler only */
 .overlay {
-  background: rgba(44, 59, 71, 0.4);
+  background: transparent;
   position: fixed;
   z-index: 9999;
   top: 0;
@@ -294,6 +296,203 @@ a {
   right: 0;
   width: 100%;
   height: 100%;
+}
+
+/* Dialog structural styles */
+.dialog_wrap {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 32px;
+  position: absolute;
+  padding: 0 0 40px 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  justify-content: center;
+  @include mixins.mobile {
+    padding: 0;
+  }
+}
+
+.dialog {
+  display: flex;
+  align-self: center;
+  justify-self: center;
+  flex-direction: column;
+  z-index: 9999;
+  position: relative;
+  width: 560px;
+  height: max-content;
+  border-radius: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  background-color: var(--color-surfaces);
+
+  @include mixins.mobile {
+    min-width: initial;
+    max-width: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 9999999;
+    padding: 0;
+    left: 0;
+    top: 0;
+    flex: 1 1;
+    background-color: var(--color-surfaces);
+    min-height: 100%;
+    border-radius: 0;
+  }
+
+  .dialog_header {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 56px;
+    background-color: var(--color-dialog);
+    border-radius: 16px 16px 0 0;
+    justify-content: space-between;
+
+    @include mixins.mobile {
+      border-radius: 16px 16px 0 0;
+      text-align: center;
+    }
+
+    &.error { background-color: var(--color-error-background); color: var(--color-danger); }
+    &.warning { background-color: var(--color-warn-background); color: var(--color-warn); }
+    &.info { background-color: var(--color-info-background); color: var(--color-info); }
+    &.success { background-color: var(--color-success-background); color: var(--color-success); }
+    &.delete { background-color: var(--color-error-background); color: var(--color-danger); }
+
+    .header_text {
+      display: flex;
+      padding-left: 20px;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+
+      .title {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 24px;
+        margin: 0;
+      }
+    }
+
+    .dialog_close {
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      right: 0;
+      height: 100%;
+      align-items: center;
+
+      &:hover svg {
+        transform: rotate(-180deg);
+        transition: transform 150ms ease;
+      }
+    }
+  }
+
+  .dialog_tabs_wrap {
+    width: 100%;
+    display: flex;
+    padding: 0 16px;
+    gap: 8px;
+    background-color: var(--color-dialog);
+
+    .dialog_tab {
+      color: var(--color-text);
+      display: flex;
+      padding: 12px 16px;
+      background-color: var(--color-background);
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+
+      &.active {
+        background-color: var(--color-surfaces);
+        box-shadow: 0 8px 20px 0 rgba(220, 231, 240, 0.3), 0 12px 16px 0 rgba(50, 85, 112, 0.1);
+        font-weight: 600;
+      }
+    }
+  }
+
+  .dialog_content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-dialog-background);
+
+    &.no_footer { border-radius: 0 0 16px 16px; }
+
+    .content_section {
+      .section_content_wrap {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--color-surfaces);
+        width: 100%;
+        gap: 16px;
+        padding: 16px 24px;
+      }
+    }
+  }
+
+  .dialog_footer {
+    display: flex;
+    background-color: var(--color-dialog);
+    flex-direction: column;
+    width: 100%;
+    border-radius: 0 0 16px 16px;
+
+    &.with_buttons {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+
+      .button_row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        @include mixins.mobile {
+          width: 100%;
+          flex-direction: column-reverse;
+        }
+      }
+    }
+
+    @include mixins.mobile { border-radius: 0; }
+  }
+
+  .info_row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+/* Responsive utility classes */
+.tablet_show {
+  display: none !important;
+  @include mixins.tablet { display: flex !important; }
+}
+.mobile_show {
+  display: none !important;
+  @include mixins.mobile { display: flex !important; }
+}
+.tablet_hidden {
+  @include mixins.tablet { display: none !important; }
+}
+.mobile_hidden {
+  @include mixins.mobile { display: none !important; }
 }
 
 .mobile_actions_wrap {

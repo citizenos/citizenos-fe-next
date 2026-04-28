@@ -32,7 +32,9 @@
           </div>
         }
 
-        <cos-activities-button></cos-activities-button>
+        @if (isLoggedIn()) {
+          <cos-activities-button class="tablet_show"></cos-activities-button>
+        }
 
         @if (isLoggedIn()) {
           <button class="btn_medium_close icon" (click)="toggleFavourite(group)">
@@ -50,6 +52,7 @@
         }
 
         <!-- Desktop action dropdown -->
+        @if (isLoggedIn()) {
         <div class="dropdown button_dropdown mobile_hidden" [class.dropdown_active]="groupActionsOpen()" (click)="$event.stopPropagation()">
           <button class="btn_medium_close icon group_actions_dropdown" (click)="groupActionsOpen.update(v => !v)">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -127,6 +130,7 @@
             </div>
           }
         </div>
+        } <!-- end @if isLoggedIn for dropdown -->
       </div>
     </div>
 
@@ -458,7 +462,7 @@
             (remove)="removeTopicFromGroup($event)"
           ></cos-topic-card>
         } @empty {
-          <div class="empty_state" translate="VIEWS.GROUP.NO_TOPICS"></div>
+          <div class="empty_state" translate="VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_HEADING"></div>
         }
       </div>
 
@@ -481,8 +485,8 @@
 
       <div class="container">
         <div class="row header_row">
-          <div class="name" translate="VIEWS.GROUP.MEMBER_TABLE_NAME"></div>
-          <div class="level" translate="VIEWS.GROUP.MEMBER_TABLE_LEVEL"></div>
+          <div class="name" translate="VIEWS.GROUP.MEMBERS_TABLE_HEADER_NAME"></div>
+          <div class="level" translate="VIEWS.GROUP.MEMBERS_TABLE_HEADER_PERMISSIONS"></div>
         </div>
 
         @for (member of members(); track member.id) {
@@ -495,7 +499,7 @@
               }
               <span>{{ member.name }}</span>
               @if (member.invite) {
-                <span class="invite_badge" translate="VIEWS.GROUP.MEMBER_INVITED"></span>
+                <span class="invite_badge" translate="VIEWS.GROUP.MEMBER_INVITED_BADGE"></span>
               }
             </div>
             <div class="level">
@@ -529,7 +533,7 @@
             </div>
           </div>
         } @empty {
-          <div class="empty_state" translate="VIEWS.GROUP.NO_MEMBERS"></div>
+          <div class="empty_state" translate="VIEWS.GROUP.MEMBERS_EMPTY"></div>
         }
       </div>
 
