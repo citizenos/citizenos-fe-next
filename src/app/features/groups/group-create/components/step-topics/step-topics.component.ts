@@ -6,6 +6,7 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { SearchService } from '../../../../../core/services/search.service';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-step-topics',
@@ -15,7 +16,8 @@ import { InputComponent } from '../../../../../shared/components/input/input.com
     FormsModule,
     TranslateModule,
     IconComponent,
-    InputComponent
+    InputComponent,
+    ButtonComponent
   ],
   templateUrl: './step-topics.component.html',
   styleUrl: './step-topics.component.scss'

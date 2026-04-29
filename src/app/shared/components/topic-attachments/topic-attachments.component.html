@@ -1,0 +1,41 @@
+<div class="create_content_block discussion" [class.open]="blockAttachments()">
+  <div class="block_title_wrap" (click)="blockAttachments.set(true)">
+    <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_ATTACHMENTS"></div>
+    
+    <div class="dropdown button_dropdown" cosDropdown>
+      <cos-button variant="secondary" (clicked)="blockAttachments.set(true); $event.stopPropagation()" icon="plus">
+        <span translate="VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_ADD"></span>
+      </cos-button>
+      <div class="options button_options">
+        <cos-button variant="ghost" (clicked)="triggerUpload()" icon="upload">
+          <input 
+            type="file" 
+            #attachmentInput 
+            class="hidden" 
+            (change)="onUpload()"
+            multiple="true" 
+          />
+          <span translate="VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_UPLOAD"></span>
+        </cos-button>
+        <!-- Dropbox/OneDrive/GoogleDrive could be added here if needed -->
+      </div>
+    </div>
+  </div>
+
+  @if (blockAttachments()) {
+    <div class="block_content attachments_wrap">
+      @for (attachment of attachments(); track attachment.id) {
+        <div class="attachment_item">
+          <input 
+            class="attachment_name_input" 
+            [(ngModel)]="attachment.name" 
+            (change)="onUpdate(attachment)" 
+          />
+          <cos-button variant="ghost" (clicked)="onDelete(attachment)" icon="trash"></cos-button>
+        </div>
+      } @empty {
+        <p class="no_attachments" translate="VIEWS.TOPICS_TOPICID.SECTION_INFO_NO_ATTACHMENTS"></p>
+      }
+    </div>
+  }
+</div>

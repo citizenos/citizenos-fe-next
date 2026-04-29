@@ -318,6 +318,21 @@ export class TopicService {
     ).pipe(map(res => res.data?.rows ?? []));
   }
 
+  updateAttachment(topicId: string, attachment: any): Observable<any> {
+    return this.http.put<ApiResponse<any>>(
+      this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/attachments/${attachment.id}`),
+      attachment,
+      { withCredentials: true }
+    ).pipe(map(res => res.data));
+  }
+
+  deleteAttachment(topicId: string, attachmentId: string): Observable<any> {
+    return this.http.delete<ApiResponse<any>>(
+      this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/attachments/${attachmentId}`),
+      { withCredentials: true }
+    ).pipe(map(res => res.data));
+  }
+
   private getAbsoluteUrlApi(path: string): string {
     return `${this.apiUrl}${path}`;
   }

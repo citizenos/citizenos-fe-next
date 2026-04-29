@@ -5,7 +5,7 @@ import { GroupInviteUserComponent } from './group-invite-user.component';
 import { GroupInviteUserService } from '../../../../../core/services/group-invite-user.service';
 import { GroupDetailService } from '../../../../../core/services/group-detail.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 const mockGroup: any = { id: 'g1', permission: { level: 'admin' } };
 const mockUser: any = { name: 'Invited User', email: 'invited@test.com', invite: { id: 'inv1', level: 'read' } };
@@ -70,7 +70,6 @@ describe('GroupInviteUserComponent', () => {
     });
 
     it('rolls back invite.level on error', () => {
-      const { throwError } = require('rxjs');
       inviteUserService.updateInvite = vi.fn().mockReturnValue(throwError(() => new Error('fail')));
       const user = { ...mockUser, invite: { id: 'inv1', level: 'read' } };
       (component as any).user = vi.fn().mockReturnValue(user);

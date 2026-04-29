@@ -57,9 +57,7 @@
                 }
               </div>
             </cos-dropdown>
-            <button class="btn_medium_submit_ghost icon" (click)="removeUser(user)">
-              <cos-icon name="trash"></cos-icon>
-            </button>
+            <cos-button variant="ghost" (clicked)="removeUser(user)" icon="trash"></cos-button>
           </div>
         </div>
       } @empty {

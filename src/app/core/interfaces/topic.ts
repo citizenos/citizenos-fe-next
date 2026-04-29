@@ -10,6 +10,9 @@ export interface TopicVote {
   id: string;
   votersCount: number;
   type: string;
+  endsAt?: string | Date | null;
+  reminderTime?: string | Date | null;
+  reminderSent?: string | Date | null;
   [key: string]: unknown;
 }
 

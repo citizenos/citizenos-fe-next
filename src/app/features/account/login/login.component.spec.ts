@@ -56,7 +56,7 @@ describe('LoginComponent', () => {
     const email = component.loginForm.controls.email;
     email.setValue('invalid-email');
     expect(email.hasError('email')).toBeTruthy();
-    
+
     email.setValue('test@example.com');
     expect(email.hasError('email')).toBeFalsy();
   });
@@ -74,11 +74,11 @@ describe('LoginComponent', () => {
       email: 'test@example.com',
       password: 'password123'
     });
-    
+
     mockUserStore.login.mockResolvedValue({});
-    
+
     await component.onSubmit();
-    
+
     expect(mockUserStore.login).toHaveBeenCalledWith('test@example.com', 'password123');
     expect(navigateSpy).toHaveBeenCalledWith(['/']);
   });
@@ -88,11 +88,11 @@ describe('LoginComponent', () => {
       email: 'test@example.com',
       password: 'wrong-password'
     });
-    
+
     mockUserStore.login.mockRejectedValue(new Error('Login failed'));
-    
+
     await component.onSubmit();
-    
+
     expect(component.error()).toBe('Login failed. Please check your credentials.');
   });
 
@@ -103,12 +103,12 @@ describe('LoginComponent', () => {
     // @ts-ignore
     delete window.location;
     window.location = { ...originalLocation, href: '' } as any;
-    
+
     component.doLoginPartner('google');
-    
+
     expect(mockUserService.getPartnerLoginUrl).toHaveBeenCalledWith('google');
     expect(window.location.href).toBe('http://partner-login.url');
-    
-    window.location = originalLocation;
+
+    window.location.href = originalLocation.href;
   });
 });

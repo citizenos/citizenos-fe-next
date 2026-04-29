@@ -11,14 +11,14 @@ import {
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Group } from '../../../../../core/interfaces/group';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-step-info',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, TranslateModule, IconComponent, InputComponent],
+  imports: [FormsModule, TranslateModule, InputComponent, ButtonComponent],
   templateUrl: './step-info.component.html',
   styleUrl: './step-info.component.scss',
 })

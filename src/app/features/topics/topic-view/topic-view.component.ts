@@ -261,6 +261,16 @@ export class TopicViewComponent implements OnInit, OnDestroy {
     });
   }
 
+  openSettings(topic: Topic) {
+    import('./components/topic-settings/topic-settings.component').then(m => {
+      this.dialogService.open(m.TopicSettingsComponent, {
+        data: { topic }
+      }).afterClosed().subscribe((updated: any) => {
+        if (updated) this.topicService.reloadTopic();
+      });
+    });
+  }
+
   toggleFavourite(topic: Topic) {
     this.topicService.toggleFavourite(topic);
   }

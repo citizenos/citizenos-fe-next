@@ -8,6 +8,7 @@ import { TopicJoinService } from '../../../../../core/services/topic-join.servic
 import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 import { TooltipDirective } from '../../../../../shared/components/tooltip/tooltip.directive';
@@ -21,6 +22,7 @@ import { take } from 'rxjs';
     TranslateModule,
     QRCodeComponent,
     IconComponent,
+    ButtonComponent,
     DropdownComponent,
     TooltipDirective
   ],

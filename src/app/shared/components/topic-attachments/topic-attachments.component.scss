@@ -1,0 +1,136 @@
+:host {
+  display: block;
+}
+
+.create_content_block {
+  background: var(--color-surfaces);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+
+  .block_content {
+    display: none;
+  }
+
+  &.open {
+    .block_content {
+      display: block;
+    }
+  }
+}
+
+.block_title_wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  
+  .block_title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.btn_medium_plain {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--color-background);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--color-text);
+
+  &:hover {
+    background: var(--color-border);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.attachments_wrap {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .attachment_item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--color-background);
+    border-radius: var(--radius-sm);
+    gap: 12px;
+
+    .attachment_name_input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 0;
+      font-size: 14px;
+      color: var(--color-link);
+      cursor: text;
+
+      &:focus {
+        outline: none;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.no_attachments {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: 16px 0 0;
+}
+
+.dropdown {
+  position: relative;
+  
+  .options {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+    min-width: 180px;
+    margin-top: 4px;
+    
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-text);
+
+      &:hover {
+        background: var(--color-background);
+      }
+    }
+  }
+
+  &.dropdown_active {
+    .options {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

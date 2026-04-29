@@ -6,12 +6,13 @@ import { SearchService } from '../../../../../core/services/search.service';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-step-invite',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, TranslateModule, IconComponent, InputComponent, DropdownComponent],
+  imports: [FormsModule, TranslateModule, IconComponent, InputComponent, DropdownComponent, ButtonComponent],
   templateUrl: './step-invite.component.html',
   styleUrl: './step-invite.component.scss',
 })

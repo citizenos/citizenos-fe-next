@@ -1,0 +1,194 @@
+@use "mixins";
+
+.lightbox_header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 0 24px;
+  background-color: var(--color-surfaces);
+  border-radius: 16px 16px 0 0;
+
+  .lightbox_header_text {
+    margin-bottom: 24px;
+    .title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-text);
+      text-transform: uppercase;
+    }
+    .title_description {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+  }
+
+  .lightbox_close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+
+  .header_row_wrap {
+    .header_row {
+      display: flex;
+      gap: 32px;
+      .tab_button {
+        cursor: pointer;
+        padding-bottom: 12px;
+        position: relative;
+        .tab_button_text {
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--color-text-muted);
+          text-transform: uppercase;
+        }
+        &.active {
+          .tab_button_text {
+            color: var(--color-link);
+          }
+          .blue_bottom_line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--color-link);
+            border-radius: 3px 3px 0 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.lightbox_content {
+  padding: 24px;
+  background-color: var(--color-surfaces);
+  min-height: 400px;
+
+  .settings_section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    gap: 16px;
+
+    .settings_cell {
+      flex: 1;
+      &.text-right {
+        text-align: right;
+        flex: 0 0 auto;
+      }
+      .setting_title {
+        font-weight: 700;
+        font-size: 16px;
+        margin-bottom: 4px;
+      }
+      .setting_description {
+        font-size: 13px;
+        color: var(--color-text-muted);
+        line-height: 1.4;
+      }
+    }
+  }
+
+  .line.lightest_line {
+    height: 1px;
+    background-color: var(--color-border-light);
+    margin: 8px 0;
+  }
+}
+
+.lightbox_footer {
+  padding: 16px 24px 24px;
+  background-color: var(--color-surfaces);
+  border-top: 1px solid var(--color-border-light);
+  border-radius: 0 0 16px 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.selected_categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+
+  .category_wrap {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-surface-contrast);
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    gap: 8px;
+    &:hover {
+      background-color: var(--color-border-light);
+    }
+    .category_title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.category_selection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+
+  @include mixins.mobile {
+    grid-template-columns: 1fr;
+  }
+
+  .category_wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px;
+    cursor: pointer;
+    &:hover {
+      border-color: var(--color-link);
+    }
+    &.category_selected {
+      background-color: var(--color-surface-contrast);
+      border-color: var(--color-link);
+      .category_title {
+        color: var(--color-link);
+      }
+    }
+    .category_title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+}
+
+.reminder_dropdown {
+  margin-top: 8px;
+  .dropdown_selection {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    background-color: var(--color-surfaces);
+  }
+}
+
+.tip {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+}

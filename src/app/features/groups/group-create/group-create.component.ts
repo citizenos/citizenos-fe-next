@@ -4,10 +4,11 @@ import {
   signal,
   inject,
   computed,
+  HostListener,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { switchMap, of, forkJoin, last, map, take, Observable } from 'rxjs';
+import { switchMap, of, forkJoin, last, map, take, Observable, finalize } from 'rxjs';
 import { Group } from '../../../core/interfaces/group';
 import { UserGroupService } from '../../../core/services/user-group.service';
 import { GroupInviteUserService } from '../../../core/services/group-invite-user.service';
@@ -19,6 +20,7 @@ import { StepTopicsComponent } from './components/step-topics/step-topics.compon
 import { StepInviteComponent } from './components/step-invite/step-invite.component';
 import { GroupCreateHelpComponent } from './components/group-create-help/group-create-help.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 export type GroupCreateStep = 'info' | 'settings' | 'add_topics' | 'invite';
 
@@ -34,6 +36,7 @@ export type GroupCreateStep = 'info' | 'settings' | 'add_topics' | 'invite';
     StepInviteComponent,
     GroupCreateHelpComponent,
     IconComponent,
+    ButtonComponent,
   ],
   templateUrl: './group-create.component.html',
   styleUrl: './group-create.component.scss',
@@ -45,6 +48,12 @@ export class GroupCreateComponent {
   private notificationService = inject(NotificationService);
   private router = inject(Router);
   private translate = inject(TranslateService);
+  wWidth = signal(window.innerWidth);
+
+  @HostListener('window:resize')
+  onResize() {
+    this.wWidth.set(window.innerWidth);
+  }
 
   currentStep = signal<GroupCreateStep>('info');
   group = signal<Partial<Group>>({
@@ -58,6 +67,7 @@ export class GroupCreateComponent {
   });
 
   imageFile = signal<File | null>(null);
+  loading = signal(false);
 
   steps: GroupCreateStep[] = ['info', 'settings', 'add_topics', 'invite'];
 
@@ -113,6 +123,7 @@ export class GroupCreateComponent {
     };
 
     const imageFile = this.imageFile();
+    this.loading.set(true);
 
     this.userGroupService.save(payload).pipe(
       switchMap(created => {
@@ -143,7 +154,8 @@ export class GroupCreateComponent {
 
         return obs$.length ? forkJoin(obs$).pipe(map(() => created)) : of(created);
       }),
-      take(1)
+      take(1),
+      finalize(() => this.loading.set(false))
     ).subscribe({
       next: created => {
         this.notificationService.success(

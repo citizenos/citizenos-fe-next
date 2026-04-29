@@ -48,22 +48,17 @@
       <div id="create_footer">
         <div class="items_row">
           <div id="close_create">
-            <button class="btn_medium_submit_ghost icon" (click)="cancel()">
-              <cos-icon name="close"></cos-icon>
-            </button>
+            <cos-button variant="ghost" (clicked)="cancel()" icon="close"></cos-button>
           </div>
           <div id="navigate_create">
             @if (currentStep() !== 'info') {
-              <button class="btn_medium_submit_ghost icon" (click)="previousStep()">
-                <cos-icon name="arrow-left"></cos-icon>
-              </button>
+              <cos-button variant="ghost" (clicked)="previousStep()" icon="arrow-left"></cos-button>
             }
-            <button class="btn_medium_submit" (click)="nextStep()">
+            <cos-button (clicked)="nextStep()" [isLoading]="loading()" [icon]="wWidth() <= 1024 ? 'arrow-right' : undefined">
               <span class="btn_text mobile_hidden" 
                 [translate]="currentStep() !== 'invite' ? 'VIEWS.GROUP_CREATE.FOOTER_BTN_CONTINUE' : 'VIEWS.GROUP_CREATE.FOOTER_BTN_CREATE'">
               </span>
-              <cos-icon class="mobile_show" name="arrow-right"></cos-icon>
-            </button>
+            </cos-button>
           </div>
         </div>
       </div>

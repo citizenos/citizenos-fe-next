@@ -5,7 +5,7 @@ import { GroupMemberUserComponent } from './group-member-user.component';
 import { GroupMemberUserService } from '../../../../../core/services/group-member-user.service';
 import { GroupDetailService } from '../../../../../core/services/group-detail.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 const mockGroup: any = { id: 'g1', permission: { level: 'admin' } };
 const mockMember: any = { userId: 'u1', name: 'Test User', email: 'test@test.com', level: 'read', imageUrl: null };
@@ -70,7 +70,6 @@ describe('GroupMemberUserComponent', () => {
     });
 
     it('rolls back level on error', () => {
-      const { throwError } = require('rxjs');
       memberUserService.updateLevel = vi.fn().mockReturnValue(throwError(() => new Error('fail')));
       const member = { ...mockMember };
       (component as any).member = vi.fn().mockReturnValue(member);

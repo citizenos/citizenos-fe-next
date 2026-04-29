@@ -11,16 +11,7 @@
           [placeholder]="'COMPONENTS.TOPIC_SHARE.PLACEHOLDER_CREATE_NEW_LINK' | translate"
         >
         @if (canUpdate()) {
-          <button id="reload" (click)="generateTokenJoin()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M17 12L18.9999 12C18.9999 10.207 18.3167 8.41728 16.9496 7.05025C14.4553 4.55593 10.5469 4.33754 7.80498 6.39507C7.36324 6.72655 6.73356 6.73367 6.34304 6.34315C5.95252 5.95262 5.94962 5.31411 6.38062 4.96878C9.91434 2.13752 15.0878 2.35994 18.3639 5.63604C20.121 7.3932 20.9999 9.69825 20.9999 12L23 12L20 16L17 12Z"
-                fill="#2C3B47" />
-              <path
-                d="M4.9999 12C4.9999 13.793 5.68312 15.5827 7.05015 16.9497C9.54447 19.4441 13.4529 19.6625 16.1948 17.6049C16.6366 17.2734 17.2662 17.2663 17.6567 17.6569C18.0473 18.0474 18.0502 18.6859 17.6192 19.0312C14.0854 21.8625 8.91203 21.6401 5.63593 18.364C3.87877 16.6068 2.99989 14.3018 2.9999 12H1L4 8L7 12L4.9999 12Z"
-                fill="#2C3B47" />
-            </svg>
-          </button>
+          <cos-button id="reload" variant="ghost" (clicked)="generateTokenJoin()" icon="refresh"></cos-button>
         }
       </div>
     </div>
@@ -47,9 +38,9 @@
     </div>
   </div>
   <div class="button_wrap">
-    <button class="btn_medium_secondary bold" (click)="copyInviteLink()">
+    <cos-button variant="secondary" (clicked)="copyInviteLink()">
       {{ 'COMPONENTS.TOPIC_SHARE.COPY_LINK' | translate }}
-    </button>
+    </cos-button>
   </div>
 </div>
 
@@ -90,9 +81,9 @@
 
   @if (!showQR()) {
     <div>
-      <button class="btn_medium_secondary bold" (click)="showQR.set(true)">
+      <cos-button variant="secondary" (clicked)="showQR.set(true)">
         {{ 'COMPONENTS.TOPIC_SHARE.BTN_GENERATE_QR_CODE' | translate }}
-      </button>
+      </cos-button>
     </div>
   }
 </div>

@@ -8,8 +8,7 @@
   </div>
   <div id="buttons_area">
     @if (!topic().permission.level || topic().permission.level === 'none') {
-      <button id="join_button" (click)="onJoin()" class="btn_medium_close"
-        translate="VIEWS.TOPICS_TOPICID.BTN_JOIN"></button>
+      <cos-button id="join_button" (clicked)="onJoin()" variant="light" translate="VIEWS.TOPICS_TOPICID.BTN_JOIN"></cos-button>
     }
 
     @if (topic().permission.level && topic().permission.level !== 'none') {
@@ -21,31 +20,27 @@
     }
 
     @if (isLoggedIn()) {
-      <button class="btn_medium_close icon tablet_show"
-        (click)="onToggleFavourite()" [class.like_active]="topic().favourite">
-        <div class="tooltip_item">
-          @if (!topic().favourite) {
-            <div class="content_description" translate="VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE"></div>
-          } @else {
-            <div class="content_description" translate="VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE"></div>
-          }
-        </div>
-        @if (!topic().favourite) {
-          <cos-icon name="favourite"></cos-icon>
-        } @else {
-          <cos-icon name="favourite-filled"></cos-icon>
-        }
-      </button>
+      <cos-button
+        variant="light"
+        class="tablet_show"
+        (clicked)="onToggleFavourite()"
+        [icon]="topic().favourite ? 'favourite-filled' : 'favourite'"
+        [class.like_active]="topic().favourite"
+        [cosTooltip]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate"
+      >
+      </cos-button>
     }
 
-    <button class="btn_medium_close icon mobile_show" (click)="mobileActions.set(!mobileActions())">
-      <cos-icon name="more-vertical" [size]="24"></cos-icon>
-    </button>
+    <cos-button
+      variant="light"
+      class="mobile_show"
+      (clicked)="mobileActions.set(!mobileActions())"
+      icon="more-vertical"
+    >
+    </cos-button>
 
     <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" cosDropdown>
-      <button class="btn_medium_close icon">
-        <cos-icon name="more-vertical"></cos-icon>
-      </button>
+      <cos-button variant="light" icon="more-vertical"></cos-button>
 
       <div class="options">
         @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {
@@ -158,6 +153,16 @@
               <cos-icon name="check" [size]="16"></cos-icon>
             </div>
             <span translate="VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC"></span>
+          </button>
+        }
+
+        @if (isLoggedIn() && topicService.canEdit(topic())) {
+          <div class="line_separator"></div>
+          <button class="option" (click)="openSettings.emit(topic())">
+            <div class="icon_wrap">
+              <cos-icon name="settings" [size]="16"></cos-icon>
+            </div>
+            <span translate="VIEWS.TOPICS_TOPICID.NAV_LNK_SETTINGS"></span>
           </button>
         }
 
@@ -295,6 +300,16 @@
           <cos-icon name="check"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC"></span>
+      </button>
+    }
+
+    @if (isLoggedIn() && topicService.canEdit(topic())) {
+      <div class="line_separator"></div>
+      <button class="option" (click)="openSettings.emit(topic()); mobileActions.set(false)">
+        <div class="icon_wrap">
+          <cos-icon name="settings"></cos-icon>
+        </div>
+        <span translate="VIEWS.TOPICS_TOPICID.NAV_LNK_SETTINGS"></span>
       </button>
     }
 

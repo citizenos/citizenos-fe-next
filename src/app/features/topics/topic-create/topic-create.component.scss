@@ -38,10 +38,10 @@
 .create-content {
   flex: 1;
   position: relative;
-  background: var(--color-surfaces);
+  background: var(--color-background);
   border-radius: 16px;
   padding: 32px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
   min-height: 400px;
 
   @media (max-width: 768px) {

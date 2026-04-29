@@ -2,22 +2,27 @@ import { Component, input, OnInit, inject, ChangeDetectionStrategy, signal } fro
 import { TranslateModule } from '@ngx-translate/core';
 import { UpperCasePipe } from '@angular/common';
 import { take } from 'rxjs/operators';
+import { QRCodeComponent } from 'angularx-qrcode';
 import { Group } from '../../../../../core/interfaces/group';
 import { GroupJoinService } from '../../../../../core/services/group-join.service';
 import { GroupMemberUserService } from '../../../../../core/services/group-member-user.service';
 import { GroupDetailService } from '../../../../../core/services/group-detail.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-group-share',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, UpperCasePipe],
-  templateUrl: './group-share.component.html'
+  imports: [TranslateModule, UpperCasePipe, QRCodeComponent, ButtonComponent, IconComponent],
+  templateUrl: './group-share.component.html',
+  styleUrls: ['./group-share.component.scss']
 })
 export class GroupShareComponent implements OnInit {
   group = input.required<Group>();
+  showQR = signal(false);
 
   private groupJoinService = inject(GroupJoinService);
   private memberUserService = inject(GroupMemberUserService);

@@ -7,6 +7,7 @@ import { ImageUploadComponent } from '../../../../../shared/components/image-upl
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { EtherpadDirective } from '../../../../../shared/directives/etherpad.directive';
+import { TopicAttachmentsComponent } from '../../../../../shared/components/topic-attachments/topic-attachments.component';
 
 @Component({
   selector: 'cos-step-topic-info',
@@ -17,7 +18,8 @@ import { EtherpadDirective } from '../../../../../shared/directives/etherpad.dir
     ImageUploadComponent,
     ButtonComponent,
     IconComponent,
-    EtherpadDirective
+    EtherpadDirective,
+    TopicAttachmentsComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './step-topic-info.component.html',

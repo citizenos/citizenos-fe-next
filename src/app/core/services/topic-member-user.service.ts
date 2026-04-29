@@ -1,8 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
+import { UserStore } from '../state/user.store';
 import { ApiResponse } from '../interfaces/api-response';
+import { Topic } from '../interfaces/topic';
+import { DialogService } from '../../shared/dialog/dialog.service';
+import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { Router } from '@angular/router';
 
 export interface TopicMemberUser {
   id: string;
@@ -16,6 +21,9 @@ export interface TopicMemberUser {
 export class TopicMemberUserService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
+  private userStore = inject(UserStore);
+  private dialog = inject(DialogService);
+  private router = inject(Router);
 
   private get baseUrl() { return this.configStore.api.baseUrl(); }
 
@@ -45,5 +53,26 @@ export class TopicMemberUserService {
       `${this.baseUrl}/api/users/self/topics/${topicId}/members/users/${userId}`,
       { withCredentials: true }
     ).pipe(map(res => res.data));
+  }
+
+  doLeaveTopic(topic: Topic, redirect: string[]) {
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        level: 'delete',
+        heading: 'MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_HEADING',
+        title: 'MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_TXT_ARE_YOU_SURE',
+        points: ['MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_TXT_LEAVING_TOPIC_DESC'],
+        confirmBtn: 'MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_BTN_YES',
+        closeBtn: 'MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_BTN_NO'
+      }
+    }).afterClosed().subscribe(result => {
+      if (result === true && this.userStore.user()) {
+        this.delete(topic.id, this.userStore.user()!.id)
+          .pipe(take(1))
+          .subscribe(() => {
+            this.router.navigate(redirect);
+          });
+      }
+    });
   }
 }

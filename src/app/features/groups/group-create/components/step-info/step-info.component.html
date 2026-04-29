@@ -13,11 +13,8 @@
     <div class="mobile_show" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_NAME_DESC"></div>
 
     <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_NAME' | translate">
-      <input
-        id="groupName"
-        [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_NAME' | translate"
-        [ngModel]="group().name"
-        (ngModelChange)="onNameChange($event)">
+      <input id="groupName" [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_NAME' | translate"
+        [ngModel]="group().name" (ngModelChange)="onNameChange($event)">
     </cos-input>
   </div>
 </div>
@@ -33,15 +30,12 @@
       </div>
       <div class="small_heading" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_HEADING_GENERAL_INFO"></div>
     </div>
-    <div translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_DESCRIPTION_DESC" [translateParams]="{descriptionLength: descriptionLength}"></div>
+    <div translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_DESCRIPTION_DESC"
+      [translateParams]="{descriptionLength: descriptionLength}"></div>
 
     <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_DESCRIPTION' | translate">
-      <textarea
-        id="groupDescription"
-        [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_DESCRIPTION' | translate"
-        rows="5"
-        [ngModel]="group().description"
-        (ngModelChange)="onDescriptionChange($event)"
+      <textarea id="groupDescription" [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_DESCRIPTION' | translate"
+        rows="5" [ngModel]="group().description" (ngModelChange)="onDescriptionChange($event)"
         [maxlength]="descriptionLength">
       </textarea>
     </cos-input>
@@ -49,22 +43,22 @@
     <div translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_CHOOSE_IMAGE_DESC"></div>
 
     @if (!group().imageUrl && !tmpImageUrl()) {
-      <div id="image_input_area" (drop)="fileDropped($event)" (dragover)="onDragOver($event)">
-        <div class="bold" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_LBL_DROP_IMAGE"></div>
-        <input type="file" #imageUpload (change)="fileUpload()" style="display: none" />
-        <button class="btn_medium_secondary" (click)="uploadImage()" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_BTN_CHOOSE_IMAGE"></button>
-      </div>
+    <div id="image_input_area" (drop)="fileDropped($event)" (dragover)="onDragOver($event)">
+      <div class="bold" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_LBL_DROP_IMAGE"></div>
+      <input type="file" #imageUpload (change)="fileUpload()" style="display: none" />
+      <cos-button variant="secondary" (clicked)="uploadImage()">{{'VIEWS.GROUP_CREATE.INFO_SETTINGS_BTN_CHOOSE_IMAGE' |
+        translate}}</cos-button>
+    </div>
     } @else {
-      <div id="image_area">
-        <div id="image_wrap">
-          <img [src]="group().imageUrl || tmpImageUrl()" />
-        </div>
-        <a class="icon_link" (click)="removeImage()">
-          <span class="bold" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_BTN_REMOVE_IMAGE"></span>
-          <cos-icon name="trash" [size]="24"></cos-icon>
-        </a>
-        <input type="file" #imageUpload (change)="fileUpload()" style="display: none" />
+    <div id="image_area">
+      <div id="image_wrap">
+        <img [src]="group().imageUrl || tmpImageUrl()" />
       </div>
+      <cos-button variant="ghost" (clicked)="removeImage()" icon="trash">
+        <span class="bold" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_BTN_REMOVE_IMAGE"></span>
+      </cos-button>
+      <input type="file" #imageUpload (change)="fileUpload()" style="display: none" />
+    </div>
     }
   </div>
 </div>
@@ -84,11 +78,8 @@
     <div class="mobile_show" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_CONTACT_EMAIL_DESC"></div>
 
     <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_CONTACT_EMAIL' | translate">
-      <input
-        id="groupContact"
-        [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_CONTACT_EMAIL' | translate"
-        [ngModel]="group().contact"
-        (ngModelChange)="updateContact($event)">
+      <input id="groupContact" [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_INPUT_CONTACT_EMAIL' | translate"
+        [ngModel]="group().contact" (ngModelChange)="updateContact($event)">
     </cos-input>
   </div>
 </div>
@@ -108,22 +99,18 @@
     <div class="mobile_show" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_RULES_OF_CONDUCT_DESC"></div>
 
     @for (rule of rules(); track $index) {
-      <div class="rule_input_row">
-        <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_RULES_OF_CONDUCT_RULE' | translate:{number: $index + 1}">
-          <input
-            [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_RULES_OF_CONDUCT_RULE' | translate:{number: $index + 1}"
-            [ngModel]="rule.rule"
-            (ngModelChange)="onRuleChange($index, $event)">
-        </cos-input>
-        <button class="btn_medium_submit_ghost icon" (click)="removeRule($index)">
-          <cos-icon name="trash"></cos-icon>
-        </button>
-      </div>
+    <div class="rule_input_row">
+      <cos-input
+        [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_RULES_OF_CONDUCT_RULE' | translate:{number: $index + 1}">
+        <input [placeholder]="'VIEWS.GROUP_CREATE.INFO_SETTINGS_RULES_OF_CONDUCT_RULE' | translate:{number: $index + 1}"
+          [ngModel]="rule.rule" (ngModelChange)="onRuleChange($index, $event)">
+      </cos-input>
+      <cos-button variant="ghost" (clicked)="removeRule($index)" icon="trash"></cos-button>
+    </div>
     }
 
-    <button class="btn_medium_secondary add_rule" (click)="addRule()">
-      <cos-icon name="plus" size="24"></cos-icon>
+    <cos-button variant="secondary" (clicked)="addRule()" icon="plus" class="add_rule">
       <span translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_BTN_ADD_NEW_RULE"></span>
-    </button>
+    </cos-button>
   </div>
 </div>

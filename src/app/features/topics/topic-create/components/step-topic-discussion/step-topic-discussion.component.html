@@ -1,0 +1,71 @@
+<div class="create_content">
+  <!-- Discussion Question Block -->
+  <div class="create_content_block discussion" [class.open]="block().question">
+    <div class="block_title_wrap" (click)="toggleBlock('question')">
+      <div class="block_title" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_DISCUSSION_QUESTION"></div>
+      @if (!block().question) {
+        <div class="block_summary">{{ discussion().question || '...' }}</div>
+      }
+    </div>
+    @if (block().question) {
+      <div class="block_content">
+        <p class="block_description" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_DISCUSSION_QUESTION_DESC"></p>
+        <input
+          class="question-input"
+          type="text"
+          [placeholder]="'VIEWS.TOPIC_CREATE.SETTINGS_DISCUSSION_QUESTION_PLACEHOLDER' | translate"
+          [ngModel]="discussion().question"
+          (ngModelChange)="onQuestionChange($event)"
+        />
+      </div>
+    }
+  </div>
+
+  <!-- Discussion Deadline Block -->
+  <div class="create_content_block discussion" [class.open]="block().deadline">
+    <div class="block_title_wrap" (click)="toggleBlock('deadline')">
+      <div class="block_title" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_DISCUSSION_DEADLINE"></div>
+      @if (!block().deadline) {
+        <div class="block_summary">
+          @if (discussion().deadline) {
+            {{ discussion().deadline | date:'short' }}
+          } @else {
+            {{ 'VIEWS.TOPIC_CREATE.LBL_NO_DEADLINE' | translate }}
+          }
+        </div>
+      }
+    </div>
+    @if (block().deadline) {
+      <div class="block_content">
+        <p class="block_description" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_DISCUSSION_DEADLINE_DESC"></p>
+        <div class="deadline-toggle">
+          <label class="checkbox_label">
+            <input
+              type="checkbox"
+              [checked]="deadlineEnabled()"
+              (change)="toggleDeadline()"
+            />
+            <span translate="VIEWS.TOPIC_CREATE.LBL_OPTION_DEADLINE"></span>
+          </label>
+        </div>
+        @if (deadlineEnabled()) {
+          <input
+            class="deadline-input"
+            type="datetime-local"
+            [ngModel]="discussion().deadline"
+            (ngModelChange)="onDeadlineChange($event)"
+          />
+        }
+      </div>
+    }
+  </div>
+
+  <div class="actions">
+    <cos-button variant="secondary" (clicked)="previous.emit()">
+      {{ 'VIEWS.TOPIC_CREATE.BTN_PREVIOUS' | translate }}
+    </cos-button>
+    <cos-button variant="primary" (clicked)="next.emit()">
+      {{ 'VIEWS.TOPIC_CREATE.BTN_NEXT' | translate }}
+    </cos-button>
+  </div>
+</div>

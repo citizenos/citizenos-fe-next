@@ -38,9 +38,7 @@
       @for (topic of selectedTopics(); track topic.id) {
         <div class="selected-item">
           <span class="topic-title">{{topic.title}}</span>
-          <button class="btn_medium_submit_ghost icon" (click)="removeTopic(topic)">
-            <cos-icon name="trash"></cos-icon>
-          </button>
+          <cos-button variant="ghost" (clicked)="removeTopic(topic)" icon="trash"></cos-button>
         </div>
       } @empty {
         <div class="empty-selection" translate="VIEWS.GROUP_CREATE.ADD_TOPICS_NO_TOPICS"></div>

@@ -7,15 +7,13 @@
         <cos-icon name="upload" [size]="24"></cos-icon>
       }
       @if (block().headerImage && (topic().imageUrl)) {
-        <button class="btn_medium_close bold" (click)="deleteTopicImage(); $event.stopPropagation();">
+        <cos-button variant="ghost" (clicked)="deleteTopicImage(); $event.stopPropagation();" icon="trash">
           <span class="link" translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_REMOVE"></span>
-          <cos-icon name="trash" [size]="20"></cos-icon>
-        </button>
+        </cos-button>
       } @else if (block().headerImage) {
-        <button class="btn_medium_close bold" (click)="toggleBlock('headerImage'); $event.stopPropagation();">
+        <cos-button variant="ghost" (clicked)="toggleBlock('headerImage'); $event.stopPropagation();" icon="close">
           <span class="link" translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL"></span>
-          <cos-icon name="close" [size]="20"></cos-icon>
-        </button>
+        </cos-button>
       }
     </div>
 
@@ -104,6 +102,9 @@
       </div>
     }
   </div>
+
+  <!-- Attachments Block -->
+  <cos-topic-attachments [topic]="topic()"></cos-topic-attachments>
 
   <div class="actions">
     <cos-button

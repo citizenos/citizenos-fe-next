@@ -1,0 +1,88 @@
+:host {
+  display: block;
+}
+
+.create_content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.create_content_block {
+  background: var(--color-surfaces);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+
+  .block_content {
+    display: none;
+    margin-top: 16px;
+  }
+
+  &.open {
+    .block_content {
+      display: block;
+    }
+  }
+}
+
+.block_title_wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  
+  .block_title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .block_summary {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.block_description {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.question-input, .deadline-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+}
+
+.deadline-toggle {
+  margin-bottom: 16px;
+  
+  .checkbox_label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
