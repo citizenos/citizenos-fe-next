@@ -1,57 +1,57 @@
 <div class="settings-panel">
-  <!-- Visibility -->
-  <div class="create_content_block" [class.active]="activeBlock === 'visibility'" (click)="activeBlock = 'visibility'">
-    <div class="create_content_block_header">
-      <div class="create_content_block_icon">
-        <cos-icon name="eye" [size]="24"></cos-icon>
+  <!-- 1. Visibility -->
+  <div class="create_content_section">
+    <div class="number_wrap">1</div>
+    <div class="section_content_wrap">
+      <div class="header_wrap">
+        <div class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_VISIBILITY"></div>
+        <div class="description" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_DESC"></div>
       </div>
-      <div class="create_content_block_title">
-        <h3 translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_VISIBILITY"></h3>
-        <p translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_DESC"></p>
-      </div>
-    </div>
-    <div class="create_content_block_content">
-      <div class="visibility-options">
+      <div class="row_wrap">
         <div
-          class="radio-option"
+          class="radio_wrap"
           [class.active]="visibility() === 'private'"
           (click)="setVisibility('private')"
         >
-          <label class="radio-box">
-            <input type="radio" [checked]="visibility() === 'private'" name="visibility" value="private">
-            <span class="radio-indicator"></span>
-            <span class="radio-label" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PRIVATE"></span>
-          </label>
-          <p class="radio-description" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PRIVATE_DESC"></p>
+          <div class="radio_text_wrap">
+            <div class="radio_lable_wrap">
+              <label class="radio_box">
+                <input type="radio" [checked]="visibility() === 'private'" name="visibility" value="private">
+                <span class="radio"></span>
+                <div class="radio_lable" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PRIVATE"></div>
+              </label>
+            </div>
+            <div class="radio_description" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PRIVATE_DESC"></div>
+          </div>
         </div>
         <div
-          class="radio-option"
+          class="radio_wrap"
           [class.active]="visibility() === 'public'"
           (click)="setVisibility('public')"
         >
-          <label class="radio-box">
-            <input type="radio" [checked]="visibility() === 'public'" name="visibility" value="public">
-            <span class="radio-indicator"></span>
-            <span class="radio-label" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PUBLIC"></span>
-          </label>
-          <p class="radio-description" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PUBLIC_DESC"></p>
+          <div class="radio_text_wrap">
+            <div class="radio_lable_wrap">
+              <label class="radio_box">
+                <input type="radio" [checked]="visibility() === 'public'" name="visibility" value="public">
+                <span class="radio"></span>
+                <div class="radio_lable" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PUBLIC"></div>
+              </label>
+            </div>
+            <div class="radio_description" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PUBLIC_DESC"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Categories -->
-  <div class="create_content_block" [class.active]="activeBlock === 'categories'" (click)="activeBlock = 'categories'">
-    <div class="create_content_block_header">
-      <div class="create_content_block_icon">
-        <cos-icon name="tags" [size]="24"></cos-icon>
+  <!-- 2. Category & Locality -->
+  <div class="create_content_section">
+    <div class="number_wrap">2</div>
+    <div class="section_content_wrap">
+      <div class="header_wrap">
+        <div class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_CATEGORY_AND_LOCALITY"></div>
+        <div class="description" translate="VIEWS.TOPIC_CREATE.SETTINGS_CATEGORY_SELECT_DESC"></div>
       </div>
-      <div class="create_content_block_title">
-        <h3 translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_CATEGORY"></h3>
-        <p translate="VIEWS.TOPIC_CREATE.SETTINGS_CATEGORY_SELECT_DESC"></p>
-      </div>
-    </div>
-    <div class="create_content_block_content">
       <cos-dropdown>
         <div selection translate="VIEWS.TOPIC_CREATE.SETTINGS_CATEGORY_SELECT"></div>
         <div options>
@@ -62,30 +62,19 @@
           }
         </div>
       </cos-dropdown>
-
-      <div class="selected-categories">
+      <div id="category_selection">
         @for (cat of categories(); track cat) {
-          <a class="category-chip" (click)="toggleCategory(cat)">
+          <a class="category_item" (click)="toggleCategory(cat)">
             <span>{{ 'TXT_TOPIC_CATEGORY_' + cat | uppercase | translate }}</span>
             <cos-icon name="close" [size]="16"></cos-icon>
           </a>
         }
       </div>
-    </div>
-  </div>
 
-  <!-- Locality -->
-  <div class="create_content_block" [class.active]="activeBlock === 'locality'" (click)="activeBlock = 'locality'">
-    <div class="create_content_block_header">
-      <div class="create_content_block_icon">
-        <cos-icon name="globe" [size]="24"></cos-icon>
+      <div class="header_wrap">
+        <div class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_LOCALITY"></div>
+        <div class="description" translate="VIEWS.TOPIC_CREATE.SETTINGS_LOCALITY_SELECT_DESC"></div>
       </div>
-      <div class="create_content_block_title">
-        <h3 translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_LOCALITY"></h3>
-        <p translate="VIEWS.TOPIC_CREATE.SETTINGS_LOCALITY_SELECT_DESC"></p>
-      </div>
-    </div>
-    <div class="create_content_block_content">
       <div class="locality-row">
         <div class="dropdown-group">
           <label translate="VIEWS.TOPIC_CREATE.SETTINGS_COUNTRY_SELECT"></label>
@@ -100,7 +89,6 @@
             </div>
           </cos-dropdown>
         </div>
-
         <div class="dropdown-group">
           <label translate="VIEWS.TOPIC_CREATE.SETTINGS_LANGUAGE_SELECT"></label>
           <cos-dropdown>
@@ -118,18 +106,14 @@
     </div>
   </div>
 
-  <!-- Groups -->
-  <div class="create_content_block" [class.active]="activeBlock === 'groups'" (click)="activeBlock = 'groups'">
-    <div class="create_content_block_header">
-      <div class="create_content_block_icon">
-        <cos-icon name="users" [size]="24"></cos-icon>
+  <!-- 3. Groups -->
+  <div class="create_content_section">
+    <div class="number_wrap">3</div>
+    <div class="section_content_wrap">
+      <div class="header_wrap">
+        <div class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_ADD_TO_GROUP"></div>
+        <div class="description" translate="VIEWS.TOPIC_CREATE.SETTINGS_ADD_TO_GROUP_DESC"></div>
       </div>
-      <div class="create_content_block_title">
-        <h3 translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_ADD_TO_GROUP"></h3>
-        <p translate="VIEWS.TOPIC_CREATE.SETTINGS_ADD_TO_GROUP_DESC"></p>
-      </div>
-    </div>
-    <div class="create_content_block_content">
       @if (availableGroups().length) {
         <cos-dropdown>
           <div selection translate="VIEWS.TOPIC_CREATE.SETTINGS_GROUP_SELECT"></div>
@@ -141,7 +125,6 @@
             }
           </div>
         </cos-dropdown>
-
         @if (addedGroups().length) {
           <div class="group-list">
             @for (group of addedGroups(); track group.id) {

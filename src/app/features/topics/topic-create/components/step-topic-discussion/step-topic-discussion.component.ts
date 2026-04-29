@@ -1,5 +1,4 @@
 import { Component, input, output, signal, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DiscussionData } from '../../../../../core/interfaces/discussion';
@@ -8,7 +7,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 @Component({
   selector: 'cos-step-topic-discussion',
   standalone: true,
-  imports: [FormsModule, TranslateModule, ButtonComponent, DatePipe],
+  imports: [FormsModule, TranslateModule, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './step-topic-discussion.component.html',
   styleUrl: './step-topic-discussion.component.scss'
@@ -20,19 +19,11 @@ export class StepTopicDiscussionComponent implements OnInit {
   previous = output<void>();
 
   deadlineEnabled = signal(false);
-  block = signal({
-    question: true,
-    deadline: true
-  });
 
   ngOnInit() {
     if (this.discussion().deadline) {
       this.deadlineEnabled.set(true);
     }
-  }
-
-  toggleBlock(name: keyof ReturnType<typeof this.block>) {
-    this.block.update(b => ({ ...b, [name]: !b[name] }));
   }
 
   onQuestionChange(question: string) {

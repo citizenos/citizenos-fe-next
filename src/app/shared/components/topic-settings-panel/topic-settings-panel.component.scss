@@ -4,157 +4,185 @@
   gap: 16px;
 }
 
-.create_content_block {
-  background: var(--color-surfaces);
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
-  transition: all 0.2s ease-in-out;
-  cursor: pointer;
-  overflow: hidden;
+.create_content_section {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--color-surfaces);
+  border-radius: 16px;
+  width: 100%;
+  padding: 24px;
+  gap: 16px;
+}
 
-  &.active {
-    border-color: var(--color-primary);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+.number_wrap {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  justify-content: center;
+  position: relative;
+  align-items: center;
+  display: flex;
+  border-radius: 20px;
+  background-color: var(--color-secondary, #e1e7ee);
+  font-weight: 600;
+}
 
-    .create_content_block_content {
-      display: block;
-    }
-  }
+.section_content_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 
-  .create_content_block_header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 24px;
-
-    .create_content_block_icon {
-      color: var(--color-text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .create_content_block_title {
-      h3 {
-        font-size: 16px;
-        font-weight: 600;
-        margin: 0 0 4px;
-        color: var(--color-text);
-      }
-      p {
-        font-size: 13px;
-        color: var(--color-text-muted);
-        margin: 0;
-      }
-    }
-  }
-
-  .create_content_block_content {
-    display: none;
-    padding: 0 24px 24px 64px;
-    border-top: 1px solid var(--color-border-light);
-
-    @media (max-width: 768px) {
-      padding: 16px;
-    }
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 }
 
-.visibility-options {
+.header_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .small_heading {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  .description {
+    font-size: 13px;
+    color: var(--color-text-muted);
+  }
+}
+
+.row_wrap {
   display: flex;
   gap: 16px;
-  margin-top: 16px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 600px) {
     flex-direction: column;
+    gap: 8px;
   }
 }
 
-.radio-option {
-  flex: 1;
+// Radio button styles — matches legacy .radio_wrap / .radio_box / .radio pattern
+.radio_wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
   padding: 16px;
+  gap: 8px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s;
+  background: var(--color-surfaces);
 
   &.active {
-    border-color: var(--color-primary);
-    background: rgba(17, 104, 168, 0.02);
+    color: var(--color-link);
   }
 
-  .radio-box {
+  &:hover {
+    background: var(--color-background);
+  }
+
+  .radio_text_wrap {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    cursor: pointer;
+    flex-direction: column;
+    gap: 8px;
 
-    input { display: none; }
-    .radio-indicator {
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--color-border);
-      border-radius: 50%;
-      position: relative;
-
-      &::after {
-        content: '';
-        position: absolute;
-        top: 4px; left: 4px;
-        width: 8px; height: 8px;
-        background: var(--color-primary);
-        border-radius: 50%;
-        display: none;
-      }
+    .radio_lable_wrap {
+      display: flex;
+      flex-direction: row;
     }
 
-    input:checked + .radio-indicator {
-      border-color: var(--color-primary);
-      &::after { display: block; }
+    .radio_description {
+      font-size: 12px;
+      color: var(--color-text-muted);
     }
-  }
-
-  .radio-description {
-    font-size: 12px;
-    color: var(--color-text-muted);
-    margin: 0;
-    line-height: 1.4;
   }
 }
 
-.selected-categories {
+.radio_box {
+  display: flex;
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  user-select: none;
+  height: 24px;
+  align-items: center;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .radio_lable {
+    font-size: var(--font-size);
+    line-height: 16px;
+    font-weight: 600;
+  }
+}
+
+.radio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  background-color: var(--color-surfaces);
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+
+  &::after {
+    content: '';
+    position: absolute;
+    display: none;
+    top: 6px;
+    left: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+  }
+}
+
+.radio_box input:checked ~ .radio {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+
+  &::after {
+    display: block;
+  }
+}
+
+// Category chips
+#category_selection {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 16px;
-}
 
-.category-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: 20px;
-  font-size: 13px;
-  color: var(--color-text);
-  cursor: pointer;
-
-  &:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+  .category_item {
+    display: flex;
+    background-color: var(--color-background);
+    border-radius: 8px;
+    gap: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    align-items: center;
   }
 }
 
 .locality-row {
   display: flex;
   gap: 24px;
-  margin-top: 16px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 600px) {
     flex-direction: column;
   }
 
@@ -176,7 +204,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 8px;
 }
 
 .group-row {
@@ -200,7 +228,9 @@
     padding: 4px;
     display: flex;
 
-    &:hover { color: var(--color-danger); }
+    &:hover {
+      color: var(--color-danger);
+    }
   }
 }
 
@@ -210,5 +240,4 @@
   color: var(--color-text-muted);
   background: var(--color-background);
   border-radius: 8px;
-  margin-top: 16px;
 }

@@ -53,8 +53,6 @@ export class TopicSettingsPanelComponent {
 
   availableGroups = signal<Group[]>([]);
 
-  activeBlock = 'visibility';
-
   constructor() {
     effect(() => {
       const t = this.topic();
