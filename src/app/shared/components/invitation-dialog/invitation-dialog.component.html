@@ -3,7 +3,7 @@
   <div id="notification_wrap_dialog" class="mobile_hidden">
     <cos-notifications></cos-notifications>
   </div>
-  <div class="dialog">
+  <div class="dialog" cdkTrapFocus [cdkTrapFocusAutoCapture]="true" role="dialog" aria-modal="true">
     <div id="notification_wrap_dialog" class="mobile_show">
       <cos-notifications></cos-notifications>
     </div>

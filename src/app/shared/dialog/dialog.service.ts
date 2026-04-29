@@ -49,6 +49,13 @@ export class DialogService {
     overlayRef.attach(portal);
     this.openDialogs.push(dialogRef as DialogRef<unknown>);
 
+    overlayRef.backdropClick().subscribe(() => dialogRef.close());
+    overlayRef.keydownEvents().subscribe(event => {
+      if (event.key === 'Escape') {
+        dialogRef.close();
+      }
+    });
+
     dialogRef
       .afterClosed()
       .pipe(take(1))

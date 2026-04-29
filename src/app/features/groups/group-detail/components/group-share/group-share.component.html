@@ -69,7 +69,7 @@
 
   @if (showQR()) {
     <div class="qr_code">
-      <qrcode [qrdata]="joinUrl()" [width]="150" [errorCorrectionLevel]="'M'"></qrcode>
+      <qrcode [qrdata]="joinUrl()" [width]="150" [errorCorrectionLevel]="'M'" [elementType]="'img'"></qrcode>
     </div>
   }
 

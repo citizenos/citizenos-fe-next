@@ -11,6 +11,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 describe('TopicShareComponent', () => {
@@ -92,14 +93,11 @@ describe('TopicShareComponent', () => {
   });
 
   it('should show QR code when generate button is clicked', async () => {
-    const buttons = fixture.nativeElement.querySelectorAll('button');
-    let genButton;
-    buttons.forEach((btn: any) => {
-      if (btn.textContent.includes('QR')) genButton = btn;
-    });
+    const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
+    let genButton = buttons.find(btn => btn.nativeElement.textContent.includes('QR'));
     
     if (genButton) {
-      (genButton as any).click();
+      genButton.triggerEventHandler('clicked', null);
       fixture.detectChanges();
       expect(component.showQR()).toBe(true);
     }
@@ -107,14 +105,11 @@ describe('TopicShareComponent', () => {
 
   it('should copy link when copy button is clicked', () => {
     const spy = vi.spyOn(component, 'copyInviteLink');
-    const buttons = fixture.nativeElement.querySelectorAll('button');
-    let copyButton;
-    buttons.forEach((btn: any) => {
-      if (btn.textContent.includes('COPY')) copyButton = btn;
-    });
+    const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
+    let copyButton = buttons.find(btn => btn.nativeElement.textContent.includes('COPY'));
 
     if (copyButton) {
-      (copyButton as any).click();
+      copyButton.triggerEventHandler('clicked', null);
       expect(spy).toHaveBeenCalled();
     }
   });

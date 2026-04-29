@@ -1,6 +1,6 @@
 <div class="overlay" (click)="doSaveSettings()"></div>
 <div class="dialog_wrap">
-  <div class="dialog">
+  <div class="dialog" cdkTrapFocus [cdkTrapFocusAutoCapture]="true" role="dialog" aria-modal="true">
     <div class="dialog_header">
       <div class="header_text">
         <h4 class="title" translate>MODALS.TOPIC_NOTIFICATION_SETTINGS_TITLE</h4>
