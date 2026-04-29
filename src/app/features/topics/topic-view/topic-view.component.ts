@@ -288,7 +288,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   }
 
   inviteEditors(topic: Topic) {
-    // InviteEditorsComponent not yet migrated — tracked in issue ilmar-e1a
+    // InviteEditorsComponent not yet migrated — tracked in issue ilmar-6gu
   }
 
   inviteMembers(topic: Topic) {
@@ -321,7 +321,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   }
 
   addGroupsDialog(topic: Topic) {
-    // TopicAddGroupsDialogComponent not yet migrated — tracked in issue ilmar-v82
+    // TopicAddGroupsDialogComponent not yet migrated — tracked in issue ilmar-h9i
   }
 
   reportReasonDialog(topic: Topic) {
