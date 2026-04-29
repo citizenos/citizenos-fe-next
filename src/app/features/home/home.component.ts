@@ -37,7 +37,13 @@ export class HomeComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);
 
   private getLimit() {
-    return isPlatformBrowser(this.platformId) && window.innerWidth < 560 ? 3 : 8;
+    if (isPlatformBrowser(this.platformId)) {
+      if (window.innerWidth <= 600) {
+        return 3;
+      }
+    }
+
+    return 8;
   }
 
   stats = toSignal(this.homeService.getStats());

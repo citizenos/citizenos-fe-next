@@ -66,21 +66,3 @@
   </div>
 }
 <div class="line_separator"></div>
-<div class="info_section">
-  <div class="section_heading" translate="COMPONENTS.GROUP_SHARE.GENERATE_QR_CODE"></div>
-  @if (!showQR()) {
-    <div translate="COMPONENTS.GROUP_SHARE.GENERATE_QR_CODE_DESCRIPTION"></div>
-  }
-  <div translate="COMPONENTS.GROUP_SHARE.GENERATE_QR_CODE_PRINT"></div>
-  @if (showQR()) {
-    <!-- TODO: requires angularx-qrcode package (ilmar-57z) -->
-    <div class="qr_code"></div>
-  }
-  @if (!showQR()) {
-    <div>
-      <button class="btn_medium_secondary bold" (click)="showQR.set(true)"
-        translate="COMPONENTS.GROUP_SHARE.BTN_GENERATE_QR_CODE">
-      </button>
-    </div>
-  }
-</div>

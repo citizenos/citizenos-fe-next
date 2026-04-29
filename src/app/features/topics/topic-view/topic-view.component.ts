@@ -253,7 +253,13 @@ export class TopicViewComponent implements OnInit, OnDestroy {
     this.topicService.changeState(topic, 'followUp');
   }
 
-  appTopicNotificationSettings() {}
+  appTopicNotificationSettings() {
+    import('./components/topic-notification-settings/topic-notification-settings.component').then(m => {
+      this.dialogService.open(m.TopicNotificationSettingsComponent, {
+        data: { topicId: this.topicId }
+      });
+    });
+  }
 
   toggleFavourite(topic: Topic) {
     this.topicService.toggleFavourite(topic);
@@ -282,11 +288,11 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   }
 
   inviteEditors(topic: Topic) {
-    // InviteEditorsComponent not yet migrated — tracked in separate issue
+    // InviteEditorsComponent not yet migrated — tracked in issue ilmar-e1a
   }
 
   inviteMembers(topic: Topic) {
-    // TopicInviteDialogComponent not yet migrated — tracked in separate issue
+    // TopicInviteDialogComponent not yet migrated — tracked in issue ilmar-p73
   }
 
   duplicateTopic(topic: Topic) {
@@ -315,11 +321,11 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   }
 
   addGroupsDialog(topic: Topic) {
-    // TopicAddGroupsDialogComponent not yet migrated — tracked in separate issue
+    // TopicAddGroupsDialogComponent not yet migrated — tracked in issue ilmar-v82
   }
 
   reportReasonDialog(topic: Topic) {
-    // TopicReportReasonComponent not yet migrated — tracked in separate issue
+    // TopicReportReasonComponent not yet migrated — tracked in issue ilmar-w2d
   }
 
   closeTopic(topic: Topic) {

@@ -1,0 +1,71 @@
+<div class="overlay" (click)="doSaveSettings()"></div>
+<div class="dialog_wrap">
+  <div class="dialog">
+    <div class="dialog_header">
+      <div class="header_text">
+        <h4 class="title" translate>MODALS.TOPIC_NOTIFICATION_SETTINGS_TITLE</h4>
+        <div class="dialog_close">
+          <button class="btn_dialog_close icon" (click)="doSaveSettings()">
+            <cos-icon name="close"></cos-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    @if (topic()) {
+      <div class="dialog_info_wrap">
+        <div class="dialog_info">
+          <div class="info_row">
+            <cos-icon name="topic" [size]="32"></cos-icon>
+            <div class="bold" [innerHTML]="topic()?.title"></div>
+          </div>
+        </div>
+        <div class="dialog_info" [ngClass]="{'toggle_off': !allowNotifications(), 'toggle_on': allowNotifications()}">
+          <div class="info_row with_toggle">
+            <div class="bold" translate="MODALS.TOPIC_NOTIFICATION_SETTINGS_LBL_TOPIC_NOTIFICATIONS"></div>
+            <cos-toggle [textOn]="'TOGGLE_ON' | translate" [textOff]="'TOGGLE_OFF' | translate"
+              [model]="allowNotifications()" (toggleClick)="allowNotifications.set($event)"></cos-toggle>
+          </div>
+        </div>
+      </div>
+      
+      <div class="dialog_content">
+        <div class="line_separator"></div>
+        <div class="bold" translate="MODALS.TOPIC_NOTIFICATION_SETTINGS_LBL_NOTIFY_ME_ABOUT"></div>
+        <label class="checkbox"><span translate="MODALS.TOPIC_NOTIFICATION_SETTINGS_LBL_ALL_ACTIONS"></span>
+          <input type="checkbox" [checked]="allChecked()" (click)="toggleAllNotifications()">
+          <span class="checkmark"></span>
+        </label>
+        <label class="checkbox"><span translate="MODALS.TOPIC_NOTIFICATION_SETTINGS_LBL_TOPIC_UPDATES"></span>
+          <input type="checkbox" [checked]="preferences().Topic && preferences().TopicReport"
+            (click)="selectOption(['Topic', 'TopicReport']);">
+          <span class="checkmark"></span>
+        </label>
+        <label class="checkbox"><span translate="MODALS.TOPIC_NOTIFICATION_SETTINGS_LBL_TOPIC_DISCUSSION"></span>
+          <input type="checkbox" [checked]="preferences().Discussion && preferences().DiscussionComment && preferences().CommentVote"
+            (click)="selectOption(['Discussion', 'DiscussionComment', 'CommentVote', 'TopicComment', 'CommentReport' ]);">
+          <span class="checkmark"></span>
+        </label>
+        <label class="checkbox"><span translate="MODALS.TOPIC_NOTIFICATION_SETTINGS_LBL_TOPIC_IDEATION"></span>
+          <input type="checkbox" [checked]="preferences().Ideation && preferences().IdeaVote && preferences().Idea && preferences().TopicIdeation && preferences().IdeaComment"
+            (click)="selectOption(['Ideation', 'Idea', 'IdeaVote', 'TopicIdeation', 'IdeaComment', 'IdeaReport']);">
+          <span class="checkmark"></span>
+        </label>
+        <label class="checkbox"><span translate="MODALS.TOPIC_NOTIFICATION_SETTINGS_LBL_TOPIC_VOTING"></span>
+          <input type="checkbox" [checked]="preferences().TopicVoteList" (click)="selectOption('TopicVoteList');">
+          <span class="checkmark"></span>
+        </label>
+        <label class="checkbox"><span translate="MODALS.TOPIC_NOTIFICATION_SETTINGS_LBL_TOPIC_FOLLOW_UP"></span>
+          <input type="checkbox" [checked]="preferences().TopicEvent" (click)="selectOption('TopicEvent');">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    }
+
+    <div class="dialog_footer with_buttons">
+      <button (click)="doSaveSettings()" translate>MODALS.TOPIC_NOTIFICATION_SETTINGS_LNK_CANCEL</button>
+      <button class="btn_medium_submit" (click)="doSaveSettings()"
+        translate="MODALS.TOPIC_NOTIFICATION_SETTINGS_BTN_SAVE"></button>
+    </div>
+  </div>
+</div>

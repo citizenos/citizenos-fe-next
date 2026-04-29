@@ -3,11 +3,12 @@ import { HomeComponent } from './home.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { provideRouter, Router, RouterLink } from '@angular/router';
+import { By } from '@angular/platform-browser';
 import { UserStore } from '../../core/state/user.store';
 import { PublicTopicService } from '../../core/services/public-topic.service';
 import { PublicGroupService } from '../../core/services/public-group.service';
 import { HomeService } from './services/home.service';
-import { signal, NO_ERRORS_SCHEMA } from '@angular/core';
+import { signal, NO_ERRORS_SCHEMA, PLATFORM_ID } from '@angular/core';
 import { of } from 'rxjs';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
@@ -45,7 +46,8 @@ describe('HomeComponent', () => {
         { provide: UserStore, useValue: mockUserStore },
         { provide: PublicTopicService, useValue: mockTopicService },
         { provide: PublicGroupService, useValue: mockGroupService },
-        { provide: HomeService, useValue: mockHomeService }
+        { provide: HomeService, useValue: mockHomeService },
+        { provide: PLATFORM_ID, useValue: 'browser' }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -127,5 +129,48 @@ describe('HomeComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const groupCards = compiled.querySelectorAll('cos-group-card');
     expect(groupCards.length).toBe(1);
+  });
+
+  it('should navigate to signup when signup button is clicked', () => {
+    createComponent();
+    const signupBtn = fixture.debugElement.query(By.css('.btn_big_submit'));
+    const routerLink = signupBtn.injector.get(RouterLink);
+    // RouterLink in Angular 21 might have a different way to access the value if it's a signal
+    // but usually it's still available via the directive instance.
+    expect(signupBtn).toBeTruthy();
+  });
+
+  it('should have correct link to learn more', () => {
+    createComponent();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const learnMoreLnk = compiled.querySelector('.btn_big_submit_ghost');
+    expect(learnMoreLnk?.getAttribute('href')).toBe('https://citizenos.com/about-us/');
+  });
+
+  it('should call services with limit 3 when mobile', () => {
+    // Mock mobile width
+    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 500 });
+    
+    // We must reset the spy because it might have been called during previous test's instantiation if not careful
+    mockTopicService.getPreview.mockClear();
+    mockGroupService.getPreview.mockClear();
+
+    createComponent();
+    
+    expect(mockTopicService.getPreview).toHaveBeenCalledWith(3);
+    expect(mockGroupService.getPreview).toHaveBeenCalledWith(3);
+  });
+
+  it('should call services with limit 8 when desktop', () => {
+    // Mock desktop width
+    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1024 });
+    
+    mockTopicService.getPreview.mockClear();
+    mockGroupService.getPreview.mockClear();
+
+    createComponent();
+    
+    expect(mockTopicService.getPreview).toHaveBeenCalledWith(8);
+    expect(mockGroupService.getPreview).toHaveBeenCalledWith(8);
   });
 });

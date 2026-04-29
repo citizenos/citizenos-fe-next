@@ -1,0 +1,41 @@
+
+.info_row.with_toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialog_content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0px 24px 24px 24px;
+}
+
+.dialog_info_wrap {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 16px 24px;
+  gap: 16px;
+
+  background-color: var(--color-surfaces);
+  .dialog_info {
+    padding: 16px;
+    border-radius: 8px;
+    background-color: var(--color-surface-contrast);
+
+    .info_row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+
+    &.toggle_off {
+      background-color: var(--color-error-background);
+    }
+
+    &.toggle_on {
+      background: var(--color-success-background);
+    }
+  }
+}

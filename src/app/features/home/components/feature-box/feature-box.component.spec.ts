@@ -3,14 +3,14 @@ import { FeatureBoxComponent } from './feature-box.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { provideRouter, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
 import { UserStore } from '../../../../core/state/user.store';
-import { signal, NO_ERRORS_SCHEMA } from '@angular/core';
+import { signal, NO_ERRORS_SCHEMA, ComponentRef } from '@angular/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('FeatureBoxComponent', () => {
   let component: FeatureBoxComponent;
   let fixture: ComponentFixture<FeatureBoxComponent>;
+  let componentRef: ComponentRef<FeatureBoxComponent>;
   let mockUserStore: any;
 
   beforeEach(async () => {
@@ -30,40 +30,45 @@ describe('FeatureBoxComponent', () => {
 
     fixture = TestBed.createComponent(FeatureBoxComponent);
     component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
     
-    // Set default currentLang if needed
     const translate = TestBed.inject(TranslateService);
     translate.use('en');
   });
 
-  const setup = (featureValue: string, itemsCount: number) => {
-    // @ts-ignore
-    component.feature = signal(featureValue);
-    // @ts-ignore
-    component.items = signal(itemsCount);
+  const setup = async (featureValue: string, itemsCount: number) => {
+    componentRef.setInput('feature', featureValue);
+    componentRef.setInput('items', itemsCount);
     fixture.detectChanges();
+    await fixture.whenStable();
     return fixture.nativeElement as HTMLElement;
   };
 
   it('should create', () => {
-    setup('discussion', 3);
     expect(component).toBeTruthy();
   });
 
-  it('should render correct heading for discussion', () => {
-    const compiled = setup('discussion', 3);
-    const heading = compiled.querySelector('.feature_heading');
-    expect(heading?.classList.contains('discussion')).toBeTruthy();
+  it('should render correct heading for all feature types', async () => {
+    const features = ['discussion', 'ideation', 'voting'];
+    for (const f of features) {
+      const compiled = await setup(f, 1);
+      const heading = compiled.querySelector('.feature_heading');
+      expect(heading?.classList.contains(f)).toBeTruthy();
+      expect(heading?.textContent?.toLowerCase()).toContain(f);
+    }
   });
 
-  it('should render correct number of items', () => {
-    const compiled = setup('ideation', 5);
+  it('should render correct number of items', async () => {
+    await setup('ideation', 5);
+    expect(component.items()).toBe(5);
+    expect(component.itemsList().length).toBe(5);
+    const compiled = fixture.nativeElement as HTMLElement;
     const items = compiled.querySelectorAll('.feature_description_item');
     expect(items.length).toBe(5);
   });
 
-  it('should navigate to login when clicking button and not authenticated', () => {
-    setup('voting', 2);
+  it('should navigate to login when clicking button and not authenticated', async () => {
+    await setup('voting', 2);
     
     const router = TestBed.inject(Router);
     const navigateSpy = vi.spyOn(router, 'navigate');
@@ -75,8 +80,8 @@ describe('FeatureBoxComponent', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['/account/login'], expect.any(Object));
   });
 
-  it('should navigate to create topic when authenticated', () => {
-    setup('discussion', 2);
+  it('should navigate to create topic when authenticated', async () => {
+    await setup('discussion', 2);
     
     const router = TestBed.inject(Router);
     const navigateSpy = vi.spyOn(router, 'navigate');

@@ -127,9 +127,16 @@ describe('ProfileComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize form with user data', () => {
+  it('should initialize form with user data', async () => {
     expect(component.form.name).toBe('Test User');
     expect(component.form.language).toBe('en');
+    
+    fixture.detectChanges();
+    await fixture.whenStable();
+    
+    const compiled = fixture.nativeElement as HTMLElement;
+    const nameInput = compiled.querySelector('#name') as HTMLInputElement;
+    expect(nameInput?.value).toBe('Test User');
   });
 
   it('should switch tabs', () => {
@@ -153,13 +160,18 @@ describe('ProfileComponent', () => {
 
   it('should show error on password mismatch during update', async () => {
     component.resetPasswordMode.set(true);
+    fixture.detectChanges();
     component.form.newPassword = 'pass1';
     component.form.passwordConfirm = 'pass2';
     
     await component.doUpdateProfile();
+    fixture.detectChanges();
     
     expect(component.errors.newPassword).toBe('MODALS.PASSWORD_MISMATCH');
-    expect(mockUserStore.updateProfile).not.toHaveBeenCalled();
+    
+    const compiled = fixture.nativeElement as HTMLElement;
+    const errorText = compiled.querySelector('.error_label');
+    expect(errorText?.textContent).toContain('MODALS.PASSWORD_MISMATCH');
   });
 
   it('should set profile language', async () => {

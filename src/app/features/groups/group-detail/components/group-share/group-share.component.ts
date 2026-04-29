@@ -29,7 +29,6 @@ export class GroupShareComponent implements OnInit {
   joinLevel = signal<string>(this.memberUserService.LEVELS[0]);
   joinToken = signal<string | null>(null);
   joinUrl = signal<string>('');
-  showQR = signal(false);
   copySuccess = signal(false);
 
   ngOnInit() {
