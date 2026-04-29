@@ -42,12 +42,16 @@ export class IconComponent {
   heightAttr = computed(() => typeof this.size() === 'number' ? this.size() : null);
 
   safeSvgContent = computed(() => {
-    const data = this.registry.getIcon(this.name());
+    const name = this.name();
+    if (!name) return '';
+    const data = this.registry.getIcon(name);
     return data ? this.sanitizer.bypassSecurityTrustHtml(data.content) : '';
   });
 
   viewBox = computed(() => {
-    const data = this.registry.getIcon(this.name());
+    const name = this.name();
+    if (!name) return '0 0 24 24';
+    const data = this.registry.getIcon(name);
     return data?.viewBox || '0 0 24 24';
   });
 }
