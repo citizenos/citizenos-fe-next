@@ -3,6 +3,10 @@ import { provideRouter } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { CreateMenuComponent } from './create-menu.component';
+import { Component } from '@angular/core';
+
+@Component({ template: '', standalone: true })
+class EmptyComponent {}
 
 (globalThis as any).ResizeObserver = class {
   observe() {}
@@ -19,7 +23,7 @@ describe('CreateMenuComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CreateMenuComponent, TranslateModule.forRoot()],
       providers: [
-        provideRouter([])
+        provideRouter([{ path: '**', component: EmptyComponent }])
       ]
     }).compileComponents();
 

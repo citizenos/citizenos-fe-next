@@ -100,18 +100,20 @@ describe('TopicIdeationComponent', () => {
     expect(comp.currentPage()).toBe(3);
   });
 
-  it('onIdeaDeleted removes idea from list', () => {
+  it('onIdeaDeleted triggers a server refresh', () => {
     const comp = makeComp();
+    const callsBefore = mockIdeationService.getIdeas.mock.calls.length;
     comp.onIdeaDeleted(mockIdea1);
-    expect(comp.ideas().find(i => i.id === 'a1')).toBeUndefined();
-    expect(comp.ideasCount()).toBe(1);
+    TestBed.flushEffects();
+    expect(mockIdeationService.getIdeas.mock.calls.length).toBeGreaterThan(callsBefore);
   });
 
-  it('onIdeaUpdated replaces idea in list', () => {
+  it('onIdeaUpdated triggers a server refresh', () => {
     const comp = makeComp();
-    const updated = { ...mockIdea1, statement: 'Updated' };
-    comp.onIdeaUpdated(updated);
-    expect(comp.ideas()[0].statement).toBe('Updated');
+    const callsBefore = mockIdeationService.getIdeas.mock.calls.length;
+    comp.onIdeaUpdated(mockIdea1);
+    TestBed.flushEffects();
+    expect(mockIdeationService.getIdeas.mock.calls.length).toBeGreaterThan(callsBefore);
   });
 
   it('onIdeaAdded hides add form and reloads', () => {

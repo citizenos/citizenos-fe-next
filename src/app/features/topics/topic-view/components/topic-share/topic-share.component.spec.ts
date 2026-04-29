@@ -10,6 +10,7 @@ import { signal, NO_ERRORS_SCHEMA } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 describe('TopicShareComponent', () => {
@@ -83,9 +84,9 @@ describe('TopicShareComponent', () => {
 
   it('should call generateTokenJoin when reload button is clicked', async () => {
     const spy = vi.spyOn(component, 'generateTokenJoin');
-    const button = fixture.nativeElement.querySelector('#reload');
+    const button = fixture.debugElement.query(By.css('#reload'));
     if (button) {
-      button.click();
+      button.triggerEventHandler('clicked', null);
       expect(spy).toHaveBeenCalled();
     }
   });

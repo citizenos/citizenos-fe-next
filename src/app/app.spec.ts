@@ -4,11 +4,12 @@ import { provideRouter } from '@angular/router';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MockIconComponent } from './shared/testing/mocks';
 import { IconComponent } from './shared/components/icon/icon.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App],
+      imports: [App, TranslateModule.forRoot()],
       providers: [
         provideRouter([])
       ]

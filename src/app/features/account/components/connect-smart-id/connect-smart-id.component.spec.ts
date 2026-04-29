@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Component, Directive, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConnectSmartIdComponent } from './connect-smart-id.component';
 import { DialogRef } from '../../../../shared/dialog/dialog-ref';
@@ -8,9 +8,17 @@ import { DialogRef } from '../../../../shared/dialog/dialog-ref';
 @Component({ selector: 'app-smart-id', template: '', standalone: true })
 class SmartIdStub {}
 
+@Component({ selector: 'cos-notifications', template: '', standalone: true })
+class CosNotificationsStub {}
+
+@Directive({ selector: '[dialogClose]', standalone: true })
+class DialogCloseStub {
+  @Input() dialogClose: any;
+}
+
 function createFixture(): ComponentFixture<ConnectSmartIdComponent> {
   TestBed.overrideComponent(ConnectSmartIdComponent, {
-    set: { imports: [TranslateModule, SmartIdStub] },
+    set: { imports: [TranslateModule, SmartIdStub, CosNotificationsStub, DialogCloseStub] },
   });
   TestBed.configureTestingModule({
     imports: [ConnectSmartIdComponent, TranslateModule.forRoot()],

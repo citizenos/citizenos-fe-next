@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Component, Directive, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConnectEidComponent } from './connect-eid.component';
 import { DialogRef } from '../../../../shared/dialog/dialog-ref';
@@ -8,9 +8,17 @@ import { DialogRef } from '../../../../shared/dialog/dialog-ref';
 @Component({ selector: 'app-esteid', template: '', standalone: true })
 class EstEidStub {}
 
+@Component({ selector: 'cos-notifications', template: '', standalone: true })
+class CosNotificationsStub {}
+
+@Directive({ selector: '[dialogClose]', standalone: true })
+class DialogCloseStub {
+  @Input() dialogClose: any;
+}
+
 function createFixture(): ComponentFixture<ConnectEidComponent> {
   TestBed.overrideComponent(ConnectEidComponent, {
-    set: { imports: [TranslateModule, EstEidStub] },
+    set: { imports: [TranslateModule, EstEidStub, CosNotificationsStub, DialogCloseStub] },
   });
   TestBed.configureTestingModule({
     imports: [ConnectEidComponent, TranslateModule.forRoot()],

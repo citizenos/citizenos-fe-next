@@ -1,6 +1,10 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { Component } from '@angular/core';
+
+@Component({ template: '', standalone: true })
+class EmptyComponent {}
 import { TopicService } from '../../../core/services/topic.service';
 import { UploadService } from '../../../core/services/upload.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -21,7 +25,7 @@ const mockDiscussionService = { get: vi.fn(), create: vi.fn(), update: vi.fn() }
 function setupProviders() {
   TestBed.configureTestingModule({
     providers: [
-      provideRouter([]),
+      provideRouter([{ path: 'topics/:id', component: EmptyComponent }]),
       { provide: TopicService, useValue: mockTopicService },
       { provide: UploadService, useValue: mockUploadService },
       { provide: NotificationService, useValue: mockNotificationService },

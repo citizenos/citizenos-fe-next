@@ -142,14 +142,14 @@ describe('GroupDetailComponent', () => {
   it('toggleFavourite calls addFavourite when not favourited', () => {
     const comp = makeComp();
     comp.group.set({ ...mockGroup, favourite: false });
-    comp.toggleFavourite(comp.group()!);
+    comp.toggleFavourite();
     expect(mockGroupDetailService.addFavourite).toHaveBeenCalledWith('group1');
   });
 
   it('toggleFavourite calls removeFavourite when favourited', () => {
     const comp = makeComp();
     comp.group.set({ ...mockGroup, favourite: true });
-    comp.toggleFavourite(comp.group()!);
+    comp.toggleFavourite();
     expect(mockGroupDetailService.removeFavourite).toHaveBeenCalledWith('group1');
   });
 
