@@ -1,26 +1,131 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { provideRouter } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { provideRouter, Router, RouterLink } from '@angular/router';
+import { UserStore } from '../../core/state/user.store';
+import { PublicTopicService } from '../../core/services/public-topic.service';
+import { PublicGroupService } from '../../core/services/public-group.service';
+import { HomeService } from './services/home.service';
+import { signal, NO_ERRORS_SCHEMA } from '@angular/core';
+import { of } from 'rxjs';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
+  let mockUserStore: any;
+  let mockTopicService: any;
+  let mockGroupService: any;
+  let mockHomeService: any;
 
   beforeEach(async () => {
+    mockUserStore = {
+      isAuthenticated: signal(false)
+    };
+    mockTopicService = {
+      getPreview: vi.fn().mockReturnValue(of([]))
+    };
+    mockGroupService = {
+      getPreview: vi.fn().mockReturnValue(of([]))
+    };
+    mockHomeService = {
+      getStats: vi.fn().mockReturnValue(of({
+        ideasProposed: 10,
+        topicsCreated: 20,
+        votesCast: 30,
+        usersCreated: 40
+      }))
+    };
+
     await TestBed.configureTestingModule({
-      imports: [HomeComponent, HttpClientTestingModule, TranslateModule.forRoot()],
-      providers: [provideRouter([])]
+      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
+      providers: [
+        provideRouter([]),
+        { provide: UserStore, useValue: mockUserStore },
+        { provide: PublicTopicService, useValue: mockTopicService },
+        { provide: PublicGroupService, useValue: mockGroupService },
+        { provide: HomeService, useValue: mockHomeService }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+    .overrideComponent(HomeComponent, {
+      set: {
+        imports: [TranslateModule, RouterLink],
+        schemas: [NO_ERRORS_SCHEMA]
+      }
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(HomeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
+  const createComponent = () => {
+    fixture = TestBed.createComponent(HomeComponent);
+    component = fixture.componentInstance;
+    const translate = TestBed.inject(TranslateService);
+    translate.use('en');
+    fixture.detectChanges();
+  };
+
   it('should create', () => {
+    createComponent();
     expect(component).toBeTruthy();
+  });
+
+  it('should redirect to dashboard if authenticated on init', () => {
+    mockUserStore.isAuthenticated.set(true);
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate');
+
+    createComponent();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/', 'en', 'dashboard']);
+  });
+
+  it('should render stats when available', () => {
+    createComponent();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const statsBoxes = compiled.querySelectorAll('.stats_box');
+    expect(statsBoxes.length).toBe(4);
+    expect(statsBoxes[0].querySelector('.number')?.textContent).toContain('10');
+  });
+
+  it('should navigate to login when creating group and not authenticated', () => {
+    createComponent();
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate');
+    mockUserStore.isAuthenticated.set(false);
+
+    component.createGroup();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/account/login'], expect.any(Object));
+  });
+
+  it('should navigate to group create when authenticated', () => {
+    createComponent();
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate');
+    mockUserStore.isAuthenticated.set(true);
+
+    component.createGroup();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/', 'en', 'my', 'groups', 'create']);
+  });
+
+  it('should render topics if available', () => {
+    mockTopicService.getPreview.mockReturnValue(of([{ id: '1', title: 'Topic 1' }]));
+    createComponent();
+    
+    const compiled = fixture.nativeElement as HTMLElement;
+    const topicCards = compiled.querySelectorAll('cos-topic-card');
+    expect(topicCards.length).toBe(1);
+  });
+
+  it('should render groups if available', () => {
+    mockGroupService.getPreview.mockReturnValue(of([{ id: '1', name: 'Group 1' }]));
+    createComponent();
+    
+    const compiled = fixture.nativeElement as HTMLElement;
+    const groupCards = compiled.querySelectorAll('cos-group-card');
+    expect(groupCards.length).toBe(1);
   });
 });

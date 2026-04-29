@@ -64,8 +64,8 @@ import { UserStore } from '../../../../core/state/user.store';
   styleUrls: ['./feature-box.component.scss']
 })
 export class FeatureBoxComponent {
-  feature = input.required<string>();
-  items = input.required<number>();
+  feature = input<string>('discussion');
+  items = input<number>(0);
 
   private router = inject(Router);
   private translate = inject(TranslateService);

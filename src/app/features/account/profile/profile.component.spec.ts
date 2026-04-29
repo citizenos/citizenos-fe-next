@@ -7,10 +7,10 @@ import { ConfigStore } from '../../../core/state/config.store';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { of, BehaviorSubject } from 'rxjs';
+import { of, BehaviorSubject, Subject } from 'rxjs';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NO_ERRORS_SCHEMA, Component, Input, Output, EventEmitter } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Component, Input, Output, EventEmitter, signal } from '@angular/core';
 
 @Component({ selector: 'cos-initials', standalone: true, template: '' })
 class MockInitialsComponent { @Input() name?: string; }
@@ -40,14 +40,15 @@ describe('ProfileComponent', () => {
   let mockTopicNotificationService: any;
   let mockConfigStore: any;
   let mockDialogService: any;
+  let mockRouter: any;
 
   beforeEach(async () => {
     mockUserStore = {
-      user: vi.fn(() => ({ id: '1', name: 'Test User', email: 'test@example.com', language: 'en', preferences: { showInSearch: true } })),
-      isLoading: vi.fn(() => false),
+      user: signal({ id: '1', name: 'Test User', email: 'test@example.com', language: 'en', preferences: { showInSearch: true } }),
+      isLoading: signal(false),
       updateProfile: vi.fn().mockResolvedValue({}),
       logout: vi.fn(),
-      deleteAccount: vi.fn()
+      deleteAccount: vi.fn().mockResolvedValue({})
     };
 
     mockTopicNotificationService = {
@@ -58,7 +59,8 @@ describe('ProfileComponent', () => {
       setParam: vi.fn(),
       loadPage: vi.fn(),
       doOrder: vi.fn(),
-      update: vi.fn().mockReturnValue(of({}))
+      update: vi.fn().mockReturnValue(of({})),
+      delete: vi.fn().mockReturnValue(of({}))
     };
 
     mockConfigStore = {
@@ -67,7 +69,11 @@ describe('ProfileComponent', () => {
     };
 
     mockDialogService = {
-      confirm: vi.fn()
+      open: vi.fn()
+    };
+
+    mockRouter = {
+      navigate: vi.fn()
     };
 
     await TestBed.configureTestingModule({
@@ -89,10 +95,7 @@ describe('ProfileComponent', () => {
             snapshot: { fragment: 'profile' }
           }
         },
-        {
-          provide: Router,
-          useValue: { navigate: vi.fn() }
-        }
+        { provide: Router, useValue: mockRouter }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -127,5 +130,87 @@ describe('ProfileComponent', () => {
   it('should initialize form with user data', () => {
     expect(component.form.name).toBe('Test User');
     expect(component.form.language).toBe('en');
+  });
+
+  it('should switch tabs', () => {
+    component.selectTab('notifications');
+    expect(mockRouter.navigate).toHaveBeenCalledWith([], { fragment: 'notifications' });
+  });
+
+  it('should toggle password reset mode', () => {
+    expect(component.resetPasswordMode()).toBeFalsy();
+    component.toggleResetPassword();
+    expect(component.resetPasswordMode()).toBeTruthy();
+  });
+
+  it('should update profile', async () => {
+    component.form.name = 'Updated Name';
+    await component.doUpdateProfile();
+    expect(mockUserStore.updateProfile).toHaveBeenCalledWith(expect.objectContaining({
+      name: 'Updated Name'
+    }));
+  });
+
+  it('should show error on password mismatch during update', async () => {
+    component.resetPasswordMode.set(true);
+    component.form.newPassword = 'pass1';
+    component.form.passwordConfirm = 'pass2';
+    
+    await component.doUpdateProfile();
+    
+    expect(component.errors.newPassword).toBe('MODALS.PASSWORD_MISMATCH');
+    expect(mockUserStore.updateProfile).not.toHaveBeenCalled();
+  });
+
+  it('should set profile language', async () => {
+    await component.setProfileLanguage('et');
+    expect(component.form.language).toBe('et');
+    expect(mockConfigStore.setLanguage).toHaveBeenCalledWith('et');
+    expect(mockUserStore.updateProfile).toHaveBeenCalledWith({ language: 'et' });
+  });
+
+  it('should delete account after confirmation', async () => {
+    const afterClosedSubject = new Subject<boolean>();
+    mockDialogService.open.mockReturnValue({
+      afterClosed: () => afterClosedSubject.asObservable()
+    });
+
+    await component.doDeleteAccount();
+    expect(mockDialogService.open).toHaveBeenCalled();
+
+    afterClosedSubject.next(true);
+    // Wait for microtasks
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(mockUserStore.deleteAccount).toHaveBeenCalled();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
+  });
+
+  it('should delete user image', async () => {
+    component.form.imageUrl = 'some-url';
+    await component.deleteUserImage();
+    expect(component.form.imageUrl).toBe('');
+    expect(mockUserStore.updateProfile).toHaveBeenCalledWith({ imageUrl: '' });
+  });
+
+  it('should search topics in notifications tab', () => {
+    component.topicSearch.set('test search');
+    component.searchTopics();
+    expect(mockTopicNotificationService.setParam).toHaveBeenCalledWith('search', 'test search');
+  });
+
+  it('should toggle topic notifications (delete)', async () => {
+    const afterClosedSubject = new Subject<boolean>();
+    mockDialogService.open.mockReturnValue({
+      afterClosed: () => afterClosedSubject.asObservable()
+    });
+
+    const mockTopic = { topicId: '123', allowNotifications: false };
+    component.toggleTopicNotifications(mockTopic);
+    
+    expect(mockDialogService.open).toHaveBeenCalled();
+    afterClosedSubject.next(true);
+    
+    expect(mockTopicNotificationService.delete).toHaveBeenCalledWith('123');
   });
 });
