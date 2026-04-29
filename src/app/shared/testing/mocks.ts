@@ -30,6 +30,6 @@ export class MockInputComponent {
   template: '<i></i>'
 })
 export class MockIconComponent {
-  name = input.required<string>();
+  name = input<string>();
   size = input<string | number>(24);
 }

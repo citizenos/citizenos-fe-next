@@ -34,7 +34,7 @@ export class IconComponent {
   private registry = inject(IconRegistryService);
   private sanitizer = inject(DomSanitizer);
 
-  name = input.required<IconName>();
+  name = input<IconName>();
   size = input<string | number>(24);
   color = input<string>();
 

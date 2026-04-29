@@ -26,6 +26,7 @@
     "@ngx-translate/http-loader": "^17.0.0",
     "@types/validator": "^13.15.10",
     "@web-eid/web-eid-library": "^2.1.0-beta.2",
+    "angularx-qrcode": "^21.0.5",
     "fast-json-patch": "^3.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

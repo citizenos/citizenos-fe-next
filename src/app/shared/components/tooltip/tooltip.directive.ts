@@ -17,7 +17,7 @@ import {
   standalone: true,
 })
 export class TooltipDirective implements OnDestroy {
-  cosTooltip = input.required<string>();
+  cosTooltip = input<string>();
   tooltipPos = input<'top' | 'bottom'>('bottom');
 
   private el = inject(ElementRef);
