@@ -146,6 +146,10 @@ export class InputComponent implements AfterContentChecked {
       }
       
       inputEl.setAttribute('aria-invalid', this.hasError().toString());
+
+      if (this.placeholder() && !inputEl.hasAttribute('aria-label')) {
+        inputEl.setAttribute('aria-label', this.placeholder());
+      }
       
       if (this.hasError() && this.errorMessage()) {
         inputEl.setAttribute('aria-describedby', this.errorId);
