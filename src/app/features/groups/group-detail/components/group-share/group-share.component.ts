@@ -18,7 +18,7 @@ import { computed } from '@angular/core';
   selector: 'app-group-share',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, UpperCasePipe, QRCodeComponent, ButtonComponent, IconComponent, DropdownComponent],
+  imports: [TranslateModule, UpperCasePipe, QRCodeComponent, ButtonComponent, DropdownComponent],
   templateUrl: './group-share.component.html',
   styleUrls: ['./group-share.component.scss']
 })

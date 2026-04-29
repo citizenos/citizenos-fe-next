@@ -13,8 +13,11 @@ import { SearchService } from '../../../../core/services/search.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DialogService } from '../../../../shared/dialog/dialog.service';
+import { IconComponent } from '../../../../shared/components/icon/icon.component';
+import { DropdownComponent } from '../../../../shared/components/dropdown/dropdown.component';
 import { TypeaheadComponent } from '../../../../shared/components/typeahead/typeahead.component';
 import { GroupShareComponent } from '../../group-detail/components/group-share/group-share.component';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { Group } from '../../../../core/interfaces/group';
 import { UserStore } from '../../../../core/state/user.store';
 import { of, switchMap, take } from 'rxjs';
@@ -29,7 +32,7 @@ function isEmail(s: string) { return EMAIL_RE.test(s.trim()); }
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslateModule, FormsModule, IconComponent, DropdownComponent,
-    TypeaheadComponent, DialogCloseDirective, GroupShareComponent
+    TypeaheadComponent, DialogCloseDirective, GroupShareComponent, ButtonComponent
   ],
   templateUrl: './group-invite-dialog.component.html',
   styleUrls: ['./group-invite-dialog.component.scss'],

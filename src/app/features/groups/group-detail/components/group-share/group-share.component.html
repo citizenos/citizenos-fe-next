@@ -6,7 +6,7 @@
         <input id="invite_group_url_input" [value]="joinUrl()"
           [placeholder]="'COMPONENTS.GROUP_SHARE.PLACEHOLDER_CREATE_NEW_LINK' | translate">
         @if (canUpdate()) {
-          <cos-button id="reload" (clicked)="generateTokenJoin()" variant="light" icon="refresh"></cos-button>
+          <cos-button id="reload" (clicked)="generateTokenJoin()" variant="light" icon="refresh" size="sm"></cos-button>
         }
       </div>
     </div>
