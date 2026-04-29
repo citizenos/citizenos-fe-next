@@ -9,7 +9,7 @@ import {
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { DatePipe, TitleCasePipe, UpperCasePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe, UpperCasePipe, NgTemplateOutlet } from '@angular/common';
 import {
   switchMap,
   catchError,
@@ -41,6 +41,7 @@ import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { CosTabsComponent, TabItem } from '../../../shared/components/tabs/tabs.component';
 
 @Component({
   selector: 'cos-group-detail',
@@ -59,6 +60,8 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
     SearchInputComponent,
     ActivitiesButtonComponent,
     PaginationComponent,
+    CosTabsComponent,
+    NgTemplateOutlet,
   ],
   templateUrl: './group-detail.component.html',
   styleUrls: ['./group-detail.component.scss'],
@@ -88,9 +91,14 @@ export class GroupDetailComponent {
   membersPage = signal(1);
 
   tabSelected = signal('topics');
+  groupTabs = signal<TabItem[]>([
+    { id: 'topics', label: 'VIEWS.GROUP.TAB_TOPICS' },
+    { id: 'members', label: 'VIEWS.GROUP.TAB_MEMBERS' },
+  ]);
   moreInfo = signal(false);
   removeTopics = signal(false);
   groupActionsOpen = signal(false);
+  mobileActions = signal(false);
   activeMemberMenuId = signal<string | null>(null);
 
   topicVisibilityFilter = signal('');
@@ -264,7 +272,9 @@ export class GroupDetailComponent {
     this.fetchMembers((page - 1) * this.MEMBER_LIMIT);
   }
 
-  toggleFavourite(group: Group) {
+  toggleFavourite() {
+    const group = this.group();
+    if (!group) return;
     if (group.favourite) {
       this.groupDetailService.removeFavourite(group.id).subscribe(() => {
         this.group.update(g => g ? { ...g, favourite: false } : g);

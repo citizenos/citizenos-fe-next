@@ -12,6 +12,7 @@ import { DomSanitizer } from '@angular/platform-browser';
       [attr.width]="widthAttr()"
       [attr.height]="heightAttr()"
       [attr.viewBox]="viewBox()"
+      [style.color]="color()"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
@@ -35,6 +36,7 @@ export class IconComponent {
 
   name = input.required<IconName>();
   size = input<string | number>(24);
+  color = input<string>();
 
   widthAttr = computed(() => typeof this.size() === 'number' ? this.size() : null);
   heightAttr = computed(() => typeof this.size() === 'number' ? this.size() : null);

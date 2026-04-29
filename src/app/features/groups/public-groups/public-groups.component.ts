@@ -57,7 +57,7 @@ import { languages } from '../../../core/constants/all-languages';
 
       <div class="groups_grid">
         @for (group of groups(); track group.id) {
-          <cos-group-card [group]="group"></cos-group-card>
+          <cos-group-card [group]="group" mode="public"></cos-group-card>
         } @empty {
           <div class="no_groups">
             <div class="no_groups_heading" translate="VIEWS.PUBLIC_GROUPS.HEADING_GET_STARTED"></div>

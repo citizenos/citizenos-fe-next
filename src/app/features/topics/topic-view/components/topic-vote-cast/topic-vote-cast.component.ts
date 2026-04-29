@@ -17,6 +17,7 @@ import { DownloadVoteResultsComponent } from '../download-vote-results/download-
 import { CloseVotingComponent } from '../close-voting/close-voting.component';
 import { BigGraphComponent } from '../big-graph/big-graph.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
+import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
 
 @Component({
   selector: 'app-topic-vote-cast',
@@ -237,6 +238,19 @@ export class TopicVoteCastComponent {
           });
         }
       });
+  }
+
+  viewIdea(option: any) {
+    const t = this.topic();
+    if (!t.ideationId || !option.ideaId) return;
+    this.dialogService.open(IdeaDialogComponent, {
+      data: {
+        topicId: t.id,
+        ideationId: t.ideationId,
+        ideaId: option.ideaId,
+        topic: t,
+      },
+    });
   }
 
   voteGraphDasharray() {

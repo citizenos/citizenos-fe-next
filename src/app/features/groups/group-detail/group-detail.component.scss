@@ -1,12 +1,11 @@
 @use "mixins";
 
 .page_content {
-  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 
   @include mixins.tablet {
     margin: 60px 0;
-    padding: 8px;
-    gap: 16px;
   }
 
   @include mixins.mobile {
@@ -15,7 +14,24 @@
 }
 
 #page_header {
-  padding: 16px 0 0 0;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  #user_info_area {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+  }
+
+  #buttons_area {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
 
   .permissions_lable {
     display: flex;
@@ -24,7 +40,7 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
-    background-color: var(--color-blue-100);
+    background-color: var(--color-secondary);
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
@@ -33,16 +49,58 @@
   }
 
   .dropdown {
+    position: relative;
     .options {
       position: absolute;
       width: max-content;
-      min-width: max-content;
       right: 0;
-      z-index: 10;
+      top: 100%;
+      z-index: 100;
       background: var(--color-surfaces);
       border: 1px solid var(--color-border);
       border-radius: 12px;
       padding: 8px 0;
+      box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.15);
+
+      .option {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        gap: 12px;
+        cursor: pointer;
+        width: 100%;
+        background: none;
+        border: none;
+        text-align: left;
+        font-size: 14px;
+        color: var(--color-text);
+        transition: background 0.2s ease-in-out;
+
+        &:hover {
+          background: var(--color-surface-contrast);
+        }
+
+        &.error_text {
+          color: var(--color-error);
+        }
+
+        .icon_wrap {
+          width: 20px;
+          display: flex;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        span {
+          font-weight: 500;
+        }
+      }
+
+      .line_separator {
+        height: 1px;
+        background: var(--color-border);
+        margin: 4px 0;
+      }
 
       @include mixins.mobile {
         position: fixed;
@@ -51,42 +109,31 @@
         right: 0;
         left: 0;
         bottom: 0;
+        top: initial;
         border-radius: 16px 16px 0 0;
       }
     }
   }
 
   @include mixins.tablet {
-    background-color: var(--color-surfaces);
-    border-radius: 16px 16px 0 0;
+    background-color: transparent;
     margin: 0;
-    padding: 8px 0;
-    height: 56px;
-    align-items: center;
-    vertical-align: middle;
-    margin-bottom: -14px;
+    padding: 16px 0;
+    height: auto;
+    margin-bottom: 0;
 
     #buttons_area {
       display: flex;
-
-      #join_button {
-        display: none;
-      }
     }
-  }
-
-  @include mixins.mobile {
-    padding: 8px;
   }
 
   .button_dropdown {
     background-color: initial;
     position: relative;
 
-    .options {
-      .option {
-        width: max-content;
-        gap: 8px;
+    &.dropdown_active {
+      .group_actions_dropdown {
+        background-color: var(--color-surface-contrast);
       }
     }
   }
@@ -385,29 +432,6 @@
   }
 }
 
-.tabs_wrap {
-  position: relative;
-  display: flex;
-  gap: 24px;
-  width: 100%;
-  justify-content: space-between;
-
-  .tabs_row {
-    width: 100%;
-
-    @include mixins.mobile {
-      justify-content: center;
-    }
-  }
-
-  button {
-    min-width: max-content;
-
-    @include mixins.mobile {
-      display: none;
-    }
-  }
-}
 
 #topic_list_filters {
   display: flex;

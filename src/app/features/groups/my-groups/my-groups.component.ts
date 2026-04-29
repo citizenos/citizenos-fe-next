@@ -72,7 +72,7 @@ import { languages } from '../../../core/constants/all-languages';
 
       <div class="groups_grid">
         @for (group of groups(); track group.id) {
-          <cos-group-card [group]="group"></cos-group-card>
+          <cos-group-card [group]="group" mode="member"></cos-group-card>
         } @empty {
           <div class="no_groups">
             <div class="no_groups_heading" translate="VIEWS.MY_GROUPS.HAVENT_ENGAGED_GROUPS_HEADING"></div>

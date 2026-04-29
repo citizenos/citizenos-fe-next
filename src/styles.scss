@@ -10,13 +10,41 @@
 
 * {
     box-sizing: border-box;
-    font-family: Noto Sans, sans-serif;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+}
+
+:root {
+  --font-size: var(--font-size-base);
+  --line-height: var(--line-height-base);
+}
+
+.large {
+  --font-size: 18px;
+  --line-height: 24px;
+  
+  * {
+    font-size: var(--font-size) !important;
+    line-height: var(--line-height) !important;
+  }
+}
+
+.extra_large {
+  --font-size: 24px;
+  --line-height: 32px;
+
+  * {
+    font-size: var(--font-size) !important;
+    line-height: var(--line-height) !important;
+  }
 }
 
 body {
   margin: 0;
   padding: 0;
   font-family: var(--font-family-base);
+  font-size: var(--font-size);
   background-color: var(--color-background);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
@@ -224,6 +252,7 @@ a {
   line-height: 24px;
 }
 
+
 /* CDK Dialog overlay */
 .cos-dialog-backdrop {
   background: rgba(0, 0, 0, 0.45);
@@ -260,6 +289,11 @@ a {
   height: 100%;
   flex-direction: column;
   gap: 24px;
+  padding: 0 24px 24px 24px;
+
+  @include mixins.tablet {
+    padding: 0 16px 16px 16px;
+  }
 }
 
 .bold {

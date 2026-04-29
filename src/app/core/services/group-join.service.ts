@@ -24,4 +24,25 @@ export class GroupJoinService {
       { level, token }, { withCredentials: true }
     ).pipe(map(r => r.data));
   }
+
+  get(token: string): Observable<any> {
+    return this.http.get<ApiResponse<any>>(
+      `${this.baseUrl}/api/groups/join/${token}`,
+      { withCredentials: true }
+    ).pipe(map(r => r.data));
+  }
+
+  join(token: string): Observable<any> {
+    return this.http.post<ApiResponse<any>>(
+      `${this.baseUrl}/api/groups/join/${token}`,
+      {}, { withCredentials: true }
+    ).pipe(map(r => r.data));
+  }
+
+  joinPublic(groupId: string): Observable<any> {
+    return this.http.post<ApiResponse<any>>(
+      `${this.baseUrl}/api/users/self/groups/${groupId}/join`,
+      {}, { withCredentials: true }
+    ).pipe(map(r => r.data));
+  }
 }

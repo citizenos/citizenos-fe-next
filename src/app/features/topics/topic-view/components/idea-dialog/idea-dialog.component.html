@@ -1,0 +1,158 @@
+<div class="overlay"></div>
+<div class="dialog_wrap">
+  <div class="dialog">
+    <!-- Mobile navigation row -->
+    <div class="mobile_buttons mobile_show">
+      <div class="mobile_buttons_left">
+        @if (hasMoreIdeas()) {
+          <button class="btn_medium_close icon" (click)="prevIdea()" [disabled]="!hasPrev()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M9.45327 6.31262C9.85294 5.89579 10.5009 5.89579 10.9006 6.31262C11.3003 6.72945 11.3003 7.40527 10.9006 7.8221L7.91837 11L18 11C18.5652 11 19 11.4108 19 12.0003C19 12.5897 18.5652 12.9824 18 12.9824L7.91837 12.9824L10.9006 16.1779C11.3003 16.5947 11.3003 17.2705 10.9006 17.6874C10.5009 18.1042 9.85294 18.1042 9.45327 17.6874L4 12L9.45327 6.31262Z"
+                fill="#2C3B47" />
+            </svg>
+          </button>
+          <button class="btn_medium_close icon" (click)="nextIdea()" [disabled]="!hasNext()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M14.5467 6.31262C14.1471 5.89579 13.4991 5.89579 13.0994 6.31262C12.6997 6.72945 12.6997 7.40527 13.0994 7.8221L16.0816 11L6 11C5.43478 11 5 11.4108 5 12.0003C5 12.5897 5.43478 12.9824 6 12.9824L16.0816 12.9824L13.0994 16.1779C12.6997 16.5947 12.6997 17.2705 13.0994 17.6874C13.4991 18.1042 14.1471 18.1042 14.5467 17.6874L20 12L14.5467 6.31262Z"
+                fill="#2C3B47" />
+            </svg>
+          </button>
+        }
+      </div>
+      <div class="mobile_buttons_right">
+        <button id="close_button" class="btn_medium_close icon" [dialogClose]="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M5.29289 17.2929C4.90237 17.6834 4.90237 18.3166 5.29289 18.7071C5.68342 19.0976 6.31658 19.0976 6.70711 18.7071L12 13.4142L17.2929 18.7071C17.6834 19.0976 18.3166 19.0976 18.7071 18.7071C19.0976 18.3166 19.0976 17.6834 18.7071 17.2929L13.4142 12L18.7071 6.70711C19.0976 6.31658 19.0976 5.68342 18.7071 5.29289C18.3166 4.90237 17.6834 4.90237 17.2929 5.29289L12 10.5858L5.29289 17.2929Z"
+              fill="#2C3B47" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="dialog_content">
+      <!-- Desktop prev button -->
+      <div class="buttons_left mobile_hidden">
+        @if (hasMoreIdeas()) {
+          <button class="btn_medium_close btn_idea_select icon" (click)="prevIdea()" [disabled]="!hasPrev()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M9.45327 6.31262C9.85294 5.89579 10.5009 5.89579 10.9006 6.31262C11.3003 6.72945 11.3003 7.40527 10.9006 7.8221L7.91837 11L18 11C18.5652 11 19 11.4108 19 12.0003C19 12.5897 18.5652 12.9824 18 12.9824L7.91837 12.9824L10.9006 16.1779C11.3003 16.5947 11.3003 17.2705 10.9006 17.6874C10.5009 18.1042 9.85294 18.1042 9.45327 17.6874L4 12L9.45327 6.31262Z"
+                fill="#2C3B47" />
+            </svg>
+          </button>
+        }
+      </div>
+
+      <!-- Desktop right buttons (close + next) -->
+      <div class="buttons_right mobile_hidden">
+        <button class="btn_medium_close mobile_hidden icon" [dialogClose]="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M5.29289 17.2929C4.90237 17.6834 4.90237 18.3166 5.29289 18.7071C5.68342 19.0976 6.31658 19.0976 6.70711 18.7071L12 13.4142L17.2929 18.7071C17.6834 19.0976 18.3166 19.0976 18.7071 18.7071C19.0976 18.3166 19.0976 17.6834 18.7071 17.2929L13.4142 12L18.7071 6.70711C19.0976 6.31658 19.0976 5.68342 18.7071 5.29289C18.3166 4.90237 17.6834 4.90237 17.2929 5.29289L12 10.5858L5.29289 17.2929Z"
+              fill="#2C3B47" />
+          </svg>
+        </button>
+        @if (hasMoreIdeas()) {
+          <button class="btn_medium_close btn_idea_select icon" (click)="nextIdea()" [disabled]="!hasNext()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M14.5467 6.31262C14.1471 5.89579 13.4991 5.89579 13.0994 6.31262C12.6997 6.72945 12.6997 7.40527 13.0994 7.8221L16.0816 11L6 11C5.43478 11 5 11.4108 5 12.0003C5 12.5897 5.43478 12.9824 6 12.9824L16.0816 12.9824L13.0994 16.1779C12.6997 16.5947 12.6997 17.2705 13.0994 17.6874C13.4991 18.1042 14.1471 18.1042 14.5467 17.6874L20 12L14.5467 6.31262Z"
+                fill="#2C3B47" />
+            </svg>
+          </button>
+        }
+      </div>
+
+      <!-- Main idea content -->
+      @if (isLoading()) {
+        <div class="idea_content_idea loading_state">
+          <div class="loader_wrapper">
+            <div class="loader"></div>
+          </div>
+          <span class="bold loader_text" translate="COMPONENTS.IDEA_DIALOG.LOADING_IMAGES"></span>
+        </div>
+      } @else if (hasError()) {
+        <div class="idea_content_idea error_state">
+          <span translate="MSG_ERROR_GET"></span>
+        </div>
+      } @else if (idea()) {
+        <div class="idea_content_idea">
+          <div class="idea_header">
+            <div class="idea_header_left">
+              @if (idea()!.author) {
+                <div class="avatar">
+                  @if (idea()!.author?.imageUrl) {
+                    <img [src]="idea()!.author!.imageUrl" [alt]="idea()!.author!.name" />
+                  } @else {
+                    <div class="profile_image_filler">
+                      <cos-initials [name]="idea()!.author!.name || ''"></cos-initials>
+                    </div>
+                  }
+                </div>
+                <div class="name_wrap">
+                  <div class="name" [innerHTML]="idea()!.author!.name"></div>
+                  <div class="date">{{ idea()!.createdAt | date: 'y-MM-dd HH:mm' }}</div>
+                </div>
+                <div class="vertical_line_separator"></div>
+              } @else {
+                <div class="name_wrap">
+                  <div class="date">{{ idea()!.createdAt | date: 'y-MM-dd HH:mm' }}</div>
+                </div>
+                <div class="vertical_line_separator"></div>
+              }
+
+              @if (userStore.isAuthenticated()) {
+                <button class="btn_small_plain" (click)="toggleFavourite()">
+                  @if (!idea()!.favourite) {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M8.33541 12.3292L8 12.1615L7.66459 12.3292L3.1118 14.6056C2.94558 14.6887 2.75 14.5678 2.75 14.382V2C2.75 1.86193 2.86193 1.75 3 1.75H13C13.1381 1.75 13.25 1.86193 13.25 2V14.382C13.25 14.5678 13.0544 14.6887 12.8882 14.6056L8.33541 12.3292Z"
+                        stroke="#2C3B47" stroke-width="1.5" />
+                    </svg>
+                  } @else {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M8.33541 12.3292L8 12.1615L7.66459 12.3292L3.1118 14.6056C2.94558 14.6887 2.75 14.5678 2.75 14.382V2C2.75 1.86193 2.86193 1.75 3 1.75H13C13.1381 1.75 13.25 1.86193 13.25 2V14.382C13.25 14.5678 13.0544 14.6887 12.8882 14.6056L8.33541 12.3292Z"
+                        fill="#2C3B47" stroke="#2C3B47" stroke-width="1.5" />
+                    </svg>
+                  }
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="idea_content">
+            <div class="statement" [innerHTML]="idea()!.statement"></div>
+            <div class="description" [innerHTML]="idea()!.description"></div>
+          </div>
+
+          <div class="idea_footer">
+            <div class="like_wrap" [class.selected]="idea()!.votes.up.selected">
+              <button class="btn_idea_like" (click)="voteIdea(1)">
+                @if (!idea()!.votes.up.selected) {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M8.12835 1.9685L4.5 6V13.5H11.3561C11.7482 13.5 12.1042 13.2708 12.2665 12.9138L14.4104 8.19719C14.4694 8.06724 14.5 7.92614 14.5 7.78339V7C14.5 6.44772 14.0523 6 13.5 6H9V2.30298C9 1.84474 8.4349 1.62789 8.12835 1.9685Z"
+                      stroke="#2C3B47" stroke-width="1.5" />
+                    <path d="M4.5 6H2C1.44772 6 1 6.44772 1 7V12.5C1 13.0523 1.44772 13.5 2 13.5H4.5" stroke="#2C3B47"
+                      stroke-width="1.5" />
+                  </svg>
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M7.57088 1.46709C8.33725 0.61557 9.75 1.15769 9.75 2.30329V5.25032H13.5C14.4665 5.25032 15.25 6.03382 15.25 7.00032V7.78371C15.25 8.03352 15.1965 8.28044 15.0931 8.50787L12.9492 13.2245C12.6653 13.8492 12.0423 14.2503 11.3561 14.2503L4.25 14.2501V5.15696L7.57088 1.46709ZM2.75 5.25H2C1.0335 5.25 0.25 6.0335 0.25 7V12.5C0.25 13.4665 1.0335 14.25 2 14.25L2.75 14.25V5.25Z"
+                      fill="#2C3B47" />
+                  </svg>
+                }
+              </button>
+              <span class="like_counter_wrap">{{ idea()!.votes.up.count }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

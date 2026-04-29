@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, input, inject, computed } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, ChangeDetectionStrategy, input, inject, computed, output } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { Group } from '../../../core/interfaces/group';
@@ -12,199 +12,256 @@ import { IconComponent } from '../icon/icon.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, TranslateModule, InitialsComponent, DatePipe, IconComponent],
   template: `
-    <a class="group_card" [routerLink]="['/', translate.currentLang, 'groups', group().id]">
+    <a class="group" [class]="mode()" (click)="viewGroup()">
       <div class="group_header">
-        <div class="header_icons">
+        <div class="image_area">
+          @if (group().imageUrl) {
+            <div class="group_icon"><img [src]="group().imageUrl" /></div>
+          } @else if (group().name) {
+            <div class="initial_wrap">
+              <cos-initials [name]="group().name" [limit]="1"></cos-initials>
+            </div>
+          }
+        </div>
+        <div class="info_area">
           @if (group().visibility === 'private') {
-            <div class="icon_item">
-              <cos-icon name="lock" [size]="20"></cos-icon>
+            <div class="item">
+              <cos-icon name="lock-legacy" [size]="24"></cos-icon>
             </div>
           }
           @if (group().favourite) {
-            <div class="icon_item favourite">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M12 3L14.645 8.35942L20.5595 9.21885L16.2798 13.3906L17.2901 19.2812L12 16.5L6.70993 19.2812L7.72025 13.3906L3.44049 9.21885L9.35497 8.35942L12 3Z" fill="currentColor"/>
-              </svg>
+            <div class="item favourite">
+              <cos-icon name="star-filled" [size]="24"></cos-icon>
             </div>
           }
-          <div class="icon_item counts">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M8.00002 8.00016C9.84097 8.00016 11.3334 6.50778 11.3334 4.66683C11.3334 2.82588 9.84097 1.3335 8.00002 1.3335C6.15907 1.3335 4.66669 2.82588 4.66669 4.66683C4.66669 6.50778 6.15907 8.00016 8.00002 8.00016Z" fill="currentColor"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M4 11.63C4 9.99356 5.19391 8.66699 6.66667 8.66699H9.33333C10.8061 8.66699 12 9.99356 12 11.63V15.3337H4V11.63Z" fill="currentColor"/>
-            </svg>
-            <span>{{ group().members?.users?.count || 1 }}</span>
+          <div class="item counts">
+            <cos-icon name="users-filled" [size]="16"></cos-icon>
+            <span class="members_count_text">{{ group().members?.users?.count || 1 }}</span>
           </div>
         </div>
       </div>
 
-      <div class="group_image_area">
-        @if (group().imageUrl) {
-          <div class="group_image" [style.background-image]="'url(' + group().imageUrl + ')'"></div>
-        } @else {
-          <div class="group_initials">
-            <cos-initials [name]="group().name" [limit]="1"></cos-initials>
-          </div>
-        }
-      </div>
-
-      <div class="group_body">
-        <div class="group_name">{{ group().name }}</div>
-        <div class="group_description">
-          @if (latestTopic(); as topic) {
-            <a class="latest_topic" [routerLink]="['/', translate.currentLang, 'topics', topic.id]" (click)="$event.stopPropagation()">
-              {{ topic.title }}
-            </a>
-          } @else {
-            {{ group().description }}
-          }
+      @if (mode() === 'public') {
+        <div class="group_content">
+          <div class="group_title bold">{{ group().name }}</div>
+          <div class="group_description">{{ group().description }}</div>
         </div>
-      </div>
 
-      <div class="group_footer">
-        <div class="group_visibility" [translate]="'TXT_GROUP_VISIBILITY_' + group().visibility.toUpperCase()"></div>
-        <div class="group_date">{{ group().createdAt | date: 'y-MM-dd HH:mm' }}</div>
-      </div>
+        <div class="group_info_area">
+          <div class="info_item">
+            <cos-icon name="status-in-progress" [size]="16" color="#1168A8"></cos-icon>
+            <div class="info_number bold">{{ group().members?.topics?.count?.inProgress || 0 }}</div>
+          </div>
+          <div class="info_item">
+            <cos-icon name="status-ideation" [size]="16" color="#E4B722"></cos-icon>
+            <div class="info_number bold">{{ group().members?.topics?.count?.ideation || 0 }}</div>
+          </div>
+          <div class="info_item">
+            <cos-icon name="status-voting" [size]="16" color="#5AB467"></cos-icon>
+            <div class="info_number bold">{{ group().members?.topics?.count?.voting || 0 }}</div>
+          </div>
+          <div class="info_item">
+            <cos-icon name="status-follow-up" [size]="16" color="#DA7AB1"></cos-icon>
+            <div class="info_number bold">{{ group().members?.topics?.count?.followUp || 0 }}</div>
+          </div>
+        </div>
+
+        <button class="btn_big_secondary" [routerLink]="['/', translate.currentLang, 'groups', group().id]">{{ 'VIEWS.PUBLIC_GROUPS.BTN_VIEW_GROUP' | translate }}</button>
+      } @else {
+        <div class="group_title bold">{{ group().name }}</div>
+        <div class="group_footer">
+          <div class="group_description">
+            @if (latestTopic(); as topic) {
+              <a [routerLink]="['/', translate.currentLang, 'topics', topic.id]" (click)="$event.stopPropagation()" class="bold">
+                {{ topic.title }}
+              </a>
+            } @else {
+              {{ 'VIEWS.MY_GROUPS.LBL_NO_TOPICS' | translate }}
+            }
+          </div>
+          <div class="date">{{ group().createdAt | date: 'y-MM-dd HH:mm' }}</div>
+        </div>
+      }
     </a>
   `,
   styles: [`
     :host { display: contents; }
-    .group_card {
+
+    .group {
       display: flex;
       flex-direction: column;
       width: 280px;
-      height: 380px;
-      background: var(--color-surfaces);
+      background-color: var(--color-surfaces);
       border-radius: 16px;
-      overflow: hidden;
+      padding: 16px;
+      gap: 8px;
+      position: relative;
+      transition: box-shadow 0.3s ease-in-out;
       text-decoration: none;
       color: var(--color-text);
-      flex-shrink: 0;
-      transition: box-shadow 0.3s ease-in-out;
-      border: 1px solid var(--color-border);
+      cursor: pointer;
+
+      &.public { height: 360px; }
+      &.member { height: 224px; }
 
       &:hover {
-        box-shadow: 0 8px 20px rgba(220, 231, 240, 0.3), 0 12px 16px rgba(50, 85, 112, 0.1);
-        .group_name { color: var(--color-link); }
+        box-shadow: 0px 8px 20px 0px rgba(220, 231, 240, 0.30), 0px 12px 16px 0px rgba(50, 85, 112, 0.10);
+        .group_title { color: var(--color-link); }
+      }
+
+      @media (max-width: 768px) {
+        width: 100%;
+        min-width: 280px;
       }
     }
 
     .group_header {
-      height: 48px;
       display: flex;
-      align-items: center;
-      padding: 0 16px;
-      background: var(--color-surface-contrast);
+      flex-direction: row;
+      justify-content: space-between;
       color: var(--color-text);
-    }
 
-    .header_icons {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      width: 100%;
-    }
+      .image_area {
+        display: flex;
+        align-items: center;
+        .initial_wrap, .group_icon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 56px;
+          height: 56px;
+          border-radius: 56px;
+          background-color: var(--color-surface-contrast);
+          overflow: hidden;
+        }
+        img {
+          width: 56px;
+          height: 56px;
+          border-radius: 56px;
+          aspect-ratio: 1;
+          object-fit: cover;
+        }
+      }
 
-    .icon_item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--color-text-muted);
+      .info_area {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        .item {
+          display: flex;
+          gap: 8px;
+          height: 32px;
+          min-width: 32px;
+          align-items: center;
+          justify-content: center;
+          padding: 4px;
+          background-color: var(--color-surface-contrast);
+          border-radius: 8px;
+          color: var(--color-text);
 
-      &.favourite { color: var(--color-warning); }
-      &.counts { margin-left: auto; font-size: 13px; font-weight: 600; }
-    }
-
-    .group_image_area {
-      height: 140px;
-      width: 100%;
-      background: var(--color-border);
-      position: relative;
-    }
-
-    .group_image {
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .group_initials {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      
-      cos-initials {
-        width: 80px;
-        height: 80px;
-        font-size: 32px;
+          &.favourite { color: var(--color-warning); }
+          .members_count_text { color: var(--color-text-muted); font-weight: 600; font-size: 13px; }
+        }
       }
     }
 
-    .group_body {
-      padding: 16px 20px;
-      flex: 1;
+    .group_content {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      color: var(--color-text);
+      height: 120px;
+      padding-right: 16px;
+      gap: 16px;
       overflow: hidden;
+
+      .group_description {
+        color: var(--color-text-muted);
+        font-size: 14px;
+        line-height: 20px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
     }
 
-    .group_name {
-      font-weight: 600;
+    .group_title {
       font-size: 18px;
+      font-weight: 600;
       line-height: 24px;
-      overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-    }
-
-    .group_description {
-      font-size: 14px;
-      line-height: 20px;
-      color: var(--color-text-muted);
       overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
+      &.bold { font-weight: 600; }
     }
 
-    .latest_topic {
-      color: var(--color-link);
-      text-decoration: none;
-      font-weight: 500;
-      &:hover { text-decoration: underline; }
+    .group_info_area {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      justify-content: space-between;
+      padding: 8px 0;
+
+      .info_item {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-surface-contrast);
+        border-radius: 8px;
+        width: 72px;
+        height: 56px;
+
+        .info_number.bold { color: var(--color-text); font-weight: 600; }
+      }
     }
 
     .group_footer {
-      padding: 12px 20px;
       display: flex;
+      height: 100%;
+      flex-direction: column;
       justify-content: space-between;
-      align-items: center;
+      width: 100%;
+      gap: 8px;
       border-top: 1px solid var(--color-border);
-      background: var(--color-surface-contrast);
+      padding-top: 16px;
+
+      .group_description {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        a {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          color: var(--color-link);
+          font-weight: 600;
+        }
+      }
+      .date { font-size: 12px; color: var(--color-text-muted); }
     }
 
-    .group_visibility {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--color-text-muted);
-      text-transform: uppercase;
-    }
-
-    .group_date {
-      font-size: 12px;
-      color: var(--color-text-muted);
+    .btn_big_secondary {
+      width: 100%;
+      justify-content: center;
     }
   `]
 })
 export class GroupCardComponent {
   group = input.required<Group>();
+  mode = input<'public' | 'member'>('member');
+  onJoin = output<Group>();
+
+  router = inject(Router);
   translate = inject(TranslateService);
 
   latestTopic = computed(() => {
     return this.group().members?.topics?.latest || null;
   });
+
+  viewGroup() {
+    this.router.navigate(['/', this.translate.currentLang, 'groups', this.group().id]);
+  }
 }

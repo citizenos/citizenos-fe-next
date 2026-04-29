@@ -90,7 +90,7 @@
       </div>
       <div class="section_content">
         @for (group of publicGroups(); track group.id) {
-          <cos-group-card [group]="group" />
+          <cos-group-card [group]="group" mode="public" />
         }
       </div>
       <button class="view_more_button btn_medium_submit" [routerLink]="['/', translate.currentLang, 'public', 'groups']">

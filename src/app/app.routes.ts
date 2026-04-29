@@ -49,6 +49,18 @@ export const routes: Routes = [
 
           // Groups
           {
+            path: 'groups/join/:token',
+            loadComponent: () => import('./features/groups/group-join/group-join.component').then(m => m.GroupJoinComponent)
+          },
+          {
+            path: 'groups/:groupId/join',
+            loadComponent: () => import('./features/groups/group-join/group-join.component').then(m => m.GroupJoinComponent)
+          },
+          {
+            path: 'groups/:groupId/invites/users/:inviteId',
+            loadComponent: () => import('./features/groups/group-invitation/group-invitation.component').then(m => m.GroupInvitationComponent)
+          },
+          {
             path: 'groups/:groupId',
             loadComponent: () => import('./features/groups/group-detail/group-detail.component').then(m => m.GroupDetailComponent)
           },

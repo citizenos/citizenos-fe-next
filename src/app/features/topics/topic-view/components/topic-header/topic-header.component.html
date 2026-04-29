@@ -38,13 +38,11 @@
       </button>
     }
 
-    <button class="btn_medium_close icon mobile_show" (click)="mobileActions = !mobileActions">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8C13.1 8 14 7.1 14 6ZM14 18C14 16.9 13.1 16 12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18ZM12 10C13.1 10 14 10.9 14 12C14 13.1 13.1 14 12 14C10.9 14 10 13.1 10 12C10 10.9 10.9 10 12 10Z" fill="#2C3B47"/>
-      </svg>
+    <button class="btn_medium_close icon mobile_show" (click)="mobileActions.set(!mobileActions())">
+      <cos-icon name="more-vertical" [size]="24"></cos-icon>
     </button>
 
-    <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" [class.open]="tabletActionsOpen" (click)="tabletActionsOpen = !tabletActionsOpen">
+    <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" [class.open]="tabletActionsOpen()" (click)="tabletActionsOpen.set(!tabletActionsOpen())">
       <!-- TODO: cosDropdown equivalent directive, for now we will use standard CSS hover or click state -->
       <button class="btn_medium_close icon">
         <cos-icon name="more-vertical"></cos-icon>
@@ -53,7 +51,7 @@
       <div class="options" (click)="$event.stopPropagation()">
         <!-- Replicated dropdown options -->
         @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {
-          <button (click)="leaveTopic.emit(topic()); tabletActionsOpen = false" class="option">
+          <button (click)="leaveTopic.emit(topic()); tabletActionsOpen.set(false)" class="option">
             <div class="icon_wrap">
               <cos-icon name="leave" [size]="16"></cos-icon>
             </div>
@@ -63,7 +61,7 @@
 
         @if (isLoggedIn()) {
           <div class="line_separator"></div>
-          <button class="option" (click)="onToggleFavourite(); tabletActionsOpen = false">
+          <button class="option" (click)="onToggleFavourite(); tabletActionsOpen.set(false)">
             <div class="icon_wrap">
               @if (topic().favourite) {
                 <cos-icon name="favourite-filled" [size]="16"></cos-icon>
@@ -92,7 +90,7 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="inviteEditors.emit(topic()); tabletActionsOpen = false">
+          <button class="option" (click)="inviteEditors.emit(topic()); tabletActionsOpen.set(false)">
             <div class="icon_wrap">
               <cos-icon name="invite" [size]="16"></cos-icon>
             </div>
@@ -132,7 +130,7 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic())) {
           <div class="line_separator"></div>
-          <button class="option" (click)="duplicateTopic.emit(topic()); tabletActionsOpen = false">
+          <button class="option" (click)="duplicateTopic.emit(topic()); tabletActionsOpen.set(false)">
             <div class="icon_wrap">
               <cos-icon name="copy" [size]="16"></cos-icon>
             </div>
@@ -142,7 +140,7 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="addGroupsDialog.emit(topic()); tabletActionsOpen = false">
+          <button class="option" (click)="addGroupsDialog.emit(topic()); tabletActionsOpen.set(false)">
             <div class="icon_wrap">
               <cos-icon name="plus" [size]="16"></cos-icon>
             </div>
@@ -162,7 +160,7 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="closeTopic.emit(topic()); tabletActionsOpen = false">
+          <button class="option" (click)="closeTopic.emit(topic()); tabletActionsOpen.set(false)">
             <div class="icon_wrap">
               <cos-icon name="check-box" [size]="16"></cos-icon>
             </div>
@@ -172,7 +170,7 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic())) {
           <div class="line_separator"></div>
-          <button class="option error_text" (click)="deleteTopic.emit(topic()); tabletActionsOpen = false">
+          <button class="option error_text" (click)="deleteTopic.emit(topic()); tabletActionsOpen.set(false)">
             <div class="icon_wrap">
               <cos-icon name="trash" [size]="16"></cos-icon>
             </div>
@@ -185,28 +183,26 @@
   </div>
 </div>
 
-@if (mobileActions) {
-  <div class="overlay" (click)="mobileActions = false"></div>
+@if (mobileActions()) {
+  <div class="overlay" (click)="mobileActions.set(false)"></div>
 }
-<div class="mobile_actions_wrap mobile_show" [class.show]="mobileActions">
+<div class="mobile_actions_wrap mobile_show" [class.show]="mobileActions()">
   <div class="heading_wrap">
     <span translate="VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS"></span>
     <div id="close_mobile" class="mobile_show">
-      <button class="btn_small_close icon" (click)="mobileActions = false">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5.29311 17.2929C4.90258 17.6834 4.90258 18.3166 5.29311 18.7071C5.68363 19.0976 6.3168 19.0976 6.70732 18.7071L12.0002 13.4142L17.2931 18.7071C17.6836 19.0976 18.3168 19.0976 18.7073 18.7071C19.0978 18.3166 19.0978 17.6834 18.7073 17.2929L13.4144 12L18.7073 6.70711C19.0978 6.31658 19.0978 5.68342 18.7073 5.29289C18.3168 4.90237 17.6836 4.90237 17.2931 5.29289L12.0002 10.5858L6.70732 5.29289C6.3168 4.90237 5.68363 4.90237 5.29311 5.29289C4.90258 5.68342 4.90258 6.31658 5.29311 6.70711L10.586 12L5.29311 17.2929Z" fill="#2C3B47"/>
-        </svg>
+      <button class="btn_small_close icon" (click)="mobileActions.set(false)">
+        <cos-icon name="close" [size]="24"></cos-icon>
       </button>
     </div>
   </div>
   <div class="options">
     @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {
-      <button id="leave_button" (click)="leaveTopic.emit(topic()); mobileActions = false" class="btn_medium_close"
+      <button id="leave_button" (click)="leaveTopic.emit(topic()); mobileActions.set(false)" class="btn_medium_close"
         translate="VIEWS.TOPICS_TOPICID.BTN_LEAVE"></button>
       <div class="line_separator"></div>
     }
     @if (isLoggedIn()) {
-      <button class="option" (click)="onToggleFavourite(); mobileActions = false">
+      <button class="option" (click)="onToggleFavourite(); mobileActions.set(false)">
         <div class="icon_wrap">
           @if (topic().favourite) {
             <cos-icon name="favourite-filled" [size]="16"></cos-icon>
@@ -223,7 +219,7 @@
     }
     @if (isLoggedIn() && appTopicNotificationSettings()) {
       <div class="line_separator"></div>
-      <button class="option" (click)="appTopicNotificationSettings()?.(); mobileActions = false">
+      <button class="option" (click)="appTopicNotificationSettings()?.(); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="bell" [size]="16"></cos-icon>
         </div>
@@ -232,7 +228,7 @@
     }
     @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
       <div class="line_separator"></div>
-      <button class="option" (click)="inviteEditors.emit(topic()); mobileActions = false">
+      <button class="option" (click)="inviteEditors.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="invite" [size]="16"></cos-icon>
         </div>
@@ -241,7 +237,7 @@
     }
     @if (isLoggedIn() && topicService.canEdit(topic()) && !topic().voteId && !topic().ideationId) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', topic().id, 'edit']" (click)="mobileActions = false">
+      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', topic().id, 'edit']" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="edit" [size]="16"></cos-icon>
         </div>
@@ -250,7 +246,7 @@
     }
     @if (isLoggedIn() && topicService.canEdit(topic()) && topic().ideationId && !topic().voteId) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', 'ideation', 'edit', topic().id]" (click)="mobileActions = false">
+      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', 'ideation', 'edit', topic().id]" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="edit" [size]="16"></cos-icon>
         </div>
@@ -259,7 +255,7 @@
     }
     @if (isLoggedIn() && topicService.canEdit(topic()) && topic().voteId) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', 'vote', 'edit', topic().id]" (click)="mobileActions = false">
+      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', 'vote', 'edit', topic().id]" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="edit" [size]="16"></cos-icon>
         </div>
@@ -268,32 +264,25 @@
     }
     @if (isLoggedIn() && topicService.canDelete(topic())) {
       <div class="line_separator"></div>
-      <button class="option" (click)="duplicateTopic.emit(topic()); mobileActions = false">
+      <button class="option" (click)="duplicateTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 5H11V14H2V5Z" fill="#2C3B47"/>
-            <path d="M4 2V4H12V12H14V2H4Z" fill="#2C3B47"/>
-          </svg>
+          <cos-icon name="copy" [size]="16"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_DUPLICATE_TOPIC"></span>
       </button>
     }
     @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
       <div class="line_separator"></div>
-      <button class="option" (click)="addGroupsDialog.emit(topic()); mobileActions = false">
+      <button class="option" (click)="addGroupsDialog.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1 13C1 14 2 14 2 14H10C10 14 11 14 11 13C11 12 10 9 6 9C2 9 1 12 1 13Z" fill="#2C3B47"/>
-            <path d="M8.12132 7.12132C7.55871 7.68393 6.79565 8 6 8C5.20435 8 4.44129 7.68393 3.87868 7.12132C3.31607 6.55871 3 5.79565 3 5C3 4.20435 3.31607 3.44129 3.87868 2.87868C4.44129 2.31607 5.20435 2 6 2C6.79565 2 7.55871 2.31607 8.12132 2.87868C8.68393 3.44129 9 4.20435 9 5C9 5.79565 8.68393 6.55871 8.12132 7.12132Z" fill="#2C3B47"/>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.99984 5.00004C9.99984 6.08068 9.57131 7.06124 8.87491 7.78104C9.22902 7.9243 9.61061 8 10 8C10.7956 8 11.5587 7.68393 12.1213 7.12132C12.6839 6.55871 13 5.79565 13 5C13 4.20435 12.6839 3.44129 12.1213 2.87868C11.5587 2.31607 10.7956 2 10 2C9.61059 2 9.22898 2.07571 8.87486 2.21898C9.57129 2.93879 9.99984 3.91937 9.99984 5.00004ZM5 13C5 14 6 14 6 14H10C10 14 11 14 11 13C11 12.1936 10.3496 10.0864 8 9.30092C5.65035 10.0864 5 12.1936 5 13Z" fill="#2C3B47"/>
-          </svg>
+          <cos-icon name="groups" [size]="16"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_ADD_TO_GROUP"></span>
       </button>
     }
     @if (topic().visibility === topicService.VISIBILITY.public && !topic().report) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', topic().id, 'report']" (click)="mobileActions = false">
+      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', topic().id, 'report']" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="report" [size]="16"></cos-icon>
         </div>
@@ -302,7 +291,7 @@
     }
     @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
       <div class="line_separator"></div>
-      <button class="option" (click)="closeTopic.emit(topic()); mobileActions = false">
+      <button class="option" (click)="closeTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="check-box" [size]="16"></cos-icon>
         </div>
@@ -311,7 +300,7 @@
     }
     @if (isLoggedIn() && topicService.canDelete(topic())) {
       <div class="line_separator"></div>
-      <button class="option error_text" (click)="deleteTopic.emit(topic()); mobileActions = false">
+      <button class="option error_text" (click)="deleteTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="trash" [size]="16"></cos-icon>
         </div>

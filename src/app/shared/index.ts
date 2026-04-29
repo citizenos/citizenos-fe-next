@@ -14,6 +14,7 @@ export { ToggleComponent } from './components/toggle/toggle.component';
 export { TooltipDirective } from './components/tooltip/tooltip.directive';
 export { TypeaheadComponent, type TypeaheadItem } from './components/typeahead/typeahead.component';
 export { ConfirmDialogComponent, type ConfirmDialogData, type DialogLevel } from './components/confirm-dialog/confirm-dialog.component';
+export { InvitationDialogComponent, type InviteDialogData } from './components/invitation-dialog/invitation-dialog.component';
 
 // Dialog system
 export { DialogService, type DialogConfig } from './dialog';

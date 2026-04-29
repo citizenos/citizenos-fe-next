@@ -1,0 +1,18 @@
+<div class="tabs_wrap">
+  <div class="tabs_row">
+    @for (tab of tabs(); track tab.id) {
+      <a class="tab_item" 
+         [class.active]="activeTab() === tab.id" 
+         (click)="onTabSelect(tab.id)">
+        @if (tab.icon) {
+          <cos-icon [name]="tab.icon" [size]="20"></cos-icon>
+        }
+        <span class="tab_text" [translate]="tab.label"></span>
+      </a>
+    }
+  </div>
+
+  <div class="tabs_actions">
+    <ng-content></ng-content>
+  </div>
+</div>

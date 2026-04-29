@@ -1,0 +1,38 @@
+@use "mixins";
+
+.dialog {
+  max-width: 560px;
+
+  .dialog_content {
+    gap: 16px;
+    padding: 24px;
+
+    @include mixins.mobile {
+      padding: 16px;
+    }
+
+    .introduction_wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      .intro_heading {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+  }
+  .dialog_footer {
+    @include mixins.mobile {
+      gap: 16px;
+      flex-direction: column-reverse;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

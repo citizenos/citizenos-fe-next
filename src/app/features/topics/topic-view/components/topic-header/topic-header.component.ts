@@ -1,4 +1,4 @@
-import { Component, input, output, inject, ChangeDetectionStrategy, computed } from '@angular/core';
+import { Component, input, output, inject, ChangeDetectionStrategy, computed, signal } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -34,8 +34,8 @@ export class TopicHeaderComponent {
   topicService = inject(TopicService);
   translate = inject(TranslateService);
 
-  mobileActions = false;
-  tabletActionsOpen = false;
+  mobileActions = signal(false);
+  tabletActionsOpen = signal(false);
 
   isLoggedIn = computed(() => this.userStore.isAuthenticated());
 

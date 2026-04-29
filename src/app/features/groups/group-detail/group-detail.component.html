@@ -6,17 +6,13 @@
       <div id="user_info_area">
         @if (!isLoggedIn() || group.visibility === 'public') {
           <button class="btn_medium_close icon" [routerLink]="['/', userLang, 'public', 'groups']">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M10.4533 17.6874C10.8529 18.1042 11.5009 18.1042 11.9006 17.6874C12.3003 17.2705 12.3003 16.5947 11.9006 16.1779L8.91837 13L19 13C19.5652 13 20 12.5892 20 11.9997C20 11.4103 19.5652 11.0176 19 11.0176L8.91837 11.0176L11.9006 7.8221C12.3003 7.40527 12.3003 6.72945 11.9006 6.31262C11.5009 5.89579 10.8529 5.89579 10.4533 6.31262L5 12L10.4533 17.6874Z" fill="#2C3B47"/>
-            </svg>
+            <cos-icon name="arrow-left" [size]="24"></cos-icon>
           </button>
           <div class="small_heading mobile_hidden" translate="VIEWS.GROUP.HEADING_BACK_TO_PUBLIC_GROUPS"></div>
         }
         @if (isLoggedIn() && group.visibility === 'private') {
           <button class="btn_medium_close icon" [routerLink]="['/', userLang, 'my', 'groups']">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M10.4533 17.6874C10.8529 18.1042 11.5009 18.1042 11.9006 17.6874C12.3003 17.2705 12.3003 16.5947 11.9006 16.1779L8.91837 13L19 13C19.5652 13 20 12.5892 20 11.9997C20 11.4103 19.5652 11.0176 19 11.0176L8.91837 11.0176L11.9006 7.8221C12.3003 7.40527 12.3003 6.72945 11.9006 6.31262C11.5009 5.89579 10.8529 5.89579 10.4533 6.31262L5 12L10.4533 17.6874Z" fill="#2C3B47"/>
-            </svg>
+            <cos-icon name="arrow-left" [size]="24"></cos-icon>
           </button>
           <div class="small_heading mobile_hidden" translate="VIEWS.GROUP.HEADING_BACK_TO_MY_GROUPS"></div>
         }
@@ -32,105 +28,27 @@
           </div>
         }
 
-        @if (isLoggedIn()) {
-          <cos-activities-button class="tablet_show"></cos-activities-button>
-        }
 
         @if (isLoggedIn()) {
-          <button class="btn_medium_close icon" (click)="toggleFavourite(group)">
-            @if (!group.favourite) {
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M14.645 8.35942L11.9999 3L9.3549 8.35942L3.44043 9.21885L7.72018 13.3906L6.70987 19.2812L11.9999 16.5L17.29 19.2812L16.2797 13.3906L20.5594 9.21885L14.645 8.35942ZM16.2615 10.6153L13.3168 10.1874L11.9999 7.5191L10.683 10.1874L7.73835 10.6153L9.86914 12.6923L9.36613 15.6251L11.9999 14.2404L14.6337 15.6251L14.1307 12.6923L16.2615 10.6153Z" fill="#2C3B47"/>
-              </svg>
-            }
-            @if (group.favourite) {
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M12 3L14.645 8.35942L20.5595 9.21885L16.2798 13.3906L17.2901 19.2812L12 16.5L6.70993 19.2812L7.72025 13.3906L3.44049 9.21885L9.35497 8.35942L12 3Z" fill="#2C3B47"/>
-              </svg>
-            }
+          <cos-activities-button class="mobile_hidden"></cos-activities-button>
+          <button class="btn_medium_close icon" (click)="toggleFavourite()">
+            <cos-icon [name]="group.favourite ? 'favourite-filled-legacy' : 'favourite-legacy'" [size]="24"></cos-icon>
           </button>
         }
 
         <!-- Desktop action dropdown -->
         @if (isLoggedIn()) {
-        <div class="dropdown button_dropdown mobile_hidden" [class.dropdown_active]="groupActionsOpen()" (click)="$event.stopPropagation()">
-          <button class="btn_medium_close icon group_actions_dropdown" (click)="groupActionsOpen.update(v => !v)">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8C13.1 8 14 7.1 14 6ZM14 18C14 16.9 13.1 16 12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18ZM12 10C13.1 10 14 10.9 14 12C14 13.1 13.1 14 12 14C10.9 14 10 13.1 10 12C10 10.9 10.9 10 12 10Z" fill="#2C3B47"/>
-            </svg>
-          </button>
-          @if (groupActionsOpen()) {
-            <div class="options group_actions_dropdown">
-              @if (isLoggedIn()) {
-                <button class="option" (click)="toggleFavourite(group); groupActionsOpen.set(false)">
-                  <div class="icon_wrap">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1L10.0572 5.16844L14.6574 5.83688L11.3287 9.08156L12.1145 13.6631L8 11.5L3.8855 13.6631L4.6713 9.08156L1.3426 5.83688L5.94275 5.16844L8 1Z" fill="#2C3B47"/>
-                    </svg>
-                  </div>
-                  @if (!group.favourite) {
-                    <span translate="VIEWS.GROUP.BTN_OPTION_FAVOURITE"></span>
-                  } @else {
-                    <span translate="VIEWS.GROUP.BTN_OPTION_UNFAVOURITE"></span>
-                  }
-                </button>
-              }
-              @if (isLoggedIn() && !isAdmin()) {
-                <div class="line_separator"></div>
-                <button class="option" (click)="openRequestTopics(); groupActionsOpen.set(false)">
-                  <div class="icon_wrap">
-                    <cos-icon name="plus" [size]="16"></cos-icon>
-                  </div>
-                  <span translate="VIEWS.GROUP.BTN_REQUEST_ADD_TOPICS"></span>
-                </button>
-              }
-              @if (canShare()) {
-                <div class="line_separator"></div>
-                <div class="option" (click)="openInvite(); groupActionsOpen.set(false)">
-                  <div class="icon_wrap">
-                    <cos-icon name="users" [size]="16"></cos-icon>
-                  </div>
-                  <span translate="VIEWS.GROUP.BTN_OPTION_INVITE"></span>
-                </div>
-              }
-              @if (isLoggedIn() && isAdmin()) {
-                <div class="line_separator"></div>
-                <div class="option" (click)="openAddTopics(); groupActionsOpen.set(false)">
-                  <div class="icon_wrap">
-                    <cos-icon name="plus" [size]="16"></cos-icon>
-                  </div>
-                  <span translate="VIEWS.GROUP.BTN_OPTION_ADD_TOPICS"></span>
-                </div>
-                <div class="line_separator"></div>
-                <div class="option" (click)="openSettings(); groupActionsOpen.set(false)">
-                  <div class="icon_wrap">
-                    <cos-icon name="edit" [size]="16"></cos-icon>
-                  </div>
-                  <span translate="VIEWS.GROUP.BTN_OPTION_EDIT"></span>
-                </div>
-              }
-              @if (group.userLevel && isLoggedIn()) {
-                <div class="line_separator"></div>
-                <div class="option" (click)="leaveGroup(); groupActionsOpen.set(false)">
-                  <div class="icon_wrap">
-                    <cos-icon name="logout" [size]="16"></cos-icon>
-                  </div>
-                  <span translate="VIEWS.GROUP.BTN_OPTION_LEAVE"></span>
-                </div>
-              }
-              @if (isAdmin()) {
-                <div class="line_separator"></div>
-                <button class="option error_text" (click)="deleteGroup(); groupActionsOpen.set(false)">
-                  <div class="icon_wrap">
-                    <cos-icon name="trash" [size]="16"></cos-icon>
-                  </div>
-                  <span translate="VIEWS.GROUP.BTN_OPTION_DELETE"></span>
-                </button>
-              }
-            </div>
-          }
-        </div>
-        } <!-- end @if isLoggedIn for dropdown -->
+          <div class="dropdown button_dropdown mobile_hidden" [class.dropdown_active]="groupActionsOpen()" (click)="$event.stopPropagation()">
+            <button class="btn_medium_close icon group_actions_dropdown" (click)="groupActionsOpen.update(v => !v)">
+              <cos-icon name="more-vertical" [size]="24"></cos-icon>
+            </button>
+            @if (groupActionsOpen()) {
+              <div class="options group_actions_dropdown">
+                <ng-container *ngTemplateOutlet="groupActionOptions"></ng-container>
+              </div>
+            }
+          </div>
+        }
       </div>
     </div>
 
@@ -170,15 +88,7 @@
                   <span translate="VIEWS.GROUP.LNK_CLOSE_INFO"></span>
                 }
               </div>
-              @if (!moreInfo()) {
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M17 10L12 15L7 10" stroke="#1168A8" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              } @else {
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(180deg)">
-                  <path d="M17 10L12 15L7 10" stroke="#1168A8" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              }
+              <cos-icon [name]="moreInfo() ? 'chevron-up' : 'chevron-down'" [size]="24" color="#1168A8"></cos-icon>
             </a>
           </div>
 
@@ -186,35 +96,23 @@
             <cos-activities-button [groupId]="group.id"></cos-activities-button>
             <div id="info_items_wrap">
               <div class="info_item">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.00008 7.99967C9.84103 7.99967 11.3334 6.50729 11.3334 4.66634C11.3334 2.82539 9.84103 1.33301 8.00008 1.33301C6.15913 1.33301 4.66675 2.82539 4.66675 4.66634C4.66675 6.50729 6.15913 7.99967 8.00008 7.99967Z" fill="#2C3B47"/>
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M4 11.63C4 9.99356 5.19391 8.66699 6.66667 8.66699H9.33333C10.8061 8.66699 12 9.99356 12 11.63V15.3337H4V11.63Z" fill="#2C3B47"/>
-                </svg>
+                <cos-icon name="users-filled" [size]="16"></cos-icon>
                 <div class="info_number">{{ group.members?.users?.count ?? 0 }}</div>
               </div>
               <div class="info_item">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M14 9.76344C14.024 9.72875 14.0472 9.69281 14.0709 9.65906C14.6753 8.76079 14.9987 7.70299 15 6.62031C15.01 3.51719 12.3918 1 9.15435 1C6.3306 1 3.97497 2.92156 3.4231 5.4725C3.34031 5.85056 3.2984 6.23642 3.2981 6.62344C3.2981 9.72969 5.8156 12.3144 9.0531 12.3144C9.56778 12.3144 10.2612 12.1597 10.6415 12.0553C11.0218 11.9509 11.3987 11.8131 11.4962 11.7759C11.5937 11.7387 11.7462 11.7006 11.8678 11.7356L14.2872 12.435C14.4491 12.4365 14.449 12.3046 14.4434 12.2831L13.8897 10.1741C13.8512 10.0178 13.8462 9.98844 14 9.76344Z" fill="#1168A8"/>
-                </svg>
+                <cos-icon name="status-in-progress" [size]="16" color="#1168A8"></cos-icon>
                 <div class="info_number">{{ group.members?.topics?.count?.inProgress || 0 }}</div>
               </div>
               <div class="info_item">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M11.8407 15.2612C11.8407 12.8819 13.8869 11.1999 16.0007 11.1999C18.1146 11.1999 20.1607 12.8821 20.1607 15.2612C20.1607 16.9416 19.491 17.8986 18.881 18.7705C18.4342 19.409 18.0193 20.0019 17.9228 20.7999H14.0828C13.9863 20.0018 13.5706 19.4088 13.1229 18.7702C12.5116 17.8984 11.8407 16.9414 11.8407 15.2612Z" fill="#E4B722"/>
-                </svg>
+                <cos-icon name="status-ideation" [size]="16" color="#E4B722"></cos-icon>
                 <div class="info_number">{{ group.members?.topics?.count?.ideation || 0 }}</div>
               </div>
               <div class="info_item">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM6.44444 12L12.6667 5.82456L11.5 4.66667L6.44444 9.68421L4.5 7.75439L3.33333 8.91228L6.44444 12Z" fill="#5AB467"/>
-                </svg>
+                <cos-icon name="status-voting" [size]="16" color="#5AB467"></cos-icon>
                 <div class="info_number">{{ group.members?.topics?.count?.voting || 0 }}</div>
               </div>
               <div class="info_item">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <rect width="16" height="16" rx="8" fill="#DA7AB1"/>
-                  <path d="M9.26255 5.01961L9.06699 4H4.66699V12.6667H5.64477V9.09804H8.38255L8.5781 10.1176H12.0003V5.01961H9.26255Z" fill="white"/>
-                </svg>
+                <cos-icon name="status-follow-up" [size]="16" color="#DA7AB1"></cos-icon>
                 <div class="info_number">{{ group.members?.topics?.count?.followUp || 0 }}</div>
               </div>
             </div>
@@ -227,28 +125,15 @@
                     <span translate="VIEWS.GROUP.LNK_CLOSE_INFO"></span>
                   }
                 </div>
-                @if (!moreInfo()) {
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M17 10L12 15L7 10" stroke="#1168A8" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                } @else {
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(180deg)">
-                    <path d="M17 10L12 15L7 10" stroke="#1168A8" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                }
+                <cos-icon [name]="moreInfo() ? 'chevron-up' : 'chevron-down'" [size]="24" color="#1168A8"></cos-icon>
               </a>
             </div>
             <div class="button_wrap mobile_show" [class.hidden]="moreInfo()">
               <button class="btn_medium_secondary" (click)="moreInfo.update(v => !v)">
+                <cos-icon [name]="moreInfo() ? 'chevron-up' : 'chevron-down'" [size]="24" color="#1168A8"></cos-icon>
                 @if (!moreInfo()) {
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M17 10L12 15L7 10" stroke="#1168A8" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
                   <span translate="VIEWS.GROUP.LNK_MORE_INFO"></span>
                 } @else {
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M17 15L12 10L7 15" stroke="#1168A8" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
                   <span translate="VIEWS.GROUP.LNK_CLOSE_INFO"></span>
                 }
               </button>
@@ -266,11 +151,7 @@
               }
               @for (rule of group.rules; track rule) {
                 <div class="rule_item">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <rect x="4" y="4" width="16" height="16" rx="8" fill="#F39129"/>
-                    <path d="M11.626 7.2002C11.3952 7.2002 11.2124 7.39487 11.2268 7.62515L11.5768 13.2251C11.5899 13.436 11.7648 13.6002 11.976 13.6002H12.0244C12.2356 13.6002 12.4105 13.436 12.4236 13.2251L12.7736 7.62515C12.788 7.39487 12.6051 7.2002 12.3744 7.2002H11.626Z" fill="white"/>
-                    <path d="M12.0002 16.4002C12.442 16.4002 12.8002 16.042 12.8002 15.6002C12.8002 15.1584 12.442 14.8002 12.0002 14.8002C11.5584 14.8002 11.2002 15.1584 11.2002 15.6002C11.2002 16.042 11.5584 16.4002 12.0002 16.4002Z" fill="white"/>
-                  </svg>
+                  <cos-icon name="status-rules" [size]="24" color="#F39129"></cos-icon>
                   <span>{{ rule }}</span>
                 </div>
               }
@@ -283,30 +164,30 @@
               <div class="info_items_wrap">
                 <div class="info_item">
                   @if (group.visibility === 'private') {
-                    <cos-icon name="lock" [size]="16"></cos-icon>
+                    <cos-icon name="lock-legacy" [size]="16"></cos-icon>
                   } @else {
-                    <cos-icon name="globe" [size]="16"></cos-icon>
+                    <cos-icon name="globe-legacy" [size]="16"></cos-icon>
                   }
                   <span [translate]="'TXT_GROUP_VISIBILITY_' + group.visibility.toUpperCase()"></span>
                 </div>
                 <div class="info_item">
-                  <cos-icon name="edit" [size]="16"></cos-icon>
+                  <cos-icon name="creator-legacy" [size]="16"></cos-icon>
                   <span>{{ group.creator?.name }}</span>
                 </div>
                 <div class="info_item">
-                  <cos-icon name="calendar" [size]="16"></cos-icon>
+                  <cos-icon name="calendar-legacy" [size]="16"></cos-icon>
                   <span>{{ group.createdAt | date: 'y-MM-dd HH:mm' }}</span>
                 </div>
                 <div class="info_item">
-                  <cos-icon name="globe" [size]="16"></cos-icon>
+                  <cos-icon name="location-legacy" [size]="16"></cos-icon>
                   <span>{{ group.country || ('VIEWS.GROUP.SECTION_INFO_LBL_COUNTRY_NOT_SPECIFIED' | translate) }}</span>
                 </div>
                 <div class="info_item">
-                  <cos-icon name="globe" [size]="16"></cos-icon>
+                  <cos-icon name="language-legacy" [size]="16"></cos-icon>
                   <span>{{ group.language || ('VIEWS.GROUP.SECTION_INFO_LBL_LANGUAGE_NOT_SPECIFIED' | translate) }}</span>
                 </div>
                 <div class="info_item">
-                  <cos-icon name="mail" [size]="16"></cos-icon>
+                  <cos-icon name="mail-legacy" [size]="16"></cos-icon>
                   <span>{{ group.contact || ('VIEWS.GROUP.SECTION_INFO_LBL_NOT_SPECIFIED' | translate) }}</span>
                 </div>
               </div>
@@ -318,15 +199,11 @@
           <div class="line_separator"></div>
           <a id="view_more" class="mobile_hidden" (click)="moreInfo.set(false)">
             <div class="bold" translate="VIEWS.GROUP.LNK_CLOSE_INFO"></div>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(180deg)">
-              <path d="M17 10L12 15L7 10" stroke="#1168A8" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <cos-icon name="chevron-up" [size]="24" color="#1168A8"></cos-icon>
           </a>
           <div class="button_wrap mobile_show">
             <button class="btn_medium_secondary" (click)="moreInfo.set(false)">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M17 15L12 10L7 15" stroke="#1168A8" stroke-width="2" stroke-linecap="round"/>
-              </svg>
+              <cos-icon name="chevron-up" [size]="24" color="#1168A8"></cos-icon>
               <span translate="VIEWS.GROUP.LNK_CLOSE_INFO"></span>
             </button>
           </div>
@@ -335,25 +212,18 @@
     </div>
 
     <!-- TABS -->
-    <div class="tabs_wrap">
-      <div class="tabs_row">
-        <a class="tab_item" [class.active]="tabSelected() === 'topics'" (click)="selectTab('topics')" translate="VIEWS.GROUP.TAB_TOPICS"></a>
-        <a class="tab_item" [class.active]="tabSelected() === 'members'" (click)="selectTab('members')" translate="VIEWS.GROUP.TAB_MEMBERS"></a>
-      </div>
-
+    <cos-tabs [tabs]="groupTabs()" [activeTab]="tabSelected()" (select)="selectTab($event)">
       <!-- Topics tab: create/manage button -->
       @if (tabSelected() === 'topics') {
         @if (isLoggedIn() && !isAdmin()) {
-          <button class="btn_medium_submit mobile_hidden" (click)="openRequestTopics()">
-            <svg width="25" height="24" viewBox="0 0 25 24" fill="none">
-              <path d="M12.5 20C11.9711 20 11.5423 19.5712 11.5423 19.0423L11.5423 12.9577L5.45775 12.9577C4.9288 12.9577 4.5 12.5289 4.5 12C4.5 11.4711 4.9288 11.0423 5.45775 11.0423H11.5423V4.95775C11.5423 4.4288 11.9711 4 12.5 4C13.0289 4 13.4577 4.4288 13.4577 4.95775L13.4577 11.0423L19.5423 11.0423C20.0712 11.0423 20.5 11.4711 20.5 12C20.5 12.5289 20.0712 12.9577 19.5423 12.9577H13.4577V19.0423C13.4577 19.5712 13.0289 20 12.5 20Z" fill="white"/>
-            </svg>
+          <button class="btn_medium_submit" (click)="openRequestTopics()">
+            <cos-icon name="plus-legacy" [size]="24" color="white"></cos-icon>
             <span translate="VIEWS.GROUP.BTN_REQUEST_ADD_TOPICS"></span>
           </button>
         }
         @if (isLoggedIn() && isAdmin()) {
-          <button class="btn_medium_close mobile_hidden" (click)="openTopicRequests()">
-            <cos-icon name="more-vertical" [size]="24"></cos-icon>
+          <button class="btn_medium_close" (click)="openTopicRequests()">
+            <cos-icon name="add-topics-legacy" [size]="24"></cos-icon>
             <span translate="VIEWS.GROUP.BTN_MANAGE_TOPICS"></span>
           </button>
         }
@@ -361,12 +231,12 @@
 
       <!-- Members tab: manage button -->
       @if (tabSelected() === 'members' && (isLoggedIn() && (group.visibility === 'public' || isAdmin()))) {
-        <button class="btn_medium_close mobile_hidden" (click)="openInvite()">
-          <cos-icon name="more-vertical" [size]="24"></cos-icon>
+        <button class="btn_medium_close" (click)="openInvite()">
+          <cos-icon name="invite-legacy" [size]="24"></cos-icon>
           <span translate="VIEWS.GROUP.BTN_MANAGE_MEMBERS"></span>
         </button>
       }
-    </div>
+    </cos-tabs>
 
     <!-- TOPICS TAB CONTENT -->
     @if (tabSelected() === 'topics') {
@@ -545,4 +415,107 @@
     }
 
   </div>
+
+  @if (mobileActions()) {
+    <div class="overlay" (click)="mobileActions.set(false)"></div>
+  }
+  <div class="mobile_actions_wrap mobile_show" [class.show]="mobileActions()">
+    <div class="heading_wrap">
+      <span translate="VIEWS.GROUP.LBL_GROUP_ACTIONS"></span>
+      <div id="close_mobile" class="mobile_show">
+        <button class="btn_small_close icon" (click)="mobileActions.set(false)">
+          <cos-icon name="close" [size]="24"></cos-icon>
+        </button>
+      </div>
+    </div>
+    <div class="options">
+      <ng-container *ngTemplateOutlet="groupActionOptions; context: { mobile: true }"></ng-container>
+    </div>
+  </div>
+
+  <ng-template #groupActionOptions let-mobile="mobile">
+    <button class="option" (click)="toggleFavourite(); groupActionsOpen.set(false); mobileActions.set(false)">
+      <div class="icon_wrap">
+        <cos-icon [name]="group.favourite ? 'favourite-filled-legacy' : 'favourite-legacy'" [size]="16"></cos-icon>
+      </div>
+      @if (!group.favourite) { <span translate="VIEWS.GROUP.BTN_OPTION_FAVOURITE"></span> }
+      @else { <span translate="VIEWS.GROUP.BTN_OPTION_UNFAVOURITE"></span> }
+    </button>
+
+    @if (isAdmin()) {
+      @if (!mobile) { <div class="line_separator"></div> }
+      <button class="option" (click)="openSettings(); groupActionsOpen.set(false); mobileActions.set(false)">
+        <div class="icon_wrap">
+          <cos-icon name="settings-legacy" [size]="16"></cos-icon>
+        </div>
+        <span translate="VIEWS.GROUP.BTN_OPTION_SETTINGS"></span>
+      </button>
+
+      @if (!mobile) { <div class="line_separator"></div> }
+      <button class="option" (click)="openInvite(); groupActionsOpen.set(false); mobileActions.set(false)">
+        <div class="icon_wrap">
+          <cos-icon name="invite-legacy" [size]="16"></cos-icon>
+        </div>
+        <span translate="VIEWS.GROUP.BTN_OPTION_INVITE"></span>
+      </button>
+
+      @if (!mobile) { <div class="line_separator"></div> }
+      <button class="option" (click)="openAddTopics(); groupActionsOpen.set(false); mobileActions.set(false)">
+        <div class="icon_wrap">
+          <cos-icon name="add-topics-legacy" [size]="16"></cos-icon>
+        </div>
+        <span translate="VIEWS.GROUP.BTN_OPTION_ADD_TOPICS"></span>
+      </button>
+
+      @if (!mobile) { <div class="line_separator"></div> }
+      <button class="option" (click)="openTopicRequests(); groupActionsOpen.set(false); mobileActions.set(false)">
+        <div class="icon_wrap">
+          <cos-icon name="plus-legacy" [size]="16"></cos-icon>
+        </div>
+        <span translate="VIEWS.GROUP.BTN_OPTION_TOPIC_REQUESTS"></span>
+      </button>
+      @if (!mobile) { <div class="line_separator"></div> }
+      <button class="option" (click)="removeTopics.set(true); groupActionsOpen.set(false); mobileActions.set(false)">
+        <div class="icon_wrap">
+          <cos-icon name="trash-legacy" [size]="16"></cos-icon>
+        </div>
+        <span translate="VIEWS.GROUP.BTN_OPTION_REMOVE_TOPICS"></span>
+      </button>
+      @if (!mobile) { <div class="line_separator"></div> }
+      <button class="option error_text" (click)="deleteGroup(); groupActionsOpen.set(false); mobileActions.set(false)">
+        <div class="icon_wrap">
+          <cos-icon name="trash-legacy" [size]="16"></cos-icon>
+        </div>
+        <span translate="VIEWS.GROUP.BTN_OPTION_DELETE"></span>
+      </button>
+    } @else {
+      @if (isLoggedIn()) {
+        @if (!mobile) { <div class="line_separator"></div> }
+        <button class="option" (click)="openRequestTopics(); groupActionsOpen.set(false); mobileActions.set(false)">
+          <div class="icon_wrap">
+            <cos-icon name="plus" [size]="16"></cos-icon>
+          </div>
+          <span translate="VIEWS.GROUP.BTN_REQUEST_ADD_TOPICS"></span>
+        </button>
+      }
+      @if (canShare()) {
+        @if (!mobile) { <div class="line_separator"></div> }
+        <button class="option" (click)="openInvite(); groupActionsOpen.set(false); mobileActions.set(false)">
+          <div class="icon_wrap">
+            <cos-icon name="invite-legacy" [size]="16"></cos-icon>
+          </div>
+          <span translate="VIEWS.GROUP.BTN_OPTION_INVITE"></span>
+        </button>
+      }
+      @if (group.userLevel && isLoggedIn()) {
+        @if (!mobile) { <div class="line_separator"></div> }
+        <button class="option error_text" (click)="leaveGroup(); groupActionsOpen.set(false); mobileActions.set(false)">
+          <div class="icon_wrap">
+            <cos-icon name="leave-legacy" [size]="16"></cos-icon>
+          </div>
+          <span translate="VIEWS.GROUP.BTN_OPTION_LEAVE"></span>
+        </button>
+      }
+    }
+  </ng-template>
 }

@@ -2,9 +2,12 @@ import { computed, inject } from '@angular/core';
 import { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';
 import { TranslateService } from '@ngx-translate/core';
 
+export type FontSize = 'medium' | 'large' | 'extra_large';
+
 interface ConfigState {
   language: string;
   theme: 'light' | 'dark';
+  fontSize: FontSize;
   api: {
     baseUrl: string;
   };
@@ -16,6 +19,7 @@ interface ConfigState {
 const initialState: ConfigState = {
   language: 'en',
   theme: 'light',
+  fontSize: 'medium',
   api: {
     baseUrl: 'https://dev.api.citizenos.com:3003'
   },
@@ -40,6 +44,9 @@ export const ConfigStore = signalStore(
       },
       toggleTheme() {
         patchState(store, { theme: store.theme() === 'light' ? 'dark' : 'light' });
+      },
+      setFontSize(size: FontSize) {
+        patchState(store, { fontSize: size });
       }
     };
   })

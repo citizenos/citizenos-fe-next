@@ -1,9 +1,9 @@
 import { Component, input, inject, signal, effect, computed, ChangeDetectionStrategy, PLATFORM_ID } from '@angular/core';
 import { DatePipe, isPlatformBrowser } from '@angular/common';
-import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toSignal, toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
-import { switchMap, map, take } from 'rxjs';
+import { of, tap, switchMap, map, take } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -50,8 +50,6 @@ export class TopicIdeationComponent {
   private platformId = inject(PLATFORM_ID);
   userStore = inject(UserStore);
 
-  ideas = signal<Idea[]>([]);
-  ideasCount = signal(0);
   loading = signal(false);
   showAddIdea = signal(false);
   currentPage = signal(1);
@@ -59,6 +57,49 @@ export class TopicIdeationComponent {
   selectedOrder = signal('');
   selectedType = signal('');
   private refreshTrigger = signal(0);
+  
+  private ideasResponse = toSignal(
+    toObservable(computed(() => ({
+      search: this.searchValue(),
+      type: this.selectedType(),
+      order: this.selectedOrder(),
+      page: this.currentPage(),
+      _v: this.refreshTrigger(),
+      topic: this.topic(),
+      ideation: this.ideation()
+    }))).pipe(
+      switchMap(({ search, type, order, page, topic, ideation }) => {
+        if (!topic?.id || !ideation?.id) return of({ rows: [] as Idea[], count: 0 });
+        this.loading.set(true);
+        const params: Record<string, any> = {
+          topicId: topic.id,
+          ideationId: ideation.id,
+          limit: PAGE_SIZE,
+          offset: (page - 1) * PAGE_SIZE,
+        };
+        if (search) params['search'] = search;
+        if (order) { params['orderBy'] = order; params['order'] = 'desc'; }
+        if (type === 'favourite') params['favourite'] = true;
+        else if (type === 'iCreated') params['authorId'] = this.userStore.user()?.id;
+
+        return this.ideationService.getIdeas(params as any).pipe(
+          tap(() => this.loading.set(false))
+        );
+      })
+    )
+  );
+
+  ideas = computed(() => {
+    const res = this.ideasResponse();
+    if (!res) return [];
+    return [...res.rows].sort(a => a.status === IdeaStatus.draft ? -1 : 1);
+  });
+
+  ideasCount = computed(() => {
+    const res = this.ideasResponse();
+    if (!res) return 0;
+    return typeof res.count === 'number' ? res.count : (res.count?.total ?? 0);
+  });
 
   Math = Math;
 
@@ -89,40 +130,8 @@ export class TopicIdeationComponent {
     }
   ]);
 
-  private queryParams = computed(() => ({
-    search: this.searchValue(),
-    type: this.selectedType(),
-    order: this.selectedOrder(),
-    page: this.currentPage(),
-    _v: this.refreshTrigger(),
-  }));
 
   constructor() {
-    toObservable(this.queryParams).pipe(
-      takeUntilDestroyed(),
-      switchMap(({ search, type, order, page }) => {
-        if (!this.topic()?.id || !this.ideation()?.id) return [];
-        this.loading.set(true);
-        const params: Record<string, any> = {
-          topicId: this.topic().id,
-          ideationId: this.ideation().id,
-          limit: PAGE_SIZE,
-          offset: (page - 1) * PAGE_SIZE,
-        };
-        if (search) params['search'] = search;
-        if (order) { params['orderBy'] = order; params['order'] = 'desc'; }
-        if (type === 'favourite') params['favourite'] = true;
-        else if (type === 'iCreated') params['authorId'] = this.userStore.user()?.id;
-        return this.ideationService.getIdeas(params as any).pipe(
-          map(res => { this.loading.set(false); return res; })
-        );
-      })
-    ).subscribe(res => {
-      const sorted = [...res.rows].sort(a => a.status === IdeaStatus.draft ? -1 : 1);
-      this.ideas.set(sorted);
-      this.ideasCount.set(typeof res.count === 'number' ? res.count : (res.count?.total ?? 0));
-    });
-
     // Reset page when search changes
     effect(() => {
       this.searchValue();
@@ -171,12 +180,11 @@ export class TopicIdeationComponent {
   }
 
   onIdeaDeleted(idea: Idea) {
-    this.ideas.update(list => list.filter(i => i.id !== idea.id));
-    this.ideasCount.update(c => c - 1);
+    this.refreshTrigger.update(n => n + 1);
   }
 
   onIdeaUpdated(idea: Idea) {
-    this.ideas.update(list => list.map(i => i.id === idea.id ? idea : i));
+    this.refreshTrigger.update(n => n + 1);
   }
 
   onIdeaAdded(idea: Idea) {

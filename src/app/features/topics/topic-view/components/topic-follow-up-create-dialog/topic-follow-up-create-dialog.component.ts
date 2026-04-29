@@ -1,0 +1,26 @@
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
+import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
+import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
+import { TopicService } from '../../../../../core/services/topic.service';
+import { Topic } from '../../../../../core/interfaces/topic';
+
+@Component({
+  selector: 'app-topic-follow-up-create-dialog',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslateModule, DialogCloseDirective, NotificationComponent],
+  templateUrl: './topic-follow-up-create-dialog.component.html',
+  styleUrl: './topic-follow-up-create-dialog.component.scss',
+})
+export class TopicFollowUpCreateDialogComponent {
+  private topicService = inject(TopicService);
+  private data = inject<{ topic: Topic }>(DIALOG_DATA);
+
+  topic = this.data.topic;
+
+  startFollowUp() {
+    return this.topicService.changeState(this.topic, 'followUp');
+  }
+}

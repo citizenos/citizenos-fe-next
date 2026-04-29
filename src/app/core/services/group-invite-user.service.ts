@@ -39,4 +39,18 @@ export class GroupInviteUserService {
       { withCredentials: true }
     );
   }
+
+  get(params: { groupId: string; inviteId: string }): Observable<any> {
+    return this.http.get<ApiResponse<any>>(
+      `${this.baseUrl}/api/users/self/groups/${params.groupId}/invites/users/${params.inviteId}`,
+      { withCredentials: true }
+    ).pipe(map(r => r.data));
+  }
+
+  accept(params: { groupId: string; inviteId: string }): Observable<any> {
+    return this.http.post<ApiResponse<any>>(
+      `${this.baseUrl}/api/users/self/groups/${params.groupId}/invites/users/${params.inviteId}/accept`,
+      {}, { withCredentials: true }
+    ).pipe(map(r => r.data));
+  }
 }
