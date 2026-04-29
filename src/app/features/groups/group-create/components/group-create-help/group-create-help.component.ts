@@ -10,5 +10,5 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './group-create-help.component.scss'
 })
 export class GroupCreateHelpComponent {
-  step = input.required<string>();
+  step = input<string>('info');
 }
