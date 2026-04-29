@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { A11yModule } from '@angular/cdk/a11y';
 import { take } from 'rxjs';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective } from '../../../../../shared/dialog';
@@ -21,7 +22,7 @@ export interface IdeaDialogData {
 @Component({
   selector: 'cos-idea-dialog',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, DatePipe],
+  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, DatePipe, A11yModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './idea-dialog.component.html',
   styleUrls: ['./idea-dialog.component.scss'],

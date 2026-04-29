@@ -14,10 +14,14 @@ $mobile-bar-height: 56px;
   }
 }
 
-#content {
+#main-content {
   flex: 1;
   margin-left: $nav-width;
   min-width: 0;
+
+  &:focus {
+    outline: none;
+  }
 
   @media (max-width: $tablet-breakpoint) {
     margin-left: 0;

@@ -1,6 +1,7 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
+import { A11yModule } from '@angular/cdk/a11y';
 import { DialogCloseDirective, DialogRef } from '../../dialog';
 import { DIALOG_DATA } from '../../dialog/dialog-tokens';
 
@@ -22,13 +23,13 @@ export interface ConfirmDialogData {
 @Component({
   selector: 'cos-confirm-dialog',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective],
+  imports: [TranslateModule, DialogCloseDirective, A11yModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="cos-dialog-overlay" dialogClose></div>
 
     <div class="cos-dialog-wrap">
-      <div class="cos-dialog">
+      <div class="cos-dialog" cdkTrapFocus [cdkTrapFocusAutoCapture]="true" role="dialog" aria-modal="true" [attr.aria-labelledby]="data.heading ? 'dialog-title' : null">
         <!-- Header -->
         <div class="cos-dialog-header" [class]="'level-' + data.level">
           <div class="cos-dialog-header-inner">
@@ -50,11 +51,11 @@ export interface ConfirmDialogData {
               }
             </div>
             @if (data.heading) {
-              <h4 class="cos-dialog-title" [translate]="data.heading"></h4>
+              <h4 id="dialog-title" class="cos-dialog-title" [translate]="data.heading"></h4>
             }
           </div>
 
-          <button class="cos-dialog-close" [dialogClose]="undefined" aria-label="Close">
+          <button class="cos-dialog-close" [dialogClose]="undefined" [attr.aria-label]="'BTN_CLOSE' | translate">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M7.72 6.295a1 1 0 00-1.414 1.415L10.586 12l-4.28 4.28a1 1 0 001.414 1.414L12 13.414l4.278 4.28a1 1 0 001.414-1.414L13.414 12l4.278-4.29a1 1 0 00-1.414-1.414L12 10.586 7.72 6.295z" fill="currentColor"/>
             </svg>

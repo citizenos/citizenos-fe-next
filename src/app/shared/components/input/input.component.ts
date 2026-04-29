@@ -1,18 +1,25 @@
-import { Component, ContentChild, ElementRef, AfterContentChecked, input, signal, ViewEncapsulation, inject } from '@angular/core';
+import { Component, ElementRef, AfterContentChecked, input, signal, ViewEncapsulation, inject } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'cos-input',
   standalone: true,
-  imports: [IconComponent],
+  imports: [IconComponent, TranslateModule],
   template: `
     <div class="input-container" [class.has-error]="hasError()">
+      @if (label()) {
+        <label [for]="inputId" class="input-label">{{ label() }}</label>
+      }
       <div class="input-wrapper">
-        <div class="cos_input_placeholder" [class.show]="showPlaceholder()" [innerHTML]="placeholder()"></div>
+        <label class="cos_input_placeholder" [for]="inputId" [class.show]="showPlaceholder()" [innerHTML]="placeholder() || label()"></label>
+        @if (!label() && !placeholder()) {
+           <label [for]="inputId" class="sr-only">{{ 'COMPONENTS.ACCESSIBILITY.INPUT_FALLBACK_LABEL' | translate }}</label>
+        }
         <ng-content></ng-content>
       </div>
       @if (hasError() && errorMessage()) {
-        <span class="error-message" role="alert">
+        <span [id]="errorId" class="error-message" role="alert">
           <cos-icon name="warning" [size]="14"></cos-icon>
           {{ errorMessage() }}
         </span>
@@ -32,19 +39,27 @@ import { IconComponent } from '../icon/icon.component';
       margin-bottom: var(--spacing-md);
       position: relative;
     }
+
+    .input-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 8px;
+    }
     
     .input-wrapper {
       position: relative;
       background: var(--color-surfaces);
-      border: 1px solid var(--color-border);
+      border: 1px solid var(--color-border-bold);
       border-radius: var(--radius-md);
-      transition: border-color 0.2s;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
       display: flex;
       align-items: center;
       min-height: 48px;
       
       &:focus-within {
         border-color: var(--color-link);
+        box-shadow: 0 0 0 3px var(--color-focus-ring);
       }
     }
     
@@ -59,6 +74,7 @@ import { IconComponent } from '../icon/icon.component';
       z-index: 2;
       pointer-events: none;
       font-family: 'Noto Sans', sans-serif;
+      cursor: text;
 
       &.show {
         display: flex;
@@ -109,9 +125,15 @@ import { IconComponent } from '../icon/icon.component';
   encapsulation: ViewEncapsulation.None
 })
 export class InputComponent implements AfterContentChecked {
+  private static idCounter = 0;
+  
+  label = input<string>('');
   placeholder = input<string>('');
   hasError = input<boolean>(false);
   errorMessage = input<string>('');
+  
+  inputId = `cos-input-${InputComponent.idCounter++}`;
+  errorId = `${this.inputId}-error`;
   
   showPlaceholder = signal<boolean>(false);
   private el = inject(ElementRef);
@@ -119,6 +141,18 @@ export class InputComponent implements AfterContentChecked {
   ngAfterContentChecked() {
     const inputEl = this.el.nativeElement.querySelector('input, textarea');
     if (inputEl) {
+      if (!inputEl.id) {
+        inputEl.id = this.inputId;
+      }
+      
+      inputEl.setAttribute('aria-invalid', this.hasError().toString());
+      
+      if (this.hasError() && this.errorMessage()) {
+        inputEl.setAttribute('aria-describedby', this.errorId);
+      } else {
+        inputEl.removeAttribute('aria-describedby');
+      }
+
       const hasValue = !!inputEl.value?.length;
       this.showPlaceholder.set(hasValue);
       

@@ -1,193 +1,197 @@
-<div class="lightbox_header">
-  <div class="lightbox_header_text">
-    <div class="title" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_ACTIONS"></div>
-    <div class="title_description">{{ topic().title }}</div>
-  </div>
+<div cdkTrapFocus [cdkTrapFocusAutoCapture]="true" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+  <div class="lightbox_header">
+    <div class="lightbox_header_text">
+      <div id="dialog-title" class="title" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_ACTIONS"></div>
+      <div class="title_description">{{ topic().title }}</div>
+    </div>
 
-  <div class="lightbox_close" (click)="doSaveTopic()">
-    <cos-icon name="close" [size]="24"></cos-icon>
-  </div>
+    <button class="lightbox_close" (click)="doSaveTopic()" [attr.aria-label]="'BTN_CLOSE' | translate">
+      <cos-icon name="close" [size]="24"></cos-icon>
+    </button>
 
-  <div class="header_row_wrap">
-    <div class="header_row">
-      <div class="tab_button" (click)="selectTab('settings')" [class.active]="tabSelected() === 'settings'">
-        <div class="tab_button_wrap">
-          <div class="tab_button_text" translate="MODALS.TOPIC_SETTINGS_TAB_SETTINGS"></div>
-          <div class="blue_bottom_line"></div>
-        </div>
-      </div>
-      @if (canEdit()) {
-        <div class="tab_button" (click)="selectTab('categories')" [class.active]="tabSelected() === 'categories'">
+    <div class="header_row_wrap">
+      <div class="header_row" role="tablist">
+        <button class="tab_button" (click)="selectTab('settings')" [class.active]="tabSelected() === 'settings'" role="tab" [attr.aria-selected]="tabSelected() === 'settings'" aria-controls="settings-tab">
           <div class="tab_button_wrap">
-            <div class="tab_button_text" translate="MODALS.TOPIC_SETTINGS_TAB_CATEGORIES"></div>
+            <div class="tab_button_text" translate="MODALS.TOPIC_SETTINGS_TAB_SETTINGS"></div>
             <div class="blue_bottom_line"></div>
           </div>
-        </div>
-      }
+        </button>
+        @if (canEdit()) {
+          <button class="tab_button" (click)="selectTab('categories')" [class.active]="tabSelected() === 'categories'" role="tab" [attr.aria-selected]="tabSelected() === 'categories'" aria-controls="categories-tab">
+            <div class="tab_button_wrap">
+              <div class="tab_button_text" translate="MODALS.TOPIC_SETTINGS_TAB_CATEGORIES"></div>
+              <div class="blue_bottom_line"></div>
+            </div>
+          </button>
+        }
+      </div>
     </div>
   </div>
-</div>
 
-<div class="line lightest_line"></div>
+  <div class="line lightest_line"></div>
 
-<div class="lightbox_content">
-  @if (tabSelected() === 'settings') {
-    <div class="settings_section_wrap">
-      <div class="lightbox_section">
-        @if (canChangeVisibility()) {
-          <div class="settings_section">
-            <div class="settings_cell">
-              <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_MAKE_PRIVATE"></div>
-              <div class="setting_description" translate="MODALS.TOPIC_SETTINGS_LBL_MAKE_PRIVATE_EXT"></div>
-            </div>
-            <div class="settings_cell">
-              <cos-toggle
-                [textOn]="('TOGGLE_ON' | translate)"
-                [textOff]="('TOGGLE_OFF' | translate)"
-                [model]="topic().visibility === VISIBILITY.private"
-                (toggleClick)="$event ? topic.update(t => ({ ...t, visibility: VISIBILITY.private })) : topic.update(t => ({ ...t, visibility: VISIBILITY.public }))"
-              ></cos-toggle>
-            </div>
-          </div>
-          <div class="line lightest_line"></div>
-        }
-
-        @if (canSendToFollowUp() && canEdit()) {
-          <div class="settings_section">
-            <div class="settings_cell">
-              <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_DEADLINE"></div>
-              <div class="setting_description" translate="MODALS.TOPIC_SETTINGS_LBL_DEADLINE_EXT"></div>
-            </div>
-            <div class="settings_cell text-right">
-              <span class="bold">{{ topic().vote?.endsAt | date:'y-MM-dd HH:mm Z' }}</span>
-            </div>
-            <div class="settings_cell">
-              <cos-button variant="ghost" (clicked)="openSetDeadline()">
-                {{ 'MODALS.TOPIC_SETTINGS_BTN_EDIT_DEADLINE' | translate }}
-              </cos-button>
-            </div>
-          </div>
-          <div class="line lightest_line"></div>
-
-          @if (topic().vote?.endsAt) {
+  <div class="lightbox_content">
+    @if (tabSelected() === 'settings') {
+      <div id="settings-tab" role="tabpanel" aria-labelledby="settings-tab-btn" class="settings_section_wrap">
+        <div class="lightbox_section">
+          @if (canChangeVisibility()) {
             <div class="settings_section">
               <div class="settings_cell">
-                <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_REMINDER"></div>
-                <div class="setting_description">
-                  <span translate="MODALS.TOPIC_SETTINGS_LBL_REMINDER_EXT"></span>
-                  @if (reminder()) {
-                    <cos-dropdown class="classic_dropdown reminder_dropdown">
-                      <div selection class="dropdown_selection">
-                        {{ selectedReminderOption() || ('MODALS.TOPIC_SETTINGS_LBL_REMINDER' | translate) }}
-                      </div>
-                      <div options class="dropdown_options">
-                        @for (option of reminderOptions; track option.value + option.unit) {
-                          @if (isVisibleReminderOption(option)) {
-                            <div class="dropdown_item" (click)="setVoteReminder(option)">
-                              {{ 'OPTION_' + option.value + '_' + option.unit.toUpperCase() | translate }}
-                            </div>
-                          }
-                        }
-                      </div>
-                    </cos-dropdown>
-                  }
-                </div>
+                <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_MAKE_PRIVATE"></div>
+                <div class="setting_description" translate="MODALS.TOPIC_SETTINGS_LBL_MAKE_PRIVATE_EXT"></div>
               </div>
               <div class="settings_cell">
                 <cos-toggle
                   [textOn]="('TOGGLE_ON' | translate)"
                   [textOff]="('TOGGLE_OFF' | translate)"
-                  [model]="reminder()"
-                  (toggleClick)="reminder.set($event)"
+                  [model]="topic().visibility === VISIBILITY.private"
+                  (toggleClick)="$event ? topic.update(t => ({ ...t, visibility: VISIBILITY.private })) : topic.update(t => ({ ...t, visibility: VISIBILITY.public }))"
                 ></cos-toggle>
               </div>
             </div>
             <div class="line lightest_line"></div>
           }
-        }
 
-        @if (canLeave()) {
-          <div class="settings_section">
-            <div class="settings_cell">
-              <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_LEAVE_TOPIC"></div>
-              <div class="setting_description" translate="MODALS.TOPIC_SETTINGS_LBL_LEAVE_TOPIC_EXT"></div>
+          @if (canSendToFollowUp() && canEdit()) {
+            <div class="settings_section">
+              <div class="settings_cell">
+                <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_DEADLINE"></div>
+                <div class="setting_description" translate="MODALS.TOPIC_SETTINGS_LBL_DEADLINE_EXT"></div>
+              </div>
+              <div class="settings_cell text-right">
+                <span class="bold">{{ topic().vote?.endsAt | date:'y-MM-dd HH:mm Z' }}</span>
+              </div>
+              <div class="settings_cell">
+                <cos-button variant="ghost" (clicked)="openSetDeadline()">
+                  {{ 'MODALS.TOPIC_SETTINGS_BTN_EDIT_DEADLINE' | translate }}
+                </cos-button>
+              </div>
             </div>
-            <div class="settings_cell">
-              <cos-button variant="secondary" (clicked)="doLeaveTopic()">
-                {{ 'MODALS.TOPIC_SETTINGS_BTN_LEAVE_TOPIC' | translate }}
-              </cos-button>
-            </div>
-          </div>
-          <div class="line lightest_line" *ngIf="canDelete()"></div>
-        }
+            <div class="line lightest_line"></div>
 
-        @if (canDelete()) {
-          <div class="settings_section">
-            <div class="settings_cell">
-              <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_DELETE_TOPIC"></div>
-              <div class="setting_description" translate="MODALS.TOPIC_SETTINGS_LBL_DELETE_TOPIC_EXT"></div>
+            @if (topic().vote?.endsAt) {
+              <div class="settings_section">
+                <div class="settings_cell">
+                  <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_REMINDER"></div>
+                  <div class="setting_description">
+                    <span translate="MODALS.TOPIC_SETTINGS_LBL_REMINDER_EXT"></span>
+                    @if (reminder()) {
+                      <cos-dropdown class="classic_dropdown reminder_dropdown">
+                        <div selection class="dropdown_selection">
+                          {{ selectedReminderOption() || ('MODALS.TOPIC_SETTINGS_LBL_REMINDER' | translate) }}
+                        </div>
+                        <div options class="dropdown_options">
+                          @for (option of reminderOptions; track option.value + option.unit) {
+                            @if (isVisibleReminderOption(option)) {
+                              <div class="dropdown_item" (click)="setVoteReminder(option)">
+                                {{ 'OPTION_' + option.value + '_' + option.unit.toUpperCase() | translate }}
+                              </div>
+                            }
+                          }
+                        </div>
+                      </cos-dropdown>
+                    }
+                  </div>
+                </div>
+                <div class="settings_cell">
+                  <cos-toggle
+                    [textOn]="('TOGGLE_ON' | translate)"
+                    [textOff]="('TOGGLE_OFF' | translate)"
+                    [model]="reminder()"
+                    (toggleClick)="reminder.set($event)"
+                  ></cos-toggle>
+                </div>
+              </div>
+              <div class="line lightest_line"></div>
+            }
+          }
+
+          @if (canLeave()) {
+            <div class="settings_section">
+              <div class="settings_cell">
+                <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_LEAVE_TOPIC"></div>
+                <div class="setting_description" translate="MODALS.TOPIC_SETTINGS_LBL_LEAVE_TOPIC_EXT"></div>
+              </div>
+              <div class="settings_cell">
+                <cos-button variant="secondary" (clicked)="doLeaveTopic()">
+                  {{ 'MODALS.TOPIC_SETTINGS_BTN_LEAVE_TOPIC' | translate }}
+                </cos-button>
+              </div>
             </div>
-            <div class="settings_cell">
-              <cos-button variant="primary" (clicked)="doDeleteTopic()">
-                {{ 'MODALS.TOPIC_SETTINGS_BTN_DELETE_TOPIC' | translate }}
-              </cos-button>
+            <div class="line lightest_line" *ngIf="canDelete()"></div>
+          }
+
+          @if (canDelete()) {
+            <div class="settings_section">
+              <div class="settings_cell">
+                <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_DELETE_TOPIC"></div>
+                <div class="setting_description" translate="MODALS.TOPIC_SETTINGS_LBL_DELETE_TOPIC_EXT"></div>
+              </div>
+              <div class="settings_cell">
+                <cos-button variant="primary" (clicked)="doDeleteTopic()">
+                  {{ 'MODALS.TOPIC_SETTINGS_BTN_DELETE_TOPIC' | translate }}
+                </cos-button>
+              </div>
             </div>
-          </div>
-        }
+          }
+        </div>
       </div>
-    </div>
-  }
+    }
 
-  @if (tabSelected() === 'categories') {
-    <div class="categories_section_wrap">
-      <div class="lightbox_section">
-        <div class="tip" translate="MODALS.TOPIC_SETTINGS_TXT_ASSIGN_CATEGORIES"></div>
-        <div class="selected_categories">
-          @for (topicCategory of topic().categories; track topicCategory) {
-            <div class="category_wrap" (click)="removeTopicCategory(topicCategory)">
-              <div class="category_cell category_title">
-                <span translate="{{ 'TXT_TOPIC_CATEGORY_' + topicCategory | uppercase }}"></span>
+    @if (tabSelected() === 'categories') {
+      <div id="categories-tab" role="tabpanel" aria-labelledby="categories-tab-btn" class="categories_section_wrap">
+        <div class="lightbox_section">
+          <div class="tip" translate="MODALS.TOPIC_SETTINGS_TXT_ASSIGN_CATEGORIES"></div>
+          <div class="selected_categories">
+            @for (topicCategory of topic().categories; track topicCategory) {
+              <div class="category_wrap" (click)="removeTopicCategory(topicCategory)" role="button" [attr.aria-label]="('TXT_TOPIC_CATEGORY_' + topicCategory | uppercase | translate) + ' - ' + ('LNK_CLEAR' | translate)">
+                <div class="category_cell category_title">
+                  <span translate="{{ 'TXT_TOPIC_CATEGORY_' + topicCategory | uppercase }}"></span>
+                </div>
+                <div class="category_cell category_control">
+                  <cos-icon name="close" [size]="16"></cos-icon>
+                </div>
               </div>
-              <div class="category_cell category_control">
-                <cos-icon name="close" [size]="16"></cos-icon>
+            }
+          </div>
+
+          <div class="line lightest_line"></div>
+
+          <div class="category_selection">
+            @for (category of CATEGORIES; track category) {
+              <div class="category_wrap" 
+                (click)="(topic().categories.indexOf(category) > -1) ? removeTopicCategory(category) : addTopicCategory(category)"
+                [class.category_selected]="topic().categories.indexOf(category) > -1"
+                role="button"
+                [attr.aria-pressed]="topic().categories.indexOf(category) > -1"
+              >
+                <div class="category_cell category_title">
+                  {{ 'TXT_TOPIC_CATEGORY_' + category | uppercase | translate }}
+                </div>
+                <div class="category_cell category_control">
+                  @if (topic().categories.indexOf(category) > -1) {
+                    <cos-icon name="close" [size]="20"></cos-icon>
+                  } @else {
+                    <cos-icon name="plus" [size]="20"></cos-icon>
+                  }
+                </div>
               </div>
-            </div>
-          }
+            }
+          </div>
         </div>
+      </div>
+    }
+  </div>
 
-        <div class="line lightest_line"></div>
-
-        <div class="category_selection">
-          @for (category of CATEGORIES; track category) {
-            <div class="category_wrap" 
-              (click)="(topic().categories.indexOf(category) > -1) ? removeTopicCategory(category) : addTopicCategory(category)"
-              [class.category_selected]="topic().categories.indexOf(category) > -1"
-            >
-              <div class="category_cell category_title">
-                {{ 'TXT_TOPIC_CATEGORY_' + category | uppercase | translate }}
-              </div>
-              <div class="category_cell category_control">
-                @if (topic().categories.indexOf(category) > -1) {
-                  <cos-icon name="close" [size]="20"></cos-icon>
-                } @else {
-                  <cos-icon name="plus" [size]="20"></cos-icon>
-                }
-              </div>
-            </div>
-          }
-        </div>
+  @if (canEdit()) {
+    <div class="lightbox_footer">
+      <div class="line lightest_line"></div>
+      <div class="blue_button_wrap">
+        <cos-button variant="primary" (clicked)="doSaveTopic()">
+          {{ 'MODALS.TOPIC_SETTINGS_BTN_SAVE_TOPIC' | translate }}
+        </cos-button>
       </div>
     </div>
   }
 </div>
-
-@if (canEdit()) {
-  <div class="lightbox_footer">
-    <div class="line lightest_line"></div>
-    <div class="blue_button_wrap">
-      <cos-button variant="primary" (clicked)="doSaveTopic()">
-        {{ 'MODALS.TOPIC_SETTINGS_BTN_SAVE_TOPIC' | translate }}
-      </cos-button>
-    </div>
-  </div>
-}

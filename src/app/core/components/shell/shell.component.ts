@@ -10,7 +10,7 @@ import { NavComponent } from './nav/nav.component';
   template: `
     <div id="content_root" [class.dark-theme]="configStore.isDarkTheme()">
       <cos-nav />
-      <div id="content">
+      <div id="main-content" tabindex="-1">
         <router-outlet></router-outlet>
       </div>
     </div>

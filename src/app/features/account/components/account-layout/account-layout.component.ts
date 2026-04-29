@@ -17,7 +17,7 @@ import { RouterOutlet, RouterLink } from '@angular/router';
         </div>
       </div>
       <div class="form-column">
-        <div class="form-wrapper">
+        <div class="form-wrapper" id="main-content" tabindex="-1">
           <router-outlet></router-outlet>
         </div>
       </div>

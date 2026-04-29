@@ -1,12 +1,13 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ConfigStore } from './core/state/config.store';
+import { TranslateModule } from '@ngx-translate/core';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, TranslateModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

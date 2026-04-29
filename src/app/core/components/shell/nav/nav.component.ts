@@ -28,7 +28,7 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
         </a>
       </div>
       <div class="nav_mobile_actions">
-        <button class="nav_icon_btn" (click)="toggleNav()" aria-label="Toggle navigation">
+        <button class="nav_icon_btn" (click)="toggleNav()" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.NAV_TOGGLE' | translate" [attr.aria-expanded]="showNav()">
           @if (!showNav()) {
             <cos-icon name="nav-menu" [size]="24"></cos-icon>
           } @else {
@@ -58,44 +58,44 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
     @if (userStore.isAuthenticated()) {
       <div id="mobile_nav_wrap">
         <div id="tablet_nav" [class.hidden]="showCreateMenu()">
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
             <cos-icon name="home"></cos-icon>
           </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
             <cos-icon name="topic"></cos-icon>
           </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
             <cos-icon name="groups"></cos-icon>
           </a>
-          <a id="tablet_create" class="btn_nav_create icon" (click)="toggleCreateMenu()">
+          <a id="tablet_create" class="btn_nav_create icon" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true">
             @if (!showCreateMenu()) {
               <cos-icon name="nav-create" [size]="40"></cos-icon>
             } @else {
               <cos-icon name="nav-create-active" [size]="40"></cos-icon>
             }
           </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'topics']"  routerLinkActive="active" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
             <cos-icon name="public-topic"></cos-icon>
           </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'groups']"  routerLinkActive="active" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
             <cos-icon name="public-groups"></cos-icon>
           </a>
         </div>
         <div id="mobile_nav" [class.hidden]="showCreateMenu()">
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
             <cos-icon name="home"></cos-icon>
           </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
             <cos-icon name="topic"></cos-icon>
           </a>
-          <a id="mobile_create" class="btn_nav_create icon" (click)="toggleCreateMenu()">
+          <a id="mobile_create" class="btn_nav_create icon" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true">
             @if (!showCreateMenu()) {
               <cos-icon name="nav-create" [size]="40"></cos-icon>
             } @else {
               <cos-icon name="nav-create-active" [size]="40"></cos-icon>
             }
           </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
             <cos-icon name="groups"></cos-icon>
           </a>
         </div>
@@ -122,7 +122,7 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
           <!-- Create menu -->
           @if (userStore.isAuthenticated()) {
             <div class="nav_create_wrap">
-              <button class="nav_create_btn" (click)="toggleCreateMenu()">
+              <button class="nav_create_btn" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true">
                 <cos-icon name="plus" [size]="16"></cos-icon>
                 <span>{{ 'DEFAULT.NAV.BTN_CREATE' | translate }}</span>
               </button>
@@ -146,7 +146,7 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
               <div class="profile_text">
                 <div class="user_name">{{ userStore.user()?.name }}</div>
                 <div class="profile_dropdown" [class.open]="showProfileDropdown()">
-                  <button class="profile_dropdown_trigger" (click)="toggleProfileDropdown()">
+                  <button class="profile_dropdown_trigger" (click)="toggleProfileDropdown()" [attr.aria-expanded]="showProfileDropdown()" aria-haspopup="true">
                     <span>{{ 'DEFAULT.NAV.LNK_MY_ACCOUNT' | translate }}</span>
                     <cos-icon name="chevron-down" [size]="16"></cos-icon>
                   </button>
@@ -185,19 +185,19 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
 
             <!-- Authenticated nav links -->
             <div class="nav_items_wrap">
-              <a class="nav_item" routerLinkActive="active" [routerLink]="['/', translate.currentLang, 'dashboard']" (click)="closeNav()">
+              <a class="nav_item" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLink]="['/', translate.currentLang, 'dashboard']" (click)="closeNav()">
                 <div class="icon_wrap">
                   <cos-icon name="home" [size]="16"></cos-icon>
                 </div>
                 <span>{{ 'DEFAULT.NAV.LNK_DASHBOARD' | translate }}</span>
               </a>
-              <a class="nav_item" routerLinkActive="active" [routerLink]="['/', translate.currentLang, 'my', 'topics']" (click)="closeNav()">
+              <a class="nav_item" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLink]="['/', translate.currentLang, 'my', 'topics']" (click)="closeNav()">
                 <div class="icon_wrap">
                   <cos-icon name="topic" [size]="16"></cos-icon>
                 </div>
                 <span>{{ 'DEFAULT.NAV.LNK_MY_TOPICS' | translate }}</span>
               </a>
-              <a class="nav_item" routerLinkActive="active" [routerLink]="['/', translate.currentLang, 'my', 'groups']" (click)="closeNav()">
+              <a class="nav_item" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLink]="['/', translate.currentLang, 'my', 'groups']" (click)="closeNav()">
                 <div class="icon_wrap">
                   <cos-icon name="groups" [size]="16"></cos-icon>
                 </div>
@@ -215,13 +215,13 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
           }
           <!-- Public nav links -->
           <div class="nav_items_wrap">
-            <a class="nav_item" routerLinkActive="active" [routerLink]="['/', translate.currentLang, 'public', 'topics']" (click)="closeNav()">
+            <a class="nav_item" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLink]="['/', translate.currentLang, 'public', 'topics']" (click)="closeNav()">
               <div class="icon_wrap">
                 <cos-icon name="public-topic" [size]="16"></cos-icon>
               </div>
               <span>{{ 'DEFAULT.NAV.LNK_PUBLIC_TOPICS' | translate }}</span>
             </a>
-            <a class="nav_item" routerLinkActive="active" [routerLink]="['/', translate.currentLang, 'public', 'groups']" (click)="closeNav()">
+            <a class="nav_item" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLink]="['/', translate.currentLang, 'public', 'groups']" (click)="closeNav()">
               <div class="icon_wrap">
                 <cos-icon name="public-groups" [size]="16"></cos-icon>
               </div>

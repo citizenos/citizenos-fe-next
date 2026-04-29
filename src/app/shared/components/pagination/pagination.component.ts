@@ -1,12 +1,13 @@
 import { Component, input, output, computed, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'cos-pagination',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [IconComponent],
+  imports: [IconComponent, TranslateModule],
   template: `
     @if (totalPages() > 1) {
       <div class="pagination">
@@ -14,7 +15,7 @@ import { IconComponent } from '../icon/icon.component';
           class="pagination-btn icon"
           [disabled]="page() === 1"
           (click)="prev()"
-          aria-label="Previous page"
+          [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.PAGINATION_PREV' | translate"
         >
           <cos-icon name="arrow-left"></cos-icon>
         </button>
@@ -31,7 +32,7 @@ import { IconComponent } from '../icon/icon.component';
           class="pagination-btn icon"
           [disabled]="page() === totalPages()"
           (click)="next()"
-          aria-label="Next page"
+          [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.PAGINATION_NEXT' | translate"
         >
           <cos-icon name="arrow-right"></cos-icon>
         </button>
@@ -49,7 +50,7 @@ import { IconComponent } from '../icon/icon.component';
     cos-pagination .pagination-btn {
       width: 40px;
       height: 40px;
-      border: 1px solid var(--color-border);
+      border: 1px solid var(--color-border-bold);
       border-radius: var(--radius-sm);
       background: var(--color-surfaces);
       cursor: pointer;

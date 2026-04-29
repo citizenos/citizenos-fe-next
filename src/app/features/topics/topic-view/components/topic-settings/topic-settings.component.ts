@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule, UpperCasePipe, DatePipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { A11yModule } from '@angular/cdk/a11y';
 import { FormsModule } from '@angular/forms';
 import { take } from 'rxjs';
 import { Topic } from '../../../../../core/interfaces/topic';
@@ -32,7 +33,8 @@ export interface TopicSettingsData {
     ToggleComponent,
     DropdownComponent,
     IconComponent,
-    TooltipDirective
+    TooltipDirective,
+    A11yModule
   ],
   templateUrl: './topic-settings.component.html',
   styleUrls: ['./topic-settings.component.scss'],

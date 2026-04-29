@@ -25,7 +25,7 @@ import { IconComponent } from '../icon/icon.component';
       position: relative;
       width: 100%;
       background: var(--color-surfaces);
-      border: 1px solid var(--color-border);
+      border: 1px solid var(--color-border-bold);
       border-radius: var(--radius-md);
     }
 
@@ -53,7 +53,7 @@ import { IconComponent } from '../icon/icon.component';
       left: 0;
       right: 0;
       background: var(--color-surfaces);
-      border: 1px solid var(--color-border);
+      border: 1px solid var(--color-border-bold);
       border-radius: var(--radius-md);
       margin-top: 4px;
       z-index: 100;
