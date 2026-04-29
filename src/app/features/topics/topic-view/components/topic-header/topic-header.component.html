@@ -42,18 +42,16 @@
       <cos-icon name="more-vertical" [size]="24"></cos-icon>
     </button>
 
-    <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" [class.open]="tabletActionsOpen()" (click)="tabletActionsOpen.set(!tabletActionsOpen())">
-      <!-- TODO: cosDropdown equivalent directive, for now we will use standard CSS hover or click state -->
+    <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" cosDropdown>
       <button class="btn_medium_close icon">
         <cos-icon name="more-vertical"></cos-icon>
       </button>
 
-      <div class="options" (click)="$event.stopPropagation()">
-        <!-- Replicated dropdown options -->
+      <div class="options">
         @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {
-          <button (click)="leaveTopic.emit(topic()); tabletActionsOpen.set(false)" class="option">
+          <button (click)="leaveTopic.emit(topic())" class="option">
             <div class="icon_wrap">
-              <cos-icon name="leave" [size]="16"></cos-icon>
+              <cos-icon name="logout" [size]="16"></cos-icon>
             </div>
             <span translate="VIEWS.TOPICS_TOPICID.BTN_LEAVE"></span>
           </button>
@@ -61,7 +59,7 @@
 
         @if (isLoggedIn()) {
           <div class="line_separator"></div>
-          <button class="option" (click)="onToggleFavourite(); tabletActionsOpen.set(false)">
+          <button class="option" (click)="onToggleFavourite()">
             <div class="icon_wrap">
               @if (topic().favourite) {
                 <cos-icon name="favourite-filled" [size]="16"></cos-icon>
@@ -69,16 +67,11 @@
                 <cos-icon name="favourite" [size]="16"></cos-icon>
               }
             </div>
-            @if (!topic().favourite) {
-              <span translate="VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE"></span>
-            } @else {
-              <span translate="VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE"></span>
-            }
+            <span [translate]="topic().favourite ? 'VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE' : 'VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE'"></span>
           </button>
         }
 
-        <!-- Add the rest of the actions replacing *ngIfs with @if -->
-        @if (isLoggedIn() && appTopicNotificationSettings()) {
+        @if (isLoggedIn()) {
           <div class="line_separator"></div>
           <button class="option" (click)="appTopicNotificationSettings()?.()">
             <div class="icon_wrap">
@@ -90,7 +83,7 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="inviteEditors.emit(topic()); tabletActionsOpen.set(false)">
+          <button class="option" (click)="inviteEditors.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="invite" [size]="16"></cos-icon>
             </div>
@@ -100,7 +93,7 @@
 
         @if (isLoggedIn() && topicService.canEdit(topic()) && !topic().voteId && !topic().ideationId) {
           <div class="line_separator"></div>
-          <button class="option" [routerLink]="['/', translate.currentLang, 'topics', topic().id, 'edit']">
+          <button class="option" [routerLink]="['/', 'topics', 'edit', topic().id]">
             <div class="icon_wrap">
               <cos-icon name="edit" [size]="16"></cos-icon>
             </div>
@@ -108,9 +101,9 @@
           </button>
         }
 
-        @if (isLoggedIn() && topicService.canEdit(topic()) && topic().ideationId && !topic().voteId) {
+        @if (isLoggedIn() && topic().ideationId && !topic().voteId && topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.ideation, topicService.STATUSES.followUp].indexOf(topic().status) > -1) {
           <div class="line_separator"></div>
-          <button class="option" [routerLink]="['/', translate.currentLang, 'topics', 'ideation', 'edit', topic().id]">
+          <button class="option" [routerLink]="['/', 'topics', 'ideation', 'edit', topic().id]">
             <div class="icon_wrap">
               <cos-icon name="edit" [size]="16"></cos-icon>
             </div>
@@ -118,9 +111,9 @@
           </button>
         }
 
-        @if (isLoggedIn() && topicService.canEdit(topic()) && topic().voteId) {
+        @if (isLoggedIn() && topic().voteId && (topicService.canDelete(topic()) || (topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.voting, topicService.STATUSES.followUp].indexOf(topic().status) > -1))) {
           <div class="line_separator"></div>
-          <button class="option" [routerLink]="['/', translate.currentLang, 'topics', 'vote', 'edit', topic().id]">
+          <button class="option" [routerLink]="['/', 'topics', 'vote', 'edit', topic().id]">
             <div class="icon_wrap">
               <cos-icon name="edit" [size]="16"></cos-icon>
             </div>
@@ -130,7 +123,7 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic())) {
           <div class="line_separator"></div>
-          <button class="option" (click)="duplicateTopic.emit(topic()); tabletActionsOpen.set(false)">
+          <button class="option" (click)="duplicateTopic.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="copy" [size]="16"></cos-icon>
             </div>
@@ -140,9 +133,9 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="addGroupsDialog.emit(topic()); tabletActionsOpen.set(false)">
+          <button class="option" (click)="addGroupsDialog.emit(topic())">
             <div class="icon_wrap">
-              <cos-icon name="plus" [size]="16"></cos-icon>
+              <cos-icon name="users" [size]="16"></cos-icon>
             </div>
             <span translate="VIEWS.TOPICS_TOPICID.OPTION_ADD_TO_GROUP"></span>
           </button>
@@ -150,7 +143,7 @@
 
         @if (topic().visibility === topicService.VISIBILITY.public && !topic().report) {
           <div class="line_separator"></div>
-          <button class="option" [routerLink]="['/', translate.currentLang, 'topics', topic().id, 'report']">
+          <button class="option" [routerLink]="['/topics', topic().id, 'report']">
             <div class="icon_wrap">
               <cos-icon name="report" [size]="16"></cos-icon>
             </div>
@@ -160,9 +153,9 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="closeTopic.emit(topic()); tabletActionsOpen.set(false)">
+          <button class="option" (click)="closeTopic.emit(topic())">
             <div class="icon_wrap">
-              <cos-icon name="check-box" [size]="16"></cos-icon>
+              <cos-icon name="check" [size]="16"></cos-icon>
             </div>
             <span translate="VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC"></span>
           </button>
@@ -170,7 +163,7 @@
 
         @if (isLoggedIn() && topicService.canDelete(topic())) {
           <div class="line_separator"></div>
-          <button class="option error_text" (click)="deleteTopic.emit(topic()); tabletActionsOpen.set(false)">
+          <button class="option error_text" (click)="deleteTopic.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="trash" [size]="16"></cos-icon>
             </div>
@@ -191,7 +184,7 @@
     <span translate="VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS"></span>
     <div id="close_mobile" class="mobile_show">
       <button class="btn_small_close icon" (click)="mobileActions.set(false)">
-        <cos-icon name="close" [size]="24"></cos-icon>
+        <cos-icon name="close"></cos-icon>
       </button>
     </div>
   </div>
@@ -201,108 +194,115 @@
         translate="VIEWS.TOPICS_TOPICID.BTN_LEAVE"></button>
       <div class="line_separator"></div>
     }
+
     @if (isLoggedIn()) {
       <button class="option" (click)="onToggleFavourite(); mobileActions.set(false)">
         <div class="icon_wrap">
           @if (topic().favourite) {
-            <cos-icon name="favourite-filled" [size]="16"></cos-icon>
+            <cos-icon name="favourite-filled"></cos-icon>
           } @else {
-            <cos-icon name="favourite" [size]="16"></cos-icon>
+            <cos-icon name="favourite"></cos-icon>
           }
         </div>
-        @if (!topic().favourite) {
-          <span translate="VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE"></span>
-        } @else {
-          <span translate="VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE"></span>
-        }
+        <span [translate]="topic().favourite ? 'VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE' : 'VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE'"></span>
       </button>
     }
-    @if (isLoggedIn() && appTopicNotificationSettings()) {
+
+    @if (isLoggedIn()) {
       <div class="line_separator"></div>
       <button class="option" (click)="appTopicNotificationSettings()?.(); mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="bell" [size]="16"></cos-icon>
+          <cos-icon name="bell"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_TOPIC_NOTIFICATIONS"></span>
       </button>
     }
+
     @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
       <div class="line_separator"></div>
       <button class="option" (click)="inviteEditors.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="invite" [size]="16"></cos-icon>
+          <cos-icon name="invite"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_INVITE_CO_EDITOR"></span>
       </button>
     }
+
     @if (isLoggedIn() && topicService.canEdit(topic()) && !topic().voteId && !topic().ideationId) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', topic().id, 'edit']" (click)="mobileActions.set(false)">
+      <button class="option" [routerLink]="['/', 'topics', 'edit', topic().id]" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="edit" [size]="16"></cos-icon>
+          <cos-icon name="edit"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC"></span>
       </button>
     }
-    @if (isLoggedIn() && topicService.canEdit(topic()) && topic().ideationId && !topic().voteId) {
+
+    @if (isLoggedIn() && topic().ideationId && !topic().voteId && topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.ideation, topicService.STATUSES.followUp].indexOf(topic().status) > -1) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', 'ideation', 'edit', topic().id]" (click)="mobileActions.set(false)">
+      <button class="option" [routerLink]="['/', 'topics', 'ideation', 'edit', topic().id]" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="edit" [size]="16"></cos-icon>
+          <cos-icon name="edit"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC"></span>
       </button>
     }
-    @if (isLoggedIn() && topicService.canEdit(topic()) && topic().voteId) {
+
+    @if (isLoggedIn() && topic().voteId && (topicService.canDelete(topic()) || (topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.voting, topicService.STATUSES.followUp].indexOf(topic().status) > -1))) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', 'vote', 'edit', topic().id]" (click)="mobileActions.set(false)">
+      <button class="option" [routerLink]="['/', 'topics', 'vote', 'edit', topic().id]" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="edit" [size]="16"></cos-icon>
+          <cos-icon name="edit"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC"></span>
       </button>
     }
+
     @if (isLoggedIn() && topicService.canDelete(topic())) {
       <div class="line_separator"></div>
       <button class="option" (click)="duplicateTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="copy" [size]="16"></cos-icon>
+          <cos-icon name="copy"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_DUPLICATE_TOPIC"></span>
       </button>
     }
+
     @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
       <div class="line_separator"></div>
       <button class="option" (click)="addGroupsDialog.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="groups" [size]="16"></cos-icon>
+          <cos-icon name="users"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_ADD_TO_GROUP"></span>
       </button>
     }
+
     @if (topic().visibility === topicService.VISIBILITY.public && !topic().report) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', translate.currentLang, 'topics', topic().id, 'report']" (click)="mobileActions.set(false)">
+      <button class="option" [routerLink]="['/topics', topic().id, 'report']" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="report" [size]="16"></cos-icon>
+          <cos-icon name="report"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC"></span>
       </button>
     }
+
     @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
       <div class="line_separator"></div>
       <button class="option" (click)="closeTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="check-box" [size]="16"></cos-icon>
+          <cos-icon name="check"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC"></span>
       </button>
     }
+
     @if (isLoggedIn() && topicService.canDelete(topic())) {
       <div class="line_separator"></div>
       <button class="option error_text" (click)="deleteTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="trash" [size]="16"></cos-icon>
+          <cos-icon name="trash"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_DELETE_TOPIC"></span>
       </button>

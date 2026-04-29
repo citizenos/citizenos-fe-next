@@ -6,12 +6,13 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Topic } from '../../../../../core/interfaces/topic';
+import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 
 @Component({
   selector: 'app-topic-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UpperCasePipe, RouterModule, TranslateModule, IconComponent],
+  imports: [UpperCasePipe, RouterModule, TranslateModule, IconComponent, CosDropdownDirective],
   templateUrl: './topic-header.component.html',
   styleUrls: ['./topic-header.component.scss']
 })
@@ -35,7 +36,6 @@ export class TopicHeaderComponent {
   translate = inject(TranslateService);
 
   mobileActions = signal(false);
-  tabletActionsOpen = signal(false);
 
   isLoggedIn = computed(() => this.userStore.isAuthenticated());
 

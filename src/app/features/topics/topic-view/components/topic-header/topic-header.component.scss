@@ -59,6 +59,12 @@
       display: inline-block;
       position: relative;
 
+      &.dropdown_active {
+        .options {
+          display: block;
+        }
+      }
+
       .options {
         display: none;
         position: absolute;
@@ -103,11 +109,6 @@
           background: var(--color-border);
           margin: 4px 0;
         }
-      }
-
-      &:focus-within .options,
-      &:hover .options {
-        display: block;
       }
     }
   }

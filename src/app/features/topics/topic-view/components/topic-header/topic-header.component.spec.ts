@@ -38,7 +38,6 @@ describe('TopicHeaderComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TopicHeaderComponent);
-    component = fixture.componentInstance;
     componentRef = fixture.componentRef;
     
     componentRef.setInput('topic', {
@@ -47,7 +46,8 @@ describe('TopicHeaderComponent', () => {
       permission: { level: 'admin' },
       status: 'inProgress',
       visibility: 'public',
-      favourite: false
+      favourite: false,
+      creator: { name: 'Test User' }
     });
     
     componentRef.setInput('navigation', {
@@ -56,6 +56,7 @@ describe('TopicHeaderComponent', () => {
     });
     
     fixture.detectChanges();
+    component = fixture.componentInstance;
   });
 
   it('should create', () => {
