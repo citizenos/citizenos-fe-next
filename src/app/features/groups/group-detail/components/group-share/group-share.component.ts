@@ -11,12 +11,14 @@ import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { computed } from '@angular/core';
 
 @Component({
   selector: 'app-group-share',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, UpperCasePipe, QRCodeComponent, ButtonComponent, IconComponent],
+  imports: [TranslateModule, UpperCasePipe, QRCodeComponent, ButtonComponent, IconComponent, DropdownComponent],
   templateUrl: './group-share.component.html',
   styleUrls: ['./group-share.component.scss']
 })
@@ -33,29 +35,28 @@ export class GroupShareComponent implements OnInit {
 
   joinLevel = signal<string>(this.memberUserService.LEVELS[0]);
   joinToken = signal<string | null>(null);
-  joinUrl = signal<string>('');
+  joinUrl = computed(() => {
+    const base = window.location.origin;
+    const token = this.joinToken();
+    const group = this.group();
+    if (token && this.groupDetailService.canShare(group)) {
+      return `${base}/groups/join/${token}`;
+    } else {
+      return `${base}/groups/${group.id}/join`;
+    }
+  });
   copySuccess = signal(false);
 
   ngOnInit() {
     const group = this.group();
     this.joinToken.set(group.join?.token ?? null);
     this.joinLevel.set(group.join?.level ?? this.memberUserService.LEVELS[0]);
-    this.generateJoinUrl();
   }
 
   canUpdate() {
     return this.groupDetailService.canUpdate(this.group());
   }
 
-  private generateJoinUrl() {
-    const base = window.location.origin;
-    const token = this.joinToken();
-    if (token && this.groupDetailService.canShare(this.group())) {
-      this.joinUrl.set(`${base}/groups/join/${token}`);
-    } else {
-      this.joinUrl.set(`${base}/groups/${this.group().id}/join`);
-    }
-  }
 
   generateTokenJoin() {
     this.dialog.open(ConfirmDialogComponent, {
@@ -72,7 +73,6 @@ export class GroupShareComponent implements OnInit {
           .pipe(take(1)).subscribe(res => {
             this.joinToken.set(res.token);
             this.joinLevel.set(res.level);
-            this.generateJoinUrl();
           });
       }
     });

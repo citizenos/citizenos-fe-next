@@ -17,21 +17,18 @@
           <div class="content_description" [innerHTML]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate"></div>
         </div>
       </span>
-      <div class="dropdown" [class.disabled]="!canUpdate()">
-        <div class="selection">
-          <div class="selected_item">{{'TXT_GROUP_LEVELS_' + joinLevel() | uppercase | translate}}</div>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />
-          </svg>
+      <cos-dropdown [class.disabled]="!canUpdate()">
+        <div selection class="selected_item">
+          {{'TXT_GROUP_LEVELS_' + joinLevel() | uppercase | translate}}
         </div>
-        <div class="options">
+        <div options>
           @for (level of LEVELS; track level) {
             <div class="option" (click)="doUpdateJoinToken(level)">
               {{'TXT_GROUP_LEVELS_' + level | uppercase | translate}}
             </div>
           }
         </div>
-      </div>
+      </cos-dropdown>
     </div>
   </div>
   <div class="button_wrap">
@@ -69,7 +66,7 @@
 
   @if (showQR()) {
     <div class="qr_code">
-      <qrcode [qrdata]="joinUrl()" [width]="150" [errorCorrectionLevel]="'M'" [elementType]="'img'"></qrcode>
+      <qrcode [qrdata]="joinUrl() || ''" [width]="150" [version]="4" [errorCorrectionLevel]="'L'" [elementType]="'img'"></qrcode>
     </div>
   }
 

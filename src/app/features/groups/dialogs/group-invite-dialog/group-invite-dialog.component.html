@@ -98,48 +98,20 @@
 
       <!-- SHARE TAB -->
       @if (activeTab() === 'share') {
-        <div class="content_section">
-          <div class="section_content_wrap">
-            <div class="bold" translate="COMPONENTS.GROUP_SHARE.GENERATE_LINK"></div>
-
-            <div class="share_url_row">
-              <input id="invite_group_url_input" [value]="joinUrl()" readonly [placeholder]="'COMPONENTS.GROUP_SHARE.PLACEHOLDER_CREATE_NEW_LINK' | translate" />
-              <button class="icon_btn" (click)="generateToken()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M17 12L19 12C19 10.207 18.317 8.417 16.95 7.05C14.455 4.556 10.547 4.338 7.805 6.395C7.363 6.727 6.734 6.734 6.343 6.343C5.953 5.953 5.95 5.314 6.381 4.969C9.914 2.138 15.088 2.36 18.364 5.636C20.121 7.393 21 9.698 21 12L23 12L20 16L17 12Z" fill="#2C3B47"/>
-                  <path d="M5 12C5 13.793 5.683 15.583 7.05 16.95C9.544 19.444 13.453 19.663 16.195 17.605C16.637 17.273 17.266 17.266 17.657 17.657C18.047 18.047 18.05 18.686 17.619 19.031C14.085 21.863 8.912 21.64 5.636 18.364C3.879 16.607 3 14.302 3 12H1L4 8L7 12L5 12Z" fill="#2C3B47"/>
-                </svg>
-              </button>
-            </div>
-
-            <div class="level_row">
-              <span class="bold" translate="COMPONENTS.GROUP_SHARE.LBL_ACCESS_LEVEL"></span>
-              <cos-dropdown>
-                <div selection>{{ 'TXT_GROUP_LEVELS_' + join().level.toUpperCase() | translate }}</div>
-                <div options>
-                  @for (level of LEVELS; track level) {
-                    <div class="option" (click)="updateJoinLevel(level)">{{ 'TXT_GROUP_LEVELS_' + level.toUpperCase() | translate }}</div>
-                  }
-                </div>
-              </cos-dropdown>
-            </div>
-
-            <button class="btn_medium_secondary" (click)="copyLink()" translate="COMPONENTS.GROUP_SHARE.COPY_LINK"></button>
-
-            @if (copySuccess()) {
-              <div class="inline_success" translate="COMPONENTS.GROUP_SHARE.MSG_LINK_COPIED"></div>
-            }
-          </div>
-        </div>
+        <app-group-share [group]="group()"></app-group-share>
       }
     </div>
 
     <div class="dialog_footer with_buttons">
       <div></div>
       <div class="button_row">
-        <a dialogClose translate="COMPONENTS.GROUP_INVITE_DIALOG.LNK_CANCEL"></a>
+        <cos-button variant="secondary" dialogClose>
+          {{ 'COMPONENTS.GROUP_INVITE_DIALOG.LNK_CANCEL' | translate }}
+        </cos-button>
         @if (activeTab() === 'invite') {
-          <button class="btn_medium_submit" (click)="invite()" translate="COMPONENTS.GROUP_INVITE_DIALOG.BTN_SAVE"></button>
+          <cos-button (clicked)="invite()">
+            {{ 'COMPONENTS.GROUP_INVITE_DIALOG.BTN_SAVE' | translate }}
+          </cos-button>
         }
       </div>
     </div>

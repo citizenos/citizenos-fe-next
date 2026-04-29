@@ -13,9 +13,8 @@ import { SearchService } from '../../../../core/services/search.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DialogService } from '../../../../shared/dialog/dialog.service';
-import { IconComponent } from '../../../../shared/components/icon/icon.component';
-import { DropdownComponent } from '../../../../shared/components/dropdown/dropdown.component';
 import { TypeaheadComponent } from '../../../../shared/components/typeahead/typeahead.component';
+import { GroupShareComponent } from '../../group-detail/components/group-share/group-share.component';
 import { Group } from '../../../../core/interfaces/group';
 import { UserStore } from '../../../../core/state/user.store';
 import { of, switchMap, take } from 'rxjs';
@@ -30,7 +29,7 @@ function isEmail(s: string) { return EMAIL_RE.test(s.trim()); }
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslateModule, FormsModule, IconComponent, DropdownComponent,
-    TypeaheadComponent, DialogCloseDirective,
+    TypeaheadComponent, DialogCloseDirective, GroupShareComponent
   ],
   templateUrl: './group-invite-dialog.component.html',
   styleUrls: ['./group-invite-dialog.component.scss'],
@@ -130,39 +129,6 @@ export class GroupInviteDialogComponent {
 
     const invites = users.map(u => ({ userId: u.userId ?? u.id, level: u.level, inviteMessage: this.inviteMessage() }));
     this.inviteUserService.invite(this.group().id, invites).pipe(take(1)).subscribe(() => this.dialogRef.close(true));
-  }
-
-  generateToken() {
-    this.dialogService.open(ConfirmDialogComponent, {
-      data: {
-        heading: 'MODALS.GROUP_INVITE_SHARE_LINK_GENERATE_CONFIRM_HEADING',
-        title: 'MODALS.GROUP_INVITE_SHARE_LINK_GENERATE_CONFIRM_TXT_ARE_YOU_SURE',
-        closeBtn: 'MODALS.GROUP_INVITE_SHARE_LINK_GENERATE_CONFIRM_BTN_NO',
-        confirmBtn: 'MODALS.GROUP_INVITE_SHARE_LINK_GENERATE_CONFIRM_BTN_YES',
-      }
-    }).afterClosed().pipe(take(1)).subscribe(confirmed => {
-      if (!confirmed) return;
-      this.groupJoinService.generateToken(this.group().id, this.join().level).pipe(take(1)).subscribe(res => {
-        this.join.set({ token: res.token, level: res.level });
-        this.generateJoinUrl();
-      });
-    });
-  }
-
-  updateJoinLevel(level: string) {
-    const j = this.join();
-    this.groupJoinService.updateLevel(this.group().id, j.token!, level).pipe(take(1)).subscribe(() => {
-      this.join.update(j => ({ ...j, level }));
-    });
-  }
-
-  copyLink() {
-    const url = this.joinUrl();
-    if (!url) return;
-    navigator.clipboard.writeText(url).then(() => {
-      this.copySuccess.set(true);
-      setTimeout(() => this.copySuccess.set(false), 3000);
-    });
   }
 
   private generateJoinUrl() {

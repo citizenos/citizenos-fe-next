@@ -117,43 +117,8 @@
     font-weight: 600;
   }
 
-  .dropdown {
+  cos-dropdown {
     width: 180px;
-    position: relative;
-    cursor: pointer;
-
-    .selection {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 12px;
-      background: var(--color-surfaces);
-      border: 1px solid var(--color-border);
-      border-radius: 4px;
-    }
-
-    .options {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background: var(--color-surfaces);
-      border: 1px solid var(--color-border);
-      border-radius: 0 0 4px 4px;
-      z-index: 10;
-
-      .option {
-        padding: 8px 12px;
-        &:hover {
-          background: var(--color-background-hover);
-        }
-      }
-    }
-
-    &:hover .options {
-      display: block;
-    }
 
     @include mixins.mobile {
       width: 100%;

@@ -83,46 +83,10 @@
   button { background: none; border: none; cursor: pointer; color: var(--color-error); }
 }
 
-.share_url_row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-
-  input {
-    flex: 1;
-    padding: 12px 16px;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    font-size: 14px;
-    background: var(--color-surface-contrast);
-    color: var(--color-text);
-  }
-}
-
-.icon_btn {
-  background: none;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-
-  &:hover { background: var(--color-surface-contrast); }
-}
-
 .inline_error {
   padding: 12px 16px;
   background: #fef2f2;
   color: var(--color-error);
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.inline_success {
-  padding: 12px 16px;
-  background: #f0fdf4;
-  color: #166534;
   border-radius: 8px;
   font-size: 14px;
 }
