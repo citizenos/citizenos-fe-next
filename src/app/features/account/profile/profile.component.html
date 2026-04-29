@@ -54,9 +54,9 @@
           }
 
           @if (tmpImageUrl) {
-          <img id="profile_image" [src]="tmpImageUrl">
+          <img id="profile_image" [src]="tmpImageUrl" [alt]="form.name">
           } @else if (form.imageUrl) {
-          <img id="profile_image" [src]="form.imageUrl">
+          <img id="profile_image" [src]="form.imageUrl" [alt]="form.name">
           } @else {
           <div class="profile_image_filler">
             <cos-initials [name]="form.name"></cos-initials>

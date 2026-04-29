@@ -6,15 +6,22 @@ import { IconComponent } from '../icon/icon.component';
   standalone: true,
   imports: [IconComponent],
   template: `
-    <div class="dropdown-wrapper" [class.open]="isOpen()">
-      <div class="dropdown-selection" (click)="toggle()">
+    <div class="dropdown-wrapper" [class.open]="isOpen()" 
+         role="combobox" 
+         [attr.aria-expanded]="isOpen()" 
+         aria-haspopup="listbox">
+      <div class="dropdown-selection" 
+           (click)="toggle()" 
+           (keydown.enter)="toggle()" 
+           (keydown.space)="toggle(); $event.preventDefault()"
+           tabindex="0">
         <ng-content select="[selection]"></ng-content>
         <div class="dropdown-arrow">
           <cos-icon name="chevron-down"></cos-icon>
         </div>
       </div>
       @if (isOpen()) {
-        <div class="dropdown-options">
+        <div class="dropdown-options" role="listbox">
           <ng-content select="[options]"></ng-content>
         </div>
       }
@@ -87,5 +94,10 @@ export class DropdownComponent {
     if (!target.closest('.dropdown-wrapper')) {
       this.isOpen.set(false);
     }
+  }
+
+  @HostListener('keydown.escape')
+  onEscape() {
+    this.isOpen.set(false);
   }
 }

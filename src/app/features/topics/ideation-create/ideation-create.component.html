@@ -1,0 +1,48 @@
+<cos-create-wizard-shell
+  domainType="ideation"
+  headingKey="VIEWS.IDEATION_CREATE.HEADING"
+  [steps]="steps"
+  [currentStep]="currentStep()"
+  (stepChange)="onStepChange($event)"
+  (saveDraft)="saveAsDraft()"
+>
+  @if (isLoading()) {
+    <div class="loading-overlay">
+      <div class="loader"></div>
+    </div>
+  }
+
+  @switch (currentStep()) {
+    @case ('info') {
+      <cos-step-topic-info
+        [topic]="$any(topic())"
+        (topicUpdate)="onTopicUpdate($event)"
+        (next)="saveToSettings()"
+      ></cos-step-topic-info>
+    }
+    @case ('settings') {
+      <cos-step-topic-settings
+        [topic]="$any(topic())"
+        (topicUpdate)="onTopicUpdate($event)"
+        (next)="onStepChange('ideation')"
+        (previous)="onStepChange('info')"
+      ></cos-step-topic-settings>
+    }
+    @case ('ideation') {
+      <cos-step-ideation-settings
+        [ideation]="$any(ideation())"
+        (ideationUpdate)="onIdeationUpdate($event)"
+        (next)="onStepChange('preview')"
+        (previous)="onStepChange('settings')"
+      ></cos-step-ideation-settings>
+    }
+    @case ('preview') {
+      <cos-step-topic-preview
+        [topic]="$any(topic())"
+        [ideation]="ideation()"
+        (previous)="onStepChange('ideation')"
+        (save)="onPublish()"
+      ></cos-step-topic-preview>
+    }
+  }
+</cos-create-wizard-shell>

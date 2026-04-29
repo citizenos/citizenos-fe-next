@@ -44,14 +44,14 @@ describe('IdeationCreateComponent (business logic)', () => {
     expect(component.currentStep()).toBe('info');
   });
 
-  it('onInfoNext should save topic and ideation if no id', () => {
-    component.onInfoNext();
+  it('saveToSettings should save topic and ideation if no id', () => {
+    component.saveToSettings();
     expect(mockTopicService.save).toHaveBeenCalled();
   });
 
-  it('onInfoNext should skip save if topic has id', () => {
+  it('saveToSettings should skip save if topic has id', () => {
     component.topic.set({ id: 'existing-id', title: 'Test' });
-    component.onInfoNext();
+    component.saveToSettings();
     expect(mockTopicService.save).not.toHaveBeenCalled();
     expect(component.currentStep()).toBe('settings');
   });

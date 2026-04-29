@@ -1,5 +1,4 @@
 import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
-
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../core/services/topic.service';
@@ -7,109 +6,28 @@ import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { Topic } from '../../../core/interfaces/topic';
 import { Vote } from '../../../core/interfaces/vote';
-import { StepNavigatorComponent, StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
-import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
+import { CreateWizardShellComponent } from '../../../shared/components/create-wizard-shell/create-wizard-shell.component';
 import { StepTopicInfoComponent } from '../topic-create/components/step-topic-info/step-topic-info.component';
 import { StepTopicSettingsComponent } from '../topic-create/components/step-topic-settings/step-topic-settings.component';
 import { StepVoteSettingsComponent } from './components/step-vote-settings/step-vote-settings.component';
 import { StepTopicPreviewComponent } from '../topic-create/components/step-topic-preview/step-topic-preview.component';
+import { switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'cos-vote-create',
   standalone: true,
   imports: [
     TranslateModule,
-    StepNavigatorComponent,
-    DomainIconComponent,
-    ButtonComponent,
+    CreateWizardShellComponent,
     StepTopicInfoComponent,
     StepTopicSettingsComponent,
     StepVoteSettingsComponent,
     StepTopicPreviewComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div class="wizard-container">
-      <div class="create-header">
-        <h1 class="create_heading">
-          <cos-domain-icon type="vote"></cos-domain-icon>
-          <span class="small_heading" translate="VIEWS.VOTE_CREATE.HEADING"></span>
-        </h1>
-        <cos-step-navigator
-          [steps]="steps"
-          [currentStep]="currentStep()"
-          (stepChange)="onStepChange($event)"
-        >
-          <div actions>
-            <cos-button variant="secondary" (clicked)="saveAsDraft()">
-              {{ 'VIEWS.TOPIC_CREATE.BTN_SAVE_DRAFT' | translate }}
-            </cos-button>
-          </div>
-        </cos-step-navigator>
-      </div>
-
-      <div class="wizard-content">
-        @switch (currentStep()) {
-          @case ('info') {
-            <cos-step-topic-info
-              [topic]="$any(topic())"
-              (topicUpdate)="onTopicUpdate($event)"
-              (next)="onInfoNext()"
-            ></cos-step-topic-info>
-          }
-          @case ('settings') {
-            <cos-step-topic-settings
-              [topic]="$any(topic())"
-              (topicUpdate)="onTopicUpdate($event)"
-              (next)="onStepChange('voting')"
-              (previous)="onStepChange('info')"
-            ></cos-step-topic-settings>
-          }
-          @case ('voting') {
-            <cos-step-vote-settings
-              [vote]="$any(vote())"
-              (voteUpdate)="onVoteUpdate($event)"
-              (next)="onStepChange('preview')"
-              (previous)="onStepChange('settings')"
-            ></cos-step-vote-settings>
-          }
-          @case ('preview') {
-            <cos-step-topic-preview
-              [topic]="$any(topic())"
-              [vote]="vote()"
-              (previous)="onStepChange('voting')"
-              (save)="onPublish()"
-            ></cos-step-topic-preview>
-          }
-        }
-      </div>
-    </div>
-  `,
-  styles: [`
-    .wizard-container { display: flex; flex-direction: column; height: 100%; background: var(--color-background); }
-    .create-header {
-      padding: 40px 40px 0;
-      max-width: 800px;
-      margin: 0 auto;
-      width: 100%;
-      .create_heading {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 24px;
-
-        .small_heading {
-          font-size: 18px;
-          font-weight: 700;
-          color: var(--color-text);
-        }
-      }
-    }
-    .wizard-content { flex: 1; padding: 40px; overflow-y: auto; max-width: 800px; margin: 0 auto; width: 100%; }
-    .btn-save-draft { background: none; border: 1px solid var(--color-border); padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; }
-    .placeholder-step { padding: 20px; border: 1px dashed var(--color-border); border-radius: var(--radius-md); text-align: center; }
-  `]
+  templateUrl: './vote-create.component.html',
+  styleUrl: './vote-create.component.scss'
 })
 export class VoteCreateComponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -118,14 +36,16 @@ export class VoteCreateComponent implements OnInit {
   private voteService = inject(TopicVoteService);
   private notification = inject(NotificationService);
 
-  steps: StepConfig[] = [
-    { key: 'info', label: 'VIEWS.VOTE_CREATE.CREATE_TAB_1', icon: 'info' },
+  readonly steps: StepConfig[] = [
+    { key: 'info', label: 'VIEWS.VOTE_CREATE.CREATE_TAB_1', icon: 'edit' },
     { key: 'settings', label: 'VIEWS.VOTE_CREATE.CREATE_TAB_2', icon: 'settings' },
     { key: 'voting', label: 'VIEWS.VOTE_CREATE.CREATE_TAB_3', icon: 'check' },
     { key: 'preview', label: 'VIEWS.VOTE_CREATE.CREATE_TAB_4', icon: 'eye' }
   ];
 
   currentStep = signal('info');
+  isLoading = signal(false);
+
   topic = signal<Partial<Topic>>({
     title: '',
     intro: '',
@@ -134,6 +54,7 @@ export class VoteCreateComponent implements OnInit {
     categories: [],
     status: 'draft'
   });
+
   vote = signal<Partial<Vote>>({
     question: '',
     type: 'regular',
@@ -144,23 +65,60 @@ export class VoteCreateComponent implements OnInit {
     endsAt: null
   });
 
-  isEdit = signal(false);
-
   ngOnInit() {
     const topicId = this.route.snapshot.params['topicId'];
     if (topicId) {
-      this.isEdit.set(true);
-      this.loadTopic(topicId);
+      this.loadExistingTopic(topicId);
+    } else {
+      this.createEagerly();
     }
   }
 
-  private loadTopic(id: string) {
-    this.topicService.loadTopic(id).subscribe(topic => {
-      this.topic.set(topic);
-      if (topic.voteId) {
-        this.voteService.get({ topicId: topic.id, voteId: topic.voteId }).subscribe(vote => {
-          this.vote.set({ ...vote, question: vote.description });
+  private loadExistingTopic(topicId: string) {
+    this.isLoading.set(true);
+    this.topicService.get(topicId).subscribe({
+      next: (topic) => {
+        this.topic.set(topic);
+        if (topic.voteId) {
+          this.voteService.get({ topicId: topic.id, voteId: topic.voteId }).subscribe({
+            next: (vote) => this.vote.set({ ...vote, question: vote.description }),
+            error: () => {}
+          });
+        }
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_LOAD_FAILED');
+      }
+    });
+  }
+
+  private createEagerly() {
+    this.isLoading.set(true);
+    this.topicService.save(this.topic()).pipe(
+      take(1),
+      switchMap((savedTopic) => {
+        this.topic.set(savedTopic);
+        const voteData = {
+          ...this.vote(),
+          topicId: savedTopic.id,
+          description: this.vote().question || ' '
+        };
+        return this.voteService.save(voteData);
+      })
+    ).subscribe({
+      next: (savedVote) => {
+        this.vote.set({ ...savedVote, question: savedVote.description });
+        this.isLoading.set(false);
+        this.router.navigate([this.topic().id], {
+          relativeTo: this.route,
+          replaceUrl: true
         });
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
       }
     });
   }
@@ -177,44 +135,70 @@ export class VoteCreateComponent implements OnInit {
     this.vote.update(v => ({ ...v, ...updates }));
   }
 
-  onInfoNext() {
-    if (!this.topic().id) {
-      this.topicService.save(this.topic()).subscribe(topic => {
-        this.topic.set(topic);
-        this.createVoteObject(topic.id);
-      });
-    } else {
-      this.onStepChange('settings');
+  saveToSettings() {
+    const t = this.topic();
+    if (!t.id) {
+      this.createEagerly();
+      return;
     }
-  }
-
-  private createVoteObject(topicId: string) {
-    const data = { ...this.vote(), topicId, description: this.vote().question || ' ' };
-    this.voteService.save(data).subscribe(vote => {
-      this.vote.set({ ...vote, question: vote.description });
-      this.onStepChange('settings');
+    this.isLoading.set(true);
+    this.topicService.patch(t).subscribe({
+      next: (updated) => {
+        this.topic.set(updated);
+        this.isLoading.set(false);
+        this.onStepChange('settings');
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
+      }
     });
   }
 
   saveAsDraft() {
-    this.topicService.patch(this.topic()).subscribe(() => {
-      if (this.vote().id) {
-         const voteData = { ...this.vote(), topicId: this.topic().id, description: this.vote().question };
-         this.voteService.update(voteData).subscribe();
+    const t = this.topic();
+    if (!t.id) return;
+    this.isLoading.set(true);
+    this.topicService.patch(t).subscribe({
+      next: () => {
+        if (this.vote().id) {
+          const voteData = { ...this.vote(), topicId: t.id, description: this.vote().question };
+          this.voteService.update(voteData).pipe(take(1)).subscribe();
+        }
+        this.isLoading.set(false);
+        this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
+        this.router.navigate(['/topics', t.id]);
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
       }
-      this.notification.success('VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
-      this.router.navigate(['/topics', this.topic().id]);
     });
   }
 
   onPublish() {
-    const topicData = { ...this.topic(), status: 'voting' };
-    this.topicService.patch(topicData).subscribe(() => {
-      const voteData = { ...this.vote(), topicId: this.topic().id, description: this.vote().question };
-      this.voteService.update(voteData).subscribe(() => {
-        this.notification.success('VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');
-        this.router.navigate(['/topics', this.topic().id]);
-      });
+    const t = this.topic();
+    if (!t.id) return;
+    this.isLoading.set(true);
+    this.topicService.patch({ ...t, status: 'voting' }).subscribe({
+      next: () => {
+        const voteData = { ...this.vote(), topicId: t.id, description: this.vote().question };
+        this.voteService.update(voteData).pipe(take(1)).subscribe({
+          next: () => {
+            this.isLoading.set(false);
+            this.notification.showRaw('success', 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');
+            this.router.navigate(['/topics', t.id]);
+          },
+          error: () => {
+            this.isLoading.set(false);
+            this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_PUBLISH_FAILED');
+          }
+        });
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_PUBLISH_FAILED');
+      }
     });
   }
 }

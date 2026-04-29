@@ -103,14 +103,7 @@
       "OPT_TEXT_SIZE_EXTRA_LARGE": "Extra large",
       "HEADING_HAVING_ISSUES": "Still need help?",
       "READ_STATEMENT": "Read our accessibility statement",
-      "CONTACT_US": "Contact us",
-      "NAV_TOGGLE": "Toggle navigation",
-      "NAV_CREATE_MENU_TOGGLE": "Toggle create menu",
-      "NAV_PROFILE_MENU_TOGGLE": "Toggle profile menu",
-      "INPUT_FALLBACK_LABEL": "Input field",
-      "SKIP_TO_MAIN": "Skip to main content",
-      "PAGINATION_PREV": "Previous page",
-      "PAGINATION_NEXT": "Next page"
+      "CONTACT_US": "Contact us"
     },
     "ACTIVITY_FEED": {
       "HEADING_GLOBAL": "Recent activity",

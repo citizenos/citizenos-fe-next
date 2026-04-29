@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentRef } from '@angular/core';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { TranslateModule } from '@ngx-translate/core';
 import { PaginationComponent } from './pagination.component';
 
 describe('PaginationComponent', () => {
@@ -9,7 +10,7 @@ describe('PaginationComponent', () => {
   let ref: ComponentRef<PaginationComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [PaginationComponent] }).compileComponents();
+    await TestBed.configureTestingModule({ imports: [PaginationComponent, TranslateModule.forRoot()] }).compileComponents();
     fixture = TestBed.createComponent(PaginationComponent);
     ref = fixture.componentRef;
     component = fixture.componentInstance;

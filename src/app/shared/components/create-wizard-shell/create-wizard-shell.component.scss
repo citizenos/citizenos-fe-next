@@ -1,0 +1,96 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.wizard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-background);
+}
+
+.create-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-surfaces);
+  padding: 24px 40px 0;
+}
+
+.create_heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  .small_heading {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+}
+
+.wizard-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+
+  &.has-sidebar {
+    gap: 24px;
+    padding: 32px 40px;
+
+    .wizard-content {
+      flex: 1;
+      min-width: 0;
+      overflow-y: auto;
+    }
+
+    .wizard-sidebar {
+      width: 320px;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+  }
+}
+
+.wizard-content {
+  flex: 1;
+  padding: 32px 40px;
+  overflow-y: auto;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+
+  .has-sidebar & {
+    padding: 0;
+    margin: 0;
+    max-width: unset;
+  }
+}
+
+@media (max-width: 1024px) {
+  .wizard-body.has-sidebar {
+    flex-direction: column;
+    padding: 24px;
+
+    .wizard-sidebar {
+      width: 100%;
+    }
+  }
+
+  .create-header {
+    padding: 16px 24px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .wizard-content {
+    padding: 16px;
+  }
+
+  .create-header {
+    padding: 12px 16px 0;
+  }
+}

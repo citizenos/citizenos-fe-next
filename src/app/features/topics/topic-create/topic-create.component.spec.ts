@@ -66,23 +66,24 @@ describe('TopicCreateComponent (business logic)', () => {
     expect(component.canNavigateTo('settings')).toBe(true);
   });
 
-  it('transitionToSettings creates topic if none exists', () => {
+  it('saveToSettings creates topic if none exists', () => {
     component.onTopicUpdate({ title: 'Test' });
-    component.transitionToSettings();
+    component.saveToSettings();
     expect(mockTopicService.save).toHaveBeenCalled();
   });
 
-  it('transitionToSettings skips save if topic already has id', () => {
+  it('saveToSettings skips save if topic already has id', () => {
+    mockTopicService.patch.mockReturnValue(of({ id: 'existing-id', title: 'Test', status: 'inProgress' }));
     component.topic.set({ id: 'existing-id', title: 'Test' });
-    component.transitionToSettings();
+    component.saveToSettings();
     expect(mockTopicService.save).not.toHaveBeenCalled();
     expect(component.currentStep()).toBe('settings');
   });
 
-  it('saveAsDraft calls save and shows success notification', () => {
-    component.topic.set({ title: 'Draft Topic' });
+  it('saveAsDraft calls patch and shows success notification', () => {
+    component.topic.set({ id: 'topic-1', title: 'Draft Topic' });
     component.saveAsDraft();
-    expect(mockTopicService.save).toHaveBeenCalled();
+    expect(mockTopicService.patch).toHaveBeenCalled();
     expect(mockNotificationService.showRaw).toHaveBeenCalledWith('success', expect.any(String));
   });
 

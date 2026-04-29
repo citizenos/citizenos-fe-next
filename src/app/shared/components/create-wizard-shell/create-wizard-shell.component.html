@@ -1,0 +1,30 @@
+<div class="wizard-container">
+  <div class="create-header">
+    <h1 class="create_heading">
+      <cos-domain-icon [type]="domainType()"></cos-domain-icon>
+      <span class="small_heading" [translate]="headingKey()"></span>
+    </h1>
+    <cos-step-navigator
+      [steps]="steps()"
+      [currentStep]="currentStep()"
+      (stepChange)="stepChange.emit($event)"
+    >
+      <div actions>
+        <cos-button variant="secondary" (clicked)="saveDraft.emit()">
+          {{ 'VIEWS.TOPIC_CREATE.BTN_SAVE_DRAFT' | translate }}
+        </cos-button>
+      </div>
+    </cos-step-navigator>
+  </div>
+
+  <div class="wizard-body" [class.has-sidebar]="hasSidebar()">
+    <div class="wizard-content">
+      <ng-content></ng-content>
+    </div>
+    @if (hasSidebar()) {
+      <div class="wizard-sidebar">
+        <ng-content select="[sidebar]"></ng-content>
+      </div>
+    }
+  </div>
+</div>

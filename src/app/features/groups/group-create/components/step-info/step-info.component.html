@@ -52,7 +52,7 @@
     } @else {
     <div id="image_area">
       <div id="image_wrap">
-        <img [src]="group().imageUrl || tmpImageUrl()" />
+        <img [src]="group().imageUrl || tmpImageUrl()" [alt]="group().name || ''" />
       </div>
       <cos-button variant="ghost" (clicked)="removeImage()" icon="trash">
         <span class="bold" translate="VIEWS.GROUP_CREATE.INFO_SETTINGS_BTN_REMOVE_IMAGE"></span>

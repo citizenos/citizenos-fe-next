@@ -1,6 +1,5 @@
 import { Component, signal, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-
 import { TranslateModule } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TopicService } from '../../../core/services/topic.service';
@@ -11,31 +10,28 @@ import { TopicInviteUserService } from '../../../core/services/topic-invite-user
 import { TopicDiscussionService } from '../../../core/services/topic-discussion.service';
 import { Topic } from '../../../core/interfaces/topic';
 import { DiscussionData } from '../../../core/interfaces/discussion';
-import { StepNavigatorComponent, StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
-import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
+import { StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
+import { CreateWizardShellComponent } from '../../../shared/components/create-wizard-shell/create-wizard-shell.component';
 import { StepTopicInfoComponent } from './components/step-topic-info/step-topic-info.component';
 import { StepTopicSettingsComponent } from './components/step-topic-settings/step-topic-settings.component';
 import { StepTopicDiscussionComponent } from './components/step-topic-discussion/step-topic-discussion.component';
 import { StepTopicPreviewComponent } from './components/step-topic-preview/step-topic-preview.component';
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
-import { switchMap, of, catchError, BehaviorSubject, forkJoin } from 'rxjs';
+import { switchMap, of, catchError, BehaviorSubject, forkJoin, take } from 'rxjs';
 import { AnyPipe } from '../../../shared/pipes/any.pipe';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-topic-create',
   standalone: true,
   imports: [
     TranslateModule,
-    StepNavigatorComponent,
-    DomainIconComponent,
+    CreateWizardShellComponent,
     StepTopicInfoComponent,
     StepTopicSettingsComponent,
     StepTopicDiscussionComponent,
     StepTopicPreviewComponent,
     MemberEditorsPanelComponent,
     AnyPipe,
-    ButtonComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-create.component.html',
@@ -89,7 +85,7 @@ export class TopicCreateComponent implements OnInit {
     { initialValue: [] }
   );
 
-  steps: StepConfig[] = [
+  readonly steps: StepConfig[] = [
     { key: 'info', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_1', icon: 'edit' },
     { key: 'settings', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_2', icon: 'settings' },
     { key: 'discussion', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_3', icon: 'comment' },
@@ -98,8 +94,14 @@ export class TopicCreateComponent implements OnInit {
 
   ngOnInit() {
     const topicId = this.route.snapshot.paramMap.get('topicId');
-    if (!topicId) return;
+    if (topicId) {
+      this.loadExistingTopic(topicId);
+    } else {
+      this.createTopicEagerly();
+    }
+  }
 
+  private loadExistingTopic(topicId: string) {
     this.isLoading.set(true);
     this.topicService.get(topicId).subscribe({
       next: (topic) => {
@@ -116,6 +118,26 @@ export class TopicCreateComponent implements OnInit {
       error: () => {
         this.isLoading.set(false);
         this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_LOAD_FAILED');
+      }
+    });
+  }
+
+  private createTopicEagerly() {
+    this.isLoading.set(true);
+    this.topicService.save(this.topic()).pipe(take(1)).subscribe({
+      next: (savedTopic) => {
+        this.topic.set(savedTopic);
+        this.reloadMembers$.next();
+        this.isLoading.set(false);
+        // Update URL to include topicId without triggering navigation
+        this.router.navigate([savedTopic.id], {
+          relativeTo: this.route,
+          replaceUrl: true
+        });
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
       }
     });
   }
@@ -142,33 +164,33 @@ export class TopicCreateComponent implements OnInit {
     this.imageFile.set(file);
   }
 
-  transitionToSettings() {
-    if (this.topic().id) {
-      this.currentStep.set('settings');
+  saveToSettings() {
+    const t = this.topic();
+    if (!t.id) {
+      // Topic not yet created (e.g. eager create failed) — create now
+      this.createTopicEagerly();
       return;
     }
 
-    this.isLoading.set(true);
-    this.topicService.save(this.topic()).pipe(
-      switchMap((newTopic: Topic) => {
-        this.topic.set(newTopic);
-        this.reloadMembers$.next();
+    const patchAndUpload$ = this.topicService.patch(t).pipe(
+      switchMap((updated) => {
+        this.topic.set(updated);
         if (this.imageFile()) {
-          const path = `/api/users/self/topics/${newTopic.id}/image`;
+          const path = `/api/users/self/topics/${updated.id}/image`;
           return this.uploadService.upload(path, this.imageFile()!);
         }
         return of(null);
       }),
       catchError(() => {
         this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
-        this.isLoading.set(false);
         return of(null);
       })
-    ).subscribe((result) => {
-      if (result !== null || !this.imageFile()) {
-        this.isLoading.set(false);
-        this.onStepChange('settings');
-      }
+    );
+
+    this.isLoading.set(true);
+    patchAndUpload$.subscribe(() => {
+      this.isLoading.set(false);
+      this.onStepChange('settings');
     });
   }
 
@@ -196,20 +218,7 @@ export class TopicCreateComponent implements OnInit {
   saveAsDraft() {
     const t = this.topic();
     if (!t.id) {
-      this.isLoading.set(true);
-      this.topicService.save(t).subscribe({
-        next: (savedTopic) => {
-          this.topic.set(savedTopic);
-          this.reloadMembers$.next();
-          this.isLoading.set(false);
-          this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
-          this.router.navigate(['/topics', savedTopic.id]);
-        },
-        error: () => {
-          this.isLoading.set(false);
-          this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
-        }
-      });
+      this.notification.showRaw('info', 'VIEWS.TOPIC_CREATE.SAVE_FIRST_TO_INVITE');
       return;
     }
 

@@ -20,7 +20,7 @@ import { TranslateModule } from '@ngx-translate/core';
       </div>
       @if (hasError() && errorMessage()) {
         <span [id]="errorId" class="error-message" role="alert">
-          <cos-icon name="warning" [size]="14"></cos-icon>
+          <cos-icon name="warning" [size]="14" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.WARNING' | translate"></cos-icon>
           {{ errorMessage() }}
         </span>
       }

@@ -16,11 +16,11 @@ import { ButtonComponent } from '../button/button.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, TranslateModule, InitialsComponent, DatePipe, IconComponent, ButtonComponent],
   template: `
-    <a class="group" [class]="mode()" (click)="viewGroup()">
+    <a class="group" [class]="mode()" (click)="viewGroup()" [attr.aria-label]="group().name">
       <div class="group_header">
         <div class="image_area">
           @if (group().imageUrl) {
-            <div class="group_icon"><img [src]="group().imageUrl" /></div>
+            <div class="group_icon"><img [src]="group().imageUrl" [alt]="group().name" /></div>
           } @else if (group().name) {
             <div class="initial_wrap">
               <cos-initials [name]="group().name" [limit]="1"></cos-initials>

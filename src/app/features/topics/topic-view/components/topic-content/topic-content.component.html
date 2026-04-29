@@ -1,7 +1,7 @@
 <div class="topic_content_wrap">
   @if (topic().imageUrl) {
     <div class="topic_image">
-        <img [src]="topic().imageUrl + '?' + topic().updatedAt" />
+        <img [src]="topic().imageUrl + '?' + topic().updatedAt" [alt]="topic().title || ''" />
       
       @if (!topic().permission.level || topic().permission.level !== 'none') {
         <div class="permissions_lable tablet_show" [translate]="
