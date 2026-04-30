@@ -4,8 +4,11 @@
   [steps]="steps"
   [currentStep]="currentStep()"
   [hasSidebar]="currentStep() !== 'preview'"
+  [isNextDisabled]="isFooterNextDisabled()"
   (stepChange)="onStepChange($event)"
   (saveDraft)="saveAsDraft()"
+  (footerContinue)="handleFooterContinue()"
+  (footerBack)="handleFooterBack()"
 >
   @if (isLoading()) {
     <div class="loading-overlay">
@@ -19,30 +22,23 @@
         [topic]="topic() | any"
         (topicUpdate)="onTopicUpdate($any($event))"
         (imageFileUpdate)="onImageFileUpdate($any($event))"
-        (next)="saveToSettings()"
       ></cos-step-topic-info>
     }
     @case ('settings') {
       <cos-step-topic-settings
         [topic]="topic() | any"
         (topicUpdate)="onTopicUpdate($any($event))"
-        (next)="currentStep.set('discussion')"
-        (previous)="currentStep.set('info')"
       ></cos-step-topic-settings>
     }
     @case ('discussion') {
       <cos-step-topic-discussion
         [discussion]="discussion()"
         (discussionChange)="discussion.set($event)"
-        (next)="transitionToPreview()"
-        (previous)="currentStep.set('settings')"
       ></cos-step-topic-discussion>
     }
     @case ('preview') {
       <cos-step-topic-preview
         [topic]="topic() | any"
-        (previous)="currentStep.set('discussion')"
-        (save)="publishTopic()"
       ></cos-step-topic-preview>
     }
   }

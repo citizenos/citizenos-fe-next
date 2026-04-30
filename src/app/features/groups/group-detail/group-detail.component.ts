@@ -42,6 +42,8 @@ import { SearchInputComponent } from '../../../shared/components/search-input/se
 import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { CosTabsComponent, TabItem } from '../../../shared/components/tabs/tabs.component';
+import { CreateMenuComponent } from '../../../shared/components/create-menu/create-menu.component';
+import { IllustrationComponent } from '../../../shared/components/illustration/illustration.component';
 
 @Component({
   selector: 'cos-group-detail',
@@ -61,6 +63,8 @@ import { CosTabsComponent, TabItem } from '../../../shared/components/tabs/tabs.
     ActivitiesButtonComponent,
     PaginationComponent,
     CosTabsComponent,
+    CreateMenuComponent,
+    IllustrationComponent,
     NgTemplateOutlet,
   ],
   templateUrl: './group-detail.component.html',
@@ -100,6 +104,7 @@ export class GroupDetailComponent {
   groupActionsOpen = signal(false);
   mobileActions = signal(false);
   activeMemberMenuId = signal<string | null>(null);
+  showCreateInContent = signal(false);
 
   topicVisibilityFilter = signal('');
   topicStatusFilter = signal('');

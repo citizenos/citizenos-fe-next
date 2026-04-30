@@ -9,11 +9,6 @@
       [currentStep]="currentStep()"
       (stepChange)="stepChange.emit($event)"
     >
-      <div actions>
-        <cos-button variant="secondary" (clicked)="saveDraft.emit()">
-          {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_SAVE_AS_DRAFT' | translate }}
-        </cos-button>
-      </div>
     </cos-step-navigator>
   </div>
 
@@ -26,5 +21,34 @@
         <ng-content select="[sidebar]"></ng-content>
       </div>
     }
+  </div>
+
+  <div id="create_footer">
+    <div class="items_row">
+      <div class="footer-left">
+        @if (!isFirstStep()) {
+          <button class="btn_medium_submit_ghost icon" (click)="footerBack.emit()">
+            <cos-icon name="arrow-left" [size]="24"></cos-icon>
+          </button>
+        }
+      </div>
+      <div class="footer-right">
+        <button class="btn_medium_secondary" (click)="saveDraft.emit()">
+          {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_SAVE_AS_DRAFT' | translate }}
+        </button>
+        <button
+          class="btn_medium_submit"
+          [class.disabled]="isNextDisabled()"
+          [disabled]="isNextDisabled()"
+          (click)="footerContinue.emit()"
+        >
+          @if (isLastStep()) {
+            {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CREATE' | translate }}
+          } @else {
+            {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE' | translate }}
+          }
+        </button>
+      </div>
+    </div>
   </div>
 </div>

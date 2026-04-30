@@ -1,5 +1,7 @@
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { Component, ChangeDetectionStrategy, inject, signal, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { UpperCasePipe } from '@angular/common';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../shared/dialog/dialog-ref';
 import { DialogCloseDirective } from '../../../../shared/dialog';
@@ -13,7 +15,7 @@ import { take } from 'rxjs';
   selector: 'cos-topic-requests-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DialogCloseDirective, IconComponent],
+  imports: [TranslateModule, DialogCloseDirective, IconComponent, RouterLink, UpperCasePipe],
   templateUrl: './topic-requests-dialog.component.html',
   styleUrls: ['./topic-requests-dialog.component.scss'],
 })
@@ -25,6 +27,8 @@ export class TopicRequestsDialogComponent {
 
   group = this.data.group;
   requests = signal<any[]>([]);
+  onClose = output();
+  translate = inject(TranslateService);
 
   constructor() {
     this.loadRequests();

@@ -10,7 +10,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 @Component({
   selector: 'cos-step-ideation-settings',
   standalone: true,
-  imports: [TranslateModule, FormsModule, InputComponent, ButtonComponent],
+  imports: [TranslateModule, FormsModule, InputComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="step-container">
@@ -53,44 +53,15 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
         </div>
       </div>
 
-      <div class="actions">
-        <cos-button
-          variant="secondary"
-          (clicked)="previous.emit()"
-        >
-          {{ 'VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL' | translate }}
-        </cos-button>
-        <cos-button
-          variant="primary"
-          [isDisabled]="!ideation().question"
-          (clicked)="next.emit()"
-        >
-          {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE' | translate }}
-        </cos-button>
-      </div>
     </div>
   `,
   styles: [`
     .step-container { display: flex; flex-direction: column; gap: 32px; }
     .form-section { display: flex; flex-direction: column; gap: 8px; }
-    .form-control {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      background: var(--color-surface);
-      color: var(--color-text);
-      font-size: 16px;
-    }
     .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     .setting-item { display: flex; flex-direction: column; gap: 8px; }
     .setting-desc { font-size: 12px; color: var(--color-text-muted); line-height: 1.4; }
     .checkbox-container { display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 500; }
-    .actions { display: flex; justify-content: space-between; margin-top: 20px; }
-    .btn-primary, .btn-secondary { padding: 12px 32px; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; }
-    .btn-primary { background: var(--color-primary); color: white; border: none; }
-    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-secondary { background: none; border: 1px solid var(--color-border); color: var(--color-text); }
   `]
 })
 export class StepIdeationSettingsComponent {
@@ -100,8 +71,6 @@ export class StepIdeationSettingsComponent {
     disableReplies: false
   });
   ideationUpdate = output<Partial<Ideation>>();
-  next = output<void>();
-  previous = output<void>();
 
   onIdeationUpdate() {
     this.ideationUpdate.emit(this.ideation());

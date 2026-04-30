@@ -332,13 +332,26 @@
             (remove)="removeTopicFromGroup($event)"
           ></cos-topic-card>
         } @empty {
-          <div class="empty_state">
-            <div class="illustration_wrap">
-              <img src="assets/imgs/no_image_discussion.svg" alt="No topics" />
+          <div id="topics_area_empty" class="empty_state">
+            <div class="icon_wrap">
+              <cos-illustration imagePath="assets/imgs/no_image_discussion.svg" size="xl"></cos-illustration>
             </div>
-            <div class="empty_text_wrap">
-              <h3 translate="VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_HEADING"></h3>
-              <p translate="VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_DESCRIPTION"></p>
+            <div class="text_wrap">
+              <div class="small_heading" translate="VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_HEADING"></div>
+              <div translate="VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_DESCRIPTION"></div>
+            </div>
+            <div class="button_wrap">
+              @if (showCreateInContent()) {
+                <div class="create_menu_wrap top">
+                  <cos-create-menu (onClose)="showCreateInContent.set(false)"></cos-create-menu>
+                </div>
+                <div id="close_create" (click)="showCreateInContent.set(false)"></div>
+              } @else {
+                <button class="btn_medium_submit" (click)="showCreateInContent.set(true)" *ngIf="isAdmin()">
+                  <cos-icon name="plus"></cos-icon>
+                  <span translate="VIEWS.GROUP.BTN_ADD_OR_CREATE_TOPICS"></span>
+                </button>
+              }
             </div>
           </div>
         }

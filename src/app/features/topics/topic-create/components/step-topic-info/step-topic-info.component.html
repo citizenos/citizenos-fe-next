@@ -113,13 +113,4 @@
   <!-- Attachments Block -->
   <cos-topic-attachments [topic]="topic()"></cos-topic-attachments>
 
-  <div class="actions">
-    <cos-button
-      variant="primary"
-      [isDisabled]="!topic().title || !topic().description"
-      (clicked)="next.emit()"
-    >
-      {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE' | translate }}
-    </cos-button>
-  </div>
 </div>

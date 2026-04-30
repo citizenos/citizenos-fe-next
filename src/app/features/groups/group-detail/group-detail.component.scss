@@ -519,37 +519,63 @@
   border-radius: 16px;
   width: 100%;
 
-  .illustration_wrap {
+  .icon_wrap {
     width: 240px;
     height: auto;
     opacity: 0.8;
-
-    img {
-      width: 100%;
-      height: auto;
-    }
   }
 
-  .empty_text_wrap {
+  .text_wrap {
     max-width: 400px;
     display: flex;
     flex-direction: column;
     gap: 8px;
 
-    h3 {
+    .small_heading {
       font-size: 20px;
       font-weight: 700;
       color: var(--color-text);
       margin: 0;
     }
 
-    p {
+    div {
       font-size: 14px;
       line-height: 1.5;
       color: var(--color-text-muted);
       margin: 0;
     }
   }
+
+  .button_wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+
+    .create_menu_wrap {
+      position: absolute;
+      bottom: 100%;
+      margin-bottom: 16px;
+      z-index: 10;
+      width: 320px;
+      background: var(--color-surfaces);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+  }
+}
+
+#close_create {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  cursor: pointer;
 }
 
 .member_search_row {

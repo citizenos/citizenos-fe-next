@@ -186,14 +186,6 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
         ></cos-deadline-picker>
       </div>
 
-      <div class="navigation-actions">
-        <cos-button variant="secondary" (clicked)="previous.emit()">
-          {{ 'VIEWS.TOPIC_CREATE.BTN_PREVIOUS' | translate }}
-        </cos-button>
-        <cos-button variant="primary" (clicked)="next.emit()" [isDisabled]="!isValid()">
-          {{ 'VIEWS.TOPIC_CREATE.BTN_NEXT' | translate }}
-        </cos-button>
-      </div>
     </div>
   `,
   styles: [`
@@ -227,14 +219,11 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
     .counter { display: flex; align-items: center; gap: 12px; }
     .counter-btn { width: 32px; height: 32px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surfaces); cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; &:hover { background: var(--color-secondary); } }
     .counter-value { min-width: 24px; text-align: center; font-weight: 600; }
-    .navigation-actions { display: flex; justify-content: space-between; margin-top: 8px; }
   `]
 })
 export class StepVoteSettingsComponent {
   vote = input.required<Partial<Vote>>();
   voteUpdate = output<Partial<Vote>>();
-  next = output<void>();
-  previous = output<void>();
 
   predefined = ['Yes', 'No', 'Neutral', 'Veto'];
 

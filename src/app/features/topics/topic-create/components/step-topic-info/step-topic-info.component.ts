@@ -1,4 +1,5 @@
 import { Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -40,7 +41,6 @@ export class StepTopicInfoComponent implements OnInit {
   });
   topicUpdate = output<Partial<Topic>>();
   imageFileUpdate = output<File | null>();
-  next = output<void>();
 
   titleLimit = 100;
   introLimit = 500;

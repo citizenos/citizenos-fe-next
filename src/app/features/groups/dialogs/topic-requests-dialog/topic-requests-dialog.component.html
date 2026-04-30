@@ -4,40 +4,45 @@
     <div class="dialog_header">
       <div class="header_text">
         <h4 class="title" translate="COMPONENTS.TOPIC_REQUESTS.HEADING"></h4>
-      </div>
-      <div class="dialog_close">
-        <button class="btn_dialog_close icon" dialogClose>
-          <cos-icon name="nav-close"></cos-icon>
-        </button>
+        <div class="dialog_close">
+          <button class="btn_dialog_close icon" dialogClose>
+            <cos-icon name="nav-close"></cos-icon>
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="dialog_content">
-      @if (requests().length) {
-        <div class="requests_list">
+    <div class="dialog_content no_footer">
+      <div class="content_section">
+        <div id="topic_request_list_wrap" class="section_content_wrap table_section">
           @for (request of requests(); track request.id) {
-            <div class="request_row">
-              <div class="request_info">
-                <span class="topic_title">{{ request.topic?.title ?? request.topicId }}</span>
-                <span class="requester">{{ request.user?.name ?? request.createdById }}</span>
-                @if (request.text) {
-                  <span class="message">{{ request.text }}</span>
-                }
+            <div class="row_list">
+              <div class="name">
+                <a class="topic_title" [routerLink]="['/', translate.currentLang, 'topics', request.topic.id]" (click)="onClose.emit()">
+                  {{ request.topic.title || request.topic.id }}
+                </a>
+                <div class="text">{{ request.text }}</div>
               </div>
-              <div class="request_actions">
-                <button class="btn_medium_submit btn_small" (click)="accept(request)" translate="COMPONENTS.TOPIC_REQUESTS.BTN_ACCEPT"></button>
-                <button class="btn_medium_close btn_small" (click)="reject(request)" translate="COMPONENTS.TOPIC_REQUESTS.BTN_DECLINE"></button>
+              <div class="visibility">
+                <div class="icon">
+                  <cos-icon [name]="request.topic.visibility === 'private' ? 'lock' : 'globe'"></cos-icon>
+                </div>
+                <span>{{ 'TXT_TOPIC_VISIBILITY_' + request.topic.visibility | uppercase | translate }}</span>
               </div>
+              <div class="action_buttons_wrap">
+                <button class="btn_medium_accept" (click)="accept(request)" translate="COMPONENTS.TOPIC_REQUESTS.BTN_ACCEPT"></button>
+                <button class="btn_medium_reject" (click)="reject(request)" translate="COMPONENTS.TOPIC_REQUESTS.BTN_REJECT"></button>
+              </div>
+            </div>
+          } @empty {
+            <div class="no_results">
+              <cos-icon name="info" [size]="48"></cos-icon>
+              <div class="small_heading" translate="COMPONENTS.TOPIC_REQUESTS.NO_REQUESTS_HEADING"></div>
+              <div translate="COMPONENTS.TOPIC_REQUESTS.NO_REQUESTS_DESC"></div>
             </div>
           }
         </div>
-      } @else {
-        <div class="empty_state" translate="COMPONENTS.TOPIC_REQUESTS.NO_REQUESTS"></div>
-      }
-    </div>
-
-    <div class="dialog_footer">
-      <a dialogClose translate="COMPONENTS.TOPIC_REQUESTS.LNK_CLOSE"></a>
+      </div>
     </div>
   </div>
 </div>

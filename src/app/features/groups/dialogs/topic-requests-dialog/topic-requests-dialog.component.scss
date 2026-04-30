@@ -1,90 +1,53 @@
-@use "mixins";
-
-.dialog {
-  max-width: 560px;
-  width: 100%;
-}
-
-.dialog_content {
-  padding: 0;
+.action_buttons_wrap {
   display: flex;
-  flex-direction: column;
-  max-height: 60vh;
-  overflow-y: auto;
-  background-color: var(--color-background);
-}
-
-.requests_list {
-  display: flex;
-  flex-direction: column;
-}
-
-.request_row {
-  display: flex;
-  align-items: center;
   gap: 16px;
-  padding: 16px 24px;
-  background: var(--color-surfaces);
-  border-bottom: 1px solid var(--color-border);
-  transition: background 0.2s ease-in-out;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  @include mixins.mobile {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  justify-content: flex-end;
+  flex-grow: 1;
 }
 
-.request_info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-
-  .topic_title {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--color-text);
-  }
-
-  .requester {
-    font-size: 12px;
-    color: var(--color-text-muted);
-  }
-
-  .message {
-    font-size: 13px;
-    font-style: italic;
-    color: var(--color-text-muted);
-    margin-top: 4px;
-    padding-left: 8px;
-    border-left: 2px solid var(--color-border);
-  }
+#topic_request_list_wrap {
+  gap: 16px;
 }
 
-.request_actions {
+.row_list {
+  padding: 16px;
   display: flex;
   gap: 8px;
   align-items: center;
-  flex-shrink: 0;
+  flex-flow: row;
 
-  @include mixins.mobile {
-    width: 100%;
+  .text {
+    font-size: 13px;
+    font-style: italic;
+  }
+
+  .name {
+    flex-grow: 1;
+  }
+
+  .visibility {
+    flex-grow: 1;
+    display: flex;
     justify-content: flex-end;
+    gap: 16px;
+
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
 
-.empty_state {
+.no_results {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
   text-align: center;
-  padding: 48px 24px;
-  color: var(--color-text-muted);
-  background: var(--color-surfaces);
+  padding: 32px;
 
-  p {
-    margin: 0;
-    font-size: 14px;
+  cos-icon {
+    opacity: 0.5;
   }
 }

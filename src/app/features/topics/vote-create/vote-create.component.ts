@@ -96,7 +96,12 @@ export class VoteCreateComponent implements OnInit {
 
   private createEagerly() {
     this.isLoading.set(true);
-    this.topicService.save(this.topic()).pipe(
+    const initialPayload = {
+      description: '<html><head></head><body></body></html>',
+      status: 'draft',
+      visibility: 'private'
+    };
+    this.topicService.save(initialPayload).pipe(
       take(1),
       switchMap((savedTopic) => {
         this.topic.set(savedTopic);
@@ -125,6 +130,25 @@ export class VoteCreateComponent implements OnInit {
 
   onStepChange(step: string) {
     this.currentStep.set(step);
+  }
+
+  isFooterNextDisabled(): boolean {
+    return this.currentStep() === 'info' && !this.topic().title;
+  }
+
+  handleFooterContinue() {
+    switch (this.currentStep()) {
+      case 'info': this.saveToSettings(); break;
+      case 'settings': this.currentStep.set('voting'); break;
+      case 'voting': this.currentStep.set('preview'); break;
+      case 'preview': this.onPublish(); break;
+    }
+  }
+
+  handleFooterBack() {
+    const order = this.steps.map(s => s.key);
+    const idx = order.indexOf(this.currentStep());
+    if (idx > 0) this.currentStep.set(order[idx - 1]);
   }
 
   onTopicUpdate(updates: Partial<Topic>) {

@@ -158,6 +158,25 @@ export class TopicCreateComponent implements OnInit {
     return !!this.topic().title;
   }
 
+  isFooterNextDisabled(): boolean {
+    return this.currentStep() === 'info' && !this.topic().title;
+  }
+
+  handleFooterContinue() {
+    switch (this.currentStep()) {
+      case 'info': this.saveToSettings(); break;
+      case 'settings': this.currentStep.set('discussion'); break;
+      case 'discussion': this.transitionToPreview(); break;
+      case 'preview': this.publishTopic(); break;
+    }
+  }
+
+  handleFooterBack() {
+    const order = this.steps.map(s => s.key);
+    const idx = order.indexOf(this.currentStep());
+    if (idx > 0) this.currentStep.set(order[idx - 1]);
+  }
+
   onTopicUpdate(updates: Partial<Topic>) {
     this.topic.update(t => ({ ...t, ...updates }));
     if (updates.id) {

@@ -3,8 +3,11 @@
   headingKey="VIEWS.VOTE_CREATE.HEADING"
   [steps]="steps"
   [currentStep]="currentStep()"
+  [isNextDisabled]="isFooterNextDisabled()"
   (stepChange)="onStepChange($event)"
   (saveDraft)="saveAsDraft()"
+  (footerContinue)="handleFooterContinue()"
+  (footerBack)="handleFooterBack()"
 >
   @if (isLoading()) {
     <div class="loading-overlay">
@@ -17,31 +20,24 @@
       <cos-step-topic-info
         [topic]="$any(topic())"
         (topicUpdate)="onTopicUpdate($event)"
-        (next)="saveToSettings()"
       ></cos-step-topic-info>
     }
     @case ('settings') {
       <cos-step-topic-settings
         [topic]="$any(topic())"
         (topicUpdate)="onTopicUpdate($event)"
-        (next)="onStepChange('voting')"
-        (previous)="onStepChange('info')"
       ></cos-step-topic-settings>
     }
     @case ('voting') {
       <cos-step-vote-settings
         [vote]="$any(vote())"
         (voteUpdate)="onVoteUpdate($event)"
-        (next)="onStepChange('preview')"
-        (previous)="onStepChange('settings')"
       ></cos-step-vote-settings>
     }
     @case ('preview') {
       <cos-step-topic-preview
         [topic]="$any(topic())"
         [vote]="vote()"
-        (previous)="onStepChange('voting')"
-        (save)="onPublish()"
       ></cos-step-topic-preview>
     }
   }

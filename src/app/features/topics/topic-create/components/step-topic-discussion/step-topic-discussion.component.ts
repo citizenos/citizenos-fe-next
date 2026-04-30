@@ -2,12 +2,11 @@ import { Component, input, output, signal, ChangeDetectionStrategy, OnInit } fro
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DiscussionData } from '../../../../../core/interfaces/discussion';
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-step-topic-discussion',
   standalone: true,
-  imports: [FormsModule, TranslateModule, ButtonComponent],
+  imports: [FormsModule, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './step-topic-discussion.component.html',
   styleUrl: './step-topic-discussion.component.scss'
@@ -15,8 +14,6 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 export class StepTopicDiscussionComponent implements OnInit {
   discussion = input<DiscussionData>({ question: '', deadline: null });
   discussionChange = output<DiscussionData>();
-  next = output<void>();
-  previous = output<void>();
 
   deadlineEnabled = signal(false);
 
