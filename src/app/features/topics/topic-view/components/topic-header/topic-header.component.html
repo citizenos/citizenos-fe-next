@@ -26,7 +26,6 @@
         (clicked)="onToggleFavourite()"
         [icon]="topic().favourite ? 'favourite-filled' : 'favourite'"
         [class.like_active]="topic().favourite"
-        [cosTooltip]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate"
       >
       </cos-button>
     }

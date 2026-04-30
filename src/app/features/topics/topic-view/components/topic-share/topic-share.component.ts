@@ -11,7 +11,7 @@ import { ConfirmDialogComponent } from '../../../../../shared/components/confirm
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
-import { TooltipDirective } from '../../../../../shared/components/tooltip/tooltip.directive';
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { take } from 'rxjs';
 
 @Component({
@@ -24,7 +24,7 @@ import { take } from 'rxjs';
     IconComponent,
     ButtonComponent,
     DropdownComponent,
-    TooltipDirective
+    TooltipComponent
   ],
   templateUrl: './topic-share.component.html',
   styleUrls: ['./topic-share.component.scss'],

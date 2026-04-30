@@ -8,13 +8,13 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
-import { TooltipDirective } from '../../../../../shared/components/tooltip/tooltip.directive';
+
 
 @Component({
   selector: 'app-topic-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UpperCasePipe, RouterModule, TranslateModule, IconComponent, CosDropdownDirective, ButtonComponent, TooltipDirective],
+  imports: [UpperCasePipe, RouterModule, TranslateModule, IconComponent, CosDropdownDirective, ButtonComponent],
   templateUrl: './topic-header.component.html',
   styleUrls: ['./topic-header.component.scss']
 })

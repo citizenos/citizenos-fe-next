@@ -126,4 +126,8 @@
 iframe {
   border-radius: 8px;
   border: 1px solid var(--color-border);
+
+  &.hidden {
+    display: none;
+  }
 }

@@ -18,9 +18,10 @@
     <div class="level_select_wrap">
       <span class="bold">
         {{ 'COMPONENTS.TOPIC_SHARE.LBL_ACCESS_LEVEL' | translate }}
-        <span [cosTooltip]="('COMPONENTS.TOPIC_INVITE_EDITORS.TOOLTIP_TOPIC_ROLES_DESCRIPTION' | translate) || ''" class="tooltip-trigger">
-          <cos-icon name="info" [size]="16"></cos-icon>
-        </span>
+        <cos-tooltip
+          [title]="'COMPONENTS.TOPIC_INVITE_EDITORS.TOOLTIP_TOPIC_ROLES_HEADING' | translate"
+          [description]="'COMPONENTS.TOPIC_INVITE_EDITORS.TOOLTIP_TOPIC_ROLES_DESCRIPTION' | translate">
+        </cos-tooltip>
       </span>
 
       <cos-dropdown [class.disabled]="!canUpdate()">

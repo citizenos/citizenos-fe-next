@@ -13,9 +13,10 @@
     <div class="level_select_wrap">
       <span class="bold">
         {{ 'COMPONENTS.GROUP_SHARE.LBL_ACCESS_LEVEL' | translate }}
-        <span [cosTooltip]="('VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate) || ''" class="tooltip-trigger">
-          <cos-icon name="info" [size]="16"></cos-icon>
-        </span>
+        <cos-tooltip
+          [title]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_HEADING' | translate"
+          [description]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate">
+        </cos-tooltip>
       </span>
       <cos-dropdown [class.disabled]="!canUpdate()">
         <div selection class="selected_item">

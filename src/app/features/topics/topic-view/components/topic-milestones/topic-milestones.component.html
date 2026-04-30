@@ -2,8 +2,9 @@
   <div class="follow_up_header">
     <div class="header_division">
       <cos-icon name="status-follow-up" [size]="32" style="color: var(--color-follow-up)"></cos-icon>
-      <div class="follow_up_title" translate="COMPONENTS.TOPIC_MILESTONES.CREATE_A_MILESTONE"
-           [cosTooltip]="'COMPONENTS.TOPIC_MILESTONES.TOOLTIP_CREATE' | translate">
+      <div class="follow_up_title" translate="COMPONENTS.TOPIC_MILESTONES.CREATE_A_MILESTONE">
+        <cos-tooltip [description]="'COMPONENTS.TOPIC_MILESTONES.TOOLTIP_CREATE' | translate">
+        </cos-tooltip>
       </div>
     </div>
   </div>

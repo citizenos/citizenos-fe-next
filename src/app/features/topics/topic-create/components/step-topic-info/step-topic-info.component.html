@@ -91,16 +91,15 @@
     </div>
     @if (block().description) {
       <div class="block_content description">
-        @if (topic().padUrl) {
-          <iframe
-            cosEtherpad
-            frameborder="0"
-            scrolling="no"
-            [src]="sanitizeURL()"
-            width="100%"
-            height="600"
-          ></iframe>
-        }
+        <iframe
+          cosEtherpad
+          frameborder="0"
+          scrolling="no"
+          [class.hidden]="!topic().padUrl"
+          [src]="sanitizeURL()"
+          width="100%"
+          height="600"
+        ></iframe>
       </div>
     }
   </div>
