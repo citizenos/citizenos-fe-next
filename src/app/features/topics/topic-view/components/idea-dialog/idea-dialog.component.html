@@ -59,15 +59,17 @@
           <div class="idea_header">
             <div class="idea_header_left">
               @if (idea()!.author) {
-                <div class="avatar">
-                  @if (idea()!.author?.imageUrl) {
-                    <img [src]="idea()!.author!.imageUrl" [alt]="idea()!.author!.name" />
-                  } @else {
-                    <div class="profile_image_filler">
-                      <cos-initials [name]="idea()!.author!.name || ''"></cos-initials>
-                    </div>
-                  }
-                </div>
+                <cos-tooltip [noIcon]="true" [title]="idea()!.author!.name">
+                  <div trigger class="avatar">
+                    @if (idea()!.author?.imageUrl) {
+                      <img [src]="idea()!.author!.imageUrl" [alt]="idea()!.author!.name" />
+                    } @else {
+                      <div class="profile_image_filler">
+                        <cos-initials [name]="idea()!.author!.name || ''"></cos-initials>
+                      </div>
+                    }
+                  </div>
+                </cos-tooltip>
                 <div class="name_wrap">
                   <div class="name" [innerHTML]="idea()!.author!.name"></div>
                   <div class="date">{{ idea()!.createdAt | date: 'y-MM-dd HH:mm' }}</div>
@@ -81,13 +83,17 @@
               }
 
               @if (userStore.isAuthenticated()) {
-                <button class="btn_small_plain" (click)="toggleFavourite()">
-                  @if (!idea()!.favourite) {
-                    <cos-icon name="favourite" [size]="16"></cos-icon>
-                  } @else {
-                    <cos-icon name="favourite-filled" [size]="16"></cos-icon>
-                  }
-                </button>
+                <cos-tooltip [noIcon]="true"
+                  [title]="(idea()!.favourite ? 'COMPONENTS.IDEABOX.TOOLTIP_SAVED_TO_FAVOURITE' : 'COMPONENTS.IDEABOX.TOOLTIP_FAVOURITE') | translate"
+                  pos="top">
+                  <button trigger class="btn_small_plain" (click)="toggleFavourite()">
+                    @if (!idea()!.favourite) {
+                      <cos-icon name="favourite" [size]="16"></cos-icon>
+                    } @else {
+                      <cos-icon name="favourite-filled" [size]="16"></cos-icon>
+                    }
+                  </button>
+                </cos-tooltip>
               }
             </div>
           </div>
@@ -99,14 +105,18 @@
 
           <div class="idea_footer">
             <div class="like_wrap" [class.selected]="idea()!.votes.up.selected">
-              <button class="btn_idea_like" (click)="voteIdea(1)">
-                @if (!idea()!.votes.up.selected) {
-                  <cos-icon name="thumbs-up" [size]="16"></cos-icon>
-                } @else {
-                  <cos-icon name="thumbs-up" [size]="16" style="color: var(--color-link)"></cos-icon>
-                }
-              </button>
-              <span class="like_counter_wrap">{{ idea()!.votes.up.count }}</span>
+              <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate" pos="top">
+                <button trigger class="btn_idea_like" (click)="voteIdea(1)">
+                  @if (!idea()!.votes.up.selected) {
+                    <cos-icon name="thumbs-up" [size]="16"></cos-icon>
+                  } @else {
+                    <cos-icon name="thumbs-up" [size]="16" style="color: var(--color-link)"></cos-icon>
+                  }
+                </button>
+              </cos-tooltip>
+              <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE_COUNT' | translate" pos="top">
+                <span trigger class="like_counter_wrap">{{ idea()!.votes.up.count }}</span>
+              </cos-tooltip>
             </div>
           </div>
         </div>

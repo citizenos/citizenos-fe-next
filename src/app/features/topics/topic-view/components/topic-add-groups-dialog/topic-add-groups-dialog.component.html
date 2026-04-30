@@ -40,6 +40,10 @@
             <div class="selected_members_wrap">
               <div class="global_level_select">
                 <span translate="COMPONENTS.TOPIC_ADD_GROUPS.LBL_ALL_GROUPS_LEVEL"></span>
+                <cos-tooltip
+                  [title]="'COMPONENTS.TOPIC_ADD_GROUPS.TOOLTIP_GROUP_PERMISSIONS_TITLE' | translate"
+                  [description]="'COMPONENTS.TOPIC_ADD_GROUPS.TOOLTIP_GROUP_PERMISSIONS_CONTENT' | translate">
+                </cos-tooltip>
                 <cos-dropdown>
                   <div selection class="selected_item">
                     {{ 'TXT_TOPIC_LEVELS_' + (globalLevel() | uppercase) | translate }}

@@ -57,9 +57,11 @@
   <!-- Intro Block -->
   <div class="create_content_block discussion" [class.active]="block().intro" [class.open]="block().intro">
     <div class="block_title_wrap" (click)="toggleBlock('intro')">
-      <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_INTRO">
-        <!-- Tooltip could go here if needed -->
-      </div>
+      <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_INTRO"></div>
+      <cos-tooltip
+        [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_INTRO_TITLE' | translate"
+        [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_INTRO_CONTENT' | translate"
+      ></cos-tooltip>
       <div class="counter_wrap">
         <div class="char_counter">{{ (topic().intro?.length || 0) }}/{{ introLimit }}</div>
       </div>
@@ -83,6 +85,10 @@
   <div class="create_content_block discussion" [class.active]="block().description" [class.open]="block().description">
     <div class="block_title_wrap" (click)="toggleBlock('description')">
       <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_DESCRIPTION"></div>
+      <cos-tooltip
+        [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_TEXT_TITLE' | translate"
+        [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_TEXT_CONTENT' | translate"
+      ></cos-tooltip>
       <div class="counter_wrap">
         @if (!topic().description) {
            <cos-icon name="warning" [size]="16" class="error"></cos-icon>

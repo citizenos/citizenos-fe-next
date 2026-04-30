@@ -61,6 +61,10 @@
             @if (pendingUsers().length) {
               <div class="level_row">
                 <span translate="COMPONENTS.GROUP_INVITE.LBL_ALL_LEVEL"></span>
+                <cos-tooltip
+                  [title]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_HEADING' | translate"
+                  [description]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate">
+                </cos-tooltip>
                 <cos-dropdown>
                   <div selection>{{ 'TXT_GROUP_LEVELS_' + selectedLevel().toUpperCase() | translate }}</div>
                   <div options>

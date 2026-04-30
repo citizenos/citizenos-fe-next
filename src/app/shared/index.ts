@@ -11,7 +11,7 @@ export { NotificationComponent } from './components/notification/notification.co
 export { PaginationComponent } from './components/pagination/pagination.component';
 export { TermsLinksComponent } from './components/terms-links/terms-links.component';
 export { ToggleComponent } from './components/toggle/toggle.component';
-export { TooltipDirective } from './components/tooltip/tooltip.directive';
+export { TooltipComponent } from './components/tooltip/tooltip.component';
 export { TypeaheadComponent, type TypeaheadItem } from './components/typeahead/typeahead.component';
 export { ConfirmDialogComponent, type ConfirmDialogData, type DialogLevel } from './components/confirm-dialog/confirm-dialog.component';
 export { InvitationDialogComponent, type InviteDialogData } from './components/invitation-dialog/invitation-dialog.component';

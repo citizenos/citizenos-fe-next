@@ -22,9 +22,11 @@
       </div>
 
       <div class="dropdown button_dropdown" cosDropdown>
-        <button class="btn-actions" (click)="$event.stopPropagation()">
-          <cos-icon name="more-vertical" size="16"></cos-icon>
-        </button>
+        <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.ARGUMENT.TOOLTIP_OPTIONS' | translate" pos="top">
+          <button trigger class="btn-actions" (click)="$event.stopPropagation()">
+            <cos-icon name="more-vertical" size="16"></cos-icon>
+          </button>
+        </cos-tooltip>
         <div class="options">
           @if (canEdit()) {
             <button class="option" (click)="showEdit.update(v => !v)">
@@ -78,14 +80,18 @@
 
     <div class="argument-footer">
       <div class="votes">
-        <button class="btn-vote btn-vote--up" [class.active]="argument().votes?.up?.selected" (click)="vote(1)">
-          <cos-icon name="thumbs-up" size="16"></cos-icon>
-          <span>{{ argument().votes?.up?.count || 0 }}</span>
-        </button>
-        <button class="btn-vote btn-vote--down" [class.active]="argument().votes?.down?.selected" (click)="vote(-1)">
-          <cos-icon name="thumbs-down" size="16"></cos-icon>
-          <span>{{ argument().votes?.down?.count || 0 }}</span>
-        </button>
+        <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.TOPIC_ARGUMENTS.TOOLTIP_UPVOTE' | translate" pos="top">
+          <button trigger class="btn-vote btn-vote--up" [class.active]="argument().votes?.up?.selected" (click)="vote(1)">
+            <cos-icon name="thumbs-up" size="16"></cos-icon>
+            <span>{{ argument().votes?.up?.count || 0 }}</span>
+          </button>
+        </cos-tooltip>
+        <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.TOPIC_ARGUMENTS.TOOLTIP_DOWNVOTE' | translate" pos="top">
+          <button trigger class="btn-vote btn-vote--down" [class.active]="argument().votes?.down?.selected" (click)="vote(-1)">
+            <cos-icon name="thumbs-down" size="16"></cos-icon>
+            <span>{{ argument().votes?.down?.count || 0 }}</span>
+          </button>
+        </cos-tooltip>
       </div>
 
       <div class="reply-actions">

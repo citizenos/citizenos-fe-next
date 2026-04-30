@@ -73,6 +73,10 @@
 
       <div class="header_wrap">
         <div class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_LOCALITY"></div>
+        <cos-tooltip
+          [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_LOCALITY_TITLE' | translate"
+          [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_LOCALITY_CONTENT' | translate"
+        ></cos-tooltip>
         <div class="description" translate="VIEWS.TOPIC_CREATE.SETTINGS_LOCALITY_SELECT_DESC"></div>
       </div>
       <div class="locality-row">
@@ -112,6 +116,10 @@
     <div class="section_content_wrap">
       <div class="header_wrap">
         <div class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_ADD_TO_GROUP"></div>
+        <cos-tooltip
+          [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_ADD_TO_GROUP' | translate"
+          [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_ADD_TO_GROUP_CONTENT' | translate"
+        ></cos-tooltip>
         <div class="description" translate="VIEWS.TOPIC_CREATE.SETTINGS_ADD_TO_GROUP_DESC"></div>
       </div>
       @if (availableGroups().length) {

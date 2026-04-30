@@ -17,38 +17,40 @@
     <div class="idea_header_left">
       @if (!isDraft()) {
         @if (idea().author) {
-          <div class="avatar">
-            @if (idea().author?.imageUrl) {
-              <img [src]="idea().author!.imageUrl" [alt]="idea().author!.name" />
-            } @else {
-              <div class="profile_image_filler">
-                <cos-initials [name]="idea().author!.name || ''" />
-              </div>
-            }
-          </div>
+          <cos-tooltip [noIcon]="true" [title]="idea().author?.name || ''">
+            <div trigger class="avatar">
+              @if (idea().author?.imageUrl) {
+                <img [src]="idea().author!.imageUrl" [alt]="idea().author!.name" />
+              } @else {
+                <div class="profile_image_filler">
+                  <cos-initials [name]="idea().author!.name || ''" />
+                </div>
+              }
+            </div>
+          </cos-tooltip>
           <div class="vertical_line_separator"></div>
         }
 
         <div class="like_wrap" [class.selected]="idea().votes.up.selected">
-          <button class="btn_idea_like" [class.disabled]="!canVote()" (click)="vote(1)">
-            @if (!idea().votes.up.selected) {
+          <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate" pos="top">
+            <button trigger class="btn_idea_like" [class.disabled]="!canVote()" (click)="vote(1)">
               <cos-icon name="thumbs-up" />
-            } @else {
-              <cos-icon name="thumbs-up" />
-            }
-          </button>
-          <span class="like_counter_wrap" (click)="showReactions()">{{ idea().votes.up.count }}</span>
+            </button>
+          </cos-tooltip>
+          <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE_COUNT' | translate" pos="top">
+            <span trigger class="like_counter_wrap" (click)="showReactions()">{{ idea().votes.up.count }}</span>
+          </cos-tooltip>
         </div>
 
         @if (userStore.user()) {
           <div class="vertical_line_separator"></div>
-          <button class="btn_small_plain" (click)="$event.preventDefault(); $event.stopPropagation(); toggleFavourite()">
-            @if (!idea().favourite) {
+          <cos-tooltip [noIcon]="true"
+            [title]="(idea().favourite ? 'COMPONENTS.IDEABOX.TOOLTIP_SAVED_TO_FAVOURITE' : 'COMPONENTS.IDEABOX.TOOLTIP_FAVOURITE') | translate"
+            pos="top">
+            <button trigger class="btn_small_plain" (click)="$event.preventDefault(); $event.stopPropagation(); toggleFavourite()">
               <cos-icon name="heart" />
-            } @else {
-              <cos-icon name="heart" />
-            }
-          </button>
+            </button>
+          </cos-tooltip>
         }
       } @else {
         <div class="draft_label">

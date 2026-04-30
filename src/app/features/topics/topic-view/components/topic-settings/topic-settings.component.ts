@@ -13,6 +13,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 import { ToggleComponent } from '../../../../../shared/components/toggle/toggle.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { TopicVoteDeadlineComponent } from '../topic-vote-deadline/topic-vote-deadline.component';
 
 export interface TopicSettingsData {
@@ -32,7 +33,8 @@ export interface TopicSettingsData {
     ToggleComponent,
     DropdownComponent,
     IconComponent,
-    A11yModule
+    A11yModule,
+    TooltipComponent
   ],
   templateUrl: './topic-settings.component.html',
   styleUrls: ['./topic-settings.component.scss'],

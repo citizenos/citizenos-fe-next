@@ -16,6 +16,7 @@ import { ConfirmDialogComponent } from '../../../../../shared/components/confirm
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 
 @Component({
   selector: 'cos-argument',
@@ -24,6 +25,7 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
   imports: [
     DatePipe, FormsModule, TranslateModule,
     IconComponent, InitialsComponent, CosDropdownDirective,
+    TooltipComponent,
     forwardRef(() => ArgumentComponent),
   ],
   templateUrl: './argument.component.html',

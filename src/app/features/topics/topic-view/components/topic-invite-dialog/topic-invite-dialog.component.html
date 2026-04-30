@@ -63,6 +63,10 @@
               <div class="selected_members_wrap">
                 <div class="global_level_select">
                   <span translate="COMPONENTS.TOPIC_INVITE.LBL_ALL_INVITEES_LEVEL"></span>
+                  <cos-tooltip
+                    [title]="'VIEWS.TOPIC_INVITE.TOOLTIP_MEMBERS_PERMISSIONS_HEADING' | translate"
+                    [description]="'VIEWS.TOPIC_INVITE.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate">
+                  </cos-tooltip>
                   <cos-dropdown>
                     <div selection class="selected_item">
                       {{ 'TXT_TOPIC_LEVELS_' + (globalLevel() | uppercase) | translate }}

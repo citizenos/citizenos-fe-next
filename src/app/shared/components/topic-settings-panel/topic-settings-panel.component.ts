@@ -9,6 +9,7 @@ import { CountryService } from '../../../core/services/country.service';
 import { LanguageService } from '../../../core/services/language.service';
 import { DropdownComponent } from '../dropdown/dropdown.component';
 import { IconComponent } from '../icon/icon.component';
+import { TooltipComponent } from '../tooltip/tooltip.component';
 
 export interface TopicMemberGroup {
   id: string;
@@ -21,7 +22,7 @@ export interface TopicMemberGroup {
 @Component({
   selector: 'cos-topic-settings-panel',
   standalone: true,
-  imports: [TranslateModule, FormsModule, UpperCasePipe, DropdownComponent, IconComponent],
+  imports: [TranslateModule, FormsModule, UpperCasePipe, DropdownComponent, IconComponent, TooltipComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-settings-panel.component.html',
   styleUrl: './topic-settings-panel.component.scss'

@@ -20,13 +20,13 @@ import { InitialsComponent } from '../../../../../shared/components/initials/ini
 import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
-import { TooltipDirective } from '../../../../../shared/components/tooltip/tooltip.directive';
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 
 @Component({
   selector: 'app-topic-vote-cast',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DatePipe, UpperCasePipe, BigGraphComponent, InitialsComponent, IconComponent, CosDropdownDirective, TooltipDirective],
+  imports: [TranslateModule, DatePipe, UpperCasePipe, BigGraphComponent, InitialsComponent, IconComponent, CosDropdownDirective, TooltipComponent],
   templateUrl: './topic-vote-cast.component.html',
   styleUrls: ['./topic-vote-cast.component.scss']
 })

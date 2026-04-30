@@ -124,7 +124,12 @@ export class TopicCreateComponent implements OnInit {
 
   private createTopicEagerly() {
     this.isLoading.set(true);
-    this.topicService.save(this.topic()).pipe(take(1)).subscribe({
+    const initialPayload = {
+      description: '<html><head></head><body></body></html>',
+      status: 'draft',
+      visibility: 'private'
+    };
+    this.topicService.save(initialPayload).pipe(take(1)).subscribe({
       next: (savedTopic) => {
         this.topic.set(savedTopic);
         this.reloadMembers$.next();

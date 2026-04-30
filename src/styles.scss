@@ -315,27 +315,6 @@ label:has(input:focus-visible) .radio {
   box-sizing: border-box;
 }
 
-/* Tooltip */
-.cos-tooltip-box {
-  position: fixed;
-  z-index: 9999;
-  background: var(--color-primary);
-  color: white;
-  font-size: 13px;
-  line-height: 18px;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-  max-width: 280px;
-  pointer-events: none;
-  white-space: normal;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-.cos-tooltip-box--visible {
-  opacity: 1;
-}
 
 .page_content {
   display: flex;

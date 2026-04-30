@@ -110,7 +110,13 @@
             <div class="text_area">
               <div class="heading bold" translate="COMPONENTS.TOPIC_VOTE_CAST.HEADING_VOTE_ENDED"></div>
               @if (canUpdate()) {
-                <div class="with_tooltip" translate="COMPONENTS.TOPIC_VOTE_CAST.VOTE_TXT_VOTE_ENDED"></div>
+                <div class="with_tooltip">
+                  <span translate="COMPONENTS.TOPIC_VOTE_CAST.VOTE_TXT_VOTE_ENDED"></span>
+                  <cos-tooltip
+                    [title]="'COMPONENTS.TOPIC_VOTE_CAST.TOOLTIP_VOTE_CLOSED_TITLE' | translate"
+                    [description]="'COMPONENTS.TOPIC_VOTE_CAST.TOOLTIP_VOTE_CLOSED_CONTENT' | translate">
+                  </cos-tooltip>
+                </div>
               }
               @if (canDelete()) {
                 <div class="links_wrap">

@@ -17,6 +17,7 @@ import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/di
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 
 export interface TopicAddGroupsDialogData {
   topic: Topic;
@@ -33,7 +34,8 @@ export interface TopicAddGroupsDialogData {
     IconComponent,
     ButtonComponent,
     DropdownComponent,
-    DialogCloseDirective
+    DialogCloseDirective,
+    TooltipComponent
   ],
   templateUrl: './topic-add-groups-dialog.component.html',
   styleUrls: ['./topic-add-groups-dialog.component.scss'],

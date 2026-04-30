@@ -12,7 +12,6 @@ import { ConfirmDialogComponent } from '../../../../../shared/components/confirm
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
-import { TooltipDirective } from '../../../../../shared/components/tooltip/tooltip.directive';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 
 @Component({
@@ -25,7 +24,6 @@ import { InputComponent } from '../../../../../shared/components/input/input.com
     IconComponent,
     CosDropdownDirective,
     TooltipComponent,
-    TooltipDirective,
     InputComponent
   ],
   templateUrl: './topic-milestones.component.html',

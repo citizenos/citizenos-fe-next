@@ -20,10 +20,12 @@ export interface IdeaDialogData {
   ideas?: Idea[];
 }
 
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
+
 @Component({
   selector: 'cos-idea-dialog',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, DatePipe, A11yModule, IconComponent],
+  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, DatePipe, A11yModule, IconComponent, TooltipComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './idea-dialog.component.html',
   styleUrls: ['./idea-dialog.component.scss'],

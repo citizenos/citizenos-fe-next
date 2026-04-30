@@ -1,71 +1,128 @@
 :host {
   display: inline-block;
   position: relative;
+  vertical-align: middle;
+  line-height: 1;
 }
 
 .tooltip_wrapper {
   display: inline-flex;
   align-items: center;
   position: relative;
-  cursor: default;
+  cursor: help;
 }
 
 .tooltip_icon {
   display: flex;
   align-items: center;
+  color: var(--color-text-muted);
+  opacity: 0.7;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
 
   svg {
-    position: relative;
-    top: 1px;
+    fill: currentColor;
+    path {
+      fill: currentColor;
+    }
   }
 }
 
 .tooltip_container {
   position: absolute;
-  z-index: 9999;
+  z-index: 10000;
   width: max-content;
-  height: max-content;
+  pointer-events: none;
+  left: 50%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(8px);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.2s;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  // Positioning
+  &.bottom {
+    top: 100%;
+    padding-top: 10px;
+  }
+
+  &.top {
+    bottom: 100%;
+    padding-bottom: 10px;
+    transform: translateX(-50%) translateY(-8px);
+    &.visible {
+      transform: translateX(-50%) translateY(0);
+    }
+  }
 
   @media (max-width: 600px) {
-    width: calc(100vw - 32px);
-    max-width: calc(100vw - 32px);
-    left: 0;
+    position: fixed;
+    top: auto !important;
+    bottom: 20px !important;
+    left: 20px !important;
+    right: 20px !important;
+    width: auto;
+    transform: translateY(20px) !important;
+    opacity: 0;
+    
+    &.visible {
+      transform: translateY(0) !important;
+      opacity: 1;
+    }
+    
+    .arrow_up, .arrow_down {
+      display: none;
+    }
   }
 }
 
 .tooltip_box {
   display: flex;
   flex-direction: column;
-  border-radius: 8px;
-  background: var(--color-text);
+  background: #2c3b47; // Dark slate from legacy
+  color: #fff;
   padding: 16px;
-  gap: 16px;
-  max-width: 400px;
-  position: absolute;
-  width: max-content;
-  box-shadow: 0px 8px 20px 0px rgba(220, 231, 240, 0.3),
-    0px 12px 16px 0px rgba(50, 85, 112, 0.1);
-  // Appear below the icon by default
-  top: calc(100% + 6px);
-  left: -12px;
+  border-radius: 8px;
+  max-width: 300px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  position: relative;
 
   @media (max-width: 600px) {
-    max-width: 300px;
+    max-width: none;
   }
 }
 
 .arrow_up {
   position: absolute;
-  top: -8px;
-  left: 4px;
-  z-index: 1;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #2c3b47;
 }
 
 .arrow_down {
   position: absolute;
-  bottom: -8px;
-  left: 4px;
-  z-index: 1;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #2c3b47;
 }
 
 .tooltip_content {
@@ -73,25 +130,34 @@
   flex-direction: column;
   gap: 8px;
   align-items: flex-start;
+  text-align: left;
 
   .content_title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    line-height: 24px;
-    color: var(--color-surfaces, #fff);
+    line-height: 1.4;
+    color: #fff;
   }
 
   .content_description {
     font-size: 14px;
     font-weight: 400;
-    line-height: 20px;
-    color: var(--color-surfaces, #fff);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
     word-break: break-word;
-    text-align: left;
 
     ::ng-deep b,
     ::ng-deep strong {
       font-weight: 600;
+      color: #fff;
+    }
+
+    ::ng-deep a {
+      color: #7abaff;
+      text-decoration: underline;
+      &:hover {
+        color: #a3cfff;
+      }
     }
   }
 }

@@ -20,14 +20,18 @@
     }
 
     @if (isLoggedIn()) {
-      <cos-button
-        variant="light"
-        class="tablet_show"
-        (clicked)="onToggleFavourite()"
-        [icon]="topic().favourite ? 'favourite-filled' : 'favourite'"
-        [class.like_active]="topic().favourite"
-      >
-      </cos-button>
+      <cos-tooltip [noIcon]="true"
+        [title]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE' : 'VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE') | translate">
+        <cos-button
+          trigger
+          variant="light"
+          class="tablet_show"
+          (clicked)="onToggleFavourite()"
+          [icon]="topic().favourite ? 'favourite-filled' : 'favourite'"
+          [class.like_active]="topic().favourite"
+        >
+        </cos-button>
+      </cos-tooltip>
     }
 
     <cos-button
@@ -39,7 +43,9 @@
     </cos-button>
 
     <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" cosDropdown>
-      <cos-button variant="light" icon="more-vertical"></cos-button>
+      <cos-tooltip [noIcon]="true" [title]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
+        <cos-button trigger variant="light" icon="more-vertical"></cos-button>
+      </cos-tooltip>
 
       <div class="options">
         @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {

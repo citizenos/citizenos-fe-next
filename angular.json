@@ -36,7 +36,12 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              {
+                "input": "src/assets/styles/etherpad.scss",
+                "inject": false,
+                "bundleName": "etherpad"
+              }
             ]
           },
           "configurations": {

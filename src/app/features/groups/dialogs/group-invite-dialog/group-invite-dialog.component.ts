@@ -18,6 +18,7 @@ import { DropdownComponent } from '../../../../shared/components/dropdown/dropdo
 import { TypeaheadComponent } from '../../../../shared/components/typeahead/typeahead.component';
 import { GroupShareComponent } from '../../group-detail/components/group-share/group-share.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { TooltipComponent } from '../../../../shared/components/tooltip/tooltip.component';
 import { Group } from '../../../../core/interfaces/group';
 import { UserStore } from '../../../../core/state/user.store';
 import { of, switchMap, take } from 'rxjs';
@@ -32,7 +33,8 @@ function isEmail(s: string) { return EMAIL_RE.test(s.trim()); }
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslateModule, FormsModule, IconComponent, DropdownComponent,
-    TypeaheadComponent, DialogCloseDirective, GroupShareComponent, ButtonComponent
+    TypeaheadComponent, DialogCloseDirective, GroupShareComponent, ButtonComponent,
+    TooltipComponent
   ],
   templateUrl: './group-invite-dialog.component.html',
   styleUrls: ['./group-invite-dialog.component.scss'],

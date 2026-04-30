@@ -17,7 +17,7 @@ import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/di
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
-import { TooltipDirective } from '../../../../../shared/components/tooltip/tooltip.directive';
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { TopicShareComponent } from '../topic-share/topic-share.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 
@@ -38,7 +38,7 @@ export interface TopicInviteDialogData {
     IconComponent,
     ButtonComponent,
     DropdownComponent,
-    TooltipDirective,
+    TooltipComponent,
     DialogCloseDirective,
     TopicShareComponent,
     InitialsComponent
