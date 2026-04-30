@@ -69,6 +69,23 @@ import { IllustrationComponent } from '../../../shared/components/illustration/i
   ],
   templateUrl: './group-detail.component.html',
   styleUrls: ['./group-detail.component.scss'],
+  animations: [
+    trigger('openSlide', [
+      state('open', style({
+        height: '*',
+        opacity: 1,
+        visibility: 'visible',
+      })),
+      state('closed', style({
+        height: '0',
+        opacity: 0,
+        visibility: 'hidden',
+        padding: '0',
+        margin: '0',
+      })),
+      transition('closed <=> open', animate('300ms ease-in-out')),
+    ]),
+  ],
 })
 export class GroupDetailComponent {
   private route = inject(ActivatedRoute);
@@ -95,11 +112,14 @@ export class GroupDetailComponent {
   membersPage = signal(1);
 
   tabSelected = signal('topics');
+  manageTopicsOpen = signal(false);
+  manageMembersOpen = signal(false);
   groupTabs = signal<TabItem[]>([
     { id: 'topics', label: 'VIEWS.GROUP.TAB_TOPICS' },
     { id: 'members', label: 'VIEWS.GROUP.TAB_MEMBERS' },
   ]);
   moreInfo = signal(false);
+  moreFilters = signal(false);
   removeTopics = signal(false);
   groupActionsOpen = signal(false);
   mobileActions = signal(false);
@@ -146,6 +166,10 @@ export class GroupDetailComponent {
     const target = event.target as HTMLElement;
     if (!target.closest('.group_actions_dropdown')) {
       this.groupActionsOpen.set(false);
+    }
+    if (!target.closest('.button_dropdown')) {
+      this.manageTopicsOpen.set(false);
+      this.manageMembersOpen.set(false);
     }
     if (!target.closest('.member_actions')) {
       this.activeMemberMenuId.set(null);

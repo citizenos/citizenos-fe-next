@@ -353,19 +353,26 @@
       }
     }
 
+    .extra-info-collapse {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 300ms ease-in-out;
+
+      &.open {
+        grid-template-rows: 1fr;
+      }
+    }
+
     #group_extra_info {
+      overflow: hidden;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       gap: 32px;
+      min-height: 0;
 
       @include mixins.tablet {
         flex-direction: column-reverse;
-        display: none;
-
-        &.open {
-          display: flex;
-        }
       }
 
       #extra_info_left,
