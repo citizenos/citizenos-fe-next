@@ -366,8 +366,8 @@ export class TopicViewComponent implements OnInit, OnDestroy {
       this.dialogService.open(m.TopicReportReasonComponent, {
         data: {
           report: {
-            moderatedReasonText: topic.moderatedReasonText,
-            moderatedReasonType: topic.moderatedReasonType
+            moderatedReasonText: topic.report?.moderatedReasonText,
+            moderatedReasonType: topic.report?.moderatedReasonType
           }
         }
       });

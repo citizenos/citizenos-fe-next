@@ -30,9 +30,7 @@ export interface IdeaReplyReportData {
     DropdownComponent
   ],
   templateUrl: './idea-reply-report.component.html',
-  styleUrls: ['./idea-reply-report.component.scss']
-})
-,
+  styleUrls: ['./idea-reply-report.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdeaReplyReportComponent {

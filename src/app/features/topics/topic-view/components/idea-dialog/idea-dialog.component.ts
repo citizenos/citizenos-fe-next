@@ -6,6 +6,7 @@ import { take } from 'rxjs';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective } from '../../../../../shared/dialog';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { Idea } from '../../../../../core/interfaces/idea';
@@ -22,7 +23,7 @@ export interface IdeaDialogData {
 @Component({
   selector: 'cos-idea-dialog',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, DatePipe, A11yModule],
+  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, DatePipe, A11yModule, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './idea-dialog.component.html',
   styleUrls: ['./idea-dialog.component.scss'],

@@ -30,14 +30,10 @@
       <div class="button_wrap" [ngClass]="{ open: readMore() }">
         <button class="btn_medium_secondary" (click)="toggleReadMore()">
           @if (!readMore()) {
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17 10L12 15L7 10" stroke="#1168A8" stroke-width="2" stroke-linecap="round" />
-            </svg>
+            <cos-icon name="chevron-down" [size]="24" color="#1168A8"></cos-icon>
             <span translate="VIEWS.TOPICS_TOPICID.BTN_READ_MORE"></span>
           } @else {
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17 15L12 10L7 15" stroke="#1168A8" stroke-width="2" stroke-linecap="round" />
-            </svg>
+            <cos-icon name="chevron-up" [size]="24" color="#1168A8"></cos-icon>
             <span translate="VIEWS.TOPICS_TOPICID.BTN_READ_LESS"></span>
           }
         </button>

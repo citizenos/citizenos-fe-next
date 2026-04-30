@@ -11,6 +11,7 @@ import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
+import { TooltipDirective } from '../../../../../shared/components/tooltip/tooltip.directive';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 
 @Component({
@@ -22,6 +23,7 @@ import { InputComponent } from '../../../../../shared/components/input/input.com
     TranslateModule,
     IconComponent,
     CosDropdownDirective,
+    TooltipDirective,
     InputComponent
   ],
   templateUrl: './topic-milestones.component.html',
@@ -95,8 +97,8 @@ export class TopicMilestonesComponent implements OnInit {
       evt.editMode = true;
     } else {
       evt.editMode = false;
-      evt.subject = evt.origSubject;
-      evt.text = evt.origText;
+      evt.subject = evt.origSubject ?? '';
+      evt.text = evt.origText ?? '';
     }
   }
 

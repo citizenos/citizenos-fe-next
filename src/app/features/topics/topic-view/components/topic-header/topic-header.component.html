@@ -150,7 +150,7 @@
           <div class="line_separator"></div>
           <button class="option" (click)="moderateTopic.emit(topic())">
             <div class="icon_wrap">
-              <cos-icon name="moderate" [size]="16"></cos-icon>
+              <cos-icon name="flag" [size]="16"></cos-icon>
             </div>
             <span translate="VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC"></span>
           </button>
@@ -160,7 +160,7 @@
           <div class="line_separator"></div>
           <button class="option" (click)="reviewTopic.emit(topic())">
             <div class="icon_wrap">
-              <cos-icon name="review" [size]="16"></cos-icon>
+              <cos-icon name="check" [size]="16"></cos-icon>
             </div>
             <span translate="VIEWS.TOPICS_TOPICID.OPTION_REVIEW_TOPIC"></span>
           </button>
@@ -327,7 +327,7 @@
       <div class="line_separator"></div>
       <button class="option" (click)="moderateTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="moderate"></cos-icon>
+          <cos-icon name="flag"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC"></span>
       </button>
@@ -337,7 +337,7 @@
       <div class="line_separator"></div>
       <button class="option" (click)="reviewTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="review"></cos-icon>
+          <cos-icon name="check"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_REVIEW_TOPIC"></span>
       </button>

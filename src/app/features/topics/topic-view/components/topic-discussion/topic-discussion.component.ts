@@ -29,7 +29,6 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
   templateUrl: './topic-discussion.component.html',
   styleUrls: ['./topic-discussion.component.scss']
 })
-})
 export class TopicDiscussionComponent implements OnInit {
   topic = input.required<Topic>();
 

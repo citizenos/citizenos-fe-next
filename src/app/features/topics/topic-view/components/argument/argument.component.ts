@@ -29,7 +29,6 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
   templateUrl: './argument.component.html',
   styleUrls: ['./argument.component.scss']
 })
-})
 export class ArgumentComponent implements OnInit, AfterViewInit {
   argument = input.required<any>();
   topicId = input.required<string>();

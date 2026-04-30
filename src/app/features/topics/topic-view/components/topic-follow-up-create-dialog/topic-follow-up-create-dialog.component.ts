@@ -2,6 +2,7 @@ import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { Topic } from '../../../../../core/interfaces/topic';
@@ -10,7 +11,7 @@ import { Topic } from '../../../../../core/interfaces/topic';
   selector: 'app-topic-follow-up-create-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DialogCloseDirective, NotificationComponent],
+  imports: [TranslateModule, DialogCloseDirective, NotificationComponent, IconComponent],
   templateUrl: './topic-follow-up-create-dialog.component.html',
   styleUrl: './topic-follow-up-create-dialog.component.scss',
 })

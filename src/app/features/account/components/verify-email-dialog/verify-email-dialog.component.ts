@@ -3,11 +3,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DialogCloseDirective } from '../../../../shared/dialog/dialog-ref';
 import { DIALOG_DATA } from '../../../../shared/dialog/dialog-tokens';
 import { NotificationComponent } from '../../../../shared/components/notification/notification.component';
+import { IconComponent } from '../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-verify-email-dialog',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective, NotificationComponent],
+  imports: [TranslateModule, DialogCloseDirective, NotificationComponent, IconComponent],
   templateUrl: './verify-email-dialog.component.html',
   styleUrl: './verify-email-dialog.component.scss',
 })

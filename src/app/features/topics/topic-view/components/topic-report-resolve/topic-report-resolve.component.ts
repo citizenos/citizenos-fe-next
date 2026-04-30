@@ -45,7 +45,7 @@ export class TopicReportResolveComponent {
     this.isLoading.set(true);
     const reportId = this.topic().report?.id;
     if (!reportId) {
-      this.notificationService.addError('MSG_ERROR_REPORT_ID_MISSING');
+      this.notificationService.error('MSG_ERROR_REPORT_ID_MISSING');
       this.isLoading.set(false);
       return;
     }
@@ -54,12 +54,12 @@ export class TopicReportResolveComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.notificationService.addSuccess('COMPONENTS.TOPIC_REPORT_RESOLVE.MSG_RESOLVE_SENT');
+          this.notificationService.success('COMPONENTS.TOPIC_REPORT_RESOLVE.MSG_RESOLVE_SENT');
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Failed to resolve report', err);
-          this.notificationService.addError('MSG_ERROR_RESOLVE_FAILED');
+          this.notificationService.error('MSG_ERROR_RESOLVE_FAILED');
           this.isLoading.set(false);
         }
       });

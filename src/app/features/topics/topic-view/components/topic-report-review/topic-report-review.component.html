@@ -1,7 +1,10 @@
 <div class="dialog_wrap">
   <div class="dialog">
-    <div class="dialog_header">
-      <div class="header_text">
+    <div class="dialog_header info">
+      <div class="header_with_icon">
+        <div class="icon_notification">
+          <cos-icon name="info-filled" [size]="40"></cos-icon>
+        </div>
         <h3 class="title" translate="MODALS.TOPIC_REPORT_REVIEW_HEADING"></h3>
       </div>
       <div class="dialog_close">
@@ -28,7 +31,7 @@
     <div class="dialog_footer with_buttons">
       <div class="button_row">
         <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_REPORT_REVIEW.BTN_CANCEL"></cos-button>
-        <cos-button variant="primary" (clicked)="doReview()" [disabled]="reviewForm.invalid || isLoading()" translate="COMPONENTS.TOPIC_REPORT_REVIEW.BTN_REVIEW"></cos-button>
+        <cos-button variant="primary" (clicked)="doReview()" [isDisabled]="reviewForm.invalid || isLoading()" translate="COMPONENTS.TOPIC_REPORT_REVIEW.BTN_REVIEW"></cos-button>
       </div>
     </div>
   </div>

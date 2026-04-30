@@ -122,12 +122,12 @@ export class TopicAddGroupsDialogComponent implements OnInit {
       .subscribe({
         next: () => {
           this.topicService.reloadTopic();
-          this.notificationService.addSuccess('COMPONENTS.TOPIC_ADD_GROUPS.MSG_GROUPS_ADDED');
+          this.notificationService.success('COMPONENTS.TOPIC_ADD_GROUPS.MSG_GROUPS_ADDED');
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Failed to add groups', err);
-          this.notificationService.addError('MSG_ERROR_GROUP_ADD_FAILED');
+          this.notificationService.error('MSG_ERROR_GROUP_ADD_FAILED');
         }
       });
   }

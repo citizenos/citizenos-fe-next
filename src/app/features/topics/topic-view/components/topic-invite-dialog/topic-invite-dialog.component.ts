@@ -104,7 +104,7 @@ export class TopicInviteDialogComponent implements OnInit {
 
   addMember(member: any) {
     if (this.selectedMembers().length >= this.maxUsers) {
-      this.notificationService.addError('MSG_ERROR_INVITE_MEMBER_COUNT_OVER_LIMIT');
+      this.notificationService.error('MSG_ERROR_INVITE_MEMBER_COUNT_OVER_LIMIT');
       return;
     }
 
@@ -180,12 +180,12 @@ export class TopicInviteDialogComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.notificationService.addSuccess('COMPONENTS.TOPIC_INVITE.MSG_INVITES_SENT');
+          this.notificationService.success('COMPONENTS.TOPIC_INVITE.MSG_INVITES_SENT');
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Failed to send invites', err);
-          this.notificationService.addError(err.error?.errors?.[0]?.message || 'MSG_ERROR_INVITE_SEND_FAILED');
+          this.notificationService.error(err.error?.errors?.[0]?.message || 'MSG_ERROR_INVITE_SEND_FAILED');
         }
       });
   }

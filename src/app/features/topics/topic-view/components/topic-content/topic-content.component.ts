@@ -5,12 +5,13 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-topic-content',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, UpperCasePipe, TranslateModule],
+  imports: [NgClass, UpperCasePipe, TranslateModule, IconComponent],
   templateUrl: './topic-content.component.html',
   styleUrls: ['./topic-content.component.scss'],
   animations: [

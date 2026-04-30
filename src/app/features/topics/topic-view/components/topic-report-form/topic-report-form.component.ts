@@ -69,12 +69,12 @@ export class TopicReportFormComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.notificationService.addSuccess('COMPONENTS.TOPIC_REPORT_FORM.MSG_REPORT_SENT');
+          this.notificationService.success('COMPONENTS.TOPIC_REPORT_FORM.MSG_REPORT_SENT');
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Failed to send report', err);
-          this.notificationService.addError('MSG_ERROR_REPORT_SEND_FAILED');
+          this.notificationService.error('MSG_ERROR_REPORT_SEND_FAILED');
           this.isLoading.set(false);
         }
       });

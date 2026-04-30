@@ -6,6 +6,7 @@ import { UpperCasePipe } from '@angular/common';
 
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -15,7 +16,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
   selector: 'app-topic-vote-sign-smartid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe],
+  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, IconComponent],
   templateUrl: './topic-vote-sign-smartid.component.html'
 })
 export class TopicVoteSignSmartidComponent {

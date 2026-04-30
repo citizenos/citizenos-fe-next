@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../shared/dialog/dialog-ref';
 import { DialogCloseDirective } from '../../../../shared/dialog';
+import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { GroupRequestTopicService } from '../../../../core/services/group-request-topic.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { Group } from '../../../../core/interfaces/group';
@@ -12,7 +13,7 @@ import { take } from 'rxjs';
   selector: 'cos-topic-requests-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DialogCloseDirective],
+  imports: [TranslateModule, DialogCloseDirective, IconComponent],
   templateUrl: './topic-requests-dialog.component.html',
   styleUrls: ['./topic-requests-dialog.component.scss'],
 })

@@ -162,6 +162,10 @@ $mobile-breakpoint: 560px;
   &:hover {
     background: var(--color-primary-hover);
     color: white;
+    
+    span, cos-icon {
+      color: white !important;
+    }
   }
 }
 

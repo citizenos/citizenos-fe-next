@@ -57,7 +57,7 @@ export class TopicReportReviewComponent {
 
     const reportId = this.topic().report?.id;
     if (!reportId) {
-      this.notificationService.addError('MSG_ERROR_REPORT_ID_MISSING');
+      this.notificationService.error('MSG_ERROR_REPORT_ID_MISSING');
       this.isLoading.set(false);
       return;
     }
@@ -66,12 +66,12 @@ export class TopicReportReviewComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.notificationService.addSuccess('COMPONENTS.TOPIC_REPORT_REVIEW.MSG_REVIEW_SENT');
+          this.notificationService.success('COMPONENTS.TOPIC_REPORT_REVIEW.MSG_REVIEW_SENT');
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Failed to review report', err);
-          this.notificationService.addError('MSG_ERROR_REVIEW_FAILED');
+          this.notificationService.error('MSG_ERROR_REVIEW_FAILED');
           this.isLoading.set(false);
         }
       });

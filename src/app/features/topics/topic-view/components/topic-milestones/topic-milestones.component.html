@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="follow_up_content">
-    @for (evt of topicEvents(); track evt.id; let $index = $index) {
+    @for (evt of topicEvents(); track evt.id) {
       <div class="milestone">
         @if (evt.editMode) {
           <div class="milestone_header">

@@ -5,6 +5,7 @@ import { interval, switchMap, takeWhile, take, map, catchError, of } from 'rxjs'
 import { UpperCasePipe } from '@angular/common';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -16,7 +17,7 @@ declare let hwcrypto: any;
   selector: 'app-topic-vote-sign-esteid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe],
+  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, IconComponent],
   templateUrl: './topic-vote-sign-esteid.component.html'
 })
 export class TopicVoteSignEsteidComponent {

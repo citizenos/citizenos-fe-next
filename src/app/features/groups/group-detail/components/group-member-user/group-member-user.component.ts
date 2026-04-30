@@ -9,12 +9,13 @@ import { GroupDetailService } from '../../../../../core/services/group-detail.se
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-group-member-user',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, InitialsComponent, UpperCasePipe],
+  imports: [TranslateModule, InitialsComponent, UpperCasePipe, IconComponent],
   templateUrl: './group-member-user.component.html'
 })
 export class GroupMemberUserComponent {

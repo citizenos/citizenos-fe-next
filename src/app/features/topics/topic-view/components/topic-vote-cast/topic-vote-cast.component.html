@@ -37,7 +37,7 @@
               <div class="line_separator"></div>
               <div class="option" (click)="sendVoteReminder()">
                 <div class="icon_wrap">
-                  <cos-icon name="notification" size="16"></cos-icon>
+                  <cos-icon name="bell" [size]="16"></cos-icon>
                 </div>
                 <span translate="COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER"></span>
               </div>
@@ -224,7 +224,7 @@
         <div class="vote_buttons_wrap">
           @if (canDelegate() && vote().authType !== VOTE_AUTH_TYPES.hard) {
             <button class="btn_medium_close" [class.active]="vote().delegation" (click)="delegate()">
-              <cos-icon name="delegate" size="24"></cos-icon>
+              <cos-icon name="users" [size]="24"></cos-icon>
               <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CAST.VOTE_HEADING_DELEGATE"></span>
             </button>
           } @else {

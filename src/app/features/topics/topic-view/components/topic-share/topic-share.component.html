@@ -75,7 +75,7 @@
 
   @if (showQR()) {
     <div class="qr_code">
-      <qrcode [qrdata]="joinUrl() || ''" [width]="150" [version]="4" [errorCorrectionLevel]="'L'" [elementType]="'canvas'"></qrcode>
+      <qrcode [qrdata]="joinUrl() || ''" [width]="120" [version]="4" [errorCorrectionLevel]="'L'" elementType="img"></qrcode>
     </div>
   }
 

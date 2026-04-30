@@ -11,6 +11,7 @@ import { UserStore } from '../../../../core/state/user.store';
 import { UserService } from '../../../../core/services/user.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { NotificationComponent } from '../../../../shared/components/notification/notification.component';
+import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { User } from '../../../../core/interfaces/user';
 
 export interface AddEmailData {
@@ -20,7 +21,7 @@ export interface AddEmailData {
 @Component({
   selector: 'app-add-email',
   standalone: true,
-  imports: [TranslateModule, ReactiveFormsModule, DialogCloseDirective, NotificationComponent],
+  imports: [TranslateModule, ReactiveFormsModule, DialogCloseDirective, NotificationComponent, IconComponent],
   templateUrl: './add-email.component.html',
   styleUrl: './add-email.component.scss',
 })

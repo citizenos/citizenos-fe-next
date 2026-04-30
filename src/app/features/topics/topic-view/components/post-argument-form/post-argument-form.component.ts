@@ -17,7 +17,6 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
   templateUrl: './post-argument-form.component.html',
   styleUrls: ['./post-argument-form.component.scss']
 })
-})
 export class PostArgumentFormComponent implements OnInit {
   topicId = input.required<string>();
   discussionId = input.required<string>();

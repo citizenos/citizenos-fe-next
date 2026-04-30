@@ -1,7 +1,10 @@
 <div class="dialog_wrap">
   <div class="dialog">
-    <div class="dialog_header">
-      <div class="header_text">
+    <div class="dialog_header warning">
+      <div class="header_with_icon">
+        <div class="icon_notification">
+          <cos-icon name="warning-filled" [size]="40"></cos-icon>
+        </div>
         <h3 class="title" translate="MODALS.TOPIC_REPORT_MODERATE_HEADING"></h3>
       </div>
       <div class="dialog_close">
@@ -44,7 +47,7 @@
     <div class="dialog_footer with_buttons">
       <div class="button_row">
         <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_REPORT_MODERATE.BTN_CANCEL"></cos-button>
-        <cos-button variant="primary" (clicked)="doModerate()" [disabled]="moderateForm.invalid || isLoading()" translate="COMPONENTS.TOPIC_REPORT_MODERATE.BTN_MODERATE"></cos-button>
+        <cos-button variant="primary" (clicked)="doModerate()" [isDisabled]="moderateForm.invalid || isLoading()" translate="COMPONENTS.TOPIC_REPORT_MODERATE.BTN_MODERATE"></cos-button>
       </div>
     </div>
   </div>

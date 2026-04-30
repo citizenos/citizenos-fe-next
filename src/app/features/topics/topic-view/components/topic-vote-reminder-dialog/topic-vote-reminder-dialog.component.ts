@@ -4,12 +4,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
 import { UserStore } from '../../../../../core/state/user.store';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-topic-vote-reminder-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DatePipe, DialogCloseDirective],
+  imports: [TranslateModule, DatePipe, DialogCloseDirective, IconComponent],
   templateUrl: './topic-vote-reminder-dialog.component.html'
 })
 export class TopicVoteReminderDialogComponent {

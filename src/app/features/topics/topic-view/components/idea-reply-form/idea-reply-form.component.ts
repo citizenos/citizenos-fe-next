@@ -18,9 +18,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
     IconComponent
   ],
   templateUrl: './idea-reply-form.component.html',
-  styleUrls: ['./idea-reply-form.component.scss']
-})
-,
+  styleUrls: ['./idea-reply-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdeaReplyFormComponent implements OnInit {

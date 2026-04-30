@@ -8,12 +8,13 @@ import { GroupInviteUserService } from '../../../../../core/services/group-invit
 import { GroupDetailService } from '../../../../../core/services/group-detail.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-group-invite-user',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, UpperCasePipe],
+  imports: [TranslateModule, UpperCasePipe, IconComponent],
   templateUrl: './group-invite-user.component.html'
 })
 export class GroupInviteUserComponent {

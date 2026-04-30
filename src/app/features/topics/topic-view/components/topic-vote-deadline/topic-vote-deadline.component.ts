@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DeadlinePickerComponent } from '../../../../../shared/components/deadline-picker/deadline-picker.component';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -12,7 +13,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
   selector: 'app-topic-vote-deadline',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DialogCloseDirective, DeadlinePickerComponent],
+  imports: [TranslateModule, DialogCloseDirective, DeadlinePickerComponent, IconComponent],
   templateUrl: './topic-vote-deadline.component.html'
 })
 export class TopicVoteDeadlineComponent {

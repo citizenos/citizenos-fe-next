@@ -220,6 +220,18 @@ export class TopicService {
     return topic && (!this.isPrivate(topic) || this.canUpdate(topic));
   }
 
+  canModerate(topic: Topic): boolean {
+    return !!(topic?.report?.type && !topic.report?.moderatedReasonType);
+  }
+
+  canReview(topic: Topic): boolean {
+    return !!(topic?.report?.moderatedReasonType);
+  }
+
+  canResolve(topic: Topic): boolean {
+    return !!(topic?.report?.type && !topic.report?.moderatedReasonType);
+  }
+
   changeState(topic: Topic, state: keyof typeof this.STATUSES, stateSuccess?: string) {
     const templates: any = {
       closed: {

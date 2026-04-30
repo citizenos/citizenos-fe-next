@@ -5,6 +5,7 @@ import { debounceTime, distinctUntilChanged, of, Subject, switchMap, take } from
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
 import { VoteDelegationService } from '../../../../../core/services/vote-delegation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -15,7 +16,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
   selector: 'app-topic-vote-delegate',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, FormsModule, DialogCloseDirective],
+  imports: [TranslateModule, FormsModule, DialogCloseDirective, IconComponent],
   templateUrl: './topic-vote-delegate.component.html'
 })
 export class TopicVoteDelegateComponent {

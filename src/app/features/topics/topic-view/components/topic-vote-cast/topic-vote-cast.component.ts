@@ -20,7 +20,7 @@ import { InitialsComponent } from '../../../../../shared/components/initials/ini
 import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
-import { TooltipDirective } from '../../../../../shared/directives/tooltip.directive';
+import { TooltipDirective } from '../../../../../shared/components/tooltip/tooltip.directive';
 
 @Component({
   selector: 'app-topic-vote-cast',
