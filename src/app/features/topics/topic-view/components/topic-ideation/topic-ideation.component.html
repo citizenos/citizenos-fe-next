@@ -4,7 +4,7 @@
       <div class="question">{{ ideation().question }}</div>
 
       @if (canUpdate() && (canEditDeadline() || !hasIdeationEndedExpired())) {
-        <div class="setting_button dropdown button_dropdown">
+        <div class="setting_button dropdown button_dropdown" cosDropdown>
           <button class="btn_medium_close mobile_hidden">
             <cos-icon name="more-vertical" [size]="24"></cos-icon>
             <span translate="COMPONENTS.TOPIC_IDEATION.BTN_IDEATION_ACTIONS"></span>

@@ -1,0 +1,33 @@
+<div class="reply_wrap reply">
+  @if (userStore.isAuthenticated()) {
+    <form [formGroup]="replyForm" (ngSubmit)="save()">
+      <div class="field_wrap" [class.error]="errors()?.text">
+        <textarea
+          formControlName="text"
+          class="gray_borders"
+          [placeholder]="'COMPONENTS.IDEA_REPLY_FORM.PLACEHOLDER_WRITE_REPLY_HERE' | translate"
+          [maxlength]="COMMENT_TYPES_MAXLENGTH['reply']"
+          rows="4"></textarea>
+        
+        @if (errors()?.text) {
+          <div class="error_label">
+            <cos-icon name="warning" size="16"></cos-icon>
+            <span>{{ errors().text | translate }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="buttons_wrap">
+        <button type="button" class="btn_medium_submit_ghost icon close_button" (click)="close()">
+          <cos-icon name="close" size="24"></cos-icon>
+        </button>
+        <button
+          type="submit"
+          class="btn_medium"
+          [disabled]="replyForm.invalid">
+          {{ (editMode() ? 'COMPONENTS.IDEA_REPLY_FORM.BTN_UPDATE_REPLY' : 'COMPONENTS.IDEA_REPLY_FORM.BTN_POST_REPLY') | translate }}
+        </button>
+      </div>
+    </form>
+  }
+</div>

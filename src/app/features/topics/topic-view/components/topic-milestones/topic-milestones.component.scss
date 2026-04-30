@@ -1,0 +1,242 @@
+@use "mixins";
+
+.follow_up_wrap {
+  background-color: var(--color-background);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+
+  .follow_up_header {
+    display: flex;
+    width: 100%;
+    padding: 12px 16px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-surfaces);
+    border-radius: 16px 16px 0px 0px;
+    border-bottom: 1px solid var(--color-border);
+
+    .header_division {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .follow_up_title {
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 24px;
+      cursor: help;
+    }
+  }
+
+  .follow_up_content {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 16px;
+
+    .milestone {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 24px 24px 24px;
+      background-color: var(--color-surfaces);
+      border-radius: 8px;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+
+      @include mixins.mobile {
+        padding: 24px 16px;
+      }
+
+      .milestone_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .title_wrap {
+          display: flex;
+          gap: 16px;
+          align-items: center;
+          justify-content: flex-start;
+
+          .circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-secondary);
+            color: var(--color-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 24px;
+          }
+
+          .title_text_area {
+            display: flex;
+            flex-direction: column;
+
+            .title_description {
+              font-size: 13px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 16px;
+              color: var(--color-text-muted);
+            }
+            .title {
+              font-size: 18px;
+              font-style: normal;
+              font-weight: 600;
+              line-height: 24px;
+            }
+          }
+        }
+
+        .button_wrap {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 24px;
+
+          .milestone_date {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--color-text-muted);
+          }
+
+          .button_dropdown {
+            position: relative;
+
+            .options {
+              display: none;
+              position: absolute;
+              right: 0;
+              top: 100%;
+              background: var(--color-surfaces);
+              box-shadow: var(--shadow-lg);
+              border-radius: 8px;
+              z-index: 10;
+              padding: 8px 0;
+              min-width: 180px;
+
+              &.show {
+                display: block;
+              }
+
+              .option {
+                display: flex;
+                align-items: center;
+                padding: 8px 16px;
+                border: none;
+                background: none;
+                width: 100%;
+                text-align: left;
+                cursor: pointer;
+                font-size: 14px;
+                color: var(--color-text-main);
+                gap: 12px;
+
+                &:hover {
+                  background: var(--color-background-hover);
+                }
+
+                &.error_text {
+                  color: var(--color-error);
+                }
+              }
+
+              .line_separator {
+                height: 1px;
+                background: var(--color-border);
+                margin: 4px 0;
+              }
+            }
+
+            &.dropdown_active {
+              .options {
+                display: block;
+              }
+            }
+          }
+        }
+      }
+
+      .section_content {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        @include mixins.mobile {
+          gap: 16px;
+        }
+
+        .title_text_area {
+          display: flex;
+          flex-direction: column;
+          
+          .title_description {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--color-text-muted);
+          }
+        }
+
+        .heading {
+          font-size: 16px;
+          font-weight: 600;
+          margin-top: 8px;
+        }
+
+        .milestone_description_text {
+          line-height: 1.5;
+          color: var(--color-text-main);
+          white-space: pre-wrap;
+        }
+
+        .error_label {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          color: var(--color-error);
+          font-size: 12px;
+          margin-top: 4px;
+        }
+      }
+
+      .section_buttons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 16px;
+        margin-top: 16px;
+
+        a {
+          cursor: pointer;
+          color: var(--color-text-muted);
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .section_buttons {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      height: 56px;
+
+      .btn_medium_submit {
+        @include mixins.mobile {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

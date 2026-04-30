@@ -29,7 +29,11 @@ export class TopicHeaderComponent {
   inviteEditors = output<Topic>();
   duplicateTopic = output<Topic>();
   addGroupsDialog = output<Topic>();
+  reportTopic = output<Topic>();
   reportReasonDialog = output<Topic>();
+  moderateTopic = output<Topic>();
+  reviewTopic = output<Topic>();
+  resolveTopic = output<Topic>();
   closeTopic = output<Topic>();
   deleteTopic = output<Topic>();
   openSettings = output<Topic>();
@@ -48,5 +52,9 @@ export class TopicHeaderComponent {
 
   onToggleFavourite() {
     this.toggleFavourite.emit(this.topic());
+  }
+
+  onReportTopic() {
+    this.reportTopic.emit(this.topic());
   }
 }

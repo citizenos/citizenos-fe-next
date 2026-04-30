@@ -1,0 +1,97 @@
+.dialog_report {
+  padding: 32px;
+  max-width: 600px;
+  background: white;
+  border-radius: 8px;
+}
+
+.dialog_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header_title h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #374151;
+}
+
+.header_close {
+  cursor: pointer;
+  color: #9CA3AF;
+}
+
+.report_argument {
+  background: #F9FAFB;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.argument_header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.author_info .name {
+  font-weight: 600;
+  color: #111827;
+}
+
+.argument_body {
+  color: #4B5563;
+  line-height: 1.5;
+}
+
+.form_group {
+  margin-bottom: 20px;
+}
+
+.form_group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.dialog_footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.btn_primary {
+  background: #3B82F6;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn_primary:disabled {
+  background: #93C5FD;
+  cursor: not-allowed;
+}
+
+.btn_secondary {
+  background: white;
+  color: #374151;
+  border: 1px solid #D1D5DB;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.error {
+  color: #EF4444;
+  font-size: 14px;
+  margin-top: 4px;
+}

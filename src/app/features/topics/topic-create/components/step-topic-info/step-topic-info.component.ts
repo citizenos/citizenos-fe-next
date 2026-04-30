@@ -58,12 +58,17 @@ export class StepTopicInfoComponent implements OnInit {
     }
   }
 
+  // Cached so Angular doesn't see a new object on every render and reload the iframe
+  private _cachedPadUrl = '';
+  private _cachedSafeUrl: SafeResourceUrl = '';
+
   sanitizeURL(): SafeResourceUrl {
     const padUrl = this.topic().padUrl;
-    if (padUrl) {
-      return this.sanitizer.bypassSecurityTrustResourceUrl(padUrl);
+    if (padUrl && padUrl !== this._cachedPadUrl) {
+      this._cachedPadUrl = padUrl;
+      this._cachedSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(padUrl);
     }
-    return '';
+    return this._cachedSafeUrl;
   }
 
   toggleBlock(name: keyof ReturnType<typeof this.block>) {

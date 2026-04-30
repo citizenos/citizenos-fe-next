@@ -1,0 +1,139 @@
+<div class="dialog_wrap">
+  <div class="dialog">
+    <div class="dialog_header">
+      <div class="header_text">
+        <h3 class="title" translate="MODALS.TOPIC_INVITE_HEADING"></h3>
+      </div>
+      <div class="dialog_close">
+        <button class="btn_dialog_close icon" dialogClose>
+          <cos-icon name="nav-close"></cos-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="dialog_tabs_wrap">
+      @if (canInvite()) {
+        <div class="dialog_tab" [class.active]="activeTab() === 'invite'" (click)="activeTab.set('invite')">
+          <span translate="COMPONENTS.TOPIC_INVITE.TAB_INVITE"></span>
+        </div>
+      }
+      <div class="dialog_tab" [class.active]="activeTab() === 'share'" (click)="activeTab.set('share')">
+        <span translate="COMPONENTS.TOPIC_INVITE.TAB_SHARE"></span>
+      </div>
+    </div>
+
+    <div class="dialog_content">
+      @if (activeTab() === 'invite') {
+        <div class="content_section">
+          <div class="section_content_wrap">
+            <div class="search_wrap">
+              <div class="input_area">
+                <input type="text"
+                       [ngModel]="searchString()"
+                       (ngModelChange)="onSearchChange($event)"
+                       (keydown.enter)="addMembersFromInput()"
+                       [placeholder]="'COMPONENTS.TOPIC_INVITE.PLACEHOLDER_SEARCH_USERS' | translate">
+                <cos-icon name="search" size="20" class="search_icon"></cos-icon>
+              </div>
+
+              @if (searchResults().length > 0) {
+                <div class="search_results">
+                  @for (result of searchResults(); track result.id) {
+                    <div class="search_result_item" (click)="addMember(result)">
+                      <div class="user_avatar">
+                        @if (result.imageUrl) {
+                          <img [src]="result.imageUrl" [alt]="result.name">
+                        } @else {
+                          <cos-initials [name]="result.name"></cos-initials>
+                        }
+                      </div>
+                      <div class="user_info">
+                        <div class="name">{{ result.name }}</div>
+                        @if (result.company) {
+                          <div class="company">{{ result.company }}</div>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+
+            @if (selectedMembers().length > 0) {
+              <div class="selected_members_wrap">
+                <div class="global_level_select">
+                  <span translate="COMPONENTS.TOPIC_INVITE.LBL_ALL_INVITEES_LEVEL"></span>
+                  <cos-dropdown>
+                    <div selection class="selected_item">
+                      {{ 'TXT_TOPIC_LEVELS_' + (globalLevel() | uppercase) | translate }}
+                    </div>
+                    <div options>
+                      @for (level of allowedLevels(); track level) {
+                        <div class="option" (click)="updateAllLevels(level)">
+                          {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
+                        </div>
+                      }
+                    </div>
+                  </cos-dropdown>
+                </div>
+
+                <div class="members_list">
+                  @for (member of selectedMembers(); track member.id) {
+                    <div class="member_item">
+                      <div class="member_info">
+                        <div class="name">{{ member.name }}</div>
+                        <div class="level_select">
+                          <cos-dropdown>
+                            <div selection class="selected_item">
+                              {{ 'TXT_TOPIC_LEVELS_' + (member.level | uppercase) | translate }}
+                            </div>
+                            <div options>
+                              @for (level of allowedLevels(); track level) {
+                                <div class="option" (click)="updateMemberLevel(member, level)">
+                                  {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
+                                </div>
+                              }
+                            </div>
+                          </cos-dropdown>
+                        </div>
+                      </div>
+                      <button class="remove_btn" (click)="removeMember(member)">
+                        <cos-icon name="nav-close" size="16"></cos-icon>
+                      </button>
+                    </div>
+                  }
+                </div>
+
+                <div class="invite_message_wrap">
+                  <textarea [(ngModel)]="inviteMessage"
+                            [placeholder]="'COMPONENTS.TOPIC_INVITE.PLACEHOLDER_INVITE_MESSAGE' | translate"
+                            maxlength="1000"></textarea>
+                  <div class="char_count">{{ inviteMessage().length }}/1000</div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      } @else {
+        <div class="content_section">
+          <div class="section_content_wrap">
+            <cos-topic-share [topic]="topic()"></cos-topic-share>
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (activeTab() === 'invite' && selectedMembers().length > 0) {
+      <div class="dialog_footer with_buttons">
+        <div class="info_row tablet_hidden">
+          <cos-icon name="info" size="16"></cos-icon>
+          <span translate="COMPONENTS.TOPIC_INVITE.TXT_INVITE_INFO"></span>
+        </div>
+        <div class="button_row">
+          <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_INVITE.BTN_CANCEL"></cos-button>
+          <cos-button variant="primary" (clicked)="doInvite()" translate="COMPONENTS.TOPIC_INVITE.BTN_INVITE"></cos-button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

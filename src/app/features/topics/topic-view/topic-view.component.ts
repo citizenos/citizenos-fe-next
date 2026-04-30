@@ -21,6 +21,8 @@ import { TopicInfoSidebarComponent } from './components/topic-info-sidebar/topic
 import { TopicStateItemsComponent } from './components/topic-state-items/topic-state-items.component';
 import { TopicIdeationComponent } from './components/topic-ideation/topic-ideation.component';
 import { TopicDiscussionComponent } from './components/topic-discussion/topic-discussion.component';
+import { TopicVoteCastComponent } from './components/topic-vote-cast/topic-vote-cast.component';
+import { TopicMilestonesComponent } from './components/topic-milestones/topic-milestones.component';
 
 import { Topic } from '../../../core/interfaces/topic';
 
@@ -38,6 +40,8 @@ import { Topic } from '../../../core/interfaces/topic';
     TopicStateItemsComponent,
     TopicIdeationComponent,
     TopicDiscussionComponent,
+    TopicVoteCastComponent,
+    TopicMilestonesComponent,
     IconComponent
   ],
   templateUrl: './topic-view.component.html',
@@ -298,11 +302,30 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   }
 
   inviteEditors(topic: Topic) {
-    // InviteEditorsComponent not yet migrated — tracked in issue ilmar-6gu
+    import('./components/topic-invite-dialog/topic-invite-dialog.component').then(m => {
+      this.dialogService.open(m.TopicInviteDialogComponent, {
+        data: {
+          topic,
+          allowedLevels: [this.topicService.LEVELS.edit, this.topicService.LEVELS.admin]
+        }
+      });
+    });
   }
 
   inviteMembers(topic: Topic) {
-    // TopicInviteDialogComponent not yet migrated — tracked in issue ilmar-p73
+    import('./components/topic-invite-dialog/topic-invite-dialog.component').then(m => {
+      this.dialogService.open(m.TopicInviteDialogComponent, {
+        data: { topic }
+      });
+    });
+  }
+
+  reportTopic(topic: Topic) {
+    import('./components/topic-report-form/topic-report-form.component').then(m => {
+      this.dialogService.open(m.TopicReportFormComponent, {
+        data: { topic }
+      });
+    });
   }
 
   duplicateTopic(topic: Topic) {
@@ -331,11 +354,48 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   }
 
   addGroupsDialog(topic: Topic) {
-    // TopicAddGroupsDialogComponent not yet migrated — tracked in issue ilmar-h9i
+    import('./components/topic-add-groups-dialog/topic-add-groups-dialog.component').then(m => {
+      this.dialogService.open(m.TopicAddGroupsDialogComponent, {
+        data: { topic }
+      });
+    });
   }
 
   reportReasonDialog(topic: Topic) {
-    // TopicReportReasonComponent not yet migrated — tracked in issue ilmar-w2d
+    import('./components/topic-report-reason/topic-report-reason.component').then(m => {
+      this.dialogService.open(m.TopicReportReasonComponent, {
+        data: {
+          report: {
+            moderatedReasonText: topic.moderatedReasonText,
+            moderatedReasonType: topic.moderatedReasonType
+          }
+        }
+      });
+    });
+  }
+
+  moderateTopic(topic: Topic) {
+    import('./components/topic-report-moderate/topic-report-moderate.component').then(m => {
+      this.dialogService.open(m.TopicReportModerateComponent, {
+        data: { topic }
+      });
+    });
+  }
+
+  reviewTopic(topic: Topic) {
+    import('./components/topic-report-review/topic-report-review.component').then(m => {
+      this.dialogService.open(m.TopicReportReviewComponent, {
+        data: { topic }
+      });
+    });
+  }
+
+  resolveTopic(topic: Topic) {
+    import('./components/topic-report-resolve/topic-report-resolve.component').then(m => {
+      this.dialogService.open(m.TopicReportResolveComponent, {
+        data: { topic }
+      });
+    });
   }
 
   closeTopic(topic: Topic) {

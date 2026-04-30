@@ -1,0 +1,50 @@
+<div class="post-argument-form">
+  <div class="type-tabs">
+    @for (t of types; track t) {
+      <button
+        class="type-tab"
+        [class]="'type-' + t"
+        [class.active]="argumentType() === t"
+        (click)="argumentType.set(t)"
+      >
+        {{ 'COMPONENTS.POST_ARGUMENT.TYPE_' + t.toUpperCase() | translate }}
+      </button>
+    }
+  </div>
+
+  <div class="form-fields">
+    <cos-input [placeholder]="'COMPONENTS.POST_ARGUMENT.SUBJECT_PLACEHOLDER' | translate">
+      <input
+        [ngModel]="subject()"
+        (ngModelChange)="subject.set($event)"
+        [maxlength]="argumentService.ARGUMENT_SUBJECT_MAXLENGTH"
+      >
+    </cos-input>
+
+    <cos-input [placeholder]="'COMPONENTS.POST_ARGUMENT.TEXT_PLACEHOLDER' | translate">
+      <textarea
+        [ngModel]="text()"
+        (ngModelChange)="text.set($event)"
+        rows="4"
+        [maxlength]="argumentService.ARGUMENT_TYPES_MAXLENGTH[argumentType()]"
+      ></textarea>
+    </cos-input>
+
+    @if (errors()) {
+      <p class="error-text">{{ errors() }}</p>
+    }
+
+    <div class="form-actions">
+      <cos-button variant="secondary" (clicked)="cancel.emit()">
+        {{ 'BTN_CANCEL' | translate }}
+      </cos-button>
+      <cos-button
+        variant="primary"
+        [isDisabled]="!subject().trim() || !text().trim()"
+        (clicked)="submit()"
+      >
+        {{ 'COMPONENTS.POST_ARGUMENT.BTN_POST' | translate }}
+      </cos-button>
+    </div>
+  </div>
+</div>

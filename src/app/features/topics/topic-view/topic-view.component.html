@@ -6,19 +6,14 @@
 <div id="topic_wrap_root">
   <div id="topic_view" class="content_wrap">
 
-    <app-topic-header
-      [topic]="topic()!"
-      [navigation]="navigation()"
-      [appTopicNotificationSettings]="appTopicNotificationSettings"
-      (joinTopic)="joinTopic($event)"
-      (toggleFavourite)="toggleFavourite($event)"
-      (leaveTopic)="leaveTopic($event)"
-      (inviteEditors)="inviteEditors($event)"
-      (duplicateTopic)="duplicateTopic($event)"
-      (addGroupsDialog)="addGroupsDialog($event)"
-      (closeTopic)="closeTopic($event)"
-      (deleteTopic)="deleteTopic($event)"
-      (openSettings)="openSettings($event)" />
+    <app-topic-header [topic]="topic()!" [navigation]="navigation()"
+      (joinTopic)="joinTopic($event)" (toggleFavourite)="toggleFavourite($event)" (leaveTopic)="leaveTopic($event)"
+      (inviteEditors)="inviteEditors($event)" (duplicateTopic)="duplicateTopic($event)"
+      (addGroupsDialog)="addGroupsDialog($event)" (reportTopic)="reportTopic($event)" (reportReasonDialog)="reportReasonDialog($event)"
+      (moderateTopic)="moderateTopic($event)" (reviewTopic)="reviewTopic($event)" (resolveTopic)="resolveTopic($event)"
+      (closeTopic)="closeTopic($event)" (deleteTopic)="deleteTopic($event)" (openSettings)="openSettings($event)"
+      [appTopicNotificationSettings]="appTopicNotificationSettings">
+    </app-topic-header>
 
     <div class="content_area_wrap">
 
@@ -117,7 +112,7 @@
               </div>
             }
             @if (topic()?.voteId && vote()) {
-              <!-- TopicVoteCastComponent not yet migrated -->
+              <app-topic-vote-cast [topic]="topic()!" [vote]="vote()!" />
             }
           </div>
         }
@@ -160,7 +155,7 @@
               </div>
             }
             @if (eventsCount() > 0 || (topic()?.status === STATUSES.followUp && topicService.canUpdate(topic()!))) {
-              <!-- TopicMilestonesComponent not yet migrated -->
+              <app-topic-milestones [topic]="topic()!" [isStatusClosed]="topic()?.status === STATUSES.closed" />
             }
           </div>
         }

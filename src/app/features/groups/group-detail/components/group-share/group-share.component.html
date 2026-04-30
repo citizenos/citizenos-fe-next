@@ -11,11 +11,11 @@
       </div>
     </div>
     <div class="level_select_wrap">
-      <span class="bold" translate="COMPONENTS.GROUP_SHARE.LBL_ACCESS_LEVEL">
-        <div class="tooltip" tooltip>
-          <div class="content_title" translate="VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_HEADING"></div>
-          <div class="content_description" [innerHTML]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate"></div>
-        </div>
+      <span class="bold">
+        {{ 'COMPONENTS.GROUP_SHARE.LBL_ACCESS_LEVEL' | translate }}
+        <span [cosTooltip]="('VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate) || ''" class="tooltip-trigger">
+          <cos-icon name="info" [size]="16"></cos-icon>
+        </span>
       </span>
       <cos-dropdown [class.disabled]="!canUpdate()">
         <div selection class="selected_item">
@@ -66,7 +66,7 @@
 
   @if (showQR()) {
     <div class="qr_code">
-      <qrcode [qrdata]="joinUrl() || ''" [width]="150" [version]="4" [errorCorrectionLevel]="'L'" [elementType]="'img'"></qrcode>
+      <qrcode [qrdata]="joinUrl() || ''" [width]="150" [version]="4" [errorCorrectionLevel]="'L'" [elementType]="'canvas'"></qrcode>
     </div>
   }
 

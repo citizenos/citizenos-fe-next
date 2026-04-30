@@ -1,0 +1,132 @@
+.discussion-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.discussion-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.discussion-question {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.discussion-deadline {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+
+  .deadline-value {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+}
+
+.arguments-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.argument-counts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.count-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--color-border);
+  background: var(--color-background);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: var(--color-primary);
+  }
+
+  &.active {
+    background: var(--color-secondary);
+    border-color: var(--color-primary);
+  }
+
+  &.count-chip--pro {
+    &.active {
+      background: #e8f5e9;
+      border-color: #5ab467;
+      color: #2e7d32;
+    }
+  }
+
+  &.count-chip--con {
+    &.active {
+      background: #ffebee;
+      border-color: #ef4025;
+      color: #c62828;
+    }
+  }
+
+  &.count-chip--poi {
+    &.active {
+      background: #e3f2fd;
+      border-color: #1168a8;
+      color: #1565c0;
+    }
+  }
+
+  .count-val {
+    font-weight: 700;
+  }
+}
+
+.post-form-container {
+  background: var(--color-surfaces);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  border: 1px solid var(--color-border);
+}
+
+.arguments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.loading-placeholder {
+  color: var(--color-text-muted);
+  font-style: italic;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--color-text-muted);
+}
+
+.no-discussion {
+  padding: 24px;
+  text-align: center;
+  color: var(--color-text-muted);
+}

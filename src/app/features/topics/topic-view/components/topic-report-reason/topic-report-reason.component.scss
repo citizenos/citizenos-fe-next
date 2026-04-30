@@ -1,0 +1,58 @@
+@use "mixins";
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.dialog_wrap {
+  .header_with_icon {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .icon_notification {
+      display: flex;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+      margin: 0;
+    }
+  }
+
+  .content_text {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-text-muted);
+    margin-bottom: 24px;
+  }
+
+  .dialog_info_wrap {
+    background: var(--color-surface-contrast);
+    border-radius: var(--radius-md);
+    padding: 24px;
+
+    .dialog_info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .reason {
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--color-text);
+      }
+
+      .explanation {
+        font-size: 14px;
+        line-height: 20px;
+        color: var(--color-text);
+        white-space: pre-wrap;
+      }
+    }
+  }
+}

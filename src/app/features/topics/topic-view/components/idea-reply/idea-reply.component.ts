@@ -14,7 +14,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { IdeaReplyFormComponent } from '../idea-reply-form/idea-reply-form.component';
 import { IdeaReplyReportComponent } from '../idea-reply-report/idea-reply-report.component';
-import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 
 @Component({
   selector: 'app-idea-reply',
@@ -26,7 +26,7 @@ import { DropdownComponent } from '../../../../../shared/components/dropdown/dro
     IconComponent,
     InitialsComponent,
     IdeaReplyFormComponent,
-    DropdownComponent,
+    CosDropdownDirective,
     forwardRef(() => IdeaReplyComponent)
   ],
   template: `
@@ -54,34 +54,32 @@ import { DropdownComponent } from '../../../../../shared/components/dropdown/dro
         <div class="header_right">
           <div class="created_at">{{ argument().createdAt | date : 'y-MM-dd HH:mm' }}</div>
           
-          <div class="dropdown mobile_hidden">
-            <cos-dropdown>
-              <button selection class="btn_argument_actions" (click)="$event.stopPropagation()">
-                <cos-icon name="more-vertical" size="16"></cos-icon>
+          <div class="dropdown button_dropdown mobile_hidden" cosDropdown>
+            <button class="btn_argument_actions" (click)="$event.stopPropagation()">
+              <cos-icon name="more-vertical" size="16"></cos-icon>
+            </button>
+            <div class="options">
+              @if (canEdit()) {
+                <button class="option" (click)="toggleEdit(); $event.stopPropagation()">
+                  <cos-icon name="edit" size="16"></cos-icon>
+                  <span translate="COMPONENTS.ARGUMENT.OPTION_EDIT"></span>
+                </button>
+              }
+              <button class="option" (click)="copyArgumentLink($event); $event.stopPropagation()">
+                <cos-icon name="link" size="16"></cos-icon>
+                <span translate="LNK_DIRECT_LINK"></span>
               </button>
-              <div options>
-                @if (canEdit()) {
-                  <button class="option" (click)="toggleEdit(); $event.stopPropagation()">
-                    <cos-icon name="edit" size="16"></cos-icon>
-                    <span translate="COMPONENTS.ARGUMENT.OPTION_EDIT"></span>
-                  </button>
-                }
-                <button class="option" (click)="copyArgumentLink($event); $event.stopPropagation()">
-                  <cos-icon name="link" size="16"></cos-icon>
-                  <span translate="LNK_DIRECT_LINK"></span>
+              <button class="option" (click)="doArgumentReport(); $event.stopPropagation()">
+                <cos-icon name="warning" size="16"></cos-icon>
+                <span translate="COMPONENTS.ARGUMENT.OPTION_REPORT"></span>
+              </button>
+              @if (canEdit()) {
+                <button class="option error_text" (click)="doShowDeleteArgument(); $event.stopPropagation()">
+                  <cos-icon name="trash" size="16"></cos-icon>
+                  <span translate="COMPONENTS.ARGUMENT.OPTION_DELETE"></span>
                 </button>
-                <button class="option" (click)="doArgumentReport(); $event.stopPropagation()">
-                  <cos-icon name="warning" size="16"></cos-icon>
-                  <span translate="COMPONENTS.ARGUMENT.OPTION_REPORT"></span>
-                </button>
-                @if (canEdit()) {
-                  <button class="option error_text" (click)="doShowDeleteArgument(); $event.stopPropagation()">
-                    <cos-icon name="trash" size="16"></cos-icon>
-                    <span translate="COMPONENTS.ARGUMENT.OPTION_DELETE"></span>
-                  </button>
-                }
-              </div>
-            </cos-dropdown>
+              }
+            </div>
           </div>
         </div>
       </div>
@@ -304,6 +302,56 @@ import { DropdownComponent } from '../../../../../shared/components/dropdown/dro
   display: flex;
   flex-direction: column;
   margin-top: 12px;
+}
+
+.dropdown {
+  position: relative;
+  .options {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: var(--color-surfaces);
+    box-shadow: var(--shadow-lg);
+    border-radius: 8px;
+    z-index: 10;
+    padding: 8px 0;
+    min-width: 180px;
+    
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-text-main);
+      gap: 12px;
+
+      &:hover {
+        background: var(--color-background-hover);
+      }
+
+      &.error_text {
+        color: var(--color-error);
+      }
+    }
+
+    .line_separator {
+      height: 1px;
+      background: var(--color-border);
+      margin: 4px 0;
+    }
+  }
+
+  &.dropdown_active {
+    .options {
+      display: block;
+    }
+  }
 }
 
 .btn_argument_actions {

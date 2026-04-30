@@ -21,7 +21,7 @@ import { IconComponent } from '../icon/icon.component';
         </div>
       </div>
       @if (isOpen()) {
-        <div class="dropdown-options" role="listbox">
+        <div class="dropdown-options" role="listbox" (click)="isOpen.set(false)">
           <ng-content select="[options]"></ng-content>
         </div>
       }

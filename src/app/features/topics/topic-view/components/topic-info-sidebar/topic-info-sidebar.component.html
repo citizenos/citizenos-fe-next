@@ -3,11 +3,11 @@
     <div class="info_header">
       <div class="info_title bold" translate="VIEWS.TOPICS_TOPICID.SECTION_INFO_TITLE_INFO"></div>
 
-      <div class="dropdown button_dropdown tablet_hidden" [class.open]="manageOpen" (click)="manageOpen = !manageOpen">
+      <div class="dropdown button_dropdown tablet_hidden" cosDropdown>
         <a class="manage_link" translate="VIEWS.TOPICS_TOPICID.LNK_MANAGE"></a>
-        <div class="options" (click)="$event.stopPropagation()">
+        <div class="options">
           @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn) {
-            <button (click)="leaveTopic.emit(topic()); manageOpen = false" class="option">
+            <button (click)="leaveTopic.emit(topic())" class="option">
               <div class="icon_wrap">
                 <cos-icon name="leave" size="16"></cos-icon>
               </div>
@@ -16,7 +16,7 @@
           }
           @if (isLoggedIn) {
             <div class="line_separator"></div>
-            <button class="option" (click)="toggleFavourite.emit(topic()); manageOpen = false">
+            <button class="option" (click)="toggleFavourite.emit(topic())">
               <div class="icon_wrap">
                 @if (topic().favourite) {
                   <cos-icon name="favourite-filled" size="16"></cos-icon>
@@ -33,7 +33,7 @@
           }
           @if (isLoggedIn && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
             <div class="line_separator"></div>
-            <button class="option" (click)="inviteEditors.emit(topic()); manageOpen = false">
+            <button class="option" (click)="inviteEditors.emit(topic())">
               <div class="icon_wrap">
                 <cos-icon name="invite" size="16"></cos-icon>
               </div>
@@ -69,7 +69,7 @@
           }
           @if (isLoggedIn && topicService.canDelete(topic())) {
             <div class="line_separator"></div>
-            <button class="option" (click)="duplicateTopic.emit(topic()); manageOpen = false">
+            <button (click)="duplicateTopic.emit(topic())" class="option">
               <div class="icon_wrap">
                 <cos-icon name="copy" size="16"></cos-icon>
               </div>
@@ -78,7 +78,7 @@
           }
           @if (isLoggedIn && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
             <div class="line_separator"></div>
-            <button class="option" (click)="addGroupsDialog.emit(topic()); manageOpen = false">
+            <button (click)="addGroupsDialog.emit(topic())" class="option">
               <div class="icon_wrap">
                 <cos-icon name="plus" size="16"></cos-icon>
               </div>
@@ -87,7 +87,7 @@
           }
           @if (isLoggedIn && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
             <div class="line_separator"></div>
-            <button class="option" (click)="closeTopic.emit(topic()); manageOpen = false">
+            <button (click)="closeTopic.emit(topic())" class="option">
               <div class="icon_wrap">
                 <cos-icon name="check-box" size="16"></cos-icon>
               </div>
@@ -96,7 +96,7 @@
           }
           @if (isLoggedIn && topicService.canDelete(topic())) {
             <div class="line_separator"></div>
-            <button class="option error_text" (click)="deleteTopic.emit(topic()); manageOpen = false">
+            <button (click)="deleteTopic.emit(topic())" class="option error_text">
               <div class="icon_wrap">
                 <cos-icon name="trash" size="16"></cos-icon>
               </div>
@@ -144,9 +144,7 @@
               <img [src]="member.imageUrl" [alt]="member.name || ''" />
             } @else {
               <div class="profile_image_filler">
-                @if (member.name) {
-                  <span class="initials">{{ member.name.charAt(0) }}</span>
-                }
+                <cos-initials [name]="member.name || ''"></cos-initials>
               </div>
             }
           </div>
@@ -171,7 +169,7 @@
       </span>
     </div>
     @if (showAttachments) {
-      <div class="info_items">
+      <div class="info_items" [@openClose]="showAttachments ? 'open' : 'closed'">
         @for (attachment of attachments(); track attachment.id) {
           <a class="info_item" (click)="onDownloadAttachment($event, attachment)">
             <cos-icon name="download" size="14"></cos-icon>
@@ -193,7 +191,7 @@
       </span>
     </div>
     @if (showGroups) {
-      <div class="info_items">
+      <div class="info_items" [@openClose]="showGroups ? 'open' : 'closed'">
         @for (group of groups(); track group.id) {
           <a class="info_item" [routerLink]="['/', 'groups', group.id]">
             <cos-icon name="groups" size="14"></cos-icon>

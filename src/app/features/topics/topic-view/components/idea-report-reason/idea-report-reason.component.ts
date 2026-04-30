@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { UpperCasePipe } from '@angular/common';
+
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { UpperCasePipe } from '@angular/common';
 
 export interface IdeaReportReasonData {
   report: {
@@ -16,131 +17,8 @@ export interface IdeaReportReasonData {
   selector: 'app-idea-report-reason',
   standalone: true,
   imports: [TranslateModule, IconComponent, DialogCloseDirective, UpperCasePipe],
-  template: `
-    <div class="dialog_wrap">
-      <div class="dialog">
-        <div class="dialog_header">
-          <div class="header_with_icon">
-            <div class="icon_notification">
-              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="40" height="40" rx="20" fill="#1168A8" />
-                <path
-                  d="M23 11.5292C23 12.926 21.9255 14.0583 20.6 14.0583C19.2745 14.0583 18 12.926 18 11.5292C18 10.1323 19.2745 9 20.6 9C21.9255 9 23 10.1323 23 11.5292Z"
-                  fill="white"
-                />
-                <path
-                  d="M17.3359 16.5357L22.8319 15.8098L20.4295 27.7096C20.2591 28.5695 20.4991 29.0576 21.1591 29.0576C21.6247 29.0576 22.3255 28.8806 22.8055 28.4354L22.5943 29.4876C21.9055 30.3626 20.3863 31 19.0783 31C17.3911 31 16.6735 29.9327 17.1391 27.664L18.9103 18.8929C19.0639 18.1518 18.9247 17.8837 18.2191 17.7067L17.1391 17.4968L17.3359 16.5357Z"
-                  fill="white"
-                />
-              </svg>
-            </div>
-            <h4 class="title" [translate]="'MODALS.TOPIC_REPORT_REASON_HEADING'"></h4>
-          </div>
-          <div class="dialog_close">
-            <a class="btn_dialog_close icon" dialogClose>
-              <cos-icon name="nav-close"></cos-icon>
-            </a>
-          </div>
-        </div>
-        <div class="dialog_content no_footer">
-          <div class="content_text" [translate]="'MODALS.TOPIC_REPORT_REASON_DESCRIPTION'"></div>
-          <div class="dialog_info_wrap">
-            <div class="dialog_info">
-              <div class="reason">{{ 'TXT_MODERATION_TYPES_' + data.report.moderatedReasonType | uppercase | translate }}</div>
-              <div class="explanation">{{ data.report.moderatedReasonText }}</div>
-            </div>
-          </div>
-        </div>
-        <div class="dialog_footer"></div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .dialog_wrap {
-      max-width: 600px;
-      width: 100%;
-      background: white;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .dialog_header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 24px;
-      background: #f4f6f8;
-      border-bottom: 1px solid #e7e9eb;
-
-      .header_with_icon {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-
-        .icon_notification {
-          flex-shrink: 0;
-        }
-
-        .title {
-          margin: 0;
-          font-size: 18px;
-          font-weight: 700;
-          color: #2c3b47;
-        }
-      }
-
-      .dialog_close {
-        cursor: pointer;
-        color: #727c84;
-        display: flex;
-
-        &:hover {
-          color: #2c3b47;
-        }
-      }
-    }
-
-    .dialog_content {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-
-      .content_text {
-        font-size: 14px;
-        color: #727c84;
-      }
-
-      .dialog_info_wrap {
-        background: #f4f6f8;
-        border-radius: 4px;
-        padding: 16px;
-
-        .dialog_info {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-
-          .reason {
-            font-weight: 700;
-            color: #2c3b47;
-            text-transform: uppercase;
-            font-size: 12px;
-          }
-
-          .explanation {
-            font-size: 14px;
-            color: #2c3b47;
-            white-space: pre-wrap;
-          }
-        }
-      }
-
-      &.no_footer {
-        padding-bottom: 32px;
-      }
-    }
-  `],
+  templateUrl: './idea-report-reason.component.html',
+  styleUrls: ['./idea-report-reason.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })

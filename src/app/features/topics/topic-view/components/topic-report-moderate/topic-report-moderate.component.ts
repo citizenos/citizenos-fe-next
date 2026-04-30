@@ -1,0 +1,92 @@
+import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { take } from 'rxjs';
+
+import { Topic } from '../../../../../core/interfaces/topic';
+import { TopicReportService } from '../../../../../core/services/topic-report.service';
+import { NotificationService } from '../../../../../core/services/notification.service';
+import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
+import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
+
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+
+export interface TopicReportModerateData {
+  topic: Topic;
+}
+
+@Component({
+  selector: 'app-topic-report-moderate',
+  standalone: true,
+  imports: [
+    CommonModule,
+    TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
+    IconComponent,
+    ButtonComponent,
+    DropdownComponent,
+    DialogCloseDirective
+  ],
+  templateUrl: './topic-report-moderate.component.html',
+  styleUrls: ['./topic-report-moderate.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class TopicReportModerateComponent {
+  data = inject<TopicReportModerateData>(DIALOG_DATA);
+  private dialogRef = inject(DialogRef<TopicReportModerateComponent>);
+  private topicReportService = inject(TopicReportService);
+  private notificationService = inject(NotificationService);
+  private fb = inject(FormBuilder);
+
+  topic = signal<Topic>(this.data.topic);
+  reportTypes = Object.keys(this.topicReportService.TYPES);
+  isLoading = signal(false);
+
+  moderateForm = this.fb.group({
+    type: [this.reportTypes[0], Validators.required],
+    text: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(2024)]]
+  });
+
+  changeType(type: string) {
+    this.moderateForm.patchValue({ type });
+  }
+
+  doModerate() {
+    if (this.moderateForm.invalid || this.isLoading()) return;
+
+    this.isLoading.set(true);
+    const moderateData = {
+      type: this.moderateForm.value.type!,
+      text: this.moderateForm.value.text!
+    };
+
+    const reportId = this.topic().report?.id;
+    if (!reportId) {
+      this.notificationService.addError('MSG_ERROR_REPORT_ID_MISSING');
+      this.isLoading.set(false);
+      return;
+    }
+
+    this.topicReportService.moderate(this.topic().id, reportId, moderateData)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.notificationService.addSuccess('COMPONENTS.TOPIC_REPORT_MODERATE.MSG_MODERATION_SENT');
+          this.dialogRef.close(true);
+        },
+        error: (err) => {
+          console.error('Failed to moderate report', err);
+          this.notificationService.addError('MSG_ERROR_MODERATION_FAILED');
+          this.isLoading.set(false);
+        }
+      });
+  }
+
+  close() {
+    this.dialogRef.close();
+  }
+}

@@ -1,0 +1,65 @@
+.post-argument-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.type-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.type-tab {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: var(--color-text);
+  }
+
+  &.active {
+    color: var(--color-text);
+  }
+
+  &.type-pro.active {
+    border-bottom-color: var(--color-success, #5ab467);
+    color: var(--color-success, #5ab467);
+  }
+
+  &.type-con.active {
+    border-bottom-color: var(--color-error, #ef4025);
+    color: var(--color-error, #ef4025);
+  }
+
+  &.type-poi.active {
+    border-bottom-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.error-text {
+  color: var(--color-error, #ef4025);
+  font-size: 13px;
+  margin: 0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

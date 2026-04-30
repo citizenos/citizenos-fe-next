@@ -159,7 +159,10 @@ $mobile-breakpoint: 560px;
   font-weight: 600;
   transition: all var(--transition-fast);
 
-  &:hover { background: var(--color-primary-dark); }
+  &:hover {
+    background: var(--color-primary-hover);
+    color: white;
+  }
 }
 
 .nav_create_menu {
@@ -518,8 +521,10 @@ $mobile-breakpoint: 560px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  color: var(--color-primary);
   transition: transform 0.2s ease-in-out;
   &:hover {
     transform: scale(1.05);
+    color: var(--color-primary-hover);
   }
 }

@@ -6,13 +6,15 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { DatePipe } from '@angular/common';
+import { DatePipe, UpperCasePipe } from '@angular/common';
+import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
+import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 
 @Component({
   selector: 'app-topic-info-sidebar',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, RouterModule, IconComponent, DatePipe],
+  imports: [TranslateModule, RouterModule, IconComponent, DatePipe, UpperCasePipe, InitialsComponent, CosDropdownDirective],
   templateUrl: './topic-info-sidebar.component.html',
   styleUrls: ['./topic-info-sidebar.component.scss'],
   animations: [

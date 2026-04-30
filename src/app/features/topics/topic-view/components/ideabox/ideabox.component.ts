@@ -18,12 +18,12 @@ import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
 import { IdeaReplyComponent } from '../idea-reply/idea-reply.component';
 import { IdeaReplyFormComponent } from '../idea-reply-form/idea-reply-form.component';
 import { CommonModule } from '@angular/common';
-import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 
 @Component({
   selector: 'app-ideabox',
   standalone: true,
-  imports: [CommonModule, DatePipe, TranslateModule, RouterModule, InitialsComponent, IconComponent, IdeaReplyComponent, IdeaReplyFormComponent, DropdownComponent],
+  imports: [CommonModule, DatePipe, TranslateModule, RouterModule, InitialsComponent, IconComponent, IdeaReplyComponent, IdeaReplyFormComponent, CosDropdownDirective],
   templateUrl: './ideabox.component.html',
   styleUrls: ['./ideabox.component.scss'],
 })

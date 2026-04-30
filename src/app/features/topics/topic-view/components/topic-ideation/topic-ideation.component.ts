@@ -19,6 +19,7 @@ import { ConfirmDialogComponent } from '../../../../../shared/components/confirm
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ListFilterToolbarComponent, FilterConfig } from '../../../../../shared/components/list-filter-toolbar/list-filter-toolbar.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 
 const PAGE_SIZE = 15;
 
@@ -35,7 +36,8 @@ const PAGE_SIZE = 15;
     SearchInputComponent,
     PaginationComponent,
     ListFilterToolbarComponent,
-    IconComponent
+    IconComponent,
+    CosDropdownDirective
   ],
   templateUrl: './topic-ideation.component.html',
   styleUrls: ['./topic-ideation.component.scss'],

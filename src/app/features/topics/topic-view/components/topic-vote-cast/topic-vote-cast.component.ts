@@ -18,13 +18,17 @@ import { CloseVotingComponent } from '../close-voting/close-voting.component';
 import { BigGraphComponent } from '../big-graph/big-graph.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
+import { TooltipDirective } from '../../../../../shared/directives/tooltip.directive';
 
 @Component({
   selector: 'app-topic-vote-cast',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DatePipe, UpperCasePipe, BigGraphComponent, InitialsComponent],
-  templateUrl: './topic-vote-cast.component.html'
+  imports: [TranslateModule, DatePipe, UpperCasePipe, BigGraphComponent, InitialsComponent, IconComponent, CosDropdownDirective, TooltipDirective],
+  templateUrl: './topic-vote-cast.component.html',
+  styleUrls: ['./topic-vote-cast.component.scss']
 })
 export class TopicVoteCastComponent {
   vote = input.required<any>();

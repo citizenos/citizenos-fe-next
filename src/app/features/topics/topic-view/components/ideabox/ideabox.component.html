@@ -60,11 +60,11 @@
 
     @if (userStore.user()) {
       <div class="idea_header_right">
-        <cos-dropdown class="button_dropdown">
-           <button selection class="btn_small_plain icon">
+        <div class="dropdown button_dropdown" cosDropdown>
+           <button class="btn_small_plain icon">
                <cos-icon name="more-vertical" />
            </button>
-           <div options>
+           <div class="options">
             @if (!isDraft()) {
               <button class="option" (click)="toggleFavourite()">
                 <cos-icon name="heart" size="16"/>
@@ -82,7 +82,7 @@
               </button>
             }
           </div>
-        </cos-dropdown>
+        </div>
       </div>
     }
   </div>

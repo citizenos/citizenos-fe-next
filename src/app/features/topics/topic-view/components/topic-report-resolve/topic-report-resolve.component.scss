@@ -1,0 +1,15 @@
+@use "mixins";
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.dialog_wrap {
+  .content_text {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-text-muted);
+    padding: 24px;
+  }
+}

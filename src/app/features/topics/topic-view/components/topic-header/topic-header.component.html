@@ -138,11 +138,41 @@
 
         @if (topic().visibility === topicService.VISIBILITY.public && !topic().report) {
           <div class="line_separator"></div>
-          <button class="option" [routerLink]="['/topics', topic().id, 'report']">
+          <button class="option" (click)="reportTopic.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="report" [size]="16"></cos-icon>
             </div>
             <span translate="VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC"></span>
+          </button>
+        }
+
+        @if (topicService.canModerate(topic())) {
+          <div class="line_separator"></div>
+          <button class="option" (click)="moderateTopic.emit(topic())">
+            <div class="icon_wrap">
+              <cos-icon name="moderate" [size]="16"></cos-icon>
+            </div>
+            <span translate="VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC"></span>
+          </button>
+        }
+
+        @if (topicService.canReview(topic())) {
+          <div class="line_separator"></div>
+          <button class="option" (click)="reviewTopic.emit(topic())">
+            <div class="icon_wrap">
+              <cos-icon name="review" [size]="16"></cos-icon>
+            </div>
+            <span translate="VIEWS.TOPICS_TOPICID.OPTION_REVIEW_TOPIC"></span>
+          </button>
+        }
+
+        @if (topicService.canResolve(topic())) {
+          <div class="line_separator"></div>
+          <button class="option" (click)="resolveTopic.emit(topic())">
+            <div class="icon_wrap">
+              <cos-icon name="check" [size]="16"></cos-icon>
+            </div>
+            <span translate="VIEWS.TOPICS_TOPICID.OPTION_RESOLVE_TOPIC"></span>
           </button>
         }
 
@@ -285,11 +315,41 @@
 
     @if (topic().visibility === topicService.VISIBILITY.public && !topic().report) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/topics', topic().id, 'report']" (click)="mobileActions.set(false)">
+      <button class="option" (click)="reportTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="report"></cos-icon>
         </div>
         <span translate="VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC"></span>
+      </button>
+    }
+
+    @if (topicService.canModerate(topic())) {
+      <div class="line_separator"></div>
+      <button class="option" (click)="moderateTopic.emit(topic()); mobileActions.set(false)">
+        <div class="icon_wrap">
+          <cos-icon name="moderate"></cos-icon>
+        </div>
+        <span translate="VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC"></span>
+      </button>
+    }
+
+    @if (topicService.canReview(topic())) {
+      <div class="line_separator"></div>
+      <button class="option" (click)="reviewTopic.emit(topic()); mobileActions.set(false)">
+        <div class="icon_wrap">
+          <cos-icon name="review"></cos-icon>
+        </div>
+        <span translate="VIEWS.TOPICS_TOPICID.OPTION_REVIEW_TOPIC"></span>
+      </button>
+    }
+
+    @if (topicService.canResolve(topic())) {
+      <div class="line_separator"></div>
+      <button class="option" (click)="resolveTopic.emit(topic()); mobileActions.set(false)">
+        <div class="icon_wrap">
+          <cos-icon name="check"></cos-icon>
+        </div>
+        <span translate="VIEWS.TOPICS_TOPICID.OPTION_RESOLVE_TOPIC"></span>
       </button>
     }
 

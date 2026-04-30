@@ -12,13 +12,14 @@ import { ConfirmDialogComponent } from '../../../../../shared/components/confirm
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { TooltipDirective } from '../../../../../shared/components/tooltip/tooltip.directive';
 import { computed } from '@angular/core';
 
 @Component({
   selector: 'app-group-share',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, UpperCasePipe, QRCodeComponent, ButtonComponent, DropdownComponent],
+  imports: [TranslateModule, UpperCasePipe, QRCodeComponent, ButtonComponent, DropdownComponent, TooltipDirective, IconComponent],
   templateUrl: './group-share.component.html',
   styleUrls: ['./group-share.component.scss']
 })

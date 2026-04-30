@@ -1,0 +1,59 @@
+<div class="dialog_report">
+  <div class="dialog_header">
+    <div class="header_title">
+      <h2 [innerHTML]="'COMPONENTS.IDEA_REPORT.HEADING_REPORT_IDEA' | translate"></h2>
+    </div>
+    <div class="header_close" cosDialogClose>
+      <cos-icon name="close"></cos-icon>
+    </div>
+  </div>
+
+  <div class="dialog_content">
+    <div class="report_argument">
+      <div class="argument_header">
+        <cos-initials [name]="data.argument.creator?.name || data.argument.author?.name"></cos-initials>
+        <div class="author_info">
+          <span class="name">{{ data.argument.creator?.name || data.argument.author?.name }}</span>
+        </div>
+      </div>
+      <div class="argument_body" [innerHTML]="data.argument.text"></div>
+    </div>
+
+    <form [formGroup]="report" (ngSubmit)="doReport()">
+      <div class="form_group">
+        <label [innerHTML]="'COMPONENTS.IDEA_REPORT.LABEL_REPORT_TYPE' | translate"></label>
+        <cos-dropdown>
+          <div selection>
+            {{ 'COMPONENTS.IDEA_REPORT.REPORT_TYPE_' + report.get('type')?.value?.toUpperCase() | translate }}
+          </div>
+          <div options>
+            @for (type of reportTypes; track type) {
+              <div class="option" (click)="selectReportType(type)">
+                {{ 'COMPONENTS.IDEA_REPORT.REPORT_TYPE_' + type.toUpperCase() | translate }}
+              </div>
+            }
+          </div>
+        </cos-dropdown>
+      </div>
+
+      <div class="form_group">
+        <label [innerHTML]="'COMPONENTS.IDEA_REPORT.LABEL_REPORT_TEXT' | translate"></label>
+        <cos-input
+          [placeholder]="'COMPONENTS.IDEA_REPORT.PLACEHOLDER_REPORT_TEXT' | translate"
+          [hasError]="!!(report.get('text')?.touched && report.get('text')?.invalid)"
+          [errorMessage]="'COMPONENTS.IDEA_REPORT.ERROR_TEXT' | translate"
+        >
+          <textarea formControlName="text" [placeholder]="'COMPONENTS.IDEA_REPORT.PLACEHOLDER_REPORT_TEXT' | translate" [maxlength]="2048" rows="5"></textarea>
+        </cos-input>
+        @if (errors()?.text) {
+          <div class="error">{{ errors().text | translate }}</div>
+        }
+      </div>
+
+      <div class="dialog_footer">
+        <button type="button" class="btn_secondary" cosDialogClose [innerHTML]="'COMPONENTS.IDEA_REPORT.BTN_CANCEL' | translate"></button>
+        <button type="submit" class="btn_primary" [disabled]="report.invalid" [innerHTML]="'COMPONENTS.IDEA_REPORT.BTN_REPORT' | translate"></button>
+      </div>
+    </form>
+  </div>
+</div>

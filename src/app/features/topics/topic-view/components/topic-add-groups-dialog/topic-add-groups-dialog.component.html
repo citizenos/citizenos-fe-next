@@ -1,0 +1,102 @@
+<div class="dialog_wrap">
+  <div class="dialog">
+    <div class="dialog_header">
+      <div class="header_text">
+        <h3 class="title" translate="MODALS.TOPIC_ADD_GROUPS_HEADING"></h3>
+      </div>
+      <div class="dialog_close">
+        <button class="btn_dialog_close icon" dialogClose>
+          <cos-icon name="nav-close"></cos-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="dialog_content">
+      <div class="content_section">
+        <div class="section_content_wrap">
+          <div class="search_wrap">
+            <div class="input_area">
+              <input type="text"
+                     [ngModel]="searchString()"
+                     (ngModelChange)="onSearchChange($event)"
+                     [placeholder]="'COMPONENTS.TOPIC_ADD_GROUPS.PLACEHOLDER_SEARCH_GROUPS' | translate">
+              <cos-icon name="search" size="20" class="search_icon"></cos-icon>
+            </div>
+
+            @if (searchResults().length > 0) {
+              <div class="search_results">
+                @for (group of searchResults(); track group.id) {
+                  <div class="search_result_item" (click)="addGroup(group)">
+                    <div class="group_info">
+                      <div class="name">{{ group.name }}</div>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          @if (selectedGroups().length > 0) {
+            <div class="selected_members_wrap">
+              <div class="global_level_select">
+                <span translate="COMPONENTS.TOPIC_ADD_GROUPS.LBL_ALL_GROUPS_LEVEL"></span>
+                <cos-dropdown>
+                  <div selection class="selected_item">
+                    {{ 'TXT_TOPIC_LEVELS_' + (globalLevel() | uppercase) | translate }}
+                  </div>
+                  <div options>
+                    @for (level of LEVELS; track level) {
+                      <div class="option" (click)="updateAllLevels(level)">
+                        {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
+                      </div>
+                    }
+                  </div>
+                </cos-dropdown>
+              </div>
+
+              <div class="members_list">
+                @for (group of selectedGroups(); track group.id) {
+                  <div class="member_item">
+                    <div class="member_info">
+                      <div class="name">{{ group.name }}</div>
+                      <div class="level_select">
+                        <cos-dropdown>
+                          <div selection class="selected_item">
+                            {{ 'TXT_TOPIC_LEVELS_' + (group.permission.level | uppercase) | translate }}
+                          </div>
+                          <div options>
+                            @for (level of LEVELS; track level) {
+                              <div class="option" (click)="updateGroupLevel(group, level)">
+                                {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
+                              </div>
+                            }
+                          </div>
+                        </cos-dropdown>
+                      </div>
+                    </div>
+                    <button class="remove_btn" (click)="removeGroup(group)">
+                      <cos-icon name="nav-close" size="16"></cos-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (selectedGroups().length > 0) {
+      <div class="dialog_footer with_buttons">
+        <div class="info_row tablet_hidden">
+          <cos-icon name="info" size="16"></cos-icon>
+          <span translate="COMPONENTS.TOPIC_ADD_GROUPS.TXT_ADD_GROUPS_INFO"></span>
+        </div>
+        <div class="button_row">
+          <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_ADD_GROUPS.BTN_CANCEL"></cos-button>
+          <cos-button variant="primary" (clicked)="doSave()" translate="COMPONENTS.TOPIC_ADD_GROUPS.BTN_ADD"></cos-button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

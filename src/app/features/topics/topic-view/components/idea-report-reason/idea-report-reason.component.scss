@@ -1,0 +1,60 @@
+@use "mixins";
+
+.dialog_wrap {
+  .header_with_icon {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .icon_notification {
+      flex-shrink: 0;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #2c3b47;
+    }
+  }
+
+  .dialog_close {
+    cursor: pointer;
+    color: #727c84;
+    display: flex;
+
+    &:hover {
+      color: #2c3b47;
+    }
+  }
+
+  .content_text {
+    font-size: 14px;
+    color: #727c84;
+  }
+
+  .dialog_info_wrap {
+    background: #f4f6f8;
+    border-radius: 4px;
+    padding: 16px;
+
+    .dialog_info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .reason {
+        font-weight: 700;
+        color: #2c3b47;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+
+      .explanation {
+        font-size: 14px;
+        color: #2c3b47;
+        white-space: pre-wrap;
+      }
+    }
+  }
+}

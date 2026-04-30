@@ -126,8 +126,10 @@
           }
         }
 
-        &:hover .options, &:focus-within .options, &.open .options {
-          display: block; // basic hover drop down
+        &.dropdown_active {
+          .options {
+            display: block;
+          }
         }
       }
     }
@@ -207,13 +209,14 @@
           .profile_image_filler {
             width: 100%;
             height: 100%;
-            background-color: var(--color-surfaces);
             border-radius: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             cos-initials {
               font-size: 14px;
+              width: 100%;
+              height: 100%;
             }
           }
         }
