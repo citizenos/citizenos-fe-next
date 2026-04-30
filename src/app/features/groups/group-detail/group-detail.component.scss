@@ -455,6 +455,51 @@
     width: auto;
   }
 
+  #buttons_area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @include mixins.mobile {
+      display: none;
+    }
+
+    button {
+      width: 40px;
+      height: 40px;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      perspective: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--color-secondary);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+
+      &:hover {
+        background: var(--color-primary-hover);
+        cos-icon {
+          color: white !important;
+        }
+      }
+
+      &.flip {
+        transform: rotateX(180deg);
+      }
+
+      .btn_icon {
+        display: flex;
+        width: 24px;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
   #options_area {
     width: 100%;
     display: flex;
@@ -485,9 +530,24 @@
       .input_area {
         flex-grow: 4;
         padding: 0 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
 
         app-search-input {
-          width: 100%;
+          flex-grow: 1;
+        }
+
+        .clear_search {
+          color: var(--color-primary);
+          font-weight: 700;
+          cursor: pointer;
+          white-space: nowrap;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
     }

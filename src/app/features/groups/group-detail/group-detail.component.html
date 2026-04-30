@@ -362,24 +362,16 @@
               </cos-dropdown>
             </div>
 
-            <!-- More filters toggle -->
-            <div class="dropdown_input tablet_hidden" (click)="moreFilters.update(v => !v)">
-              <div class="cos_input_placeholder show" [translate]="'VIEWS.GROUP.LBL_FILTER_MORE'"></div>
-              <div class="input-wrapper">
-                <div class="selection_wrap">
-                  <div class="selection" [translate]="moreFilters() ? 'VIEWS.GROUP.LNK_FILTER_LESS' : 'VIEWS.GROUP.LNK_FILTER_MORE'"></div>
-                </div>
-                <cos-icon [name]="moreFilters() ? 'chevron-up' : 'chevron-down'" [size]="24" color="#1168A8"></cos-icon>
-              </div>
-            </div>
-
             <!-- Search -->
             <div class="input_area">
-              <app-search-input
-                [placeholder]="'VIEWS.GROUP.PLACEHOLDER_SEARCH_TOPICS' | translate"
-                [value]="topicSearch()"
-                (valueChange)="onTopicSearch($event)"
-              ></app-search-input>
+              <cos-icon name="search" [size]="24" color="#727C84"></cos-icon>
+              <cos-input [placeholder]="'VIEWS.GROUP.PLACEHOLDER_SEARCH_TOPICS' | translate">
+                <input [placeholder]="'VIEWS.GROUP.PLACEHOLDER_SEARCH_TOPICS' | translate" type="text"
+                  [ngModel]="topicSearch()" (ngModelChange)="onTopicSearch($event)">
+              </cos-input>
+              @if (topicSearch()) {
+                <a class="clear_search" (click)="onTopicSearch('')" translate="VIEWS.GROUP.LNK_CLEAR"></a>
+              }
             </div>
           </div>
 
@@ -416,6 +408,13 @@
               </div>
             </div>
           }
+        </div>
+        <div id="buttons_area" class="mobile_hidden">
+          <button [class.flip]="moreFilters()" (click)="moreFilters.update(v => !v)">
+            <div class="btn_icon">
+              <cos-icon name="chevron-down" [size]="24" color="#2C3B47"></cos-icon>
+            </div>
+          </button>
         </div>
       </div>
 

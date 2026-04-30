@@ -10,6 +10,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DatePipe, TitleCasePipe, UpperCasePipe, NgTemplateOutlet } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
   switchMap,
   catchError,
@@ -35,6 +36,7 @@ import { countries } from '../../../core/constants/countries';
 import { languages } from '../../../core/constants/all-languages';
 
 import { InitialsComponent } from '../../../shared/components/initials/initials.component';
+import { InputComponent } from '../../../shared/components/input/input.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { TopicCardComponent } from '../../../shared/components/topic-card/topic-card.component';
 import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
@@ -66,6 +68,8 @@ import { IllustrationComponent } from '../../../shared/components/illustration/i
     CreateMenuComponent,
     IllustrationComponent,
     NgTemplateOutlet,
+    FormsModule,
+    InputComponent,
   ],
   templateUrl: './group-detail.component.html',
   styleUrls: ['./group-detail.component.scss'],
