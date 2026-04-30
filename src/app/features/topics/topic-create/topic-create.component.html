@@ -49,6 +49,7 @@
 
   <div sidebar class="sidebar-block">
     <cos-member-editors-panel
+      [topic]="topic() | any"
       [members]="members()"
       [invites]="invites()"
       (inviteEditors)="inviteEditors()"

@@ -508,10 +508,48 @@
 }
 
 .empty_state {
-  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
   text-align: center;
-  color: var(--color-text-muted);
+  gap: 24px;
+  background: var(--color-surfaces);
+  border-radius: 16px;
   width: 100%;
+
+  .illustration_wrap {
+    width: 240px;
+    height: auto;
+    opacity: 0.8;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .empty_text_wrap {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 0;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+  }
 }
 
 .member_search_row {

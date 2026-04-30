@@ -56,7 +56,7 @@ export interface ConfirmDialogData {
 
           <div class="dialog_close">
             <button class="btn_dialog_close" [dialogClose]="undefined" [attr.aria-label]="'BTN_CLOSE' | translate">
-              <cos-icon name="close" [size]="24"></cos-icon>
+              <cos-icon name="nav-close"></cos-icon>
             </button>
           </div>
         </div>

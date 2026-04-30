@@ -332,7 +332,15 @@
             (remove)="removeTopicFromGroup($event)"
           ></cos-topic-card>
         } @empty {
-          <div class="empty_state" translate="VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_HEADING"></div>
+          <div class="empty_state">
+            <div class="illustration_wrap">
+              <img src="assets/imgs/no_image_discussion.svg" alt="No topics" />
+            </div>
+            <div class="empty_text_wrap">
+              <h3 translate="VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_HEADING"></h3>
+              <p translate="VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_DESCRIPTION"></p>
+            </div>
+          </div>
         }
       </div>
 

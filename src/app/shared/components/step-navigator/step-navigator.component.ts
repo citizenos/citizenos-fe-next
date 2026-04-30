@@ -38,32 +38,28 @@ export interface StepConfig {
   styles: [`
     .step-navigator {
       display: flex;
-      align-items: center;
+      align-items: stretch;
       background: var(--color-surfaces);
-      border-bottom: 1px solid var(--color-border);
+      border-radius: 16px;
       padding: 0 16px;
-      gap: 4px;
+      width: 100%;
     }
 
     .step-tab {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 16px 20px;
+      padding: 27px 56px;
       cursor: pointer;
-      color: var(--color-text-muted);
-      font-weight: 500;
+      color: var(--color-text);
+      font-weight: 400;
       text-decoration: none;
-      border-bottom: 3px solid transparent;
+      border-bottom: 2px solid transparent;
       transition: color 0.2s, border-color 0.2s;
 
-      &:hover {
-        color: var(--color-text);
-      }
-
       &.active {
-        color: var(--color-primary);
-        border-bottom-color: var(--color-primary);
+        border-bottom-color: var(--color-link);
+        font-weight: 600;
       }
 
       &.completed {
@@ -72,8 +68,8 @@ export interface StepConfig {
     }
 
     .step-number {
-      font-weight: 700;
-      font-size: 14px;
+      display: flex;
+      align-items: center;
     }
 
     .step-icon-mobile {
@@ -84,18 +80,23 @@ export interface StepConfig {
       margin-left: auto;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 16px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
+      .step-tab {
+        padding: 12px 38px;
+      }
       .step-text {
         display: none;
       }
-      .step-icon-mobile {
-        display: block;
-      }
+    }
+
+    @media (max-width: 768px) {
       .step-tab {
-        padding: 12px 16px;
+        flex-grow: 1;
+        padding: 12px;
+        justify-content: center;
       }
       .step-actions {
         display: none;

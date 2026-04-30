@@ -12,22 +12,24 @@
 }
 
 .create-header {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px 24px 0;
   position: sticky;
   top: 0;
   z-index: 10;
-  background: var(--color-surfaces);
-  padding: 24px 40px 0;
+  background: var(--color-background);
 }
 
 .create_heading {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 16px;
 
   .small_heading {
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     color: var(--color-text);
   }
 }
