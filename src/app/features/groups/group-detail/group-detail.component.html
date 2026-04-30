@@ -131,162 +131,74 @@
 
         <!-- EXTRA INFO (expanded) -->
         <div class="extra-info-collapse" [class.open]="moreInfo()">
-        <div id="group_extra_info">
-          <div id="extra_info_left">
-            <div class="bold" translate="VIEWS.GROUP.RULES_OF_CONDUCT"></div>
-            <div id="rule_items_wrap">
-              @if (!group.rules || !group.rules.length) {
-                <div class="rule_item" translate="VIEWS.GROUP.LBL_NO_RULES"></div>
-              }
-              @for (rule of group.rules; track rule) {
-                <div class="rule_item">
-                  <cos-icon name="status-rules" [size]="24" color="#F39129"></cos-icon>
-                  <span>{{ rule }}</span>
-                </div>
-              }
-            </div>
-          </div>
-
-          <div id="extra_info_right">
-            <div id="group_extra_info_wrap">
-              <div class="bold" translate="VIEWS.GROUP.HEADING_INFO"></div>
-              <div class="info_items_wrap">
-                <div class="info_item">
-                  @if (group.visibility === 'private') {
-                    <cos-icon name="lock-legacy" [size]="16"></cos-icon>
-                  } @else {
-                    <cos-icon name="globe-legacy" [size]="16"></cos-icon>
+          <div id="group_extra_info_container">
+            <div id="group_extra_info">
+              <div id="extra_info_left">
+                <div class="bold" translate="VIEWS.GROUP.RULES_OF_CONDUCT"></div>
+                <div id="rule_items_wrap">
+                  @if (!group.rules || !group.rules.length) {
+                    <div class="rule_item" translate="VIEWS.GROUP.LBL_NO_RULES"></div>
                   }
-                  <span [translate]="'TXT_GROUP_VISIBILITY_' + group.visibility.toUpperCase()"></span>
+                  @for (rule of group.rules; track rule) {
+                    <div class="rule_item">
+                      <cos-icon name="status-rules" [size]="24" color="#F39129"></cos-icon>
+                      <span>{{ rule }}</span>
+                    </div>
+                  }
                 </div>
-                <div class="info_item">
-                  <cos-icon name="creator-legacy" [size]="16"></cos-icon>
-                  <span>{{ group.creator?.name }}</span>
-                </div>
-                <div class="info_item">
-                  <cos-icon name="calendar-legacy" [size]="16"></cos-icon>
-                  <span>{{ group.createdAt | date: 'y-MM-dd HH:mm' }}</span>
-                </div>
-                <div class="info_item">
-                  <cos-icon name="location-legacy" [size]="16"></cos-icon>
-                  <span>{{ group.country || ('VIEWS.GROUP.SECTION_INFO_LBL_COUNTRY_NOT_SPECIFIED' | translate) }}</span>
-                </div>
-                <div class="info_item">
-                  <cos-icon name="language-legacy" [size]="16"></cos-icon>
-                  <span>{{ group.language || ('VIEWS.GROUP.SECTION_INFO_LBL_LANGUAGE_NOT_SPECIFIED' | translate) }}</span>
-                </div>
-                <div class="info_item">
-                  <cos-icon name="mail-legacy" [size]="16"></cos-icon>
-                  <span>{{ group.contact || ('VIEWS.GROUP.SECTION_INFO_LBL_NOT_SPECIFIED' | translate) }}</span>
+              </div>
+
+              <div id="extra_info_right">
+                <div id="group_extra_info_wrap">
+                  <div class="bold" translate="VIEWS.GROUP.HEADING_INFO"></div>
+                  <div class="info_items_wrap">
+                    <div class="info_item">
+                      @if (group.visibility === 'private') {
+                        <cos-icon name="lock-legacy" [size]="16"></cos-icon>
+                      } @else {
+                        <cos-icon name="globe-legacy" [size]="16"></cos-icon>
+                      }
+                      <span [translate]="'TXT_GROUP_VISIBILITY_' + group.visibility.toUpperCase()"></span>
+                    </div>
+                    <div class="info_item">
+                      <cos-icon name="creator-legacy" [size]="16"></cos-icon>
+                      <span>{{ group.creator?.name }}</span>
+                    </div>
+                    <div class="info_item">
+                      <cos-icon name="calendar-legacy" [size]="16"></cos-icon>
+                      <span>{{ group.createdAt | date: 'y-MM-dd HH:mm' }}</span>
+                    </div>
+                    <div class="info_item">
+                      <cos-icon name="location-legacy" [size]="16"></cos-icon>
+                      <span>{{ group.country || ('VIEWS.GROUP.SECTION_INFO_LBL_COUNTRY_NOT_SPECIFIED' | translate) }}</span>
+                    </div>
+                    <div class="info_item">
+                      <cos-icon name="language-legacy" [size]="16"></cos-icon>
+                      <span>{{ group.language || ('VIEWS.GROUP.SECTION_INFO_LBL_LANGUAGE_NOT_SPECIFIED' | translate) }}</span>
+                    </div>
+                    <div class="info_item">
+                      <cos-icon name="mail-legacy" [size]="16"></cos-icon>
+                      <span>{{ group.contact || ('VIEWS.GROUP.SECTION_INFO_LBL_NOT_SPECIFIED' | translate) }}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+            <div class="line_separator"></div>
+            <div class="close_info_wrap">
+              <a id="view_more" (click)="moreInfo.set(false)">
+                <div class="bold" translate="VIEWS.GROUP.LNK_CLOSE_INFO"></div>
+                <cos-icon name="chevron-up" [size]="24" color="#1168A8"></cos-icon>
+              </a>
+            </div>
           </div>
         </div>
-        </div>
-
-        @if (moreInfo()) {
-          <div class="line_separator"></div>
-          <a id="view_more" class="mobile_hidden" (click)="moreInfo.set(false)">
-            <div class="bold" translate="VIEWS.GROUP.LNK_CLOSE_INFO"></div>
-            <cos-icon name="chevron-up" [size]="24" color="#1168A8"></cos-icon>
-          </a>
-          <div class="button_wrap mobile_show">
-            <button class="btn_medium_secondary" (click)="moreInfo.set(false)">
-              <cos-icon name="chevron-up" [size]="24" color="#1168A8"></cos-icon>
-              <span translate="VIEWS.GROUP.LNK_CLOSE_INFO"></span>
-            </button>
-          </div>
-        }
       </div>
     </div>
 
     <!-- TABS -->
     <cos-tabs [tabs]="groupTabs()" [activeTab]="tabSelected()" (select)="selectTab($event)">
       <!-- Topics tab: create/manage button -->
-      @if (tabSelected() === 'topics') {
-        @if (isLoggedIn() && !isAdmin()) {
-          <button class="btn_medium_submit" (click)="openRequestTopics()">
-            <cos-icon name="plus-legacy" [size]="24" color="white"></cos-icon>
-            <span translate="VIEWS.GROUP.BTN_REQUEST_ADD_TOPICS"></span>
-          </button>
-        }
-        @if (isLoggedIn() && isAdmin()) {
-          <div class="dropdown button_dropdown" [class.dropdown_active]="manageTopicsOpen()" (click)="$event.stopPropagation()">
-            <button class="btn_medium_close" (click)="manageTopicsOpen.update(v => !v)">
-              <cos-icon name="more-vertical" [size]="24"></cos-icon>
-              <span translate="VIEWS.GROUP.BTN_MANAGE_TOPICS"></span>
-            </button>
-            @if (manageTopicsOpen()) {
-              <div class="options">
-                <button class="option" (click)="showCreateInContent.set(true); manageTopicsOpen.set(false)">
-                  <div class="icon_wrap">
-                    <cos-icon name="add-topics-legacy" [size]="16"></cos-icon>
-                  </div>
-                  <span translate="VIEWS.GROUP.BTN_ADD_OR_CREATE_TOPICS"></span>
-                </button>
-                <div class="line_separator"></div>
-                <button class="option" (click)="openTopicRequests(); manageTopicsOpen.set(false)">
-                  <div class="icon_wrap">
-                    <cos-icon name="edit" [size]="16"></cos-icon>
-                  </div>
-                  <span translate="VIEWS.GROUP.BTN_VIEW_TOPIC_REQUESTS"></span>
-                </button>
-                <div class="line_separator"></div>
-                <button class="option" (click)="openAddTopics(); manageTopicsOpen.set(false)">
-                  <div class="icon_wrap">
-                    <cos-icon name="add-topics-legacy" [size]="16"></cos-icon>
-                  </div>
-                  <span translate="VIEWS.GROUP.BTN_ADD_TOPICS"></span>
-                </button>
-                <div class="line_separator"></div>
-                <button class="option error_text" (click)="removeAllTopics(); manageTopicsOpen.set(false)">
-                  <div class="icon_wrap">
-                    <cos-icon name="trash-legacy" [size]="16"></cos-icon>
-                  </div>
-                  <span translate="VIEWS.GROUP.BTN_OPTION_REMOVE_ALL_TOPICS"></span>
-                </button>
-              </div>
-            }
-          </div>
-        }
-      }
-
-      <!-- Members tab: manage button -->
-      @if (tabSelected() === 'members' && (isLoggedIn() && (group.visibility === 'public' || isAdmin()))) {
-        <div class="dropdown button_dropdown" [class.dropdown_active]="manageMembersOpen()" (click)="$event.stopPropagation()">
-          <button class="btn_medium_close" (click)="manageMembersOpen.update(v => !v)">
-            <cos-icon name="more-vertical" [size]="24"></cos-icon>
-            <span translate="VIEWS.GROUP.BTN_MANAGE_MEMBERS"></span>
-          </button>
-          @if (manageMembersOpen()) {
-            <div class="options">
-              <button class="option" (click)="openInvite(); manageMembersOpen.set(false)">
-                <div class="icon_wrap">
-                  <cos-icon name="invite-legacy" [size]="16"></cos-icon>
-                </div>
-                <span translate="VIEWS.GROUP.BTN_ADD_MEMBERS"></span>
-              </button>
-              <div class="line_separator"></div>
-              @for (level of MEMBER_LEVELS; track level) {
-                <button class="option" (click)="setAllRights(level); manageMembersOpen.set(false)">
-                  <div class="icon_wrap">
-                    <cos-icon name="settings-legacy" [size]="16"></cos-icon>
-                  </div>
-                  <span [innerHTML]="'VIEWS.GROUP.BULK_OPT_SET_ALL_RIGHTS' | translate:{level: ('TXT_GROUP_LEVELS_' + level.toUpperCase()) | translate}"></span>
-                </button>
-                <div class="line_separator"></div>
-              }
-              <button class="option error_text" (click)="removeAllMembers(); manageMembersOpen.set(false)">
-                <div class="icon_wrap">
-                  <cos-icon name="trash-legacy" [size]="16"></cos-icon>
-                </div>
-                <span translate="VIEWS.GROUP.BTN_OPTION_REMOVE_ALL_MEMBERS"></span>
-              </button>
-            </div>
-          }
-        </div>
-      }
     </cos-tabs>
 
     <!-- TOPICS TAB CONTENT -->
@@ -412,24 +324,30 @@
 
               <!-- Search -->
               <div class="input_area">
-                <cos-icon name="search" [size]="24" color="#727C84"></cos-icon>
-                <cos-input [placeholder]="'VIEWS.GROUP.PLACEHOLDER_SEARCH_TOPICS' | translate">
-                  <input [placeholder]="'VIEWS.GROUP.PLACEHOLDER_SEARCH_TOPICS' | translate" type="text"
-                    [ngModel]="topicSearch()" (ngModelChange)="onTopicSearch($event)">
-                </cos-input>
-                @if (topicSearch()) {
-                  <a class="clear_search" (click)="onTopicSearch('')" translate="VIEWS.GROUP.LNK_CLEAR"></a>
-                }
+                <div class="search_box">
+                  <cos-icon name="search" [size]="24" color="#727C84"></cos-icon>
+                  <cos-input [placeholder]="'VIEWS.GROUP.PLACEHOLDER_SEARCH_TOPICS' | translate">
+                    <input [placeholder]="'VIEWS.GROUP.PLACEHOLDER_SEARCH_TOPICS' | translate" type="text"
+                      [ngModel]="topicSearch()" (ngModelChange)="onTopicSearch($event)">
+                  </cos-input>
+                  @if (topicSearch()) {
+                    <a class="clear_search" (click)="onTopicSearch('')" translate="VIEWS.GROUP.LNK_CLEAR"></a>
+                  }
+                </div>
               </div>
             </div>
           }
         </div>
-        <div id="buttons_area" class="mobile_hidden">
-          <button [class.flip]="moreFilters()" (click)="moreFilters.update(v => !v)">
-            <div class="btn_icon">
-              <cos-icon name="chevron-down" [size]="24" color="#2C3B47"></cos-icon>
-            </div>
+
+        <div id="buttons_area" class="filter_control_buttons mobile_hidden">
+          <button class="btn_big_secondary" [class.flip]="moreFilters()" (click)="moreFilters.set(!moreFilters())">
+            <cos-icon name="chevron-down" [size]="24"></cos-icon>
           </button>
+          @if (moreFilters()) {
+            <button class="btn_big_secondary" (click)="resetFilters()">
+              <cos-icon name="refresh" [size]="24"></cos-icon>
+            </button>
+          }
         </div>
       </div>
 
@@ -444,19 +362,14 @@
         } @empty {
           <div id="topics_area_empty" class="no_engagements empty_state">
             <div class="illustration">
-              <cos-illustration imagePath="assets/imgs/no_image_discussion.svg" size="xl"></cos-illustration>
+              <cos-illustration imagePath="assets/imgs/no_image_discussion.svg"></cos-illustration>
             </div>
             <div class="text_wrap">
               <div class="small_heading" translate="VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_HEADING"></div>
               <div translate="VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_DESCRIPTION"></div>
             </div>
             <div class="button_wrap">
-              @if (showCreateInContent()) {
-                <div id="close_create" (click)="showCreateInContent.set(false)"></div>
-                <div class="create_menu_wrap top">
-                  <cos-create-menu (createTopic)="showCreateInContent.set(false)"></cos-create-menu>
-                </div>
-              } @else {
+              @if (isLoggedIn()) {
                 @if (isAdmin()) {
                   <button class="btn_medium_submit" (click)="showCreateInContent.set(true)">
                     <span translate="VIEWS.GROUP.BTN_ADD_OR_CREATE_TOPICS"></span>
@@ -466,6 +379,9 @@
                     <span translate="VIEWS.GROUP.BTN_REQUEST_ADD_TOPICS"></span>
                   </button>
                 }
+                <button class="btn_medium_secondary" (click)="viewPublicTopics()">
+                  <span translate="VIEWS.GROUP.HAVENT_ENGAGED_BTN_VIEW_PUBLIC_TOPICS"></span>
+                </button>
               }
             </div>
           </div>
@@ -570,36 +486,25 @@
   </div>
 
   <ng-template #groupActionOptions let-mobile="mobile">
-    <button class="option" (click)="toggleFavourite(); groupActionsOpen.set(false); mobileActions.set(false)">
+    @if (isLoggedIn()) {
+      <button class="option" (click)="toggleFavourite(); groupActionsOpen.set(false); mobileActions.set(false)">
+        <div class="icon_wrap">
+          <cos-icon [name]="group.favourite ? 'star-filled' : 'favourite-legacy'" [size]="16"></cos-icon>
+        </div>
+        <span [translate]="group.favourite ? 'VIEWS.GROUP.BTN_OPTION_UNFAVOURITE' : 'VIEWS.GROUP.BTN_OPTION_FAVOURITE'"></span>
+      </button>
+      <div class="line_separator"></div>
+    }
+
+    <button class="option" (click)="openInvite(); groupActionsOpen.set(false); mobileActions.set(false)">
       <div class="icon_wrap">
-        <cos-icon [name]="group.favourite ? 'favourite-filled-legacy' : 'favourite-legacy'" [size]="16"></cos-icon>
+        <cos-icon name="users" [size]="16"></cos-icon>
       </div>
-      @if (!group.favourite) { <span translate="VIEWS.GROUP.BTN_OPTION_FAVOURITE"></span> }
-      @else { <span translate="VIEWS.GROUP.BTN_OPTION_UNFAVOURITE"></span> }
+      <span translate="VIEWS.GROUP.BTN_OPTION_INVITE"></span>
     </button>
 
-    @if (isLoggedIn() && !isAdmin()) {
-      @if (!mobile) { <div class="line_separator"></div> }
-      <button class="option" (click)="openRequestTopics(); groupActionsOpen.set(false); mobileActions.set(false)">
-        <div class="icon_wrap">
-          <cos-icon name="plus-legacy" [size]="16"></cos-icon>
-        </div>
-        <span translate="VIEWS.GROUP.BTN_REQUEST_ADD_TOPICS"></span>
-      </button>
-    }
-
-    @if (group.visibility === 'public' || (group.visibility === 'private' && isAdmin())) {
-      @if (!mobile) { <div class="line_separator"></div> }
-      <button class="option" (click)="openInvite(); groupActionsOpen.set(false); mobileActions.set(false)">
-        <div class="icon_wrap">
-          <cos-icon name="invite-legacy" [size]="16"></cos-icon>
-        </div>
-        <span translate="VIEWS.GROUP.BTN_OPTION_INVITE"></span>
-      </button>
-    }
-
     @if (isAdmin()) {
-      @if (!mobile) { <div class="line_separator"></div> }
+      <div class="line_separator"></div>
       <button class="option" (click)="openAddTopics(); groupActionsOpen.set(false); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="add-topics-legacy" [size]="16"></cos-icon>
@@ -607,46 +512,32 @@
         <span translate="VIEWS.GROUP.BTN_OPTION_ADD_TOPICS"></span>
       </button>
 
-      @if (!mobile) { <div class="line_separator"></div> }
-      <button class="option" (click)="openTopicRequests(); groupActionsOpen.set(false); mobileActions.set(false)">
-        <div class="icon_wrap">
-          <cos-icon name="plus-legacy" [size]="16"></cos-icon>
-        </div>
-        <span translate="VIEWS.GROUP.BTN_OPTION_TOPIC_REQUESTS"></span>
-      </button>
-
-      @if (!mobile) { <div class="line_separator"></div> }
+      <div class="line_separator"></div>
       <button class="option" (click)="openSettings(); groupActionsOpen.set(false); mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="settings-legacy" [size]="16"></cos-icon>
+          <cos-icon name="edit" [size]="16"></cos-icon>
         </div>
-        <span translate="VIEWS.GROUP.BTN_OPTION_SETTINGS"></span>
+        <span translate="VIEWS.GROUP.BTN_OPTION_EDIT"></span>
       </button>
+    }
 
-      @if (!mobile) { <div class="line_separator"></div> }
-      <button class="option" (click)="removeTopics.set(true); groupActionsOpen.set(false); mobileActions.set(false)">
+    @if (group.userLevel && isLoggedIn()) {
+      <div class="line_separator"></div>
+      <button class="option" (click)="leaveGroup(); groupActionsOpen.set(false); mobileActions.set(false)">
         <div class="icon_wrap">
-          <cos-icon name="trash-legacy" [size]="16"></cos-icon>
+          <cos-icon name="logout" [size]="16"></cos-icon>
         </div>
-        <span translate="VIEWS.GROUP.BTN_OPTION_REMOVE_TOPICS"></span>
+        <span translate="VIEWS.GROUP.BTN_OPTION_LEAVE"></span>
       </button>
+    }
 
-      @if (!mobile) { <div class="line_separator"></div> }
+    @if (isAdmin()) {
+      <div class="line_separator"></div>
       <button class="option error_text" (click)="deleteGroup(); groupActionsOpen.set(false); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="trash-legacy" [size]="16"></cos-icon>
         </div>
         <span translate="VIEWS.GROUP.BTN_OPTION_DELETE"></span>
-      </button>
-    }
-
-    @if (group.userLevel && isLoggedIn()) {
-      @if (!mobile) { <div class="line_separator"></div> }
-      <button class="option error_text" (click)="leaveGroup(); groupActionsOpen.set(false); mobileActions.set(false)">
-        <div class="icon_wrap">
-          <cos-icon name="leave-legacy" [size]="16"></cos-icon>
-        </div>
-        <span translate="VIEWS.GROUP.BTN_OPTION_LEAVE"></span>
       </button>
     }
   </ng-template>

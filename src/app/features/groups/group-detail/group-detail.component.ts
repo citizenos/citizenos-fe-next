@@ -234,7 +234,7 @@ export class GroupDetailComponent {
     });
   }
 
-  private resetFilters() {
+  resetFilters() {
     this.topicVisibilityFilter.set('');
     this.topicStatusFilter.set('');
     this.topicOrderFilter.set('');
@@ -288,6 +288,11 @@ export class GroupDetailComponent {
     this.fetchMembers((page - 1) * this.MEMBER_LIMIT);
   }
 
+
+  viewPublicTopics() {
+    this.router.navigate(['/', this.userLang, 'public', 'topics']);
+  }
+
   toggleFavourite() {
     const group = this.group();
     if (!group) return;
@@ -303,9 +308,14 @@ export class GroupDetailComponent {
   }
 
   joinGroup(group: Group) {
+    if (!this.isLoggedIn()) {
+      this.router.navigate(['/', this.userLang, 'account', 'login'], { queryParams: { returnUrl: this.router.url } });
+      return;
+    }
     this.groupDetailService.joinPublic(group.id).subscribe(res => {
-      this.group.update(g => g ? { ...g, userLevel: res?.userLevel ?? 'read' } : g);
+      this.group.update(g => g ? { ...g, userLevel: res?.level || res?.userLevel || 'read' } : g);
       this.fetchTopics(0);
+      this.fetchMembers(0);
     });
   }
 
