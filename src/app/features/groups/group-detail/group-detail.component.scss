@@ -525,6 +525,24 @@
           flex-grow: 2;
           min-width: calc(50% - 12px);
         }
+
+        cos-dropdown {
+          .dropdown-wrapper {
+            border: none;
+            background: transparent;
+          }
+
+          .dropdown-selection {
+            padding-left: 16px;
+            padding-right: 16px;
+            transition: padding var(--transition-fast);
+          }
+
+          &.with_value .dropdown-selection {
+            padding-top: 22px;
+            padding-bottom: 6px;
+          }
+        }
       }
 
       .input_area {
