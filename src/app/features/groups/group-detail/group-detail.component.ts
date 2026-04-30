@@ -69,23 +69,6 @@ import { IllustrationComponent } from '../../../shared/components/illustration/i
   ],
   templateUrl: './group-detail.component.html',
   styleUrls: ['./group-detail.component.scss'],
-  animations: [
-    trigger('openSlide', [
-      state('open', style({
-        height: '*',
-        opacity: 1,
-        visibility: 'visible',
-      })),
-      state('closed', style({
-        height: '0',
-        opacity: 0,
-        visibility: 'hidden',
-        padding: '0',
-        margin: '0',
-      })),
-      transition('closed <=> open', animate('300ms ease-in-out')),
-    ]),
-  ],
 })
 export class GroupDetailComponent {
   private route = inject(ActivatedRoute);
