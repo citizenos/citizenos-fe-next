@@ -135,7 +135,6 @@ export interface FilterConfig {
       position: relative;
     }
     .toolbar-dropdown {
-      display: flex;
       flex: 1;
     }
     .toolbar-search {

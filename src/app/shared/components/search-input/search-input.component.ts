@@ -63,10 +63,19 @@ import { FormsModule } from '@angular/forms';
       justify-content: center;
       border-radius: 50%;
       color: var(--color-text-muted, #727C84);
+      transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+      cos-icon {
+        transition: transform 0.3s ease-in-out;
+      }
     }
     .clear-button:hover {
-      background: rgba(0, 0, 0, 0.05);
+      background: var(--color-background-hover);
       color: var(--color-text, #2C3B47);
+
+      cos-icon {
+        transform: rotate(90deg);
+      }
     }
   `],
   encapsulation: ViewEncapsulation.None
