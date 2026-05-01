@@ -298,6 +298,7 @@ label:has(input:focus-visible) .radio {
   font-style: normal;
   font-weight: 600;
   line-height: 22px;
+  * { font-size: inherit; line-height: inherit; }
 }
 
 
@@ -346,6 +347,7 @@ label:has(input:focus-visible) .radio {
   font-style: normal;
   font-weight: 600;
   line-height: 32px;
+  * { font-size: inherit; line-height: inherit; }
 }
 
 .medium_heading {
@@ -353,6 +355,7 @@ label:has(input:focus-visible) .radio {
   font-style: normal;
   font-weight: 600;
   line-height: 32px;
+  * { font-size: inherit; line-height: inherit; }
 }
 
 .small_heading {
@@ -360,6 +363,7 @@ label:has(input:focus-visible) .radio {
   font-style: normal;
   font-weight: 600;
   line-height: 22px;
+  * { font-size: inherit; line-height: inherit; }
 }
 
 /* The CDK backdrop handles the visual background; .overlay is click-outside handler only */
