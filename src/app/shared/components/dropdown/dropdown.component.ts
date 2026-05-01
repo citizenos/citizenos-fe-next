@@ -47,7 +47,7 @@ import { IconComponent } from '../icon/icon.component';
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 12px;
+      padding: 6px 12px;
       cursor: pointer;
       gap: 8px;
     }

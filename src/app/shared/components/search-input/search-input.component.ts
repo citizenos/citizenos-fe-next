@@ -14,8 +14,7 @@ import { FormsModule } from '@angular/forms';
       </div>
       <cos-input [placeholder]="placeholder()">
         <input type="text"
-               [ngModel]="value()"
-               (ngModelChange)="onValueChange($event)"
+               [(ngModel)]="value"
                [placeholder]="placeholder()" />
       </cos-input>
       <button class="clear-button" (click)="clearValue()" aria-label="Clear Search">
@@ -33,7 +32,8 @@ import { FormsModule } from '@angular/forms';
     .search-icon {
       position: absolute;
       left: 12px;
-      top: 15px;
+      top: 50%;
+      transform: translateY(-50%);
       z-index: 10;
       display: flex;
       align-items: center;
@@ -52,11 +52,15 @@ import { FormsModule } from '@angular/forms';
     }
     .clear-button {
       position: absolute;
-      right: 12px;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
       z-index: 10;
       background: transparent;
       border: none;
       padding: 4px;
+      width: 32px;
+      height: 32px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -83,10 +87,6 @@ import { FormsModule } from '@angular/forms';
 export class SearchInputComponent {
   placeholder = input<string>('Search...');
   value = model<string>('');
-
-  onValueChange(newValue: string) {
-    this.value.set(newValue);
-  }
 
   clearValue() {
     this.value.set('');
