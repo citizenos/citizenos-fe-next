@@ -22,57 +22,71 @@ export interface FilterConfig {
   imports: [DropdownComponent, SearchInputComponent, IconComponent, TranslateModule],
   template: `
     <div class="list-filter-toolbar" role="toolbar" aria-label="List Filters">
-      <div class="filters-row">
-        @for (filter of filters(); track filter.key) {
-          <cos-dropdown class="toolbar-dropdown">
-            <ng-container selection>
-              <div class="selected_item">
-                <span class="font-bold">{{ getActiveFilterText(filter) | translate }}</span>
-              </div>
-            </ng-container>
-            <ng-container options>
-              @for (option of filter.items; track option.value) {
-                <div class="option" (click)="selectFilter(filter.key, option.value)">
-                  <span>{{ option.title | translate }}</span>
-                </div>
-              }
-            </ng-container>
-          </cos-dropdown>
-        }
-        <button class="search-btn" [class.active]="showSearch()" (click)="showSearch.update(v => !v)" aria-label="Toggle Search">
-          <cos-icon name="search"></cos-icon>
-        </button>
-      </div>
-      @if (showSearch()) {
-        <div class="search-row">
-          <app-search-input
-            [placeholder]="searchPlaceholder()"
-            [value]="searchValue()"
-            (valueChange)="searchChange.emit($event)"
-          ></app-search-input>
+      @if (moreFilters()) {
+        <div class="options_area">
+          <div class="options_row">
+            @for (filter of filters(); track filter.key) {
+              <cos-dropdown class="toolbar-dropdown">
+                <ng-container selection>
+                  <div class="selected_item">
+                    <span class="font-bold">{{ getActiveFilterText(filter) | translate }}</span>
+                  </div>
+                </ng-container>
+                <ng-container options>
+                  @for (option of filter.items; track option.value) {
+                    <div class="option" (click)="selectFilter(filter.key, option.value)">
+                      <span>{{ option.title | translate }}</span>
+                    </div>
+                  }
+                </ng-container>
+              </cos-dropdown>
+            }
+            <div class="input_area">
+              <app-search-input
+                [placeholder]="searchPlaceholder()"
+                [value]="searchValue()"
+                (valueChange)="searchChange.emit($event)"
+              ></app-search-input>
+            </div>
+          </div>
         </div>
       }
+      <div class="filter_control_buttons">
+        <button class="btn_big_secondary" [class.flip]="moreFilters()" (click)="moreFilters.update(v => !v)" aria-label="Toggle Filters">
+          <div class="btn_icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17 10L12 15L7 10" stroke="#1168A8" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </div>
+        </button>
+      </div>
     </div>
   `,
   styles: [`
     .list-filter-toolbar {
       display: flex;
       flex-direction: column;
-      gap: 16px;
       background: var(--color-surfaces);
       border-radius: 16px;
-      padding: 16px;
       width: 100%;
       margin-bottom: 24px;
+      overflow: hidden;
     }
-    .filters-row {
+    .options_area {
+      padding: 16px 16px 0 16px;
+    }
+    .options_row {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       gap: 16px;
-      align-items: center;
+      align-items: flex-start;
     }
     .toolbar-dropdown {
+      min-width: 200px;
+    }
+    .input_area {
+      flex: 1;
       min-width: 200px;
     }
     .selected_item {
@@ -87,25 +101,33 @@ export interface FilterConfig {
     .font-bold {
       font-weight: 600;
     }
-    .search-btn {
-      margin-left: auto;
-      background: transparent;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
+    .filter_control_buttons {
+      display: flex;
+      justify-content: center;
       padding: 8px;
-      cursor: pointer;
+    }
+    .btn_big_secondary {
+      background: var(--color-background);
+      border: 1px solid var(--color-primary, #1168A8);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--color-text-muted);
-      transition: background 0.2s;
+      cursor: pointer;
+      transition: transform 0.2s;
     }
-    .search-btn:hover, .search-btn.active {
+    .btn_big_secondary.flip {
+      transform: rotate(180deg);
+    }
+    .btn_big_secondary:hover {
       background: var(--color-surface-hover);
-      color: var(--color-text);
     }
-    .search-row {
-      width: 100%;
+    .btn_icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   `],
 })
@@ -116,7 +138,7 @@ export class ListFilterToolbarComponent {
   filterChange = output<{ key: string, value: string }>();
   searchChange = output<string>();
 
-  showSearch = signal(false);
+  moreFilters = signal(false);
 
   getActiveFilterText(filter: FilterConfig): string {
     const value = filter.selectedValue === '' ? 'all' : filter.selectedValue;
