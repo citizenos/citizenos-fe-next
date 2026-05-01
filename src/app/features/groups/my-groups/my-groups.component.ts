@@ -55,6 +55,7 @@ import { languages } from '../../../core/constants/all-languages';
 
       <app-list-filter-toolbar
         [filters]="filterConfigs()"
+        [filtersExtra]="filterExtraConfigs()"
         [searchPlaceholder]="'VIEWS.MY_GROUPS.PLACEHOLDER_SEARCH' | translate"
         [searchValue]="searchValue()"
         (filterChange)="onFilterChange($event)"
@@ -214,7 +215,13 @@ export class MyGroupsComponent {
           { title: 'VIEWS.MY_GROUPS.MOST_RECENT', value: 'createdAt' },
           { title: 'VIEWS.MY_GROUPS.MOST_TOPICS', value: 'topicCount' },
         ],
-      },
+      }
+    ];
+  });
+
+  filterExtraConfigs = computed<FilterConfig[]>(() => {
+    const sel = this.selectedFilters();
+    return [
       {
         key: 'country',
         placeholder: 'VIEWS.MY_GROUPS.FILTER_COUNTRY',

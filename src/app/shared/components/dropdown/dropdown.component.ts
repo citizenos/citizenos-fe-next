@@ -1,4 +1,4 @@
-import { Component, signal, HostListener } from '@angular/core';
+import { Component, input, signal, HostListener } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
@@ -6,16 +6,23 @@ import { IconComponent } from '../icon/icon.component';
   standalone: true,
   imports: [IconComponent],
   template: `
-    <div class="dropdown-wrapper" [class.open]="isOpen()" 
-         role="combobox" 
-         [attr.aria-expanded]="isOpen()" 
+    <div class="dropdown-wrapper" [class.open]="isOpen()"
+         role="combobox"
+         [attr.aria-expanded]="isOpen()"
          aria-haspopup="listbox">
-      <div class="dropdown-selection" 
-           (click)="toggle()" 
-           (keydown.enter)="toggle()" 
+      <div class="dropdown-selection"
+           (click)="toggle()"
+           (keydown.enter)="toggle()"
            (keydown.space)="toggle(); $event.preventDefault()"
            tabindex="0">
-        <ng-content select="[selection]"></ng-content>
+        <div class="dropdown-content">
+          @if (placeholder()) {
+            <span class="dropdown-label">{{ placeholder() }}</span>
+          }
+          <div class="dropdown-value">
+            <ng-content select="[selection]"></ng-content>
+          </div>
+        </div>
         <div class="dropdown-arrow">
           <cos-icon name="chevron-down"></cos-icon>
         </div>
@@ -40,11 +47,32 @@ import { IconComponent } from '../icon/icon.component';
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px;
+      padding: 8px 12px;
       cursor: pointer;
+      gap: 8px;
+    }
+
+    .dropdown-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .dropdown-label {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      line-height: 16px;
+    }
+
+    .dropdown-value {
+      font-size: 14px;
+      color: var(--color-text);
+      line-height: 20px;
     }
 
     .dropdown-arrow {
+      flex-shrink: 0;
       transition: transform 0.2s;
       color: var(--color-text-muted);
     }
@@ -68,18 +96,11 @@ import { IconComponent } from '../icon/icon.component';
       overflow-y: auto;
     }
 
-    .dropdown-options .option {
-      padding: 12px 16px;
-      cursor: pointer;
-      transition: background 0.1s;
-      
-      &:hover {
-        background: var(--color-secondary);
-      }
-    }
+    /* option item styles live in the parent component that projects them */
   `],
 })
 export class DropdownComponent {
+  placeholder = input<string>('');
   isOpen = signal<boolean>(false);
 
   toggle() {

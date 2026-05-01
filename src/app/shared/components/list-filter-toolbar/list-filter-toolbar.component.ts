@@ -1,4 +1,5 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, input, output, signal, computed } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DropdownComponent } from '../dropdown/dropdown.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
 import { IconComponent } from '../icon/icon.component';
@@ -22,123 +23,202 @@ export interface FilterConfig {
   imports: [DropdownComponent, SearchInputComponent, IconComponent, TranslateModule],
   template: `
     <div class="list-filter-toolbar" role="toolbar" aria-label="List Filters">
-      @if (moreFilters()) {
-        <div class="options_area">
+      <div class="options_area">
+        @for (row of mainRows(); track $index) {
           <div class="options_row">
-            @for (filter of filters(); track filter.key) {
-              <cos-dropdown class="toolbar-dropdown">
+            @for (filter of row; track filter.key) {
+              <cos-dropdown
+                class="toolbar-dropdown"
+                [placeholder]="filter.placeholder | translate">
                 <ng-container selection>
-                  <div class="selected_item">
-                    <span class="font-bold">{{ getActiveFilterText(filter) | translate }}</span>
-                  </div>
+                  <span class="selected-item">{{ getActiveFilterText(filter) | translate }}</span>
                 </ng-container>
                 <ng-container options>
                   @for (option of filter.items; track option.value) {
                     <div class="option" (click)="selectFilter(filter.key, option.value)">
-                      <span>{{ option.title | translate }}</span>
+                      {{ option.title | translate }}
                     </div>
                   }
                 </ng-container>
               </cos-dropdown>
             }
-            <div class="input_area">
-              <app-search-input
-                [placeholder]="searchPlaceholder()"
-                [value]="searchValue()"
-                (valueChange)="searchChange.emit($event)"
-              ></app-search-input>
+          </div>
+        }
+
+        <div class="extra_area" [@slideInOut]="moreFilters() ? 'open' : 'closed'">
+          @for (row of extraRows(); track $index) {
+            <div class="options_row">
+              @for (item of row; track (item.key || 'search')) {
+                @if (item.type === 'search') {
+                  <app-search-input
+                    class="toolbar-search"
+                    [placeholder]="searchPlaceholder()"
+                    [value]="searchValue()"
+                    (valueChange)="searchChange.emit($event)"
+                  ></app-search-input>
+                } @else {
+                  <cos-dropdown
+                    class="toolbar-dropdown"
+                    [placeholder]="item.placeholder | translate">
+                    <ng-container selection>
+                      <span class="selected-item">{{ getActiveFilterText(item) | translate }}</span>
+                    </ng-container>
+                    <ng-container options>
+                      @for (option of item.items; track option.value) {
+                        <div class="option" (click)="selectFilter(item.key, option.value)">
+                          {{ option.title | translate }}
+                        </div>
+                      }
+                    </ng-container>
+                  </cos-dropdown>
+                }
+              }
             </div>
-          </div>
+          }
         </div>
-      }
+      </div>
       <div class="filter_control_buttons">
-        <button class="btn_big_secondary" [class.flip]="moreFilters()" (click)="moreFilters.update(v => !v)" aria-label="Toggle Filters">
-          <div class="btn_icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17 10L12 15L7 10" stroke="#1168A8" stroke-width="2" stroke-linecap="round" />
-            </svg>
-          </div>
+        <button class="btn_big_secondary" (click)="moreFilters.update(v => !v)" aria-label="Toggle Filters">
+          <cos-icon [name]="moreFilters() ? 'chevron-up' : 'chevron-down'"></cos-icon>
         </button>
+        @if (hasActiveFilters()) {
+          <button class="btn_big_secondary" (click)="clearAll()" aria-label="Reset Filters">
+            <cos-icon name="refresh"></cos-icon>
+          </button>
+        }
       </div>
     </div>
   `,
+  animations: [
+    trigger('slideInOut', [
+      state('closed', style({
+        height: '0px',
+        opacity: 0,
+        overflow: 'hidden',
+        visibility: 'hidden',
+        marginTop: '0px'
+      })),
+      state('open', style({
+        height: '*',
+        opacity: 1,
+        visibility: 'visible',
+        marginTop: '16px'
+      })),
+      transition('open <=> closed', animate('300ms ease-in-out'))
+    ])
+  ],
   styles: [`
     .list-filter-toolbar {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 16px;
       background: var(--color-surfaces);
       border-radius: 16px;
+      padding: 16px;
       width: 100%;
       margin-bottom: 24px;
-      overflow: hidden;
+      box-sizing: border-box;
     }
     .options_area {
-      padding: 16px 16px 0 16px;
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
     .options_row {
+      width: 100%;
       display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
+      flex-flow: row wrap;
       gap: 16px;
-      align-items: flex-start;
+      position: relative;
     }
     .toolbar-dropdown {
-      min-width: 200px;
-    }
-    .input_area {
+      display: flex;
       flex: 1;
-      min-width: 200px;
     }
-    .selected_item {
-      font-size: 14px;
-      color: var(--color-text, #2C3B47);
-      line-height: 24px;
+    .toolbar-search {
+      display: flex;
+      flex: 2;
     }
-    .option {
-      font-size: 14px;
-      color: var(--color-text, #2C3B47);
+    .extra_area {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
     .font-bold {
       font-weight: 600;
     }
+    .option {
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-text);
+    }
+    .option:hover {
+      background: var(--color-secondary);
+    }
     .filter_control_buttons {
       display: flex;
-      justify-content: center;
-      padding: 8px;
+      flex-direction: column;
+      gap: 8px;
+      flex-shrink: 0;
     }
     .btn_big_secondary {
       background: var(--color-background);
-      border: 1px solid var(--color-primary, #1168A8);
+      border: 1px solid var(--color-background);
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .btn_big_secondary.flip {
-      transform: rotate(180deg);
+      color: var(--color-link);
+      transition: background 0.2s;
     }
     .btn_big_secondary:hover {
-      background: var(--color-surface-hover);
-    }
-    .btn_icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: var(--color-background-hover);
     }
   `],
 })
 export class ListFilterToolbarComponent {
   filters = input<FilterConfig[]>([]);
+  filtersExtra = input<FilterConfig[]>([]);
   searchPlaceholder = input<string>('');
   searchValue = input<string>('');
   filterChange = output<{ key: string, value: string }>();
   searchChange = output<string>();
 
   moreFilters = signal(false);
+
+  mainRows = computed(() => {
+    const f = this.filters();
+    const chunks = [];
+    for (let i = 0; i < f.length; i += 4) {
+      chunks.push(f.slice(i, i + 4));
+    }
+    return chunks;
+  });
+
+  extraRows = computed(() => {
+    const ex = this.filtersExtra();
+    const items: any[] = [
+      ...ex.map(f => ({ ...f, type: 'filter' })),
+      { type: 'search' }
+    ];
+    const chunks = [];
+    for (let i = 0; i < items.length; i += 4) {
+      chunks.push(items.slice(i, i + 4));
+    }
+    return chunks;
+  });
+
+  hasActiveFilters = computed(() => {
+    const filterActive = [...this.filters(), ...this.filtersExtra()].some(f => f.selectedValue !== '' && f.selectedValue !== 'all');
+    return filterActive || this.searchValue() !== '';
+  });
 
   getActiveFilterText(filter: FilterConfig): string {
     const value = filter.selectedValue === '' ? 'all' : filter.selectedValue;
@@ -147,5 +227,10 @@ export class ListFilterToolbarComponent {
 
   selectFilter(key: string, value: string) {
     this.filterChange.emit({ key, value });
+  }
+
+  clearAll() {
+    [...this.filters(), ...this.filtersExtra()].forEach(f => this.filterChange.emit({ key: f.key, value: 'all' }));
+    this.searchChange.emit('');
   }
 }

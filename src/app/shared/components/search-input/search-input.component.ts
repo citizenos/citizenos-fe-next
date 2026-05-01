@@ -13,16 +13,14 @@ import { FormsModule } from '@angular/forms';
         <cos-icon name="search" size="24"></cos-icon>
       </div>
       <cos-input [placeholder]="placeholder()">
-        <input type="text" 
-               [ngModel]="value()" 
-               (ngModelChange)="onValueChange($event)" 
+        <input type="text"
+               [ngModel]="value()"
+               (ngModelChange)="onValueChange($event)"
                [placeholder]="placeholder()" />
       </cos-input>
-      @if (value()) {
-        <button class="clear-button" (click)="clearValue()" aria-label="Clear Search">
-          <cos-icon name="close" size="20"></cos-icon>
-        </button>
-      }
+      <button class="clear-button" (click)="clearValue()" aria-label="Clear Search">
+        <cos-icon name="close" size="20"></cos-icon>
+      </button>
     </div>
   `,
   styles: [`
@@ -35,10 +33,15 @@ import { FormsModule } from '@angular/forms';
     .search-icon {
       position: absolute;
       left: 12px;
+      top: 15px;
       z-index: 10;
       display: flex;
       align-items: center;
       color: var(--color-text-muted, #727C84);
+      cos-icon {
+        width: 24px;
+        height: 24px;
+      }
     }
     .search-input-wrapper cos-input {
       width: 100%;
