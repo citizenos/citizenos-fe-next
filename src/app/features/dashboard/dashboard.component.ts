@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -9,6 +9,7 @@ import { PublicTopicService } from '../../core/services/public-topic.service';
 import { UserGroupService } from '../../core/services/user-group.service';
 import { PublicGroupService } from '../../core/services/public-group.service';
 import { NewsService } from '../../core/services/news.service';
+import { UiStateService } from '../../core/services/ui-state.service';
 import { CreateMenuComponent } from '../../shared/components/create-menu/create-menu.component';
 import { TopicCardComponent } from '../../shared/components/topic-card/topic-card.component';
 import { GroupCardComponent } from '../../shared/components/group-card/group-card.component';
@@ -25,7 +26,7 @@ import { News } from '../../core/interfaces/news';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   translate = inject(TranslateService);
 
   private userTopicService = inject(UserTopicService);
@@ -33,8 +34,16 @@ export class DashboardComponent {
   private userGroupService = inject(UserGroupService);
   private publicGroupService = inject(PublicGroupService);
   private newsService = inject(NewsService);
+  private uiState = inject(UiStateService);
 
   readonly showCreate = signal(false);
+
+  ngOnInit() {
+    if (!localStorage.getItem('show-dashboard-tour')) {
+      this.uiState.showOnboarding.set(true);
+      localStorage.setItem('show-dashboard-tour', 'true');
+    }
+  }
 
   readonly myTopics = toSignal(this.userTopicService.loadItems(), { initialValue: [] });
   readonly publicTopics = toSignal(this.publicTopicService.loadItems(), { initialValue: [] });
@@ -50,7 +59,7 @@ export class DashboardComponent {
         return img ? { ...item, imageUrl: img.src } : item;
       }))
     ),
-    { initialValue: [] }
+    { initialValue: [] as News[] }
   );
 
   readonly hasNoEngagements = computed(() => this.myTopics().length === 0);

@@ -7,6 +7,7 @@ import { HelpComponent } from './help/help.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { OnboardingComponent } from './onboarding/onboarding.component';
 import { AccessibilityMenuComponent } from './accessibility-menu/accessibility-menu.component';
+import { UiStateService } from '../../services/ui-state.service';
 import { TourComponent } from '../../../shared/components/tour/tour.component';
 
 @Component({
@@ -23,7 +24,7 @@ import { TourComponent } from '../../../shared/components/tour/tour.component';
     TourComponent
   ],
   template: `
-    <div id="content_root" [class.dark-theme]="configStore.isDarkTheme()">
+    <div id="content_root" [class]="uiState.accessibilityClasses()" [class.dark-theme]="configStore.isDarkTheme()">
       <cos-nav />
       <div id="main-content" tabindex="-1">
         <router-outlet></router-outlet>
@@ -40,4 +41,5 @@ import { TourComponent } from '../../../shared/components/tour/tour.component';
 })
 export class ShellComponent {
   configStore = inject(ConfigStore);
+  uiState = inject(UiStateService);
 }

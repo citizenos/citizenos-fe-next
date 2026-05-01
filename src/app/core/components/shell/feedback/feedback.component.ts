@@ -14,199 +14,242 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
   imports: [CommonModule, FormsModule, TranslateModule, IconComponent],
   template: `
     @if (uiState.showFeedback()) {
-      <div class="feedback_overlay" (click)="uiState.showFeedback.set(false)"></div>
-      <div id="feedback_panel" class="open">
-        <div class="feedback_header">
-          <div class="feedback_title" translate="MODALS.GIVE_FEEDBACK_TITLE"></div>
-          <button class="feedback_close" (click)="uiState.showFeedback.set(false)">
-            <cos-icon name="close" [size]="24"></cos-icon>
-          </button>
-        </div>
+      <div id="root_lightbox" class="feedback_overlay_root">
+        <div id="lightbox" class="wide_lightbox">
+          <div id="lightbox_wrap">
+            <div id="lightbox_header">
+              <div id="lightbox_header_text">
+                <div class="title" translate="MODALS.GIVE_FEEDBACK_HEADING"></div>
+                <div class="description" translate="MODALS.GIVE_FEEDBACK_DESC"></div>
+              </div>
+              <div id="lightbox_close" (click)="uiState.showFeedback.set(false)">
+                <div class="table_cell ngdialog-close">
+                  <div class="sprite sprite-btn-popup-close2x ngdialog-close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="#2C3B47"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div class="line lightest_line"></div>
+            </div>
 
-        <div class="feedback_content">
-          @if (!isSubmitted()) {
-            <div class="feedback_intro" translate="MODALS.GIVE_FEEDBACK_INTRO"></div>
-            <div class="form_group">
-              <label translate="MODALS.GIVE_FEEDBACK_LBL_NAME"></label>
-              <input type="text" [(ngModel)]="name" [placeholder]="'MODALS.GIVE_FEEDBACK_PLACEHOLDER_NAME' | translate">
-            </div>
-            <div class="form_group">
-              <label translate="MODALS.GIVE_FEEDBACK_LBL_EMAIL"></label>
-              <input type="email" [(ngModel)]="email" [placeholder]="'MODALS.GIVE_FEEDBACK_PLACEHOLDER_EMAIL' | translate">
-            </div>
-            <div class="form_group">
-              <label translate="MODALS.GIVE_FEEDBACK_LBL_ORGANIZATION"></label>
-              <input type="text" [(ngModel)]="org" [placeholder]="'MODALS.GIVE_FEEDBACK_PLACEHOLDER_ORGANIZATION' | translate">
-            </div>
-            <div class="form_group">
-              <label translate="MODALS.GIVE_FEEDBACK_QUESTION_1"></label>
-              <textarea [(ngModel)]="message" [placeholder]="'MODALS.GIVE_FEEDBACK_PLACEHOLDER_MESSAGE' | translate" required></textarea>
-              @if (error() && !message) {
-                <div class="error_text" translate="MODALS.GIVE_FEEDBACK_ERROR_MESSAGE_REQUIRED"></div>
+            <div class="lightbox_content">
+              <div class="line_wrap">
+                <div class="line lightest_line"></div>
+              </div>
+
+              @if (!isSubmitted()) {
+                <div class="lightbox_section">
+                  <label class="bold" translate="MODALS.GIVE_FEEDBACK_LBL_NAME"></label>
+                  <input class="feedback_input" [(ngModel)]="name">
+                  
+                  <label class="bold" translate="MODALS.GIVE_FEEDBACK_LBL_EMAIL"></label>
+                  <input class="feedback_input" [(ngModel)]="email">
+                  
+                  <label class="bold" translate="MODALS.GIVE_FEEDBACK_LBL_GROUP_OR_ORG"></label>
+                  <input class="feedback_input" [(ngModel)]="org">
+                  
+                  <div class="bold" translate="MODALS.GIVE_FEEDBACK_QUESTION_1"></div>
+                  <textarea class="feedback_info_textarea" [class.error_input]="error() && !message" [(ngModel)]="message"
+                    [placeholder]="'MODALS.GIVE_FEEDBACK_PLACEHOLDER_TEXTAREA' | translate"></textarea>
+
+                  <div class="bold" translate="MODALS.GIVE_FEEDBACK_QUESTION_2"></div>
+
+                  <label class="checkcontainer">
+                    <input type="checkbox" class="checkbox" [checked]="allowContact" (change)="allowContact = !allowContact">
+                    <span class="option_checkbox"></span>
+                    <span class="bold" translate="MODALS.GIVE_FEEDBACK_LBL_CHECKBOX"></span>
+                  </label>
+                  
+                  <p class="feedback_info_text" [innerHtml]="'MODALS.GIVE_FEEDBACK_BE_CAREFULL' | translate"></p>
+                  <p class="feedback_info_text" [innerHtml]="'MODALS.GIVE_FEEDBACK_BE_GDPR' | translate"></p>
+                  <p class="feedback_info_text" [innerHtml]="'MODALS.GIVE_FEEDBACK_BE_VIEW_MORE_LEGAL' | translate"></p>
+                </div>
+              } @else {
+                <div class="lightbox_section">
+                  <div class="feedback_icon_wrap">
+                    <div class="feedback_icon_circle">
+                      <div class="icon_checkmark_white">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="feedback_submitted_title" [innerHtml]="'MODALS.GIVE_FEEDBACK_TITLE_THANK_YOU' | translate"></div>
+                  <div class="feedback_info_text thank_you" [innerHtml]="'MODALS.GIVE_FEEDBACK_TEXT_THANK_YOU' | translate"></div>
+                </div>
               }
             </div>
-            <div class="form_group checkbox">
-              <label>
-                <input type="checkbox" [(ngModel)]="allowContact">
-                <span translate="MODALS.GIVE_FEEDBACK_QUESTION_2"></span>
-              </label>
-            </div>
-            <button class="btn_medium_submit" (click)="submitFeedback()" translate="MODALS.GIVE_FEEDBACK_BTN_SUBMIT"></button>
-          } @else {
-            <div class="success_message">
-              <div class="success_icon">
-                <cos-icon name="check" [size]="48"></cos-icon>
+
+            <div class="lightbox_footer">
+              <div class="line lightest_line"></div>
+              <div class="lightbox_section">
+                <div class="footer_button_wrap right">
+                  @if (!isSubmitted()) {
+                    <div class="blue_link" (click)="uiState.showFeedback.set(false)" translate="MODALS.GIVE_FEEDBACK_BTN_CANCEL"></div>
+                    <div class="blue_button" (click)="submitFeedback()" translate="MODALS.GIVE_FEEDBACK_BTN_SUBMIT"></div>
+                  } @else {
+                    <div class="blue_button" (click)="uiState.showFeedback.set(false)" translate="MODALS.GIVE_FEEDBACK_BTN_CLOSE"></div>
+                  }
+                </div>
               </div>
-              <div class="success_title" translate="MODALS.GIVE_FEEDBACK_SUCCESS_TITLE"></div>
-              <div class="success_text" translate="MODALS.GIVE_FEEDBACK_SUCCESS_TEXT"></div>
-              <button class="btn_medium_submit" (click)="uiState.showFeedback.set(false)" translate="MODALS.GIVE_FEEDBACK_BTN_CLOSE"></button>
             </div>
-          }
+          </div>
         </div>
+        <div id="close_lightbox" (click)="uiState.showFeedback.set(false)"></div>
       </div>
     }
   `,
   styles: [`
-    .feedback_overlay {
+    .feedback_overlay_root {
       position: fixed;
       inset: 0;
-      z-index: 99;
-      background-color: rgba(44, 59, 71, 0.8);
-    }
-
-    #feedback_panel {
-      position: fixed;
-      right: -400px;
-      top: 0;
-      width: 400px;
-      height: 100%;
-      background: var(--color-background);
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      transition: right 0.3s ease;
-      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-    }
-
-    #feedback_panel.open {
-      right: 0;
-    }
-
-    .feedback_header {
+      z-index: 9999;
       display: flex;
       align-items: center;
-      padding: 16px;
-      border-bottom: 1px solid var(--color-border);
-      gap: 16px;
+      justify-content: center;
+      background: rgba(44, 59, 71, 0.8);
     }
 
-    .feedback_title {
-      flex: 1;
-      font-weight: 600;
-      font-size: 18px;
-    }
-
-    .feedback_close {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      color: var(--color-text);
-      display: flex;
-      align-items: center;
-    }
-
-    .feedback_content {
-      flex: 1;
+    #lightbox {
+      background: white;
+      width: 600px;
+      max-width: 90%;
+      max-height: 90vh;
       overflow-y: auto;
+      border-radius: 8px;
+      position: relative;
+      z-index: 10000;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    }
+
+    #lightbox_header {
       padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      position: relative;
     }
 
-    .feedback_intro {
-      color: var(--color-text-muted);
-      line-height: 1.5;
-    }
-
-    .form_group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .form_group label {
+    #lightbox_header_text .title {
+      font-size: 24px;
       font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    #lightbox_header_text .description {
+      color: #727c84;
       font-size: 14px;
     }
 
-    .form_group input, .form_group textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid var(--color-border);
-      border-radius: 4px;
-      background: var(--color-background);
-      color: var(--color-text);
+    #lightbox_close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      cursor: pointer;
     }
 
-    .form_group textarea {
+    .lightbox_content {
+      padding: 0 24px 24px;
+    }
+
+    .lightbox_section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .feedback_input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .feedback_info_textarea {
+      width: 100%;
       height: 120px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
       resize: vertical;
     }
 
-    .form_group.checkbox label {
+    .error_input {
+      border-color: var(--color-error);
+    }
+
+    .checkcontainer {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 8px;
-      font-weight: normal;
       cursor: pointer;
     }
 
-    .form_group.checkbox input {
-      width: auto;
-      margin-top: 4px;
-    }
-
-    .error_text {
-      color: var(--color-error);
+    .feedback_info_text {
       font-size: 12px;
+      color: #727c84;
+      margin: 0;
     }
 
-    .btn_medium_submit {
-      padding: 10px 24px;
-      background: var(--color-primary);
+    .lightbox_footer {
+      padding: 24px;
+      border-top: 1px solid #eee;
+    }
+
+    .footer_button_wrap {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .blue_link {
+      color: #1168a8;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .blue_button {
+      background: #1168a8;
       color: white;
-      border: none;
+      padding: 12px 24px;
       border-radius: 4px;
       cursor: pointer;
       font-weight: 600;
-      align-self: flex-start;
     }
 
-    .success_message {
+    #close_lightbox {
+      position: absolute;
+      inset: 0;
+      z-index: 9999;
+    }
+
+    .feedback_icon_wrap {
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      padding: 24px 0;
+    }
+
+    .feedback_icon_circle {
+      width: 64px;
+      height: 64px;
+      background: #4caf50;
+      border-radius: 50%;
+      display: flex;
       align-items: center;
+      justify-content: center;
+    }
+
+    .feedback_submitted_title {
       text-align: center;
-      gap: 16px;
-      padding-top: 40px;
-    }
-
-    .success_icon {
-      color: var(--color-success);
-    }
-
-    .success_title {
-      font-weight: 600;
       font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
     }
 
-    @media (max-width: 560px) {
-      #feedback_panel {
-        width: 100%;
-        right: -100%;
-      }
+    .feedback_info_text.thank_you {
+      text-align: center;
+      font-size: 14px;
     }
   `]
 })

@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { ConfigStore, FontSize } from '../../../state/config.store';
 import { UiStateService } from '../../../services/ui-state.service';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
 
@@ -11,185 +10,279 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
   imports: [CommonModule, TranslateModule, IconComponent],
   template: `
     @if (uiState.showAccessibility()) {
-      <div class="accessibility_overlay" (click)="uiState.showAccessibility.set(false)"></div>
-      <div id="accessibility_panel" class="open">
-        <div class="accessibility_header">
-          <div class="accessibility_title" translate="COMPONENTS.ACCESSIBILITY.TITLE"></div>
-          <button class="accessibility_close" (click)="uiState.showAccessibility.set(false)">
-            <cos-icon name="close" [size]="24"></cos-icon>
-          </button>
-        </div>
+      <div class="feedback_overlay_root">
+        <div class="dialog_wrap">
+          <div class="dialog">
+            <div class="dialog_header">
+              <div class="header_text">
+                <h4 class="title" translate="COMPONENTS.ACCESSIBILITY.MODAL_HEADING"></h4>
+                <div class="dialog_close">
+                  <button class="btn_dialog_close" (click)="uiState.showAccessibility.set(false)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="#2C3B47"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="dialog_content">
+              <div class="accessibility_options_wrap">
+                <h4 translate="COMPONENTS.ACCESSIBILITY.HEADING_CONTRAST"></h4>
 
-        <div class="accessibility_content">
-          <div class="section">
-            <div class="section_title" translate="COMPONENTS.ACCESSIBILITY.HEADING_CONTRAST"></div>
-            <div class="options_grid">
-              <button class="option_btn" [class.active]="configStore.theme() === 'light'" (click)="configStore.toggleTheme()">
-                <div class="preview light">A</div>
-                <span translate="COMPONENTS.ACCESSIBILITY.OPT_CONTRAST_DEFAULT"></span>
-              </button>
-              <button class="option_btn" [class.active]="configStore.theme() === 'dark'" (click)="configStore.toggleTheme()">
-                <div class="preview dark">A</div>
-                <span translate="COMPONENTS.ACCESSIBILITY.OPT_CONTRAST_HIGH"></span>
-              </button>
+                <div class="radio_wrap" (click)="setContrast('default')">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="radio_box">
+                        <input type="radio" [checked]="uiState.accessibility().contrast === 'default'" name="contrast" value="default">
+                        <span class="radio"></span>
+                        <div class="radio_lable" translate="COMPONENTS.ACCESSIBILITY.OPT_CONTRAST_DEFAULT"></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="radio_icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="3" y="3" width="9" height="9" fill="#5C9CD0" />
+                      <rect x="3" y="12" width="9" height="9" fill="#E9D519" />
+                      <rect x="12" y="3" width="9" height="9" fill="#DA7AB1" />
+                      <rect x="12" y="12" width="9" height="9" fill="#5AB467" />
+                      <rect x="0.5" y="0.5" width="23" height="23" rx="2.5" stroke="#2C3B47" />
+                    </svg>
+                  </div>
+                </div>
+                
+                <div class="radio_wrap" (click)="setContrast('high_contrast')">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="radio_box">
+                        <input type="radio" [checked]="uiState.accessibility().contrast === 'high_contrast'" name="contrast" value="high_contrast">
+                        <span class="radio"></span>
+                        <div class="radio_lable" translate="COMPONENTS.ACCESSIBILITY.OPT_CONTRAST_HIGH"></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="radio_icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="3" y="3" width="9" height="18" fill="#2C3B47" />
+                      <rect x="12" y="3" width="9" height="18" fill="#FFF500" />
+                      <rect x="0.5" y="0.5" width="23" height="23" rx="2.5" stroke="#2C3B47" />
+                    </svg>
+                  </div>
+                </div>
+
+                <h4 translate="COMPONENTS.ACCESSIBILITY.HEADING_TEXT_SIZE"></h4>
+
+                <div class="radio_wrap" (click)="setTextSize('')">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="radio_box">
+                        <input type="radio" [checked]="uiState.accessibility().text === ''" name="textSize" value="">
+                        <span class="radio"></span>
+                        <div class="radio_lable" translate="COMPONENTS.ACCESSIBILITY.OPT_TEXT_SIZE_DEFAULT"></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="radio_icon">
+                    <div class="icon_text_size text_default">A</div>
+                  </div>
+                </div>
+
+                <div class="radio_wrap" (click)="setTextSize('large')">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="radio_box">
+                        <input type="radio" [checked]="uiState.accessibility().text === 'large'" name="textSize" value="large">
+                        <span class="radio"></span>
+                        <div class="radio_lable" translate="COMPONENTS.ACCESSIBILITY.OPT_TEXT_SIZE_LARGE"></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="radio_icon">
+                    <div class="icon_text_size large">A</div>
+                  </div>
+                </div>
+
+                <div class="radio_wrap" (click)="setTextSize('extra_large')">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="radio_box">
+                        <input type="radio" [checked]="uiState.accessibility().text === 'extra_large'" name="textSize" value="extra_large">
+                        <span class="radio"></span>
+                        <div class="radio_lable" translate="COMPONENTS.ACCESSIBILITY.OPT_TEXT_SIZE_EXTRA_LARGE"></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="radio_icon">
+                    <div class="icon_text_size extra_large">A</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dialog_info_wrap">
+              <div class="dialog_info">
+                <div class="bold" translate="COMPONENTS.ACCESSIBILITY.HEADING_HAVING_ISSUES"></div>
+                <div class="row">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 12V14L19 11.5L15 9V11H6V12H15Z" fill="#2C3B47" />
+                  </svg>
+                  <a href="https://citizenos.com/contact/" target="_blank" translate="COMPONENTS.ACCESSIBILITY.READ_STATEMENT"></a>
+                </div>
+                <div class="row">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 12V14L19 11.5L15 9V11H6V12H15Z" fill="#2C3B47" />
+                  </svg>
+                  <a href="https://citizenos.com/contact/" target="_blank" translate="COMPONENTS.ACCESSIBILITY.CONTACT_US"></a>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div class="section">
-            <div class="section_title" translate="COMPONENTS.ACCESSIBILITY.HEADING_TEXT_SIZE"></div>
-            <div class="options_grid">
-              <button class="option_btn" [class.active]="configStore.fontSize() === 'medium'" (click)="configStore.setFontSize('medium')">
-                <div class="preview size_medium">Aa</div>
-                <span translate="COMPONENTS.ACCESSIBILITY.OPT_SIZE_MEDIUM"></span>
-              </button>
-              <button class="option_btn" [class.active]="configStore.fontSize() === 'large'" (click)="configStore.setFontSize('large')">
-                <div class="preview size_large">Aa</div>
-                <span translate="COMPONENTS.ACCESSIBILITY.OPT_SIZE_LARGE"></span>
-              </button>
-              <button class="option_btn" [class.active]="configStore.fontSize() === 'extra_large'" (click)="configStore.setFontSize('extra_large')">
-                <div class="preview size_extra_large">Aa</div>
-                <span translate="COMPONENTS.ACCESSIBILITY.OPT_SIZE_EXTRA_LARGE"></span>
-              </button>
-            </div>
-          </div>
         </div>
+        <div id="close_lightbox" (click)="uiState.showAccessibility.set(false)"></div>
       </div>
     }
   `,
   styles: [`
-    .accessibility_overlay {
+    @use "mixins";
+
+    .feedback_overlay_root {
       position: fixed;
       inset: 0;
-      z-index: 99;
-      background-color: rgba(44, 59, 71, 0.8);
-    }
-
-    #accessibility_panel {
-      position: fixed;
-      right: -400px;
-      top: 0;
-      width: 400px;
-      height: 100%;
-      background: var(--color-background);
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      transition: right 0.3s ease;
-      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-    }
-
-    #accessibility_panel.open {
-      right: 0;
-    }
-
-    .accessibility_header {
+      z-index: 9999;
       display: flex;
       align-items: center;
-      padding: 16px;
-      border-bottom: 1px solid var(--color-border);
-      gap: 16px;
+      justify-content: center;
+      background: rgba(44, 59, 71, 0.8);
     }
 
-    .accessibility_title {
-      flex: 1;
-      font-weight: 600;
+    .dialog_wrap {
+      z-index: 10000;
+      position: relative;
+    }
+
+    .dialog {
+      background: white;
+      width: 560px;
+      max-width: 90vw;
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dialog_header {
+      padding: 16px 24px;
+      background: #f1f7fc;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .header_text {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .title {
       font-size: 18px;
+      font-weight: 600;
+      margin: 0;
     }
 
-    .accessibility_close {
+    .btn_dialog_close {
       background: none;
       border: none;
       cursor: pointer;
       padding: 4px;
-      color: var(--color-text);
-      display: flex;
-      align-items: center;
     }
 
-    .accessibility_content {
-      flex: 1;
-      overflow-y: auto;
+    .accessibility_options_wrap {
       padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 32px;
-    }
-
-    .section {
-      display: flex;
-      flex-direction: column;
       gap: 16px;
+
+      h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
     }
 
-    .section_title {
-      font-weight: 600;
-      font-size: 16px;
-      color: var(--color-text-muted);
-    }
-
-    .options_grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .option_btn {
+    .radio_wrap {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      padding: 16px;
-      background: var(--color-surfaces);
-      border: 2px solid transparent;
+      padding: 12px;
+      border: 1px solid #eee;
       border-radius: 8px;
       cursor: pointer;
-      transition: all 0.2s ease;
+
+      &:hover {
+        background: #f9f9f9;
+      }
     }
 
-    .option_btn:hover {
-      background: var(--color-border);
-    }
-
-    .option_btn.active {
-      border-color: var(--color-primary);
-      background: var(--color-background);
-    }
-
-    .preview {
-      width: 60px;
-      height: 60px;
+    .radio_box {
       display: flex;
       align-items: center;
-      justify-content: center;
-      border-radius: 4px;
-      font-size: 24px;
-      font-weight: 700;
+      gap: 12px;
+      cursor: pointer;
     }
 
-    .preview.light {
-      background: white;
-      color: #2C3B47;
-      border: 1px solid #ddd;
+    .radio_lable {
+      font-size: 14px;
     }
 
-    .preview.dark {
-      background: #2C3B47;
-      color: white;
+    .icon_text_size {
+      font-weight: 600;
+      &.text_default { font-size: 14px; }
+      &.large { font-size: 18px; }
+      &.extra_large { font-size: 24px; }
     }
 
-    .preview.size_medium { font-size: 16px; }
-    .preview.size_large { font-size: 20px; }
-    .preview.size_extra_large { font-size: 24px; }
+    .dialog_info_wrap {
+      padding: 16px 24px;
+      background: #f9f9f9;
+      border-top: 1px solid #eee;
+    }
 
-    @media (max-width: 560px) {
-      #accessibility_panel {
-        width: 100%;
-        right: -100%;
+    .dialog_info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 14px;
+
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        a {
+          color: #1168a8;
+          text-decoration: none;
+          &:hover { text-decoration: underline; }
+        }
       }
+    }
+
+    #close_lightbox {
+      position: absolute;
+      inset: 0;
+      z-index: 9999;
+    }
+    
+    .bold {
+      font-weight: 600;
     }
   `]
 })
 export class AccessibilityMenuComponent {
-  public configStore = inject(ConfigStore);
   public uiState = inject(UiStateService);
+
+  setContrast(contrast: string) {
+    const acc = this.uiState.accessibility();
+    this.uiState.accessibility.set({ ...acc, contrast });
+  }
+
+  setTextSize(size: string) {
+    const acc = this.uiState.accessibility();
+    this.uiState.accessibility.set({ ...acc, text: size });
+  }
 }

@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class UiStateService {
@@ -6,6 +6,19 @@ export class UiStateService {
   showFeedback = signal(false);
   showOnboarding = signal(false);
   showAccessibility = signal(false);
+
+  accessibility = signal({
+    contrast: 'default',
+    text: ''
+  });
+
+  accessibilityClasses = computed(() => {
+    const acc = this.accessibility();
+    const classes: string[] = [];
+    if (acc.contrast && acc.contrast !== 'default') classes.push(acc.contrast);
+    if (acc.text) classes.push(acc.text);
+    return classes.join(' ');
+  });
 
   toggleHelp() {
     this.showHelp.update(v => !v);
