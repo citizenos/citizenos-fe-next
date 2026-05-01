@@ -1,5 +1,5 @@
 import {
-  Component, signal, inject, ChangeDetectionStrategy, ViewEncapsulation, HostListener
+  Component, signal, computed, inject, ChangeDetectionStrategy, ViewEncapsulation, HostListener
 } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -11,6 +11,9 @@ import { LogoComponent } from '../../../../shared/components/logo/logo.component
 import { LanguageSelectComponent } from '../language-select/language-select.component';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { SELECTED_LANGUAGES } from '../../../constants/languages';
+import { UiStateService } from '../../../services/ui-state.service';
+import { ConfigStore } from '../../../state/config.store';
+import { TourItemDirective } from '../../../../shared/directives/tour-item.directive';
 
 
 @Component({
@@ -18,7 +21,7 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [RouterLink, RouterLinkActive, TranslateModule, InitialsComponent, LogoComponent, IconComponent, CreateMenuComponent],
+  imports: [RouterLink, RouterLinkActive, TranslateModule, InitialsComponent, LogoComponent, IconComponent, CreateMenuComponent, TourItemDirective],
   template: `
     <!-- Mobile top bar -->
     <div class="nav_mobile">
@@ -28,7 +31,8 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
         </a>
       </div>
       <div class="nav_mobile_actions">
-        <button class="nav_icon_btn" (click)="toggleNav()" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.NAV_TOGGLE' | translate" [attr.aria-expanded]="showNav()">
+        <button class="nav_icon_btn" (click)="toggleNav()" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.NAV_TOGGLE' | translate" [attr.aria-expanded]="showNav()"
+          [cosTourItem]="{tourid: ['dashboard_mobile', 'dashboard_tablet'], index: 3, position: 'bottom'}">
           @if (!showNav()) {
             <cos-icon name="nav-menu" [size]="24"></cos-icon>
           } @else {
@@ -108,7 +112,7 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
     }
 
     <!-- Sidebar -->
-    <div class="nav_wrap" [class.nav_is_open]="showNav()">
+    <div class="nav_wrap" [class.nav_is_open]="showNav()" [cosTourItem]="{tourid: 'dashboard', index: 2, position: 'right'}">
       <nav class="nav">
 
         <!-- Desktop logo -->
@@ -122,7 +126,8 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
           <!-- Create menu -->
           @if (userStore.isAuthenticated()) {
             <div class="nav_create_wrap">
-              <button class="nav_create_btn" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true">
+              <button class="nav_create_btn" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true"
+                [cosTourItem]="{tourid: 'dashboard', index: 1, position: 'right'}">
                 <cos-icon name="plus" [size]="16"></cos-icon>
                 <span>{{ 'DEFAULT.NAV.BTN_CREATE' | translate }}</span>
               </button>
@@ -240,7 +245,7 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
               </div>
               <span>{{ currentLanguageLabel }}</span>
             </button>
-            <a class="nav_item" href="https://citizenos.com/help?app=true" target="_blank">
+            <button class="nav_item" (click)="uiState.showHelp.set(true); closeNav()">
               <div class="icon_wrap">
                 <cos-icon name="help" [size]="16"></cos-icon>
                 @if (helpExtraInfo()) {
@@ -248,19 +253,31 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
                 }
               </div>
               <span>{{ 'DEFAULT.NAV.LNK_HELP' | translate }}</span>
-            </a>
-            <a class="nav_item" href="https://citizenos.com/donate" target="_blank">
+            </button>
+            <a class="nav_item" [href]="lnkDonate()" target="_blank">
                <div class="icon_wrap">
                 <cos-icon name="about" [size]="16"></cos-icon>
               </div>
               <span>{{ 'DEFAULT.NAV.LNK_ABOUT' | translate }}</span>
             </a>
-            <a class="nav_item" href="https://citizenos.com/faq" target="_blank">
+            <a class="nav_item" [href]="lnkFaq()" target="_blank">
               <div class="icon_wrap">
                 <cos-icon name="faq" [size]="16"></cos-icon>
               </div>
               <span>{{ 'DEFAULT.NAV.LNK_FAQ' | translate }}</span>
             </a>
+            <button class="nav_item" (click)="uiState.showFeedback.set(true); closeNav()">
+              <div class="icon_wrap">
+                <cos-icon name="nav-feedback" [size]="16"></cos-icon>
+              </div>
+              <span>{{ 'DEFAULT.NAV.LNK_FEEDBACK' | translate }}</span>
+            </button>
+            <button class="nav_item" (click)="uiState.showAccessibility.set(true); closeNav()">
+              <div class="icon_wrap">
+                <cos-icon name="accessibility" [size]="16"></cos-icon>
+              </div>
+              <span>{{ 'DEFAULT.NAV.LNK_ACCESSIBILITY' | translate }}</span>
+            </button>
           </div>
         </div>
 
@@ -293,8 +310,20 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
 export class NavComponent {
   readonly translate = inject(TranslateService);
   readonly userStore = inject(UserStore);
+  readonly uiState = inject(UiStateService);
+  private readonly configStore = inject(ConfigStore);
   private readonly dialog = inject(DialogService);
   private readonly router = inject(Router);
+ 
+  lnkDonate = computed(() => {
+    const links = this.configStore.links.donate();
+    return links[this.translate.currentLang] || links['en'];
+  });
+
+  lnkFaq = computed(() => {
+    const links = this.configStore.links.faq();
+    return links[this.translate.currentLang] || links['en'];
+  });
 
   showNav = signal(false);
   showCreateMenu = signal(false);

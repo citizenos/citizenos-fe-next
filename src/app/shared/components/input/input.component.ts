@@ -31,12 +31,11 @@ import { TranslateModule } from '@ngx-translate/core';
       display: block;
       width: 100%;
     }
-    
+
     .input-container {
       display: flex;
       flex-direction: column;
       width: 100%;
-      margin-bottom: var(--spacing-md);
       position: relative;
     }
 
@@ -46,23 +45,23 @@ import { TranslateModule } from '@ngx-translate/core';
       color: var(--color-text);
       margin-bottom: 8px;
     }
-    
+
     .input-wrapper {
       position: relative;
       background: var(--color-surfaces);
-      border: 1px solid var(--color-border-bold);
+      border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
       display: flex;
       align-items: center;
       min-height: 48px;
-      
+
       &:focus-within {
-        border-color: var(--color-link);
+        border-color: var(--color-border-active);
         box-shadow: 0 0 0 3px var(--color-focus-ring);
       }
     }
-    
+
     .cos_input_placeholder {
       display: none;
       position: absolute;
@@ -93,7 +92,7 @@ import { TranslateModule } from '@ngx-translate/core';
       box-shadow: none !important;
       height: 48px;
       box-sizing: border-box;
-      
+
       &::placeholder {
         color: var(--color-text-muted);
         opacity: 0.7;
@@ -104,13 +103,13 @@ import { TranslateModule } from '@ngx-translate/core';
         padding-bottom: 10px;
       }
     }
-    
+
     .has-error {
       .input-wrapper {
         border-color: var(--color-danger);
       }
     }
-    
+
     .error-message {
       font-size: 12px;
       color: var(--color-danger);
@@ -126,15 +125,15 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class InputComponent implements AfterContentChecked {
   private static idCounter = 0;
-  
+
   label = input<string>('');
   placeholder = input<string>('');
   hasError = input<boolean>(false);
   errorMessage = input<string>('');
-  
+
   inputId = `cos-input-${InputComponent.idCounter++}`;
   errorId = `${this.inputId}-error`;
-  
+
   showPlaceholder = signal<boolean>(false);
   private el = inject(ElementRef);
 
@@ -144,13 +143,13 @@ export class InputComponent implements AfterContentChecked {
       if (!inputEl.id) {
         inputEl.id = this.inputId;
       }
-      
+
       inputEl.setAttribute('aria-invalid', this.hasError().toString());
 
       if (this.placeholder() && !inputEl.hasAttribute('aria-label')) {
         inputEl.setAttribute('aria-label', this.placeholder());
       }
-      
+
       if (this.hasError() && this.errorMessage()) {
         inputEl.setAttribute('aria-describedby', this.errorId);
       } else {
@@ -159,7 +158,7 @@ export class InputComponent implements AfterContentChecked {
 
       const hasValue = !!inputEl.value?.length;
       this.showPlaceholder.set(hasValue);
-      
+
       if (hasValue) {
         inputEl.classList.add('with_value');
       } else {

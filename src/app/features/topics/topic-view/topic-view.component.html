@@ -7,6 +7,7 @@
   <div id="topic_view" class="content_wrap">
 
     <app-topic-header [topic]="topic()!" [navigation]="navigation()"
+      [cosTourItem]="{ tourid: 'topic', index: 1, position: 'bottom' }"
       (joinTopic)="joinTopic($event)" (toggleFavourite)="toggleFavourite($event)" (leaveTopic)="leaveTopic($event)"
       (inviteEditors)="inviteEditors($event)" (duplicateTopic)="duplicateTopic($event)"
       (addGroupsDialog)="addGroupsDialog($event)" (reportTopic)="reportTopic($event)" (reportReasonDialog)="reportReasonDialog($event)"
@@ -19,6 +20,7 @@
 
       <div class="content_area_left">
         <app-topic-content
+          [cosTourItem]="{ tourid: 'topic', index: 3, position: 'top' }"
           [topic]="topic()!"
           [tabTablet]="tabTablet()" />
 
@@ -62,14 +64,14 @@
 
         <!-- Discussion tab -->
         @if (!tabSelected() || tabSelected() === 'discussion') {
-          <div [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'discussion' }">
+          <div [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'discussion' }" [cosTourItem]="{ tourid: 'topic', index: 7, position: 'top' }">
             <cos-topic-discussion [topic]="topic()!"></cos-topic-discussion>
           </div>
         }
 
         <!-- Ideation tab -->
         @if (tabSelected() === 'ideation' && ideation()) {
-          <div [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'ideation' }">
+          <div [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'ideation' }" [cosTourItem]="{ tourid: 'topic', index: 7, position: 'top' }">
             <app-topic-ideation [topic]="topic()!" [ideation]="ideation()!" />
           </div>
         }
@@ -110,7 +112,7 @@
               </div>
             }
             @if (topic()?.voteId && vote()) {
-              <app-topic-vote-cast [topic]="topic()!" [vote]="vote()!" />
+              <app-topic-vote-cast [topic]="topic()!" [vote]="vote()!" [cosTourItem]="{ tourid: 'topic', index: 7, position: 'top' }" />
             }
           </div>
         }
@@ -162,6 +164,7 @@
         <div class="content_area_right">
 
           <app-topic-info-sidebar
+            [cosTourItem]="{ tourid: 'topic', index: 6, position: 'left' }"
             [topic]="topic()!"
             [groups]="groups()"
             [attachments]="attachments()"
@@ -178,6 +181,7 @@
             (downloadAttachment)="downloadAttachment($event)" />
 
           <app-topic-state-items
+            [cosTourItem]="{ tourid: 'topic', index: 5, position: 'left' }"
             [topic]="topic()!"
             [ideation]="ideation()"
             [vote]="vote()"

@@ -210,6 +210,17 @@
         background-color: var(--color-surface-contrast);
         padding: 16px;
 
+        .option {
+          padding: 10px 16px;
+          cursor: pointer;
+          font-size: 14px;
+          color: var(--color-text);
+        }
+
+        .option:hover {
+          background: var(--color-secondary);
+        }
+
         .preference_title {
           font-weight: 700;
           font-size: 14px;
@@ -224,10 +235,10 @@
         cos-input {
           max-width: 400px;
           margin-top: 8px;
-          
+
           cos-dropdown {
             width: 100%;
-            
+
             .dropdown-wrapper {
               border: none;
               background: transparent;
@@ -236,12 +247,12 @@
             .dropdown-selection {
               padding: 16px;
               min-height: 48px;
-              
+
               .selected_item {
                 font-size: 14px;
                 font-weight: 600;
               }
-              
+
               &.with_label {
                 padding-top: 22px;
                 padding-bottom: 10px;

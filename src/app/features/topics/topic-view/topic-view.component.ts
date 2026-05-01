@@ -6,6 +6,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap, combineLatest, map, of, tap, catchError, startWith, take } from 'rxjs';
 
 import { TopicService } from '../../../core/services/topic.service';
+import { TourItemDirective } from '../../../shared/directives/tour-item.directive';
 import { TopicIdeationService } from '../../../core/services/topic-ideation.service';
 import { TopicEventService } from '../../../core/services/topic-event.service';
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
@@ -42,7 +43,8 @@ import { Topic } from '../../../core/interfaces/topic';
     TopicDiscussionComponent,
     TopicVoteCastComponent,
     TopicMilestonesComponent,
-    IconComponent
+    IconComponent,
+    TourItemDirective
   ],
   templateUrl: './topic-view.component.html',
   styleUrls: ['./topic-view.component.scss']

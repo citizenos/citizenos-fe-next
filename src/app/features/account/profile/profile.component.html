@@ -163,21 +163,18 @@
           <div class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_PROFILE_LANGUAEG"></div>
           <div class="preference_description" translate="VIEWS.ACCOUNT.LBL_PROFILE_LANGUAEG_DESCRIPTION"></div>
 
-          <cos-input [placeholder]="'VIEWS.ACCOUNT.LBL_SELECT_PROFILE_LANGUAEG' | translate">
-            <input name="lang_trigger" [ngModel]="form.language" hidden>
-            <cos-dropdown>
-              <div selection>
-                <div class="selected_item bold">{{languages[form.language] || form.language}}</div>
-              </div>
-              <div options>
-                @for (language of languages | keyvalue; track language.key) {
-                <div class="option" (click)="setProfileLanguage(language.key)">{{language.value}}</div>
-                }
-              </div>
-            </cos-dropdown>
-          </cos-input>
+          <cos-dropdown class="toolbar-dropdown"
+            [placeholder]="'VIEWS.ACCOUNT.LBL_SELECT_PROFILE_LANGUAEG' | translate">
+            <ng-container selection>
+              <span class="selected-item">{{languages[form.language] || form.language}}</span>
+            </ng-container>
+            <ng-container options>
+              @for (language of languages | keyvalue; track language.key) {
+              <div class="option" (click)="setProfileLanguage(language.key)">{{language.value}}</div>
+              }
+            </ng-container>
+          </cos-dropdown>
         </div>
-
         <div class="prefrence_box">
           <div class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_SHOW_IN_SEARCH"></div>
           <div class="preference_header">

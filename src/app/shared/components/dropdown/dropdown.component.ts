@@ -41,6 +41,11 @@ import { IconComponent } from '../icon/icon.component';
       background: var(--color-surfaces);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
+      transition: border-color var(--transition-fast);
+
+      &.open {
+        border-color: var(--color-border-active);
+      }
     }
 
     .dropdown-selection {

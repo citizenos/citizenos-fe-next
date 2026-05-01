@@ -14,6 +14,12 @@ interface ConfigState {
   etherpad: {
     baseUrl: string;
   };
+  links: {
+    help: Record<string, string>;
+    faq: Record<string, string>;
+    about: string;
+    donate: Record<string, string>;
+  };
 }
 
 const initialState: ConfigState = {
@@ -25,6 +31,23 @@ const initialState: ConfigState = {
   },
   etherpad: {
     baseUrl: 'https://dev.p.citizenos.com:9001'
+  },
+  links: {
+    help: {
+      en: 'https://app.citizenos.com/en/topics/c6b6d06a-e8cf-4297-9654-8c1cf01b133b',
+      et: 'https://app.citizenos.com/en/topics/fd8c4e13-6c5f-4423-9408-cf97c30727d7',
+      ru: 'https://app.citizenos.com/en/topics/bd15b9e8-7de4-42c2-a394-78ed95a735cd'
+    },
+    faq: {
+      en: 'https://citizenos.com/faq/',
+      et: 'https://citizenos.com/et/kkk/'
+    },
+    about: 'https://citizenos.com/platform/',
+    donate: {
+      en: 'https://citizenos.com/donate/',
+      et: 'https://citizenos.com/et/toeta/',
+      ru: 'https://citizenos.com/ru/pomoch-proektu/'
+    }
   }
 };
 

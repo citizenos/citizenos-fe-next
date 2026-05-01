@@ -13,6 +13,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { GlobalSearchService } from '../../../services/global-search.service';
 import { SearchService } from '../../../services/search.service';
 import { UserStore } from '../../../state/user.store';
+import { ConfigStore } from '../../../state/config.store';
+import { UiStateService } from '../../../services/ui-state.service';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
 
 @Component({
@@ -56,6 +58,11 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
             <div translate="COMPONENTS.SEARCH.DESC_START_SEARCH"></div>
           </div>
         </div>
+        <div id="donate_wrap">
+          <div class="donate_item" id="donate_icon"></div>
+          <div class="donate_item" id="donate_text" translate="DONATE_TXT"></div>
+          <a class="donate_item" id="donate_button" target="_blank" [href]="lnkDonate()" translate="DONATE_BTN"></a>
+        </div>
       }
 
       @if (showResults()) {
@@ -64,6 +71,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
           @if (noResults()) {
             <div class="results_no_results_wrap">
               <span class="results_no_results_text" translate="COMPONENTS.SEARCH.TXT_NO_RESULTS_FOUND"></span>
+              <span class="results_no_results_link" (click)="toggleHelp()" translate="COMPONENTS.SEARCH.LNK_HELP_PANEL"></span>
             </div>
           }
           @for (context of contexts; track context) {
@@ -192,6 +200,33 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
       background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='80' height='80' rx='40' fill='white'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M35.7144 52.8574C43.9986 52.8574 50.7144 46.1417 50.7144 37.8574C50.7144 29.5732 43.9986 22.8574 35.7144 22.8574C27.4301 22.8574 20.7144 29.5732 20.7144 37.8574C20.7144 46.1417 27.4301 52.8574 35.7144 52.8574ZM35.7144 48.5717C41.6317 48.5717 46.4286 43.7748 46.4286 37.8574C46.4286 31.9401 41.6317 27.1431 35.7144 27.1431C29.797 27.1431 25.0001 31.9401 25.0001 37.8574C25.0001 43.7748 29.797 48.5717 35.7144 48.5717Z' fill='%23A7D1F3'/%3E%3Cpath d='M59.4866 55.1116L49.9219 45.5469L46.9754 48.4933L56.5402 58.058C57.3538 58.8717 58.673 58.8717 59.4866 58.058C60.3002 57.2444 60.3002 55.9252 59.4866 55.1116Z' fill='%23EFE08A'/%3E%3C/svg%3E");
     }
 
+    #donate_wrap {
+       padding-top: 64px;
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       gap: 16px;
+       text-align: center;
+    }
+
+    #donate_icon {
+      width: 48px;
+      height: 48px;
+      background-image: url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z' fill='%23EFE08A'/%3E%3Cpath d='M24 34C24 34 32 26 32 20C32 15.5817 28.4183 12 24 12C19.5817 12 16 15.5817 16 20C16 26 24 34 24 34Z' fill='white'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    #donate_button {
+      display: inline-flex;
+      padding: 10px 24px;
+      background: var(--color-primary);
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
     #results_area {
       display: flex;
       flex-direction: column;
@@ -214,6 +249,13 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
 
     .results_no_results_text {
       font-size: 13px;
+    }
+
+    .results_no_results_link {
+      font-size: 13px;
+      color: var(--color-primary);
+      cursor: pointer;
+      font-weight: 600;
     }
 
     .result_group_wrap {
@@ -256,11 +298,18 @@ export class GlobalSearchPanelComponent {
   private userStore = inject(UserStore);
   private router = inject(Router);
   private translate = inject(TranslateService);
+  private configStore = inject(ConfigStore);
+  private uiState = inject(UiStateService);
 
   searchInput = signal('');
   showResults = signal(false);
   noResults = signal(true);
   searchResults = signal<Record<string, any>>({});
+
+  lnkDonate = computed(() => {
+    const links = this.configStore.links.donate();
+    return links[this.translate.currentLang] || links['en'];
+  });
 
   readonly contexts = ['my', 'public'];
   readonly models = ['topics', 'groups'];
@@ -340,5 +389,10 @@ export class GlobalSearchPanelComponent {
         return updated;
       });
     });
+  }
+
+  toggleHelp() {
+    this.globalSearch.showSearch.set(false);
+    this.uiState.showHelp.set(true);
   }
 }
