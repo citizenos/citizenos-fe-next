@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes, UrlSegment } from '@angular/router';
 import { ShellComponent } from './core/components/shell/shell.component';
 import { languageResolver } from './core/resolvers/language.resolver';
 import { authGuard } from './core/guards/auth.guard';
@@ -9,6 +9,18 @@ import { PageNotFoundComponent } from './core/components/page-not-found/page-not
 export const routes: Routes = [
   // The root path redirects to english home by default, or you can have a lang detection component
   { path: '', redirectTo: '/en', pathMatch: 'full' },
+  
+  // Legacy paths redirect to /en/:path
+  {
+    matcher: (segments: UrlSegment[]) => {
+      const knownFeatures = ['topics', 'groups', 'dashboard', 'my', 'public', 'account'];
+      if (segments.length > 0 && knownFeatures.includes(segments[0].path)) {
+        return { consumed: segments }; // Consume everything so the redirect gets the full path
+      }
+      return null;
+    },
+    redirectTo: (pos) => `/en/${pos.url}`
+  },
   
   // The main layout wrapping all localized routes
   {

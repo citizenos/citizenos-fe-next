@@ -61,7 +61,7 @@ export class TopicInfoSidebarComponent {
   showAttachments = false;
   showGroups = false;
   manageOpen = false;
-  lang = computed(() => this.translate.currentLang);
+  lang = computed(() => this.translate.currentLang || 'en');
 
   get isLoggedIn() {
     return this.userStore.isAuthenticated();
