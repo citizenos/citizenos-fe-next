@@ -10,7 +10,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UserTopicService } from '../../../core/services/user-topic.service';
 import { TopicCardComponent } from '../../../shared/components/topic-card/topic-card.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
-import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { ListFilterToolbarComponent, FilterConfig } from '../../../shared/components/list-filter-toolbar/list-filter-toolbar.component';
 import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { CreateMenuComponent } from '../../../shared/components/create-menu/create-menu.component';
@@ -25,7 +24,6 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
     TranslateModule,
     TopicCardComponent,
     PaginationComponent,
-    SearchInputComponent,
     ListFilterToolbarComponent,
     ActivitiesButtonComponent,
     CreateMenuComponent,
@@ -33,24 +31,17 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
   ],
   template: `
     <div class="page_content">
-      <app-page-list-header (searchToggle)="showSearch.update(v => !v)">
+      <app-page-list-header>
         <span title translate="VIEWS.MY_TOPICS.HEADER"></span>
         <cos-activities-button activities></cos-activities-button>
       </app-page-list-header>
 
-      @if (showSearch()) {
-        <div class="search_row">
-          <app-search-input
-            [placeholder]="'VIEWS.MY_TOPICS.PLACEHOLDER_SEARCH_TOPIC' | translate"
-            [value]="searchValue()"
-            (valueChange)="onSearch($event)"
-          ></app-search-input>
-        </div>
-      }
-
       <app-list-filter-toolbar
         [filters]="filterConfigs()"
+        [searchPlaceholder]="'VIEWS.MY_TOPICS.PLACEHOLDER_SEARCH_TOPIC' | translate"
+        [searchValue]="searchValue()"
         (filterChange)="onFilterChange($event)"
+        (searchChange)="onSearch($event)"
       ></app-list-filter-toolbar>
 
       <div class="topics_grid">
@@ -72,8 +63,6 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
     </div>
   `,
   styles: [`
-    .search_row { margin-bottom: 16px; }
-
     .topics_grid {
       display: flex;
       flex-wrap: wrap;
@@ -100,7 +89,6 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
 export class MyTopicsComponent {
   private topicService = inject(UserTopicService);
 
-  showSearch = signal(false);
   searchValue = signal('');
   currentPage = signal(1);
 

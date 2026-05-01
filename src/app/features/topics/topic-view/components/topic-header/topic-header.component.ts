@@ -45,6 +45,7 @@ export class TopicHeaderComponent {
 
   mobileActions = signal(false);
 
+  lang = computed(() => this.translate.currentLang);
   isLoggedIn = computed(() => this.userStore.isAuthenticated());
 
   onJoin() {

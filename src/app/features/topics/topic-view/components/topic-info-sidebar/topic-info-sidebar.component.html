@@ -42,7 +42,7 @@
           }
           @if (isLoggedIn && topicService.canEdit(topic()) && !topic().voteId && !topic().ideationId) {
             <div class="line_separator"></div>
-            <button class="option" [routerLink]="['/', 'topics', 'edit', topic().id]">
+            <button class="option" [routerLink]="['/', lang(), 'topics', 'edit', topic().id]">
               <div class="icon_wrap">
                 <cos-icon name="edit" size="16"></cos-icon>
               </div>
@@ -51,7 +51,7 @@
           }
           @if (isLoggedIn && topicService.canEdit(topic()) && topic().ideationId && !topic().voteId) {
             <div class="line_separator"></div>
-            <button class="option" [routerLink]="['/', 'topics', 'ideation', 'edit', topic().id]">
+            <button class="option" [routerLink]="['/', lang(), 'topics', 'ideation', 'edit', topic().id]">
               <div class="icon_wrap">
                 <cos-icon name="edit" size="16"></cos-icon>
               </div>
@@ -60,7 +60,7 @@
           }
           @if (isLoggedIn && topicService.canEdit(topic()) && topic().voteId) {
             <div class="line_separator"></div>
-            <button class="option" [routerLink]="['/', 'topics', 'vote', 'edit', topic().id]">
+            <button class="option" [routerLink]="['/', lang(), 'topics', 'vote', 'edit', topic().id]">
               <div class="icon_wrap">
                 <cos-icon name="edit" size="16"></cos-icon>
               </div>
@@ -193,7 +193,7 @@
     @if (showGroups) {
       <div class="info_items" [@openClose]="showGroups ? 'open' : 'closed'">
         @for (group of groups(); track group.id) {
-          <a class="info_item" [routerLink]="['/', 'groups', group.id]">
+          <a class="info_item" [routerLink]="['/', lang(), 'groups', group.id]">
             <cos-icon name="groups" size="14"></cos-icon>
             {{ group.name }}
           </a>

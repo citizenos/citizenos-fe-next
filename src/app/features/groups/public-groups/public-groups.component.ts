@@ -11,7 +11,6 @@ import { PublicGroupService } from '../../../core/services/public-group.service'
 import { UserStore } from '../../../core/state/user.store';
 import { GroupCardComponent } from '../../../shared/components/group-card/group-card.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
-import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { ListFilterToolbarComponent, FilterConfig } from '../../../shared/components/list-filter-toolbar/list-filter-toolbar.component';
 import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { PageListHeaderComponent } from '../../../shared/components/page-list-header/page-list-header.component';
@@ -26,33 +25,25 @@ import { languages } from '../../../core/constants/all-languages';
     TranslateModule,
     GroupCardComponent,
     PaginationComponent,
-    SearchInputComponent,
     ListFilterToolbarComponent,
     ActivitiesButtonComponent,
     PageListHeaderComponent,
   ],
   template: `
     <div class="page_content">
-      <app-page-list-header (searchToggle)="showSearch.update(v => !v)">
+      <app-page-list-header>
         <span title translate="VIEWS.PUBLIC_GROUPS.TITLE"></span>
         @if (isAuthenticated()) {
           <cos-activities-button activities></cos-activities-button>
         }
       </app-page-list-header>
 
-      @if (showSearch()) {
-        <div class="search_row">
-          <app-search-input
-            [placeholder]="'VIEWS.PUBLIC_GROUPS.PLACEHOLDER_SEARCH' | translate"
-            [value]="searchValue()"
-            (valueChange)="onSearch($event)"
-          ></app-search-input>
-        </div>
-      }
-
       <app-list-filter-toolbar
         [filters]="filterConfigs()"
+        [searchPlaceholder]="'VIEWS.PUBLIC_GROUPS.PLACEHOLDER_SEARCH' | translate"
+        [searchValue]="searchValue()"
         (filterChange)="onFilterChange($event)"
+        (searchChange)="onSearch($event)"
       ></app-list-filter-toolbar>
 
       <div class="groups_grid">
@@ -74,14 +65,6 @@ import { languages } from '../../../core/constants/all-languages';
     </div>
   `,
   styles: [`
-    .page_content {
-      padding: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .search_row { margin-bottom: 16px; }
-
     .groups_grid {
       display: flex;
       flex-wrap: wrap;
@@ -112,7 +95,6 @@ export class PublicGroupsComponent {
 
   isAuthenticated = this.userStore.isAuthenticated;
 
-  showSearch = signal(false);
   searchValue = signal('');
   currentPage = signal(1);
 

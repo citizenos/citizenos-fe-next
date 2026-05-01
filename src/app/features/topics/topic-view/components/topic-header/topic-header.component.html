@@ -93,7 +93,7 @@
 
         @if (isLoggedIn() && topicService.canEdit(topic()) && !topic().voteId && !topic().ideationId) {
           <div class="line_separator"></div>
-          <button class="option" [routerLink]="['/', 'topics', 'edit', topic().id]">
+          <button class="option" [routerLink]="['/', lang(), 'topics', 'edit', topic().id]">
             <div class="icon_wrap">
               <cos-icon name="edit" [size]="16"></cos-icon>
             </div>
@@ -103,7 +103,7 @@
 
         @if (isLoggedIn() && topic().ideationId && !topic().voteId && topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.ideation, topicService.STATUSES.followUp].indexOf(topic().status) > -1) {
           <div class="line_separator"></div>
-          <button class="option" [routerLink]="['/', 'topics', 'ideation', 'edit', topic().id]">
+          <button class="option" [routerLink]="['/', lang(), 'topics', 'ideation', 'edit', topic().id]">
             <div class="icon_wrap">
               <cos-icon name="edit" [size]="16"></cos-icon>
             </div>
@@ -113,7 +113,7 @@
 
         @if (isLoggedIn() && topic().voteId && (topicService.canDelete(topic()) || (topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.voting, topicService.STATUSES.followUp].indexOf(topic().status) > -1))) {
           <div class="line_separator"></div>
-          <button class="option" [routerLink]="['/', 'topics', 'vote', 'edit', topic().id]">
+          <button class="option" [routerLink]="['/', lang(), 'topics', 'vote', 'edit', topic().id]">
             <div class="icon_wrap">
               <cos-icon name="edit" [size]="16"></cos-icon>
             </div>
@@ -270,7 +270,7 @@
 
     @if (isLoggedIn() && topicService.canEdit(topic()) && !topic().voteId && !topic().ideationId) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', 'topics', 'edit', topic().id]" (click)="mobileActions.set(false)">
+      <button class="option" [routerLink]="['/', lang(), 'topics', 'edit', topic().id]" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="edit"></cos-icon>
         </div>
@@ -280,7 +280,7 @@
 
     @if (isLoggedIn() && topic().ideationId && !topic().voteId && topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.ideation, topicService.STATUSES.followUp].indexOf(topic().status) > -1) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', 'topics', 'ideation', 'edit', topic().id]" (click)="mobileActions.set(false)">
+      <button class="option" [routerLink]="['/', lang(), 'topics', 'ideation', 'edit', topic().id]" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="edit"></cos-icon>
         </div>
@@ -290,7 +290,7 @@
 
     @if (isLoggedIn() && topic().voteId && (topicService.canDelete(topic()) || (topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.voting, topicService.STATUSES.followUp].indexOf(topic().status) > -1))) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', 'topics', 'vote', 'edit', topic().id]" (click)="mobileActions.set(false)">
+      <button class="option" [routerLink]="['/', lang(), 'topics', 'vote', 'edit', topic().id]" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="edit"></cos-icon>
         </div>

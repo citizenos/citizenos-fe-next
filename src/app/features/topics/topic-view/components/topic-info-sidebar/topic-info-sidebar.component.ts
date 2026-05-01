@@ -1,5 +1,5 @@
-import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { Component, input, output, inject, ChangeDetectionStrategy, computed } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
@@ -56,10 +56,12 @@ export class TopicInfoSidebarComponent {
 
   topicService = inject(TopicService);
   userStore = inject(UserStore);
+  private translate = inject(TranslateService);
 
   showAttachments = false;
   showGroups = false;
   manageOpen = false;
+  lang = computed(() => this.translate.currentLang);
 
   get isLoggedIn() {
     return this.userStore.isAuthenticated();

@@ -1,4 +1,4 @@
-import { Component, signal, HostListener, ViewEncapsulation } from '@angular/core';
+import { Component, signal, HostListener } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
@@ -32,7 +32,7 @@ import { IconComponent } from '../icon/icon.component';
       position: relative;
       width: 100%;
       background: var(--color-surfaces);
-      border: 1px solid var(--color-border-bold);
+      border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
     }
 
@@ -40,9 +40,8 @@ import { IconComponent } from '../icon/icon.component';
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 16px;
+      padding: 8px;
       cursor: pointer;
-      min-height: 48px;
     }
 
     .dropdown-arrow {
@@ -60,12 +59,12 @@ import { IconComponent } from '../icon/icon.component';
       left: 0;
       right: 0;
       background: var(--color-surfaces);
-      border: 1px solid var(--color-border-bold);
+      border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       margin-top: 4px;
       z-index: 100;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      max-height: 200px;
+      max-height: 350px;
       overflow-y: auto;
     }
 
@@ -79,7 +78,6 @@ import { IconComponent } from '../icon/icon.component';
       }
     }
   `],
-  encapsulation: ViewEncapsulation.None
 })
 export class DropdownComponent {
   isOpen = signal<boolean>(false);

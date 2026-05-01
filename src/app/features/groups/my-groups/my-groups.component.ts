@@ -10,7 +10,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserGroupService } from '../../../core/services/user-group.service';
 import { GroupCardComponent } from '../../../shared/components/group-card/group-card.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
-import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { ListFilterToolbarComponent, FilterConfig } from '../../../shared/components/list-filter-toolbar/list-filter-toolbar.component';
 import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { CreateMenuComponent } from '../../../shared/components/create-menu/create-menu.component';
@@ -30,7 +29,6 @@ import { languages } from '../../../core/constants/all-languages';
     TranslateModule,
     GroupCardComponent,
     PaginationComponent,
-    SearchInputComponent,
     ListFilterToolbarComponent,
     ActivitiesButtonComponent,
     CreateMenuComponent,
@@ -39,7 +37,7 @@ import { languages } from '../../../core/constants/all-languages';
   ],
   template: `
     <div class="page_content">
-      <app-page-list-header (searchToggle)="showSearch.update(v => !v)">
+      <app-page-list-header>
         <span title translate="VIEWS.MY_GROUPS.HEADER"></span>
         <div activities class="header_actions">
           <cos-activities-button></cos-activities-button>
@@ -55,19 +53,12 @@ import { languages } from '../../../core/constants/all-languages';
         <div id="close_create" (click)="showCreate.set(false)"></div>
       </div>
 
-      @if (showSearch()) {
-        <div class="search_row">
-          <app-search-input
-            [placeholder]="'VIEWS.MY_GROUPS.PLACEHOLDER_SEARCH' | translate"
-            [value]="searchValue()"
-            (valueChange)="onSearch($event)"
-          ></app-search-input>
-        </div>
-      }
-
       <app-list-filter-toolbar
         [filters]="filterConfigs()"
+        [searchPlaceholder]="'VIEWS.MY_GROUPS.PLACEHOLDER_SEARCH' | translate"
+        [searchValue]="searchValue()"
         (filterChange)="onFilterChange($event)"
+        (searchChange)="onSearch($event)"
       ></app-list-filter-toolbar>
 
       <div class="groups_grid">
@@ -99,8 +90,6 @@ import { languages } from '../../../core/constants/all-languages';
     </div>
   `,
   styles: [`
-    .search_row { margin-bottom: 16px; }
-
     .groups_grid {
       display: flex;
       flex-wrap: wrap;
@@ -181,7 +170,6 @@ export class MyGroupsComponent {
   private sortedCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
   private sortedLanguages = [...languages].sort((a, b) => a.name.localeCompare(b.name));
 
-  showSearch = signal(false);
   showCreate = signal(false);
   searchValue = signal('');
   currentPage = signal(1);
