@@ -22,6 +22,7 @@ import {
 import { GroupDetailService } from '../../../core/services/group-detail.service';
 import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
 import { GroupMemberUserService, GroupMember } from '../../../core/services/group-member-user.service';
+import { ListFilterToolbarComponent, FilterConfig } from '../../../shared/components/list-filter-toolbar/list-filter-toolbar.component';
 import { UserStore } from '../../../core/state/user.store';
 import { Group } from '../../../core/interfaces/group';
 import { Topic } from '../../../core/interfaces/topic';
@@ -64,6 +65,7 @@ import { IllustrationComponent } from '../../../shared/components/illustration/i
     SearchInputComponent,
     ActivitiesButtonComponent,
     PaginationComponent,
+    ListFilterToolbarComponent,
     CosTabsComponent,
     CreateMenuComponent,
     IllustrationComponent,
@@ -147,6 +149,79 @@ export class GroupDetailComponent {
   private memberFilters$ = toObservable(computed(() => ({
     search: this.memberSearch(),
   })));
+
+  filterConfigs = computed<FilterConfig[]>(() => {
+    return [
+      {
+        key: 'visibility',
+        placeholder: 'VIEWS.GROUP.TOPICS_FILTER_TYPE',
+        selectedValue: this.topicVisibilityFilter(),
+        items: [
+          { title: 'VIEWS.GROUP.FILTER_ALL', value: 'all' },
+          ...(this.isLoggedIn() ? [{ title: 'VIEWS.GROUP.FILTER_FAVOURITED', value: 'favourite' }] : []),
+          { title: 'VIEWS.GROUP.FILTER_MODERATED', value: 'showModerated' },
+        ],
+      },
+      {
+        key: 'status',
+        placeholder: 'VIEWS.GROUP.TOPICS_FILTER_STATUS',
+        selectedValue: this.topicStatusFilter(),
+        items: [
+          { title: 'TXT_TOPIC_STATUS_ALL', value: 'all' },
+          ...this.TOPIC_STATUSES.map(s => ({ title: `TXT_TOPIC_STATUS_${s.toUpperCase()}`, value: s })),
+        ],
+      },
+      {
+        key: 'orderBy',
+        placeholder: 'VIEWS.GROUP.TOPICS_FILTER_ORDER',
+        selectedValue: this.topicOrderFilter(),
+        items: [
+          { title: 'VIEWS.GROUP.TOPICS_FILTERS_ORDER_ALL', value: 'all' },
+          { title: 'VIEWS.GROUP.TOPICS_FILTER_ORDER_RECENT_ACTIVITY', value: 'lastActivity' },
+          { title: 'VIEWS.GROUP.TOPICS_FILTER_ORDER_MOST_PARTICIPANTS', value: 'membersCount' },
+          { title: 'VIEWS.GROUP.TOPICS_FILTER_ORDER_MOST_RECENT', value: 'created' },
+        ],
+      },
+    ];
+  });
+
+  filterExtraConfigs = computed<FilterConfig[]>(() => {
+    return [
+      {
+        key: 'country',
+        placeholder: 'VIEWS.GROUP.TOPICS_FILTER_COUNTRY',
+        selectedValue: this.topicCountryFilter(),
+        items: [
+          { title: 'VIEWS.GROUP.FILTER_ALL', value: 'all' },
+          ...this.sortedCountries.map(c => ({ title: c.name, value: c.name })),
+        ],
+      },
+      {
+        key: 'language',
+        placeholder: 'VIEWS.GROUP.TOPICS_FILTER_LANGUAGE',
+        selectedValue: this.topicLanguageFilter(),
+        items: [
+          { title: 'VIEWS.GROUP.FILTER_ALL', value: 'all' },
+          ...this.sortedLanguages.map(l => ({ title: l.name, value: l.name })),
+        ],
+      },
+    ];
+  });
+
+  onFilterChange(event: { key: string; value: string }) {
+    const val = event.value === 'all' ? '' : event.value;
+    switch (event.key) {
+      case 'visibility': this.topicVisibilityFilter.set(val); break;
+      case 'status': this.topicStatusFilter.set(val); break;
+      case 'orderBy': this.topicOrderFilter.set(val); break;
+      case 'country': this.topicCountryFilter.set(val); break;
+      case 'language': this.topicLanguageFilter.set(val); break;
+    }
+  }
+
+  onSearch(value: string) {
+    this.topicSearch.set(value);
+  }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {

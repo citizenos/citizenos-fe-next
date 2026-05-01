@@ -32,11 +32,13 @@ import { FormsModule } from '@angular/forms';
     .search-icon {
       position: absolute;
       left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
+      height: 100%;
+      top: 0;
+      bottom: 0;
+      align-items: center;
+      justify-content: center;
       z-index: 10;
       display: flex;
-      align-items: center;
       color: var(--color-text-muted, #727C84);
       cos-icon {
         width: 24px;
