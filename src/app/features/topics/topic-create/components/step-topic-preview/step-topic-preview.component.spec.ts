@@ -1,8 +1,9 @@
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { StepTopicPreviewComponent } from './step-topic-preview.component';
+import { runInInjectionContext } from '@angular/core';
 
-describe('StepTopicPreviewComponent (business logic)', () => {
+describe('StepTopicPreviewComponent', () => {
   let component: StepTopicPreviewComponent;
 
   beforeEach(() => {
@@ -14,15 +15,12 @@ describe('StepTopicPreviewComponent (business logic)', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit previous on onPrevious', () => {
-    const spy = vi.spyOn(component.previous, 'emit');
-    component.previous.emit();
-    expect(spy).toHaveBeenCalled();
+  it('should have default empty topic input', () => {
+    expect(component.topic()).toEqual({ title: '', description: '' });
   });
 
-  it('should emit save on publish', () => {
-    const spy = vi.spyOn(component.save, 'emit');
-    component.save.emit();
-    expect(spy).toHaveBeenCalled();
+  it('should have null ideation and vote by default', () => {
+    expect(component.ideation()).toBeNull();
+    expect(component.vote()).toBeNull();
   });
 });
