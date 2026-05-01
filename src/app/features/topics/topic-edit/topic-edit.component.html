@@ -1,7 +1,7 @@
 <cos-create-wizard-shell
   domainType="topic"
   headingKey="VIEWS.TOPIC_EDIT.HEADING"
-  [steps]="steps"
+  [steps]="steps()"
   [currentStep]="currentStep()"
   [hasSidebar]="currentStep() !== 'preview'"
   [isNextDisabled]="isFooterNextDisabled()"
@@ -35,6 +35,18 @@
         [discussion]="discussion()"
         (discussionChange)="discussion.set($event)"
       ></cos-step-topic-discussion>
+    }
+    @case ('ideation') {
+      <cos-step-ideation-settings
+        [ideation]="ideation()"
+        (ideationUpdate)="ideation.set($event)"
+      ></cos-step-ideation-settings>
+    }
+    @case ('voting') {
+      <cos-step-vote-settings
+        [vote]="vote()"
+        (voteUpdate)="vote.set($event)"
+      ></cos-step-vote-settings>
     }
     @case ('preview') {
       <cos-step-topic-preview

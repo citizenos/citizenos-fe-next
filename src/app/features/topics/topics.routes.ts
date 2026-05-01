@@ -26,6 +26,10 @@ export const TOPICS_ROUTES: Routes = [
           { path: '', loadComponent: () => import('./ideation-create/ideation-create.component').then(m => m.IdeationCreateComponent) },
           { path: ':topicId', loadComponent: () => import('./ideation-create/ideation-create.component').then(m => m.IdeationCreateComponent) }
         ]
+      },
+      {
+        path: 'edit/:topicId',
+        loadComponent: () => import('./topic-edit/topic-edit.component').then(m => m.TopicEditComponent)
       }
     ]
   },
@@ -38,6 +42,10 @@ export const TOPICS_ROUTES: Routes = [
           { path: '', loadComponent: () => import('./vote-create/vote-create.component').then(m => m.VoteCreateComponent) },
           { path: ':topicId', loadComponent: () => import('./vote-create/vote-create.component').then(m => m.VoteCreateComponent) }
         ]
+      },
+      {
+        path: 'edit/:topicId',
+        loadComponent: () => import('./topic-edit/topic-edit.component').then(m => m.TopicEditComponent)
       }
     ]
   },

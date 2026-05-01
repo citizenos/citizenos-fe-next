@@ -10,13 +10,20 @@ import { NotificationService } from '../../../core/services/notification.service
 import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
 import { TopicInviteUserService } from '../../../core/services/topic-invite-user.service';
 import { TopicDiscussionService } from '../../../core/services/topic-discussion.service';
+import { TopicIdeationService } from '../../../core/services/topic-ideation.service';
+import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { Topic } from '../../../core/interfaces/topic';
 import { DiscussionData } from '../../../core/interfaces/discussion';
+import { Ideation } from '../../../core/interfaces/ideation';
+import { Vote } from '../../../core/interfaces/vote';
 import { StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
+import { IconName } from '../../../shared/components/icon/icon.registry';
 import { CreateWizardShellComponent } from '../../../shared/components/create-wizard-shell/create-wizard-shell.component';
 import { StepTopicInfoComponent } from '../topic-create/components/step-topic-info/step-topic-info.component';
 import { StepTopicSettingsComponent } from '../topic-create/components/step-topic-settings/step-topic-settings.component';
 import { StepTopicDiscussionComponent } from '../topic-create/components/step-topic-discussion/step-topic-discussion.component';
+import { StepIdeationSettingsComponent } from '../ideation-create/components/step-ideation-settings/step-ideation-settings.component';
+import { StepVoteSettingsComponent } from '../vote-create/components/step-vote-settings/step-vote-settings.component';
 import { StepTopicPreviewComponent } from '../topic-create/components/step-topic-preview/step-topic-preview.component';
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
 import { AnyPipe } from '../../../shared/pipes/any.pipe';
@@ -30,6 +37,8 @@ import { AnyPipe } from '../../../shared/pipes/any.pipe';
     StepTopicInfoComponent,
     StepTopicSettingsComponent,
     StepTopicDiscussionComponent,
+    StepIdeationSettingsComponent,
+    StepVoteSettingsComponent,
     StepTopicPreviewComponent,
     MemberEditorsPanelComponent,
     AnyPipe,
@@ -44,12 +53,16 @@ export class TopicEditComponent implements OnInit {
   private memberUserService = inject(TopicMemberUserService);
   private inviteUserService = inject(TopicInviteUserService);
   private discussionService = inject(TopicDiscussionService);
+  private ideationService = inject(TopicIdeationService);
+  private voteService = inject(TopicVoteService);
   private notification = inject(NotificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
   topic = signal<Partial<Topic>>({});
   discussion = signal<DiscussionData>({ question: '', deadline: null });
+  ideation = signal<Partial<Ideation>>({});
+  vote = signal<Partial<Vote>>({});
   imageFile = signal<File | null>(null);
   isLoading = signal(false);
   currentStep = signal('info');
@@ -78,12 +91,12 @@ export class TopicEditComponent implements OnInit {
     { initialValue: [] }
   );
 
-  readonly steps: StepConfig[] = [
-    { key: 'info', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_1', icon: 'edit' },
-    { key: 'settings', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_2', icon: 'settings' },
-    { key: 'discussion', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_3', icon: 'comment' },
-    { key: 'preview', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_4', icon: 'eye' }
-  ];
+  steps = signal<StepConfig[]>([
+    { key: 'info', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_1', icon: 'edit' as IconName },
+    { key: 'settings', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_2', icon: 'settings' as IconName },
+    { key: 'discussion', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_3', icon: 'comment' as IconName },
+    { key: 'preview', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_4', icon: 'eye' as IconName }
+  ]);
 
   ngOnInit() {
     const topicId = this.route.snapshot.paramMap.get('topicId');
@@ -104,9 +117,23 @@ export class TopicEditComponent implements OnInit {
         }
         this.topic.set(topic);
         this.reloadMembers$.next();
+        this.updateSteps(topic.status);
+
         if (topic.discussionId) {
           this.discussionService.get(topicId, topic.discussionId).subscribe({
             next: (d) => this.discussion.set({ question: d.question, deadline: d.deadline }),
+            error: () => {}
+          });
+        }
+        if (topic.ideationId) {
+          this.ideationService.get({ topicId, ideationId: topic.ideationId }).subscribe({
+            next: (i) => this.ideation.set(i),
+            error: () => {}
+          });
+        }
+        if (topic.voteId) {
+          this.voteService.get({ topicId, voteId: topic.voteId }).subscribe({
+            next: (v) => this.vote.set({ ...v, question: v.description }),
             error: () => {}
           });
         }
@@ -137,14 +164,44 @@ export class TopicEditComponent implements OnInit {
   handleFooterContinue() {
     switch (this.currentStep()) {
       case 'info': this.saveToSettings(); break;
-      case 'settings': this.currentStep.set('discussion'); break;
+      case 'settings': this.currentStep.set(this.steps()[2].key); break;
       case 'discussion': this.transitionToPreview(); break;
+      case 'ideation': this.saveIdeation(); break;
+      case 'voting': this.saveVote(); break;
       case 'preview': this.publishTopic(); break;
     }
   }
 
+  private updateSteps(status?: string) {
+    const baseSteps: StepConfig[] = [
+      { key: 'info', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_1', icon: 'edit' },
+      { key: 'settings', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_2', icon: 'settings' }
+    ];
+    const previewStep: StepConfig = { key: 'preview', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_4', icon: 'eye' };
+
+    if (status === this.topicService.STATUSES.ideation) {
+      this.steps.set([
+        ...baseSteps,
+        { key: 'ideation', label: 'VIEWS.IDEATION_CREATE.CREATE_TAB_3', icon: 'activity' },
+        previewStep
+      ]);
+    } else if (status === this.topicService.STATUSES.voting) {
+      this.steps.set([
+        ...baseSteps,
+        { key: 'voting', label: 'VIEWS.VOTE_CREATE.CREATE_TAB_3', icon: 'check' },
+        previewStep
+      ]);
+    } else {
+      this.steps.set([
+        ...baseSteps,
+        { key: 'discussion', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_3', icon: 'comment' },
+        previewStep
+      ]);
+    }
+  }
+
   handleFooterBack() {
-    const order = this.steps.map(s => s.key);
+    const order = this.steps().map(s => s.key);
     const idx = order.indexOf(this.currentStep());
     if (idx > 0) this.currentStep.set(order[idx - 1]);
   }
@@ -251,6 +308,47 @@ export class TopicEditComponent implements OnInit {
       this.isLoading.set(false);
       this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
       this.router.navigate(['/topics', savedTopic.id]);
+    });
+  }
+
+  saveIdeation() {
+    const t = this.topic();
+    const i = this.ideation();
+    if (!t.id || !t.ideationId) {
+      this.currentStep.set('preview');
+      return;
+    }
+    this.isLoading.set(true);
+    this.ideationService.update({ ...i, topicId: t.id }).pipe(take(1)).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+        this.currentStep.set('preview');
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.currentStep.set('preview');
+      }
+    });
+  }
+
+  saveVote() {
+    const t = this.topic();
+    const v = this.vote();
+    if (!t.id || !t.voteId) {
+      this.currentStep.set('preview');
+      return;
+    }
+    this.isLoading.set(true);
+    const voteData = { ...v, topicId: t.id, description: v.question };
+    this.voteService.update(voteData).pipe(take(1)).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+        this.currentStep.set('preview');
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.currentStep.set('preview');
+      }
     });
   }
 

@@ -13,19 +13,23 @@ import { NotificationService } from '../../../core/services/notification.service
 import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
 import { TopicInviteUserService } from '../../../core/services/topic-invite-user.service';
 import { TopicDiscussionService } from '../../../core/services/topic-discussion.service';
+import { TopicIdeationService } from '../../../core/services/topic-ideation.service';
+import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { TopicEditComponent } from './topic-edit.component';
 
 const mockTopic = { id: 'topic-1', title: 'Existing Topic', visibility: 'public', status: 'inProgress', categories: [], discussionId: 'disc-1' };
 const mockTopicService = { 
   get: vi.fn(), 
   patch: vi.fn(),
-  STATUSES: { draft: 'draft', inProgress: 'inProgress' }
+  STATUSES: { draft: 'draft', inProgress: 'inProgress', ideation: 'ideation', voting: 'voting' }
 };
 const mockUploadService = { upload: vi.fn() };
 const mockNotificationService = { showRaw: vi.fn() };
 const mockMemberUserService = { loadItems: vi.fn() };
 const mockInviteUserService = { loadItems: vi.fn() };
 const mockDiscussionService = { get: vi.fn(), create: vi.fn(), update: vi.fn() };
+const mockIdeationService = { get: vi.fn(), save: vi.fn(), update: vi.fn() };
+const mockVoteService = { get: vi.fn(), save: vi.fn(), update: vi.fn() };
 
 describe('TopicEditComponent', () => {
   let component: TopicEditComponent;
@@ -57,7 +61,9 @@ describe('TopicEditComponent', () => {
         { provide: NotificationService, useValue: mockNotificationService },
         { provide: TopicMemberUserService, useValue: mockMemberUserService },
         { provide: TopicInviteUserService, useValue: mockInviteUserService },
-        { provide: TopicDiscussionService, useValue: mockDiscussionService }
+        { provide: TopicDiscussionService, useValue: mockDiscussionService },
+        { provide: TopicIdeationService, useValue: mockIdeationService },
+        { provide: TopicVoteService, useValue: mockVoteService }
       ]
     });
 
@@ -85,5 +91,25 @@ describe('TopicEditComponent', () => {
     component.topic.set(mockTopic);
     component.publishTopic();
     expect(mockTopicService.patch).toHaveBeenCalled();
+  });
+
+  it('should load ideation data if topic has ideationId', () => {
+    const ideationTopic = { ...mockTopic, status: 'ideation', ideationId: 'ideation-1' };
+    mockTopicService.get.mockReturnValue(of(ideationTopic));
+    mockIdeationService.get.mockReturnValue(of({ id: 'ideation-1', question: 'IQ' }));
+    
+    component.ngOnInit();
+    expect(mockIdeationService.get).toHaveBeenCalled();
+    expect(component.steps().some(s => s.key === 'ideation')).toBe(true);
+  });
+
+  it('should load vote data if topic has voteId', () => {
+    const voteTopic = { ...mockTopic, status: 'voting', voteId: 'vote-1' };
+    mockTopicService.get.mockReturnValue(of(voteTopic));
+    mockVoteService.get.mockReturnValue(of({ id: 'vote-1', description: 'VQ' }));
+    
+    component.ngOnInit();
+    expect(mockVoteService.get).toHaveBeenCalled();
+    expect(component.steps().some(s => s.key === 'voting')).toBe(true);
   });
 });
