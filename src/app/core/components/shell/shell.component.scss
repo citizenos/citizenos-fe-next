@@ -26,5 +26,6 @@ $mobile-bar-height: 56px;
   @media (max-width: $tablet-breakpoint) {
     margin-left: 0;
     padding-top: 0;
+    padding-bottom: $mobile-bar-height;
   }
 }

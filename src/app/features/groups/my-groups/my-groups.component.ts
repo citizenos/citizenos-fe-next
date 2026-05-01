@@ -99,12 +99,6 @@ import { languages } from '../../../core/constants/all-languages';
     </div>
   `,
   styles: [`
-    .page_content {
-      padding: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
     .search_row { margin-bottom: 16px; }
 
     .groups_grid {

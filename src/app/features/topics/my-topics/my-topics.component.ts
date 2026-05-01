@@ -72,12 +72,6 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
     </div>
   `,
   styles: [`
-    .page_content {
-      padding: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
     .search_row { margin-bottom: 16px; }
 
     .topics_grid {

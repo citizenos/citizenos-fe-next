@@ -1,4 +1,4 @@
-import { Component, output, ViewEncapsulation } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
@@ -21,18 +21,15 @@ import { IconComponent } from '../icon/icon.component';
     </div>
   `,
   styles: [`
+    :host {
+      display: contents;
+    }
     .page-list-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 24px;
       min-height: 40px;
-    }
-    .small_heading {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--color-text, #2C3B47);
-      margin: 0;
     }
     .header-actions {
       display: flex;
@@ -48,15 +45,14 @@ import { IconComponent } from '../icon/icon.component';
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      color: var(--color-text-muted, #727C84);
+      color: var(--color-text-muted);
       transition: background 0.2s;
     }
     .icon_btn:hover {
-      background: rgba(0, 0, 0, 0.05);
-      color: var(--color-text, #2C3B47);
+      background: var(--color-surface-hover);
+      color: var(--color-text);
     }
-  `],
-  encapsulation: ViewEncapsulation.None
+  `]
 })
 export class PageListHeaderComponent {
   searchToggle = output<void>();
