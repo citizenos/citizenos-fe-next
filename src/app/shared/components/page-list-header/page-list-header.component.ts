@@ -28,8 +28,6 @@ import { IconComponent } from '../icon/icon.component';
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
-      min-height: 40px;
     }
     .header-actions {
       display: flex;

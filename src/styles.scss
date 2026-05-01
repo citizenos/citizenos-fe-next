@@ -297,7 +297,7 @@ label:has(input:focus-visible) .radio {
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
-  line-height: 24px;
+  line-height: 22px;
 }
 
 
@@ -327,6 +327,14 @@ label:has(input:focus-visible) .radio {
   @include mixins.tablet {
     padding: 0 16px 16px 16px;
   }
+
+  #page_header {
+    padding: 16px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 .bold {
@@ -349,7 +357,9 @@ label:has(input:focus-visible) .radio {
 
 .small_heading {
   font-size: 18px;
-  line-height: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px;
 }
 
 /* The CDK backdrop handles the visual background; .overlay is click-outside handler only */
