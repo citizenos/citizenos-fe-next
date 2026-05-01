@@ -1,0 +1,103 @@
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { TopicSettingsComponent } from './topic-settings.component';
+import { TopicService } from '../../../../../core/services/topic.service';
+import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
+import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
+import { DIALOG_DATA, DialogRef, DialogService } from '../../../../../shared/dialog';
+
+const MOCK_TOPIC = {
+  id: '123',
+  title: 'Test Topic',
+  permission: { level: 'admin' },
+  status: 'inProgress',
+  visibility: 'public',
+  categories: ['culture'],
+  voteId: 'v1'
+};
+
+describe('TopicSettingsComponent', () => {
+  let component: TopicSettingsComponent;
+  let fixture: ComponentFixture<TopicSettingsComponent>;
+
+  const mockTopicService = {
+    VISIBILITY: { public: 'public', private: 'private' },
+    CATEGORIES: { culture: 'culture', arts: 'arts' },
+    canEdit: vi.fn().mockReturnValue(true),
+    canDelete: vi.fn().mockReturnValue(true),
+    canSendToFollowUp: vi.fn().mockReturnValue(true),
+    canLeave: vi.fn().mockReturnValue(true),
+    loadGroups: vi.fn().mockReturnValue(of([])),
+    update: vi.fn().mockReturnValue(of({})),
+    CATEGORIES_COUNT_MAX: 3
+  };
+
+  const mockTopicVoteService = {
+    get: vi.fn().mockReturnValue(of({ reminderTime: null })),
+    update: vi.fn().mockReturnValue(of({}))
+  };
+
+  const mockTopicMemberUserService = {
+    delete: vi.fn().mockReturnValue(of({}))
+  };
+
+  const mockDialogRef = {
+    close: vi.fn()
+  };
+
+  const mockDialogService = {
+    open: vi.fn().mockReturnValue({ afterClosed: () => of(true) })
+  };
+
+  beforeEach(async () => {
+    vi.clearAllMocks();
+    await TestBed.configureTestingModule({
+      imports: [TopicSettingsComponent, TranslateModule.forRoot()],
+      providers: [
+        { provide: DIALOG_DATA, useValue: { topic: MOCK_TOPIC } },
+        { provide: DialogRef, useValue: mockDialogRef },
+        { provide: TopicService, useValue: mockTopicService },
+        { provide: TopicVoteService, useValue: mockTopicVoteService },
+        { provide: TopicMemberUserService, useValue: mockTopicMemberUserService },
+        { provide: DialogService, useValue: mockDialogService }
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(TopicSettingsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should switch tabs', () => {
+    component.selectTab('categories');
+    expect(component.tabSelected()).toBe('categories');
+  });
+
+  it('should load groups on init', () => {
+    expect(mockTopicService.loadGroups).toHaveBeenCalledWith(MOCK_TOPIC.id);
+  });
+
+  it('should toggle visibility', () => {
+    component.topic.update(t => ({ ...t, visibility: 'private' }));
+    expect(component.topic().visibility).toBe('private');
+  });
+
+  it('should save topic and close', () => {
+    component.doSaveTopic();
+    expect(mockTopicService.update).toHaveBeenCalled();
+    expect(mockDialogRef.close).toHaveBeenCalledWith(true);
+  });
+
+  it('should add and remove categories', () => {
+    component.addTopicCategory('arts');
+    expect(component.topic().categories).toContain('arts');
+    component.removeTopicCategory('arts');
+    expect(component.topic().categories).not.toContain('arts');
+  });
+});

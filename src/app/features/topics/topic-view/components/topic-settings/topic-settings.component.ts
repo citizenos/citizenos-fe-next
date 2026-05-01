@@ -42,7 +42,7 @@ export interface TopicSettingsData {
 })
 export class TopicSettingsComponent implements OnInit {
   private dialogData = inject<TopicSettingsData>(DIALOG_DATA);
-  private dialogRef = inject(DialogRef<TopicSettingsComponent>);
+  public dialogRef = inject(DialogRef<TopicSettingsComponent>);
   private topicService = inject(TopicService);
   private topicVoteService = inject(TopicVoteService);
   private topicMemberUserService = inject(TopicMemberUserService);
@@ -50,6 +50,7 @@ export class TopicSettingsComponent implements OnInit {
   private dialog = inject(DialogService);
 
   topic = signal<Topic>({ ...this.dialogData.topic });
+  groups = signal<any[]>([]);
   tabSelected = signal('settings');
   errors = signal<any>({});
   
@@ -78,6 +79,10 @@ export class TopicSettingsComponent implements OnInit {
           }
         });
     }
+
+    this.topicService.loadGroups(t.id).pipe(take(1)).subscribe((groups) => {
+      this.groups.set(groups);
+    });
   }
 
   canEdit() {
@@ -102,9 +107,9 @@ export class TopicSettingsComponent implements OnInit {
 
   canChangeVisibility() {
     const t = this.topic();
-    // Legacy logic: canDelete() && (private OR no public groups)
-    // For now simplified, but we might need to load groups if needed
-    return this.canDelete();
+    const hasPublicGroup = this.groups().some(g => g.visibility === 'public');
+
+    return this.canDelete() && (t.visibility === this.VISIBILITY.private || !hasPublicGroup);
   }
 
   selectedReminderOption = computed(() => {

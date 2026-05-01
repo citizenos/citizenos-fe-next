@@ -1,0 +1,54 @@
+<cos-create-wizard-shell
+  domainType="topic"
+  headingKey="VIEWS.TOPIC_EDIT.HEADING"
+  [steps]="steps"
+  [currentStep]="currentStep()"
+  [hasSidebar]="currentStep() !== 'preview'"
+  [isNextDisabled]="isFooterNextDisabled()"
+  (stepChange)="onStepChange($event)"
+  (saveDraft)="saveAsDraft()"
+  (footerContinue)="handleFooterContinue()"
+  (footerBack)="handleFooterBack()"
+>
+  @if (isLoading()) {
+    <div class="loading-overlay">
+      <div class="loader"></div>
+    </div>
+  }
+
+  @switch (currentStep()) {
+    @case ('info') {
+      <cos-step-topic-info
+        [topic]="topic() | any"
+        (topicUpdate)="onTopicUpdate($any($event))"
+        (imageFileUpdate)="onImageFileUpdate($any($event))"
+      ></cos-step-topic-info>
+    }
+    @case ('settings') {
+      <cos-step-topic-settings
+        [topic]="topic() | any"
+        (topicUpdate)="onTopicUpdate($any($event))"
+      ></cos-step-topic-settings>
+    }
+    @case ('discussion') {
+      <cos-step-topic-discussion
+        [discussion]="discussion()"
+        (discussionChange)="discussion.set($event)"
+      ></cos-step-topic-discussion>
+    }
+    @case ('preview') {
+      <cos-step-topic-preview
+        [topic]="topic() | any"
+      ></cos-step-topic-preview>
+    }
+  }
+
+  <div sidebar class="sidebar-block">
+    <cos-member-editors-panel
+      [topic]="topic() | any"
+      [members]="members()"
+      [invites]="invites()"
+      (inviteEditors)="inviteEditors()"
+    ></cos-member-editors-panel>
+  </div>
+</cos-create-wizard-shell>

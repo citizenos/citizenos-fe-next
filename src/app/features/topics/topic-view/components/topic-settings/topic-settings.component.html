@@ -5,7 +5,7 @@
       <div class="title_description">{{ topic().title }}</div>
     </div>
 
-    <button class="lightbox_close" (click)="doSaveTopic()" [attr.aria-label]="'BTN_CLOSE' | translate">
+    <button class="lightbox_close" (click)="dialogRef.close()" [attr.aria-label]="'BTN_CLOSE' | translate">
       <cos-icon name="close" [size]="24"></cos-icon>
     </button>
 

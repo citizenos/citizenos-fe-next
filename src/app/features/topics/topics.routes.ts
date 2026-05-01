@@ -14,6 +14,10 @@ export const TOPICS_ROUTES: Routes = [
     ]
   },
   {
+    path: 'edit/:topicId',
+    loadComponent: () => import('./topic-edit/topic-edit.component').then(m => m.TopicEditComponent)
+  },
+  {
     path: 'ideation',
     children: [
       {
