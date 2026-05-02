@@ -27,6 +27,10 @@ import { StepVoteSettingsComponent } from '../vote-create/components/step-vote-s
 import { StepTopicPreviewComponent } from '../topic-create/components/step-topic-preview/step-topic-preview.component';
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
 import { AnyPipe } from '../../../shared/pipes/any.pipe';
+import { DialogService } from '../../../shared/dialog';
+import { TopicSettingsDisabledDialogComponent } from '../topic-view/components/topic-settings-disabled-dialog/topic-settings-disabled-dialog.component';
+import { TopicSettingsLockedComponent } from '../topic-view/components/topic-settings-locked/topic-settings-locked.component';
+import { TopicEditDisabledDialogComponent } from '../topic-view/components/topic-edit-disabled-dialog/topic-edit-disabled-dialog.component';
 
 @Component({
   selector: 'cos-topic-edit',
@@ -58,6 +62,7 @@ export class TopicEditComponent implements OnInit {
   private notification = inject(NotificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialog = inject(DialogService);
 
   topic = signal<Partial<Topic>>({});
   discussion = signal<DiscussionData>({ question: '', deadline: null });
@@ -147,6 +152,26 @@ export class TopicEditComponent implements OnInit {
   }
 
   onStepChange(step: string) {
+    const t = this.topic() as Topic;
+    if (step === 'discussion' && !this.topicService.canEditDescription(t)) {
+      const ref = this.dialog.open(TopicSettingsLockedComponent);
+      ref.afterClosed().subscribe(() => {
+        this.currentStep.set(this.topicService.canDelete(t) ? 'settings' : 'preview');
+      });
+      return;
+    }
+    if (step === 'info' && !this.topicService.canEditDescription(t)) {
+      const ref = this.dialog.open(TopicEditDisabledDialogComponent);
+      ref.afterClosed().subscribe(() => {
+        this.currentStep.set(this.topicService.canDelete(t) ? 'settings' : 'preview');
+      });
+      return;
+    }
+    if (step === 'settings' && !this.topicService.canDelete(t)) {
+      const ref = this.dialog.open(TopicSettingsDisabledDialogComponent);
+      ref.afterClosed().subscribe(() => this.currentStep.set('info'));
+      return;
+    }
     if (this.canNavigateTo(step)) {
       this.currentStep.set(step);
     }
