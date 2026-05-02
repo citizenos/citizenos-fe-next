@@ -1,0 +1,13 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
+
+@Component({
+  selector: 'cos-topic-edit-disabled-dialog',
+  standalone: true,
+  imports: [TranslateModule, DialogCloseDirective],
+  templateUrl: './topic-edit-disabled-dialog.component.html',
+  styleUrl: './topic-edit-disabled-dialog.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class TopicEditDisabledDialogComponent {}

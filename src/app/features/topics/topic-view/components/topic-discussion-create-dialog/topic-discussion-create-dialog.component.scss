@@ -1,0 +1,22 @@
+.dialog_tabs_wrap {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid #e7e9eb;
+  padding: 0 24px;
+}
+
+.dialog_tab {
+  cursor: pointer;
+  padding: 12px 0;
+  color: #727c84;
+  text-decoration: none;
+
+  &.active {
+    color: #1168a8;
+    border-bottom: 2px solid #1168a8;
+  }
+}
+
+.content_section {
+  padding: 16px 0;
+}

@@ -5,10 +5,19 @@
         {{ discussion()?.question || ('COMPONENTS.TOPIC_ARGUMENTS.QUESTION_DISCUSSION' | translate) }}
       </div>
 
-      @if (canUpdate() && discussion()?.deadline) {
+      @if (canUpdate()) {
         <div class="discussion-deadline">
-          <span class="deadline-label" translate="COMPONENTS.TOPIC_ARGUMENTS.LBL_DEADLINE"></span>
-          <span class="deadline-value">{{ discussion()?.deadline | date:'y-MM-dd HH:mm' }}</span>
+          @if (discussion()?.deadline) {
+            <span class="deadline-label" translate="COMPONENTS.TOPIC_ARGUMENTS.LBL_DEADLINE"></span>
+            <span class="deadline-value">{{ discussion()?.deadline | date:'y-MM-dd HH:mm' }}</span>
+          }
+          <a class="deadline-edit-link" (click)="openEditDeadline()">
+            @if (!discussion()?.deadline) {
+              <span translate="COMPONENTS.TOPIC_ARGUMENTS.OPT_ADD_DEADLINE"></span>
+            } @else {
+              <span translate="COMPONENTS.TOPIC_ARGUMENTS.OPT_EDIT_DEADLINE"></span>
+            }
+          </a>
         </div>
       }
     </div>

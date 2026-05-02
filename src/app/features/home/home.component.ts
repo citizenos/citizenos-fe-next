@@ -8,6 +8,7 @@ import { UserStore } from '../../core/state/user.store';
 import { PublicTopicService } from '../../core/services/public-topic.service';
 import { PublicGroupService } from '../../core/services/public-group.service';
 import { HomeService } from './services/home.service';
+import { SeoService } from '../../core/services/seo.service';
 
 import { FeatureBoxComponent } from './components/feature-box/feature-box.component';
 import { TopicCardComponent } from '../../shared/components/topic-card/topic-card.component';
@@ -34,6 +35,7 @@ export class HomeComponent implements OnInit {
   private topicService = inject(PublicTopicService);
   private groupService = inject(PublicGroupService);
   private homeService = inject(HomeService);
+  private seoService = inject(SeoService);
   private platformId = inject(PLATFORM_ID);
 
   private getLimit() {
@@ -51,6 +53,7 @@ export class HomeComponent implements OnInit {
   groups = toSignal(this.groupService.getPreview(this.getLimit()));
 
   ngOnInit() {
+    this.seoService.setPageTitle();
     if (this.userStore.isAuthenticated()) {
       this.router.navigate(['/', this.translate.currentLang, 'dashboard']);
       return;

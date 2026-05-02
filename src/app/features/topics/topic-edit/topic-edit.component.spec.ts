@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, ActivatedRoute } from '@angular/router';
+import { provideRouter, ActivatedRoute, Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { of } from 'rxjs';
 
@@ -79,8 +79,7 @@ describe('TopicEditComponent', () => {
   it('should redirect to create if topic is draft', () => {
     const draftTopic = { ...mockTopic, status: 'draft' };
     mockTopicService.get.mockReturnValue(of(draftTopic));
-    // We need to spy on router.navigate
-    const router = TestBed.inject(require('@angular/router').Router);
+    const router = TestBed.inject(Router);
     const navigateSpy = vi.spyOn(router, 'navigate');
     
     component.ngOnInit();

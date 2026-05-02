@@ -11,6 +11,8 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicDiscussionService } from '../../../../../core/services/topic-discussion.service';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { UserStore } from '../../../../../core/state/user.store';
+import { DialogService } from '../../../../../shared/dialog';
+import { EditDiscussionDeadlineComponent } from '../edit-discussion-deadline/edit-discussion-deadline.component';
 import { ArgumentComponent } from '../argument/argument.component';
 import { PostArgumentFormComponent } from '../post-argument-form/post-argument-form.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
@@ -35,6 +37,7 @@ export class TopicDiscussionComponent implements OnInit {
   private topicService = inject(TopicService);
   private discussionService = inject(TopicDiscussionService);
   private argumentService = inject(TopicArgumentService);
+  private dialog = inject(DialogService);
   userStore = inject(UserStore);
 
   showPostForm = signal(false);
@@ -105,5 +108,13 @@ export class TopicDiscussionComponent implements OnInit {
   onArgumentPosted() {
     this.showPostForm.set(false);
     this.reload();
+  }
+
+  openEditDeadline() {
+    const disc = this.discussion();
+    if (!disc) return;
+    this.dialog.open(EditDiscussionDeadlineComponent, {
+      data: { discussion: disc, topic: this.topic() }
+    });
   }
 }

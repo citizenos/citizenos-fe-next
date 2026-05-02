@@ -4,27 +4,24 @@
     <div class="block_title_wrap" (click)="toggleBlock('headerImage')">
       <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_HEADER_IMAGE"></div>
       @if (!block().headerImage) {
-        <cos-icon name="upload" [size]="24"></cos-icon>
+      <cos-icon name="upload" [size]="24"></cos-icon>
       }
       @if (block().headerImage && (topic().imageUrl)) {
-        <cos-button variant="ghost" (clicked)="deleteTopicImage(); $event.stopPropagation();" icon="trash">
-          <span class="link" translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_REMOVE"></span>
-        </cos-button>
+      <cos-button variant="ghost" (clicked)="deleteTopicImage(); $event.stopPropagation();" icon="trash">
+        <span class="link" translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_REMOVE"></span>
+      </cos-button>
       } @else if (block().headerImage) {
-        <cos-button variant="ghost" (clicked)="toggleBlock('headerImage'); $event.stopPropagation();" icon="close">
-          <span class="link" translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL"></span>
-        </cos-button>
+      <cos-button variant="ghost" (clicked)="toggleBlock('headerImage'); $event.stopPropagation();" icon="close">
+        <span class="link" translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL"></span>
+      </cos-button>
       }
     </div>
 
     @if (block().headerImage) {
-      <div class="block_content image_content">
-        <cos-image-upload
-          [imageUrl]="topic().imageUrl || null"
-          (imageFileChange)="onImageChange($event)"
-          (imageRemoved)="deleteTopicImage()"
-        ></cos-image-upload>
-      </div>
+    <div class="block_content image_content">
+      <cos-image-upload [imageUrl]="topic().imageUrl || null" (imageFileChange)="onImageChange($event)"
+        (imageRemoved)="deleteTopicImage()"></cos-image-upload>
+    </div>
     }
   </div>
 
@@ -35,78 +32,59 @@
       <div class="counter_wrap">
         <div class="char_counter">{{ (topic().title?.length || 0) }}/{{ titleLimit }}</div>
         @if (!topic().title) {
-          <cos-icon name="warning" [size]="16" class="error"></cos-icon>
+        <cos-icon name="warning" [size]="16" class="error"></cos-icon>
         }
       </div>
     </div>
     @if (block().title || topic().title) {
-      <div class="block_content">
-        <input
-          #topicTitle
-          id="title_input"
-          type="text"
-          placeholder="..."
-          [ngModel]="topic().title"
-          (ngModelChange)="onUpdate({title: $event})"
-          [maxlength]="titleLimit"
-        />
-      </div>
+    <div class="block_content">
+      <input #topicTitle id="title_input" type="text" placeholder="..." [ngModel]="topic().title"
+        (ngModelChange)="onUpdate({title: $event})" [maxlength]="titleLimit" />
+    </div>
     }
   </div>
 
   <!-- Intro Block -->
   <div class="create_content_block discussion" [class.active]="block().intro" [class.open]="block().intro">
     <div class="block_title_wrap" (click)="toggleBlock('intro')">
-      <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_INTRO"></div>
-      <cos-tooltip
-        [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_INTRO_TITLE' | translate"
-        [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_INTRO_CONTENT' | translate"
-      ></cos-tooltip>
+      <div class="block_title">
+        <span translate="VIEWS.TOPIC_CREATE.TITLE_INTRO"></span>
+        <cos-tooltip [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_INTRO_TITLE' | translate"
+          [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_INTRO_CONTENT' | translate"></cos-tooltip>
+      </div>
+
       <div class="counter_wrap">
         <div class="char_counter">{{ (topic().intro?.length || 0) }}/{{ introLimit }}</div>
       </div>
     </div>
     @if (block().intro || topic().intro) {
-      <div class="block_content">
-        <textarea
-          #topicIntro
-          id="intro_input"
-          placeholder="..."
-          [ngModel]="topic().intro"
-          (ngModelChange)="onUpdate({intro: $event})"
-          [maxlength]="introLimit"
-          rows="3"
-        ></textarea>
-      </div>
+    <div class="block_content">
+      <textarea #topicIntro id="intro_input" placeholder="..." [ngModel]="topic().intro"
+        (ngModelChange)="onUpdate({intro: $event})" [maxlength]="introLimit" rows="3"></textarea>
+    </div>
     }
   </div>
 
   <!-- Description Block -->
   <div class="create_content_block discussion" [class.active]="block().description" [class.open]="block().description">
     <div class="block_title_wrap" (click)="toggleBlock('description')">
-      <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_DESCRIPTION"></div>
-      <cos-tooltip
-        [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_TEXT_TITLE' | translate"
-        [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_TEXT_CONTENT' | translate"
-      ></cos-tooltip>
+      <div class="block_title">
+        <span translate="VIEWS.TOPIC_CREATE.TITLE_DESCRIPTION"></span>
+        <cos-tooltip [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_TEXT_TITLE' | translate"
+          [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_TEXT_CONTENT' | translate"></cos-tooltip>
+      </div>
+
       <div class="counter_wrap">
         @if (!topic().description) {
-           <cos-icon name="warning" [size]="16" class="error"></cos-icon>
+        <cos-icon name="warning" [size]="16" class="error"></cos-icon>
         }
       </div>
     </div>
     @if (block().description) {
-      <div class="block_content description">
-        <iframe
-          cosEtherpad
-          frameborder="0"
-          scrolling="no"
-          [class.hidden]="!topic().padUrl"
-          [src]="sanitizeURL()"
-          width="100%"
-          height="600"
-        ></iframe>
-      </div>
+    <div class="block_content description">
+      <iframe cosEtherpad frameborder="0" scrolling="no" [class.hidden]="!topic().padUrl" [src]="sanitizeURL()"
+        width="100%" height="600"></iframe>
+    </div>
     }
   </div>
 

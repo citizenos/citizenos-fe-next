@@ -1,0 +1,34 @@
+<div class="overlay" dialogClose></div>
+<div class="dialog_wrap">
+  <div class="dialog">
+    <div class="dialog_header discussion">
+      <div class="header_text">
+        @if (isNew) {
+          <div class="small_heading" translate="COMPONENTS.EDIT_DISCUSSION_DEADLINE.DIALOG_HEADING_ADD"></div>
+        } @else {
+          <div class="small_heading" translate="COMPONENTS.EDIT_DISCUSSION_DEADLINE.DIALOG_HEADING"></div>
+        }
+        <div class="dialog_close">
+          <a class="btn_dialog_close icon" dialogClose>
+            <cos-icon name="close" [size]="24"></cos-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="dialog_content">
+      <div class="dialog_description" translate="COMPONENTS.EDIT_DISCUSSION_DEADLINE.LBL_EDIT_DISCUSSION_DEADLINE_DESC"></div>
+      <div class="deadline_wrap">
+        <cos-deadline-picker
+          [deadline]="deadline()"
+          [showReminder]="false"
+          (deadlineChange)="onDeadlineChange($event)" />
+      </div>
+    </div>
+    <div class="dialog_footer with_buttons">
+      <a dialogClose translate="COMPONENTS.EDIT_DISCUSSION_DEADLINE.LNK_CANCEL"></a>
+      <div class="button_row">
+        <button class="btn_medium_submit" (click)="save()">{{ "COMPONENTS.EDIT_DISCUSSION_DEADLINE.BTN_SAVE" | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>

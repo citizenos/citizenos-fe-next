@@ -17,6 +17,7 @@ import { DialogService } from '../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { InitialsComponent } from '../../../shared/components/initials/initials.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SeoService } from '../../../core/services/seo.service';
 
 type ProfileTab = 'profile' | 'notifications';
 
@@ -54,6 +55,7 @@ export class ProfileComponent implements OnInit {
   router = inject(Router);
   dialog = inject(DialogService);
   private platformId = inject(PLATFORM_ID);
+  private seoService = inject(SeoService);
   private destroyRef = inject(DestroyRef);
 
   activeTab = signal<ProfileTab>('profile');
@@ -85,6 +87,7 @@ export class ProfileComponent implements OnInit {
   };
 
   ngOnInit() {
+    this.seoService.setPageTitle('NAV_PROFILE');
     // Initialize form with user data
     const user = this.store.user();
     if (user) {

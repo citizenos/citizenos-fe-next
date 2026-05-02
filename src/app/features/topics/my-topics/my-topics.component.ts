@@ -15,6 +15,7 @@ import { ActivitiesButtonComponent } from '../../../shared/components/activities
 import { CreateMenuComponent } from '../../../shared/components/create-menu/create-menu.component';
 import { PageListHeaderComponent } from '../../../shared/components/page-list-header/page-list-header.component';
 import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.constants';
+import { SeoService } from '../../../core/services/seo.service';
 
 @Component({
   selector: 'cos-my-topics',
@@ -88,6 +89,11 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
 })
 export class MyTopicsComponent {
   private topicService = inject(UserTopicService);
+  private seoService = inject(SeoService);
+
+  constructor() {
+    this.seoService.setPageTitle('NAV_MY_TOPICS');
+  }
 
   searchValue = signal('');
   currentPage = signal(1);

@@ -16,6 +16,7 @@ import { ActivitiesButtonComponent } from '../../../shared/components/activities
 import { PageListHeaderComponent } from '../../../shared/components/page-list-header/page-list-header.component';
 import { countries } from '../../../core/constants/countries';
 import { languages } from '../../../core/constants/all-languages';
+import { SeoService } from '../../../core/services/seo.service';
 
 @Component({
   selector: 'cos-public-groups',
@@ -92,6 +93,11 @@ import { languages } from '../../../core/constants/all-languages';
 export class PublicGroupsComponent {
   private groupService = inject(PublicGroupService);
   private userStore = inject(UserStore);
+  private seoService = inject(SeoService);
+
+  constructor() {
+    this.seoService.setPageTitle('NAV_PUBLIC_GROUPS');
+  }
 
   isAuthenticated = this.userStore.isAuthenticated;
 

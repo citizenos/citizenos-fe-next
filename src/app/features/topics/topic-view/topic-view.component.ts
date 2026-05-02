@@ -15,6 +15,7 @@ import { UserStore } from '../../../core/state/user.store';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { SeoService } from '../../../core/services/seo.service';
 
 import { TopicHeaderComponent } from './components/topic-header/topic-header.component';
 import { TopicContentComponent } from './components/topic-content/topic-content.component';
@@ -62,6 +63,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   translate = inject(TranslateService);
   private dialogService = inject(DialogService);
   private platformId = inject(PLATFORM_ID);
+  private seoService = inject(SeoService);
   private destroyRef = inject(DestroyRef);
   get STATUSES() { return this.topicService.STATUSES; }
 
@@ -111,6 +113,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
           return this.topicService.loadTopic(topicId).pipe(
             tap((topic: any) => {
               this.topic.set(topic);
+              this.seoService.setPageTitle(topic.title);
               this.loadRelatedData(topic);
               this.loading.set(false);
               

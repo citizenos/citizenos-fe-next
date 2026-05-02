@@ -14,6 +14,7 @@ import { ListFilterToolbarComponent, FilterConfig } from '../../../shared/compon
 import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { PageListHeaderComponent } from '../../../shared/components/page-list-header/page-list-header.component';
 import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.constants';
+import { SeoService } from '../../../core/services/seo.service';
 
 @Component({
   selector: 'cos-public-topics',
@@ -85,6 +86,11 @@ import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.
 })
 export class PublicTopicsComponent {
   private topicService = inject(PublicTopicService);
+  private seoService = inject(SeoService);
+
+  constructor() {
+    this.seoService.setPageTitle('NAV_PUBLIC_TOPICS');
+  }
 
   searchValue = signal('');
   currentPage = signal(1);

@@ -47,6 +47,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
 import { CosTabsComponent, TabItem } from '../../../shared/components/tabs/tabs.component';
 import { CreateMenuComponent } from '../../../shared/components/create-menu/create-menu.component';
 import { IllustrationComponent } from '../../../shared/components/illustration/illustration.component';
+import { SeoService } from '../../../core/services/seo.service';
 
 @Component({
   selector: 'cos-group-detail',
@@ -85,6 +86,7 @@ export class GroupDetailComponent {
   private groupMemberUserService = inject(GroupMemberUserService);
   userStore = inject(UserStore);
   private dialogService = inject(DialogService);
+  private seoService = inject(SeoService);
 
   TOPIC_STATUSES = ['draft', 'ideation', 'inProgress', 'voting', 'followUp', 'closed'];
   MEMBER_LEVELS = this.groupMemberUserService.LEVELS;
@@ -252,7 +254,10 @@ export class GroupDetailComponent {
           })
         );
       })
-    ).subscribe(group => this.group.set(group));
+    ).subscribe(group => {
+      this.group.set(group);
+      this.seoService.setPageTitle(group.name);
+    });
 
     this.route.fragment.pipe(takeUntilDestroyed()).subscribe(fragment => {
       this.tabSelected.set(fragment || 'topics');

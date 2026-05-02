@@ -16,6 +16,7 @@ import { GroupCardComponent } from '../../shared/components/group-card/group-car
 import { TourItemDirective } from '../../shared/directives/tour-item.directive';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { PageHeaderComponent } from '../../core/components/shell/page-header/page-header.component';
+import { SeoService } from '../../core/services/seo.service';
 import { News } from '../../core/interfaces/news';
 
 @Component({
@@ -35,10 +36,12 @@ export class DashboardComponent implements OnInit {
   private publicGroupService = inject(PublicGroupService);
   private newsService = inject(NewsService);
   private uiState = inject(UiStateService);
+  private seoService = inject(SeoService);
 
   readonly showCreate = signal(false);
 
   ngOnInit() {
+    this.seoService.setPageTitle('NAV_DASHBOARD');
     if (!localStorage.getItem('show-dashboard-tour')) {
       this.uiState.showOnboarding.set(true);
       localStorage.setItem('show-dashboard-tour', 'true');
