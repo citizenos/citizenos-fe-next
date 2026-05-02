@@ -1,4 +1,4 @@
-import { Component, input, output, inject, ChangeDetectionStrategy, computed, signal } from '@angular/core';
+import { Component, input, output, inject, ChangeDetectionStrategy, computed, signal, model } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -21,9 +21,10 @@ import { ActivitiesButtonComponent } from '../../../../../shared/components/acti
   styleUrls: ['./topic-header.component.scss']
 })
 export class TopicHeaderComponent {
-  topic = input.required<Topic>();
-  navigation = input.required<{title: string, link: string[]}>();
-  appTopicNotificationSettings = input<() => void>();
+  topic = model<Topic>({} as Topic);
+  navigation = model<{title: string, link: string[]}>({title: '', link: []});
+  wWidth = model<number>(1200);
+  appTopicNotificationSettings = model<() => void>();
 
   joinTopic = output<Topic>();
   toggleFavourite = output<Topic>();

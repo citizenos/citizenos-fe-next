@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { GlobalSearchService } from '../../../core/services/global-search.service';
 import { TourItemDirective } from '../../directives/tour-item.directive';
@@ -13,7 +13,7 @@ import { TourItemDirective } from '../../directives/tour-item.directive';
         <ng-content select="[title]"></ng-content>
       </div>
       <div class="header-actions">
-        <button id="show_search" class="btn_medium_close icon" (click)="globalSearch.showSearch.update(v => !v)" aria-label="Toggle Search"
+        <button id="show_search" class="btn_medium_close icon" (click)="onSearchToggle()" aria-label="Toggle Search"
           [cosTourItem]="{tourid: 'dashboard', index: 1, position: 'right'}">
           <cos-icon name="search"></cos-icon>
         </button>
@@ -55,4 +55,10 @@ import { TourItemDirective } from '../../directives/tour-item.directive';
 })
 export class PageListHeaderComponent {
   globalSearch = inject(GlobalSearchService);
+  searchToggle = output<void>();
+
+  onSearchToggle() {
+    this.globalSearch.showSearch.update(v => !v);
+    this.searchToggle.emit();
+  }
 }

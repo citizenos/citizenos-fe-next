@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, model } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { IconName } from '../icon/icon.registry';
 
@@ -34,14 +34,14 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
   styleUrl: './button.component.scss'
 })
 export class ButtonComponent {
-  variant = input<ButtonVariant>('primary');
-  size = input<ButtonSize>('md');
-  type = input<'button' | 'submit' | 'reset'>('button');
+  variant = model<ButtonVariant>('primary');
+  size = model<ButtonSize>('md');
+  type = model<'button' | 'submit' | 'reset'>('button');
   
-  icon = input<IconName>();
+  icon = model<IconName>();
   
-  isLoading = input<boolean>(false);
-  isDisabled = input<boolean>(false);
+  isLoading = model<boolean>(false);
+  isDisabled = model<boolean>(false);
 
   clicked = output<MouseEvent>();
 

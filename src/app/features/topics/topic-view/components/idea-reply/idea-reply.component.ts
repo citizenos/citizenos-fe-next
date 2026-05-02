@@ -1,4 +1,4 @@
-import { Component, inject, signal, input, output, ChangeDetectionStrategy, OnInit, AfterViewInit, ViewChild, ElementRef, forwardRef } from '@angular/core';
+import { Component, inject, signal, input, model, output, ChangeDetectionStrategy, OnInit, AfterViewInit, ViewChild, ElementRef, forwardRef } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -370,11 +370,11 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdeaReplyComponent implements OnInit, AfterViewInit {
-  argument = input.required<any>();
+  argument = model.required<any>();
   root = input<any>(null);
-  topicId = input.required<string>();
-  ideationId = input.required<string>();
-  ideaId = input.required<string>();
+  topicId = model.required<string>();
+  ideationId = model.required<string>();
+  ideaId = model.required<string>();
   showReplyInput = signal(false);
   showReplies = signal(false);
 

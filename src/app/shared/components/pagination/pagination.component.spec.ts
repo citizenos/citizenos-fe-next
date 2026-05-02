@@ -1,8 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentRef } from '@angular/core';
+import { ComponentRef, Component, Input } from '@angular/core';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TranslateModule } from '@ngx-translate/core';
 import { PaginationComponent } from './pagination.component';
+import { IconComponent } from '../icon/icon.component';
+
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent {
+  @Input() name = '';
+  @Input() size: any;
+}
 
 describe('PaginationComponent', () => {
   let fixture: ComponentFixture<PaginationComponent>;
@@ -10,50 +17,58 @@ describe('PaginationComponent', () => {
   let ref: ComponentRef<PaginationComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [PaginationComponent, TranslateModule.forRoot()] }).compileComponents();
+    await TestBed.configureTestingModule({ 
+      imports: [PaginationComponent, TranslateModule.forRoot(), MockIconComponent] 
+    })
+    .overrideComponent(PaginationComponent, {
+      remove: { imports: [IconComponent] },
+      add: { imports: [MockIconComponent] }
+    })
+    .compileComponents();
+    
     fixture = TestBed.createComponent(PaginationComponent);
     ref = fixture.componentRef;
     component = fixture.componentInstance;
   });
 
   it('should render pagination when totalPages > 1', () => {
-    ref.setInput('totalPages', 10);
-    ref.setInput('page', 1);
+    component.totalPages.set(10);
+    component.page.set(1);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.pagination')).toBeTruthy();
   });
 
   it('should not render when totalPages <= 1', () => {
-    ref.setInput('totalPages', 1);
-    ref.setInput('page', 1);
+    component.totalPages.set(1);
+    component.page.set(1);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.pagination')).toBeNull();
   });
 
   it('should compute all pages when total <= 5', () => {
-    ref.setInput('totalPages', 5);
-    ref.setInput('page', 1);
+    component.totalPages.set(5);
+    component.page.set(1);
     fixture.detectChanges();
     expect(component.pages()).toEqual([1, 2, 3, 4, 5]);
   });
 
   it('should show pages 1-5 when current page < 4', () => {
-    ref.setInput('totalPages', 20);
-    ref.setInput('page', 2);
+    component.totalPages.set(20);
+    component.page.set(2);
     fixture.detectChanges();
     expect(component.pages()).toEqual([1, 2, 3, 4, 5]);
   });
 
   it('should center 5 pages around current page in the middle', () => {
-    ref.setInput('totalPages', 20);
-    ref.setInput('page', 10);
+    component.totalPages.set(20);
+    component.page.set(10);
     fixture.detectChanges();
     expect(component.pages()).toEqual([8, 9, 10, 11, 12]);
   });
 
   it('should emit next page on next()', () => {
-    ref.setInput('totalPages', 10);
-    ref.setInput('page', 3);
+    component.totalPages.set(10);
+    component.page.set(3);
     fixture.detectChanges();
     const spy = vi.fn();
     component.select.subscribe(spy);
@@ -62,8 +77,8 @@ describe('PaginationComponent', () => {
   });
 
   it('should not emit below page 1 on prev()', () => {
-    ref.setInput('totalPages', 10);
-    ref.setInput('page', 1);
+    component.totalPages.set(10);
+    component.page.set(1);
     fixture.detectChanges();
     const spy = vi.fn();
     component.select.subscribe(spy);
@@ -72,8 +87,8 @@ describe('PaginationComponent', () => {
   });
 
   it('should not emit beyond totalPages on next()', () => {
-    ref.setInput('totalPages', 5);
-    ref.setInput('page', 5);
+    component.totalPages.set(5);
+    component.page.set(5);
     fixture.detectChanges();
     const spy = vi.fn();
     component.select.subscribe(spy);

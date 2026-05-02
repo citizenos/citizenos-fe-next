@@ -1,4 +1,4 @@
-import { Component, input, output, signal, inject, ChangeDetectionStrategy, effect } from '@angular/core';
+import { Component, input, output, signal, inject, ChangeDetectionStrategy, effect, model } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { UpperCasePipe } from '@angular/common';
@@ -32,8 +32,8 @@ export class TopicSettingsPanelComponent {
   private countryService = inject(CountryService);
   private languageService = inject(LanguageService);
 
-  topic = input<Topic>({} as Topic);
-  groups = input<Group[]>([]);
+  topic = model<Topic>({} as Topic);
+  groups = model<Group[]>([]);
 
   visibilityChange = output<string>();
   categoriesChange = output<string[]>();

@@ -1,4 +1,4 @@
-import { Component, input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy, model } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Topic } from '../../../core/interfaces/topic';
 import { TopicMemberGroup } from '../topic-settings-panel/topic-settings-panel.component';
@@ -197,8 +197,8 @@ import { Vote } from '../../../core/interfaces/vote';
   `]
 })
 export class TopicPreviewComponent {
-  topic = input<Topic>({} as Topic);
-  topicGroups = input<TopicMemberGroup[]>([]);
+  topic = model.required<Topic>();
+  topicGroups = model<TopicMemberGroup[]>([]);
   ideation = input<Partial<Ideation> | null>(null);
   vote = input<Partial<Vote> | null>(null);
 }

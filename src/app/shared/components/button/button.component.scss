@@ -67,12 +67,12 @@ button {
 }
 
 .btn-light {
-  background-color: var(--color-background);
+  background-color: var(--color-surfaces);
   color: var(--color-text);
   border: none;
   &:hover:not(:disabled) {
     color: var(--color-link);
-    background-color: var(--color-background);
+    background-color: var(--color-dialog-contrast);
   }
 }
 

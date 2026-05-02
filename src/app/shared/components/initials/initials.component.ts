@@ -1,4 +1,4 @@
-import { Component, input, computed, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy, ViewEncapsulation, model } from '@angular/core';
 
 @Component({
   selector: 'cos-initials',
@@ -26,8 +26,8 @@ import { Component, input, computed, ChangeDetectionStrategy, ViewEncapsulation 
   `]
 })
 export class InitialsComponent {
-  name = input<string>('');
-  limit = input<number>(2);
+  name = model<string>('');
+  limit = model<number>(2);
 
   initials = computed(() => {
     const parts = this.name().trim().split(/\s+/).filter(Boolean);

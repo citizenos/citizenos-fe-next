@@ -4,9 +4,9 @@
   </div>
 } @else if (topic()) {
 <div id="topic_wrap_root">
-  <div id="topic_view" class="content_wrap">
+  <div id="topic_view" class="page_content">
 
-    <app-topic-header [topic]="topic()!" [navigation]="navigation()"
+    <app-topic-header [topic]="topic()!" [navigation]="navigation()" [wWidth]="wWidth()"
       [cosTourItem]="{ tourid: 'topic', index: 1, position: 'bottom' }"
       (joinTopic)="joinTopic($event)" (toggleFavourite)="toggleFavourite($event)" (leaveTopic)="leaveTopic($event)"
       (inviteEditors)="inviteEditors($event)" (duplicateTopic)="duplicateTopic($event)"
@@ -122,6 +122,9 @@
               <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_ACTION"></span>
             </a>
           }
+          <div id="activities_button_wrap">
+            <cos-activities-button [topicId]="topic()!.id"></cos-activities-button>
+          </div>
         </div>
 
         <!-- Discussion tab -->

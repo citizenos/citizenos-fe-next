@@ -13,7 +13,8 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
   template: ''
 })
 class MockIconComponent {
-  @Input() name: string = '';
+  @Input() name = '';
+  @Input() size: any;
 }
 
 describe('IdeaReportReasonComponent', () => {

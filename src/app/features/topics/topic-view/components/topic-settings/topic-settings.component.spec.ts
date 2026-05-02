@@ -7,6 +7,55 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
 import { DIALOG_DATA, DialogRef, DialogService } from '../../../../../shared/dialog';
+import { Component, Input, output } from '@angular/core';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { ToggleComponent } from '../../../../../shared/components/toggle/toggle.component';
+import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
+import { CommonModule, UpperCasePipe, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { A11yModule } from '@angular/cdk/a11y';
+
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent {
+  @Input() name = '';
+  @Input() size: any;
+  @Input() color: any;
+}
+
+@Component({ selector: 'cos-button', standalone: true, template: '<button (click)="clicked.emit($event)"><ng-content></ng-content></button>' })
+class MockButtonComponent {
+  @Input() variant = 'primary';
+  @Input() size = 'md';
+  @Input() type = 'button';
+  @Input() icon: any;
+  @Input() isLoading = false;
+  @Input() isDisabled = false;
+  clicked = output<Event>();
+}
+
+@Component({ selector: 'cos-toggle', standalone: true, template: '' })
+class MockToggleComponent {
+  @Input() model: any;
+  @Input() textOn: any;
+  @Input() textOff: any;
+  modelChange = output<any>();
+}
+
+@Component({ selector: 'cos-dropdown', standalone: true, template: '<ng-content select="[selection]"></ng-content><ng-content select="[options]"></ng-content>' })
+class MockDropdownComponent {
+  @Input() options: any;
+}
+
+@Component({ selector: 'cos-tooltip', standalone: true, template: '<ng-content></ng-content>' })
+class MockTooltipComponent {
+  @Input() text = '';
+  @Input() title = '';
+  @Input() description = '';
+  @Input() pos: any;
+  @Input() noIcon = false;
+}
 
 const MOCK_TOPIC = {
   id: '123',
@@ -40,7 +89,8 @@ describe('TopicSettingsComponent', () => {
   };
 
   const mockTopicMemberUserService = {
-    delete: vi.fn().mockReturnValue(of({}))
+    delete: vi.fn().mockReturnValue(of({})),
+    doLeaveTopic: vi.fn()
   };
 
   const mockDialogRef = {
@@ -54,15 +104,39 @@ describe('TopicSettingsComponent', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     await TestBed.configureTestingModule({
-      imports: [TopicSettingsComponent, TranslateModule.forRoot()],
+      imports: [
+        TopicSettingsComponent,
+        TranslateModule.forRoot(),
+        MockIconComponent,
+        MockButtonComponent,
+        MockToggleComponent,
+        MockDropdownComponent,
+        MockTooltipComponent
+      ],
       providers: [
-        { provide: DIALOG_DATA, useValue: { topic: MOCK_TOPIC } },
+        { provide: DIALOG_DATA, useValue: { topic: { ...MOCK_TOPIC } } },
         { provide: DialogRef, useValue: mockDialogRef },
         { provide: TopicService, useValue: mockTopicService },
         { provide: TopicVoteService, useValue: mockTopicVoteService },
         { provide: TopicMemberUserService, useValue: mockTopicMemberUserService },
         { provide: DialogService, useValue: mockDialogService }
       ]
+    }).overrideComponent(TopicSettingsComponent, {
+      set: {
+        imports: [
+          CommonModule,
+          UpperCasePipe,
+          DatePipe,
+          TranslateModule,
+          FormsModule,
+          A11yModule,
+          MockButtonComponent,
+          MockToggleComponent,
+          MockDropdownComponent,
+          MockIconComponent,
+          MockTooltipComponent
+        ]
+      }
     }).compileComponents();
 
     fixture = TestBed.createComponent(TopicSettingsComponent);

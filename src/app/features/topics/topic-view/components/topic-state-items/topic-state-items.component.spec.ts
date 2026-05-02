@@ -9,6 +9,19 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { TranslateModule } from '@ngx-translate/core';
 import { ComponentRef } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { DomainIconComponent } from '../../../../../shared/components/domain-icon/domain-icon.component';
+import { Component, Input } from '@angular/core';
+import { Topic } from '../../../../../core/interfaces/topic';
+
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent { @Input() name = ''; @Input() size = 24; }
+
+@Component({ selector: 'cos-domain-icon', standalone: true, template: '' })
+class MockDomainIconComponent {
+  @Input() type = '';
+  @Input() size = 40;
+}
 
 describe('TopicStateItemsComponent', () => {
   let component: TopicStateItemsComponent;
@@ -59,7 +72,9 @@ describe('TopicStateItemsComponent', () => {
       imports: [
         TopicStateItemsComponent,
         TranslateModule.forRoot(),
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        MockIconComponent,
+        MockDomainIconComponent
       ],
       providers: [
         { provide: UserStore, useValue: mockUserStore },
@@ -68,25 +83,33 @@ describe('TopicStateItemsComponent', () => {
         { provide: TopicVoteService, useValue: mockTopicVoteService },
         { provide: TopicArgumentService, useValue: mockTopicArgumentService }
       ]
-    }).compileComponents();
+    })
+    .overrideComponent(TopicStateItemsComponent, {
+      remove: { imports: [IconComponent, DomainIconComponent] },
+      add: { imports: [MockIconComponent, MockDomainIconComponent] }
+    })
+    .compileComponents();
 
     fixture = TestBed.createComponent(TopicStateItemsComponent);
-    component = fixture.componentInstance;
+    component = fixture.componentInstance; componentRef = fixture.componentRef;
     componentRef = fixture.componentRef;
     
-    componentRef.setInput('topic', {
-      id: '123',
-      status: 'inProgress',
-      permission: { level: 'admin' },
-      discussionId: '456',
-      voteId: '789'
-    });
+    component.topic.set({
+      id: '123', status: 'inProgress', permission: { level: 'admin' },
+      discussionId: '456', voteId: '789',
+      title: null, intro: null, description: '', visibility: 'public', hashtag: null,
+      join: { token: '', level: '' }, categories: [], endsAt: null, createdAt: '',
+      updatedAt: '', sourcePartnerId: null, sourcePartnerObjectId: null, creator: {},
+      lastActivity: null, country: null, language: null,
+      members: { users: { count: 1 }, groups: { count: 0 } },
+      comments: null, padUrl: '', imageUrl: null, authors: []
+    } as Topic);
     
-    componentRef.setInput('ideation', null);
-    componentRef.setInput('vote', {
+    component.ideation.set(null);
+    component.vote.set({
       votersCount: 42
     });
-    componentRef.setInput('eventCount', 5);
+    component.eventCount.set(5);
     
     fixture.detectChanges();
   });

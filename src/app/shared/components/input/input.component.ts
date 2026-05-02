@@ -1,4 +1,4 @@
-import { Component, ElementRef, AfterContentChecked, input, signal, ViewEncapsulation, inject } from '@angular/core';
+import { Component, ElementRef, AfterContentChecked, input, signal, ViewEncapsulation, inject, model } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -126,10 +126,10 @@ import { TranslateModule } from '@ngx-translate/core';
 export class InputComponent implements AfterContentChecked {
   private static idCounter = 0;
 
-  label = input<string>('');
-  placeholder = input<string>('');
-  hasError = input<boolean>(false);
-  errorMessage = input<string>('');
+  label = model<string>('');
+  placeholder = model<string>('');
+  hasError = model<boolean>(false);
+  errorMessage = model<string>('');
 
   inputId = `cos-input-${InputComponent.idCounter++}`;
   errorId = `${this.inputId}-error`;

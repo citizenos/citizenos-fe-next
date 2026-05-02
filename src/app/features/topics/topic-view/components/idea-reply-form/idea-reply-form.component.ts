@@ -1,4 +1,4 @@
-import { Component, inject, signal, input, output, ChangeDetectionStrategy, OnInit, effect } from '@angular/core';
+import { Component, inject, signal, input, output, ChangeDetectionStrategy, OnInit, effect, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -23,11 +23,11 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 })
 export class IdeaReplyFormComponent implements OnInit {
   // Inputs as signals
-  argument = input<any>(null);
-  topicId = input<string>('');
-  ideationId = input<string>('');
-  ideaId = input<string>('');
-  editMode = input<boolean>(false);
+  argument = model<any>(null);
+  topicId = model<string>('');
+  ideationId = model<string>('');
+  ideaId = model<string>('');
+  editMode = model<boolean>(false);
 
   // Outputs
   showReplyChange = output<boolean>();

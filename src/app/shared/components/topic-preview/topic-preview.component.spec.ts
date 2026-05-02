@@ -31,32 +31,32 @@ describe('TopicPreviewComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TopicPreviewComponent);
-    ref = fixture.componentRef;
+    ref = fixture.componentRef; component = fixture.componentInstance;
     component = fixture.componentInstance;
   });
 
   it('should create', () => {
-    ref.setInput('topic', mockTopic);
+    component.topic.set(mockTopic);
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('should display topic title', () => {
-    ref.setInput('topic', mockTopic);
+    component.topic.set(mockTopic);
     fixture.detectChanges();
     const title = fixture.nativeElement.querySelector('.preview-title');
     expect(title.textContent).toContain('Preview Topic');
   });
 
   it('should display intro', () => {
-    ref.setInput('topic', mockTopic);
+    component.topic.set(mockTopic);
     fixture.detectChanges();
     const intro = fixture.nativeElement.querySelector('.preview-intro');
     expect(intro.textContent).toContain('Introduction text');
   });
 
   it('should display image when imageUrl is set', () => {
-    ref.setInput('topic', mockTopic);
+    component.topic.set(mockTopic);
     fixture.detectChanges();
     const img = fixture.nativeElement.querySelector('.preview-image img');
     expect(img).toBeTruthy();
@@ -64,14 +64,14 @@ describe('TopicPreviewComponent', () => {
   });
 
   it('should display categories', () => {
-    ref.setInput('topic', mockTopic);
+    component.topic.set(mockTopic);
     fixture.detectChanges();
     const tags = fixture.nativeElement.querySelectorAll('.category-tag');
     expect(tags.length).toBe(2);
   });
 
   it('should display country and language', () => {
-    ref.setInput('topic', mockTopic);
+    component.topic.set(mockTopic);
     fixture.detectChanges();
     const metaValues = fixture.nativeElement.querySelectorAll('.meta-value');
     const texts = Array.from(metaValues).map((el: any) => el.textContent.trim());
@@ -81,8 +81,8 @@ describe('TopicPreviewComponent', () => {
   });
 
   it('should display groups when provided', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('topicGroups', [{ id: 'g1', name: 'Test Group' }]);
+    component.topic.set(mockTopic);
+    component.topicGroups.set([{ id: 'g1', name: 'Test Group' }]);
     fixture.detectChanges();
     const chips = fixture.nativeElement.querySelectorAll('.group-chip');
     expect(chips.length).toBe(1);

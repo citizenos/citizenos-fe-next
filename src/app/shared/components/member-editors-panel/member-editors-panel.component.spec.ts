@@ -34,45 +34,46 @@ describe('MemberEditorsPanelComponent', () => {
   });
 
   it('should create', () => {
-    ref.setInput('topic', mockTopic);
+    component.topic.set(mockTopic);
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('should show no-members message when empty', () => {
-    ref.setInput('topic', mockTopic);
+    component.topic.set(mockTopic);
     fixture.detectChanges();
     const noMembers = fixture.nativeElement.querySelector('.no-members');
     expect(noMembers).toBeTruthy();
   });
 
   it('should show members when provided', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('members', [
-      { id: 'u1', name: 'John', email: 'john@test.com', level: 'edit' }
+    component.topic.set(mockTopic);
+    component.members.set([
+      { id: 'u1', name: 'John', email: 'john@test.com', level: 'edit' },
+      { id: 'u2', name: 'Jane', email: 'jane@test.com', level: 'edit' }
     ]);
     fixture.detectChanges();
-    const rows = fixture.nativeElement.querySelectorAll('.member-row');
-    expect(rows.length).toBe(1);
+    const rows = fixture.nativeElement.querySelectorAll('.topic_member');
+    expect(rows.length).toBe(3); // One for "Joined" label, two for members
     expect(fixture.nativeElement.querySelector('.no-members')).toBeNull();
   });
 
   it('should emit inviteEditors on button click', () => {
-    ref.setInput('topic', mockTopic);
+    component.topic.set(mockTopic);
     fixture.detectChanges();
     const emitSpy = vi.spyOn(component.inviteEditors, 'emit');
-    const btn = fixture.nativeElement.querySelector('#invite_editors_btn');
+    const btn = fixture.nativeElement.querySelector('.btn_medium_secondary');
     btn.click();
     expect(emitSpy).toHaveBeenCalled();
   });
 
   it('should show invites when provided', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('invites', [
+    component.topic.set(mockTopic);
+    component.invites.set([
       { id: 'i1', email: 'invited@test.com' }
     ]);
     fixture.detectChanges();
-    const inviteRows = fixture.nativeElement.querySelectorAll('.invite-row');
-    expect(inviteRows.length).toBe(1);
+    const inviteRows = fixture.nativeElement.querySelectorAll('.topic_member');
+    expect(inviteRows.length).toBe(3); // "Joined" label, "Invited" label, one invite row
   });
 });

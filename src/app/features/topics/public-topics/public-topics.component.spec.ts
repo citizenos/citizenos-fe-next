@@ -5,6 +5,8 @@ import { PublicTopicsComponent } from './public-topics.component';
 import { PublicTopicService } from '../../../core/services/public-topic.service';
 import { of, BehaviorSubject } from 'rxjs';
 import { provideRouter } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { SeoService } from '../../../core/services/seo.service';
 
 const mockService = {
   items$: of([]),
@@ -20,9 +22,11 @@ describe('PublicTopicsComponent', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       providers: [
         provideRouter([]),
         { provide: PublicTopicService, useValue: mockService },
+        SeoService
       ],
     });
     injector = TestBed.inject(EnvironmentInjector);

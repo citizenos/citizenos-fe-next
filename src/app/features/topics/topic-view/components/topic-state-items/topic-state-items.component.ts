@@ -1,4 +1,4 @@
-import { Component, input, output, inject, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, inject, computed, ChangeDetectionStrategy, model } from '@angular/core';
 import { NgClass, DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -19,13 +19,13 @@ import { DomainIconComponent } from '../../../../../shared/components/domain-ico
   styleUrls: ['./topic-state-items.component.scss']
 })
 export class TopicStateItemsComponent {
-  topic = input.required<Topic>();
+  topic = model.required<Topic>();
   
   // These could be passed down, but the component could also query them if it has id.
   // For UI representation, let's allow passing signals or objects
-  ideation = input<any>(null);
-  vote = input<any>(null);
-  eventCount = input<number>(0);
+  ideation = model<any>(null);
+  vote = model<any>(null);
+  eventCount = model<number>(0);
   
   // We can inject services to check logic
   topicService = inject(TopicService);

@@ -1,4 +1,4 @@
-import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, output, inject, ChangeDetectionStrategy, model } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Topic } from '../../../core/interfaces/topic';
 import { TopicService } from '../../../core/services/topic.service';
@@ -185,9 +185,9 @@ export interface TopicInvite {
 export class MemberEditorsPanelComponent {
   topicService = inject(TopicService);
 
-  topic = input<Topic>({} as Topic);
-  members = input<TopicMember[]>([]);
-  invites = input<TopicInvite[]>([]);
+  topic = model.required<Topic>();
+  members = model<any[]>([]);
+  invites = model<any[]>([]);
 
   inviteEditors = output<void>();
   manageMembers = output<void>();

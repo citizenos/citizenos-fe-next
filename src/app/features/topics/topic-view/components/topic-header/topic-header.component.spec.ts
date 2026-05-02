@@ -1,20 +1,58 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentRef } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicHeaderComponent } from './topic-header.component';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
+import { ActivitiesButtonComponent } from '../../../../../shared/components/activities-button/activities-button.component';
+import { Component, Input, output } from '@angular/core';
+import { Topic } from '../../../../../core/interfaces/topic';
+import { UpperCasePipe } from '@angular/common';
+import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 
-const BASE_TOPIC = {
-  id: '123',
-  title: 'Test Topic',
-  permission: { level: 'admin' },
-  status: 'inProgress',
-  visibility: 'public',
-  favourite: false,
-  creator: { name: 'Test User' }
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent {
+  @Input() name = '';
+  @Input() size = 24;
+  @Input() color: any;
+}
+
+@Component({ selector: 'cos-button', standalone: true, template: '<button (click)="clicked.emit($event)"><ng-content></ng-content></button>' })
+class MockButtonComponent {
+  @Input() variant = 'primary';
+  @Input() size = 'md';
+  @Input() type = 'button';
+  @Input() icon: any;
+  @Input() isLoading = false;
+  @Input() isDisabled = false;
+  clicked = output<MouseEvent>();
+}
+
+@Component({ selector: 'cos-tooltip', standalone: true, template: '<ng-content></ng-content>' })
+class MockTooltipComponent {
+  @Input() text = '';
+  @Input() title = '';
+  @Input() noIcon = false;
+}
+
+@Component({ selector: 'cos-activities-button', standalone: true, template: '' })
+class MockActivitiesButtonComponent {
+  @Input() topicId = '';
+}
+
+const BASE_TOPIC: Topic = {
+  id: '123', title: 'Test Topic', intro: null, description: '', status: 'inProgress',
+  visibility: 'public', hashtag: null, join: { token: '', level: '' }, categories: [],
+  endsAt: null, createdAt: '', updatedAt: '', sourcePartnerId: null, sourcePartnerObjectId: null,
+  permission: { level: 'admin' }, creator: { name: 'Test User' }, lastActivity: null,
+  country: null, language: null, members: { users: { count: 1 }, groups: { count: 0 } },
+  voteId: null, discussionId: null, comments: null, padUrl: '', imageUrl: null, authors: [],
+  favourite: false
 };
 
 describe('TopicHeaderComponent', () => {
@@ -37,20 +75,35 @@ describe('TopicHeaderComponent', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     await TestBed.configureTestingModule({
-      imports: [TopicHeaderComponent, TranslateModule.forRoot()],
+      imports: [TopicHeaderComponent, TranslateModule.forRoot(), MockIconComponent, MockButtonComponent, MockTooltipComponent, MockActivitiesButtonComponent],
       providers: [
         provideRouter([]),
         { provide: UserStore, useValue: mockUserStore },
         { provide: TopicService, useValue: mockTopicService }
       ]
-    }).compileComponents();
+    })
+    .overrideComponent(TopicHeaderComponent, {
+      set: {
+        imports: [
+          TranslateModule,
+          RouterModule,
+          UpperCasePipe,
+          CosDropdownDirective,
+          MockIconComponent,
+          MockButtonComponent,
+          MockTooltipComponent,
+          MockActivitiesButtonComponent
+        ]
+      }
+    })
+    .compileComponents();
 
     fixture = TestBed.createComponent(TopicHeaderComponent);
-    componentRef = fixture.componentRef;
-    componentRef.setInput('topic', { ...BASE_TOPIC });
-    componentRef.setInput('navigation', { title: 'Back', link: ['/'] });
-    fixture.detectChanges();
     component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
+    component.topic.set({ ...BASE_TOPIC });
+    component.navigation.set({ title: 'Back', link: ['/'] });
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -59,7 +112,7 @@ describe('TopicHeaderComponent', () => {
 
   // --- Join button ---
   it('should show join button when user has no permissions', () => {
-    componentRef.setInput('topic', { ...BASE_TOPIC, permission: { level: 'none' } });
+    component.topic.set({ ...BASE_TOPIC, permission: { level: 'none' } });
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('#join_button')).toBeTruthy();
   });
@@ -69,7 +122,7 @@ describe('TopicHeaderComponent', () => {
   });
 
   it('should emit joinTopic when join button clicked', () => {
-    componentRef.setInput('topic', { ...BASE_TOPIC, permission: { level: 'none' } });
+    component.topic.set({ ...BASE_TOPIC, permission: { level: 'none' } });
     fixture.detectChanges();
     vi.spyOn(component.joinTopic, 'emit');
     fixture.debugElement.query(el => el.nativeElement.id === 'join_button')
@@ -83,7 +136,7 @@ describe('TopicHeaderComponent', () => {
   });
 
   it('should hide permissions label when permission level is none', () => {
-    componentRef.setInput('topic', { ...BASE_TOPIC, permission: { level: 'none' } });
+    component.topic.set({ ...BASE_TOPIC, permission: { level: 'none' } });
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.permissions_lable')).toBeFalsy();
   });
@@ -159,7 +212,7 @@ describe('TopicHeaderComponent', () => {
   });
 
   it('should hide report button for topics with existing report', () => {
-    componentRef.setInput('topic', { ...BASE_TOPIC, report: { id: 'r1' } });
+    component.topic.set({ ...BASE_TOPIC, report: { id: 'r1', type: null, text: null, moderatedReasonType: null, moderatedReasonText: null } } as any);
     fixture.detectChanges();
     const reportBtn = Array.from(fixture.nativeElement.querySelectorAll('.options button') as NodeListOf<HTMLElement>)
       .find(b => b.querySelector('span[translate="VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC"]'));
@@ -169,7 +222,7 @@ describe('TopicHeaderComponent', () => {
   it('should show moderate button when canModerate returns true', () => {
     mockTopicService.canModerate.mockReturnValue(true);
     // Re-set an input to trigger OnPush re-render
-    componentRef.setInput('topic', { ...BASE_TOPIC });
+    component.topic.set({ ...BASE_TOPIC });
     fixture.detectChanges();
     const moderateBtn = Array.from(fixture.nativeElement.querySelectorAll('.options button') as NodeListOf<HTMLElement>)
       .find(b => b.querySelector('span[translate="VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC"]'));

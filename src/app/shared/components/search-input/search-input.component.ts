@@ -17,9 +17,11 @@ import { FormsModule } from '@angular/forms';
                [(ngModel)]="value"
                [placeholder]="placeholder()" />
       </cos-input>
-      <button class="clear-button" (click)="clearValue()" aria-label="Clear Search">
-        <cos-icon name="close" size="20"></cos-icon>
-      </button>
+      @if (value()) {
+        <button class="clear-button" (click)="clearValue()" aria-label="Clear Search">
+          <cos-icon name="close" size="20"></cos-icon>
+        </button>
+      }
     </div>
   `,
   styles: [`

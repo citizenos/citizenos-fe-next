@@ -5,6 +5,8 @@ import { MyTopicsComponent } from './my-topics.component';
 import { UserTopicService } from '../../../core/services/user-topic.service';
 import { of, BehaviorSubject } from 'rxjs';
 import { provideRouter } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { SeoService } from '../../../core/services/seo.service';
 import { TOPIC_STATUSES } from '../../../core/constants/topic.constants';
 
 const mockService = {
@@ -21,9 +23,11 @@ describe('MyTopicsComponent', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       providers: [
         provideRouter([]),
         { provide: UserTopicService, useValue: mockService },
+        SeoService
       ],
     });
     injector = TestBed.inject(EnvironmentInjector);

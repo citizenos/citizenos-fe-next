@@ -15,10 +15,12 @@ class CosNotificationsStub {}
 class DialogCloseStub {
   @Input() dialogClose: any;
 }
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent { @Input() name = ''; @Input() size: any; }
 
 function createFixture(): ComponentFixture<ConnectSmartIdComponent> {
   TestBed.overrideComponent(ConnectSmartIdComponent, {
-    set: { imports: [TranslateModule, SmartIdStub, CosNotificationsStub, DialogCloseStub] },
+    set: { imports: [TranslateModule, SmartIdStub, CosNotificationsStub, DialogCloseStub, MockIconComponent] },
   });
   TestBed.configureTestingModule({
     imports: [ConnectSmartIdComponent, TranslateModule.forRoot()],

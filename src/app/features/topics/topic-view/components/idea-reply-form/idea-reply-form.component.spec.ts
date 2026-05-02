@@ -69,12 +69,12 @@ describe('IdeaReplyFormComponent', () => {
     const componentRef = fixture.componentRef;
     
     // Set required inputs
-    componentRef.setInput('topicId', inputs.topicId || 'topic1');
-    componentRef.setInput('ideationId', inputs.ideationId || 'ideation1');
-    componentRef.setInput('ideaId', inputs.ideaId || 'idea1');
+    component.topicId.set(inputs.topicId || 'topic1');
+    component.ideationId.set(inputs.ideationId || 'ideation1');
+    component.ideaId.set(inputs.ideaId || 'idea1');
     
-    if (inputs.editMode !== undefined) componentRef.setInput('editMode', inputs.editMode);
-    if (inputs.argument) componentRef.setInput('argument', inputs.argument);
+    if (inputs.editMode !== undefined) component.editMode.set(inputs.editMode);
+    if (inputs.argument) component.argument.set(inputs.argument);
     
     fixture.detectChanges();
     await fixture.whenStable();

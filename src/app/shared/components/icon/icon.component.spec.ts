@@ -22,7 +22,7 @@ describe('IconComponent', () => {
   });
 
   it('should render SVG content from registry', () => {
-    fixture.componentRef.setInput('name', 'smart-id');
+    component.name.set('smart-id');
     fixture.detectChanges();
     
     const svgElement = fixture.nativeElement.querySelector('svg');
@@ -31,8 +31,8 @@ describe('IconComponent', () => {
   });
 
   it('should set numeric width and height attributes', () => {
-    fixture.componentRef.setInput('name', 'smart-id');
-    fixture.componentRef.setInput('size', 32);
+    component.name.set('smart-id');
+    component.size.set(32);
     fixture.detectChanges();
     
     const svgElement = fixture.nativeElement.querySelector('svg');
@@ -41,8 +41,8 @@ describe('IconComponent', () => {
   });
 
   it('should remove width and height attributes when size is "auto" or other string', () => {
-    fixture.componentRef.setInput('name', 'smart-id');
-    fixture.componentRef.setInput('size', 'auto');
+    component.name.set('smart-id');
+    component.size.set('auto');
     fixture.detectChanges();
     
     const svgElement = fixture.nativeElement.querySelector('svg');
@@ -51,7 +51,7 @@ describe('IconComponent', () => {
   });
 
   it('should render empty content for invalid icon name', () => {
-    fixture.componentRef.setInput('name', 'invalid' as any);
+    component.name.set('invalid' as any);
     fixture.detectChanges();
     
     const svgElement = fixture.nativeElement.querySelector('svg');

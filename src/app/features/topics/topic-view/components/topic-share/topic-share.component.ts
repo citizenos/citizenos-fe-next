@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input, inject, signal, computed, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, inject, signal, computed, ElementRef, ViewChild, OnInit, model } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UpperCasePipe } from '@angular/common';
 import { QRCodeComponent } from 'angularx-qrcode';
@@ -31,7 +31,7 @@ import { take } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopicShareComponent implements OnInit {
-  topic = input<Topic>();
+  topic = model<Topic>();
 
   @ViewChild('linkInput') linkInput!: ElementRef;
 

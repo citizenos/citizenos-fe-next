@@ -1,9 +1,12 @@
+import 'reflect-metadata';
 import { getTestBed } from '@angular/core/testing';
 import {
   BrowserTestingModule,
   platformBrowserTesting,
 } from '@angular/platform-browser/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection, importProvidersFrom } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { TranslateModule } from '@ngx-translate/core';
 import { beforeEach } from 'vitest';
 
 getTestBed().initTestEnvironment(
@@ -14,7 +17,11 @@ getTestBed().initTestEnvironment(
 // ... production config
 beforeEach(() => {
   getTestBed().configureTestingModule({
-    providers: [provideZonelessChangeDetection()],
+    providers: [
+      provideZonelessChangeDetection(),
+      provideAnimationsAsync(),
+      importProvidersFrom(TranslateModule.forRoot())
+    ],
   });
 });
 

@@ -16,38 +16,38 @@ describe('InitialsComponent', () => {
   });
 
   it('should show first + last initial for two-word name', () => {
-    ref.setInput('name', 'John Doe');
+    component.name.set('John Doe');
     fixture.detectChanges();
     expect(component.initials()).toBe('JD');
   });
 
   it('should show first initial for single-word name', () => {
-    ref.setInput('name', 'Alice');
+    component.name.set('Alice');
     fixture.detectChanges();
     expect(component.initials()).toBe('A');
   });
 
   it('should use first + last word for multi-word name', () => {
-    ref.setInput('name', 'Mary Jane Watson');
+    component.name.set('Mary Jane Watson');
     fixture.detectChanges();
     expect(component.initials()).toBe('MW');
   });
 
   it('should show ? for empty name', () => {
-    ref.setInput('name', '');
+    component.name.set('');
     fixture.detectChanges();
     expect(component.initials()).toBe('?');
   });
 
   it('should respect limit=1', () => {
-    ref.setInput('name', 'John Doe');
-    ref.setInput('limit', 1);
+    component.name.set('John Doe');
+    component.limit.set(1);
     fixture.detectChanges();
     expect(component.initials()).toBe('J');
   });
 
   it('should render initials in the DOM', () => {
-    ref.setInput('name', 'Jane Smith');
+    component.name.set('Jane Smith');
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent.trim()).toBe('JS');
   });

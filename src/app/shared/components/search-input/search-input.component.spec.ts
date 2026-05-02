@@ -2,6 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchInputComponent } from './search-input.component';
 import { ComponentRef } from '@angular/core';
 import { IconRegistryService } from '../icon/icon.registry';
+import { IconComponent } from '../icon/icon.component';
+import { Component, Input } from '@angular/core';
+
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent { @Input() name = ''; @Input() size = 24; }
 
 describe('SearchInputComponent', () => {
   let component: SearchInputComponent;
@@ -10,9 +15,14 @@ describe('SearchInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchInputComponent],
+      imports: [SearchInputComponent, MockIconComponent],
       providers: [IconRegistryService]
-    }).compileComponents();
+    })
+    .overrideComponent(SearchInputComponent, {
+      remove: { imports: [IconComponent] },
+      add: { imports: [MockIconComponent] }
+    })
+    .compileComponents();
 
     fixture = TestBed.createComponent(SearchInputComponent);
     component = fixture.componentInstance;
@@ -32,22 +42,28 @@ describe('SearchInputComponent', () => {
     expect(component.value()).toBe('test text');
   });
 
+  it('should update placeholder via setInput', () => {
+    componentRef.setInput('placeholder', 'New Placeholder');
+    fixture.detectChanges();
+    expect(component.placeholder()).toBe('New Placeholder');
+  });
+
   it('should show clear button when there is a value', () => {
-    componentRef.setInput('value', 'test');
+    component.value.set('test');
     fixture.detectChanges();
     const clearBtn = fixture.nativeElement.querySelector('.clear-button');
     expect(clearBtn).toBeTruthy();
   });
 
   it('should not show clear button when there is no value', () => {
-    componentRef.setInput('value', '');
+    component.value.set('');
     fixture.detectChanges();
     const clearBtn = fixture.nativeElement.querySelector('.clear-button');
     expect(clearBtn).toBeFalsy();
   });
 
   it('should clear value when clear button is clicked', () => {
-    componentRef.setInput('value', 'test');
+    component.value.set('test');
     fixture.detectChanges();
     const clearBtn = fixture.nativeElement.querySelector('.clear-button');
     clearBtn.click();

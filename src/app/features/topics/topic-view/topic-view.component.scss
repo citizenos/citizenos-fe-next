@@ -3,7 +3,6 @@
 #topic_wrap_root {
   background: var(--color-background);
   min-height: 100vh;
-  padding-top: 24px;
 }
 
 .topic_loading {
@@ -241,6 +240,18 @@
   padding: 0px 16px;
   gap: 32px;
   margin-bottom: 24px;
+  position: relative;
+
+  #activities_button_wrap {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    position: absolute;
+    right: 24px;
+    height: 100%;
+  }
 
   @media (max-width: 1024px) {
     display: none;

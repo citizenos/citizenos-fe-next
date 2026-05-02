@@ -16,9 +16,12 @@ class DialogCloseStub {
   @Input() dialogClose: any;
 }
 
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent { @Input() name = ''; @Input() size: any; }
+
 function createFixture(): ComponentFixture<ConnectEidComponent> {
   TestBed.overrideComponent(ConnectEidComponent, {
-    set: { imports: [TranslateModule, EstEidStub, CosNotificationsStub, DialogCloseStub] },
+    set: { imports: [TranslateModule, EstEidStub, CosNotificationsStub, DialogCloseStub, MockIconComponent] },
   });
   TestBed.configureTestingModule({
     imports: [ConnectEidComponent, TranslateModule.forRoot()],

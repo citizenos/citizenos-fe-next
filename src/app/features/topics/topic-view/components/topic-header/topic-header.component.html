@@ -46,7 +46,9 @@
 
     <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" cosDropdown>
       <cos-tooltip [noIcon]="true" [title]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
-        <cos-button trigger variant="light" icon="more-vertical"></cos-button>
+        <cos-button trigger variant="light" [icon]="wWidth() <= 1024 ? 'more-vertical' : 'settings-legacy'">
+          <cos-icon name="arrow-down-legacy" size="12"></cos-icon>
+        </cos-button>
       </cos-tooltip>
 
       <div class="options">

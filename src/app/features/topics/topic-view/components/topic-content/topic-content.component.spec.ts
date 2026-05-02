@@ -10,6 +10,7 @@ import { TopicContentComponent } from './topic-content.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ComponentRef } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Topic } from '../../../../../core/interfaces/topic';
 
 describe('TopicContentComponent', () => {
   let component: TopicContentComponent;
@@ -26,20 +27,21 @@ describe('TopicContentComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TopicContentComponent);
-    component = fixture.componentInstance;
+    component = fixture.componentInstance; componentRef = fixture.componentRef;
     componentRef = fixture.componentRef;
     
-    componentRef.setInput('topic', {
-      id: '123',
-      title: 'Topic Title',
-      intro: 'Short intro',
-      description: '<p>Long description here...</p>',
-      imageUrl: 'http://example.com/img.jpg',
-      updatedAt: '2023',
-      permission: { level: 'admin' }
-    });
+    component.topic.set({
+      id: '123', title: 'Topic Title', intro: 'Short intro',
+      description: '<p>Long description here...</p>', imageUrl: 'http://example.com/img.jpg',
+      updatedAt: '2023', permission: { level: 'admin' }, status: 'inProgress',
+      visibility: 'public', hashtag: null, join: { token: '', level: '' }, categories: [],
+      endsAt: null, createdAt: '', sourcePartnerId: null, sourcePartnerObjectId: null,
+      creator: {}, lastActivity: null, country: null, language: null,
+      members: { users: { count: 1 }, groups: { count: 0 } },
+      voteId: null, discussionId: null, comments: null, padUrl: '', authors: []
+    } as Topic);
     
-    componentRef.setInput('tabTablet', '');
+    component.tabTablet.set('');
     
     fixture.detectChanges();
   });
@@ -55,7 +57,7 @@ describe('TopicContentComponent', () => {
   });
 
   it('should hide intro and content if tabTablet is set', () => {
-    componentRef.setInput('tabTablet', 'discussion');
+    component.tabTablet.set('discussion');
     fixture.detectChanges();
     
     const compiled = fixture.nativeElement as HTMLElement;

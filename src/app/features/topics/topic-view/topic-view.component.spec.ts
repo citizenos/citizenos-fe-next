@@ -11,7 +11,7 @@ import { provideRouter, ActivatedRoute } from '@angular/router';
 import { of, BehaviorSubject } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Component, Input, output } from '@angular/core';
 
 import { TopicService } from '../../../core/services/topic.service';
 import { TopicIdeationService } from '../../../core/services/topic-ideation.service';
@@ -26,7 +26,108 @@ import { TopicIdeationComponent } from './components/topic-ideation/topic-ideati
 import { TopicDiscussionComponent } from './components/topic-discussion/topic-discussion.component';
 import { TopicVoteCastComponent } from './components/topic-vote-cast/topic-vote-cast.component';
 import { TopicMilestonesComponent } from './components/topic-milestones/topic-milestones.component';
-import { Topic } from '../../../core/interfaces/topic';
+import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
+
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent {
+  @Input() name = '';
+  @Input() size: any;
+  @Input() color: any;
+}
+
+@Component({ selector: 'app-topic-header', standalone: true, template: '' })
+class MockTopicHeaderComponent {
+  @Input() topic: any;
+  @Input() navigation: any;
+  @Input() wWidth: any;
+  @Input() cosTourItem: any;
+  @Input() appTopicNotificationSettings: any;
+  joinTopic = output<any>();
+  toggleFavourite = output<any>();
+  leaveTopic = output<any>();
+  inviteEditors = output<any>();
+  duplicateTopic = output<any>();
+  addGroupsDialog = output<any>();
+  reportTopic = output<any>();
+  reportReasonDialog = output<any>();
+  moderateTopic = output<any>();
+  reviewTopic = output<any>();
+  resolveTopic = output<any>();
+  closeTopic = output<any>();
+  deleteTopic = output<any>();
+  openSettings = output<any>();
+}
+
+@Component({ selector: 'app-topic-content', standalone: true, template: '' })
+class MockTopicContentComponent {
+  @Input() topic: any;
+  @Input() tabTablet: any;
+  @Input() cosTourItem: any;
+}
+
+@Component({ selector: 'app-topic-info-sidebar', standalone: true, template: '' })
+class MockTopicInfoSidebarComponent {
+  @Input() topic: any;
+  @Input() groups: any;
+  @Input() attachments: any;
+  @Input() members: any;
+  @Input() appTopicNotificationSettings: any;
+  @Input() cosTourItem: any;
+  toggleFavourite = output<any>();
+  leaveTopic = output<any>();
+  inviteEditors = output<any>();
+  duplicateTopic = output<any>();
+  addGroupsDialog = output<any>();
+  closeTopic = output<any>();
+  deleteTopic = output<any>();
+  inviteMembers = output<any>();
+  downloadAttachment = output<any>();
+}
+
+@Component({ selector: 'app-topic-state-items', standalone: true, template: '' })
+class MockTopicStateItemsComponent {
+  @Input() topic: any;
+  @Input() ideation: any;
+  @Input() vote: any;
+  @Input() eventCount: any;
+  @Input() cosTourItem: any;
+  navigateTab = output<any>();
+  startDiscussion = output<any>();
+  startVote = output<any>();
+  sendToFollowUp = output<any>();
+}
+
+@Component({ selector: 'cos-activities-button', standalone: true, template: '' })
+class MockActivitiesButtonComponent {
+  @Input() topicId = '';
+}
+
+@Component({ selector: 'cos-topic-discussion', standalone: true, template: '' })
+class MockTopicDiscussionComponent {
+  @Input() topic: any;
+  @Input() cosTourItem: any;
+}
+
+@Component({ selector: 'app-topic-ideation', standalone: true, template: '' })
+class MockTopicIdeationComponent {
+  @Input() topic: any;
+  @Input() ideation: any;
+  @Input() cosTourItem: any;
+}
+
+@Component({ selector: 'app-topic-vote-cast', standalone: true, template: '' })
+class MockTopicVoteCastComponent {
+  @Input() topic: any;
+  @Input() vote: any;
+  @Input() cosTourItem: any;
+}
+
+@Component({ selector: 'app-topic-milestones', standalone: true, template: '' })
+class MockTopicMilestonesComponent {
+  @Input() topic: any;
+  @Input() isStatusClosed: any;
+}
 
 describe('TopicViewComponent', () => {
   let component: TopicViewComponent;
@@ -99,7 +200,17 @@ describe('TopicViewComponent', () => {
       imports: [
         TopicViewComponent,
         TranslateModule.forRoot(),
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        MockIconComponent,
+        MockTopicHeaderComponent,
+        MockTopicContentComponent,
+        MockTopicInfoSidebarComponent,
+        MockTopicStateItemsComponent,
+        MockActivitiesButtonComponent,
+        MockTopicDiscussionComponent,
+        MockTopicIdeationComponent,
+        MockTopicVoteCastComponent,
+        MockTopicMilestonesComponent
       ],
       providers: [
         provideRouter([]),
@@ -113,20 +224,21 @@ describe('TopicViewComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).overrideComponent(TopicViewComponent, {
-      add: {
-        schemas: [NO_ERRORS_SCHEMA]
-      },
-      remove: {
+      set: {
         imports: [
-          TopicHeaderComponent,
-          TopicContentComponent,
-          TopicInfoSidebarComponent,
-          TopicStateItemsComponent,
-          TopicIdeationComponent,
-          TopicDiscussionComponent,
-          TopicVoteCastComponent,
-          TopicMilestonesComponent
-        ]
+          TranslateModule,
+          MockIconComponent,
+          MockTopicHeaderComponent,
+          MockTopicContentComponent,
+          MockTopicInfoSidebarComponent,
+          MockTopicStateItemsComponent,
+          MockActivitiesButtonComponent,
+          MockTopicDiscussionComponent,
+          MockTopicIdeationComponent,
+          MockTopicVoteCastComponent,
+          MockTopicMilestonesComponent
+        ],
+        schemas: [NO_ERRORS_SCHEMA]
       }
     }).compileComponents();
 

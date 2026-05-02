@@ -1,4 +1,4 @@
-import { Component, input, signal, ViewChild, ElementRef, AfterViewInit, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, ViewChild, ElementRef, AfterViewInit, OnDestroy, inject, ChangeDetectionStrategy, model } from '@angular/core';
 import { NgClass, UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -31,8 +31,8 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 export class TopicContentComponent implements AfterViewInit, OnDestroy {
   private sanitizer = inject(DomSanitizer);
 
-  topic = input.required<Topic>();
-  tabTablet = input<string>('');
+  topic = model.required<Topic>();
+  tabTablet = model<string>('');
 
   @ViewChild('topicText') topicTextEl?: ElementRef<HTMLElement>;
 

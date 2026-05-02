@@ -17,6 +17,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { SeoService } from '../../../core/services/seo.service';
 
+import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { TopicHeaderComponent } from './components/topic-header/topic-header.component';
 import { TopicContentComponent } from './components/topic-content/topic-content.component';
 import { TopicInfoSidebarComponent } from './components/topic-info-sidebar/topic-info-sidebar.component';
@@ -45,7 +46,8 @@ import { Topic } from '../../../core/interfaces/topic';
     TopicVoteCastComponent,
     TopicMilestonesComponent,
     IconComponent,
-    TourItemDirective
+    TourItemDirective,
+    ActivitiesButtonComponent
   ],
   templateUrl: './topic-view.component.html',
   styleUrls: ['./topic-view.component.scss']

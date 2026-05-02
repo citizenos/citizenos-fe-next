@@ -1,4 +1,4 @@
-import { Component, input, output, signal, computed } from '@angular/core';
+import { Component, input, output, signal, computed, model, effect } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DropdownComponent } from '../dropdown/dropdown.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
@@ -54,7 +54,7 @@ export interface FilterConfig {
                     class="toolbar-search"
                     [placeholder]="searchPlaceholder()"
                     [value]="searchValue()"
-                    (valueChange)="searchChange.emit($event)"
+                    (valueChange)="searchValue.set($event)"
                   ></app-search-input>
                 } @else {
                   <cos-dropdown
@@ -183,14 +183,18 @@ export interface FilterConfig {
   `],
 })
 export class ListFilterToolbarComponent {
-  filters = input<FilterConfig[]>([]);
-  filtersExtra = input<FilterConfig[]>([]);
+  filters = model<FilterConfig[]>([]);
+  filtersExtra = model<FilterConfig[]>([]);
   searchPlaceholder = input<string>('');
-  searchValue = input<string>('');
+  searchValue = model<string>('');
   filterChange = output<{ key: string, value: string }>();
   searchChange = output<string>();
 
   moreFilters = signal(false);
+
+  constructor() {
+    effect(() => this.searchChange.emit(this.searchValue()));
+  }
 
   mainRows = computed(() => {
     const f = this.filters();
@@ -230,6 +234,6 @@ export class ListFilterToolbarComponent {
 
   clearAll() {
     [...this.filters(), ...this.filtersExtra()].forEach(f => this.filterChange.emit({ key: f.key, value: 'all' }));
-    this.searchChange.emit('');
+    this.searchValue.set('');
   }
 }

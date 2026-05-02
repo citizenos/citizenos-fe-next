@@ -11,6 +11,13 @@ import { Component, Input, ComponentRef, NO_ERRORS_SCHEMA } from '@angular/core'
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent {
+  @Input() name = '';
+  @Input() size = 24;
+}
 
 describe('IdeaReplyComponent', () => {
   let mockIdeationService: any;
@@ -37,7 +44,8 @@ describe('IdeaReplyComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         IdeaReplyComponent,
-        TranslateModule.forRoot()
+        TranslateModule.forRoot(),
+        MockIconComponent
       ],
       providers: [
         provideAnimationsAsync(),
@@ -51,6 +59,10 @@ describe('IdeaReplyComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
+    .overrideComponent(IdeaReplyComponent, {
+      remove: { imports: [IconComponent] },
+      add: { imports: [MockIconComponent] }
+    })
     .compileComponents();
   });
 
@@ -59,10 +71,10 @@ describe('IdeaReplyComponent', () => {
     const component = fixture.componentInstance;
     const componentRef = fixture.componentRef;
     
-    componentRef.setInput('argument', inputs.argument || { id: 'arg1', text: 'Test argument', creator: { id: 'user1', name: 'User 1' }, votes: { up: { count: 0 } } });
-    componentRef.setInput('topicId', 'topic1');
-    componentRef.setInput('ideationId', 'ideation1');
-    componentRef.setInput('ideaId', 'idea1');
+    component.argument.set(inputs.argument || { id: 'arg1', text: 'Test argument', creator: { id: 'user1', name: 'User 1' }, votes: { up: { count: 0 } } });
+    component.topicId.set('topic1');
+    component.ideationId.set('ideation1');
+    component.ideaId.set('idea1');
     
     fixture.detectChanges();
     return { fixture, component, componentRef };

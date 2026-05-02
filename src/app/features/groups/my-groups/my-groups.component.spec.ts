@@ -46,7 +46,7 @@ describe('MyGroupsComponent', () => {
 
   it('filterConfigs has all required filter keys', () => {
     const comp = makeComp();
-    const keys = comp.filterConfigs().map(c => c.key);
+    const keys = [...comp.filterConfigs().map(c => c.key), ...comp.filterExtraConfigs().map(c => c.key)];
     expect(keys).toContain('visibility');
     expect(keys).toContain('engagement');
     expect(keys).toContain('orderBy');

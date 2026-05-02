@@ -7,6 +7,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ComponentRef } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { Component, Input } from '@angular/core';
+
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent { @Input() name = ''; @Input() size = 24; }
 
 describe('TopicInfoSidebarComponent', () => {
   let component: TopicInfoSidebarComponent;
@@ -30,36 +35,40 @@ describe('TopicInfoSidebarComponent', () => {
       imports: [
         TopicInfoSidebarComponent,
         TranslateModule.forRoot(),
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        MockIconComponent
       ],
       providers: [
         provideRouter([]),
         { provide: UserStore, useValue: mockUserStore },
         { provide: TopicService, useValue: mockTopicService }
       ]
-    }).compileComponents();
+    })
+    .overrideComponent(TopicInfoSidebarComponent, {
+      remove: { imports: [IconComponent] },
+      add: { imports: [MockIconComponent] }
+    })
+    .compileComponents();
 
     fixture = TestBed.createComponent(TopicInfoSidebarComponent);
-    component = fixture.componentInstance;
+    component = fixture.componentInstance; componentRef = fixture.componentRef;
     componentRef = fixture.componentRef;
     
-    componentRef.setInput('topic', {
-      id: '123',
-      title: 'Topic',
-      visibility: 'public',
-      creator: { name: 'Admin' },
-      createdAt: '2023-01-01T00:00:00Z',
-      country: 'EE',
-      language: 'et',
-      categories: ['environment'],
-      permission: { level: 'admin' },
-      favourite: false,
-      members: { users: { count: 0 } }
+    component.topic.set({
+      id: '123', title: 'Topic', intro: null, description: '', status: 'inProgress',
+      visibility: 'public', hashtag: null, join: { token: '', level: '' },
+      categories: ['environment'], endsAt: null, createdAt: '2023-01-01T00:00:00Z',
+      updatedAt: '', sourcePartnerId: null, sourcePartnerObjectId: null,
+      permission: { level: 'admin' }, creator: { name: 'Admin' }, lastActivity: null,
+      country: 'EE', language: 'et',
+      members: { users: { count: 0 }, groups: { count: 0 } },
+      voteId: null, discussionId: null, comments: null, padUrl: '',
+      imageUrl: null, authors: [], favourite: false
     });
     
-    componentRef.setInput('attachments', []);
-    componentRef.setInput('groups', []);
-    componentRef.setInput('members', []);
+    component.attachments.set([]);
+    component.groups.set([]);
+    component.members.set([]);
     
     fixture.detectChanges();
   });

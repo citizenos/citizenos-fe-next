@@ -6,13 +6,45 @@ import { TopicJoinService } from '../../../../../core/services/topic-join.servic
 import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { of } from 'rxjs';
-import { signal, NO_ERRORS_SCHEMA } from '@angular/core';
+import { signal, NO_ERRORS_SCHEMA, Input, Component, output } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent {
+  @Input() name = '';
+  @Input() size: any;
+}
+
+@Component({ selector: 'cos-button', standalone: true, template: '<button (click)="clicked.emit($event)"><ng-content></ng-content></button>' })
+class MockButtonComponent {
+  @Input() variant = 'primary';
+  @Input() size = 'md';
+  @Input() type = 'button';
+  @Input() icon: any;
+  @Input() isLoading = false;
+  @Input() isDisabled = false;
+  clicked = output<Event>();
+}
+
+@Component({ selector: 'cos-dropdown', standalone: true, template: '<ng-content select="[selection]"></ng-content><ng-content select="[options]"></ng-content>' })
+class MockDropdownComponent {}
+
+@Component({ selector: 'cos-tooltip', standalone: true, template: '<ng-content></ng-content>' })
+class MockTooltipComponent {
+  @Input() text = '';
+  @Input() title = '';
+  @Input() description = '';
+  @Input() pos: any;
+  @Input() noIcon = false;
+}
 
 describe('TopicShareComponent', () => {
   let component: TopicShareComponent;
@@ -32,7 +64,7 @@ describe('TopicShareComponent', () => {
     document.execCommand = vi.fn();
 
     await TestBed.configureTestingModule({
-      imports: [TopicShareComponent, TranslateModule.forRoot(), NoopAnimationsModule],
+      imports: [TopicShareComponent, TranslateModule.forRoot(), NoopAnimationsModule, MockIconComponent, MockButtonComponent, MockDropdownComponent, MockTooltipComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         provideHttpClient(),
@@ -65,12 +97,16 @@ describe('TopicShareComponent', () => {
           }
         }
       ]
-    }).compileComponents();
+    })
+    .overrideComponent(TopicShareComponent, {
+      remove: { imports: [IconComponent, ButtonComponent, DropdownComponent, TooltipComponent] },
+      add: { imports: [MockIconComponent, MockButtonComponent, MockDropdownComponent, MockTooltipComponent] }
+    })
+    .compileComponents();
 
     fixture = TestBed.createComponent(TopicShareComponent);
     component = fixture.componentInstance;
-    // Force set the input signal for testing
-    (component as any).topic = signal(mockTopic);
+    component.topic.set(mockTopic);
     fixture.detectChanges();
   });
 
@@ -93,7 +129,7 @@ describe('TopicShareComponent', () => {
   });
 
   it('should show QR code when generate button is clicked', async () => {
-    const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
+    const buttons = fixture.debugElement.queryAll(By.css('cos-button'));
     let genButton = buttons.find(btn => btn.nativeElement.textContent.includes('QR'));
     
     if (genButton) {
@@ -105,7 +141,7 @@ describe('TopicShareComponent', () => {
 
   it('should copy link when copy button is clicked', () => {
     const spy = vi.spyOn(component, 'copyInviteLink');
-    const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
+    const buttons = fixture.debugElement.queryAll(By.css('cos-button'));
     let copyButton = buttons.find(btn => btn.nativeElement.textContent.includes('COPY'));
 
     if (copyButton) {

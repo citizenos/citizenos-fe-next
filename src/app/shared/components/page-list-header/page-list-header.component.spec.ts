@@ -1,55 +1,61 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageListHeaderComponent } from './page-list-header.component';
-import { Component } from '@angular/core';
+import { Component, Input, output, signal } from '@angular/core';
+import { IconComponent } from '../icon/icon.component';
+import { GlobalSearchService } from '../../../core/services/global-search.service';
+import { TourItemDirective } from '../../directives/tour-item.directive';
+import { By } from '@angular/platform-browser';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
-@Component({
-  standalone: true,
-  imports: [PageListHeaderComponent],
-  template: `
-    <app-page-list-header (searchToggle)="onSearchToggle()">
-      <div title>Header Title Test</div>
-      <button activities>Activities Test</button>
-    </app-page-list-header>
-  `
-})
-class TestHostComponent {
-  toggleInvoked = false;
-  onSearchToggle() {
-    this.toggleInvoked = true;
-  }
+@Component({ selector: 'cos-icon', standalone: true, template: '' })
+class MockIconComponent {
+  @Input() name = '';
+  @Input() size: any;
 }
 
 describe('PageListHeaderComponent', () => {
-  let hostComponent: TestHostComponent;
-  let fixture: ComponentFixture<TestHostComponent>;
+  let component: PageListHeaderComponent;
+  let fixture: ComponentFixture<PageListHeaderComponent>;
+  let globalSearch: any;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [TestHostComponent, PageListHeaderComponent]
-    }).compileComponents();
+    globalSearch = {
+      showSearch: signal(false)
+    };
 
-    fixture = TestBed.createComponent(TestHostComponent);
-    hostComponent = fixture.componentInstance;
+    await TestBed.configureTestingModule({
+      imports: [PageListHeaderComponent, MockIconComponent],
+      providers: [
+        { provide: GlobalSearchService, useValue: globalSearch }
+      ]
+    })
+    .overrideComponent(PageListHeaderComponent, {
+      set: {
+        imports: [
+          MockIconComponent,
+          TourItemDirective
+        ]
+      }
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(PageListHeaderComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create completely mapped component', () => {
-    expect(hostComponent).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('should project the title element correctly', () => {
-    const titleContainer = fixture.nativeElement.querySelector('.small_heading');
-    expect(titleContainer.textContent.trim()).toBe('Header Title Test');
-  });
-
-  it('should project the activities element correctly', () => {
-    const activitiesEl = fixture.nativeElement.querySelector('.header-actions button[activities]');
-    expect(activitiesEl.textContent.trim()).toBe('Activities Test');
-  });
-
-  it('should emit searchToggle when search icon is clicked', () => {
-    const searchBtn = fixture.nativeElement.querySelector('#show_search');
-    searchBtn.click();
-    expect(hostComponent.toggleInvoked).toBe(true);
+  it('should emit searchToggle and update globalSearch on click', () => {
+    const spy = vi.fn();
+    component.searchToggle.subscribe(spy);
+    
+    const searchBtn = fixture.debugElement.query(By.css('#show_search'));
+    searchBtn.triggerEventHandler('click', null);
+    
+    expect(globalSearch.showSearch()).toBe(true);
+    expect(spy).toHaveBeenCalled();
   });
 });

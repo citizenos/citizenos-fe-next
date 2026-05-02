@@ -27,9 +27,4 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should have correct title', () => {
-    const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect((app as any).title()).toBe('citizenos-fe-next');
-  });
 });

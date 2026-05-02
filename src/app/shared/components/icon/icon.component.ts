@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, model, input } from '@angular/core';
 import { IconName, IconRegistryService } from './icon.registry';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -34,8 +34,8 @@ export class IconComponent {
   private registry = inject(IconRegistryService);
   private sanitizer = inject(DomSanitizer);
 
-  name = input<IconName>();
-  size = input<string | number>(24);
+  name = model.required<IconName>();
+  size = model<string | number>(24);
   color = input<string>();
 
   widthAttr = computed(() => typeof this.size() === 'number' ? this.size() : null);

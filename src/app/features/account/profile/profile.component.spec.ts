@@ -25,7 +25,7 @@ class MockTermsLinksComponent {}
 class MockToggleComponent { @Input() model = false; @Input() textOn = ''; @Input() textOff = ''; @Output() toggleClick = new EventEmitter<boolean>(); }
 
 @Component({ selector: 'cos-dropdown', standalone: true, template: '<ng-content select="[selection]"></ng-content><ng-content select="[options]"></ng-content>' })
-class MockDropdownComponent {}
+class MockDropdownComponent { @Input() placeholder = ''; }
 
 @Component({ selector: 'cos-input', standalone: true, template: '<ng-content></ng-content>' })
 class MockInputComponent { @Input() placeholder = ''; @Input() hasError = false; }

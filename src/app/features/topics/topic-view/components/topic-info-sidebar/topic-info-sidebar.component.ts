@@ -1,4 +1,4 @@
-import { Component, input, output, inject, ChangeDetectionStrategy, computed } from '@angular/core';
+import { Component, input, output, inject, ChangeDetectionStrategy, computed, model } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -37,12 +37,12 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
   ]
 })
 export class TopicInfoSidebarComponent {
-  topic = input.required<Topic>();
-  attachments = input<any[]>([]);
-  groups = input<any[]>([]);
-  members = input<any[]>([]);
+  topic = model.required<Topic>();
+  attachments = model<any[]>([]);
+  groups = model<any[]>([]);
+  members = model<any[]>([]);
 
-  appTopicNotificationSettings = input<() => void>();
+  appTopicNotificationSettings = model<() => void>();
 
   toggleFavourite = output<Topic>();
   leaveTopic = output<Topic>();

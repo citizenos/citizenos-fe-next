@@ -1,4 +1,4 @@
-import { Component, input, output, computed, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, input, output, computed, ChangeDetectionStrategy, ViewEncapsulation, model } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -81,8 +81,8 @@ import { TranslateModule } from '@ngx-translate/core';
   `]
 })
 export class PaginationComponent {
-  totalPages = input<number>(0);
-  page = input<number>(1);
+  totalPages = model<number>(0);
+  page = model<number>(1);
 
   select = output<number>();
 

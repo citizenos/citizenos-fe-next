@@ -49,29 +49,29 @@ describe('TopicSettingsPanelComponent', () => {
   });
 
   it('should create', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('groups', []);
+    component.topic.set(mockTopic);
+    component.groups.set([]);
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('should initialize with topic visibility', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('groups', []);
+    component.topic.set(mockTopic);
+    component.groups.set([]);
     fixture.detectChanges();
     expect(component.visibility()).toBe('private');
   });
 
   it('should initialize with topic categories', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('groups', []);
+    component.topic.set(mockTopic);
+    component.groups.set([]);
     fixture.detectChanges();
     expect(component.categories()).toEqual(['education']);
   });
 
   it('should emit visibilityChange on setVisibility', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('groups', []);
+    component.topic.set(mockTopic);
+    component.groups.set([]);
     fixture.detectChanges();
     const emitSpy = vi.spyOn(component.visibilityChange, 'emit');
     component.setVisibility('public');
@@ -80,8 +80,8 @@ describe('TopicSettingsPanelComponent', () => {
   });
 
   it('should toggle category', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('groups', []);
+    component.topic.set(mockTopic);
+    component.groups.set([]);
     fixture.detectChanges();
     const emitSpy = vi.spyOn(component.categoriesChange, 'emit');
     component.toggleCategory('health');
@@ -90,16 +90,16 @@ describe('TopicSettingsPanelComponent', () => {
   });
 
   it('should remove existing category on toggle', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('groups', []);
+    component.topic.set(mockTopic);
+    component.groups.set([]);
     fixture.detectChanges();
     component.toggleCategory('education');
     expect(component.categories()).not.toContain('education');
   });
 
   it('should not exceed max categories', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('groups', []);
+    component.topic.set(mockTopic);
+    component.groups.set([]);
     fixture.detectChanges();
     component.categories.set(['a', 'b', 'c']);
     component.toggleCategory('d');
@@ -107,8 +107,8 @@ describe('TopicSettingsPanelComponent', () => {
   });
 
   it('should emit countryChange', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('groups', []);
+    component.topic.set(mockTopic);
+    component.groups.set([]);
     fixture.detectChanges();
     const emitSpy = vi.spyOn(component.countryChange, 'emit');
     component.onCountryChange('Estonia');
@@ -117,8 +117,8 @@ describe('TopicSettingsPanelComponent', () => {
   });
 
   it('should add and remove groups', () => {
-    ref.setInput('topic', mockTopic);
-    ref.setInput('groups', []);
+    component.topic.set(mockTopic);
+    component.groups.set([]);
     fixture.detectChanges();
     const group = { id: 'g1', name: 'Group 1' } as any;
     component.addGroup(group);
