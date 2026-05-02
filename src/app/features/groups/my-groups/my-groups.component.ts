@@ -169,7 +169,7 @@ export class MyGroupsComponent {
   private seoService = inject(SeoService);
 
   constructor() {
-    this.seoService.setPageTitle('NAV_MY_GROUPS');
+    this.seoService.setPageTitle('VIEWS.MY_GROUPS.HEADER');
   }
 
   get userLang() { return this.translate.currentLang; }

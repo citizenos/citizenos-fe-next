@@ -92,7 +92,7 @@ export class MyTopicsComponent {
   private seoService = inject(SeoService);
 
   constructor() {
-    this.seoService.setPageTitle('NAV_MY_TOPICS');
+    this.seoService.setPageTitle('VIEWS.MY_TOPICS.HEADER');
   }
 
   searchValue = signal('');

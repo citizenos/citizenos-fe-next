@@ -87,7 +87,7 @@ export class ProfileComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.seoService.setPageTitle('NAV_PROFILE');
+    this.seoService.setPageTitle('VIEWS.ACCOUNT.HEADING');
     // Initialize form with user data
     const user = this.store.user();
     if (user) {

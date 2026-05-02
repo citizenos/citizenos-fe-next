@@ -40,8 +40,11 @@ export class DashboardComponent implements OnInit {
 
   readonly showCreate = signal(false);
 
+  constructor() {
+    this.seoService.setPageTitle('DEFAULT.NAV.LNK_DASHBOARD');
+  }
+
   ngOnInit() {
-    this.seoService.setPageTitle('NAV_DASHBOARD');
     if (!localStorage.getItem('show-dashboard-tour')) {
       this.uiState.showOnboarding.set(true);
       localStorage.setItem('show-dashboard-tour', 'true');

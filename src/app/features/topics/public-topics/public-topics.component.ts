@@ -89,7 +89,7 @@ export class PublicTopicsComponent {
   private seoService = inject(SeoService);
 
   constructor() {
-    this.seoService.setPageTitle('NAV_PUBLIC_TOPICS');
+    this.seoService.setPageTitle('COMPONENTS.PUBLIC_TOPICS.HEADER');
   }
 
   searchValue = signal('');

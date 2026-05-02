@@ -96,7 +96,7 @@ export class PublicGroupsComponent {
   private seoService = inject(SeoService);
 
   constructor() {
-    this.seoService.setPageTitle('NAV_PUBLIC_GROUPS');
+    this.seoService.setPageTitle('VIEWS.PUBLIC_GROUPS.TITLE');
   }
 
   isAuthenticated = this.userStore.isAuthenticated;
