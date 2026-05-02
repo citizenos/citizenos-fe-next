@@ -69,6 +69,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
 
   topic = signal<Topic | null>(null);
   loading = signal(true);
+  hideTopicContent = signal(false);
   ideation = signal<any>(null);
   vote = signal<any>(null);
   eventsCount = signal<number>(0);
@@ -113,6 +114,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
           return this.topicService.loadTopic(topicId).pipe(
             tap((topic: any) => {
               this.topic.set(topic);
+              this.hideTopicContent.set(!!topic.report?.moderatedReasonType);
               this.seoService.setPageTitle(topic.title);
               this.loadRelatedData(topic);
               this.loading.set(false);

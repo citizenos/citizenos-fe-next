@@ -19,10 +19,72 @@
     <div class="content_area_wrap">
 
       <div class="content_area_left">
-        <app-topic-content
-          [cosTourItem]="{ tourid: 'topic', index: 3, position: 'top' }"
-          [topic]="topic()!"
-          [tabTablet]="tabTablet()" />
+        @if (topic()?.report && ((topic()?.report?.type && !topic()?.report?.moderatedReasonType) || topic()?.report?.type || (topicService.canEdit(topic()!) && topic()?.report?.moderatedReasonType))) {
+          <div class="notification_inline warning">
+            <div class="icon_notification">
+              <cos-icon name="warning" [size]="24" color="white"></cos-icon>
+            </div>
+            <div class="message">
+              <div class="title" translate="VIEWS.TOPICS_TOPICID.HEADING_REPORTED"></div>
+              <div class="content">
+                <div class="content_description" [translate]="topicService.canEdit(topic()!) ? 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED_ADMIN' : 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED'"></div>
+                <div class="content_items_wrap">
+                  @if (topic()?.report?.type && !topic()?.report?.moderatedReasonType) {
+                    <div class="content_item">
+                      <a (click)="moderateTopic(topic()!)">
+                        <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
+                        <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_MODERATE"></span>
+                      </a>
+                    </div>
+                  }
+                  <div class="content_item">
+                    <a (click)="reportReasonDialog(topic()!)">
+                      <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
+                      <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_VIEW_REPORT_DETAILS"></span>
+                    </a>
+                  </div>
+                  @if (topic()?.report?.type) {
+                    <div class="content_item">
+                      <a (click)="resolveTopic(topic()!)">
+                        <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
+                        <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_RESOLVE"></span>
+                      </a>
+                    </div>
+                  }
+                  @if (topicService.canEdit(topic()!) && topic()?.report?.moderatedReasonType) {
+                    <div class="content_item">
+                      <a (click)="reviewTopic(topic()!)">
+                        <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
+                        <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_SUBMIT_FOR_REVIEW"></span>
+                      </a>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+        <div class="topic_content_wrap_outer" [class.reported]="hideTopicContent()">
+          @if (hideTopicContent()) {
+            <div class="moderated_topic">
+              <div class="notification">
+                <div>
+                  <cos-icon name="warning" [size]="40" color="#F39129"></cos-icon>
+                </div>
+                <div class="notification_title" translate="COMPONENTS.TOPICBOX.NOTIFICATION_TITLE"></div>
+                <div class="notification_links">
+                  <a (click)="reportReasonDialog(topic()!)">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_LNK_WHY' | translate }}</a>
+                  <a (click)="hideTopicContent.set(false)">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_LNK_VIEW' | translate }}</a>
+                </div>
+              </div>
+            </div>
+          }
+          <app-topic-content
+            [cosTourItem]="{ tourid: 'topic', index: 3, position: 'top' }"
+            [topic]="topic()!"
+            [tabTablet]="tabTablet()" />
+        </div>
 
         <!-- Mobile/Tablet Tabs -->
         @if (wWidth() <= 1024) {

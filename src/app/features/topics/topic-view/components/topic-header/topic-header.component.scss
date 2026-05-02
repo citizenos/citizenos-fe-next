@@ -24,8 +24,9 @@
     }
   }
 
-  activities-button {
-    display: none;
+  cos-activities-button {
+    display: flex;
+    align-items: center;
   }
 
   #user_info_area {
@@ -129,7 +130,7 @@
       }
     }
 
-    activities-button {
+    cos-activities-button {
       display: flex;
     }
 

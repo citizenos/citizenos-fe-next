@@ -18,6 +18,15 @@ import { TopicIdeationService } from '../../../core/services/topic-ideation.serv
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { TopicEventService } from '../../../core/services/topic-event.service';
 import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
+import { TopicHeaderComponent } from './components/topic-header/topic-header.component';
+import { TopicContentComponent } from './components/topic-content/topic-content.component';
+import { TopicInfoSidebarComponent } from './components/topic-info-sidebar/topic-info-sidebar.component';
+import { TopicStateItemsComponent } from './components/topic-state-items/topic-state-items.component';
+import { TopicIdeationComponent } from './components/topic-ideation/topic-ideation.component';
+import { TopicDiscussionComponent } from './components/topic-discussion/topic-discussion.component';
+import { TopicVoteCastComponent } from './components/topic-vote-cast/topic-vote-cast.component';
+import { TopicMilestonesComponent } from './components/topic-milestones/topic-milestones.component';
+import { Topic } from '../../../core/interfaces/topic';
 
 describe('TopicViewComponent', () => {
   let component: TopicViewComponent;
@@ -103,6 +112,22 @@ describe('TopicViewComponent', () => {
         { provide: TopicEventService, useValue: mockTopicEventService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
+    }).overrideComponent(TopicViewComponent, {
+      add: {
+        schemas: [NO_ERRORS_SCHEMA]
+      },
+      remove: {
+        imports: [
+          TopicHeaderComponent,
+          TopicContentComponent,
+          TopicInfoSidebarComponent,
+          TopicStateItemsComponent,
+          TopicIdeationComponent,
+          TopicDiscussionComponent,
+          TopicVoteCastComponent,
+          TopicMilestonesComponent
+        ]
+      }
     }).compileComponents();
 
     fixture = TestBed.createComponent(TopicViewComponent);

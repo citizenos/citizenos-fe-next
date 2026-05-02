@@ -108,19 +108,19 @@
     </div>
     
     <div class="info_item">
-      <cos-icon name="user" size="16"></cos-icon>
+      <cos-icon name="creator-legacy" size="16"></cos-icon>
       <span>{{ topic().creator.name }}</span>
     </div>
     <div class="info_item">
-      <cos-icon name="calendar" size="16"></cos-icon>
+      <cos-icon name="calendar-legacy" size="16"></cos-icon>
       <span>{{ topic().createdAt | date : "y-MM-dd HH:mm" }}</span>
     </div>
     <div class="info_item">
-      <cos-icon name="globe" size="16"></cos-icon>
+      <cos-icon name="location-legacy" size="16"></cos-icon>
       <span>{{ topic().country || ("VIEWS.TOPICS_TOPICID.SECTION_INFO_LBL_COUNTRY_NOT_SPECIFIED" | translate) }}</span>
     </div>
     <div class="info_item">
-      <cos-icon name="translation" size="16"></cos-icon>
+      <cos-icon name="language-legacy" size="16"></cos-icon>
       <span>{{ topic().language || ("VIEWS.TOPICS_TOPICID.SECTION_INFO_LBL_LANGUAGE_NOT_SPECIFIED" | translate) }}</span>
     </div>
   </div>
