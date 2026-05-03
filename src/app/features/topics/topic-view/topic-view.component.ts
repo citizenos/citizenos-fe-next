@@ -16,6 +16,7 @@ import { DialogService } from '../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { SeoService } from '../../../core/services/seo.service';
+import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
 
 import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { TopicHeaderComponent } from './components/topic-header/topic-header.component';
@@ -48,6 +49,7 @@ import { Topic } from '../../../core/interfaces/topic';
     TopicVoteCastComponent,
     TopicMilestonesComponent,
     IconComponent,
+    DomainIconComponent,
     TourItemDirective,
     ActivitiesButtonComponent
   ],
@@ -88,7 +90,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
 
   wWidth = signal<number>(isPlatformBrowser(this.platformId) ? window.innerWidth : 1280);
 
-  navigation = signal<{title: string, link: any[]}>({
+  navigation = signal<{ title: string, link: any[] }>({
     title: 'DEFAULT.NAV.HEADING_TOPICS',
     link: ['/']
   });
@@ -122,7 +124,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
               this.seoService.setPageTitle(topic.title);
               this.loadRelatedData(topic);
               this.loading.set(false);
-              
+
               const fragment = this.route.snapshot.fragment;
               if (fragment) {
                 this.selectTab(fragment);
@@ -173,7 +175,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (res: any) => this.eventsCount.set(res.count || 0),
-          error: () => {}
+          error: () => { }
         });
     }
 
@@ -184,21 +186,21 @@ export class TopicViewComponent implements OnInit, OnDestroy {
           this.groups.set(groups);
           this.updateNavigation(topic, groups);
         },
-        error: () => {}
+        error: () => { }
       });
 
     this.topicService.loadAttachments(topic.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (attachments: any[]) => this.attachments.set(attachments),
-        error: () => {}
+        error: () => { }
       });
 
     this.topicMemberUserService.loadItems(topic.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (members: any[]) => this.members.set(members),
-        error: () => {}
+        error: () => { }
       });
   }
 

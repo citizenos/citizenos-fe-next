@@ -1,267 +1,273 @@
 @if (loading()) {
-  <div class="topic_loading">
-    <cos-icon name="spinner" [size]="48" class="spin"></cos-icon>
-  </div>
+<div class="topic_loading">
+  <cos-icon name="spinner" [size]="48" class="spin"></cos-icon>
+</div>
 } @else if (topic()) {
 <div id="topic_wrap_root">
   <div id="topic_view" class="page_content">
 
     <app-topic-header [topic]="topic()!" [navigation]="navigation()" [wWidth]="wWidth()"
-      [cosTourItem]="{ tourid: 'topic', index: 1, position: 'bottom' }"
-      (joinTopic)="joinTopic($event)" (toggleFavourite)="toggleFavourite($event)" (leaveTopic)="leaveTopic($event)"
+      [cosTourItem]="{ tourid: 'topic', index: 1, position: 'bottom' }" (joinTopic)="joinTopic($event)"
+      (toggleFavourite)="toggleFavourite($event)" (leaveTopic)="leaveTopic($event)"
       (inviteEditors)="inviteEditors($event)" (duplicateTopic)="duplicateTopic($event)"
-      (addGroupsDialog)="addGroupsDialog($event)" (reportTopic)="reportTopic($event)" (reportReasonDialog)="reportReasonDialog($event)"
-      (moderateTopic)="moderateTopic($event)" (reviewTopic)="reviewTopic($event)" (resolveTopic)="resolveTopic($event)"
-      (closeTopic)="closeTopic($event)" (deleteTopic)="deleteTopic($event)" (openSettings)="openSettings($event)"
+      (addGroupsDialog)="addGroupsDialog($event)" (reportTopic)="reportTopic($event)"
+      (reportReasonDialog)="reportReasonDialog($event)" (moderateTopic)="moderateTopic($event)"
+      (reviewTopic)="reviewTopic($event)" (resolveTopic)="resolveTopic($event)" (closeTopic)="closeTopic($event)"
+      (deleteTopic)="deleteTopic($event)" (openSettings)="openSettings($event)"
       [appTopicNotificationSettings]="appTopicNotificationSettings">
     </app-topic-header>
 
-    <div class="content_area_wrap">
+    <!-- Mobile/Tablet Tabs -->
+    @if (wWidth() <= 1024) { <div id="tabs_tablet" class="topic_tabs tablet tabs_wrap tablet_show">
+      <a class="topic_tab" (click)="tabTablet.set('')" [class.active]="!tabTablet()">
+        <cos-domain-icon type="topic" [size]="32" />
+      </a>
+      <a class="topic_tab discussion" (click)="tabTablet.set('discussion')"
+        [class.active]="tabTablet() === 'discussion'"
+        [class.disabled]="topic()?.status === 'draft' || topic()?.status === 'inProgress'">
+        <cos-domain-icon type="topic" [size]="32" />
+      </a>
+  </div>
+  }
 
-      <div class="content_area_left">
-        @if (topic()?.report && ((topic()?.report?.type && !topic()?.report?.moderatedReasonType) || topic()?.report?.type || (topicService.canEdit(topic()!) && topic()?.report?.moderatedReasonType))) {
-          <div class="notification_inline warning">
-            <div class="icon_notification">
-              <cos-icon name="warning" [size]="24" color="white"></cos-icon>
-            </div>
-            <div class="message">
-              <div class="title" translate="VIEWS.TOPICS_TOPICID.HEADING_REPORTED"></div>
-              <div class="content">
-                <div class="content_description" [translate]="topicService.canEdit(topic()!) ? 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED_ADMIN' : 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED'"></div>
-                <div class="content_items_wrap">
-                  @if (topic()?.report?.type && !topic()?.report?.moderatedReasonType) {
-                    <div class="content_item">
-                      <a (click)="moderateTopic(topic()!)">
-                        <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
-                        <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_MODERATE"></span>
-                      </a>
-                    </div>
-                  }
-                  <div class="content_item">
-                    <a (click)="reportReasonDialog(topic()!)">
-                      <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
-                      <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_VIEW_REPORT_DETAILS"></span>
-                    </a>
-                  </div>
-                  @if (topic()?.report?.type) {
-                    <div class="content_item">
-                      <a (click)="resolveTopic(topic()!)">
-                        <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
-                        <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_RESOLVE"></span>
-                      </a>
-                    </div>
-                  }
-                  @if (topicService.canEdit(topic()!) && topic()?.report?.moderatedReasonType) {
-                    <div class="content_item">
-                      <a (click)="reviewTopic(topic()!)">
-                        <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
-                        <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_SUBMIT_FOR_REVIEW"></span>
-                      </a>
-                    </div>
-                  }
-                </div>
-              </div>
-            </div>
-          </div>
-        }
+  <!-- Desktop Tabs -->
+  <div class="topic_tabs mobile_hidden">
+    @if (topic()?.ideationId || topic()?.status === STATUSES.ideation) {
+    <a class="topic_tab ideation" (click)="selectTab('ideation')" [class.active]="tabSelected() === 'ideation'">
+      <cos-domain-icon type="ideation" [size]="32" />
+      <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_IDEATION"></span>
+    </a>
+    }
+    <a class="topic_tab discussion" (click)="selectTab('discussion')"
+      [class.active]="tabSelected() === 'discussion' || !tabSelected()">
+      <cos-domain-icon type="topic" [size]="32" />
+      <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_DISCUSSION"></span>
+    </a>
+    @if (topic()?.voteId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress,
+    STATUSES.voting].includes(topic()?.status || '')) {
+    <a class="topic_tab voting" (click)="selectTab('voting')" [class.active]="tabSelected() === 'voting'">
+      <cos-domain-icon type="vote" [size]="32" />
+      <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_VOTING"></span>
+    </a>
+    }
+    <a class="topic_tab follow_up" (click)="selectTab('followUp')" [class.active]="tabSelected() === 'followUp'">
+      <cos-domain-icon type="follow-up" [size]="32" />
+      <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_FOLLOW_UP"></span>
+    </a>
+    <div id="activities_button_wrap">
+      <cos-activities-button [topicId]="topic()!.id"></cos-activities-button>
+    </div>
+  </div>
 
-        <div class="topic_content_wrap_outer" [class.reported]="hideTopicContent()">
-          @if (hideTopicContent()) {
-            <div class="moderated_topic">
-              <div class="notification">
-                <div>
-                  <cos-icon name="warning" [size]="40" color="#F39129"></cos-icon>
-                </div>
-                <div class="notification_title" translate="COMPONENTS.TOPICBOX.NOTIFICATION_TITLE"></div>
-                <div class="notification_links">
-                  <a (click)="reportReasonDialog(topic()!)">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_LNK_WHY' | translate }}</a>
-                  <a (click)="hideTopicContent.set(false)">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_LNK_VIEW' | translate }}</a>
-                </div>
-              </div>
-            </div>
-          }
-          <app-topic-content
-            [cosTourItem]="{ tourid: 'topic', index: 3, position: 'top' }"
-            [topic]="topic()!"
-            [tabTablet]="tabTablet()" />
+  <div class="content_area_wrap">
+
+    <div class="content_area_left">
+      @if (topic()?.report && ((topic()?.report?.type && !topic()?.report?.moderatedReasonType) || topic()?.report?.type
+      || (topicService.canEdit(topic()!) && topic()?.report?.moderatedReasonType))) {
+      <div class="notification_inline warning">
+        <div class="icon_notification">
+          <cos-icon name="warning" [size]="24" color="white"></cos-icon>
         </div>
-
-        <!-- Mobile/Tablet Tabs -->
-        @if (wWidth() <= 1024) {
-          <div id="tabs_tablet" class="topic_tabs tablet tabs_wrap tablet_show">
-            <a class="topic_tab" (click)="tabTablet.set('')" [class.active]="!tabTablet()">
-              <cos-icon name="topic" [size]="32"></cos-icon>
-            </a>
-            <a class="topic_tab discussion" (click)="tabTablet.set('discussion')" [class.active]="tabTablet() === 'discussion'" [class.disabled]="topic()?.status === 'draft' || topic()?.status === 'inProgress'">
-              <cos-icon name="comment" [size]="32"></cos-icon>
-            </a>
-          </div>
-        }
-
-        <!-- Desktop Tabs -->
-        <div class="topic_tabs mobile_hidden">
-          @if (topic()?.ideationId || topic()?.status === STATUSES.ideation) {
-            <a class="topic_tab ideation" (click)="selectTab('ideation')" [class.active]="tabSelected() === 'ideation'">
-              <cos-icon name="idea" size="20"></cos-icon>
-              <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_IDEATION"></span>
-            </a>
-          }
-          <a class="topic_tab discussion" (click)="selectTab('discussion')" [class.active]="tabSelected() === 'discussion' || !tabSelected()">
-            <cos-icon name="comment" size="20"></cos-icon>
-            <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_DISCUSSION"></span>
-          </a>
-          @if (topic()?.voteId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress, STATUSES.voting].includes(topic()?.status || '')) {
-            <a class="topic_tab voting" (click)="selectTab('voting')" [class.active]="tabSelected() === 'voting'">
-              <cos-icon name="check-box" size="20"></cos-icon>
-              <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_VOTING"></span>
-            </a>
-          }
-          @if (topic()?.status === STATUSES.followUp || topic()?.status === STATUSES.closed) {
-            <a class="topic_tab follow_up" (click)="selectTab('followUp')" [class.active]="tabSelected() === 'followUp'">
-              <cos-icon name="arrow-next" size="20"></cos-icon>
-              <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_ACTION"></span>
-            </a>
-          }
-          <div id="activities_button_wrap">
-            <cos-activities-button [topicId]="topic()!.id"></cos-activities-button>
+        <div class="message">
+          <div class="title" translate="VIEWS.TOPICS_TOPICID.HEADING_REPORTED"></div>
+          <div class="content">
+            <div class="content_description"
+              [translate]="topicService.canEdit(topic()!) ? 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED_ADMIN' : 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED'">
+            </div>
+            <div class="content_items_wrap">
+              @if (topic()?.report?.type && !topic()?.report?.moderatedReasonType) {
+              <div class="content_item">
+                <a (click)="moderateTopic(topic()!)">
+                  <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
+                  <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_MODERATE"></span>
+                </a>
+              </div>
+              }
+              <div class="content_item">
+                <a (click)="reportReasonDialog(topic()!)">
+                  <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
+                  <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_VIEW_REPORT_DETAILS"></span>
+                </a>
+              </div>
+              @if (topic()?.report?.type) {
+              <div class="content_item">
+                <a (click)="resolveTopic(topic()!)">
+                  <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
+                  <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_RESOLVE"></span>
+                </a>
+              </div>
+              }
+              @if (topicService.canEdit(topic()!) && topic()?.report?.moderatedReasonType) {
+              <div class="content_item">
+                <a (click)="reviewTopic(topic()!)">
+                  <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
+                  <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_SUBMIT_FOR_REVIEW"></span>
+                </a>
+              </div>
+              }
+            </div>
           </div>
         </div>
+      </div>
+      }
 
-        <!-- Discussion tab -->
-        @if (!tabSelected() || tabSelected() === 'discussion') {
-          <div [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'discussion' }" [cosTourItem]="{ tourid: 'topic', index: 7, position: 'top' }">
-            <cos-topic-discussion [topic]="topic()!"></cos-topic-discussion>
+      <div class="topic_content_wrap_outer" [class.reported]="hideTopicContent()">
+        @if (hideTopicContent()) {
+        <div class="moderated_topic">
+          <div class="notification">
+            <div>
+              <cos-icon name="warning" [size]="40" color="#F39129"></cos-icon>
+            </div>
+            <div class="notification_title" translate="COMPONENTS.TOPICBOX.NOTIFICATION_TITLE"></div>
+            <div class="notification_links">
+              <a (click)="reportReasonDialog(topic()!)">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_LNK_WHY' | translate }}</a>
+              <a (click)="hideTopicContent.set(false)">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_LNK_VIEW' | translate }}</a>
+            </div>
           </div>
+        </div>
         }
-
-        <!-- Ideation tab -->
-        @if (tabSelected() === 'ideation' && ideation()) {
-          <div [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'ideation' }" [cosTourItem]="{ tourid: 'topic', index: 7, position: 'top' }">
-            <app-topic-ideation [topic]="topic()!" [ideation]="ideation()!" />
-          </div>
-        }
-
-        <!-- Voting tab -->
-        @if (tabSelected() === 'voting') {
-          <div class="vote_wrap" [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'voting' }">
-            @if (!topic()?.voteId) {
-              <div class="topic_feature_section voting">
-                <div class="no_feature_yet">
-                  <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip_voting)">
-                      <rect width="96" height="96" rx="48" fill="white"/>
-                      <path d="M60.4741 84.8165L33.9747 87.5576L34.5735 98.5014L60.4741 98.5014L60.4741 84.8165Z" fill="#5C9CD0"/>
-                      <path d="M39.426 73.0151C39.5735 75.6403 39.847 80 39.847 80L55.7464 78.1781C55.7464 78.1781 55.0377 71.6809 57.1247 69.2952C57.4164 68.9617 57.734 68.6141 58.0625 68.2546C60.0836 66.0426 62.5181 63.3781 61.9031 60.7461C61.188 57.6862 55.7332 56.5701 55.7332 56.5701L57.5454 38.1548C57.6222 37.3983 57.3872 36.6431 56.8917 36.0541C56.3963 35.4651 55.6807 35.0903 54.9013 35.0116C54.1676 34.9469 53.4359 35.1552 52.8545 35.5942C52.2731 36.0332 51.8854 36.6701 51.7698 37.3759L49.9372 47.3073C49.9372 47.3073 49.2501 44.0056 47.2133 43.8671C45.1764 43.7286 43.9381 45.5234 43.5256 47.9962C42.9343 46.6963 41.9339 46.17 40.9594 46.4954L40.8798 46.2683C40.8798 46.2683 40.8724 46.3611 40.8593 46.5318C39.8666 46.9164 38.7753 47.761 38.8743 50.475C37.9455 49.4105 37.0625 48.7395 36.1955 48.9294L36.1113 48.687C36.1113 48.687 36.1102 48.7806 36.1087 48.9513C35.9414 48.9992 35.7747 49.0798 35.6083 49.1965C34.5519 49.9373 33.9007 53.5686 34.0124 55.5409C34.0291 55.8357 34.0298 56.2681 34.0307 56.79C34.0356 59.7597 34.0454 65.6267 37.0307 65.5227C37.1332 65.8435 37.3363 66.3302 37.5829 66.9211C38.2775 68.5858 39.3171 71.0776 39.426 73.0151Z" fill="#F8E1B8"/>
-                    </g>
-                    <defs><clipPath id="clip_voting"><rect width="96" height="96" rx="48" fill="white"/></clipPath></defs>
-                  </svg>
-                  <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_VOTING_HEADING"></div>
-                  @if (topicService.canDelete(topic()!) && topic()?.status !== STATUSES.followUp && topic()?.status !== STATUSES.closed) {
-                    <div class="button">
-                      <button class="btn_medium_submit animate" (click)="startVote(topic()!)">
-                        <cos-icon name="plus" [size]="20"></cos-icon>
-                        <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_BTN_ADD"></span>
-                      </button>
-                    </div>
-                  }
-                  <div class="no_feature_description">
-                    <div class="description_text">
-                      <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_HEADING"></div>
-                      <div>
-                        <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_BEFORE"></span><br/><br/>
-                        <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_AFTER"></span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            }
-            @if (topic()?.voteId && vote()) {
-              <app-topic-vote-cast [topic]="topic()!" [vote]="vote()!" [cosTourItem]="{ tourid: 'topic', index: 7, position: 'top' }" />
-            }
-          </div>
-        }
-
-        <!-- Follow-up tab -->
-        @if (tabSelected() === 'followUp') {
-          <div class="follow_up_wrap" [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'followUp' }">
-            @if (eventsCount() === 0 && (!topicService.canUpdate(topic()!) || topic()?.status !== STATUSES.followUp)) {
-              <div class="topic_feature_section follow_up">
-                <div class="no_feature_yet">
-                  <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip_followup)">
-                      <rect width="96" height="96" rx="48" fill="white"/>
-                      <path d="M60.4741 84.8165L33.9747 87.5576L34.5735 98.5014L60.4741 98.5014L60.4741 84.8165Z" fill="#5C9CD0"/>
-                      <path d="M39.426 73.0151C39.5735 75.6403 39.847 80 39.847 80L55.7464 78.1781C55.7464 78.1781 55.0377 71.6809 57.1247 69.2952C57.4164 68.9617 57.734 68.6141 58.0625 68.2546C60.0836 66.0426 62.5181 63.3781 61.9031 60.7461C61.188 57.6862 55.7332 56.5701 55.7332 56.5701L57.5454 38.1548C57.6222 37.3983 57.3872 36.6431 56.8917 36.0541C56.3963 35.4651 55.6807 35.0903 54.9013 35.0116C54.1676 34.9469 53.4359 35.1552 52.8545 35.5942C52.2731 36.0332 51.8854 36.6701 51.7698 37.3759L49.9372 47.3073C49.9372 47.3073 49.2501 44.0056 47.2133 43.8671C45.1764 43.7286 43.9381 45.5234 43.5256 47.9962C42.9343 46.6963 41.9339 46.17 40.9594 46.4954L40.8798 46.2683C40.8798 46.2683 40.8724 46.3611 40.8593 46.5318C39.8666 46.9164 38.7753 47.761 38.8743 50.475C37.9455 49.4105 37.0625 48.7395 36.1955 48.9294L36.1113 48.687C36.1113 48.687 36.1102 48.7806 36.1087 48.9513C35.9414 48.9992 35.7747 49.0798 35.6083 49.1965C34.5519 49.9373 33.9007 53.5686 34.0124 55.5409C34.0291 55.8357 34.0298 56.2681 34.0307 56.79C34.0356 59.7597 34.0454 65.6267 37.0307 65.5227C37.1332 65.8435 37.3363 66.3302 37.5829 66.9211C38.2775 68.5858 39.3171 71.0776 39.426 73.0151Z" fill="#F8E1B8"/>
-                    </g>
-                    <defs><clipPath id="clip_followup"><rect width="96" height="96" rx="48" fill="white"/></clipPath></defs>
-                  </svg>
-                  <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_UP_HEADING"></div>
-                  @if (topicService.canDelete(topic()!) && topic()?.status !== STATUSES.closed) {
-                    <div class="button">
-                      <button class="btn_medium_submit animate" (click)="sendToFollowUp(topic()!)">
-                        <cos-icon name="plus" [size]="20"></cos-icon>
-                        <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_BTN_ADD"></span>
-                      </button>
-                    </div>
-                  }
-                  <div class="no_feature_description">
-                    <div class="description_text">
-                      <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_HEADING"></div>
-                      <div>
-                        <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_BEFORE"></span><br/><br/>
-                        <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_AFTER"></span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            }
-            @if (eventsCount() > 0 || (topic()?.status === STATUSES.followUp && topicService.canUpdate(topic()!))) {
-              <app-topic-milestones [topic]="topic()!" [isStatusClosed]="topic()?.status === STATUSES.closed" />
-            }
-          </div>
-        }
-
+        <app-topic-content [cosTourItem]="{ tourid: 'topic', index: 3, position: 'top' }" [topic]="topic()!"
+          [tabTablet]="tabTablet()" />
       </div>
 
-      @if (wWidth() > 1024 || !tabTablet()) {
-        <div class="content_area_right">
 
-          <app-topic-info-sidebar
-            [cosTourItem]="{ tourid: 'topic', index: 6, position: 'left' }"
-            [topic]="topic()!"
-            [groups]="groups()"
-            [attachments]="attachments()"
-            [appTopicNotificationSettings]="appTopicNotificationSettings"
-            (toggleFavourite)="toggleFavourite($event)"
-            (leaveTopic)="leaveTopic($event)"
-            (inviteEditors)="inviteEditors($event)"
-            (duplicateTopic)="duplicateTopic($event)"
-            (addGroupsDialog)="addGroupsDialog($event)"
-            (closeTopic)="closeTopic($event)"
-            (deleteTopic)="deleteTopic($event)"
-            (downloadAttachment)="downloadAttachment($event)" />
+      <!-- Discussion tab -->
+      @if (!tabSelected() || tabSelected() === 'discussion') {
+      <div [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'discussion' }"
+        [cosTourItem]="{ tourid: 'topic', index: 7, position: 'top' }">
+        <cos-topic-discussion [topic]="topic()!"></cos-topic-discussion>
+      </div>
+      }
 
-          <app-topic-participants-section
-            [topic]="topic()!"
-            [members]="members()" />
+      <!-- Ideation tab -->
+      @if (tabSelected() === 'ideation' && ideation()) {
+      <div [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'ideation' }"
+        [cosTourItem]="{ tourid: 'topic', index: 7, position: 'top' }">
+        <app-topic-ideation [topic]="topic()!" [ideation]="ideation()!" />
+      </div>
+      }
 
-          <app-topic-state-items
-            [cosTourItem]="{ tourid: 'topic', index: 5, position: 'left' }"
-            [topic]="topic()!"
-            [ideation]="ideation()"
-            [vote]="vote()"
-            [eventCount]="eventsCount()"
-            (navigateTab)="selectTab($event)"
-            (startDiscussion)="startDiscussion($event)"
-            (startVote)="startVote($event)"
-            (sendToFollowUp)="sendToFollowUp($event)" />
-
+      <!-- Voting tab -->
+      @if (tabSelected() === 'voting') {
+      <div class="vote_wrap" [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'voting' }">
+        @if (!topic()?.voteId) {
+        <div class="topic_feature_section voting">
+          <div class="no_feature_yet">
+            <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clip-path="url(#clip_voting)">
+                <rect width="96" height="96" rx="48" fill="white" />
+                <path d="M60.4741 84.8165L33.9747 87.5576L34.5735 98.5014L60.4741 98.5014L60.4741 84.8165Z"
+                  fill="#5C9CD0" />
+                <path
+                  d="M39.426 73.0151C39.5735 75.6403 39.847 80 39.847 80L55.7464 78.1781C55.7464 78.1781 55.0377 71.6809 57.1247 69.2952C57.4164 68.9617 57.734 68.6141 58.0625 68.2546C60.0836 66.0426 62.5181 63.3781 61.9031 60.7461C61.188 57.6862 55.7332 56.5701 55.7332 56.5701L57.5454 38.1548C57.6222 37.3983 57.3872 36.6431 56.8917 36.0541C56.3963 35.4651 55.6807 35.0903 54.9013 35.0116C54.1676 34.9469 53.4359 35.1552 52.8545 35.5942C52.2731 36.0332 51.8854 36.6701 51.7698 37.3759L49.9372 47.3073C49.9372 47.3073 49.2501 44.0056 47.2133 43.8671C45.1764 43.7286 43.9381 45.5234 43.5256 47.9962C42.9343 46.6963 41.9339 46.17 40.9594 46.4954L40.8798 46.2683C40.8798 46.2683 40.8724 46.3611 40.8593 46.5318C39.8666 46.9164 38.7753 47.761 38.8743 50.475C37.9455 49.4105 37.0625 48.7395 36.1955 48.9294L36.1113 48.687C36.1113 48.687 36.1102 48.7806 36.1087 48.9513C35.9414 48.9992 35.7747 49.0798 35.6083 49.1965C34.5519 49.9373 33.9007 53.5686 34.0124 55.5409C34.0291 55.8357 34.0298 56.2681 34.0307 56.79C34.0356 59.7597 34.0454 65.6267 37.0307 65.5227C37.1332 65.8435 37.3363 66.3302 37.5829 66.9211C38.2775 68.5858 39.3171 71.0776 39.426 73.0151Z"
+                  fill="#F8E1B8" />
+              </g>
+              <defs>
+                <clipPath id="clip_voting">
+                  <rect width="96" height="96" rx="48" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+            <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_VOTING_HEADING"></div>
+            @if (topicService.canDelete(topic()!) && topic()?.status !== STATUSES.followUp && topic()?.status !==
+            STATUSES.closed) {
+            <div class="button">
+              <button class="btn_medium_submit animate" (click)="startVote(topic()!)">
+                <cos-icon name="plus" [size]="20"></cos-icon>
+                <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_BTN_ADD"></span>
+              </button>
+            </div>
+            }
+            <div class="no_feature_description">
+              <div class="description_text">
+                <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_HEADING"></div>
+                <div>
+                  <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_BEFORE"></span><br /><br />
+                  <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_AFTER"></span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        }
+        @if (topic()?.voteId && vote()) {
+        <app-topic-vote-cast [topic]="topic()!" [vote]="vote()!"
+          [cosTourItem]="{ tourid: 'topic', index: 7, position: 'top' }" />
+        }
+      </div>
+      }
+
+      <!-- Follow-up tab -->
+      @if (tabSelected() === 'followUp') {
+      <div class="follow_up_wrap" [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'followUp' }">
+        @if (eventsCount() === 0 && (!topicService.canUpdate(topic()!) || topic()?.status !== STATUSES.followUp)) {
+        <div class="topic_feature_section follow_up">
+          <div class="no_feature_yet">
+            <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clip-path="url(#clip_followup)">
+                <rect width="96" height="96" rx="48" fill="white" />
+                <path d="M60.4741 84.8165L33.9747 87.5576L34.5735 98.5014L60.4741 98.5014L60.4741 84.8165Z"
+                  fill="#5C9CD0" />
+                <path
+                  d="M39.426 73.0151C39.5735 75.6403 39.847 80 39.847 80L55.7464 78.1781C55.7464 78.1781 55.0377 71.6809 57.1247 69.2952C57.4164 68.9617 57.734 68.6141 58.0625 68.2546C60.0836 66.0426 62.5181 63.3781 61.9031 60.7461C61.188 57.6862 55.7332 56.5701 55.7332 56.5701L57.5454 38.1548C57.6222 37.3983 57.3872 36.6431 56.8917 36.0541C56.3963 35.4651 55.6807 35.0903 54.9013 35.0116C54.1676 34.9469 53.4359 35.1552 52.8545 35.5942C52.2731 36.0332 51.8854 36.6701 51.7698 37.3759L49.9372 47.3073C49.9372 47.3073 49.2501 44.0056 47.2133 43.8671C45.1764 43.7286 43.9381 45.5234 43.5256 47.9962C42.9343 46.6963 41.9339 46.17 40.9594 46.4954L40.8798 46.2683C40.8798 46.2683 40.8724 46.3611 40.8593 46.5318C39.8666 46.9164 38.7753 47.761 38.8743 50.475C37.9455 49.4105 37.0625 48.7395 36.1955 48.9294L36.1113 48.687C36.1113 48.687 36.1102 48.7806 36.1087 48.9513C35.9414 48.9992 35.7747 49.0798 35.6083 49.1965C34.5519 49.9373 33.9007 53.5686 34.0124 55.5409C34.0291 55.8357 34.0298 56.2681 34.0307 56.79C34.0356 59.7597 34.0454 65.6267 37.0307 65.5227C37.1332 65.8435 37.3363 66.3302 37.5829 66.9211C38.2775 68.5858 39.3171 71.0776 39.426 73.0151Z"
+                  fill="#F8E1B8" />
+              </g>
+              <defs>
+                <clipPath id="clip_followup">
+                  <rect width="96" height="96" rx="48" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+            <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_UP_HEADING"></div>
+            @if (topicService.canDelete(topic()!) && topic()?.status !== STATUSES.closed) {
+            <div class="button">
+              <button class="btn_medium_submit animate" (click)="sendToFollowUp(topic()!)">
+                <cos-icon name="plus" [size]="20"></cos-icon>
+                <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_BTN_ADD"></span>
+              </button>
+            </div>
+            }
+            <div class="no_feature_description">
+              <div class="description_text">
+                <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_HEADING"></div>
+                <div>
+                  <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_BEFORE"></span><br /><br />
+                  <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_AFTER"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+        @if (eventsCount() > 0 || (topic()?.status === STATUSES.followUp && topicService.canUpdate(topic()!))) {
+        <app-topic-milestones [topic]="topic()!" [isStatusClosed]="topic()?.status === STATUSES.closed" />
+        }
+      </div>
       }
 
     </div>
+
+    @if (wWidth() > 1024 || !tabTablet()) {
+    <div class="content_area_right">
+
+      <app-topic-info-sidebar [cosTourItem]="{ tourid: 'topic', index: 6, position: 'left' }" [topic]="topic()!"
+        [groups]="groups()" [attachments]="attachments()" [appTopicNotificationSettings]="appTopicNotificationSettings"
+        (toggleFavourite)="toggleFavourite($event)" (leaveTopic)="leaveTopic($event)"
+        (inviteEditors)="inviteEditors($event)" (duplicateTopic)="duplicateTopic($event)"
+        (addGroupsDialog)="addGroupsDialog($event)" (closeTopic)="closeTopic($event)"
+        (deleteTopic)="deleteTopic($event)" (downloadAttachment)="downloadAttachment($event)" />
+
+      <app-topic-participants-section [topic]="topic()!" [members]="members()" />
+
+      <app-topic-state-items [cosTourItem]="{ tourid: 'topic', index: 5, position: 'left' }" [topic]="topic()!"
+        [ideation]="ideation()" [vote]="vote()" [eventCount]="eventsCount()" (navigateTab)="selectTab($event)"
+        (startDiscussion)="startDiscussion($event)" (startVote)="startVote($event)"
+        (sendToFollowUp)="sendToFollowUp($event)" />
+
+    </div>
+    }
+
   </div>
+</div>
 </div>
 }

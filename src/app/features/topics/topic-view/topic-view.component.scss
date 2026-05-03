@@ -313,6 +313,11 @@
   color: var(--color-text);
   cursor: pointer;
 
+  cos-icon {
+    width: 32px;
+    height: 32px;
+  }
+
   @media (max-width: 1024px) {
     padding: 12px 38px;
     width: 100%;
