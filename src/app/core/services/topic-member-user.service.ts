@@ -28,10 +28,10 @@ export class TopicMemberUserService {
   private get baseUrl() { return this.configStore.api.baseUrl(); }
 
   loadItems(topicId: string): Observable<TopicMemberUser[]> {
-    return this.http.get<ApiResponse<TopicMemberUser[]>>(
+    return this.http.get<ApiResponse<{ rows: TopicMemberUser[] }>>(
       `${this.baseUrl}/api/users/self/topics/${topicId}/members/users`,
       { withCredentials: true }
-    ).pipe(map(res => res.data ?? []));
+    ).pipe(map(res => res.data?.rows ?? []));
   }
 
   query(params: { topicId: string; search?: string }): Observable<{ rows: TopicMemberUser[] }> {
