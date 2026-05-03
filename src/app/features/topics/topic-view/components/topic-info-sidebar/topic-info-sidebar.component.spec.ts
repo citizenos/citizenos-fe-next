@@ -68,7 +68,6 @@ describe('TopicInfoSidebarComponent', () => {
     
     component.attachments.set([]);
     component.groups.set([]);
-    component.members.set([]);
     
     fixture.detectChanges();
   });

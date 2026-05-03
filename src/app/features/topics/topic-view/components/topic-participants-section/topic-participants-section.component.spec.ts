@@ -1,9 +1,8 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { of, Subject } from 'rxjs';
+import { of } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
@@ -74,14 +73,14 @@ describe('TopicParticipantsSectionComponent', () => {
       ]
     })
     .overrideComponent(TopicParticipantsSectionComponent, {
-      set: { imports: [AsyncPipe, TranslateModule, MockInitialsComponent] }
+      set: { imports: [TranslateModule, MockInitialsComponent] }
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(TopicParticipantsSectionComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('topic', MOCK_TOPIC);
-    fixture.componentRef.setInput('members$', of([]));
+    fixture.componentRef.setInput('members', []);
   });
 
   it('renders without errors', () => {
@@ -143,53 +142,44 @@ describe('TopicParticipantsSectionComponent', () => {
     );
   });
 
-  it('shows participant count from topic when members$ emits', async () => {
-    fixture.componentRef.setInput('members$', of([{ name: 'Alice' }, { name: 'Bob' }]));
+  it('shows participant count from topic', () => {
+    fixture.componentRef.setInput('members', [{ name: 'Alice' }, { name: 'Bob' }]);
     fixture.detectChanges();
-    await fixture.whenStable();
     const count = fixture.nativeElement.querySelector('.participants_count');
     expect(count).toBeTruthy();
     expect(count.textContent.trim()).toBe('5');
   });
 
-  it('shows avatar images for members with imageUrl', async () => {
+  it('shows avatar images for members with imageUrl', () => {
     const members = [
       { name: 'Alice', imageUrl: 'https://example.com/a.jpg' },
       { name: 'Bob', imageUrl: null }
     ];
-    fixture.componentRef.setInput('members$', of(members));
-    fixture.detectChanges();
-    await fixture.whenStable();
+    fixture.componentRef.setInput('members', members);
     fixture.detectChanges();
     const img = fixture.nativeElement.querySelector('.avatar img');
     expect(img).toBeTruthy();
     expect(img.getAttribute('src')).toBe('https://example.com/a.jpg');
   });
 
-  it('shows initials filler for members without imageUrl', async () => {
-    const members = [{ name: 'Bob', imageUrl: null }];
-    fixture.componentRef.setInput('members$', of(members));
-    fixture.detectChanges();
-    await fixture.whenStable();
+  it('shows initials filler for members without imageUrl', () => {
+    fixture.componentRef.setInput('members', [{ name: 'Bob', imageUrl: null }]);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.profile_image_filler')).toBeTruthy();
   });
 
-  it('shows overflow count when more than 3 members', async () => {
-    const members = [
+  it('shows overflow count when more than 3 members', () => {
+    fixture.componentRef.setInput('members', [
       { name: 'A' }, { name: 'B' }, { name: 'C' }, { name: 'D' }
-    ];
-    fixture.componentRef.setInput('members$', of(members));
-    fixture.detectChanges();
-    await fixture.whenStable();
+    ]);
     fixture.detectChanges();
     const avatars = fixture.nativeElement.querySelectorAll('.avatar');
     expect(avatars.length).toBeGreaterThan(3);
   });
 
-  it('hides count section when members$ is empty observable', () => {
-    fixture.componentRef.setInput('members$', new Subject());
+  it('shows count section with empty members', () => {
+    fixture.componentRef.setInput('members', []);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.participants_count_wrap')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.participants_count_wrap')).toBeTruthy();
   });
 });

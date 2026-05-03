@@ -233,7 +233,6 @@
             [topic]="topic()!"
             [groups]="groups()"
             [attachments]="attachments()"
-            [members]="members()"
             [appTopicNotificationSettings]="appTopicNotificationSettings"
             (toggleFavourite)="toggleFavourite($event)"
             (leaveTopic)="leaveTopic($event)"
@@ -242,8 +241,11 @@
             (addGroupsDialog)="addGroupsDialog($event)"
             (closeTopic)="closeTopic($event)"
             (deleteTopic)="deleteTopic($event)"
-            (inviteMembers)="inviteMembers($event)"
             (downloadAttachment)="downloadAttachment($event)" />
+
+          <app-topic-participants-section
+            [topic]="topic()!"
+            [members]="members()" />
 
           <app-topic-state-items
             [cosTourItem]="{ tourid: 'topic', index: 5, position: 'left' }"

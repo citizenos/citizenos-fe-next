@@ -1,0 +1,153 @@
+
+ RUN  v4.1.5 /home/ilmar/citizenos/citizenos-fe-next
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should create
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show join button when user has no permissions
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should hide join button when user has permissions
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should emit joinTopic when join button clicked
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should display permissions label when permission level is set
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should hide permissions label when permission level is none
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should emit toggleFavourite when onToggleFavourite is called
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should toggle mobile actions panel
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show overlay when mobile actions are open
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should close mobile actions when overlay is clicked
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show leave button when user has non-none permission
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should emit leaveTopic when leave button clicked
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show delete button when canDelete is true
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should emit deleteTopic when delete button clicked
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should emit openSettings when settings button clicked
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show report button only for public topics without a report
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should hide report button for topics with existing report
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+stderr | src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show moderate button when canModerate returns true
+NG0303: Can't bind to 'routerLink' since it isn't a known property of 'button' (used in the 'TopicHeaderComponent' component template).
+1. If 'button' is an Angular component and it has the 'routerLink' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+
+ ❯ src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts (18 tests | 18 failed) 473ms
+     × should create 116ms
+     × should show join button when user has no permissions 28ms
+     × should hide join button when user has permissions 28ms
+     × should emit joinTopic when join button clicked 23ms
+     × should display permissions label when permission level is set 25ms
+     × should hide permissions label when permission level is none 24ms
+     × should emit toggleFavourite when onToggleFavourite is called 21ms
+     × should toggle mobile actions panel 20ms
+     × should show overlay when mobile actions are open 21ms
+     × should close mobile actions when overlay is clicked 19ms
+     × should show leave button when user has non-none permission 18ms
+     × should emit leaveTopic when leave button clicked 20ms
+     × should show delete button when canDelete is true 22ms
+     × should emit deleteTopic when delete button clicked 17ms
+     × should emit openSettings when settings button clicked 18ms
+     × should show report button only for public topics without a report 18ms
+     × should hide report button for topics with existing report 16ms
+     × should show moderate button when canModerate returns true 17ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 18 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should create
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show join button when user has no permissions
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should hide join button when user has permissions
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should emit joinTopic when join button clicked
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should display permissions label when permission level is set
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should hide permissions label when permission level is none
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should emit toggleFavourite when onToggleFavourite is called
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should toggle mobile actions panel
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show overlay when mobile actions are open
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should close mobile actions when overlay is clicked
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show leave button when user has non-none permission
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should emit leaveTopic when leave button clicked
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show delete button when canDelete is true
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should emit deleteTopic when delete button clicked
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should emit openSettings when settings button clicked
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show report button only for public topics without a report
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should hide report button for topics with existing report
+ FAIL  src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts > TopicHeaderComponent > should show moderate button when canModerate returns true
+Error: NG0302: The pipe 'uppercase' could not be found in the 'TopicHeaderComponent' component. Verify that it is included in the '@Component.imports' of this component. Find more at https://v21.angular.dev/errors/NG0302
+ ❯ getPipeDef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/pipe.ts:114:10
+ ❯ getPipeDef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/pipe.ts:49:14
+ ❯ TopicHeaderComponent_Conditional_9_Template ng:/TopicHeaderComponent.js:23:5
+ ❯ templateFn ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:109:4
+ ❯ executeTemplate ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/render.ts:107:6
+ ❯ renderView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/view_manipulation.ts:65:4
+ ❯ createAndRenderEmbeddedLView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/control_flow.ts:197:30
+ ❯ TopicHeaderComponent_Template ng:/TopicHeaderComponent.js:862:9
+ ❯ templateFn ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:109:4
+ ❯ executeTemplate ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:232:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/18]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  18 failed (18)
+   Start at  23:46:46
+   Duration  5.39s (transform 101ms, setup 131ms, import 157ms, tests 473ms, environment 262ms)
+

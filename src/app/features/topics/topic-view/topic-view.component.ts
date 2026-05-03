@@ -21,6 +21,7 @@ import { ActivitiesButtonComponent } from '../../../shared/components/activities
 import { TopicHeaderComponent } from './components/topic-header/topic-header.component';
 import { TopicContentComponent } from './components/topic-content/topic-content.component';
 import { TopicInfoSidebarComponent } from './components/topic-info-sidebar/topic-info-sidebar.component';
+import { TopicParticipantsSectionComponent } from './components/topic-participants-section/topic-participants-section.component';
 import { TopicStateItemsComponent } from './components/topic-state-items/topic-state-items.component';
 import { TopicIdeationComponent } from './components/topic-ideation/topic-ideation.component';
 import { TopicDiscussionComponent } from './components/topic-discussion/topic-discussion.component';
@@ -40,6 +41,7 @@ import { Topic } from '../../../core/interfaces/topic';
     TopicHeaderComponent,
     TopicContentComponent,
     TopicInfoSidebarComponent,
+    TopicParticipantsSectionComponent,
     TopicStateItemsComponent,
     TopicIdeationComponent,
     TopicDiscussionComponent,

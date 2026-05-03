@@ -6,15 +6,14 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { DatePipe, UpperCasePipe } from '@angular/common';
-import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
+import { DatePipe } from '@angular/common';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 
 @Component({
   selector: 'app-topic-info-sidebar',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, RouterModule, IconComponent, DatePipe, UpperCasePipe, InitialsComponent, CosDropdownDirective],
+  imports: [TranslateModule, RouterModule, IconComponent, DatePipe, CosDropdownDirective],
   templateUrl: './topic-info-sidebar.component.html',
   styleUrls: ['./topic-info-sidebar.component.scss'],
   animations: [
@@ -40,8 +39,6 @@ export class TopicInfoSidebarComponent {
   topic = model.required<Topic>();
   attachments = model<any[]>([]);
   groups = model<any[]>([]);
-  members = model<any[]>([]);
-
   appTopicNotificationSettings = model<() => void>();
 
   toggleFavourite = output<Topic>();
@@ -51,7 +48,6 @@ export class TopicInfoSidebarComponent {
   addGroupsDialog = output<Topic>();
   closeTopic = output<Topic>();
   deleteTopic = output<Topic>();
-  inviteMembers = output<Topic>();
   downloadAttachment = output<any>();
 
   topicService = inject(TopicService);

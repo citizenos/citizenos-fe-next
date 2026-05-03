@@ -125,41 +125,6 @@
     </div>
   </div>
 
-  <!-- Participants -->
-  <div class="info_items_wrap">
-    <div class="info_header">
-      <div class="info_title" translate="VIEWS.TOPICS_TOPICID.SECTION_PARTICIPANTS_HEADING"></div>
-      @if (topicService.canUpdate(topic())) {
-        <a class="manage_link" (click)="inviteMembers.emit(topic())">
-          <span translate="VIEWS.TOPICS_TOPICID.LNK_MANAGE"></span>
-        </a>
-      }
-    </div>
-    <div class="participants_count_wrap">
-      <div class="participants_count">{{ topic().members.users.count || members().length }}</div>
-      <div class="avatars_wrap">
-        @for (member of members().slice(0, 3); track member.id) {
-          <div class="avatar">
-            @if (member.imageUrl) {
-              <img [src]="member.imageUrl" [alt]="member.name || ''" />
-            } @else {
-              <div class="profile_image_filler">
-                <cos-initials [name]="member.name || ''"></cos-initials>
-              </div>
-            }
-          </div>
-        }
-        @if (members().length > 3) {
-          <div class="avatar">+ {{ topic().members.users.count - 3 }}</div>
-        }
-      </div>
-    </div>
-    @if (topicService.canDelete(topic())) {
-      <button class="btn_medium_secondary bold" (click)="inviteMembers.emit(topic())"
-        translate="VIEWS.TOPICS_TOPICID.SECTION_PARTICIPANTS_BTN_SHARE"></button>
-    }
-  </div>
-
   <!-- Attachments -->
   <div class="info_items_wrap">
     <div class="info_title" (click)="showAttachments = !showAttachments">

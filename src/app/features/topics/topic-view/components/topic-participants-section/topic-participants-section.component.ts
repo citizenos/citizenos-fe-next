@@ -1,6 +1,4 @@
 import { Component, ChangeDetectionStrategy, inject, input } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
-import { Observable } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { Topic } from '../../../../../core/interfaces/topic';
@@ -12,14 +10,14 @@ import { InitialsComponent } from '../../../../../shared/components/initials/ini
 @Component({
   selector: 'app-topic-participants-section',
   standalone: true,
-  imports: [AsyncPipe, TranslateModule, InitialsComponent],
+  imports: [TranslateModule, InitialsComponent],
   templateUrl: './topic-participants-section.component.html',
   styleUrls: ['./topic-participants-section.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopicParticipantsSectionComponent {
   topic = input.required<Topic>();
-  members$ = input.required<Observable<any[]>>();
+  members = input.required<any[]>();
 
   readonly topicService = inject(TopicService);
   private dialogService = inject(DialogService);
