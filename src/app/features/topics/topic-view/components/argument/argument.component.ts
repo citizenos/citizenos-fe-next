@@ -17,6 +17,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
+import { ArgumentReportComponent } from '../argument-report/argument-report.component';
 
 @Component({
   selector: 'cos-argument',
@@ -137,8 +138,9 @@ export class ArgumentComponent implements OnInit, AfterViewInit {
   }
 
   doReport() {
-    // ArgumentReportComponent — stub for now, wired in report migration
-    this.notification.showRaw('info', 'Report submitted');
+    this.dialog.open(ArgumentReportComponent, {
+      data: { argument: this.argument(), topicId: this.topicId() }
+    });
   }
 
   doDelete() {

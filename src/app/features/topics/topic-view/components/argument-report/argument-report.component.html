@@ -1,0 +1,78 @@
+<div class="dialog_wrap">
+  <div class="dialog">
+    <div class="dialog_header warning">
+      <div class="header_with_icon">
+        <div class="icon_notification">
+          <cos-icon name="warning-filled" [size]="40"></cos-icon>
+        </div>
+        <h4 class="title" translate="COMPONENTS.ARGUMENT_REPORT.HEADING"></h4>
+      </div>
+      <div class="dialog_close">
+        <button class="btn_dialog_close icon" dialogClose>
+          <cos-icon name="nav-close"></cos-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="dialog_content">
+      <div class="dialog_info_wrap">
+        <div class="dialog_info row">
+          <div class="delete_info_button_wrap">
+            <div class="delete_info_text" translate="COMPONENTS.ARGUMENT_REPORT.MESSAGE_MAIN"></div>
+          </div>
+          <div class="profile_image_wrap">
+            @if (argument.creator?.imageUrl) {
+              <img class="profile_image" [src]="argument.creator.imageUrl">
+            } @else {
+              <div class="profile_image_filler">
+                @if (argument.creator?.name) {
+                  <cos-initials [name]="argument.creator.name"></cos-initials>
+                }
+              </div>
+            }
+          </div>
+          <div class="bold" [innerHTML]="argument.creator?.name"></div>
+        </div>
+      </div>
+
+      <form [formGroup]="reportForm">
+        <div class="form_group">
+          <label translate="COMPONENTS.ARGUMENT_REPORT.LABLE_REASON"></label>
+          <cos-dropdown>
+            <div selection class="selected_item">
+              {{ 'TXT_REPORT_TYPES_' + (reportForm.value.type | uppercase) | translate }}
+            </div>
+            <div options>
+              @for (type of reportTypes; track type) {
+                <div class="option" (click)="selectReportType(type)">
+                  {{ 'TXT_REPORT_TYPES_' + (type | uppercase) | translate }}
+                </div>
+              }
+            </div>
+          </cos-dropdown>
+        </div>
+
+        <div class="form_group">
+          <label translate="COMPONENTS.ARGUMENT_REPORT.PLACEHOLDER_REPORT_TEXT"></label>
+          <textarea formControlName="text"
+                    [placeholder]="'COMPONENTS.ARGUMENT_REPORT.PLACEHOLDER_REPORT_TEXT' | translate"
+                    rows="5" maxlength="2048"
+                    [class.error_input]="reportForm.controls['text'].errors?.['required'] && reportForm.controls['text'].touched">
+          </textarea>
+          @if (reportForm.controls['text'].errors?.['required'] && reportForm.controls['text'].touched) {
+            <div class="error_label">
+              <span translate="COMPONENTS.ARGUMENT_REPORT.ERROR_TEXT"></span>
+            </div>
+          }
+        </div>
+      </form>
+    </div>
+
+    <div class="dialog_footer with_buttons">
+      <div class="button_row">
+        <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.ARGUMENT_REPORT.BTN_CANCEL"></cos-button>
+        <cos-button variant="primary" (clicked)="doReport()" [isDisabled]="reportForm.invalid || isLoading()" translate="COMPONENTS.ARGUMENT_REPORT.BTN_SUBMIT"></cos-button>
+      </div>
+    </div>
+  </div>
+</div>

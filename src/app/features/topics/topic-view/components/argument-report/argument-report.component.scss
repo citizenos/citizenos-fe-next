@@ -1,0 +1,66 @@
+.dialog_content {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .form_group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      label {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--color-text);
+      }
+
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        resize: vertical;
+        background: var(--color-background);
+        box-sizing: border-box;
+
+        &:focus {
+          border-color: var(--color-primary);
+          outline: none;
+        }
+
+        &.error_input {
+          border-color: var(--color-error);
+        }
+      }
+    }
+  }
+
+  .dialog_info_wrap {
+    .dialog_info.row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+
+      .profile_image_wrap {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+
+        .profile_image {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .profile_image_filler {
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
+  }
+}
