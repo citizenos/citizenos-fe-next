@@ -198,6 +198,22 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams> 
       .pipe(map(res => res.data));
   }
 
+  getReport(data: { topicId: string; commentId: string; reportId: string; token: string }): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/topics/${data.topicId}/comments/${data.commentId}/reports/${data.reportId}`);
+    return this.http.get<ApiResponse<any>>(path, {
+      headers: { Authorization: `Bearer ${data.token}` },
+      withCredentials: true, observe: 'body', responseType: 'json'
+    }).pipe(map(res => res.data));
+  }
+
+  moderate(data: { token: string; topicId: string; discussionId: string; commentId: string; reportId: string; report: any }): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}/reports/${data.reportId}/moderate`);
+    return this.http.post<ApiResponse<any>>(path, data.report, {
+      headers: { Authorization: `Bearer ${data.token}` },
+      withCredentials: true, observe: 'body', responseType: 'json'
+    }).pipe(map(res => res.data));
+  }
+
   getArgumentIdWithVersion(argumentId: string, version: number): string {
     return argumentId + this.ARGUMENT_VERSION_SEPARATOR + version;
   }
