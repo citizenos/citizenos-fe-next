@@ -1,0 +1,253 @@
+<div class="overlay" dialogClose></div>
+<div class="dialog_wrap">
+  <div id="notification_wrap_dialog" class="mobile_hidden">
+    <cos-notifications></cos-notifications>
+  </div>
+  <div class="dialog">
+    <div id="notification_wrap_dialog" class="mobile_show">
+      <cos-notifications></cos-notifications>
+    </div>
+    <div class="dialog_header">
+      <div class="header_text">
+        <h4 class="title" translate="MODALS.TOPIC_MEMBERS_HEADING"></h4>
+        <div class="dialog_close">
+          <a class="btn_dialog_close icon" dialogClose>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
+                fill="#2C3B47" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="dialog_tabs_wrap">
+      <a class="dialog_tab mobile_hidden" [class.active]="activeTab() === 'participants'"
+        (click)="activeTab.set('participants')" translate="MODALS.TOPIC_MEMBERS_TAB_PARTICIPANTS"></a>
+      <a class="dialog_tab mobile_hidden" [class.active]="activeTab() === 'groups'"
+        (click)="activeTab.set('groups')" translate="MODALS.TOPIC_MEMBERS_TAB_GROUPS"></a>
+      <a class="dialog_tab mobile_hidden" [class.active]="activeTab() === 'invited'"
+        (click)="activeTab.set('invited')" translate="MODALS.TOPIC_MEMBERS_TAB_INVITED"></a>
+      <div class="dropdown mobile_show" cosDropdown>
+        <div class="selection">
+          <div class="selected_item">
+            {{'MODALS.TOPIC_MEMBERS_TAB_' + activeTab() | uppercase | translate}}
+          </div>
+          <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </div>
+        </div>
+        <div class="options">
+          <div class="option" (click)="activeTab.set('participants')" translate="MODALS.TOPIC_MEMBERS_TAB_PARTICIPANTS">
+          </div>
+          <div class="option" (click)="activeTab.set('groups')" translate="MODALS.TOPIC_MEMBERS_TAB_GROUPS">
+          </div>
+          <div class="option" (click)="activeTab.set('invited')" translate="MODALS.TOPIC_MEMBERS_TAB_INVITED">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dialog_content no_footer">
+      @if (activeTab() === 'participants') {
+        <div class="content_section">
+          <div id="topic_members_list_wrap" class="section_content_wrap table_section">
+            <div class="topic_members_filters">
+              <cos-input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate">
+                <input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate"
+                  [ngModel]="userSearch()"
+                  (ngModelChange)="setUserSearch($event)">
+              </cos-input>
+              <div class="dropdown" cosDropdown>
+                <div class="selection">
+                  <span translate="MODALS.TOPIC_MEMBERS_ORDER_BY"></span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                </div>
+                <div class="options">
+                  <div class="option" (click)="doUserOrder('name', 'asc')"
+                    translate="MODALS.TOPIC_MEMBERS_ORDER_BY_NAME_ASC"></div>
+                  <div class="option" (click)="doUserOrder('name', 'desc')"
+                    translate="MODALS.TOPIC_MEMBERS_ORDER_BY_NAME_DESC"></div>
+                  <div class="option" (click)="doUserOrder('level', 'asc')">
+                    <span translate="MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL"></span>
+                    <svg width="24" height="24" viewBox="0 0 24 24" transform="translate(0, 0) scale(1, -1)" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="#2C3B47" />
+                    </svg>
+                  </div>
+                  <div class="option" (click)="doUserOrder('level', 'desc')">
+                    <span translate="MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL"></span>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="#2C3B47" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="line_separator"></div>
+            <div class="container">
+              <div class="row header_row">
+                <div class="name"><a translate="COMPONENTS.GROUP_INVITE.NAME"></a></div>
+                <div class="level">
+                  <div class="level_heading" translate="COMPONENTS.GROUP_INVITE.ROLE">
+                    <cos-tooltip
+                      [title]="'COMPONENTS.TOPIC_INVITE_EDITORS.TOOLTIP_TOPIC_ROLES_HEADING' | translate"
+                      [description]="'COMPONENTS.TOPIC_INVITE_EDITORS.TOOLTIP_TOPIC_ROLES_DESCRIPTION' | translate">
+                    </cos-tooltip>
+                  </div>
+                  <div class="button_heading" translate="COMPONENTS.GROUP_INVITE.ACTIONS"></div>
+                </div>
+              </div>
+              @for (user of pagedUsers(); track user.id) {
+                <div class="row_list">
+                  <app-topic-member-user [member]="user" [topic]="topic" [withEmail]="false"></app-topic-member-user>
+                </div>
+              }
+            </div>
+            <div class="line_separator"></div>
+            <div id="footer_buttons">
+              <cos-pagination class="pagination"
+                [totalPages]="userTotalPages()"
+                [page]="userPage()"
+                (select)="userPage.set($event)"></cos-pagination>
+            </div>
+          </div>
+        </div>
+      }
+      @if (activeTab() === 'groups') {
+        <div class="content_section">
+          <div id="topic_members_list_wrap" class="section_content_wrap table_section">
+            <div class="topic_members_filters">
+              <cos-input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate">
+                <input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_TOPIC_TITLE_PERMISSION' | translate"
+                  [ngModel]="groupSearch()"
+                  (ngModelChange)="setGroupSearch($event)">
+              </cos-input>
+              <div class="dropdown" cosDropdown>
+                <div class="selection">
+                  <span translate="MODALS.TOPIC_MEMBERS_ORDER_BY"></span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                </div>
+                <div class="options">
+                  <div class="option" (click)="doGroupOrder('name', 'asc')"
+                    translate="MODALS.TOPIC_MEMBERS_ORDER_BY_NAME_ASC"></div>
+                  <div class="option" (click)="doGroupOrder('name', 'desc')"
+                    translate="MODALS.TOPIC_MEMBERS_ORDER_BY_NAME_DESC"></div>
+                  <div class="option" (click)="doGroupOrder('level', 'asc')">
+                    <span translate="MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL"></span>
+                    <div>
+                      <svg width="24" height="24" viewBox="0 0 24 24" transform="translate(0, 0) scale(1, -1)"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="#2C3B47" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="option" (click)="doGroupOrder('level', 'desc')">
+                    <span translate="MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL"></span>
+                    <div>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="#2C3B47" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="line_separator"></div>
+            <div class="container">
+              @if (filteredGroups().length) {
+                <div class="row header_row">
+                  <div class="name"><a translate="COMPONENTS.GROUP_INVITE.NAME"></a></div>
+                  <div class="level">
+                    <div class="level_heading" translate="COMPONENTS.GROUP_INVITE.ROLE">
+                      <cos-tooltip
+                        [title]="'COMPONENTS.TOPIC_ADD_GROUPS.TOOLTIP_GROUP_PERMISSIONS_TITLE' | translate"
+                        [description]="'COMPONENTS.TOPIC_ADD_GROUPS.TOOLTIP_GROUP_PERMISSIONS_CONTENT' | translate">
+                      </cos-tooltip>
+                    </div>
+                    <div class="button_heading" translate="COMPONENTS.GROUP_INVITE.ACTIONS"></div>
+                  </div>
+                </div>
+              }
+              @for (group of pagedGroups(); track group.id) {
+                <div class="row_list">
+                  <app-topic-member-group [topic]="topic" [group]="group"></app-topic-member-group>
+                </div>
+              }
+            </div>
+            @if (filteredGroups().length) {
+              <div class="line_separator"></div>
+            }
+            <div id="footer_buttons">
+              <cos-pagination class="pagination"
+                [totalPages]="groupTotalPages()"
+                [page]="groupPage()"
+                (select)="groupPage.set($event)"></cos-pagination>
+            </div>
+          </div>
+        </div>
+      }
+      @if (activeTab() === 'invited') {
+        <div class="content_section">
+          <div id="topic_members_list_wrap" class="section_content_wrap table_section">
+            <div class="topic_members_filters">
+              <cos-input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate">
+                <input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_TOPIC_TITLE_PERMISSION' | translate"
+                  [ngModel]="inviteSearch()"
+                  (ngModelChange)="setInviteSearch($event)">
+              </cos-input>
+              <div class="dropdown" cosDropdown>
+                <div class="selection">
+                  <span translate="MODALS.TOPIC_MEMBERS_ORDER_BY"></span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                </div>
+                <div class="options">
+                  <div class="option" (click)="doInviteOrder('name', 'asc')"
+                    translate="MODALS.TOPIC_MEMBERS_ORDER_BY_NAME_ASC"></div>
+                  <div class="option" (click)="doInviteOrder('name', 'desc')"
+                    translate="MODALS.TOPIC_MEMBERS_ORDER_BY_NAME_DESC"></div>
+                  <div class="option" (click)="doInviteOrder('level', 'asc')">
+                    <span translate="MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL"></span>
+                    <div>
+                      <svg width="24" height="24" viewBox="0 0 24 24" transform="translate(0, 0) scale(1, -1)"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="#2C3B47" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="option" (click)="doInviteOrder('level', 'desc')">
+                    <span translate="MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL"></span>
+                    <div>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="#2C3B47" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="line_separator"></div>
+            @for (invite of pagedInvites(); track invite.id) {
+              <div class="row_list">
+                <app-topic-member-invite [invite]="invite" [topic]="topic"></app-topic-member-invite>
+              </div>
+            }
+            <div class="line_separator"></div>
+            <div id="footer_buttons">
+              <cos-pagination class="pagination"
+                [totalPages]="inviteTotalPages()"
+                [page]="invitePage()"
+                (select)="invitePage.set($event)"></cos-pagination>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
