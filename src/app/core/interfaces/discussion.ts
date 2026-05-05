@@ -5,6 +5,9 @@ export interface Discussion {
   creatorId: string;
   createdAt: string;
   updatedAt: string;
+  comments?: {
+    count: number;
+  };
 }
 
 export interface DiscussionData {

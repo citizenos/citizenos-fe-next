@@ -51,6 +51,7 @@ export class ArgumentComponent implements OnInit, AfterViewInit {
   showReplies = signal(false);
   showReplyForm = signal(false);
   showDeletedArgument = signal(false);
+  showEdits = signal(false);
 
   editSubject = signal('');
   editText = signal('');

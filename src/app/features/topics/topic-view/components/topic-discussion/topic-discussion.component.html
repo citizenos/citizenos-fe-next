@@ -89,22 +89,22 @@
             <div class="legend">
               <div class="legend_item pro">
                 <div class="dot"></div>
-                <div class="bold" translate="COMPONENTS.TOPIC_ARGUMENTS.GRAPH_LEGEND_PRO"></div>
+                <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_PRO"></div>
                 <span>{{counts().pro}}</span>
               </div>
               <div class="legend_item con">
                 <div class="dot"></div>
-                <div class="bold" translate="COMPONENTS.TOPIC_ARGUMENTS.GRAPH_LEGEND_CON"></div>
+                <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_CON"></div>
                 <span>{{counts().con}}</span>
               </div>
               <div class="legend_item">
                 <div class="dot"></div>
-                <div class="bold" translate="COMPONENTS.TOPIC_ARGUMENTS.GRAPH_LEGEND_INFO"></div>
+                <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_INFO"></div>
                 <span>{{counts().poi}}</span>
               </div>
               <div class="legend_item reply">
                 <div class="dot"></div>
-                <div class="bold" translate="COMPONENTS.TOPIC_ARGUMENTS.GRAPH_LEGEND_REPLIES"></div>
+                <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_REPLIES"></div>
                 <span>{{counts().reply}}</span>
               </div>
             </div>
@@ -118,7 +118,7 @@
 
       <div class="arguments_filters">
         <div class="filter-dropdowns">
-          <cos-input [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_TYPE' | translate" class="dropdown_input">
+          <div class="dropdown_wrap">
             <div class="dropdown" cosDropdown [multipleChoice]="true">
               <div class="selection" trigger>
                 <div class="selected_item">
@@ -128,35 +128,35 @@
                     {{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_TYPE' | translate | uppercase }}
                   }
                 </div>
-                <div>
+                <div class="icon_wrap">
                   <cos-icon name="chevron-down" size="16"></cos-icon>
                 </div>
               </div>
-              <div class="options">
+              <div class="options filter_options">
                 @for (option of argumentTypes; track option.value) {
-                  <div class="option check" (click)="toggleTypeFilter(option.value); $event.stopPropagation()">
+                  <div class="option check">
                     <label class="checkbox">
                       <span>{{ option.title | translate | uppercase }}</span>
-                      <input type="checkbox" [checked]="selectedTypes().includes(option.value)" (click)="$event.stopPropagation()">
+                      <input type="checkbox" [checked]="selectedTypes().includes(option.value)" (change)="toggleTypeFilter(option.value)">
                       <span class="checkmark"></span>
                     </label>
                   </div>
                 }
               </div>
             </div>
-          </cos-input>
+          </div>
 
-          <cos-input [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER' | translate" class="dropdown_input">
+          <div class="dropdown_wrap">
             <div class="dropdown" cosDropdown>
               <div class="selection" trigger>
                 <div class="selected_item">
                   {{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER_BY_' + selectedOrder().toUpperCase() | translate | uppercase }}
                 </div>
-                <div>
+                <div class="icon_wrap">
                   <cos-icon name="chevron-down" size="16"></cos-icon>
                 </div>
               </div>
-              <div class="options">
+              <div class="options filter_options">
                 @for (option of orderByOptions; track option.value) {
                   <div class="option" (click)="setOrder(option.value)">
                     {{ option.title | translate | uppercase }}
@@ -164,13 +164,13 @@
                 }
               </div>
             </div>
-          </cos-input>
+          </div>
         </div>
       </div>
 
       <div id="arguments">
         @if (loading() && !arguments().length) {
-          <div class="loading-placeholder" translate="COMPONENTS.TOPIC_ARGUMENTS.LOADING"></div>
+          <div class="loading-placeholder">Loading...</div>
         }
 
         @for (argument of flattenedArguments(); track argument.id) {

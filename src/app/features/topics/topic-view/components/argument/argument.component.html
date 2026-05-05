@@ -1,139 +1,162 @@
-<div class="argument" [class]="'argument--' + argument().type" [id]="argumentId()">
-  <div class="argument-inner">
+<div class="argument" [id]="argumentId()">
+  <div class="argument_wrap" [class]="argument().type" [class.reply]="root()">
+    <div class="argument_content_wrap">
+      <div class="argument_header">
+        <div class="header_left">
+          <div class="author_wrap">
+            <div class="image_wrap">
+              @if (argument().creator?.imageUrl) {
+                <img [src]="argument().creator.imageUrl" [alt]="argument().creator.name" class="profile_image">
+              } @else {
+                <div class="profile_image_filler">
+                  <cos-initials [name]="argument().creator?.name || ''"></cos-initials>
+                </div>
+              }
+            </div>
+            <div class="author_name">{{ argument().creator?.name }}</div>
+          </div>
+        </div>
 
-    <div class="argument-header">
-      <div class="type-badge type-badge--{{ argument().type }}">
-        {{ 'COMPONENTS.TOPIC_ARGUMENTS.GRAPH_LEGEND_' + argument().type.toUpperCase() | translate }}
+        <div class="header_right">
+          <div class="created_at">{{ argument().createdAt | date:'y-MM-dd HH:mm' }}</div>
+          <div class="dropdown button_dropdown" cosDropdown>
+            <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.ARGUMENT.LBL_ARGUMENT_ACTIONS' | translate" pos="top">
+              <button trigger class="btn_argument_actions" (click)="$event.stopPropagation()">
+                <cos-icon name="more-vertical" size="16"></cos-icon>
+              </button>
+            </cos-tooltip>
+            <div class="options">
+              @if (canEdit()) {
+                <button class="option" (click)="showEdit.update(v => !v)">
+                  <cos-icon name="edit" size="16"></cos-icon>
+                  <span translate="COMPONENTS.ARGUMENT.OPTION_EDIT"></span>
+                </button>
+              }
+              <button class="option" (click)="copyLink($event)">
+                <cos-icon name="link" size="16"></cos-icon>
+                <span translate="LNK_DIRECT_LINK"></span>
+              </button>
+              <button class="option" (click)="doReport()">
+                <cos-icon name="warning" size="16"></cos-icon>
+                <span translate="COMPONENTS.ARGUMENT.OPTION_REPORT"></span>
+              </button>
+              @if (isEdited()) {
+                <button class="option" (click)="showEdits.set(!showEdits())">
+                  <cos-icon name="history" size="16"></cos-icon>
+                  <span translate="VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_VIEW_PREVIOUS_VERSIONS"></span>
+                </button>
+              }
+              @if (canEdit()) {
+                <button class="option" (click)="doDelete()">
+                  <cos-icon name="trash" size="16"></cos-icon>
+                  <span translate="COMPONENTS.ARGUMENT.OPTION_DELETE"></span>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="author-row">
-        <div class="avatar">
-          @if (argument().creator?.imageUrl) {
-            <img [src]="argument().creator.imageUrl" [alt]="argument().creator.name" class="avatar-img">
-          } @else {
-            <cos-initials [name]="argument().creator?.name || ''"></cos-initials>
+      <div class="argument_content">
+        @if (argument().deletedAt && !showDeletedArgument()) {
+          <div class="deleted_argument_wrap">
+            <div class="deleted_argument_content_wrap">
+              <cos-icon name="warning" size="40" class="deleted_icon"></cos-icon>
+              @if (argument().deletedReasonType && argument().deletedReasonText) {
+                <div class="bold" [innerHtml]="'VIEWS.TOPICS_TOPICID.ARGUMENT_FOUND_INAPPRIOPRIATE_BY' | translate:{usersFullName: argument().deletedBy?.name}"></div>
+                <div class="buttons_wrap">
+                  <a (click)="doReport()" translate="VIEWS.TOPICS_TOPICID.ARGUMENT_WHY"></a>
+                  <a (click)="showDeletedArgument.set(true)" translate="VIEWS.TOPICS_TOPICID.ARGUMENT_VIEW_ARGUMENT_ANYWAY"></a>
+                </div>
+              } @else if (argument().deletedBy?.id === argument().creator?.id || !argument().deletedReasonType) {
+                <div class="bold" [innerHtml]="'VIEWS.TOPICS_TOPICID.ARGUMENT_CREATOR_REMOVED_ARGUMENT' | translate"></div>
+                <div class="buttons_wrap">
+                  <a (click)="showDeletedArgument.set(true)" translate="VIEWS.TOPICS_TOPICID.ARGUMENT_VIEW_ARGUMENT_ANYWAY"></a>
+                </div>
+              }
+            </div>
+          </div>
+        } @else {
+          @if (argument().subject) {
+            <div class="argument_subject">{{ argument().subject }}</div>
           }
-        </div>
-        <span class="author-name">{{ argument().creator?.name }}</span>
-        <span class="created-at">{{ argument().createdAt | date:'y-MM-dd HH:mm' }}</span>
-        @if (isEdited()) {
-          <span class="edited-badge" translate="VIEWS.TOPICS_TOPICID.LBL_EDITED"></span>
+          <div class="argument_body" #argumentBody [innerHTML]="safe(argument().text)"></div>
         }
       </div>
 
-      <div class="dropdown button_dropdown" cosDropdown>
-        <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.ARGUMENT.TOOLTIP_OPTIONS' | translate" pos="top">
-          <button trigger class="btn-actions" (click)="$event.stopPropagation()">
-            <cos-icon name="more-vertical" size="16"></cos-icon>
-          </button>
-        </cos-tooltip>
-        <div class="options">
-          @if (canEdit()) {
-            <button class="option" (click)="showEdit.update(v => !v)">
-              <cos-icon name="edit" size="16"></cos-icon>
-              <span translate="COMPONENTS.ARGUMENT.OPTION_EDIT"></span>
+        @if (showEdit()) {
+          <div class="edit-form">
+            <input [ngModel]="editSubject()" (ngModelChange)="editSubject.set($event)" class="edit-subject-input" [placeholder]="'COMPONENTS.POST_ARGUMENT.SUBJECT_PLACEHOLDER' | translate">
+            <textarea [ngModel]="editText()" (ngModelChange)="editText.set($event)" class="edit-text-input" rows="4"></textarea>
+            <div class="edit-actions">
+              <button class="btn-cancel" (click)="showEdit.set(false)" translate="BTN_CANCEL"></button>
+              <button class="btn-save" (click)="saveEdit()" translate="BTN_SAVE"></button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="argument_footer">
+        <div class="footer_left">
+          <div class="button_group">
+            <button class="btn_vote_argument" (click)="vote(1)">
+              <cos-icon [name]="argument().votes?.up?.selected ? 'thumbs-up-filled-legacy' : 'thumbs-up-legacy'" size="16"></cos-icon>
+            </button>
+            <button class="btn_small_plain count_pro" [class.bold]="argument().votes?.up?.selected">
+              {{ argument().votes?.up?.count || 0 }}
+            </button>
+          </div>
+          <div class="button_group">
+            <button class="btn_vote_argument" (click)="vote(-1)">
+              <cos-icon [name]="argument().votes?.down?.selected ? 'thumbs-down-filled-legacy' : 'thumbs-down-legacy'" size="16"></cos-icon>
+            </button>
+            <button class="btn_small_plain count_con" [class.bold]="argument().votes?.down?.selected">
+              {{ argument().votes?.down?.count || 0 }}
+            </button>
+          </div>
+        </div>
+        <div class="footer_right">
+          @if ((argument().replies?.count || 0) > 0) {
+            <button class="btn_ghost_reply_argument" (click)="showReplies.update(v => !v)">
+              {{ (showReplies() ? 'COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES' : 'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES') | translate:{ count: argument().replies.count } }}
             </button>
           }
-          <button class="option" (click)="copyLink($event)">
-            <cos-icon name="link" size="16"></cos-icon>
-            <span translate="LNK_DIRECT_LINK"></span>
-          </button>
-          <button class="option" (click)="doReport()">
-            <cos-icon name="warning" size="16"></cos-icon>
-            <span translate="COMPONENTS.ARGUMENT.OPTION_REPORT"></span>
-          </button>
-          @if (canEdit()) {
-            <button class="option option--error" (click)="doDelete()">
-              <cos-icon name="trash" size="16"></cos-icon>
-              <span translate="COMPONENTS.ARGUMENT.OPTION_DELETE"></span>
-            </button>
-          }
+          <button class="btn_reply_argument" (click)="showReplyForm.update(v => !v)" translate="COMPONENTS.ARGUMENT.BTN_REPLY"></button>
         </div>
       </div>
     </div>
 
-    @if (argument().subject) {
-      <div class="argument-subject">{{ argument().subject }}</div>
-    }
-
-    @if (!argument().deletedAt && !showEdit()) {
-      <div class="argument-body" #argumentBody [innerHTML]="safe(argument().text)"></div>
-    }
-
-    @if (argument().deletedAt && !showDeletedArgument()) {
-      <div class="argument-deleted">
-        <span translate="VIEWS.TOPICS_TOPICID.LBL_ARGUMENT_DELETED"></span>
-        <button class="btn-show-deleted" (click)="showDeletedArgument.set(true)" translate="VIEWS.TOPICS_TOPICID.BTN_SHOW_DELETED"></button>
-      </div>
-    }
-
-    @if (showEdit()) {
-      <div class="edit-form">
-        <input [ngModel]="editSubject()" (ngModelChange)="editSubject.set($event)" class="edit-subject-input" [placeholder]="'COMPONENTS.POST_ARGUMENT.SUBJECT_PLACEHOLDER' | translate">
-        <textarea [ngModel]="editText()" (ngModelChange)="editText.set($event)" class="edit-text-input" rows="4"></textarea>
-        <div class="edit-actions">
-          <button class="btn-cancel" (click)="showEdit.set(false)" translate="BTN_CANCEL"></button>
-          <button class="btn-save" (click)="saveEdit()" translate="BTN_SAVE"></button>
+    @if (showReplyForm()) {
+      <div class="post-form-container">
+        <textarea
+          [ngModel]="replyText()"
+          (ngModelChange)="replyText.set($event)"
+          class="reply-textarea"
+          rows="3"
+          [placeholder]="'VIEWS.TOPICS_TOPICID.PLACEHOLDER_WRITE_REPLY_HERE' | translate"
+        ></textarea>
+        <div class="reply-form-actions">
+          <button class="btn-cancel" (click)="showReplyForm.set(false)" translate="LNK_CANCEL"></button>
+          <button class="btn_submit" [disabled]="!replyText().trim()" (click)="postReply()" translate="VIEWS.TOPICS_TOPICID.BTN_ARGUMENT_POST_REPLY"></button>
         </div>
       </div>
     }
 
-    <div class="argument-footer">
-      <div class="votes">
-        <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.TOPIC_ARGUMENTS.TOOLTIP_UPVOTE' | translate" pos="top">
-          <button trigger class="btn-vote btn-vote--up" [class.active]="argument().votes?.up?.selected" (click)="vote(1)">
-            <cos-icon name="thumbs-up" size="16"></cos-icon>
-            <span>{{ argument().votes?.up?.count || 0 }}</span>
-          </button>
-        </cos-tooltip>
-        <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.TOPIC_ARGUMENTS.TOOLTIP_DOWNVOTE' | translate" pos="top">
-          <button trigger class="btn-vote btn-vote--down" [class.active]="argument().votes?.down?.selected" (click)="vote(-1)">
-            <cos-icon name="thumbs-down" size="16"></cos-icon>
-            <span>{{ argument().votes?.down?.count || 0 }}</span>
-          </button>
-        </cos-tooltip>
-      </div>
-
-      <div class="reply-actions">
-        @if ((argument().replies?.count || 0) > 0) {
-          <button class="btn-toggle-replies" (click)="showReplies.update(v => !v)">
-            {{ (showReplies() ? 'COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES' : 'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES') | translate:{ count: argument().replies.count } }}
-          </button>
-        }
-        @if (userStore.isAuthenticated()) {
-          <button class="btn-reply" (click)="showReplyForm.update(v => !v)" translate="COMPONENTS.ARGUMENT.BTN_REPLY"></button>
+    @if (showReplies()) {
+      <div class="replies_wrap" [class]="argument().type">
+        @for (reply of argument().replies?.rows; track reply.id) {
+          <div class="reply_container">
+            <div class="reply_referer"></div>
+            <cos-argument
+              [argument]="reply"
+              [topicId]="topicId()"
+              [discussionId]="discussionId()"
+              [root]="root() || argument()"
+              (deleted)="deleted.emit()"
+            ></cos-argument>
+          </div>
         }
       </div>
-    </div>
+    }
   </div>
-
-  @if (showReplyForm()) {
-    <div class="reply-form-wrap">
-      <textarea
-        [ngModel]="replyText()"
-        (ngModelChange)="replyText.set($event)"
-        class="reply-textarea"
-        rows="3"
-        [placeholder]="'COMPONENTS.ARGUMENT.REPLY_PLACEHOLDER' | translate"
-      ></textarea>
-      <div class="reply-form-actions">
-        <button class="btn-cancel" (click)="showReplyForm.set(false)" translate="LNK_CANCEL"></button>
-        <button class="btn-primary" [disabled]="!replyText().trim()" (click)="postReply()" translate="VIEWS.TOPICS_TOPICID.BTN_ARGUMENT_POST_REPLY"></button>
-      </div>
-    </div>
-  }
-
-  @if (showReplies()) {
-    <div class="replies-wrap">
-      @for (reply of argument().replies?.rows; track reply.id) {
-        <cos-argument
-          [argument]="reply"
-          [topicId]="topicId()"
-          [discussionId]="discussionId()"
-          [root]="root() || argument()"
-          (deleted)="deleted.emit()"
-        ></cos-argument>
-      }
-    </div>
-  }
 </div>

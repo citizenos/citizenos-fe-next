@@ -93,15 +93,10 @@ export class TopicDiscussionComponent implements OnInit {
   arguments = toSignal(this.argumentService.items$, { initialValue: [] as any[] });
   loading = toSignal(this.argumentService.isLoading$, { initialValue: false });
 
+  private argumentCount = toSignal(this.argumentService.count, { initialValue: { total: 0, pro: 0, con: 0, poi: 0, reply: 0 } });
+
   counts = computed(() => {
-    const args = this.arguments();
-    return {
-      total: args.length,
-      pro: args.filter((a: any) => a.type === 'pro').length,
-      con: args.filter((a: any) => a.type === 'con').length,
-      poi: args.filter((a: any) => a.type === 'poi').length,
-      reply: args.reduce((acc: number, a: any) => acc + (a.replies?.count || 0), 0)
-    };
+    return this.argumentCount();
   });
 
   flattenedArguments = computed(() => {
