@@ -74,6 +74,7 @@ describe('TopicDiscussionComponent', () => {
   });
 
   it('toggleTypeFilter should update selectedTypes', () => {
+    component.selectedTypes.set([]);
     component.toggleTypeFilter('pro');
     expect(component.selectedTypes()).toEqual(['pro']);
     expect(mockArgumentService.setParam).toHaveBeenCalledWith('types', ['pro']);

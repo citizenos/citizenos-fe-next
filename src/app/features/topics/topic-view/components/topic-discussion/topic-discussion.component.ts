@@ -1,19 +1,22 @@
 import {
   Component, input, signal, inject, ChangeDetectionStrategy, OnInit, computed
 } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { NgClass, DatePipe, UpperCasePipe, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { switchMap, of, take, tap } from 'rxjs';
+import { RouterLink } from '@angular/router';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
-import { AsyncPipe, KeyValuePipe } from '@angular/common';
 
 import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicDiscussionService } from '../../../../../core/services/topic-discussion.service';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
+import { NotificationService } from '../../../../../core/services/notification.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog';
 import { EditDiscussionDeadlineComponent } from '../edit-discussion-deadline/edit-discussion-deadline.component';
+import { MissingDiscussionComponent } from '../missing-discussion/missing-discussion.component';
+import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ArgumentComponent } from '../argument/argument.component';
 import { PostArgumentFormComponent } from '../post-argument-form/post-argument-form.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
@@ -23,17 +26,16 @@ import { PaginationComponent } from '../../../../../shared/components/pagination
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 
-
-
 @Component({
   selector: 'cos-topic-discussion',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DatePipe, TranslateModule, AsyncPipe, KeyValuePipe,
+    NgClass, DatePipe, UpperCasePipe, TranslateModule, AsyncPipe, KeyValuePipe,
     ArgumentComponent, PostArgumentFormComponent,
     ButtonComponent, IconComponent, PaginationComponent,
-    CosDropdownDirective, InputComponent, DropdownComponent
+    CosDropdownDirective, InputComponent, DropdownComponent,
+    RouterLink
   ],
   templateUrl: './topic-discussion.component.html',
   styleUrls: ['./topic-discussion.component.scss']
@@ -44,25 +46,26 @@ export class TopicDiscussionComponent implements OnInit {
   private topicService = inject(TopicService);
   private discussionService = inject(TopicDiscussionService);
   private argumentService = inject(TopicArgumentService);
+  private userStore = inject(UserStore);
   private dialog = inject(DialogService);
-  userStore = inject(UserStore);
+  private notification = inject(NotificationService);
 
   showPostForm = signal(false);
-  
+
   argumentTypes = [
-    { value: 'pro', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_PRO' },
-    { value: 'con', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_CON' },
-    { value: 'poi', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_POI' }
-  ];
-  orderByOptions = [
-    { value: 'default', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER_BY_DEFAULT' },
-    { value: 'rating', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER_BY_RATING' },
-    { value: 'newest', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER_BY_NEWEST' },
-    { value: 'oldest', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER_BY_OLDEST' }
+    { value: 'pro', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_ARGUMENT_TYPE_PRO' },
+    { value: 'con', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_ARGUMENT_TYPE_CON' },
+    { value: 'poi', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_ARGUMENT_TYPE_POI' }
   ];
 
-  selectedTypes = signal<string[]>([]);
-  selectedOrder = signal<string>('default');
+  orderByOptions = [
+    { value: 'relevance', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_SORT_BY_RELEVANCE' },
+    { value: 'popularity', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_SORT_BY_POPULARITY' },
+    { value: 'date', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_SORT_BY_DATE' }
+  ];
+
+  selectedTypes = signal<string[]>(['pro', 'con', 'poi']);
+  selectedOrder = signal<string>('relevance');
 
   discussion = toSignal(
     toObservable(this.topic).pipe(
@@ -74,6 +77,12 @@ export class TopicDiscussionComponent implements OnInit {
               this.argumentService.setParam('discussionId', disc.id);
               this.argumentService.setParam('limit', 5);
               this.argumentService.loadPage(1);
+
+              if (!disc.question && disc.createdAt === disc.updatedAt && this.canUpdate()) {
+                this.dialog.open(MissingDiscussionComponent, {
+                  data: { topic: topic }
+                });
+              }
             })
           );
         }
@@ -82,70 +91,68 @@ export class TopicDiscussionComponent implements OnInit {
     )
   );
 
-  arguments = toSignal(this.argumentService.items$, { initialValue: [] });
+  arguments = toSignal(this.argumentService.items$, { initialValue: [] as any[] });
   loading = toSignal(this.argumentService.isLoading$, { initialValue: false });
-  counts = toSignal(this.argumentService.count, { initialValue: { total: 0, pro: 0, con: 0, poi: 0, reply: 0 } });
-  
-  // Keep these as observables to pipe to PaginationComponent
-  totalPages$ = this.argumentService.totalPages;
-  page$ = this.argumentService.page;
 
-  flattenedArguments = computed(() => this.flattenArguments(this.arguments() as any[]));
+  counts = computed(() => {
+    const args = this.arguments();
+    return {
+      total: args.length,
+      pro: args.filter((a: any) => a.type === 'pro').length,
+      con: args.filter((a: any) => a.type === 'con').length,
+      poi: args.filter((a: any) => a.type === 'poi').length,
+      reply: args.reduce((acc: number, a: any) => acc + (a.replies?.count || 0), 0)
+    };
+  });
 
-  ngOnInit() {
+  flattenedArguments = computed(() => {
+    return this.arguments();
+  });
+
+  ngOnInit(): void {
+    // Initial load handled by toSignal/switchMap
   }
 
-
-  private flattenArguments(rows: any[]): any[] {
-    const result: any[] = [];
-    rows.forEach(row => {
-      result.push(row);
-      if (row.replies?.rows?.length) {
-        row.replies.count = row.replies.rows.length;
-        row.replies.rows.forEach((reply: any) => {
-          if (reply.children?.length) {
-            row.replies.count += reply.children.length;
-          }
-        });
-      }
-    });
-    return result;
+  canPost() {
+    return this.userStore.isAuthenticated();
   }
 
   canUpdate() {
     return this.topicService.canUpdate(this.topic());
   }
 
-  canPost() {
-    return this.userStore.isAuthenticated() && this.discussion();
+  canEditDeadline() {
+    return this.canUpdate() && [this.topicService.STATUSES.draft, this.topicService.STATUSES.ideation, this.topicService.STATUSES.inProgress].indexOf(this.topic().status) > -1;
   }
 
-  getArgumentPercentage(count: number) {
-    const total = this.counts().pro + this.counts().con;
+  hasDiscussionEndedExpired() {
+    const disc = this.discussion();
+    if (!disc) return false;
+    return this.discussionService.hasDiscussionEndedExpired(this.topic(), disc);
+  }
+
+  getArgumentPercentage(count: number): number {
+    const total = this.counts().total;
     if (total === 0) return 0;
     return (count / total) * 100;
   }
 
   toggleTypeFilter(type: string) {
     const current = this.selectedTypes();
-    const next = current.includes(type) ? current.filter(t => t !== type) : [...current, type];
-    this.selectedTypes.set(next);
-    this.argumentService.setParam('types', next.length ? next : null);
+    if (current.includes(type)) {
+      this.selectedTypes.set(current.filter(t => t !== type));
+    } else {
+      this.selectedTypes.set([...current, type]);
+    }
+    const selected = this.selectedTypes();
+    this.argumentService.setParam('types', selected.length ? selected : null);
     this.argumentService.loadPage(1);
   }
 
   setOrder(order: string) {
     this.selectedOrder.set(order);
-    this.argumentService.setParam('orderBy', order === 'default' ? null : order);
+    this.argumentService.setParam('sortOrder', order);
     this.argumentService.loadPage(1);
-  }
-
-  loadPage(page: number) {
-    this.argumentService.loadPage(page);
-  }
-
-  reload() {
-    this.argumentService.loadPage(this.argumentService.page.value);
   }
 
   onArgumentPosted() {
@@ -153,11 +160,60 @@ export class TopicDiscussionComponent implements OnInit {
     this.reload();
   }
 
+  reload() {
+    this.argumentService.loadPage((this.argumentService as any).page.value);
+  }
+
   openEditDeadline() {
+    this.dialog.open(EditDiscussionDeadlineComponent, {
+      data: {
+        topic: this.topic(),
+        discussion: this.discussion()
+      }
+    });
+  }
+
+  closeDiscussion() {
     const disc = this.discussion();
     if (!disc) return;
-    this.dialog.open(EditDiscussionDeadlineComponent, {
-      data: { discussion: disc, topic: this.topic() }
+
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        heading: 'COMPONENTS.CLOSE_DISCUSSION_CONFIRM.HEADING',
+        description: 'COMPONENTS.CLOSE_DISCUSSION_CONFIRM.ARE_YOU_SURE',
+        confirmBtn: 'COMPONENTS.CLOSE_DISCUSSION_CONFIRM.CONFIRM_YES',
+        closeBtn: 'COMPONENTS.CLOSE_DISCUSSION_CONFIRM.CONFIRM_NO',
+        level: 'warn'
+      }
+    }).afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        disc.deadline = new Date().toISOString();
+        this.saveDiscussion(disc);
+      }
     });
+  }
+
+  saveDiscussion(discussion: any) {
+    const payload = {
+      deadline: discussion.deadline
+    };
+    this.discussionService.update(this.topic().id, discussion.id, payload)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.topicService.reloadTopic();
+          this.dialog.closeAll();
+        },
+        error: (res) => {
+          if (res.errors) {
+            Object.values(res.errors).forEach((message) => {
+              if (typeof message === 'string')
+                this.notification.showRaw('error', message);
+            });
+          } else if (res.message) {
+            this.notification.showRaw('error', res.message);
+          }
+        }
+      });
   }
 }
