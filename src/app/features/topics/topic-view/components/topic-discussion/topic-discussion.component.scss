@@ -3,17 +3,22 @@
 .arguments_wrap {
   display: flex;
   flex-direction: column;
+  background-color: #c9dff1;
+  padding: 32px;
+  min-height: 100%;
+
+  @include mixins.mobile {
+    padding: 16px;
+  }
 
   .arguments_header {
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    padding-bottom: 24px;
     gap: 16px;
-    border-radius: 16px 16px 0 0;
-    background-color: #c9dff1;
 
     @include mixins.mobile {
-      padding: 16px;
+      padding: 0;
     }
 
     .header_section {
@@ -59,12 +64,9 @@
   }
 
   .arguments_content {
-    background-color: var(--color-blue-100);
-    padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    border-radius: 0 0 16px 16px;
 
     .discussion_info_text_wrap {
       display: flex;
@@ -204,9 +206,9 @@
       }
 
       .dot {
-        height: 8px;
-        width: 8px;
-        background-color: var(--color-argument-info, #5C9CD0);
+        height: 12px;
+        width: 12px;
+        background-color: #5C9CD0;
         border-radius: 50%;
       }
 
@@ -233,7 +235,7 @@
 
         &.reply {
           .dot {
-            background-color: var(--color-border, #E0E4E8);
+            background-color: #E0E4E8;
           }
         }
 
@@ -291,15 +293,16 @@
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      padding: 8px 12px;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
+      padding: 0 16px;
       cursor: pointer;
-      background: var(--color-surfaces);
+      background: transparent;
+      height: 48px;
+      box-sizing: border-box;
 
       .selected_item {
         font-weight: 600;
         font-size: 13px;
+        padding-top: 12px;
       }
     }
 

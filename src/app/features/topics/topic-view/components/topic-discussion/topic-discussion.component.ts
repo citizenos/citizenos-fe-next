@@ -53,19 +53,18 @@ export class TopicDiscussionComponent implements OnInit {
   showPostForm = signal(false);
 
   argumentTypes = [
-    { value: 'pro', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_ARGUMENT_TYPE_PRO' },
-    { value: 'con', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_ARGUMENT_TYPE_CON' },
-    { value: 'poi', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_ARGUMENT_TYPE_POI' }
+    { value: 'pro', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_PRO' },
+    { value: 'con', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_CON' },
+    { value: 'poi', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_POI' }
   ];
-
+  
   orderByOptions = [
-    { value: 'relevance', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_SORT_BY_RELEVANCE' },
-    { value: 'popularity', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_SORT_BY_POPULARITY' },
-    { value: 'date', title: 'COMPONENTS.TOPIC_ARGUMENTS.LBL_SORT_BY_DATE' }
+    { value: 'popularity', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER_BY_POPULARITY' },
+    { value: 'date', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER_BY_DATE' }
   ];
 
   selectedTypes = signal<string[]>(['pro', 'con', 'poi']);
-  selectedOrder = signal<string>('relevance');
+  selectedOrder = signal<string>('popularity');
 
   discussion = toSignal(
     toObservable(this.topic).pipe(

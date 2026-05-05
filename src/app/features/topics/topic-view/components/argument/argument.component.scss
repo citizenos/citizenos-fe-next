@@ -1,24 +1,44 @@
 .argument {
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .argument-inner {
   background: var(--color-surfaces, #f9fafb);
-  border-radius: var(--radius-md, 8px);
+  border-radius: 8px;
   padding: 16px;
-  border-left: 4px solid var(--color-border);
+  width: 85%;
+  max-width: 680px;
+  box-sizing: border-box;
+
+  @media (max-width: 550px) {
+    width: calc(100% - 16px);
+  }
 }
 
 .argument--pro .argument-inner {
-  border-left-color: var(--color-success, #5ab467);
+  border-left: 4px solid #5ab467;
+  background-color: #f1f8f1;
+  align-self: flex-start;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .argument--con .argument-inner {
-  border-left-color: var(--color-error, #ef4025);
+  border-right: 4px solid #ef4025;
+  background-color: #fef2f0;
+  align-self: flex-end;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .argument--poi .argument-inner {
-  border-left-color: var(--color-primary, #1168a8);
+  border-left: 4px solid #5C9CD0;
+  background-color: #f0f7fd;
+  align-self: center;
+  width: calc(100% - 32px);
+  max-width: 100%;
 }
 
 .argument-header {

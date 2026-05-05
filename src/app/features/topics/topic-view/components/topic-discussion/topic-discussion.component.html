@@ -125,7 +125,7 @@
                   @if (selectedTypes().length === 1) {
                     {{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_' + selectedTypes()[0].toUpperCase() | translate | uppercase }}
                   } @else {
-                    {{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_TYPE' | translate }}
+                    {{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_TYPE' | translate | uppercase }}
                   }
                 </div>
                 <div>
@@ -134,10 +134,10 @@
               </div>
               <div class="options">
                 @for (option of argumentTypes; track option.value) {
-                  <div class="option check" (click)="toggleTypeFilter(option.value)">
+                  <div class="option check" (click)="toggleTypeFilter(option.value); $event.stopPropagation()">
                     <label class="checkbox">
-                      <span>{{ option.title | uppercase | translate }}</span>
-                      <input type="checkbox" [checked]="selectedTypes().includes(option.value)">
+                      <span>{{ option.title | translate | uppercase }}</span>
+                      <input type="checkbox" [checked]="selectedTypes().includes(option.value)" (click)="$event.stopPropagation()">
                       <span class="checkmark"></span>
                     </label>
                   </div>
@@ -159,7 +159,7 @@
               <div class="options">
                 @for (option of orderByOptions; track option.value) {
                   <div class="option" (click)="setOrder(option.value)">
-                    {{ option.title | uppercase | translate }}
+                    {{ option.title | translate | uppercase }}
                   </div>
                 }
               </div>

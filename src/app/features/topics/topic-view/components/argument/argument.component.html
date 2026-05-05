@@ -3,7 +3,7 @@
 
     <div class="argument-header">
       <div class="type-badge type-badge--{{ argument().type }}">
-        {{ 'COMPONENTS.ARGUMENT.TYPE_' + argument().type.toUpperCase() | translate }}
+        {{ 'COMPONENTS.TOPIC_ARGUMENTS.GRAPH_LEGEND_' + argument().type.toUpperCase() | translate }}
       </div>
 
       <div class="author-row">
@@ -17,7 +17,7 @@
         <span class="author-name">{{ argument().creator?.name }}</span>
         <span class="created-at">{{ argument().createdAt | date:'y-MM-dd HH:mm' }}</span>
         @if (isEdited()) {
-          <span class="edited-badge" translate="COMPONENTS.ARGUMENT.LBL_EDITED"></span>
+          <span class="edited-badge" translate="VIEWS.TOPICS_TOPICID.LBL_EDITED"></span>
         }
       </div>
 
@@ -62,8 +62,8 @@
 
     @if (argument().deletedAt && !showDeletedArgument()) {
       <div class="argument-deleted">
-        <span translate="COMPONENTS.ARGUMENT.LBL_DELETED"></span>
-        <button class="btn-show-deleted" (click)="showDeletedArgument.set(true)" translate="COMPONENTS.ARGUMENT.BTN_SHOW_DELETED"></button>
+        <span translate="VIEWS.TOPICS_TOPICID.LBL_ARGUMENT_DELETED"></span>
+        <button class="btn-show-deleted" (click)="showDeletedArgument.set(true)" translate="VIEWS.TOPICS_TOPICID.BTN_SHOW_DELETED"></button>
       </div>
     }
 
@@ -117,8 +117,8 @@
         [placeholder]="'COMPONENTS.ARGUMENT.REPLY_PLACEHOLDER' | translate"
       ></textarea>
       <div class="reply-form-actions">
-        <button class="btn-cancel" (click)="showReplyForm.set(false)" translate="BTN_CANCEL"></button>
-        <button class="btn-primary" [disabled]="!replyText().trim()" (click)="postReply()" translate="COMPONENTS.ARGUMENT.BTN_POST_REPLY"></button>
+        <button class="btn-cancel" (click)="showReplyForm.set(false)" translate="LNK_CANCEL"></button>
+        <button class="btn-primary" [disabled]="!replyText().trim()" (click)="postReply()" translate="VIEWS.TOPICS_TOPICID.BTN_ARGUMENT_POST_REPLY"></button>
       </div>
     </div>
   }
