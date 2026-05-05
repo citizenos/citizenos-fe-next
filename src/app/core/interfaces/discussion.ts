@@ -8,6 +8,6 @@ export interface Discussion {
 }
 
 export interface DiscussionData {
-  question: string;
-  deadline: string | null;
+  question?: string;
+  deadline?: string | null;
 }

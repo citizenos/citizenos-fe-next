@@ -40,4 +40,8 @@ export class TopicDiscussionService {
       .put<ApiResponse<Discussion>>(`${this.base(topicId)}/${discussionId}`, payload, { withCredentials: true })
       .pipe(map(r => r.data!));
   }
+
+  hasDiscussionEndedExpired(topic: any, discussion: any) {
+    return (['draft', 'followUp', 'closed'].indexOf(topic.status) > -1) || (discussion.deadline && (new Date() > new Date(discussion.deadline)));
+  }
 }
