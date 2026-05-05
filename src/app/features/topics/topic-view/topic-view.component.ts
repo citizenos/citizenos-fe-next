@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, inject, signal, HostListener, ChangeDetec
 import { NgClass, isPlatformBrowser } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { switchMap, combineLatest, map, of, tap, catchError, startWith, take } from 'rxjs';
 
 import { TopicService } from '../../../core/services/topic.service';
@@ -76,14 +76,59 @@ export class TopicViewComponent implements OnInit, OnDestroy {
   topic = signal<Topic | null>(null);
   loading = signal(true);
   hideTopicContent = signal(false);
-  ideation = signal<any>(null);
-  vote = signal<any>(null);
-  eventsCount = signal<number>(0);
-  attachments = signal<any[]>([]);
-  groups = signal<any[]>([]);
-  members = signal<any[]>([]);
-
   topicId = '';
+
+  ideation = toSignal(
+    toObservable(this.topic).pipe(
+      switchMap(topic => topic?.ideationId ? this.topicIdeationService.get({ topicId: topic.id, ideationId: topic.ideationId }).pipe(catchError(() => of(null))) : of(null))
+    ), { initialValue: null }
+  );
+
+  vote = toSignal(
+    toObservable(this.topic).pipe(
+      switchMap(topic => topic?.voteId ? this.topicVoteService.get({ topicId: topic.id, voteId: topic.voteId }).pipe(catchError(() => of(null))) : of(null))
+    ), { initialValue: null }
+  );
+
+  eventsCount = toSignal(
+    toObservable(this.topic).pipe(
+      switchMap(topic => {
+        if (topic && (topic.status === this.topicService.STATUSES.followUp || topic.status === this.topicService.STATUSES.closed)) {
+          return this.topicEventService.query({ topicId: topic.id }).pipe(
+            map((res: any) => res.count || 0),
+            catchError(() => of(0))
+          );
+        }
+        return of(0);
+      })
+    ), { initialValue: 0 }
+  );
+
+  groups = toSignal(
+    toObservable(this.topic).pipe(
+      switchMap(topic => {
+        if (topic) {
+          return this.topicService.loadGroups(topic.id).pipe(
+            tap(groups => this.updateNavigation(topic, groups)),
+            catchError(() => of([]))
+          );
+        }
+        return of([]);
+      })
+    ), { initialValue: [] }
+  );
+
+  attachments = toSignal(
+    toObservable(this.topic).pipe(
+      switchMap(topic => topic ? this.topicService.loadAttachments(topic.id).pipe(catchError(() => of([]))) : of([]))
+    ), { initialValue: [] }
+  );
+
+  members = toSignal(
+    toObservable(this.topic).pipe(
+      switchMap(topic => topic ? this.topicMemberUserService.loadItems(topic.id).pipe(catchError(() => of([]))) : of([]))
+    ), { initialValue: [] }
+  );
 
   tabSelected = signal<string | null>(null);
   tabTablet = signal<string>('');
@@ -122,7 +167,6 @@ export class TopicViewComponent implements OnInit, OnDestroy {
               this.topic.set(topic);
               this.hideTopicContent.set(!!topic.report?.moderatedReasonType);
               this.seoService.setPageTitle(topic.title);
-              this.loadRelatedData(topic);
               this.loading.set(false);
 
               const fragment = this.route.snapshot.fragment;
@@ -157,52 +201,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
     // Cleanup if necessary
   }
 
-  loadRelatedData(topic: Topic) {
-    if (topic.ideationId) {
-      this.topicIdeationService.get({ topicId: topic.id, ideationId: topic.ideationId })
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((ideation: any) => this.ideation.set(ideation));
-    }
-
-    if (topic.voteId) {
-      this.topicVoteService.get({ topicId: topic.id, voteId: topic.voteId })
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((vote: any) => this.vote.set(vote));
-    }
-
-    if (topic.status === this.topicService.STATUSES.followUp || topic.status === this.topicService.STATUSES.closed) {
-      this.topicEventService.query({ topicId: topic.id })
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: (res: any) => this.eventsCount.set(res.count || 0),
-          error: () => { }
-        });
-    }
-
-    this.topicService.loadGroups(topic.id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (groups: any[]) => {
-          this.groups.set(groups);
-          this.updateNavigation(topic, groups);
-        },
-        error: () => { }
-      });
-
-    this.topicService.loadAttachments(topic.id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (attachments: any[]) => this.attachments.set(attachments),
-        error: () => { }
-      });
-
-    this.topicMemberUserService.loadItems(topic.id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (members: any[]) => this.members.set(members),
-        error: () => { }
-      });
-  }
+  // loadRelatedData has been refactored to declarative signal derivations.
 
   private updateNavigation(topic: Topic, groups: any[]) {
     const isPrivate = topic.visibility === this.topicService.VISIBILITY.private;

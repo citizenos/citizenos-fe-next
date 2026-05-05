@@ -20,8 +20,10 @@ const mockArgumentService = {
   count: countSubject.asObservable(),
   setParam: vi.fn(),
   loadItems: vi.fn(() => of([])),
+  loadPage: vi.fn(),
   params: new BehaviorSubject({ page: 1, offset: 0, limit: 10 }),
   page: new BehaviorSubject(1),
+  totalPages: new BehaviorSubject(1),
 };
 const mockDiscussionService = { get: vi.fn() };
 const mockTopicService = { canUpdate: vi.fn() };
@@ -71,17 +73,17 @@ describe('TopicDiscussionComponent', () => {
     expect(component.canPost()).toBeFalsy();
   });
 
-  it('setFilter should update activeFilter', () => {
-    component.setFilter('pro');
-    expect(component.activeFilter()).toBe('pro');
+  it('toggleTypeFilter should update selectedTypes', () => {
+    component.toggleTypeFilter('pro');
+    expect(component.selectedTypes()).toEqual(['pro']);
     expect(mockArgumentService.setParam).toHaveBeenCalledWith('types', ['pro']);
-    expect(mockArgumentService.loadItems).toHaveBeenCalled();
+    expect(mockArgumentService.loadPage).toHaveBeenCalledWith(1);
   });
 
-  it('setFilter null should clear filter', () => {
-    component.activeFilter.set('pro');
-    component.setFilter(null);
-    expect(component.activeFilter()).toBeNull();
+  it('toggleTypeFilter toggling twice should remove filter', () => {
+    component.selectedTypes.set(['pro']);
+    component.toggleTypeFilter('pro');
+    expect(component.selectedTypes()).toEqual([]);
     expect(mockArgumentService.setParam).toHaveBeenCalledWith('types', null);
   });
 
@@ -89,11 +91,11 @@ describe('TopicDiscussionComponent', () => {
     component.showPostForm.set(true);
     component.onArgumentPosted();
     expect(component.showPostForm()).toBe(false);
-    expect(mockArgumentService.loadItems).toHaveBeenCalled();
+    expect(mockArgumentService.loadPage).toHaveBeenCalled();
   });
 
-  it('reload calls loadItems', () => {
+  it('reload calls loadPage', () => {
     component.reload();
-    expect(mockArgumentService.loadItems).toHaveBeenCalled();
+    expect(mockArgumentService.loadPage).toHaveBeenCalledWith(mockArgumentService.page.value);
   });
 });

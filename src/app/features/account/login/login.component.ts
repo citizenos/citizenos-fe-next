@@ -58,7 +58,7 @@ import { UserService } from '../../../core/services/user.service';
             </div>
           }
 
-          <cos-input 
+          <cos-input
             [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate"
             [hasError]="loginForm.controls.email.touched && loginForm.controls.email.invalid"
             [errorMessage]="'Invalid email address'"
@@ -66,7 +66,7 @@ import { UserService } from '../../../core/services/user.service';
             <input type="email" formControlName="email" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate">
           </cos-input>
 
-          <cos-input 
+          <cos-input
             [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate"
             [hasError]="loginForm.controls.password.touched && loginForm.controls.password.invalid"
             [errorMessage]="'Password is required'"
@@ -82,11 +82,11 @@ import { UserService } from '../../../core/services/user.service';
           </div>
 
           <div class="form-actions">
-            <cos-button 
-              type="submit" 
+            <cos-button
+              type="submit"
               variant="primary"
               size="lg"
-              [isLoading]="userStore.isLoading()" 
+              [isLoading]="userStore.isLoading()"
               [isDisabled]="loginForm.invalid"
             >
               {{ 'COMPONENTS.LOGIN_FORM.LOGIN_BTN_LOGIN' | translate }}
@@ -108,6 +108,12 @@ import { UserService } from '../../../core/services/user.service';
       gap: 40px;
       padding: 0;
       width: 100%;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
     .nav-back {
@@ -145,7 +151,7 @@ import { UserService } from '../../../core/services/user.service';
       border-radius: var(--radius-pill);
       border: none;
       transition: background-color 0.2s;
-      
+
       &:hover {
         background-color: var(--color-secondary);
       }
@@ -158,13 +164,13 @@ import { UserService } from '../../../core/services/user.service';
       margin-bottom: 24px;
       color: var(--color-text-muted);
       font-size: 14px;
-      
+
       &::before, &::after {
         content: '';
         flex: 1;
         border-bottom: 1px solid var(--color-border);
       }
-      
+
       span {
         padding: 0 16px;
       }
@@ -210,7 +216,7 @@ import { UserService } from '../../../core/services/user.service';
       font-size: 14px;
       a { color: var(--color-link); text-decoration: none; font-weight: 600; }
     }
-    
+
     .form-actions {
       width: 100%;
 

@@ -4,7 +4,8 @@ import {
 import { DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { switchMap, of, take, tap } from 'rxjs';
-import { toSignal, toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { AsyncPipe, KeyValuePipe } from '@angular/common';
 
 import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -18,15 +19,21 @@ import { PostArgumentFormComponent } from '../post-argument-form/post-argument-f
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
+import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
+import { InputComponent } from '../../../../../shared/components/input/input.component';
+
+
 
 @Component({
   selector: 'cos-topic-discussion',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DatePipe, TranslateModule,
+    DatePipe, TranslateModule, AsyncPipe, KeyValuePipe,
     ArgumentComponent, PostArgumentFormComponent,
-    ButtonComponent, IconComponent,
+    ButtonComponent, IconComponent, PaginationComponent,
+    CosDropdownDirective, InputComponent, DropdownComponent
   ],
   templateUrl: './topic-discussion.component.html',
   styleUrls: ['./topic-discussion.component.scss']
@@ -41,7 +48,21 @@ export class TopicDiscussionComponent implements OnInit {
   userStore = inject(UserStore);
 
   showPostForm = signal(false);
-  activeFilter = signal<string | null>(null);
+  
+  argumentTypes = [
+    { value: 'pro', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_PRO' },
+    { value: 'con', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_CON' },
+    { value: 'poi', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_POI' }
+  ];
+  orderByOptions = [
+    { value: 'default', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER_BY_DEFAULT' },
+    { value: 'rating', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER_BY_RATING' },
+    { value: 'newest', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER_BY_NEWEST' },
+    { value: 'oldest', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER_BY_OLDEST' }
+  ];
+
+  selectedTypes = signal<string[]>([]);
+  selectedOrder = signal<string>('default');
 
   discussion = toSignal(
     toObservable(this.topic).pipe(
@@ -51,8 +72,8 @@ export class TopicDiscussionComponent implements OnInit {
             tap(disc => {
               this.argumentService.setParam('topicId', topic.id);
               this.argumentService.setParam('discussionId', disc.id);
-              this.argumentService.setParam('limit', 20);
-              this.argumentService.loadItems().subscribe(); // ItemsListService needs a trigger
+              this.argumentService.setParam('limit', 5);
+              this.argumentService.loadPage(1);
             })
           );
         }
@@ -64,6 +85,10 @@ export class TopicDiscussionComponent implements OnInit {
   arguments = toSignal(this.argumentService.items$, { initialValue: [] });
   loading = toSignal(this.argumentService.isLoading$, { initialValue: false });
   counts = toSignal(this.argumentService.count, { initialValue: { total: 0, pro: 0, con: 0, poi: 0, reply: 0 } });
+  
+  // Keep these as observables to pipe to PaginationComponent
+  totalPages$ = this.argumentService.totalPages;
+  page$ = this.argumentService.page;
 
   flattenedArguments = computed(() => this.flattenArguments(this.arguments() as any[]));
 
@@ -95,14 +120,32 @@ export class TopicDiscussionComponent implements OnInit {
     return this.userStore.isAuthenticated() && this.discussion();
   }
 
-  setFilter(type: string | null) {
-    this.activeFilter.set(type);
-    this.argumentService.setParam('types', type ? [type] : null);
-    this.argumentService.loadItems().subscribe();
+  getArgumentPercentage(count: number) {
+    const total = this.counts().pro + this.counts().con;
+    if (total === 0) return 0;
+    return (count / total) * 100;
+  }
+
+  toggleTypeFilter(type: string) {
+    const current = this.selectedTypes();
+    const next = current.includes(type) ? current.filter(t => t !== type) : [...current, type];
+    this.selectedTypes.set(next);
+    this.argumentService.setParam('types', next.length ? next : null);
+    this.argumentService.loadPage(1);
+  }
+
+  setOrder(order: string) {
+    this.selectedOrder.set(order);
+    this.argumentService.setParam('orderBy', order === 'default' ? null : order);
+    this.argumentService.loadPage(1);
+  }
+
+  loadPage(page: number) {
+    this.argumentService.loadPage(page);
   }
 
   reload() {
-    this.argumentService.loadItems().subscribe();
+    this.argumentService.loadPage(this.argumentService.page.value);
   }
 
   onArgumentPosted() {
