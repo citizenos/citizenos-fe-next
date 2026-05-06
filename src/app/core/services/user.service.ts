@@ -112,6 +112,16 @@ export class UserService {
     return this.http.delete(`${this.apiUrl}/api/users/self`, { withCredentials: true });
   }
 
+  updateTermsVersion(termsVersion: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/api/users/self`, { termsVersion }, { withCredentials: true });
+  }
+
+  listUserConnections(userId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/users/${userId}/userconnections`, { withCredentials: true }).pipe(
+      map(res => res.data)
+    );
+  }
+
   uploadUserImage(file: File): Observable<any> {
     const path = `${this.apiUrl}/api/users/self/upload`;
     return this.uploadService.upload(path, file);

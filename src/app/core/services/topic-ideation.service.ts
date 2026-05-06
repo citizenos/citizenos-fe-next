@@ -322,6 +322,22 @@ export class TopicIdeationService extends ItemsListService {
       .pipe(map(res => res.data));
   }
 
+  getIdeaReport(data: { topicId: string; ideationId: string; ideaId: string; reportId: string; token: string }): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/topics/${data.topicId}/ideations/${data.ideationId}/ideas/${data.ideaId}/reports/${data.reportId}`);
+    return this.http.get<ApiResponse<any>>(path, {
+      headers: { Authorization: `Bearer ${data.token}` },
+      withCredentials: true, observe: 'body', responseType: 'json'
+    }).pipe(map(res => res.data));
+  }
+
+  moderateIdea(data: { topicId: string; ideationId: string; ideaId: string; reportId: string; token: string; report: any }): Observable<any> {
+    const path = this.getAbsoluteUrlApi(`/api/topics/${data.topicId}/ideations/${data.ideationId}/ideas/${data.ideaId}/reports/${data.reportId}/moderate`);
+    return this.http.post<ApiResponse<any>>(path, data.report, {
+      headers: { Authorization: `Bearer ${data.token}` },
+      withCredentials: true, observe: 'body', responseType: 'json'
+    }).pipe(map(res => res.data));
+  }
+
   hasIdeationEnded(topic: Topic, ideation: any): boolean {
     if ([this.STATUSES.draft, this.STATUSES.ideation].indexOf(topic.status) === -1) {
       return true;

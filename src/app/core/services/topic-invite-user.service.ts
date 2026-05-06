@@ -38,4 +38,22 @@ export class TopicInviteUserService {
       { withCredentials: true }
     ).pipe(map(res => res.data));
   }
+
+  get(params: { topicId: string; inviteId: string }): Observable<any> {
+    return this.http.get<ApiResponse<any>>(
+      `${this.baseUrl}/api/users/self/topics/${params.topicId}/invites/users/${params.inviteId}`,
+      { withCredentials: true }
+    ).pipe(map(res => {
+      const data = res.data;
+      data.user.isRegistered = res.status.code !== 20002;
+      return data;
+    }));
+  }
+
+  accept(data: { topicId: string; inviteId: string; [key: string]: any }): Observable<any> {
+    return this.http.post<ApiResponse<any>>(
+      `${this.baseUrl}/api/users/self/topics/${data.topicId}/invites/users/${data.inviteId}/accept`,
+      data, { withCredentials: true }
+    ).pipe(map(res => res.data));
+  }
 }
