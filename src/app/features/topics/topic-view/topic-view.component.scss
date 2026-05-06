@@ -237,6 +237,54 @@
 
 
 
+.info_section {
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surfaces);
+  padding: 16px;
+  min-width: 288px;
+  max-width: 288px;
+  gap: 8px;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .info_items_wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .info_header {
+      display: flex;
+      justify-content: space-between;
+
+      .info_title {
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 16px;
+        color: var(--color-text);
+      }
+    }
+
+    .info_item {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 14px;
+      color: var(--color-text-main);
+    }
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+  }
+}
+
 .topic_tabs {
   display: flex;
   background-color: var(--color-surfaces);

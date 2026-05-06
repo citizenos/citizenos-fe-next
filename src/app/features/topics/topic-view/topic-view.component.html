@@ -259,6 +259,21 @@
 
       <app-topic-participants-section [topic]="topic()!" [members]="members()" />
 
+      @if (userStore.isAuthenticated()) {
+      <div class="info_section notifications">
+        <div class="info_items_wrap">
+          <div class="info_header">
+            <div class="info_title" translate="VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_HEADING"></div>
+          </div>
+          <div class="info_item" translate="VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_DESC"></div>
+          <button class="btn_medium_secondary bold" (click)="appTopicNotificationSettings()">
+            <div class="icon"><cos-icon name="bell" size="16"></cos-icon></div>
+            <span translate="VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_BTN"></span>
+          </button>
+        </div>
+      </div>
+      }
+
       <app-topic-state-items [cosTourItem]="{ tourid: 'topic', index: 5, position: 'left' }" [topic]="topic()!"
         [ideation]="ideation()" [vote]="vote()" [eventCount]="eventsCount()" (navigateTab)="selectTab($event)"
         (startDiscussion)="startDiscussion($event)" (startVote)="startVote($event)"

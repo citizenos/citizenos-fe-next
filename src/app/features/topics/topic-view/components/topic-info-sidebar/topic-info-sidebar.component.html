@@ -108,6 +108,14 @@
     </div>
     
     <div class="info_item">
+      @if (topic().visibility === 'private') {
+        <cos-icon name="lock-legacy" size="16"></cos-icon>
+      } @else {
+        <cos-icon name="public-topic" size="16"></cos-icon>
+      }
+      <span [translate]="'TXT_TOPIC_VISIBILITY_' + topic().visibility.toUpperCase()"></span>
+    </div>
+    <div class="info_item">
       <cos-icon name="creator-legacy" size="16"></cos-icon>
       <span>{{ topic().creator.name }}</span>
     </div>
