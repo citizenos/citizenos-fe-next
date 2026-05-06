@@ -3,7 +3,6 @@
 .arguments_wrap {
   display: flex;
   flex-direction: column;
-  padding: 32px;
   min-height: 100%;
 
   @include mixins.mobile {
@@ -144,25 +143,25 @@
     width: 100%;
   }
 
-    .selection {
-      position: relative;
-      cursor: pointer;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      border: 1px solid #718DA2;
-      border-radius: 8px;
-      padding: 8px 16px;
-      background: var(--color-surfaces);
-      min-height: 48px;
+  .selection {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #718DA2;
+    border-radius: 8px;
+    padding: 8px 16px;
+    background: var(--color-surfaces);
+    min-height: 48px;
 
-      .selected_item {
-        font-weight: 600;
-        font-size: 13px;
-        text-transform: uppercase;
-      }
+    .selected_item {
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
     }
+  }
 
   .options {
     display: none;
@@ -180,13 +179,6 @@
     padding: 16px;
     box-shadow: 0px 8px 20px 0px rgba(220, 231, 240, 0.3),
       0px 12px 16px 0px rgba(50, 85, 112, 0.1);
-  }
-
-  &.dropdown_active {
-    .options {
-      display: flex;
-    }
-  }
 
     &.filter_options {
       padding: 16px 8px;
@@ -213,6 +205,12 @@
       &:hover {
         color: var(--color-link);
       }
+    }
+  }
+
+  &.dropdown_active {
+    .options {
+      display: flex;
     }
   }
 }
@@ -469,50 +467,7 @@
   }
 }
 
-.post-form-container {
-  margin-top: 16px;
-  background: var(--color-surfaces);
-  border-radius: 16px;
-  padding: 24px;
-  border: 1px solid var(--color-border);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 
-  textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    font-size: 14px;
-    min-height: 100px;
-
-    &:focus {
-      outline: none;
-      border-color: var(--color-link);
-    }
-  }
-
-  .reply-form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-
-    .btn-cancel {
-      background: transparent;
-      border: none;
-      color: var(--color-text-muted);
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .btn_medium_submit {
-      @include mixins.button(var(--color-primary), white);
-      padding: 12px 24px;
-      border-radius: 24px;
-    }
-  }
-}
 
 .loading-placeholder {
   text-align: center;

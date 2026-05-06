@@ -1,50 +1,77 @@
-<div class="post-argument-form">
-  <div class="type-tabs">
-    @for (t of types; track t) {
-      <button
-        class="type-tab"
-        [class]="'type-' + t"
-        [class.active]="argumentType() === t"
-        (click)="argumentType.set(t)"
+<div id="create_argument_tablet_btn">
+  <button class="btn_big_submit" (click)="isOpen.set(true)">
+    <cos-icon name="plus" size="24"></cos-icon>
+  </button>
+</div>
+
+<div id="create_argument_footer_menu" [class.open]="!isOpen()" [class.closed]="isOpen()">
+  <div class="footer_title" translate="COMPONENTS.POST_ARGUMENT.FOOTER_MENU_TITLE"></div>
+  <button class="btn_medium_submit" (click)="isOpen.set(true)">
+    <span class="btn_text" translate="COMPONENTS.POST_ARGUMENT.FOOTER_MENU_BTN_ADD_ARGUMENT"></span>
+  </button>
+</div>
+
+<div id="create_argument_footer" [class.open]="isOpen()" [class.closed]="!isOpen()">
+  <div id="post_argument_form_wrap">
+    <div class="form_header">
+      <span translate="COMPONENTS.POST_ARGUMENT.FOOTER_FORM_TITLE"></span>
+      <div id="close_mobile" class="mobile_show">
+        <button class="btn_small_close icon close_button mobile_show" (click)="close()">
+          <cos-icon name="close" size="24"></cos-icon>
+        </button>
+      </div>
+    </div>
+    
+    <form id="argument_form">
+      <div id="type_select_wrap">
+        <div class="type_item" translate="COMPONENTS.POST_ARGUMENT.FOOTER_FORM_ARGUMENT_TYPE_TITLE"></div>
+        @for (atype of types; track atype) {
+          <div class="type_item" [class]="atype">
+            <label class="radio_box" (click)="argumentType.set(atype)">
+              <input type="radio" [checked]="argumentType() === atype" name="argumentType" [value]="atype">
+              <span class="radio"></span>
+              <div class="radio_lable" translate="{{ 'COMPONENTS.POST_ARGUMENT.ARGUMENT_TYPE_SELECT_OPTION_' + atype.toUpperCase() }}"></div>
+            </label>
+          </div>
+        }
+      </div>
+
+      <cos-input
+        [placeholder]="'COMPONENTS.POST_ARGUMENT.PLACEHOLDER_ADD_SUBJECT_TO_ARGUMENT' | translate"
       >
-        {{ 'COMPONENTS.POST_ARGUMENT.TYPE_' + t.toUpperCase() | translate }}
-      </button>
-    }
+        <input id="argument_subject" name="subject" [ngModel]="subject()" (ngModelChange)="subject.set($event)" autocomplete="off"
+          [placeholder]="'COMPONENTS.POST_ARGUMENT.PLACEHOLDER_ADD_SUBJECT_TO_ARGUMENT' | translate"
+          class="gray_borders" (focus)="focusArgumentSubject.set(true)" (blur)="focusArgumentSubject.set(false)"
+          [attr.maxlength]="ARGUMENT_SUBJECT_MAXLENGTH" required>
+      </cos-input>
+
+      <div id="subject_counter" [translate]="'COMPONENTS.POST_ARGUMENT.SUBJECT_CHARACTERS_LEFT'"
+        [translateParams]="{chars: subject().length || 0, charsLeft: ARGUMENT_SUBJECT_MAXLENGTH}"></div>
+      
+      <textarea name="text" id="argument_text" [ngModel]="text()" (ngModelChange)="text.set($event)" class="gray_borders"
+        [placeholder]="'COMPONENTS.POST_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT' | translate"
+        [maxlength]="argumentMaxLength()" required rows="4"></textarea>
+      
+      <div id="chars_left" [translate]="'COMPONENTS.POST_ARGUMENT.ARGUMENT_TYPE_CHARACTER_LIMIT'"
+        [translateParams]="{numberOfCharacters: argumentMaxLength() - (text().length || 0)}"></div>
+
+    </form>
   </div>
 
-  <div class="form-fields">
-    <cos-input [placeholder]="'COMPONENTS.POST_ARGUMENT.SUBJECT_PLACEHOLDER' | translate">
-      <input
-        [ngModel]="subject()"
-        (ngModelChange)="subject.set($event)"
-        [maxlength]="argumentService.ARGUMENT_SUBJECT_MAXLENGTH"
-      >
-    </cos-input>
-
-    <cos-input [placeholder]="'COMPONENTS.POST_ARGUMENT.TEXT_PLACEHOLDER' | translate">
-      <textarea
-        [ngModel]="text()"
-        (ngModelChange)="text.set($event)"
-        rows="4"
-        [maxlength]="argumentService.ARGUMENT_TYPES_MAXLENGTH[argumentType()]"
-      ></textarea>
-    </cos-input>
-
-    @if (errors()) {
-      <p class="error-text">{{ errors() }}</p>
-    }
-
-    <div class="form-actions">
-      <cos-button variant="secondary" (clicked)="cancel.emit()">
-        {{ 'BTN_CANCEL' | translate }}
-      </cos-button>
-      <cos-button
-        variant="primary"
-        [isDisabled]="!subject().trim() || !text().trim()"
-        (clicked)="submit()"
-      >
-        {{ 'COMPONENTS.POST_ARGUMENT.BTN_POST' | translate }}
-      </cos-button>
+  <div id="buttons_row">
+    <div id="close_create">
+      <button class="btn_medium_submit_ghost icon close_button" (click)="close()">
+        <cos-icon name="close" size="24"></cos-icon>
+      </button>
+    </div>
+    <div id="navigate_create">
+      <button class="btn_medium_submit icon" (click)="submit()" [disabled]="!subject().trim() || !text().trim()">
+        <span class="btn_text" translate="COMPONENTS.POST_ARGUMENT.BTN_ARGUMENT_POST"></span>
+      </button>
     </div>
   </div>
 </div>
+
+@if (isOpen()) {
+  <div class="overlay" (click)="close()"></div>
+}

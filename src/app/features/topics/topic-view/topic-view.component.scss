@@ -25,7 +25,7 @@
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: center;
     gap: 32px;
 
     @media (max-width: 1024px) {
@@ -34,11 +34,16 @@
     }
 
     .content_area_left {
-      flex: 1;
-      min-width: 0;
+      max-width: 872px;
+      width: calc(100% - 320px);
       display: flex;
       flex-direction: column;
       gap: 32px;
+
+      @media (max-width: 1024px) {
+        width: 100%;
+        max-width: 100%;
+      }
 
       .notification_inline {
         display: flex;
@@ -214,10 +219,10 @@
     }
 
     .content_area_right {
-      width: 344px;
+      width: 288px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 16px;
       position: sticky;
       top: 24px;
 
@@ -239,7 +244,6 @@
   border-radius: 16px;
   padding: 0px 16px;
   gap: 32px;
-  margin-bottom: 24px;
   position: relative;
 
   #activities_button_wrap {
