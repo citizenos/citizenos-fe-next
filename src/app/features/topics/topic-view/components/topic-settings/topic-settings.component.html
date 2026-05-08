@@ -125,7 +125,9 @@
                 </cos-button>
               </div>
             </div>
-            <div class="line lightest_line" *ngIf="canDelete()"></div>
+            @if (canDelete()) {
+              <div class="line lightest_line"></div>
+            }
           }
 
           @if (canDelete()) {

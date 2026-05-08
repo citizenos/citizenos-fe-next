@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, signal, OnInit, DestroyRef } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonModule, UpperCasePipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { of, map, catchError, forkJoin, take } from 'rxjs';
@@ -27,7 +27,6 @@ export interface TopicAddGroupsDialogData {
   selector: 'app-topic-add-groups-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     TranslateModule,
     FormsModule,
     UpperCasePipe,

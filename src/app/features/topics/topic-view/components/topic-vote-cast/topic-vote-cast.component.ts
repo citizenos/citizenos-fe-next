@@ -1,4 +1,4 @@
-import { Component, input, signal, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { DatePipe, UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
@@ -30,7 +30,7 @@ import { TooltipComponent } from '../../../../../shared/components/tooltip/toolt
   templateUrl: './topic-vote-cast.component.html',
   styleUrls: ['./topic-vote-cast.component.scss']
 })
-export class TopicVoteCastComponent {
+export class TopicVoteCastComponent implements OnInit {
   vote = input.required<any>();
   topic = input.required<Topic>();
 

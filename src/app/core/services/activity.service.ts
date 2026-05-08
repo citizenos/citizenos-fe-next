@@ -320,7 +320,7 @@ export class ActivityService {
   }
 
   private getActivityObject(activity: any): any {
-    let obj = activity.data.object?.object ?? activity.data.object;
+    const obj = activity.data.object?.object ?? activity.data.object;
     return Array.isArray(obj) ? obj[0] : obj;
   }
 

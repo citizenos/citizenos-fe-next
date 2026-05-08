@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input, output, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output, inject, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Group } from '../../../../../core/interfaces/group';
@@ -22,7 +22,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
   templateUrl: './step-topics.component.html',
   styleUrl: './step-topics.component.scss'
 })
-export class StepTopicsComponent {
+export class StepTopicsComponent implements OnInit {
   group = input.required<Partial<Group>>();
   groupUpdate = output<Partial<Group>>();
 

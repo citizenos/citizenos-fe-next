@@ -6,12 +6,12 @@ import { Component, Input, Output, EventEmitter, input } from '@angular/core';
   template: '<ng-content></ng-content>'
 })
 export class MockButtonComponent {
-  @Input() variant: string = 'primary';
-  @Input() size: string = 'md';
-  @Input() isLoading: boolean = false;
-  @Input() isDisabled: boolean = false;
+  @Input() variant = 'primary';
+  @Input() size = 'md';
+  @Input() isLoading = false;
+  @Input() isDisabled = false;
   @Input() icon?: string;
-  @Input() type: string = 'button';
+  @Input() type = 'button';
 }
 
 @Component({
@@ -20,8 +20,8 @@ export class MockButtonComponent {
   template: '<ng-content></ng-content>'
 })
 export class MockInputComponent {
-  @Input() placeholder: string = '';
-  @Input() hasError: boolean = false;
+  @Input() placeholder = '';
+  @Input() hasError = false;
 }
 
 @Component({

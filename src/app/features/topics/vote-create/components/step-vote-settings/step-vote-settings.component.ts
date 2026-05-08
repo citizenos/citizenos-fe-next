@@ -247,7 +247,7 @@ export class StepVoteSettingsComponent {
   }
 
   togglePredefined(val: string) {
-    let options = [...(this.vote().options || [])];
+    const options = [...(this.vote().options || [])];
     const index = options.findIndex(o => o.value === val);
     if (index > -1) {
       options.splice(index, 1);

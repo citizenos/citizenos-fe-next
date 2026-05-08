@@ -80,7 +80,7 @@ export class ProfileComponent implements OnInit {
   imageFile: File | null = null;
   tmpImageUrl: string | null = null;
 
-  languages: { [key: string]: string } = {
+  languages: Record<string, string> = {
     en: 'English',
     et: 'Eesti',
     ru: 'Русский'

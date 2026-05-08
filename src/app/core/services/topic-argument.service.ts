@@ -133,7 +133,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams> 
         this.countTotal.next(res.countTotal || res.count || 0);
         if (paramsValue.types?.length) {
           let totalCount = 0;
-          let types = (!Array.isArray(paramsValue.types)) ? [paramsValue.types] : paramsValue.types;
+          const types = (!Array.isArray(paramsValue.types)) ? [paramsValue.types] : paramsValue.types;
           types.forEach((type: string) => totalCount += (res.count?.[type] || 0));
           this.countTotal.next(totalCount);
         }

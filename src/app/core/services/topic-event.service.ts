@@ -51,7 +51,7 @@ export class TopicEventService extends ItemsListService {
       .pipe(map(res => ({ rows: res.data?.rows ?? res.data ?? [], count: res.data?.count ?? 0 })));
   }
 
-  queryPublic(params: { [key: string]: any }): Observable<any> {
+  queryPublic(params: Record<string, any>): Observable<any> {
     const path = this.getAbsoluteUrlApi('/api/topics');
     const queryParams = Object.fromEntries(Object.entries(params).filter((i) => i[1] !== null));
 
@@ -59,7 +59,7 @@ export class TopicEventService extends ItemsListService {
       .pipe(map(res => res.data));
   }
 
-  query(params: { [key: string]: any }): Observable<any> {
+  query(params: Record<string, any>): Observable<any> {
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params['topicId']}/events`);
     const queryParams = Object.fromEntries(Object.entries(params).filter((i) => i[1] !== null));
     

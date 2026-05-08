@@ -1,5 +1,5 @@
 import { Component, inject, signal, input, model, output, ChangeDetectionStrategy, OnInit, AfterViewInit, ViewChild, ElementRef, forwardRef } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -20,7 +20,7 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
   selector: 'app-idea-reply',
   standalone: true,
   imports: [
-    CommonModule,
+    DatePipe,
     TranslateModule,
     RouterModule,
     IconComponent,

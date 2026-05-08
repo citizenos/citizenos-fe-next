@@ -1,5 +1,4 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
@@ -21,7 +20,6 @@ export interface IdeaReplyReportData {
   selector: 'idea-reply-report',
   standalone: true,
   imports: [
-    CommonModule,
     TranslateModule,
     ReactiveFormsModule,
     IconComponent,

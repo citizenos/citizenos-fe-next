@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { UiStateService } from '../../../services/ui-state.service';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
@@ -7,7 +6,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
 @Component({
   selector: 'cos-accessibility-menu',
   standalone: true,
-  imports: [CommonModule, TranslateModule, IconComponent],
+  imports: [TranslateModule, IconComponent],
   template: `
     @if (uiState.showAccessibility()) {
       <div class="feedback_overlay_root">

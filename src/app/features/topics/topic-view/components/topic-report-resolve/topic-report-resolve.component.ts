@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
 import { take } from 'rxjs';
 
 import { Topic } from '../../../../../core/interfaces/topic';
@@ -20,7 +19,6 @@ export interface TopicReportResolveData {
   selector: 'app-topic-report-resolve',
   standalone: true,
   imports: [
-    CommonModule,
     TranslateModule,
     IconComponent,
     ButtonComponent,

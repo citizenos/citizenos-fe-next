@@ -44,7 +44,7 @@ export class TopicContentComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     if (this.topicTextEl?.nativeElement) {
       this.resizeObserver = new ResizeObserver((entries) => {
-        for (let entry of entries) {
+        for (const entry of entries) {
           if (entry.target.scrollHeight >= 320) {
             this.readMoreButton.set(true);
           }

@@ -21,7 +21,7 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
   @Input() item = '';
   @Input() initialValue?: string | null = null;
   itemChange = output<string>();
-  @Input() limit: number = 100;
+  @Input() limit = 100;
   @Input() placeholder?: string;
   @Input('cosmarkdowntranslatecharacterstatuskey')
   cosMarkdownTranslateCharacterStatusKey: any;

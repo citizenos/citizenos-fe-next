@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from '../icon/icon.component';
 import { IconName } from '../icon/icon.registry';
@@ -13,7 +12,7 @@ export interface TabItem {
 @Component({
   selector: 'cos-tabs',
   standalone: true,
-  imports: [CommonModule, TranslateModule, IconComponent],
+  imports: [TranslateModule, IconComponent],
   templateUrl: './tabs.component.html',
   styleUrl: './tabs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

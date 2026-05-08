@@ -1,5 +1,5 @@
 import {
-  Component, ChangeDetectionStrategy, inject, signal, computed,
+  Component, ChangeDetectionStrategy, inject, signal, computed, OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -39,7 +39,7 @@ function isEmail(s: string) { return EMAIL_RE.test(s.trim()); }
   templateUrl: './group-invite-dialog.component.html',
   styleUrls: ['./group-invite-dialog.component.scss'],
 })
-export class GroupInviteDialogComponent {
+export class GroupInviteDialogComponent implements OnInit {
   private data = inject<{ group: Group }>(DIALOG_DATA);
   private dialogRef = inject(DialogRef);
   private inviteUserService = inject(GroupInviteUserService);
@@ -70,7 +70,7 @@ export class GroupInviteDialogComponent {
   copySuccess = signal(false);
   canShare = computed(() => this.data.group.visibility === 'public' || true);
 
-  constructor() {
+  ngOnInit() {
     this.generateJoinUrl();
   }
 

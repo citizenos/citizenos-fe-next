@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { UiStateService } from '../../../services/ui-state.service';
 import { TourService } from '../../../services/tour.service';
@@ -8,7 +7,7 @@ import { UserStore } from '../../../state/user.store';
 @Component({
   selector: 'cos-onboarding',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [TranslateModule],
   template: `
     @if (uiState.showOnboarding()) {
       <div class="feedback_overlay_root">

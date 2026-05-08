@@ -7,10 +7,10 @@ import { Directive, ElementRef, HostListener, OnDestroy, Input, inject } from '@
 export class EtherpadDirective implements OnDestroy {
   private element = inject(ElementRef);
   
-  width: string = '';
-  height: string = '';
-  minWidth: number = 0;
-  minHeight: number = 0;
+  width = '';
+  height = '';
+  minWidth = 0;
+  minHeight = 0;
   
   @Input('cosEtherpad') params: any;
 

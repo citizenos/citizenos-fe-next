@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
-import { CommonModule, UpperCasePipe, DatePipe } from '@angular/common';
+import { UpperCasePipe, DatePipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { A11yModule } from '@angular/cdk/a11y';
 import { FormsModule } from '@angular/forms';
@@ -24,7 +24,6 @@ export interface TopicSettingsData {
   selector: 'cos-topic-settings',
   standalone: true,
   imports: [
-    CommonModule,
     UpperCasePipe,
     DatePipe,
     TranslateModule,
@@ -142,7 +141,7 @@ export class TopicSettingsComponent implements OnInit {
   isVisibleReminderOption(time: any) {
     const t = this.topic();
     if (t.vote?.endsAt) {
-      let timeItem = new Date(t.vote.endsAt);
+      const timeItem = new Date(t.vote.endsAt);
       switch (time.unit) {
         case 'weeks':
           timeItem.setDate(timeItem.getDate() - (time.value * 7));
@@ -162,7 +161,7 @@ export class TopicSettingsComponent implements OnInit {
     const t = this.topic();
     if (t.vote) {
       const deadline = t.vote.endsAt || new Date();
-      let reminderTime = new Date(deadline);
+      const reminderTime = new Date(deadline);
       switch (time.unit) {
         case 'weeks':
           reminderTime.setDate(reminderTime.getDate() - (time.value * 7));

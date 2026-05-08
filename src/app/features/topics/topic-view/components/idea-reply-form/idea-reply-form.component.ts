@@ -1,5 +1,4 @@
 import { Component, inject, signal, input, output, ChangeDetectionStrategy, OnInit, effect, model } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -12,7 +11,6 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
   selector: 'app-idea-reply-form',
   standalone: true,
   imports: [
-    CommonModule,
     TranslateModule,
     ReactiveFormsModule,
     IconComponent

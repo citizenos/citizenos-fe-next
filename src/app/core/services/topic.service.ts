@@ -61,7 +61,7 @@ export class TopicService {
     return this.configStore.api.baseUrl();
   }
 
-  loadTopic(id: string, params?: { [key: string]: string | boolean }): Observable<Topic> {
+  loadTopic(id: string, params?: Record<string, string | boolean>): Observable<Topic> {
     return this.loadTopic$.pipe(
       startWith(void 0),
       switchMap(() => this.get(id, params)),
@@ -73,7 +73,7 @@ export class TopicService {
     this.loadTopic$.next();
   }
 
-  get(id: string, params?: { [key: string]: string | boolean }): Observable<Topic> {
+  get(id: string, params?: Record<string, string | boolean>): Observable<Topic> {
     const path = this.userStore.isAuthenticated()
       ? this.getAbsoluteUrlApi(`/api/users/self/topics/${id}`)
       : this.getAbsoluteUrlApi(`/api/topics/${id}`);

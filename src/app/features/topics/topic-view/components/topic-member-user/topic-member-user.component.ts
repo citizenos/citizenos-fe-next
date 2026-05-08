@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, inject, signal, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UpperCasePipe } from '@angular/common';
@@ -27,7 +27,7 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
   styleUrls: ['./topic-member-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TopicMemberUserComponent {
+export class TopicMemberUserComponent implements OnInit {
   topic = input.required<Topic>();
   member = input.required<any>();
   fields = input<any>();

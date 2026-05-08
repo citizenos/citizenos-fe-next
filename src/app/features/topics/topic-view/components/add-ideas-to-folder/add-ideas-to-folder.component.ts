@@ -1,5 +1,4 @@
 import { Component, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -17,7 +16,6 @@ interface IdeationFolderDialogData {
   selector: 'app-add-ideas-to-folder',
   standalone: true,
   imports: [
-    CommonModule,
     TranslateModule,
     IconComponent
   ],

@@ -1,5 +1,4 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
@@ -11,7 +10,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
 @Component({
   selector: 'cos-feedback',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, IconComponent],
+  imports: [FormsModule, TranslateModule, IconComponent],
   template: `
     @if (uiState.showFeedback()) {
       <div id="root_lightbox" class="feedback_overlay_root">

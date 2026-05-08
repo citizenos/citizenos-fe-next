@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { CommonModule, UpperCasePipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { take } from 'rxjs';
@@ -21,7 +21,6 @@ export interface ArgumentReportData {
   selector: 'app-argument-report',
   standalone: true,
   imports: [
-    CommonModule,
     UpperCasePipe,
     TranslateModule,
     ReactiveFormsModule,

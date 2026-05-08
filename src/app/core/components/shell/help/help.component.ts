@@ -1,5 +1,4 @@
 import { Component, ElementRef, inject, signal, computed, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -15,7 +14,7 @@ import { TermsLinksComponent } from '../../../../shared/components/terms-links/t
 @Component({
   selector: 'cos-help',
   standalone: true,
-  imports: [CommonModule, TranslateModule, FormsModule, ReactiveFormsModule, IconComponent, TermsLinksComponent],
+  imports: [TranslateModule, FormsModule, ReactiveFormsModule, IconComponent, TermsLinksComponent],
   template: `
     @if (uiState.showHelp() || helptooltip()) {
       <div id="dark_overlay" class="help_overlay" (click)="toggleHelp()"></div>

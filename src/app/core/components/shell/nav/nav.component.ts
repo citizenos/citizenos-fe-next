@@ -1,5 +1,5 @@
 import {
-  Component, signal, computed, inject, ChangeDetectionStrategy, ViewEncapsulation, HostListener
+  Component, signal, computed, inject, ChangeDetectionStrategy, ViewEncapsulation, HostListener, OnInit
 } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -307,7 +307,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
   `,
   styleUrl: './nav.component.scss'
 })
-export class NavComponent {
+export class NavComponent implements OnInit {
   readonly translate = inject(TranslateService);
   readonly userStore = inject(UserStore);
   readonly uiState = inject(UiStateService);
@@ -330,7 +330,7 @@ export class NavComponent {
   showProfileDropdown = signal(false);
   helpExtraInfo = signal(false);
 
-  constructor() {
+  ngOnInit() {
     this.router.events.subscribe(() => {
       const url = this.router.url;
       if (url.includes('/topics/') && !url.includes('/create/') && !url.includes('/edit/')) {

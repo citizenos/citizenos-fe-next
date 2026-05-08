@@ -1,5 +1,4 @@
 import { Component, ElementRef, inject, signal, computed, ViewChild, Renderer2, HostListener, effect, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TourService } from '../../../core/services/tour.service';
@@ -9,7 +8,7 @@ import { IconComponent } from '../icon/icon.component';
 @Component({
   selector: 'cos-tour',
   standalone: true,
-  imports: [CommonModule, TranslateModule, IconComponent],
+  imports: [TranslateModule, IconComponent],
   template: `
     @if (tourService.showTour()) {
       <div id="tour_container">

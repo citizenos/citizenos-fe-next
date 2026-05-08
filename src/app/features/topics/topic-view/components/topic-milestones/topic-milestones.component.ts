@@ -1,5 +1,5 @@
 import { Component, OnInit, input, inject, signal, computed } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { take, map } from 'rxjs';
@@ -18,7 +18,7 @@ import { InputComponent } from '../../../../../shared/components/input/input.com
   selector: 'app-topic-milestones',
   standalone: true,
   imports: [
-    CommonModule,
+    DatePipe,
     FormsModule,
     TranslateModule,
     IconComponent,

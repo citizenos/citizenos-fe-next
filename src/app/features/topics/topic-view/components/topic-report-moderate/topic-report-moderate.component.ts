@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { take } from 'rxjs';
 
@@ -22,7 +22,7 @@ export interface TopicReportModerateData {
   selector: 'app-topic-report-moderate',
   standalone: true,
   imports: [
-    CommonModule,
+    UpperCasePipe,
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,

@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { take } from 'rxjs';
 
@@ -21,7 +20,6 @@ export interface TopicReportReviewData {
   selector: 'app-topic-report-review',
   standalone: true,
   imports: [
-    CommonModule,
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,

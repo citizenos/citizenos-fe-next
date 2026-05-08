@@ -81,7 +81,7 @@ export abstract class ItemsListService<T extends ListParams = ListParams> {
     this.page.next(page);
   }
 
-  doOrder(orderBy: string, order: string = 'ASC') {
+  doOrder(orderBy: string, order = 'ASC') {
     const current = this.params.value;
     this.params.next({ ...current, orderBy, order: order.toUpperCase() });
     this.page.next(1);

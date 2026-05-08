@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, DestroyRef } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CommonModule, UpperCasePipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { of, switchMap, take, map, catchError, forkJoin, Observable } from 'rxjs';
@@ -31,7 +31,6 @@ export interface TopicInviteDialogData {
   selector: 'app-topic-invite-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     TranslateModule,
     FormsModule,
     UpperCasePipe,

@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { map, take, catchError, EMPTY } from 'rxjs';
 import { A11yModule } from '@angular/cdk/a11y';
@@ -17,7 +17,7 @@ import { Topic } from '../../../../../core/interfaces/topic';
 @Component({
   selector: 'app-topic-notification-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, IconComponent, ToggleComponent, A11yModule],
+  imports: [NgClass, TranslateModule, IconComponent, ToggleComponent, A11yModule],
   templateUrl: './topic-notification-settings.component.html',
   styleUrls: ['./topic-notification-settings.component.scss']
 })

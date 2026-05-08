@@ -1,12 +1,11 @@
 import { Component, computed, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 export type DomainType = 'topic' | 'ideation' | 'vote' | 'follow-up';
 
 @Component({
   selector: 'cos-domain-icon',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="domain-icon" [style.width.px]="size()" [style.height.px]="size()">
       <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
