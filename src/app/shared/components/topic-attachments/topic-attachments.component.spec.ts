@@ -32,7 +32,7 @@ describe('TopicAttachmentsComponent (business logic)', () => {
       ]
     });
     component = TestBed.runInInjectionContext(() => new TopicAttachmentsComponent());
-    // @ts-ignore - setting required input
+    // @ts-expect-error - setting required input
     component.topic = () => ({ id: 'topic-1' });
   });
 

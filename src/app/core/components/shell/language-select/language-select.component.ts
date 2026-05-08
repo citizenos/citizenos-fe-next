@@ -302,7 +302,7 @@ export class LanguageSelectComponent {
     if (this.userStore.isAuthenticated()) {
       try {
         await firstValueFrom(this.userService.updateLanguage(lang));
-      } catch {}
+      } catch { /* non-critical: language switches locally even if server update fails */ }
     }
 
     this.router.navigate(segments, {

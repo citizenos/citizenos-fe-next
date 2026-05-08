@@ -22,6 +22,7 @@ export class DialogRef<T = unknown, R = unknown> {
   private afterClosedSubject = new Subject<R | undefined>();
   component?: { name: string };
 
+  // eslint-disable-next-line @angular-eslint/prefer-inject -- manually instantiated per dialog
   constructor(private overlayRef: OverlayRef) {}
 
   close(result?: R) {

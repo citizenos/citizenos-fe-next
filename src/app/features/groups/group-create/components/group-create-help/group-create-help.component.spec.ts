@@ -17,7 +17,7 @@ describe('GroupCreateHelpComponent', () => {
   const setup = (stepValue: string) => {
     fixture = TestBed.createComponent(GroupCreateHelpComponent);
     component = fixture.componentInstance;
-    // @ts-ignore - Manual signal override to bypass input setting issues in tests
+    // @ts-expect-error - Manual signal override to bypass input setting issues in tests
     component.step = signal(stepValue);
     fixture.detectChanges();
     return fixture.nativeElement as HTMLElement;

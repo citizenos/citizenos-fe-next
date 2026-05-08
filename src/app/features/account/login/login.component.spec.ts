@@ -100,7 +100,7 @@ describe('LoginComponent', () => {
     // We can't easily test window.location.href changes in unit tests
     // but we can test that the service is called.
     const originalLocation = window.location;
-    // @ts-ignore
+    // @ts-expect-error - test override
     delete window.location;
     window.location = { ...originalLocation, href: '' } as any;
 

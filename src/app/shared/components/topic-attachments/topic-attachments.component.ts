@@ -52,8 +52,7 @@ export class TopicAttachmentsComponent implements OnInit {
     const topicId = this.topic().id;
     if (!topicId || !files.length) return;
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
+    for (const file of files) {
       const path = `/api/users/self/topics/${topicId}/attachments`;
       
       this.uploadService.upload(path, file, { name: file.name }).subscribe({

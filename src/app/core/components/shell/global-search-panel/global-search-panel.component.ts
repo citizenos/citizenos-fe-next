@@ -362,7 +362,7 @@ export class GlobalSearchPanelComponent {
 
   goToView(item: any, context: string) {
     const lang = this.translate.currentLang;
-    const isGroup = item.hasOwnProperty('name');
+    const isGroup = Object.hasOwn(item, 'name');
     this.globalSearch.showSearch.set(false);
     if (isGroup) {
       this.router.navigate(['/', lang, 'groups', item.id]);

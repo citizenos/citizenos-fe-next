@@ -51,8 +51,8 @@ export class CosDropdownDirective {
       const optionsWrap = dropdown.querySelector('.options');
       if (optionsWrap) {
         const options = optionsWrap.querySelectorAll('.option');
-        for (let i = 0; i < options.length; i++) {
-          const item = options[i] as HTMLElement;
+        for (const option of options) {
+          const item = option as HTMLElement;
           if (item.innerText.trim().toLowerCase().indexOf(letter) === 0) {
             item.scrollIntoView({ block: 'nearest' });
             break;
