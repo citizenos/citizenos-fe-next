@@ -5,28 +5,28 @@
 
   @if (step() === 'info') {
     <div class="help_content">
-      <div class="small_heading" translate="VIEWS.GROUP_CREATE.HELP_INFO_HEADING"></div>
-      <div translate="VIEWS.GROUP_CREATE.HELP_INFO_TXT"></div>
+      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.HELP_INFO_HEADING' | translate }}</h2>
+      <div>{{ 'VIEWS.GROUP_CREATE.HELP_INFO_TXT' | translate }}</div>
     </div>
   } @else if (step() === 'settings') {
     <div class="help_content">
-      <div class="small_heading" translate="VIEWS.GROUP_CREATE.HELP_SETTINGS_HEADING"></div>
-      <div translate="VIEWS.GROUP_CREATE.HELP_SETTINGS_TXT"></div>
+      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.HELP_SETTINGS_HEADING' | translate }}</h2>
+      <div>{{ 'VIEWS.GROUP_CREATE.HELP_SETTINGS_TXT' | translate }}</div>
     </div>
   } @else if (step() === 'add_topics') {
     <div class="help_content">
-      <div class="small_heading" translate="VIEWS.GROUP_CREATE.HELP_ADD_TOPICS_HEADING"></div>
-      <div translate="VIEWS.GROUP_CREATE.HELP_ADD_TOPICS_TXT"></div>
+      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.HELP_ADD_TOPICS_HEADING' | translate }}</h2>
+      <div>{{ 'VIEWS.GROUP_CREATE.HELP_ADD_TOPICS_TXT' | translate }}</div>
     </div>
   } @else if (step() === 'invite') {
     <div class="help_content">
-      <div class="small_heading" translate="VIEWS.GROUP_CREATE.HELP_INVITE_HEADING"></div>
-      <div translate="VIEWS.GROUP_CREATE.HELP_INVITE_TXT"></div>
+      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.HELP_INVITE_HEADING' | translate }}</h2>
+      <div>{{ 'VIEWS.GROUP_CREATE.HELP_INVITE_TXT' | translate }}</div>
     </div>
   }
 
   <div class="help_footer">
-    <div translate="VIEWS.GROUP_CREATE.HELP_FOOTER_TXT"></div>
-    <a href="https://citizenos.com/help" target="_blank" translate="VIEWS.GROUP_CREATE.HELP_FOOTER_LINK"></a>
+    <div>{{ 'VIEWS.GROUP_CREATE.HELP_FOOTER_TXT' | translate }}</div>
+    <a href="https://citizenos.com/help" target="_blank">{{ 'VIEWS.GROUP_CREATE.HELP_FOOTER_LINK' | translate }}</a>
   </div>
 </div>

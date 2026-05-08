@@ -2,7 +2,7 @@
   <div class="dialog">
     <div class="dialog_header">
       <div class="header_text">
-        <h3 class="title">{{ 'MODALS.TOPIC_INVITE_HEADING' | translate }}</h3>
+        <h1 class="title">{{ 'MODALS.TOPIC_INVITE_HEADING' | translate }}</h1>
       </div>
       <div class="dialog_close">
         <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
@@ -28,7 +28,8 @@
           <div class="section_content_wrap">
             <div class="search_wrap">
               <div class="input_area">
-                <input type="text"
+                <label class="hidden" for="user_search">{{ 'COMPONENTS.TOPIC_INVITE.PLACEHOLDER_SEARCH_USERS' | translate }}</label>
+                <input id="user_search" type="text"
                        [ngModel]="searchString()"
                        (ngModelChange)="onSearchChange($event)"
                        (keydown.enter)="addMembersFromInput()"
@@ -68,7 +69,7 @@
                     [description]="'VIEWS.TOPIC_INVITE.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate">
                   </cos-tooltip>
                   <cos-dropdown>
-                    <div selection class="selected_item">
+                    <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.TOPIC_INVITE.LBL_ALL_INVITEES_LEVEL' | translate">
                       {{ 'TXT_TOPIC_LEVELS_' + (globalLevel() | uppercase) | translate }}
                     </div>
                     <div options>
@@ -88,7 +89,7 @@
                         <div class="name">{{ member.name }}</div>
                         <div class="level_select">
                           <cos-dropdown>
-                            <div selection class="selected_item">
+                            <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="member.name">
                               {{ 'TXT_TOPIC_LEVELS_' + (member.level | uppercase) | translate }}
                             </div>
                             <div options>
@@ -109,7 +110,8 @@
                 </div>
 
                 <div class="invite_message_wrap">
-                  <textarea [(ngModel)]="inviteMessage"
+                  <label class="hidden" for="inviteMessage">{{ 'COMPONENTS.TOPIC_INVITE.PLACEHOLDER_INVITE_MESSAGE' | translate }}</label>
+                  <textarea id="inviteMessage" [(ngModel)]="inviteMessage"
                             [placeholder]="'COMPONENTS.TOPIC_INVITE.PLACEHOLDER_INVITE_MESSAGE' | translate"
                             maxlength="1000"></textarea>
                   <div class="char_count">{{ inviteMessage().length }}/1000</div>

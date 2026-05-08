@@ -94,7 +94,7 @@ import { ButtonComponent } from '../button/button.component';
           <div class="date">{{ group().createdAt | date: 'y-MM-dd HH:mm' }}</div>
         </div>
       }
-    </a>
+    </div>
   `,
   styles: [`
     :host { display: contents; }

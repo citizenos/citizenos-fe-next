@@ -10,7 +10,7 @@ import { DragndropDirective } from './dragndrop.directive';
 })
 class HostComponent {
   droppedFiles: FileList | null = null;
-  onDrop(files: FileList) { this.droppedFiles = files; }
+  onDrop(files: any) { this.droppedFiles = files; }
 }
 
 describe('DragndropDirective', () => {

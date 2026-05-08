@@ -110,7 +110,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
           <!-- Min/Max choices for multiple type -->
           <div class="min-max-section">
-            <h4>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_MIN_MAX' | translate }}</h4>
+            <h2 class="small_heading">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_MIN_MAX' | translate }}</h2>
             <p class="section-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.VOTE_TXT_DESCRIPTION_CHOICE_RANGE"></p>
             <div class="min-max-row">
               <div class="counter-group">

@@ -1,4 +1,4 @@
-<div class="section_heading" translate="COMPONENTS.GROUP_SHARE.GENERATE_LINK"></div>
+<h3 class="section_heading">{{ 'COMPONENTS.GROUP_SHARE.GENERATE_LINK' | translate }}</h3>
 <div class="token_wrap">
   <div class="token_settings_wrap">
     <div class="share_wrap">
@@ -19,12 +19,12 @@
         </cos-tooltip>
       </span>
       <cos-dropdown [class.disabled]="!canUpdate()">
-        <div selection class="selected_item">
+        <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.GROUP_SHARE.LBL_ACCESS_LEVEL' | translate">
           {{'TXT_GROUP_LEVELS_' + joinLevel() | uppercase | translate}}
         </div>
         <div options>
           @for (level of LEVELS; track level) {
-            <div class="option" (click)="doUpdateJoinToken(level)">
+            <div class="option" (click)="doUpdateJoinToken(level)" (keydown.enter)="doUpdateJoinToken(level)" role="button" tabindex="0">
               {{'TXT_GROUP_LEVELS_' + level | uppercase | translate}}
             </div>
           }
@@ -45,7 +45,7 @@
     </div>
     <div class="message">
       <div class="content">
-        <span translate="COMPONENTS.GROUP_SHARE.MSG_LINK_COPIED"></span>
+        <span>{{ 'COMPONENTS.GROUP_SHARE.MSG_LINK_COPIED' | translate }}</span>
       </div>
     </div>
   </div>
@@ -53,7 +53,7 @@
 <div class="line_separator"></div>
 
 <div class="info_section">
-  <div class="section_heading">{{ 'COMPONENTS.GROUP_SHARE.GENERATE_QR_CODE' | translate }}</div>
+  <h3 class="section_heading">{{ 'COMPONENTS.GROUP_SHARE.GENERATE_QR_CODE' | translate }}</h3>
   @if (!showQR()) {
     <div>{{ 'COMPONENTS.GROUP_SHARE.GENERATE_QR_CODE_DESCRIPTION' | translate }}</div>
   } @else {

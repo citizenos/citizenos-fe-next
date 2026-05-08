@@ -9,7 +9,7 @@
     </div>
     <div class="dialog_header">
       <div class="header_text">
-        <h4 class="title">{{ 'MODALS.TOPIC_MEMBERS_HEADING' | translate }}</h4>
+        <h1 class="title">{{ 'MODALS.TOPIC_MEMBERS_HEADING' | translate }}</h1>
         <div class="dialog_close">
           <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,7 +29,7 @@
       <button type="button" class="dialog_tab mobile_hidden" [class.active]="activeTab() === 'invited'"
         (click)="activeTab.set('invited')" (keydown.enter)="activeTab.set('invited')" role="tab" [aria-selected]="activeTab() === 'invited'">{{ 'MODALS.TOPIC_MEMBERS_TAB_INVITED' | translate }}</button>
       <div class="dropdown mobile_show" cosDropdown>
-        <div class="selection">
+        <div class="selection" role="button" tabindex="0" [attr.aria-label]="'MODALS.TOPIC_MEMBERS_TAB_' + activeTab() | uppercase | translate">
           <div class="selected_item">
             {{'MODALS.TOPIC_MEMBERS_TAB_' + activeTab() | uppercase | translate}}
           </div>
@@ -57,12 +57,13 @@
           <div id="topic_members_list_wrap" class="section_content_wrap table_section">
             <div class="topic_members_filters">
               <cos-input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate">
-                <input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate"
+                <label class="hidden" for="user_search">{{ 'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate }}</label>
+                <input id="user_search" [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate"
                   [ngModel]="userSearch()"
                   (ngModelChange)="setUserSearch($event)">
               </cos-input>
               <div class="dropdown" cosDropdown>
-                <div class="selection">
+                <div class="selection" role="button" tabindex="0" [attr.aria-label]="'MODALS.TOPIC_MEMBERS_ORDER_BY' | translate">
                   <span>{{ 'MODALS.TOPIC_MEMBERS_ORDER_BY' | translate }}</span>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />
@@ -126,12 +127,13 @@
           <div id="topic_members_list_wrap" class="section_content_wrap table_section">
             <div class="topic_members_filters">
               <cos-input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate">
-                <input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_TOPIC_TITLE_PERMISSION' | translate"
+                <label class="hidden" for="group_search">{{ 'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate }}</label>
+                <input id="group_search" [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_TOPIC_TITLE_PERMISSION' | translate"
                   [ngModel]="groupSearch()"
                   (ngModelChange)="setGroupSearch($event)">
               </cos-input>
               <div class="dropdown" cosDropdown>
-                <div class="selection">
+                <div class="selection" role="button" tabindex="0" [attr.aria-label]="'MODALS.TOPIC_MEMBERS_ORDER_BY' | translate">
                   <span>{{ 'MODALS.TOPIC_MEMBERS_ORDER_BY' | translate }}</span>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />
@@ -203,12 +205,13 @@
           <div id="topic_members_list_wrap" class="section_content_wrap table_section">
             <div class="topic_members_filters">
               <cos-input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate">
-                <input [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_TOPIC_TITLE_PERMISSION' | translate"
+                <label class="hidden" for="invite_search">{{ 'MODALS.TOPIC_MEMBERS_PLACEHOLDER_NAME_PERMISSION' | translate }}</label>
+                <input id="invite_search" [placeholder]="'MODALS.TOPIC_MEMBERS_PLACEHOLDER_TOPIC_TITLE_PERMISSION' | translate"
                   [ngModel]="inviteSearch()"
                   (ngModelChange)="setInviteSearch($event)">
               </cos-input>
               <div class="dropdown" cosDropdown>
-                <div class="selection">
+                <div class="selection" role="button" tabindex="0" [attr.aria-label]="'MODALS.TOPIC_MEMBERS_ORDER_BY' | translate">
                   <span>{{ 'MODALS.TOPIC_MEMBERS_ORDER_BY' | translate }}</span>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />

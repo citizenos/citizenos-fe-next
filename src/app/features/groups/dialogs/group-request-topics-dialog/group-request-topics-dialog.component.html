@@ -3,9 +3,9 @@
   <div class="dialog">
     <div class="dialog_header">
       <div class="header_text">
-        <h4 class="title" translate="COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.HEADING"></h4>
+        <h1 class="title">{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.HEADING' | translate }}</h1>
         <div class="dialog_close">
-          <button class="btn_dialog_close icon" dialogClose>
+          <button type="button" class="btn_dialog_close icon" dialogClose [attr.aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="nav-close"></cos-icon>
           </button>
         </div>
@@ -18,7 +18,7 @@
         (searchQuery)="onSearch($event)"
       >
         @for (topic of searchResults(); track topic.id) {
-          <div class="typeahead-item" (mousedown)="addTopic(topic)">{{ topic.title }}</div>
+          <div class="typeahead-item" (mousedown)="addTopic(topic)" (keydown.enter)="addTopic(topic)" role="button" tabindex="0">{{ topic.title }}</div>
         }
       </cos-typeahead>
 
@@ -27,7 +27,7 @@
           @for (topic of topicsToRequest(); track topic.id) {
             <div class="topic_row">
               <span class="topic_title">{{ topic.title }}</span>
-              <button class="remove_btn" (click)="removeTopic(topic)">
+              <button type="button" class="remove_btn" (click)="removeTopic(topic)" [attr.aria-label]="'CONTROL.DELETE' | translate">
                 <cos-icon name="close" [size]="16"></cos-icon>
               </button>
             </div>
@@ -36,8 +36,9 @@
       }
 
       <div class="input_wrap">
-        <label class="bold" translate="COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.LBL_MESSAGE"></label>
+        <label class="bold" for="request_message">{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.LBL_MESSAGE' | translate }}</label>
         <textarea
+          id="request_message"
           rows="3"
           [placeholder]="'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.PLACEHOLDER_MESSAGE' | translate"
           [ngModel]="message()"
@@ -46,15 +47,15 @@
       </div>
 
       @if (noTopicsSelected()) {
-        <div class="inline_error" translate="COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.NO_TOPICS_SELECTED"></div>
+        <div class="inline_error">{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.NO_TOPICS_SELECTED' | translate }}</div>
       }
     </div>
 
     <div class="dialog_footer with_buttons">
       <div></div>
       <div class="button_row">
-        <a dialogClose translate="COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.LNK_CANCEL"></a>
-        <button class="btn_medium_submit" (click)="send()" translate="COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.BTN_SEND"></button>
+        <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.LNK_CANCEL' | translate }}</button>
+        <button type="button" class="btn_medium_submit" (click)="send()">{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.BTN_SEND' | translate }}</button>
       </div>
     </div>
   </div>

@@ -45,7 +45,7 @@ describe('CreateMenuComponent', () => {
   });
 
   it('should emit onClose when a menu item is clicked', () => {
-    const emitSpy = vi.spyOn(component.onClose, 'emit');
+    const emitSpy = vi.spyOn(component.closeMenu, 'emit');
     const firstItem = fixture.nativeElement.querySelector('.create_menu_item');
     if (firstItem) {
       firstItem.click();

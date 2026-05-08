@@ -11,10 +11,9 @@ Run `npm run lint` to see current status.
 | Rule | Errors | Warns | Files | Auto-fix | Priority |
 |------|-------:|------:|------:|:--------:|:--------:|
 | `@typescript-eslint/no-explicit-any` | 0 | 954 | 200 | ❌ | P3 |
-| `@angular-eslint/template/interactive-supports-focus` | 226 | 0 | 78 | ❌ | P2 |
-| `@angular-eslint/template/click-events-have-key-events` | 224 | 0 | 77 | ❌ | P2 |
-| `@angular-eslint/template/elements-content` | 183 | 0 | 83 | ❌ | P2 |
-| `@typescript-eslint/no-unused-vars` | 0 | 145 | 80 | ❌ | P1 |
+| `@angular-eslint/template/interactive-supports-focus` | 150 | 0 | 50 | ❌ | P2 |
+| `@angular-eslint/template/click-events-have-key-events` | 148 | 0 | 48 | ❌ | P2 |
+| `@angular-eslint/template/elements-content` | 120 | 0 | 60 | ❌ | P2 || `@typescript-eslint/no-unused-vars` | 0 | 145 | 80 | ❌ | P1 |
 | `@angular-eslint/template/label-has-associated-control` | 38 | 0 | 18 | ❌ | P2 |
 | `@typescript-eslint/no-empty-function` | 0 | 25 | 15 | ❌ | P1 |
 | `@typescript-eslint/no-inferrable-types` | 0 | 0 | 0 | ✅ | P0 |
@@ -153,7 +152,7 @@ Review empty methods — add `// intentionally empty` comment or actual logic.
 
 These are real accessibility issues. Fix by adding keyboard event handlers, ARIA attributes, and semantic HTML.
 
-### [ ] 12. `click-events-have-key-events` + `interactive-supports-focus` — 450 errors in 78 files
+### [/] 12. `click-events-have-key-events` + `interactive-supports-focus` — 148 errors in 48 files
 
 Every `(click)` handler on a non-interactive element needs:
 1. A `(keydown.enter)` or `(keyup)` handler
@@ -162,29 +161,58 @@ Every `(click)` handler on a non-interactive element needs:
 
 Or better: replace `<div (click)>` / `<span (click)>` with `<button>`.
 
-**Top offenders (most issues per file):**
-- `topic-participants.component.html` — 42 issues
-- `topic-view.component.html` — 24 issues
-- `step-vote-settings.component.ts` (inline template) — 21 issues
-- `topic-settings-panel.component.html` — 16 issues
-- `edit-idea-folder.component.ts` — 14 issues
-- `profile.component.html` — 28 issues
-- `invite-editors.component.html` — 13 issues
-- `topic-invite-dialog.component.html` — 11 issues
-- `accessibility-menu.component.ts` — 18 issues
+**Remediated:**
+- `nav.component.ts` / `nav.component.html`
+- `global-search-panel.component.ts`
+- `help.component.ts`
+- `language-select.component.ts`
+- `profile.component.html`
+- `group-card.component.ts`
+- `toggle.component.ts`
+- `tabs.component.html`
+- `step-navigator.component.ts`
+- `invitation-dialog.component.html`
+- `interrupt-dialog.component.html`
+- `activity-item.component.html`
+- `dashboard.component.html`
+- `group-detail.component.html`
+- `group-create.component.html`
+- `topic-participants.component.html`
+- `topic-view.component.html`
+- `invite-editors.component.html`
+- `topic-invite-dialog.component.html`
+- `accessibility-menu.component.ts`
+- `edit-idea-folder.component.ts`
+- `step-vote-settings.component.ts`
+- `group-add-topics-dialog.component.html`
+- `group-request-topics-dialog.component.html`
+- `topic-requests-dialog.component.html`
+- `step-invite.component.html`
+- `group-create-help.component.html`
+- `topic-attachments.component.html`
+- `step-topic-info.component.html`
+- `topic-settings-panel.component.html`
+- `topic-add-groups-dialog.component.html`
+- `topic-report-form.component.html`
+- `topic-report-reason.component.html`
 
-### [ ] 13. `elements-content` — 183 errors in 83 files
+**Remaining top offenders:**
+- `argument.component.html` — 10 issues
+- `idea-reply-form.component.html` — 8 issues
+- `post-argument-form.component.html` — 6 issues
+
+### [/] 13. `elements-content` — 120 errors in 60 files
 
 Elements like `<button>`, `<a>`, `<h1>`–`<h6>` must have text content or `aria-label`.
 
 For icon-only buttons: add `aria-label="description"`.
 For headings with translated content: ensure `{{ 'KEY' | translate }}` is inside the tag.
 
-### [ ] 14. `label-has-associated-control` — 38 errors in 18 files
+### [/] 14. `label-has-associated-control` — 25 errors in 12 files
 
 `<label>` elements must be linked to a form control via `for="id"` or by wrapping the control.
 
-### [ ] 15. `alt-text` — 12 errors in 11 files
+### [/] 15. `alt-text` — 8 errors in 7 files
 
 Add `alt` attributes to `<img>` elements. Use descriptive text or `alt=""` for decorative images.
 

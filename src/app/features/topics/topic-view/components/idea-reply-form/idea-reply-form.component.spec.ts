@@ -112,7 +112,7 @@ describe('IdeaReplyFormComponent', () => {
     
     // Check if signals are actually set
     if (component.editMode() && component.argument()) {
-        component.ngOnInit(); // Force it if effect didn't run
+        TestBed.flushEffects();
     }
     fixture.detectChanges();
 

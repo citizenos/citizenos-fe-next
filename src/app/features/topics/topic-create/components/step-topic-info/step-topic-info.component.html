@@ -1,18 +1,18 @@
 <div class="create_content">
   <!-- Header Image Block -->
   <div class="create_content_block discussion" [class.open]="block().headerImage">
-    <div class="block_title_wrap" (click)="toggleBlock('headerImage')">
-      <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_HEADER_IMAGE"></div>
+    <div class="block_title_wrap" (click)="toggleBlock('headerImage')" (keydown.enter)="toggleBlock('headerImage')" role="button" tabindex="0">
+      <div class="block_title">{{ 'VIEWS.TOPIC_CREATE.TITLE_HEADER_IMAGE' | translate }}</div>
       @if (!block().headerImage) {
       <cos-icon name="upload" [size]="24"></cos-icon>
       }
       @if (block().headerImage && (topic().imageUrl)) {
       <cos-button variant="ghost" (clicked)="deleteTopicImage(); $event.stopPropagation();" icon="trash">
-        <span class="link" translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_REMOVE"></span>
+        <span class="link">{{ 'VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_REMOVE' | translate }}</span>
       </cos-button>
       } @else if (block().headerImage) {
       <cos-button variant="ghost" (clicked)="toggleBlock('headerImage'); $event.stopPropagation();" icon="close">
-        <span class="link" translate="VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL"></span>
+        <span class="link">{{ 'VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_CANCEL' | translate }}</span>
       </cos-button>
       }
     </div>
@@ -27,8 +27,8 @@
 
   <!-- Title Block -->
   <div class="create_content_block discussion" [class.active]="block().title" [class.open]="block().title">
-    <div class="block_title_wrap" (click)="toggleBlock('title')">
-      <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_HEADING"></div>
+    <div class="block_title_wrap" (click)="toggleBlock('title')" (keydown.enter)="toggleBlock('title')" role="button" tabindex="0">
+      <div class="block_title">{{ 'VIEWS.TOPIC_CREATE.TITLE_HEADING' | translate }}</div>
       <div class="counter_wrap">
         <div class="char_counter">{{ (topic().title?.length || 0) }}/{{ titleLimit }}</div>
         @if (!topic().title) {
@@ -38,6 +38,7 @@
     </div>
     @if (block().title || topic().title) {
     <div class="block_content">
+      <label class="hidden" for="title_input">{{ 'VIEWS.TOPIC_CREATE.TITLE_HEADING' | translate }}</label>
       <input #topicTitle id="title_input" type="text" placeholder="..." [ngModel]="topic().title"
         (ngModelChange)="onUpdate({title: $event})" [maxlength]="titleLimit" />
     </div>
@@ -46,9 +47,9 @@
 
   <!-- Intro Block -->
   <div class="create_content_block discussion" [class.active]="block().intro" [class.open]="block().intro">
-    <div class="block_title_wrap" (click)="toggleBlock('intro')">
+    <div class="block_title_wrap" (click)="toggleBlock('intro')" (keydown.enter)="toggleBlock('intro')" role="button" tabindex="0">
       <div class="block_title">
-        <span translate="VIEWS.TOPIC_CREATE.TITLE_INTRO"></span>
+        <span>{{ 'VIEWS.TOPIC_CREATE.TITLE_INTRO' | translate }}</span>
         <cos-tooltip [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_INTRO_TITLE' | translate"
           [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_INTRO_CONTENT' | translate"></cos-tooltip>
       </div>
@@ -59,6 +60,7 @@
     </div>
     @if (block().intro || topic().intro) {
     <div class="block_content">
+      <label class="hidden" for="intro_input">{{ 'VIEWS.TOPIC_CREATE.TITLE_INTRO' | translate }}</label>
       <textarea #topicIntro id="intro_input" placeholder="..." [ngModel]="topic().intro"
         (ngModelChange)="onUpdate({intro: $event})" [maxlength]="introLimit" rows="3"></textarea>
     </div>
@@ -67,9 +69,9 @@
 
   <!-- Description Block -->
   <div class="create_content_block discussion" [class.active]="block().description" [class.open]="block().description">
-    <div class="block_title_wrap" (click)="toggleBlock('description')">
+    <div class="block_title_wrap" (click)="toggleBlock('description')" (keydown.enter)="toggleBlock('description')" role="button" tabindex="0">
       <div class="block_title">
-        <span translate="VIEWS.TOPIC_CREATE.TITLE_DESCRIPTION"></span>
+        <span>{{ 'VIEWS.TOPIC_CREATE.TITLE_DESCRIPTION' | translate }}</span>
         <cos-tooltip [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_TEXT_TITLE' | translate"
           [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_TEXT_CONTENT' | translate"></cos-tooltip>
       </div>

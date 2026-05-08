@@ -29,7 +29,7 @@ interface IdeationFolderDialogData {
       <div class="dialog">
         <div class="dialog_header ideation">
           <div class="header_text">
-            <div class="title">{{ 'COMPONENTS.EDIT_IDEA_FOLDER.HEADING' | translate }}</div>
+            <h1 class="title">{{ 'COMPONENTS.EDIT_IDEA_FOLDER.HEADING' | translate }}</h1>
             <div class="dialog_close">
               <button type="button" class="btn_dialog_close icon" (click)="dialogRef.close()" [aria-label]="'CONTROL.CLOSE' | translate">
                 <cos-icon name="close"></cos-icon>
@@ -54,7 +54,7 @@ interface IdeationFolderDialogData {
               </form>
 
               @if (ideas().length > 0) {
-                <div class="bold">{{ 'COMPONENTS.EDIT_IDEA_FOLDER.LBL_IDEAS_SELECTION' | translate }}</div>
+                <h2 class="bold">{{ 'COMPONENTS.EDIT_IDEA_FOLDER.LBL_IDEAS_SELECTION' | translate }}</h2>
                 <div class="idea_selection_wrap">
                   <div class="idea_selection_header">
                     <div class="checkbox_wrap" (click)="toggleAllIdeas()" (keydown.enter)="toggleAllIdeas()" tabindex="0" role="button" [attr.aria-label]="'COMPONENTS.EDIT_IDEA_FOLDER.LBL_IDEAS' | translate:{count: ideas().length}">

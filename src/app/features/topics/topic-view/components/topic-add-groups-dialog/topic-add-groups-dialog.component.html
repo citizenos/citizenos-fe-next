@@ -2,7 +2,7 @@
   <div class="dialog">
     <div class="dialog_header">
       <div class="header_text">
-        <h3 class="title">{{ 'MODALS.TOPIC_ADD_GROUPS_HEADING' | translate }}</h3>
+        <h1 class="title">{{ 'MODALS.TOPIC_ADD_GROUPS_HEADING' | translate }}</h1>
       </div>
       <div class="dialog_close">
         <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
@@ -16,7 +16,8 @@
         <div class="section_content_wrap">
           <div class="search_wrap">
             <div class="input_area">
-              <input type="text"
+              <label class="hidden" for="group_search">{{ 'COMPONENTS.TOPIC_ADD_GROUPS.PLACEHOLDER_SEARCH_GROUPS' | translate }}</label>
+              <input id="group_search" type="text"
                      [ngModel]="searchString()"
                      (ngModelChange)="onSearchChange($event)"
                      [placeholder]="'COMPONENTS.TOPIC_ADD_GROUPS.PLACEHOLDER_SEARCH_GROUPS' | translate">
@@ -45,7 +46,7 @@
                   [description]="'COMPONENTS.TOPIC_ADD_GROUPS.TOOLTIP_GROUP_PERMISSIONS_CONTENT' | translate">
                 </cos-tooltip>
                 <cos-dropdown>
-                  <div selection class="selected_item">
+                  <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.TOPIC_ADD_GROUPS.LBL_ALL_GROUPS_LEVEL' | translate">
                     {{ 'TXT_TOPIC_LEVELS_' + (globalLevel() | uppercase) | translate }}
                   </div>
                   <div options>
@@ -65,7 +66,7 @@
                       <div class="name">{{ group.name }}</div>
                       <div class="level_select">
                         <cos-dropdown>
-                          <div selection class="selected_item">
+                          <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="group.name">
                             {{ 'TXT_TOPIC_LEVELS_' + (group.permission.level | uppercase) | translate }}
                           </div>
                           <div options>

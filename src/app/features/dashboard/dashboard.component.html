@@ -17,22 +17,22 @@
         </svg>
       </div>
       <div class="text_wrap">
-        <div class="small_heading" [innerHTML]="'VIEWS.DASHBOARD.HAVENT_ENGAGED_TOPICS_HEADING' | translate"></div>
+        <h2 class="small_heading" [innerHTML]="'VIEWS.DASHBOARD.HAVENT_ENGAGED_TOPICS_HEADING' | translate"></h2>
         <div [innerHTML]="'VIEWS.DASHBOARD.HAVENT_ENGAGED_TOPICS_DESCRIPTION' | translate"></div>
       </div>
       <div class="button_wrap">
         <div id="create_menu_wrap" [class.hidden]="!showCreate()">
           <cos-create-menu (closeMenu)="showCreate.set(false)" />
-          <div id="close_create" (click)="showCreate.set(false)"></div>
+          <div id="close_create" (click)="showCreate.set(false)" (keydown.enter)="showCreate.set(false)" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
         </div>
-        <button class="btn_medium_submit" (click)="toggleCreate()" [class.active]="showCreate()">
+        <button type="button" class="btn_medium_submit" (click)="toggleCreate()" [class.active]="showCreate()">
           <cos-icon name="plus" [size]="24" />
           <span>{{ 'VIEWS.DASHBOARD.HAVENT_ENGAGED_BTN_CREATE' | translate }}</span>
         </button>
-        <button class="btn_medium_submit" [routerLink]="['/', translate.currentLang, 'public', 'topics']">
+        <button type="button" class="btn_medium_submit" [routerLink]="['/', translate.currentLang, 'public', 'topics']">
           {{ 'VIEWS.DASHBOARD.HAVENT_ENGAGED_BTN_VIEW_PUBLIC_TOPICS' | translate }}
         </button>
-        <button class="btn_medium_submit" [routerLink]="['/', translate.currentLang, 'public', 'groups']">
+        <button type="button" class="btn_medium_submit" [routerLink]="['/', translate.currentLang, 'public', 'groups']">
           {{ 'VIEWS.DASHBOARD.HAVENT_ENGAGED_BTN_VIEW_PUBLIC_GROUPS' | translate }}
         </button>
       </div>
@@ -42,7 +42,7 @@
   @if (publicTopics().length > 0) {
     <div class="dashboard_section items_list_section" [cosTourItem]="{tourid: 'dashboard', index: 5, position: 'bottom'}">
       <div class="section_header">
-        <div class="small_heading">{{ 'VIEWS.DASHBOARD.PUBLIC_TOPICS_HEADER' | translate }}</div>
+        <h2 class="small_heading">{{ 'VIEWS.DASHBOARD.PUBLIC_TOPICS_HEADER' | translate }}</h2>
         <a class="view_more_link" [routerLink]="['/', translate.currentLang, 'public', 'topics']">
           <span>{{ 'VIEWS.DASHBOARD.PUBLIC_TOPICS_LNK_VIEW_ALL' | translate }}</span>
           <cos-icon name="arrow-next" [size]="24" />
@@ -53,7 +53,7 @@
           <cos-topic-card [topic]="topic" />
         }
       </div>
-      <button class="view_more_button btn_big_submit" [routerLink]="['/', translate.currentLang, 'public', 'topics']">
+      <button type="button" class="view_more_button btn_big_submit" [routerLink]="['/', translate.currentLang, 'public', 'topics']">
         {{ 'VIEWS.DASHBOARD.PUBLIC_TOPICS_LNK_VIEW_ALL' | translate }}
       </button>
     </div>
@@ -62,7 +62,7 @@
   @if (myTopics().length > 0) {
     <div class="dashboard_section items_list_section" [cosTourItem]="{tourid: 'dashboard', index: 5, position: 'bottom'}">
       <div class="section_header">
-        <div class="small_heading">{{ 'VIEWS.DASHBOARD.MY_TOPICS_HEADER' | translate }}</div>
+        <h2 class="small_heading">{{ 'VIEWS.DASHBOARD.MY_TOPICS_HEADER' | translate }}</h2>
         <a class="view_more_link" [routerLink]="['/', translate.currentLang, 'my', 'topics']">
           <span>{{ 'VIEWS.DASHBOARD.MY_TOPICS_LNK_VIEW_ALL' | translate }}</span>
           <cos-icon name="arrow-next" [size]="24" />
@@ -73,7 +73,7 @@
           <cos-topic-card [topic]="topic" />
         }
       </div>
-      <button class="view_more_button btn_big_submit" [routerLink]="['/', translate.currentLang, 'my', 'topics']">
+      <button type="button" class="view_more_button btn_big_submit" [routerLink]="['/', translate.currentLang, 'my', 'topics']">
         {{ 'VIEWS.DASHBOARD.MY_TOPICS_LNK_VIEW_ALL' | translate }}
       </button>
     </div>
@@ -82,7 +82,7 @@
   @if (myGroups().length > 0 && publicGroups().length > 0) {
     <div class="dashboard_section items_list_section" [cosTourItem]="{tourid: 'dashboard', index: 6, position: 'bottom'}">
       <div class="section_header">
-        <div class="small_heading">{{ 'VIEWS.HOME.PUBLIC_GROUPS_TITLE' | translate }}</div>
+        <h2 class="small_heading">{{ 'VIEWS.HOME.PUBLIC_GROUPS_TITLE' | translate }}</h2>
         <a class="view_more_link" [routerLink]="['/', translate.currentLang, 'public', 'groups']">
           <span>{{ 'VIEWS.HOME.BTN_VIEW_ALL_GROUPS' | translate }}</span>
           <cos-icon name="arrow-next" [size]="24" />
@@ -93,7 +93,7 @@
           <cos-group-card [group]="group" mode="public" />
         }
       </div>
-      <button class="view_more_button btn_medium_submit" [routerLink]="['/', translate.currentLang, 'public', 'groups']">
+      <button type="button" class="view_more_button btn_medium_submit" [routerLink]="['/', translate.currentLang, 'public', 'groups']">
         {{ 'VIEWS.HOME.BTN_VIEW_ALL_GROUPS' | translate }}
       </button>
     </div>
@@ -102,7 +102,7 @@
   @if (myGroups().length > 0) {
     <div class="dashboard_section items_list_section" [cosTourItem]="{tourid: 'dashboard', index: 6, position: 'bottom'}">
       <div class="section_header">
-        <div class="small_heading">{{ 'VIEWS.DASHBOARD.MY_GROUPS_HEADER' | translate }}</div>
+        <h2 class="small_heading">{{ 'VIEWS.DASHBOARD.MY_GROUPS_HEADER' | translate }}</h2>
         <a class="view_more_link" [routerLink]="['/', translate.currentLang, 'my', 'groups']">
           <span>{{ 'VIEWS.DASHBOARD.MY_GROUPS_LNK_VIEW_ALL' | translate }}</span>
           <cos-icon name="arrow-next" [size]="24" />
@@ -113,7 +113,7 @@
           <cos-group-card [group]="group" />
         }
       </div>
-      <button class="view_more_button btn_big_submit" [routerLink]="['/', translate.currentLang, 'my', 'groups']">
+      <button type="button" class="view_more_button btn_big_submit" [routerLink]="['/', translate.currentLang, 'my', 'groups']">
         {{ 'VIEWS.DASHBOARD.MY_GROUPS_LNK_VIEW_ALL' | translate }}
       </button>
     </div>
@@ -122,12 +122,12 @@
   @defer (on viewport) {
     <div class="dashboard_section_row news_section">
       <div class="section_header mobile">
-        <div class="small_heading">{{ 'VIEWS.DASHBOARD.NEWS_HEADER' | translate }}</div>
+        <h2 class="small_heading">{{ 'VIEWS.DASHBOARD.NEWS_HEADER' | translate }}</h2>
       </div>
 
       <div id="news">
         <div class="section_header">
-          <div class="small_heading">{{ 'VIEWS.DASHBOARD.NEWS_HEADER' | translate }}</div>
+          <h3 class="small_heading">{{ 'VIEWS.DASHBOARD.NEWS_HEADER' | translate }}</h3>
           <a href="https://citizenos.com/news" target="_blank">
             <span>{{ 'VIEWS.DASHBOARD.NEWS_LNK_VIEW_ALL' | translate }}</span>
             <cos-icon name="arrow-next" [size]="24" />
@@ -151,7 +151,7 @@
       </div>
 
       <div id="help_us">
-        <div id="title">{{ 'VIEWS.DASHBOARD.HELP_US_HEADER' | translate }}</div>
+        <h3 id="title">{{ 'VIEWS.DASHBOARD.HELP_US_HEADER' | translate }}</h3>
         <div class="help_items_wrap">
           <div class="help_item">
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">

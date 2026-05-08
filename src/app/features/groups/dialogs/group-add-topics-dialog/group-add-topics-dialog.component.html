@@ -3,9 +3,9 @@
   <div class="dialog">
     <div class="dialog_header">
       <div class="header_text">
-        <h4 class="title" translate="COMPONENTS.GROUP_ADD_TOPICS_DIALOG.HEADING"></h4>
+        <h1 class="title">{{ 'COMPONENTS.GROUP_ADD_TOPICS_DIALOG.HEADING' | translate }}</h1>
         <div class="dialog_close">
-          <button class="btn_dialog_close icon" dialogClose>
+          <button type="button" class="btn_dialog_close icon" dialogClose [attr.aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="nav-close"></cos-icon>
           </button>
         </div>
@@ -18,7 +18,7 @@
         (searchQuery)="onSearch($event)"
       >
         @for (topic of searchResults(); track topic.id) {
-          <div class="typeahead-item" (mousedown)="addTopic(topic)">{{ topic.title }}</div>
+          <div class="typeahead-item" (mousedown)="addTopic(topic)" (keydown.enter)="addTopic(topic)" role="button" tabindex="0">{{ topic.title }}</div>
         }
       </cos-typeahead>
 
@@ -28,14 +28,14 @@
             <div class="topic_row">
               <span class="topic_title">{{ topic.title }}</span>
               <cos-dropdown>
-                <div selection>{{ 'TXT_TOPIC_PERMISSION_' + topic.selectedLevel.toUpperCase() | translate }}</div>
+                <div selection role="button" tabindex="0" [attr.aria-label]="topic.title">{{ 'TXT_TOPIC_PERMISSION_' + topic.selectedLevel.toUpperCase() | translate }}</div>
                 <div options>
                   @for (level of LEVELS; track level) {
-                    <div class="option" (click)="updateLevel(topic, level)">{{ 'TXT_TOPIC_PERMISSION_' + level.toUpperCase() | translate }}</div>
+                    <div class="option" (click)="updateLevel(topic, level)" (keydown.enter)="updateLevel(topic, level)" role="button" tabindex="0">{{ 'TXT_TOPIC_PERMISSION_' + level.toUpperCase() | translate }}</div>
                   }
                 </div>
               </cos-dropdown>
-              <button class="remove_btn" (click)="removeTopic(topic)">
+              <button type="button" class="remove_btn" (click)="removeTopic(topic)" [attr.aria-label]="'CONTROL.DELETE' | translate">
                 <cos-icon name="close" [size]="16"></cos-icon>
               </button>
             </div>
@@ -44,15 +44,15 @@
       }
 
       @if (noTopicsSelected()) {
-        <div class="inline_error" translate="COMPONENTS.GROUP_ADD_TOPICS_DIALOG.NO_TOPICS_SELECTED"></div>
+        <div class="inline_error">{{ 'COMPONENTS.GROUP_ADD_TOPICS_DIALOG.NO_TOPICS_SELECTED' | translate }}</div>
       }
     </div>
 
     <div class="dialog_footer with_buttons">
       <div></div>
       <div class="button_row">
-        <a dialogClose translate="COMPONENTS.GROUP_ADD_TOPICS_DIALOG.LNK_CANCEL"></a>
-        <button class="btn_medium_submit" (click)="save()" translate="COMPONENTS.GROUP_ADD_TOPICS_DIALOG.BTN_SAVE"></button>
+        <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.GROUP_ADD_TOPICS_DIALOG.LNK_CANCEL' | translate }}</button>
+        <button type="button" class="btn_medium_submit" (click)="save()">{{ 'COMPONENTS.GROUP_ADD_TOPICS_DIALOG.BTN_SAVE' | translate }}</button>
       </div>
     </div>
   </div>

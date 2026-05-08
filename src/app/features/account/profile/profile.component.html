@@ -1,7 +1,7 @@
 <div class="page_content">
   <div class="page_header">
-    <div class="page_title" translate="VIEWS.ACCOUNT.HEADING"></div>
-    <button class="btn_medium_close" (click)="store.logout()">
+    <h1 class="page_title" translate="VIEWS.ACCOUNT.HEADING"></h1>
+    <button type="button" class="btn_medium_close" (click)="store.logout()" [attr.aria-label]="'VIEWS.ACCOUNT.BTN_LOG_OUT' | translate">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M6 2C4.34315 2 3 3.34315 3 5L3 19C3 20.6569 4.34315 22 6 22L17 22V20L6 20C5.44772 20 5 19.5523 5 19L5 5C5 4.44772 5.44772 4 6 4L17 4V2L6 2Z"
@@ -23,7 +23,7 @@
 
   <div id="tab_dropdown" class="dropdown mobile_show">
     <cos-dropdown>
-      <div selection>
+      <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.ACCOUNT.TAB_' + activeTab() | uppercase | translate">
         <div class="selected_item bold" [translate]="'VIEWS.ACCOUNT.TAB_' + activeTab() | uppercase"> </div>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
@@ -72,7 +72,7 @@
       </div>
 
       <div id="profile_data_area">
-        <h4 class="small_heading">{{ 'VIEWS.ACCOUNT.HEADING_ACCOUNT_DETAILS' | translate }}</h4>
+        <h2 class="small_heading">{{ 'VIEWS.ACCOUNT.HEADING_ACCOUNT_DETAILS' | translate }}</h2>
         <form id="profile_form" (submit)="doUpdateProfile(); $event.preventDefault()">
           <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_NAME' | translate" [hasError]="!!errors.name">
             <input id="name" name="name" [(ngModel)]="form.name" required [maxlength]="255">
@@ -162,10 +162,10 @@
           </div>
         </form>
 
-        <h4 class="small_heading">{{ 'VIEWS.ACCOUNT.TAB_PREFERENCES' | translate }}</h4>
+        <h2 class="small_heading">{{ 'VIEWS.ACCOUNT.TAB_PREFERENCES' | translate }}</h2>
 
         <div class="prefrence_box">
-          <div class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_PROFILE_LANGUAEG"></div>
+          <h3 class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_PROFILE_LANGUAEG"></h3>
           <div class="preference_description" translate="VIEWS.ACCOUNT.LBL_PROFILE_LANGUAEG_DESCRIPTION"></div>
 
           <cos-dropdown class="toolbar-dropdown"
@@ -182,7 +182,7 @@
           </cos-dropdown>
         </div>
         <div class="prefrence_box">
-          <div class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_SHOW_IN_SEARCH"></div>
+          <h3 class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_SHOW_IN_SEARCH"></h3>
           <div class="preference_header">
             <div class="preference_description" translate="VIEWS.ACCOUNT.LBL_SHOW_IN_SEARCH_DESCRIPTION"></div>
           </div>
@@ -191,13 +191,13 @@
         </div>
 
         <div class="prefrence_box">
-          <div class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_LINKS_TITLE"></div>
+          <h3 class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_LINKS_TITLE"></h3>
           <div class="preference_description" translate="VIEWS.ACCOUNT.LBL_LINKS_DESCRIPTION"></div>
           <cos-terms-links></cos-terms-links>
         </div>
 
         <div class="prefrence_box">
-          <div class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_DELETE_ACCOUNT"></div>
+          <h3 class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_DELETE_ACCOUNT"></h3>
           <div class="preference_description" translate="VIEWS.ACCOUNT.LBL_DELETE_ACCOUNT_DESCRIPTION"></div>
           <div class="delete_account">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -215,7 +215,7 @@
     </div>
     } @else if (activeTab() === 'notifications') {
     <div class="profile_area_section">
-      <h4 class="small_heading">{{ 'VIEWS.ACCOUNT.NOTIFICATIONS_HEADING' | translate }}</h4>
+      <h2 class="small_heading">{{ 'VIEWS.ACCOUNT.NOTIFICATIONS_HEADING' | translate }}</h2>
       <div class="filter_section">
         <div class="input_area">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -230,7 +230,7 @@
         </div>
         <cos-input [placeholder]="'VIEWS.ACCOUNT.SHOW_PER_PAGE' | translate" class="dropdown_input">
           <cos-dropdown>
-            <div selection>
+            <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.ACCOUNT.SHOW_PER_PAGE' | translate">
               <div class="selected_item">{{(topicNotificationService.params | async)?.limit}}</div>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />

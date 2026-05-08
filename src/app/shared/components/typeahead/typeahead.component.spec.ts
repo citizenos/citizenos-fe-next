@@ -27,7 +27,7 @@ describe('TypeaheadComponent', () => {
 
   it('should emit search on onQuery()', () => {
     const spy = vi.fn();
-    component.search.subscribe(spy);
+    component.searchQuery.subscribe(spy);
     component.term.set('alice');
     component.onQuery();
     expect(spy).toHaveBeenCalledWith('alice');
@@ -40,7 +40,7 @@ describe('TypeaheadComponent', () => {
 
   it('should clear term and emit select on doSelect()', () => {
     const spy = vi.fn();
-    component.select.subscribe(spy);
+    component.selectItem.subscribe(spy);
     component.term.set('test');
     const item: TypeaheadItem = { id: '1', name: 'Alice' };
     component.doSelect(item);

@@ -7,10 +7,10 @@
       <div class="number_wrap mobile_show">
         <div>1</div>
       </div>
-      <div class="small_heading" translate="VIEWS.GROUP_CREATE.ADD_TOPICS_HEADING"></div>
-      <div class="mobile_hidden" translate="VIEWS.GROUP_CREATE.ADD_TOPICS_DESC"></div>
+      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.ADD_TOPICS_HEADING' | translate }}</h2>
+      <div class="mobile_hidden">{{ 'VIEWS.GROUP_CREATE.ADD_TOPICS_DESC' | translate }}</div>
     </div>
-    <div class="mobile_show" translate="VIEWS.GROUP_CREATE.ADD_TOPICS_DESC"></div>
+    <div class="mobile_show">{{ 'VIEWS.GROUP_CREATE.ADD_TOPICS_DESC' | translate }}</div>
 
     <div class="search-container">
       <cos-input [placeholder]="'VIEWS.GROUP_CREATE.ADD_TOPICS_INPUT_SEARCH' | translate">
@@ -24,7 +24,7 @@
       @if (searchResults().length > 0) {
         <div class="search-results">
           @for (topic of searchResults(); track topic.id) {
-            <div class="search-item" (click)="addTopic(topic)">
+            <div class="search-item" (click)="addTopic(topic)" (keydown.enter)="addTopic(topic)" role="button" tabindex="0">
               <span class="topic-title">{{topic.title}}</span>
               <cos-icon name="plus" size="16"></cos-icon>
             </div>
@@ -34,14 +34,14 @@
     </div>
 
     <div class="selected-topics">
-      <div class="small_heading" translate="VIEWS.GROUP_CREATE.ADD_TOPICS_SELECTED"></div>
+      <h3 class="small_heading">{{ 'VIEWS.GROUP_CREATE.ADD_TOPICS_SELECTED' | translate }}</h3>
       @for (topic of selectedTopics(); track topic.id) {
         <div class="selected-item">
           <span class="topic-title">{{topic.title}}</span>
           <cos-button variant="ghost" (clicked)="removeTopic(topic)" icon="trash"></cos-button>
         </div>
       } @empty {
-        <div class="empty-selection" translate="VIEWS.GROUP_CREATE.ADD_TOPICS_NO_TOPICS"></div>
+        <div class="empty-selection">{{ 'VIEWS.GROUP_CREATE.ADD_TOPICS_NO_TOPICS' | translate }}</div>
       }
     </div>
   </div>

@@ -77,7 +77,7 @@
                   }
                 </div>
               </div>
-              <div class="medium_heading" [innerHTML]="group.name"></div>
+              <h1 class="medium_heading" [innerHTML]="group.name"></h1>
             </div>
             <div id="group_description" [class.open]="moreInfo()" [innerHTML]="group.description"></div>
             @if (!moreInfo()) {
@@ -228,7 +228,7 @@
               <cos-illustration imagePath="assets/imgs/no_image_discussion.svg"></cos-illustration>
             </div>
             <div class="text_wrap">
-              <div class="small_heading">{{ 'VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_HEADING' | translate }}</div>
+              <h2 class="small_heading">{{ 'VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_HEADING' | translate }}</h2>
               <div>{{ 'VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_DESCRIPTION' | translate }}</div>
             </div>
             <div class="button_wrap">
@@ -290,7 +290,7 @@
             <div class="level">
               <span>{{ 'TXT_GROUP_LEVELS_' + member.level.toUpperCase() | translate }}</span>
               @if (isAdmin()) {
-                <div class="member_actions" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" role="button" tabindex="0">
+                <div class="member_actions" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" role="button" tabindex="0" [attr.aria-label]="'VIEWS.GROUP.LBL_MEMBER_ACTIONS' | translate">
                   <button type="button" class="btn_medium_close icon" (click)="activeMemberMenuId.set(activeMemberMenuId() === member.id ? null : member.id)" [attr.aria-label]="'CONTROL.MORE_OPTIONS' | translate" [attr.aria-expanded]="activeMemberMenuId() === member.id">
                     <cos-icon name="more-vertical" [size]="24"></cos-icon>
                   </button>

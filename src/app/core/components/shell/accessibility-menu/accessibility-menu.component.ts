@@ -14,7 +14,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
           <div class="dialog">
             <div class="dialog_header">
               <div class="header_text">
-                <h4 class="title">{{ 'COMPONENTS.ACCESSIBILITY.MODAL_HEADING' | translate }}</h4>
+                <h1 class="title">{{ 'COMPONENTS.ACCESSIBILITY.MODAL_HEADING' | translate }}</h1>
                 <div class="dialog_close">
                   <button type="button" class="btn_dialog_close" (click)="uiState.showAccessibility.set(false)" [attr.aria-label]="'CONTROL.CLOSE' | translate">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,7 +26,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
             </div>
             <div class="dialog_content">
               <div class="accessibility_options_wrap">
-                <h4>{{ 'COMPONENTS.ACCESSIBILITY.HEADING_CONTRAST' | translate }}</h4>
+                <h2 class="small_heading">{{ 'COMPONENTS.ACCESSIBILITY.HEADING_CONTRAST' | translate }}</h2>
 
                 <div class="radio_wrap" (click)="setContrast('default')" (keydown.enter)="setContrast('default')" role="button" tabindex="0">
                   <div class="radio_text_wrap">
@@ -68,7 +68,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
                   </div>
                 </div>
 
-                <h4>{{ 'COMPONENTS.ACCESSIBILITY.HEADING_TEXT_SIZE' | translate }}</h4>
+                <h2 class="small_heading">{{ 'COMPONENTS.ACCESSIBILITY.HEADING_TEXT_SIZE' | translate }}</h2>
 
                 <div class="radio_wrap" (click)="setTextSize('')" (keydown.enter)="setTextSize('')" role="button" tabindex="0">
                   <div class="radio_text_wrap">
@@ -118,7 +118,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
             </div>
             <div class="dialog_info_wrap">
               <div class="dialog_info">
-                <div class="bold">{{ 'COMPONENTS.ACCESSIBILITY.HEADING_HAVING_ISSUES' | translate }}</div>
+                <h3 class="bold">{{ 'COMPONENTS.ACCESSIBILITY.HEADING_HAVING_ISSUES' | translate }}</h3>
                 <div class="row">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15 12V14L19 11.5L15 9V11H6V12H15Z" fill="#2C3B47" />

@@ -1,21 +1,21 @@
 <div class="page_content">
   <div id="create_heading">
-    <div class="small_heading" translate="VIEWS.GROUP_CREATE.HEADING"></div>
+    <h1 class="small_heading" translate="VIEWS.GROUP_CREATE.HEADING"></h1>
   </div>
 
-  <div id="create_tabs">
-    <a class="create_tab" [class.active]="currentStep() === 'info'" (click)="setStep('info')">
+  <div id="create_tabs" role="tablist">
+    <button type="button" class="create_tab" role="tab" [attr.aria-selected]="currentStep() === 'info'" [class.active]="currentStep() === 'info'" (click)="setStep('info')">
       1.<span class="tab_text" translate="VIEWS.GROUP_CREATE.CREATE_TAB_1"></span>
-    </a>
-    <a class="create_tab" [class.active]="currentStep() === 'settings'" (click)="setStep('settings')">
+    </button>
+    <button type="button" class="create_tab" role="tab" [attr.aria-selected]="currentStep() === 'settings'" [class.active]="currentStep() === 'settings'" (click)="setStep('settings')">
       2.<span class="tab_text" translate="VIEWS.GROUP_CREATE.CREATE_TAB_2"></span>
-    </a>
-    <a class="create_tab" [class.active]="currentStep() === 'add_topics'" (click)="setStep('add_topics')">
+    </button>
+    <button type="button" class="create_tab" role="tab" [attr.aria-selected]="currentStep() === 'add_topics'" [class.active]="currentStep() === 'add_topics'" (click)="setStep('add_topics')">
       3.<span class="tab_text" translate="VIEWS.GROUP_CREATE.CREATE_TAB_3"></span>
-    </a>
-    <a class="create_tab" [class.active]="currentStep() === 'invite'" (click)="setStep('invite')">
+    </button>
+    <button type="button" class="create_tab" role="tab" [attr.aria-selected]="currentStep() === 'invite'" [class.active]="currentStep() === 'invite'" (click)="setStep('invite')">
       4.<span class="tab_text" translate="VIEWS.GROUP_CREATE.CREATE_TAB_4"></span>
-    </a>
+    </button>
   </div>
 
   <div id="create_content_wrap">

@@ -5,7 +5,7 @@
         <div class="icon_notification">
           <cos-icon name="warning-filled" [size]="40"></cos-icon>
         </div>
-        <h3 class="title">{{ 'MODALS.TOPIC_REPORT_HEADING' | translate }}</h3>
+        <h1 class="title">{{ 'MODALS.TOPIC_REPORT_HEADING' | translate }}</h1>
       </div>
       <div class="dialog_close">
         <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
@@ -21,7 +21,7 @@
         <div class="form_group">
           <label for="report_type">{{ 'COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TYPE' | translate }}</label>
           <cos-dropdown id="report_type">
-            <div selection class="selected_item">
+            <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TYPE' | translate">
               {{ 'TXT_REPORT_TYPES_' + (reportForm.value.type | uppercase) | translate }}
             </div>
             <div options>

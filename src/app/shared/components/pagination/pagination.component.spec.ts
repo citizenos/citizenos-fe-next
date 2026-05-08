@@ -71,7 +71,7 @@ describe('PaginationComponent', () => {
     component.page.set(3);
     fixture.detectChanges();
     const spy = vi.fn();
-    component.select.subscribe(spy);
+    component.selectPage.subscribe(spy);
     component.next();
     expect(spy).toHaveBeenCalledWith(4);
   });
@@ -81,7 +81,7 @@ describe('PaginationComponent', () => {
     component.page.set(1);
     fixture.detectChanges();
     const spy = vi.fn();
-    component.select.subscribe(spy);
+    component.selectPage.subscribe(spy);
     component.prev();
     expect(spy).not.toHaveBeenCalled();
   });
@@ -91,7 +91,7 @@ describe('PaginationComponent', () => {
     component.page.set(5);
     fixture.detectChanges();
     const spy = vi.fn();
-    component.select.subscribe(spy);
+    component.selectPage.subscribe(spy);
     component.next();
     expect(spy).not.toHaveBeenCalled();
   });

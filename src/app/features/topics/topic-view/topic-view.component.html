@@ -74,7 +74,7 @@
           <cos-icon name="warning" [size]="24" color="white"></cos-icon>
         </div>
         <div class="message">
-          <div class="title">{{ 'VIEWS.TOPICS_TOPICID.HEADING_REPORTED' | translate }}</div>
+          <h2 class="title">{{ 'VIEWS.TOPICS_TOPICID.HEADING_REPORTED' | translate }}</h2>
           <div class="content">
             <div class="content_description">
               {{ (topicService.canEdit(topic()!) ? 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED_ADMIN' : 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED') | translate }}
@@ -127,7 +127,7 @@
             <div>
               <cos-icon name="warning" [size]="40" color="#F39129"></cos-icon>
             </div>
-            <div class="notification_title">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_TITLE' | translate }}</div>
+            <h2 class="notification_title">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_TITLE' | translate }}</h2>
             <div class="notification_links">
               <button type="button" class="btn_link" (click)="reportReasonDialog(topic()!)"
                 (keydown.enter)="reportReasonDialog(topic()!)">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_LNK_WHY' | translate
@@ -181,7 +181,7 @@
                 </clipPath>
               </defs>
             </svg>
-            <div class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_VOTING_HEADING' | translate }}</div>
+            <h2 class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_VOTING_HEADING' | translate }}</h2>
             @if (topicService.canDelete(topic()!) && topic()?.status !== STATUSES.followUp && topic()?.status !==
             STATUSES.closed) {
             <div class="button">
@@ -193,7 +193,7 @@
             }
             <div class="no_feature_description">
               <div class="description_text">
-                <div class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_HEADING' | translate }}</div>
+                <h3 class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_HEADING' | translate }}</h3>
                 <div>
                   <span>{{ 'VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_BEFORE' | translate }}</span><br /><br />
                   <span>{{ 'VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_AFTER' | translate }}</span>
@@ -231,7 +231,7 @@
                 </clipPath>
               </defs>
             </svg>
-            <div class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_FOLLOW_UP_HEADING' | translate }}</div>
+            <h2 class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_FOLLOW_UP_HEADING' | translate }}</h2>
             @if (topicService.canDelete(topic()!) && topic()?.status !== STATUSES.closed) {
             <div class="button">
               <button type="button" class="btn_medium_submit animate" (click)="sendToFollowUp(topic()!)">
@@ -242,7 +242,7 @@
             }
             <div class="no_feature_description">
               <div class="description_text">
-                <div class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_HEADING' | translate }}</div>
+                <h3 class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_HEADING' | translate }}</h3>
                 <div>
                   <span>{{ 'VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_BEFORE' | translate }}</span><br /><br />
                   <span>{{ 'VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_AFTER' | translate }}</span>
@@ -276,7 +276,7 @@
       <div class="info_section notifications">
         <div class="info_items_wrap">
           <div class="info_header">
-            <div class="info_title">{{ 'VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_HEADING' | translate }}</div>
+            <h3 class="info_title">{{ 'VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_HEADING' | translate }}</h3>
           </div>
           <div class="info_item">{{ 'VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_DESC' | translate }}</div>
           <button type="button" class="btn_medium_secondary bold" (click)="appTopicNotificationSettings()">

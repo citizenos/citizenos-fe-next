@@ -7,10 +7,10 @@
       <div class="number_wrap mobile_show">
         <div>1</div>
       </div>
-      <div class="small_heading" translate="VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS"></div>
-      <div class="mobile_hidden" translate="VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS_DESC"></div>
+      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS' | translate }}</h2>
+      <div class="mobile_hidden">{{ 'VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS_DESC' | translate }}</div>
     </div>
-    <div class="mobile_show" translate="VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS_DESC"></div>
+    <div class="mobile_show">{{ 'VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS_DESC' | translate }}</div>
 
     <div class="search-container">
       <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_SEARCH_USERS' | translate">
@@ -24,7 +24,7 @@
       @if (searchResults().length > 0) {
         <div class="search-results">
           @for (user of searchResults(); track user.id) {
-            <div class="search-item" (click)="addUser(user)">
+            <div class="search-item" (click)="addUser(user)" (keydown.enter)="addUser(user)" role="button" tabindex="0">
               <div class="user-info">
                 <span class="user-name">{{user.name}}</span>
                 <span class="user-email">{{user.email}}</span>
@@ -37,7 +37,7 @@
     </div>
 
     <div class="selected-users">
-      <div class="small_heading" translate="VIEWS.GROUP_CREATE.INVITE_SELECTED_USERS"></div>
+      <h3 class="small_heading">{{ 'VIEWS.GROUP_CREATE.INVITE_SELECTED_USERS' | translate }}</h3>
       @for (user of selectedUsers(); track (user.id || user.email)) {
         <div class="selected-item">
           <div class="user-info">
@@ -46,12 +46,12 @@
           </div>
           <div class="actions">
             <cos-dropdown class="level-dropdown">
-              <div selection>
+              <div selection role="button" tabindex="0" [attr.aria-label]="user.name">
                 <span [translate]="'TXT_GROUP_LEVELS_' + (user.level || 'read').toUpperCase()"></span>
               </div>
               <div options>
                 @for (level of LEVELS; track level) {
-                  <div class="option" (click)="updateLevel(user, level)">
+                  <div class="option" (click)="updateLevel(user, level)" (keydown.enter)="updateLevel(user, level)" role="button" tabindex="0">
                     <span [translate]="'TXT_GROUP_LEVELS_' + level.toUpperCase()"></span>
                   </div>
                 }
@@ -61,7 +61,7 @@
           </div>
         </div>
       } @empty {
-        <div class="empty-selection" translate="VIEWS.GROUP_CREATE.INVITE_NO_USERS"></div>
+        <div class="empty-selection">{{ 'VIEWS.GROUP_CREATE.INVITE_NO_USERS' | translate }}</div>
       }
     </div>
   </div>
@@ -76,7 +76,7 @@
       <div class="number_wrap mobile_show">
         <div>2</div>
       </div>
-      <div class="small_heading" translate="VIEWS.GROUP_CREATE.INVITE_HEADING_MESSAGE"></div>
+      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.INVITE_HEADING_MESSAGE' | translate }}</h2>
     </div>
 
     <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_MESSAGE' | translate">

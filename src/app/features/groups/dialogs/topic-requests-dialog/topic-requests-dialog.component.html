@@ -3,9 +3,9 @@
   <div class="dialog">
     <div class="dialog_header">
       <div class="header_text">
-        <h4 class="title" translate="COMPONENTS.TOPIC_REQUESTS.HEADING"></h4>
+        <h1 class="title">{{ 'COMPONENTS.TOPIC_REQUESTS.HEADING' | translate }}</h1>
         <div class="dialog_close">
-          <button class="btn_dialog_close icon" dialogClose>
+          <button type="button" class="btn_dialog_close icon" dialogClose [attr.aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="nav-close"></cos-icon>
           </button>
         </div>
@@ -30,15 +30,15 @@
                 <span>{{ 'TXT_TOPIC_VISIBILITY_' + request.topic.visibility | uppercase | translate }}</span>
               </div>
               <div class="action_buttons_wrap">
-                <button class="btn_medium_accept" (click)="accept(request)" translate="COMPONENTS.TOPIC_REQUESTS.BTN_ACCEPT"></button>
-                <button class="btn_medium_reject" (click)="reject(request)" translate="COMPONENTS.TOPIC_REQUESTS.BTN_REJECT"></button>
+                <button type="button" class="btn_medium_accept" (click)="accept(request)">{{ 'COMPONENTS.TOPIC_REQUESTS.BTN_ACCEPT' | translate }}</button>
+                <button type="button" class="btn_medium_reject" (click)="reject(request)">{{ 'COMPONENTS.TOPIC_REQUESTS.BTN_REJECT' | translate }}</button>
               </div>
             </div>
           } @empty {
             <div class="no_results">
               <cos-icon name="info" [size]="48"></cos-icon>
-              <div class="small_heading" translate="COMPONENTS.TOPIC_REQUESTS.NO_REQUESTS_HEADING"></div>
-              <div translate="COMPONENTS.TOPIC_REQUESTS.NO_REQUESTS_DESC"></div>
+              <h2 class="small_heading">{{ 'COMPONENTS.TOPIC_REQUESTS.NO_REQUESTS_HEADING' | translate }}</h2>
+              <div>{{ 'COMPONENTS.TOPIC_REQUESTS.NO_REQUESTS_DESC' | translate }}</div>
             </div>
           }
         </div>

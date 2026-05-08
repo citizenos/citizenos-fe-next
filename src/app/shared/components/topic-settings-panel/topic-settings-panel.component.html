@@ -4,7 +4,7 @@
     <div class="number_wrap">1</div>
     <div class="section_content_wrap">
       <div class="header_wrap">
-        <div class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_VISIBILITY"></div>
+        <h2 class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_VISIBILITY"></h2>
         <div class="description" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_DESC"></div>
       </div>
       <div class="row_wrap">
@@ -55,11 +55,11 @@
     <div class="number_wrap">2</div>
     <div class="section_content_wrap">
       <div class="header_wrap">
-        <div class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_CATEGORY_AND_LOCALITY"></div>
+        <h2 class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_CATEGORY_AND_LOCALITY"></h2>
         <div class="description" translate="VIEWS.TOPIC_CREATE.SETTINGS_CATEGORY_SELECT_DESC"></div>
       </div>
       <cos-dropdown>
-        <div selection translate="VIEWS.TOPIC_CREATE.SETTINGS_CATEGORY_SELECT"></div>
+        <div selection role="button" tabindex="0" translate="VIEWS.TOPIC_CREATE.SETTINGS_CATEGORY_SELECT"></div>
         <div options>
           @for (category of categoryKeys; track category) {
             <div class="option" (click)="toggleCategory(category)" (keydown.enter)="toggleCategory(category)" tabindex="0" role="button">
@@ -78,7 +78,7 @@
       </div>
 
       <div class="header_wrap">
-        <div class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_LOCALITY"></div>
+        <h2 class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_LOCALITY"></h2>
         <cos-tooltip
           [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_LOCALITY_TITLE' | translate"
           [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_LOCALITY_CONTENT' | translate"
@@ -89,7 +89,7 @@
         <div class="dropdown-group">
           <span class="label">{{ 'VIEWS.TOPIC_CREATE.SETTINGS_COUNTRY_SELECT' | translate }}</span>
           <cos-dropdown>
-            <div selection>
+            <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.TOPIC_CREATE.SETTINGS_COUNTRY_SELECT' | translate">
               {{ country() || ('VIEWS.TOPIC_CREATE.SETTINGS_COUNTRY_SELECT' | translate) }}
             </div>
             <div options>
@@ -102,7 +102,7 @@
         <div class="dropdown-group">
           <span class="label">{{ 'VIEWS.TOPIC_CREATE.SETTINGS_LANGUAGE_SELECT' | translate }}</span>
           <cos-dropdown>
-            <div selection>
+            <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.TOPIC_CREATE.SETTINGS_LANGUAGE_SELECT' | translate">
               {{ language() || ('VIEWS.TOPIC_CREATE.SETTINGS_LANGUAGE_SELECT' | translate) }}
             </div>
             <div options>
@@ -121,7 +121,7 @@
     <div class="number_wrap">3</div>
     <div class="section_content_wrap">
       <div class="header_wrap">
-        <div class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_ADD_TO_GROUP"></div>
+        <h2 class="small_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_ADD_TO_GROUP"></h2>
         <cos-tooltip
           [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_ADD_TO_GROUP' | translate"
           [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_ADD_TO_GROUP_CONTENT' | translate"
@@ -130,7 +130,7 @@
       </div>
       @if (availableGroups().length) {
         <cos-dropdown>
-          <div selection translate="VIEWS.TOPIC_CREATE.SETTINGS_GROUP_SELECT"></div>
+          <div selection role="button" tabindex="0" translate="VIEWS.TOPIC_CREATE.SETTINGS_GROUP_SELECT"></div>
           <div options>
             @for (group of availableGroups(); track group.id) {
               @if (!isGroupAdded(group)) {
@@ -144,7 +144,7 @@
             @for (group of addedGroups(); track group.id) {
               <div class="group-row">
                 <span class="group-name">{{ group.name }}</span>
-                <button class="remove-group-btn" (click)="removeGroup(group)">
+                <button type="button" class="remove-group-btn" (click)="removeGroup(group)" [attr.aria-label]="'CONTROL.DELETE' | translate">
                   <cos-icon name="close" [size]="16"></cos-icon>
                 </button>
               </div>

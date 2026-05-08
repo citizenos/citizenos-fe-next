@@ -1,10 +1,10 @@
 <div class="create_content_block discussion" [class.open]="blockAttachments()">
-  <div class="block_title_wrap" (click)="blockAttachments.set(true)">
-    <div class="block_title" translate="VIEWS.TOPIC_CREATE.TITLE_ATTACHMENTS"></div>
+  <div class="block_title_wrap" (click)="blockAttachments.set(true)" (keydown.enter)="blockAttachments.set(true)" role="button" tabindex="0">
+    <div class="block_title">{{ 'VIEWS.TOPIC_CREATE.TITLE_ATTACHMENTS' | translate }}</div>
     
     <div class="dropdown button_dropdown" cosDropdown>
       <cos-button variant="secondary" (clicked)="blockAttachments.set(true); $event.stopPropagation()" icon="plus">
-        <span translate="VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_ADD"></span>
+        <span>{{ 'VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_ADD' | translate }}</span>
       </cos-button>
       <div class="options button_options">
         <cos-button variant="ghost" (clicked)="triggerUpload()" icon="upload">
@@ -14,8 +14,9 @@
             class="hidden" 
             (change)="onUpload()"
             multiple="true" 
+            [attr.aria-label]="'VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_UPLOAD' | translate"
           />
-          <span translate="VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_UPLOAD"></span>
+          <span>{{ 'VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_UPLOAD' | translate }}</span>
         </cos-button>
         <!-- Dropbox/OneDrive/GoogleDrive could be added here if needed -->
       </div>
@@ -30,11 +31,12 @@
             class="attachment_name_input" 
             [(ngModel)]="attachment.name" 
             (change)="onUpdate(attachment)" 
+            [attr.aria-label]="'VIEWS.TOPICS_TOPICID.ATTACHMENT_NAME' | translate"
           />
-          <cos-button variant="ghost" (clicked)="onDelete(attachment)" icon="trash"></cos-button>
+          <cos-button variant="ghost" (clicked)="onDelete(attachment)" icon="trash" [attr.aria-label]="'CONTROL.DELETE' | translate"></cos-button>
         </div>
       } @empty {
-        <p class="no_attachments" translate="VIEWS.TOPICS_TOPICID.SECTION_INFO_NO_ATTACHMENTS"></p>
+        <p class="no_attachments">{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_NO_ATTACHMENTS' | translate }}</p>
       }
     </div>
   }

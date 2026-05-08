@@ -49,7 +49,7 @@ describe('CosTabsComponent', () => {
 
   it('should emit select when tab clicked', () => {
     const spy = vi.fn();
-    component.select.subscribe(spy);
+    component.selectTab.subscribe(spy);
     const el: HTMLElement = fixture.nativeElement;
     const tabs = el.querySelectorAll<HTMLElement>('.tab_item');
     tabs[1].click();

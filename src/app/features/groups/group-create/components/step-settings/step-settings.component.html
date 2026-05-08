@@ -7,30 +7,30 @@
       <div class="number_wrap mobile_show">
         <div>1</div>
       </div>
-      <div class="small_heading" translate="VIEWS.GROUP_CREATE.SETTINGS_HEADING_VISIBILITY"></div>
-      <div class="mobile_hidden" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_DESC"></div>
+      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.SETTINGS_HEADING_VISIBILITY' | translate }}</h2>
+      <div class="mobile_hidden">{{ 'VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_DESC' | translate }}</div>
     </div>
-    <div class="mobile_show" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_DESC"></div>
+    <div class="mobile_show">{{ 'VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_DESC' | translate }}</div>
 
     <div class="row_wrap">
-      <div class="radio_wrap" [class.active]="group().visibility === 'private'" (click)="updateVisibility('private')">
+      <div class="radio_wrap" [class.active]="group().visibility === 'private'">
         <label class="radio_box">
-          <input type="radio" [checked]="group().visibility === 'private'" name="visibility">
+          <input type="radio" [checked]="group().visibility === 'private'" name="visibility" (change)="updateVisibility('private')">
           <span class="radio"></span>
           <div class="radio_text_wrap">
-            <div class="radio_lable" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PRIVATE"></div>
-            <div class="radio_description" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PRIVATE_DESC"></div>
+            <div class="radio_lable">{{ 'VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PRIVATE' | translate }}</div>
+            <div class="radio_description">{{ 'VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PRIVATE_DESC' | translate }}</div>
           </div>
         </label>
       </div>
 
-      <div class="radio_wrap" [class.active]="group().visibility === 'public'" (click)="updateVisibility('public')">
+      <div class="radio_wrap" [class.active]="group().visibility === 'public'">
         <label class="radio_box">
-          <input type="radio" [checked]="group().visibility === 'public'" name="visibility">
+          <input type="radio" [checked]="group().visibility === 'public'" name="visibility" (change)="updateVisibility('public')">
           <span class="radio"></span>
           <div class="radio_text_wrap">
-            <div class="radio_lable" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PUBLIC"></div>
-            <div class="radio_description" translate="VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PUBLIC_DESC"></div>
+            <div class="radio_lable">{{ 'VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PUBLIC' | translate }}</div>
+            <div class="radio_description">{{ 'VIEWS.GROUP_CREATE.SETTINGS_VISIBILITY_PUBLIC_DESC' | translate }}</div>
           </div>
         </label>
       </div>
@@ -47,30 +47,30 @@
       <div class="number_wrap mobile_show">
         <div>2</div>
       </div>
-      <div class="small_heading" translate="VIEWS.GROUP_CREATE.SETTINGS_HEADING_LOCALITY"></div>
-      <div class="mobile_hidden" translate="VIEWS.GROUP_CREATE.SETTINGS_LOCALITY_SELECT_DESC"></div>
+      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.SETTINGS_HEADING_LOCALITY' | translate }}</h2>
+      <div class="mobile_hidden">{{ 'VIEWS.GROUP_CREATE.SETTINGS_LOCALITY_SELECT_DESC' | translate }}</div>
     </div>
-    <div class="mobile_show" translate="VIEWS.GROUP_CREATE.SETTINGS_LOCALITY_SELECT_DESC"></div>
+    <div class="mobile_show">{{ 'VIEWS.GROUP_CREATE.SETTINGS_LOCALITY_SELECT_DESC' | translate }}</div>
 
     <div class="row_wrap">
       <cos-dropdown class="locality-dropdown">
-        <div selection>
+        <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.GROUP_CREATE.SETTINGS_COUNTRY_SELECT' | translate">
           <span [translate]="group().country ? '' : 'VIEWS.GROUP_CREATE.SETTINGS_COUNTRY_SELECT'">{{group().country}}</span>
         </div>
         <div options>
           @for (country of countries; track country.iso2) {
-            <div class="option" (click)="updateCountry(country.name)">{{country.name}}</div>
+            <div class="option" (click)="updateCountry(country.name)" (keydown.enter)="updateCountry(country.name)" role="button" tabindex="0">{{country.name}}</div>
           }
         </div>
       </cos-dropdown>
 
       <cos-dropdown class="locality-dropdown">
-        <div selection>
+        <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.GROUP_CREATE.SETTINGS_LANGUAGE_SELECT' | translate">
           <span [translate]="group().language ? '' : 'VIEWS.GROUP_CREATE.SETTINGS_LANGUAGE_SELECT'">{{group().language}}</span>
         </div>
         <div options>
           @for (language of languages; track language.code) {
-            <div class="option" (click)="updateLanguage(language.name)">{{language.name}}</div>
+            <div class="option" (click)="updateLanguage(language.name)" (keydown.enter)="updateLanguage(language.name)" role="button" tabindex="0">{{language.name}}</div>
           }
         </div>
       </cos-dropdown>
