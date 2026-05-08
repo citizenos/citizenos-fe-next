@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
@@ -207,7 +207,7 @@ import * as webeid from '@web-eid/web-eid-library/web-eid';
     }
   `]
 })
-export class EstEidComponent implements OnInit, OnDestroy {
+export class EstEidComponent implements OnDestroy {
   private fb = inject(FormBuilder);
   userStore = inject(UserStore);
 
@@ -221,7 +221,7 @@ export class EstEidComponent implements OnInit, OnDestroy {
     phoneNumber: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s-]{7,}$/)]]
   });
 
-  ngOnInit() { }
+
 
   ngOnDestroy() {
     this.stopPolling();

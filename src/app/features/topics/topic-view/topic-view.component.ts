@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, signal, HostListener, ChangeDetectionStrategy, PLATFORM_ID, computed, DestroyRef } from '@angular/core';
+import { Component, OnInit, inject, signal, HostListener, ChangeDetectionStrategy, PLATFORM_ID, computed, DestroyRef } from '@angular/core';
 import { NgClass, isPlatformBrowser } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -56,7 +56,7 @@ import { Topic } from '../../../core/interfaces/topic';
   templateUrl: './topic-view.component.html',
   styleUrls: ['./topic-view.component.scss']
 })
-export class TopicViewComponent implements OnInit, OnDestroy {
+export class TopicViewComponent implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
 
@@ -197,9 +197,7 @@ export class TopicViewComponent implements OnInit, OnDestroy {
     this.topicService.reloadTopic();
   }
 
-  ngOnDestroy() {
-    // Cleanup if necessary
-  }
+
 
   // loadRelatedData has been refactored to declarative signal derivations.
 

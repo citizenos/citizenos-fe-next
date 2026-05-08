@@ -1,10 +1,10 @@
-import { Directive, ElementRef, HostListener, OnDestroy, Input, inject } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, inject } from '@angular/core';
 
 @Directive({
   selector: '[cosEtherpad]',
   standalone: true
 })
-export class EtherpadDirective implements OnDestroy {
+export class EtherpadDirective {
   private element = inject(ElementRef);
   
   width = '';
@@ -28,7 +28,7 @@ export class EtherpadDirective implements OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+
 
   private valueNotPercent(value: any) {
     return (value + '').indexOf('%') < 0;

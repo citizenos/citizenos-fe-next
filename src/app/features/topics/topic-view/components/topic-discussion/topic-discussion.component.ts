@@ -1,5 +1,5 @@
 import {
-  Component, input, signal, inject, ChangeDetectionStrategy, OnInit, computed
+  Component, input, signal, inject, ChangeDetectionStrategy, computed
 } from '@angular/core';
 import { NgClass, DatePipe, UpperCasePipe, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -40,7 +40,7 @@ import { InputComponent } from '../../../../../shared/components/input/input.com
   templateUrl: './topic-discussion.component.html',
   styleUrls: ['./topic-discussion.component.scss']
 })
-export class TopicDiscussionComponent implements OnInit {
+export class TopicDiscussionComponent {
   topic = input.required<Topic>();
 
   private topicService = inject(TopicService);
@@ -103,9 +103,7 @@ export class TopicDiscussionComponent implements OnInit {
     return this.arguments();
   });
 
-  ngOnInit(): void {
-    // Initial load handled by toSignal/switchMap
-  }
+
 
   canPost() {
     return this.userStore.isAuthenticated();

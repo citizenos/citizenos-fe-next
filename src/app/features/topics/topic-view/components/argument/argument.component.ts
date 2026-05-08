@@ -1,6 +1,6 @@
 import {
   Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit,
-  AfterViewInit, ViewChild, ElementRef, forwardRef
+  ViewChild, ElementRef, forwardRef
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -32,7 +32,7 @@ import { ArgumentReportComponent } from '../argument-report/argument-report.comp
   templateUrl: './argument.component.html',
   styleUrls: ['./argument.component.scss']
 })
-export class ArgumentComponent implements OnInit, AfterViewInit {
+export class ArgumentComponent implements OnInit {
   argument = input.required<any>();
   topicId = input.required<string>();
   discussionId = input.required<string>();
@@ -62,7 +62,7 @@ export class ArgumentComponent implements OnInit, AfterViewInit {
     this.editText.set(this.argument().text || '');
   }
 
-  ngAfterViewInit() {}
+
 
   argumentId() {
     const arg = this.argument();

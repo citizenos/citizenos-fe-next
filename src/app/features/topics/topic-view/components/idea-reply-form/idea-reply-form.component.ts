@@ -1,4 +1,4 @@
-import { Component, inject, signal, input, output, ChangeDetectionStrategy, OnInit, effect, model } from '@angular/core';
+import { Component, inject, signal, output, ChangeDetectionStrategy, effect, model } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -19,7 +19,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
   styleUrls: ['./idea-reply-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IdeaReplyFormComponent implements OnInit {
+export class IdeaReplyFormComponent {
   // Inputs as signals
   argument = model<any>(null);
   topicId = model<string>('');
@@ -56,8 +56,7 @@ export class IdeaReplyFormComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+
 
   save() {
     if (this.replyForm.invalid) return;

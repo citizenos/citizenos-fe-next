@@ -346,6 +346,7 @@ export class HelpComponent {
       this.helpFrame?.nativeElement.contentWindow.postMessage('back', helpDomain.origin);
     } catch (err) {
       if (this.helpFrame) {
+        // eslint-disable-next-line no-self-assign -- intentional: forces iframe reload
         this.helpFrame.nativeElement.src = this.helpFrame.nativeElement.src;
       }
     }

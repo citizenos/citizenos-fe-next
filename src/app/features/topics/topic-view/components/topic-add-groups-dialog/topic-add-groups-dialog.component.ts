@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, signal, OnInit, DestroyRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, DestroyRef } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -40,7 +40,7 @@ export interface TopicAddGroupsDialogData {
   styleUrls: ['./topic-add-groups-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TopicAddGroupsDialogComponent implements OnInit {
+export class TopicAddGroupsDialogComponent {
   data = inject<TopicAddGroupsDialogData>(DIALOG_DATA);
   private dialogRef = inject(DialogRef<TopicAddGroupsDialogComponent>);
   private topicService = inject(TopicService);
@@ -57,7 +57,7 @@ export class TopicAddGroupsDialogComponent implements OnInit {
   readonly LEVELS = Object.keys(this.topicMemberGroupService.LEVELS);
   globalLevel = signal<string>(this.LEVELS[0]);
 
-  ngOnInit() {}
+
 
   onSearchChange(str: string) {
     this.searchString.set(str);

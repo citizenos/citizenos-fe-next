@@ -17,6 +17,10 @@ export class ActivityFeedState {
   }
 
   toggle(ctx?: { groupId?: string; topicId?: string }): void {
-    this.isOpen() ? this.close() : this.open(ctx);
+    if (this.isOpen()) {
+      this.close();
+    } else {
+      this.open(ctx);
+    }
   }
 }
