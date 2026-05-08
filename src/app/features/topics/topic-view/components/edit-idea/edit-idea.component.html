@@ -1,0 +1,99 @@
+<div class="edit_idea_wrap">
+  <div class="edit_idea_header">
+    <h3>{{ (idea().status === 'draft' ? 'COMPONENTS.EDIT_IDEA.FOOTER_FORM_TITLE' : 'COMPONENTS.EDIT_IDEA.BTN_IDEA_UPDATE') | translate }}</h3>
+    <div class="header_actions">
+      @if (isAutosaving()) {
+        <div class="autosave_indicator">
+          <div class="loader"></div>
+          <span>{{ 'COMPONENTS.IDEA_DIALOG.AUTOSAVING' | translate }}</span>
+        </div>
+      }
+      <button type="button" class="btn_close" (click)="close()" [aria-label]="'CONTROL.CLOSE' | translate">
+        <cos-icon name="close" [size]="24"></cos-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="edit_idea_form">
+    <div class="field_wrap" [class.error]="errors()['statement']">
+      <label for="idea_statement">{{ 'COMPONENTS.EDIT_IDEA.PLACEHOLDER_ADD_STATEMENT_TO_IDEA' | translate }}</label>
+      <input
+        id="idea_statement"
+        type="text"
+        class="field"
+        [maxlength]="STATEMENT_MAXLENGTH"
+        [ngModel]="statement()"
+        (ngModelChange)="onStatementChange($event)"
+        placeholder="{{ 'COMPONENTS.EDIT_IDEA.PLACEHOLDER_ADD_STATEMENT_TO_IDEA' | translate }}" />
+      @if (errors()['statement']) {
+        <div class="error_message">{{ 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY' | translate }}</div>
+      }
+      <div class="char_count">{{ statement().length }}/{{ STATEMENT_MAXLENGTH }}</div>
+    </div>
+
+    @if (ideation().allowAnonymous && ideation().demographicsConfig) {
+      <div class="demographics_wrap">
+        <!-- Simplified demographics for now, can be expanded -->
+         @for (key of ideation().demographicsConfig | keyvalue; track key.key) {
+            <div class="field_wrap">
+                <label [for]="'demographics_' + key.key">{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_' + (key.key | uppercase) | translate }}</label>
+                <input [id]="'demographics_' + key.key" type="text" class="field" [(ngModel)]="key.value.value" />
+            </div>
+         }
+      </div>
+    }
+
+    <div class="field_wrap" [class.error]="errors()['description']">
+      <label for="idea_description">{{ 'COMPONENTS.EDIT_IDEA.PLACEHOLDER_EXPLAIN_YOUR_IDEA' | translate }}</label>
+      <textarea
+        id="idea_description"
+        class="field"
+        rows="8"
+        [ngModel]="description()"
+        (ngModelChange)="onDescriptionChange($event)"
+        placeholder="{{ 'COMPONENTS.EDIT_IDEA.PLACEHOLDER_EXPLAIN_YOUR_IDEA' | translate }}"></textarea>
+      @if (errors()['description']) {
+        <div class="error_message">{{ 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY' | translate }}</div>
+      }
+    </div>
+
+    @if (images().length || newImages().length) {
+      <div class="idea_images_wrap">
+        @for (image of images(); track image.id; let i = $index) {
+          <div class="image_item">
+            <img [src]="image.link" [alt]="image.name" />
+            <span class="image_name">{{ image.name }}</span>
+            <button type="button" class="btn_remove" (click)="removeImage(image, i)" [aria-label]="'CONTROL.REMOVE' | translate">
+              <cos-icon name="close" [size]="16"></cos-icon>
+            </button>
+          </div>
+        }
+        @for (image of newImages(); track i; let i = $index) {
+          <div class="image_item new">
+            <img [src]="image.link" [alt]="image.name" />
+            <span class="image_name">{{ image.name }}</span>
+            <button type="button" class="btn_remove" (click)="removeNewImage(i)" [aria-label]="'CONTROL.REMOVE' | translate">
+              <cos-icon name="close" [size]="16"></cos-icon>
+            </button>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="form_actions">
+      <input #imageUpload type="file" class="hidden" multiple (change)="fileUpload($event)" accept="image/*" />
+      <button type="button" class="btn_medium_plain" (click)="imageUpload.click()">
+        <cos-icon name="image" [size]="20"></cos-icon>
+        <span>{{ 'COMPONENTS.EDIT_IDEA.BTN_ADD_IMAGE' | translate }}</span>
+      </button>
+      <div class="spacer"></div>
+      @if (idea().status === 'draft') {
+        <button type="button" class="btn_medium_plain" (click)="saveDraft()">{{ 'COMPONENTS.ADD_IDEA.BTN_SAVE_DRAFT' | translate }}</button>
+      }
+      <button type="button" class="btn_medium" (click)="publish()">
+        {{ (idea().status === 'draft' ? 'COMPONENTS.EDIT_IDEA.BTN_IDEA_POST' : 'COMPONENTS.EDIT_IDEA.BTN_IDEA_UPDATE') | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+<div class="overlay" (click)="close()"></div>

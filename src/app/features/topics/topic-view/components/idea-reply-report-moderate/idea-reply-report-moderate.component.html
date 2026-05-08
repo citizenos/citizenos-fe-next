@@ -14,16 +14,16 @@
               fill="white" />
           </svg>
         </div>
-        <h4 class="title" translate="COMPONENTS.IDEA_REPLY_REPORT_MODERATE.HEADING"></h4>
+        <h1 class="title" translate="COMPONENTS.IDEA_REPLY_REPORT_MODERATE.HEADING"></h1>
       </div>
       <div class="dialog_close">
-        <a class="btn_dialog_close icon" dialogClose>
+        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
               fill="#2C3B47" />
           </svg>
-        </a>
+        </button>
       </div>
     </div>
     <div class="dialog_content">
@@ -40,7 +40,7 @@
       </div>
       <form [formGroup]="report">
         <div class="dropdown" cosDropdown>
-          <div class="selection">
+          <div class="selection" role="button" [attr.aria-label]="'COMPONENTS.IDEA_REPLY_REPORT_MODERATE.LBL_REPORT_TYPE' | translate" tabindex="0">
             <div class="selected_item" [translate]="'TXT_REPORT_TYPES_' + (report.value.type || '').toUpperCase()">
             </div>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,7 +56,8 @@
           </div>
         </div>
 
-        <textarea formControlName="text"
+        <label for="report_text" class="hidden">{{ 'COMPONENTS.ARGUMENT_REPORT.PLACEHOLDER_REPORT_TEXT' | translate }}</label>
+        <textarea id="report_text" formControlName="text"
           [ngClass]="{'error_input': report.controls['text'].errors?.['required'] && report.controls['text'].touched}"
           [placeholder]="'COMPONENTS.ARGUMENT_REPORT.PLACEHOLDER_REPORT_TEXT' | translate"
           [maxlength]="2048"
@@ -85,7 +86,7 @@
         <button class="btn_big_submit" [disabled]="report.invalid"
           translate="COMPONENTS.IDEA_REPLY_REPORT_MODERATE.BTN_SUBMIT"
           (click)="doModerate()"></button>
-        <a dialogClose translate="COMPONENTS.IDEA_REPLY_REPORT_MODERATE.BTN_CANCEL"></a>
+        <button type="button" class="btn_big_plain" dialogClose translate="COMPONENTS.IDEA_REPLY_REPORT_MODERATE.BTN_CANCEL"></button>
       </div>
     </div>
     <div class="dialog_footer"></div>
