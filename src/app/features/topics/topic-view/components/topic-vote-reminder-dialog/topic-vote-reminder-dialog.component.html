@@ -1,39 +1,37 @@
-<div class="overlay" dialogClose></div>
+<div class="overlay" dialogClose (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
 <div class="dialog_wrap">
   <div class="dialog">
     <div class="dialog_header voting">
       <div class="header_text">
-        <div class="small_heading" translate="COMPONENTS.TOPIC_VOTE_REMINDER.DIALOG_HEADING"></div>
+        <div class="small_heading">{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.DIALOG_HEADING' | translate }}</div>
         <div class="dialog_close">
-          <a class="btn_dialog_close icon" dialogClose>
+          <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="close" [size]="24"></cos-icon>
-          </a>
+          </button>
         </div>
       </div>
     </div>
 
     <div class="dialog_content no_footer">
       <div class="text_wrap">
-        <div class="content_description" translate="COMPONENTS.TOPIC_VOTE_REMINDER.DIALOG_DESCRIPTION"></div>
+        <div class="content_description">{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.DIALOG_DESCRIPTION' | translate }}</div>
         <div class="line_separator"></div>
-        <div translate="COMPONENTS.TOPIC_VOTE_REMINDER.REMINDER_PREVIEW_DESC"></div>
+        <div>{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.REMINDER_PREVIEW_DESC' | translate }}</div>
       </div>
       <div class="email_preview_wrap">
         <div class="email_preview">
           <div class="email_header">
-            <div class="email_title_desc" translate="COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_HEADING"></div>
+            <div class="email_title_desc">{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_HEADING' | translate }}</div>
             <div class="email_title" [innerHTML]="data.topic.title"></div>
           </div>
           <div class="email_body">
             <div class="text_area">
-              <span translate="COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_GREETING"
-                [translateParams]="{ userName: user()?.name }"></span>
+              <span>{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_GREETING' | translate:{ userName: user()?.name } }}</span>
               <div>
-                <span [translate]="data.vote.endsAt ? 'COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_TEXT_WARN' : 'COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_TEXT_PLEASE_VOTE'"></span>
+                <span>{{ (data.vote.endsAt ? 'COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_TEXT_WARN' : 'COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_TEXT_PLEASE_VOTE') | translate }}</span>
                 <span> </span>
                 @if (data.vote.endsAt) {
-                  <b translate="COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_TEXT_DAYS_LEFT"
-                    [translateParams]="{ daysLeft: daysLeft() }"></b>
+                  <b>{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_TEXT_DAYS_LEFT' | translate:{ daysLeft: daysLeft() } }}</b>
                 }
               </div>
             </div>
@@ -43,17 +41,16 @@
               </div>
               <div class="vote_info_text">
                 <div class="info_row">
-                  <b translate="COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_VOTE_VOTES_COLLECTED"></b>
+                  <b>{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_VOTE_VOTES_COLLECTED' | translate }}</b>
                   <b>{{ data.vote.votersCount || 0 }}</b>
                 </div>
                 @if (data.vote.endsAt) {
-                  <span translate="COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_VOTE_DEADLINE"
-                    [translateParams]="{ deadline: (data.vote.endsAt | date:'y-MM-dd HH:mm') }"></span>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_VOTE_DEADLINE' | translate:{ deadline: (data.vote.endsAt | date:'y-MM-dd HH:mm') } }}</span>
                 }
               </div>
             </div>
             <div class="button_wrap">
-              <div class="btn_medium_submit" translate="COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_BTN_CAST_VOTE"></div>
+              <div class="btn_medium_submit">{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.PREVIEW_EMAIL_BTN_CAST_VOTE' | translate }}</div>
             </div>
             <div class="notification_inline warning">
               <div class="icon_notification">
@@ -66,9 +63,9 @@
       </div>
 
       <div class="button_wrap">
-        <button class="btn_medium_secondary" [dialogClose]="true"
-          translate="COMPONENTS.TOPIC_VOTE_REMINDER.BTN_SEND_REMINDER"></button>
-        <a dialogClose translate="COMPONENTS.TOPIC_VOTE_REMINDER.LNK_CANCEL"></a>
+        <button type="button" class="btn_medium_secondary" [dialogClose]="true">
+          {{ 'COMPONENTS.TOPIC_VOTE_REMINDER.BTN_SEND_REMINDER' | translate }}</button>
+        <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.LNK_CANCEL' | translate }}</button>
       </div>
     </div>
   </div>

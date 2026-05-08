@@ -11,7 +11,11 @@ import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
     <div id="anonymous_dialog" class="modals-base">
       <div class="modal-header">
         <div class="header-text">
-          {{ 'MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_HEADING' | translate }}
+          @if (type === 'draft') {
+            {{ 'MODALS.TOPIC_IDEA_POSTING_DRAFT_ANONYMOUSLY' | translate }}
+          } @else {
+            {{ 'MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_HEADING' | translate }}
+          }
         </div>
         <div dialogClose class="close-icon-container">
           <cos-icon name="nav-close"></cos-icon>
@@ -43,18 +47,27 @@ import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
               </div>
             } @else {
               <div class="bold-text">
-                {{ 'MODALS.TOPIC_IDEA_POSTING_DRAFT_ANONYMOUSLY' | translate }}
+                {{ 'MODALS.TOPIC_IDEA_POSTING_DRAFT_ANONIMOUSLY_TEXT_1' | translate }}
+              </div>
+              <div class="light-text">
+                {{ 'MODALS.TOPIC_IDEA_POSTING_DRAFT_ANONIMOUSLY_TEXT_2' | translate }}
               </div>
             }
           </div>
         </div>
         <div class="footer-buttons-container">
-          <button class="btn-clear" dialogClose>
-            {{ 'MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_BTN_CANCEL' | translate }}
-          </button>
-          <button class="btn-clear no-bg" [dialogClose]="true">
-            {{ 'MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_BTN_CONTINUE' | translate }}
-          </button>
+          @if (type === 'draft') {
+            <button class="btn-clear no-bg" [dialogClose]="true">
+              {{ 'MODALS.TOPIC_IDEA_POSTING_DRAFT_ANONIMOUSLY_BTN_GOT_IT' | translate }}
+            </button>
+          } @else {
+            <button class="btn-clear" dialogClose>
+              {{ 'MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_BTN_CANCEL' | translate }}
+            </button>
+            <button class="btn-clear no-bg" [dialogClose]="true">
+              {{ 'MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_BTN_CONTINUE' | translate }}
+            </button>
+          }
         </div>
       </div>
     </div>

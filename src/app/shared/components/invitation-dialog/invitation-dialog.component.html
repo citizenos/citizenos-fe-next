@@ -37,7 +37,7 @@
         </h4>
       </div>
       <div class="dialog_close">
-        <a class="btn_dialog_close icon" [dialogClose]="undefined" [attr.aria-label]="'BTN_CLOSE' | translate">
+        <button type="button" class="btn_dialog_close icon" [dialogClose]="undefined" [attr.aria-label]="'BTN_CLOSE' | translate">
           <svg
             width="24"
             height="24"
@@ -50,7 +50,7 @@
               fill="#2C3B47"
             />
           </svg>
-        </a>
+        </button>
       </div>
     </div>
 
@@ -81,10 +81,10 @@
           @if (data.creator) {
             <div class="dialog_info row">
               @if (data.view === 'topic') {
-                <div translate="COMPONENTS.TOPIC_JOIN.TOPIC_CREATED_BY"></div>
+                <div>{{ 'COMPONENTS.TOPIC_JOIN.TOPIC_CREATED_BY' | translate }}</div>
               }
               @if (data.view === 'group') {
-                <div translate="COMPONENTS.GROUP_JOIN.GROUP_CREATED_BY"></div>
+                <div>{{ 'COMPONENTS.GROUP_JOIN.GROUP_CREATED_BY' | translate }}</div>
               }
               <div class="profile_image_wrap">
                 @if (data.creator.imageUrl) {
@@ -114,29 +114,28 @@
           <div class="dialog_info content_inner">
             <div
               class="content_title"
-              translate="MODALS.TOPIC_INVITE_VIEW_HEADING_INVITATION_DETAILS"
-            ></div>
+            >{{ 'MODALS.TOPIC_INVITE_VIEW_HEADING_INVITATION_DETAILS' | translate }}</div>
 
             <ul class="content_list content_list_details">
               @if (data.creator && data.creator.name && data.type === 'invite') {
                 <li>
-                  <div translate="MODALS.TOPIC_INVITE_VIEW_LBL_INVITED_BY"></div>
+                  <div>{{ 'MODALS.TOPIC_INVITE_VIEW_LBL_INVITED_BY' | translate }}</div>
                   <div class="bold">{{ data.creator.name }}</div>
                 </li>
               }
               @if (data.user && data.user.email) {
                 <li>
-                  <div translate="MODALS.TOPIC_INVITE_VIEW_LBL_INVITATION_SENT_TO"></div>
+                  <div>{{ 'MODALS.TOPIC_INVITE_VIEW_LBL_INVITATION_SENT_TO' | translate }}</div>
                   <div class="bold">{{ data.user.email }}</div>
                 </li>
               }
               @if (data.level) {
                 <li>
                   @if (data.view === 'topic') {
-                    <div translate="MODALS.TOPIC_INVITE_VIEW_LBL_TOPIC_LEVEL"></div>
+                    <div>{{ 'MODALS.TOPIC_INVITE_VIEW_LBL_TOPIC_LEVEL' | translate }}</div>
                   }
                   @if (data.view === 'group') {
-                    <div translate="MODALS.GROUP_INVITE_VIEW_LBL_GROUP_LEVEL"></div>
+                    <div>{{ 'MODALS.GROUP_INVITE_VIEW_LBL_GROUP_LEVEL' | translate }}</div>
                   }
                   <div class="bold">
                     {{ ('TXT_TOPIC_LEVELS_' + data.level | uppercase) | translate }}
@@ -273,7 +272,7 @@
     <div class="dialog_footer_join">
       <div class="button_wrap">
         <div class="actions_wrap">
-          <button class="btn_medium_submit" [dialogClose]="true">
+          <button type="button" class="btn_medium_submit" [dialogClose]="true">
             @if (
               (data.user && data.user.isRegistered && loggedIn) ||
               !data.user
@@ -301,6 +300,7 @@
           </button>
           @if (data.publicAccess !== null) {
             <button
+              type="button"
               id="group_button"
               (click)="goToPublicUrl(data.publicAccess!.link)"
               class="btn_medium_secondary ng-star-inserted"
@@ -309,7 +309,7 @@
             </button>
           }
         </div>
-        <a [dialogClose]="false" translate="MODALS.TOPIC_INVITE_VIEW_LNK_CANCEL"></a>
+        <button type="button" class="btn_link" [dialogClose]="false">{{ 'MODALS.TOPIC_INVITE_VIEW_LNK_CANCEL' | translate }}</button>
       </div>
     </div>
 
@@ -387,11 +387,11 @@
             fill="#F190B7"
           />
         </svg>
-        <span translate="MODALS.GROUP_INVITE_NEW_TO_CITIZEN_OS"></span>
+        <span>{{ 'MODALS.GROUP_INVITE_NEW_TO_CITIZEN_OS' | translate }}</span>
       </div>
 
       <a class="line_wrapper" href="https://citizenos.com" target="_blank">
-        <span translate="MODALS.GROUP_INVITE_READ_MORE" class="bold"></span>
+        <span class="bold">{{ 'MODALS.GROUP_INVITE_READ_MORE' | translate }}</span>
 
         <svg
           width="16"

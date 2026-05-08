@@ -21,35 +21,35 @@
           <div class="created_at">{{ argument().createdAt | date:'y-MM-dd HH:mm' }}</div>
           <div class="dropdown button_dropdown" cosDropdown>
             <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.ARGUMENT.LBL_ARGUMENT_ACTIONS' | translate" pos="top">
-              <button trigger class="btn_argument_actions" (click)="$event.stopPropagation()">
+              <button type="button" trigger class="btn_argument_actions" (click)="$event.stopPropagation()">
                 <cos-icon name="more-vertical" size="16"></cos-icon>
               </button>
             </cos-tooltip>
             <div class="options">
               @if (canEdit()) {
-                <button class="option" (click)="showEdit.update(v => !v)">
+                <button type="button" class="option" (click)="showEdit.update(v => !v)">
                   <cos-icon name="edit" size="16"></cos-icon>
-                  <span translate="COMPONENTS.ARGUMENT.OPTION_EDIT"></span>
+                  <span>{{ 'COMPONENTS.ARGUMENT.OPTION_EDIT' | translate }}</span>
                 </button>
               }
-              <button class="option" (click)="copyLink($event)">
+              <button type="button" class="option" (click)="copyLink($event)">
                 <cos-icon name="link" size="16"></cos-icon>
-                <span translate="LNK_DIRECT_LINK"></span>
+                <span>{{ 'LNK_DIRECT_LINK' | translate }}</span>
               </button>
-              <button class="option" (click)="doReport()">
+              <button type="button" class="option" (click)="doReport()">
                 <cos-icon name="warning" size="16"></cos-icon>
-                <span translate="COMPONENTS.ARGUMENT.OPTION_REPORT"></span>
+                <span>{{ 'COMPONENTS.ARGUMENT.OPTION_REPORT' | translate }}</span>
               </button>
               @if (isEdited()) {
-                <button class="option" (click)="showEdits.set(!showEdits())">
+                <button type="button" class="option" (click)="showEdits.set(!showEdits())">
                   <cos-icon name="history-legacy" size="16"></cos-icon>
-                  <span translate="VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_VIEW_PREVIOUS_VERSIONS"></span>
+                  <span>{{ 'VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_VIEW_PREVIOUS_VERSIONS' | translate }}</span>
                 </button>
               }
               @if (canEdit()) {
-                <button class="option" (click)="doDelete()">
+                <button type="button" class="option" (click)="doDelete()">
                   <cos-icon name="trash" size="16"></cos-icon>
-                  <span translate="COMPONENTS.ARGUMENT.OPTION_DELETE"></span>
+                  <span>{{ 'COMPONENTS.ARGUMENT.OPTION_DELETE' | translate }}</span>
                 </button>
               }
             </div>
@@ -65,13 +65,13 @@
               @if (argument().deletedReasonType && argument().deletedReasonText) {
                 <div class="bold" [innerHtml]="'VIEWS.TOPICS_TOPICID.ARGUMENT_FOUND_INAPPRIOPRIATE_BY' | translate:{usersFullName: argument().deletedBy?.name}"></div>
                 <div class="buttons_wrap">
-                  <a (click)="doReport()" translate="VIEWS.TOPICS_TOPICID.ARGUMENT_WHY"></a>
-                  <a (click)="showDeletedArgument.set(true)" translate="VIEWS.TOPICS_TOPICID.ARGUMENT_VIEW_ARGUMENT_ANYWAY"></a>
+                  <button type="button" class="btn_link" (click)="doReport()">{{ 'VIEWS.TOPICS_TOPICID.ARGUMENT_WHY' | translate }}</button>
+                  <button type="button" class="btn_link" (click)="showDeletedArgument.set(true)">{{ 'VIEWS.TOPICS_TOPICID.ARGUMENT_VIEW_ARGUMENT_ANYWAY' | translate }}</button>
                 </div>
               } @else if (argument().deletedBy?.id === argument().creator?.id || !argument().deletedReasonType) {
                 <div class="bold" [innerHtml]="'VIEWS.TOPICS_TOPICID.ARGUMENT_CREATOR_REMOVED_ARGUMENT' | translate"></div>
                 <div class="buttons_wrap">
-                  <a (click)="showDeletedArgument.set(true)" translate="VIEWS.TOPICS_TOPICID.ARGUMENT_VIEW_ARGUMENT_ANYWAY"></a>
+                  <button type="button" class="btn_link" (click)="showDeletedArgument.set(true)">{{ 'VIEWS.TOPICS_TOPICID.ARGUMENT_VIEW_ARGUMENT_ANYWAY' | translate }}</button>
                 </div>
               }
             </div>
@@ -89,8 +89,8 @@
             <input [ngModel]="editSubject()" (ngModelChange)="editSubject.set($event)" class="edit-subject-input" [placeholder]="'COMPONENTS.POST_ARGUMENT.SUBJECT_PLACEHOLDER' | translate">
             <textarea [ngModel]="editText()" (ngModelChange)="editText.set($event)" class="edit-text-input" rows="4"></textarea>
             <div class="edit-actions">
-              <button class="btn-cancel" (click)="showEdit.set(false)" translate="BTN_CANCEL"></button>
-              <button class="btn-save" (click)="saveEdit()" translate="BTN_SAVE"></button>
+              <button type="button" class="btn-cancel" (click)="showEdit.set(false)">{{ 'BTN_CANCEL' | translate }}</button>
+              <button type="button" class="btn-save" (click)="saveEdit()">{{ 'BTN_SAVE' | translate }}</button>
             </div>
           </div>
         }
@@ -98,29 +98,31 @@
       <div class="argument_footer">
         <div class="footer_left">
           <div class="button_group">
-            <button class="btn_vote_argument" (click)="vote(1)">
+            <button type="button" class="btn_vote_argument" (click)="vote(1)" [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_UP' | translate">
               <cos-icon [name]="argument().votes?.up?.selected ? 'thumbs-up-filled-legacy' : 'thumbs-up-legacy'" size="16"></cos-icon>
             </button>
-            <button class="btn_small_plain count_pro" [class.bold]="argument().votes?.up?.selected">
+            <button type="button" class="btn_small_plain count_pro" [class.bold]="argument().votes?.up?.selected">
               {{ argument().votes?.up?.count || 0 }}
             </button>
           </div>
           <div class="button_group">
-            <button class="btn_vote_argument" (click)="vote(-1)">
+            <button type="button" class="btn_vote_argument" (click)="vote(-1)" [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_DOWN' | translate">
               <cos-icon [name]="argument().votes?.down?.selected ? 'thumbs-down-filled-legacy' : 'thumbs-down-legacy'" size="16"></cos-icon>
             </button>
-            <button class="btn_small_plain count_con" [class.bold]="argument().votes?.down?.selected">
+            <button type="button" class="btn_small_plain count_con" [class.bold]="argument().votes?.down?.selected">
               {{ argument().votes?.down?.count || 0 }}
             </button>
           </div>
         </div>
         <div class="footer_right">
           @if ((argument().replies?.count || 0) > 0) {
-            <button class="btn_ghost_reply_argument" (click)="showReplies.update(v => !v)">
+            <button type="button" class="btn_ghost_reply_argument" (click)="showReplies.update(v => !v)">
               {{ (showReplies() ? 'COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES' : 'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES') | translate:{ count: argument().replies.count } }}
             </button>
           }
-          <button class="btn_reply_argument" (click)="showReplyForm.update(v => !v)" translate="COMPONENTS.ARGUMENT.BTN_REPLY"></button>
+          <button type="button" class="btn_reply_argument" (click)="showReplyForm.update(v => !v)">
+            {{ 'COMPONENTS.ARGUMENT.BTN_REPLY' | translate }}
+          </button>
         </div>
       </div>
     </div>
@@ -135,8 +137,8 @@
           [placeholder]="'VIEWS.TOPICS_TOPICID.PLACEHOLDER_WRITE_REPLY_HERE' | translate"
         ></textarea>
         <div class="reply-form-actions">
-          <button class="btn-cancel" (click)="showReplyForm.set(false)" translate="LNK_CANCEL"></button>
-          <button class="btn_submit" [disabled]="!replyText().trim()" (click)="postReply()" translate="VIEWS.TOPICS_TOPICID.BTN_ARGUMENT_POST_REPLY"></button>
+          <button type="button" class="btn-cancel" (click)="showReplyForm.set(false)">{{ 'LNK_CANCEL' | translate }}</button>
+          <button type="button" class="btn_submit" [disabled]="!replyText().trim()" (click)="postReply()">{{ 'VIEWS.TOPICS_TOPICID.BTN_ARGUMENT_POST_REPLY' | translate }}</button>
         </div>
       </div>
     }

@@ -1,4 +1,4 @@
-<div class="overlay" [dialogClose]="undefined"></div>
+<div class="overlay" [dialogClose]="undefined" (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
 <div class="dialog_wrap">
   <div id="notification_wrap_dialog" class="mobile_hidden">
     <cos-notifications></cos-notifications>
@@ -16,48 +16,44 @@
             d="M21.5777 16.2745L21.3333 15H15.8333V25.8333H17.0555V21.3725H20.4777L20.7221 22.6471H24.9999V16.2745H21.5777Z"
             fill="#DA7AB1" />
         </svg>
-        <h4 class="title" translate="COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_HEADING"></h4>
+        <h4 class="title">{{ 'COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_HEADING' | translate }}</h4>
         <div class="dialog_close">
-          <a class="btn_dialog_close icon" [dialogClose]="undefined">
+          <button type="button" class="btn_dialog_close icon" [dialogClose]="undefined" [aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="close" [size]="24"></cos-icon>
-          </a>
+          </button>
         </div>
       </div>
     </div>
     <div class="dialog_content">
       <div class="introduction_wrap">
         <div class="intro_heading">
-          <span translate="COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ARE_YOU_SURE"></span>
-          <span translate="COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_KEEP_IN_MIND"></span>
+          <span>{{ 'COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ARE_YOU_SURE' | translate }}</span>
+          <span>{{ 'COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_KEEP_IN_MIND' | translate }}</span>
         </div>
         <div class="dialog_info">
           <div class="row">
             <cos-icon name="close" [size]="24" style="color: var(--color-error)"></cos-icon>
-            <span class="error_text bold"
-              translate="COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_1"></span>
+            <span class="error_text bold">{{ 'COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_1' | translate }}</span>
           </div>
           <div class="row">
             <cos-icon name="close" [size]="24" style="color: var(--color-error)"></cos-icon>
-            <span class="error_text bold"
-              translate="COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_7"></span>
+            <span class="error_text bold">{{ 'COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_7' | translate }}</span>
           </div>
           <div class="row">
             <cos-icon name="close" [size]="24" style="color: var(--color-error)"></cos-icon>
-            <span class="error_text bold"
-              translate="COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_5"></span>
+            <span class="error_text bold">{{ 'COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_5' | translate }}</span>
           </div>
           <div class="row">
             <cos-icon name="close" [size]="24" style="color: var(--color-error)"></cos-icon>
-            <span class="error_text bold"
-              translate="COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_6"></span>
+            <span class="error_text bold">{{ 'COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_6' | translate }}</span>
           </div>
           <div class="row">
             <cos-icon name="check" [size]="24"></cos-icon>
-            <span translate="COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_2"></span>
+            <span>{{ 'COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_2' | translate }}</span>
           </div>
           <div class="row">
             <cos-icon name="check" [size]="24"></cos-icon>
-            <span translate="COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_3"></span>
+            <span>{{ 'COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_3' | translate }}</span>
           </div>
         </div>
         <div class="dialog_info_wrap">
@@ -72,16 +68,16 @@
                   d="M10.2099 10.0623L13.6449 9.63184L12.1434 16.6893C12.0369 17.1993 12.1869 17.4888 12.5994 17.4888C12.8904 17.4888 13.3284 17.3838 13.6284 17.1198L13.4964 17.7438C13.0659 18.2628 12.1164 18.6408 11.2989 18.6408C10.2444 18.6408 9.79593 18.0078 10.0869 16.6623L11.1939 11.4603C11.2899 11.0208 11.2029 10.8618 10.7619 10.7568L10.0869 10.6323L10.2099 10.0623Z"
                   fill="white" />
               </svg>
-              <span translate="COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_INFO"></span>
+              <span>{{ 'COMPONENTS.TOPIC_FOLLOW_UP_CREATE.DIALOG_TAB_INTRODUCTION_INFO' | translate }}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="dialog_footer with_buttons">
-      <a [dialogClose]="undefined" translate="COMPONENTS.TOPIC_FOLLOW_UP_CREATE.LNK_CANCEL"></a>
+      <button type="button" class="btn_link" [dialogClose]="undefined">{{ 'COMPONENTS.TOPIC_FOLLOW_UP_CREATE.LNK_CANCEL' | translate }}</button>
       <div class="button_row">
-        <button class="btn_medium_submit" (click)="startFollowUp()">
+        <button type="button" class="btn_medium_submit" (click)="startFollowUp()">
           {{ "COMPONENTS.TOPIC_FOLLOW_UP_CREATE.BTN_START_FOLLOW_UP" | translate }}
         </button>
       </div>

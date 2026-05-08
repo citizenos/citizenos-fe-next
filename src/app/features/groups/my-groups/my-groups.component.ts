@@ -39,19 +39,19 @@ import { SeoService } from '../../../core/services/seo.service';
   template: `
     <div class="page_content">
       <app-page-list-header>
-        <span title translate="VIEWS.MY_GROUPS.HEADER"></span>
+        <span title>{{ 'VIEWS.MY_GROUPS.HEADER' | translate }}</span>
         <div activities class="header_actions">
           <cos-activities-button></cos-activities-button>
-          <button class="btn_medium_submit" (click)="toggleCreate()" [class.active]="showCreate()">
+          <button type="button" class="btn_medium_submit" (click)="toggleCreate()" [class.active]="showCreate()" [attr.aria-expanded]="showCreate()" [attr.aria-label]="'VIEWS.MY_GROUPS.HAVENT_ENGAGED_BTN_CREATE' | translate">
             <cos-icon name="plus" [size]="24"></cos-icon>
-            <span translate="VIEWS.MY_GROUPS.HAVENT_ENGAGED_BTN_CREATE"></span>
+            <span>{{ 'VIEWS.MY_GROUPS.HAVENT_ENGAGED_BTN_CREATE' | translate }}</span>
           </button>
         </div>
       </app-page-list-header>
 
       <div id="create_menu_wrap" [class.hidden]="!showCreate()">
         <cos-create-menu (closeMenu)="showCreate.set(false)"></cos-create-menu>
-        <div id="close_create" (click)="showCreate.set(false)"></div>
+        <div id="close_create" (click)="showCreate.set(false)" (keydown.enter)="showCreate.set(false)" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
       </div>
 
       <app-list-filter-toolbar
@@ -68,16 +68,16 @@ import { SeoService } from '../../../core/services/seo.service';
           <cos-group-card [group]="group" mode="member"></cos-group-card>
         } @empty {
           <div class="no_groups">
-            <div class="no_groups_heading" translate="VIEWS.MY_GROUPS.HAVENT_ENGAGED_GROUPS_HEADING"></div>
-            <div class="no_groups_desc" translate="VIEWS.MY_GROUPS.HAVENT_ENGAGED_GROUPS_DESCRIPTION"></div>
+            <div class="no_groups_heading">{{ 'VIEWS.MY_GROUPS.HAVENT_ENGAGED_GROUPS_HEADING' | translate }}</div>
+            <div class="no_groups_desc">{{ 'VIEWS.MY_GROUPS.HAVENT_ENGAGED_GROUPS_DESCRIPTION' | translate }}</div>
             <div class="no_groups_actions">
-              <button class="btn_medium_submit" (click)="toggleCreate()">
+              <button type="button" class="btn_medium_submit" (click)="toggleCreate()">
                 <cos-icon name="plus"></cos-icon>
-                <span translate="VIEWS.MY_GROUPS.HAVENT_ENGAGED_BTN_CREATE"></span>
+                <span>{{ 'VIEWS.MY_GROUPS.HAVENT_ENGAGED_BTN_CREATE' | translate }}</span>
               </button>
               <a class="btn_medium_submit"
-                 [routerLink]="['/', userLang, 'public', 'groups']"
-                 translate="VIEWS.MY_GROUPS.HAVENT_ENGAGED_BTN_VIEW_PUBLIC_GROUPS">
+                 [routerLink]="['/', userLang, 'public', 'groups']">
+                 {{ 'VIEWS.MY_GROUPS.HAVENT_ENGAGED_BTN_VIEW_PUBLIC_GROUPS' | translate }}
               </a>
             </div>
           </div>

@@ -32,9 +32,9 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
         <div class="dialog-header">
           <div class="dialog-title">
             <cos-domain-icon type="vote"></cos-domain-icon>
-            <h4 translate="COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_HEADING"></h4>
+            <h4>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_HEADING' | translate }}</h4>
           </div>
-          <button class="btn-close" dialogClose aria-label="Close">
+          <button type="button" class="btn-close" dialogClose aria-label="Close">
             <cos-icon name="close"></cos-icon>
           </button>
         </div>
@@ -42,6 +42,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
         <div class="dialog-tabs">
           @for (tab of TABS; track tab.key) {
             <button
+              type="button"
               class="dialog-tab"
               [class.active]="currentStep() === tab.key"
               (click)="goToStep(tab.key)"
@@ -55,47 +56,47 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
         <div class="dialog-content">
           @if (currentStep() === 'intro') {
             <div class="intro-wrap">
-              <p class="intro-heading" translate="COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ARE_YOU_SURE"></p>
-              <p class="intro-subheading" translate="COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_KEEP_IN_MIND"></p>
+              <p class="intro-heading">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ARE_YOU_SURE' | translate }}</p>
+              <p class="intro-subheading">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_KEEP_IN_MIND' | translate }}</p>
 
               <div class="info-list">
                 <div class="info-row warning">
                   <cos-icon name="close" class="icon-error"></cos-icon>
-                  <span translate="COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_1"></span>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_1' | translate }}</span>
                 </div>
                 @if (topic.ideationId) {
                   <div class="info-row warning">
                     <cos-icon name="close" class="icon-error"></cos-icon>
-                    <span translate="COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_7"></span>
+                    <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_7' | translate }}</span>
                   </div>
                 }
                 @if (topic.ideationId && !topic.discussionId) {
                   <div class="info-row warning">
                     <cos-icon name="close" class="icon-error"></cos-icon>
-                    <span translate="COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_9"></span>
+                    <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_9' | translate }}</span>
                   </div>
                 }
                 <div class="info-row neutral">
                   <cos-icon name="close"></cos-icon>
-                  <span translate="COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_5"></span>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_5' | translate }}</span>
                 </div>
                 <div class="info-row neutral">
                   <cos-icon name="close"></cos-icon>
-                  <span translate="COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_6"></span>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_6' | translate }}</span>
                 </div>
                 <div class="info-row ok">
                   <cos-icon name="check"></cos-icon>
-                  <span translate="COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_2"></span>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_2' | translate }}</span>
                 </div>
                 <div class="info-row ok">
                   <cos-icon name="check"></cos-icon>
-                  <span translate="COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_3"></span>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_3' | translate }}</span>
                 </div>
               </div>
 
               <div class="intro-info-box">
                 <cos-icon name="info"></cos-icon>
-                <span translate="COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_INFO"></span>
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_INFO' | translate }}</span>
               </div>
 
               <div class="intro-actions">

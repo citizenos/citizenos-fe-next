@@ -22,7 +22,7 @@ declare let hwcrypto: any;
 })
 export class TopicVoteSignEsteidComponent {
   data = inject<{ topic: any; options: any[] }>(DIALOG_DATA);
-  private dialogRef = inject(DialogRef);
+  protected dialogRef = inject(DialogRef);
   private topicVoteService = inject(TopicVoteService);
   private topicService = inject(TopicService);
   private notification = inject(NotificationService);

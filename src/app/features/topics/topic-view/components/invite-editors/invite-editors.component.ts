@@ -34,7 +34,7 @@ export interface InviteEditorsData {
 })
 export class InviteEditorsComponent {
   private data = inject<InviteEditorsData>(DIALOG_DATA);
-  private dialogRef = inject(DialogRef<InviteEditorsComponent>);
+  protected dialogRef = inject(DialogRef<InviteEditorsComponent>);
   private topicService = inject(TopicService);
   private topicInviteUserService = inject(TopicInviteUserService);
   private searchService = inject(SearchService);

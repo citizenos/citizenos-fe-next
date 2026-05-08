@@ -25,7 +25,7 @@ export interface MissingDiscussionData {
 })
 export class MissingDiscussionComponent {
   private data = inject<MissingDiscussionData>(DIALOG_DATA);
-  private dialogRef = inject(DialogRef);
+  protected dialogRef = inject(DialogRef);
   private discussionService = inject(TopicDiscussionService);
   private topicService = inject(TopicService);
 

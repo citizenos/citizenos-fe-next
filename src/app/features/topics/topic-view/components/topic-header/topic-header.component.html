@@ -1,6 +1,6 @@
 <div id="page_header">
   <div id="user_info_area">
-    <button [routerLink]="navigation().link">
+    <button type="button" [routerLink]="navigation().link" [aria-label]="'CONTROL.BACK' | translate">
       <cos-icon name="arrow-left"></cos-icon>
     </button>
     <div class="small_heading mobile_hidden truncate_text navigation_title"
@@ -53,17 +53,17 @@
 
       <div class="options">
         @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {
-          <button (click)="leaveTopic.emit(topic())" class="option">
+          <button type="button" (click)="leaveTopic.emit(topic())" class="option">
             <div class="icon_wrap">
               <cos-icon name="leave" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.BTN_LEAVE"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.BTN_LEAVE' | translate }}</span>
           </button>
         }
 
         @if (isLoggedIn()) {
           <div class="line_separator"></div>
-          <button class="option" (click)="onToggleFavourite()">
+          <button type="button" class="option" (click)="onToggleFavourite()">
             <div class="icon_wrap">
               @if (topic().favourite) {
                 <cos-icon name="favourite-filled-legacy" [size]="16"></cos-icon>
@@ -77,141 +77,141 @@
 
         @if (isLoggedIn()) {
           <div class="line_separator"></div>
-          <button class="option" (click)="appTopicNotificationSettings()?.()">
+          <button type="button" class="option" (click)="appTopicNotificationSettings()?.()">
             <div class="icon_wrap">
               <cos-icon name="bell" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_TOPIC_NOTIFICATIONS"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_TOPIC_NOTIFICATIONS' | translate }}</span>
           </button>
         }
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="inviteEditors.emit(topic())">
+          <button type="button" class="option" (click)="inviteEditors.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="invite-legacy" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_INVITE_CO_EDITOR"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_INVITE_CO_EDITOR' | translate }}</span>
           </button>
         }
 
         @if (isLoggedIn() && topicService.canEdit(topic()) && !topic().voteId && !topic().ideationId) {
           <div class="line_separator"></div>
-          <button class="option" [routerLink]="['/', lang(), 'topics', 'edit', topic().id]">
+          <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'edit', topic().id]">
             <div class="icon_wrap">
               <cos-icon name="edit" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
           </button>
         }
 
         @if (isLoggedIn() && topic().ideationId && !topic().voteId && topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.ideation, topicService.STATUSES.followUp].indexOf(topic().status) > -1) {
           <div class="line_separator"></div>
-          <button class="option" [routerLink]="['/', lang(), 'topics', 'ideation', 'edit', topic().id]">
+          <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'ideation', 'edit', topic().id]">
             <div class="icon_wrap">
               <cos-icon name="edit" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
           </button>
         }
 
         @if (isLoggedIn() && topic().voteId && (topicService.canDelete(topic()) || (topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.voting, topicService.STATUSES.followUp].indexOf(topic().status) > -1))) {
           <div class="line_separator"></div>
-          <button class="option" [routerLink]="['/', lang(), 'topics', 'vote', 'edit', topic().id]">
+          <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'vote', 'edit', topic().id]">
             <div class="icon_wrap">
               <cos-icon name="edit" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
           </button>
         }
 
         @if (isLoggedIn() && topicService.canDelete(topic())) {
           <div class="line_separator"></div>
-          <button class="option" (click)="duplicateTopic.emit(topic())">
+          <button type="button" class="option" (click)="duplicateTopic.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="copy" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_DUPLICATE_TOPIC"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_DUPLICATE_TOPIC' | translate }}</span>
           </button>
         }
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="addGroupsDialog.emit(topic())">
+          <button type="button" class="option" (click)="addGroupsDialog.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="users" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_ADD_TO_GROUP"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_ADD_TO_GROUP' | translate }}</span>
           </button>
         }
 
         @if (topic().visibility === topicService.VISIBILITY.public && !topic().report) {
           <div class="line_separator"></div>
-          <button class="option" (click)="reportTopic.emit(topic())">
+          <button type="button" class="option" (click)="reportTopic.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="report" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC' | translate }}</span>
           </button>
         }
 
         @if (topicService.canModerate(topic())) {
           <div class="line_separator"></div>
-          <button class="option" (click)="moderateTopic.emit(topic())">
+          <button type="button" class="option" (click)="moderateTopic.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="flag" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC' | translate }}</span>
           </button>
         }
 
         @if (topicService.canReview(topic())) {
           <div class="line_separator"></div>
-          <button class="option" (click)="reviewTopic.emit(topic())">
+          <button type="button" class="option" (click)="reviewTopic.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="check" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_REVIEW_TOPIC"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_REVIEW_TOPIC' | translate }}</span>
           </button>
         }
 
         @if (topicService.canResolve(topic())) {
           <div class="line_separator"></div>
-          <button class="option" (click)="resolveTopic.emit(topic())">
+          <button type="button" class="option" (click)="resolveTopic.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="check" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_RESOLVE_TOPIC"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_RESOLVE_TOPIC' | translate }}</span>
           </button>
         }
 
         @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
           <div class="line_separator"></div>
-          <button class="option" (click)="closeTopic.emit(topic())">
+          <button type="button" class="option" (click)="closeTopic.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="check" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC' | translate }}</span>
           </button>
         }
 
         @if (isLoggedIn() && topicService.canEdit(topic())) {
           <div class="line_separator"></div>
-          <button class="option" (click)="openSettings.emit(topic())">
+          <button type="button" class="option" (click)="openSettings.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="settings-legacy" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.NAV_LNK_SETTINGS"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.NAV_LNK_SETTINGS' | translate }}</span>
           </button>
         }
 
         @if (isLoggedIn() && topicService.canDelete(topic())) {
           <div class="line_separator"></div>
-          <button class="option error_text" (click)="deleteTopic.emit(topic())">
+          <button type="button" class="option error_text" (click)="deleteTopic.emit(topic())">
             <div class="icon_wrap">
               <cos-icon name="trash-legacy" [size]="16"></cos-icon>
             </div>
-            <span translate="VIEWS.TOPICS_TOPICID.OPTION_DELETE_TOPIC"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_DELETE_TOPIC' | translate }}</span>
           </button>
         }
       </div>
@@ -221,26 +221,27 @@
 </div>
 
 @if (mobileActions()) {
-  <div class="overlay" (click)="mobileActions.set(false)"></div>
+  <div class="overlay" (click)="mobileActions.set(false)" (keydown.enter)="mobileActions.set(false)" tabindex="-1" role="presentation"></div>
 }
 <div class="mobile_actions_wrap mobile_show" [class.show]="mobileActions()">
   <div class="heading_wrap">
-    <span translate="VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS"></span>
+    <span>{{ 'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate }}</span>
     <div id="close_mobile" class="mobile_show">
-      <button class="btn_small_close icon" (click)="mobileActions.set(false)">
+      <button type="button" class="btn_small_close icon" (click)="mobileActions.set(false)" [aria-label]="'CONTROL.CLOSE' | translate">
         <cos-icon name="close"></cos-icon>
       </button>
     </div>
   </div>
   <div class="options">
     @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {
-      <button id="leave_button" (click)="leaveTopic.emit(topic()); mobileActions.set(false)" class="btn_medium_close"
-        translate="VIEWS.TOPICS_TOPICID.BTN_LEAVE"></button>
+      <button type="button" id="leave_button" (click)="leaveTopic.emit(topic()); mobileActions.set(false)" class="btn_medium_close">
+        {{ 'VIEWS.TOPICS_TOPICID.BTN_LEAVE' | translate }}
+      </button>
       <div class="line_separator"></div>
     }
 
     @if (isLoggedIn()) {
-      <button class="option" (click)="onToggleFavourite(); mobileActions.set(false)">
+      <button type="button" class="option" (click)="onToggleFavourite(); mobileActions.set(false)">
         <div class="icon_wrap">
           @if (topic().favourite) {
             <cos-icon name="favourite-filled-legacy"></cos-icon>
@@ -248,147 +249,147 @@
             <cos-icon name="favourite-legacy"></cos-icon>
           }
         </div>
-        <span [translate]="topic().favourite ? 'VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE' : 'VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE'"></span>
+        <span>{{ (topic().favourite ? 'VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE' : 'VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE') | translate }}</span>
       </button>
     }
 
     @if (isLoggedIn()) {
       <div class="line_separator"></div>
-      <button class="option" (click)="appTopicNotificationSettings()?.(); mobileActions.set(false)">
+      <button type="button" class="option" (click)="appTopicNotificationSettings()?.(); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="bell"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_TOPIC_NOTIFICATIONS"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_TOPIC_NOTIFICATIONS' | translate }}</span>
       </button>
     }
 
     @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
       <div class="line_separator"></div>
-      <button class="option" (click)="inviteEditors.emit(topic()); mobileActions.set(false)">
+      <button type="button" class="option" (click)="inviteEditors.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="invite-legacy"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_INVITE_CO_EDITOR"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_INVITE_CO_EDITOR' | translate }}</span>
       </button>
     }
 
     @if (isLoggedIn() && topicService.canEdit(topic()) && !topic().voteId && !topic().ideationId) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', lang(), 'topics', 'edit', topic().id]" (click)="mobileActions.set(false)">
+      <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'edit', topic().id]" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="edit"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
       </button>
     }
 
     @if (isLoggedIn() && topic().ideationId && !topic().voteId && topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.ideation, topicService.STATUSES.followUp].indexOf(topic().status) > -1) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', lang(), 'topics', 'ideation', 'edit', topic().id]" (click)="mobileActions.set(false)">
+      <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'ideation', 'edit', topic().id]" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="edit"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
       </button>
     }
 
     @if (isLoggedIn() && topic().voteId && (topicService.canDelete(topic()) || (topicService.canEdit(topic()) && [topicService.STATUSES.draft, topicService.STATUSES.voting, topicService.STATUSES.followUp].indexOf(topic().status) > -1))) {
       <div class="line_separator"></div>
-      <button class="option" [routerLink]="['/', lang(), 'topics', 'vote', 'edit', topic().id]" (click)="mobileActions.set(false)">
+      <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'vote', 'edit', topic().id]" (click)="mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="edit"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
       </button>
     }
 
     @if (isLoggedIn() && topicService.canDelete(topic())) {
       <div class="line_separator"></div>
-      <button class="option" (click)="duplicateTopic.emit(topic()); mobileActions.set(false)">
+      <button type="button" class="option" (click)="duplicateTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="copy"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_DUPLICATE_TOPIC"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_DUPLICATE_TOPIC' | translate }}</span>
       </button>
     }
 
     @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
       <div class="line_separator"></div>
-      <button class="option" (click)="addGroupsDialog.emit(topic()); mobileActions.set(false)">
+      <button type="button" class="option" (click)="addGroupsDialog.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="users"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_ADD_TO_GROUP"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_ADD_TO_GROUP' | translate }}</span>
       </button>
     }
 
     @if (topic().visibility === topicService.VISIBILITY.public && !topic().report) {
       <div class="line_separator"></div>
-      <button class="option" (click)="reportTopic.emit(topic()); mobileActions.set(false)">
+      <button type="button" class="option" (click)="reportTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="report"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC' | translate }}</span>
       </button>
     }
 
     @if (topicService.canModerate(topic())) {
       <div class="line_separator"></div>
-      <button class="option" (click)="moderateTopic.emit(topic()); mobileActions.set(false)">
+      <button type="button" class="option" (click)="moderateTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="flag"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC' | translate }}</span>
       </button>
     }
 
     @if (topicService.canReview(topic())) {
       <div class="line_separator"></div>
-      <button class="option" (click)="reviewTopic.emit(topic()); mobileActions.set(false)">
+      <button type="button" class="option" (click)="reviewTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="check"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_REVIEW_TOPIC"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_REVIEW_TOPIC' | translate }}</span>
       </button>
     }
 
     @if (topicService.canResolve(topic())) {
       <div class="line_separator"></div>
-      <button class="option" (click)="resolveTopic.emit(topic()); mobileActions.set(false)">
+      <button type="button" class="option" (click)="resolveTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="check"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_RESOLVE_TOPIC"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_RESOLVE_TOPIC' | translate }}</span>
       </button>
     }
 
     @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
       <div class="line_separator"></div>
-      <button class="option" (click)="closeTopic.emit(topic()); mobileActions.set(false)">
+      <button type="button" class="option" (click)="closeTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="check"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC' | translate }}</span>
       </button>
     }
 
     @if (isLoggedIn() && topicService.canEdit(topic())) {
       <div class="line_separator"></div>
-      <button class="option" (click)="openSettings.emit(topic()); mobileActions.set(false)">
+      <button type="button" class="option" (click)="openSettings.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="settings-legacy"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.NAV_LNK_SETTINGS"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.NAV_LNK_SETTINGS' | translate }}</span>
       </button>
     }
 
     @if (isLoggedIn() && topicService.canDelete(topic())) {
       <div class="line_separator"></div>
-      <button class="option error_text" (click)="deleteTopic.emit(topic()); mobileActions.set(false)">
+      <button type="button" class="option error_text" (click)="deleteTopic.emit(topic()); mobileActions.set(false)">
         <div class="icon_wrap">
           <cos-icon name="trash-legacy"></cos-icon>
         </div>
-        <span translate="VIEWS.TOPICS_TOPICID.OPTION_DELETE_TOPIC"></span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_DELETE_TOPIC' | translate }}</span>
       </button>
     }
   </div>

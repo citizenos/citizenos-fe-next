@@ -3,18 +3,22 @@
   <div class="dialog">
     <div class="dialog_header">
       <div class="header_text">
-        <h4 class="title" translate="COMPONENTS.GROUP_SETTINGS.HEADING"></h4>
+        <h4 class="title">{{ 'COMPONENTS.GROUP_SETTINGS.HEADING' | translate }}</h4>
         <div class="dialog_close">
-          <button class="btn_dialog_close icon" dialogClose>
+          <button type="button" class="btn_dialog_close icon" dialogClose [attr.aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="nav-close"></cos-icon>
           </button>
         </div>
       </div>
     </div>
 
-    <div class="dialog_tabs_wrap">
-      <a class="dialog_tab" [class.active]="activeTab() === 'info'" (click)="activeTab.set('info')" translate="COMPONENTS.GROUP_SETTINGS.TAB_INFO"></a>
-      <a class="dialog_tab" [class.active]="activeTab() === 'settings'" (click)="activeTab.set('settings')" translate="COMPONENTS.GROUP_SETTINGS.TAB_SETTINGS"></a>
+    <div class="dialog_tabs_wrap" role="tablist">
+      <button type="button" class="dialog_tab" role="tab" [attr.aria-selected]="activeTab() === 'info'" [class.active]="activeTab() === 'info'" (click)="activeTab.set('info')">
+        {{ 'COMPONENTS.GROUP_SETTINGS.TAB_INFO' | translate }}
+      </button>
+      <button type="button" class="dialog_tab" role="tab" [attr.aria-selected]="activeTab() === 'settings'" [class.active]="activeTab() === 'settings'" (click)="activeTab.set('settings')">
+        {{ 'COMPONENTS.GROUP_SETTINGS.TAB_SETTINGS' | translate }}
+      </button>
     </div>
 
     <div class="dialog_content">
@@ -23,21 +27,23 @@
       @if (activeTab() === 'info') {
         <div class="content_section">
           <div class="section_content_wrap">
-            <div translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_NAME_DESC"></div>
+            <label for="group_name">{{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_NAME_DESC' | translate }}</label>
             <div class="input_wrap" [class.error]="errors()?.name">
               <input
+                id="group_name"
                 [placeholder]="'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_NAME' | translate"
                 [ngModel]="group().name"
                 (ngModelChange)="group.update(g => ({ ...g, name: $event }))"
               />
               @if (errors()?.name) {
-                <span class="error_label" [translate]="errors().name"></span>
+                <span class="error_label">{{ errors().name | translate }}</span>
               }
             </div>
 
-            <div translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_DESCRIPTION_DESC" [translateParams]="{descriptionLength: descriptionLength}"></div>
+            <label for="group_description">{{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_DESCRIPTION_DESC' | translate: {descriptionLength: descriptionLength} }}</label>
             <div class="input_wrap">
               <textarea
+                id="group_description"
                 rows="5"
                 [placeholder]="'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_DESCRIPTION' | translate"
                 [maxlength]="descriptionLength"
@@ -46,12 +52,13 @@
               ></textarea>
             </div>
 
-            <div translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_CHOOSE_IMAGE_DESC"></div>
+            <div>{{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_CHOOSE_IMAGE_DESC' | translate }}</div>
 
             @if (!group().imageUrl && !uploadedImageUrl()) {
               <div id="image_input_area">
-                <div class="bold" translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_LBL_DROP_IMAGE"></div>
-                <label class="btn_medium_secondary" translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_BTN_CHOOSE_IMAGE">
+                <div class="bold">{{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_LBL_DROP_IMAGE' | translate }}</div>
+                <label class="btn_medium_secondary">
+                  {{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_BTN_CHOOSE_IMAGE' | translate }}
                   <input type="file" accept="image/*" (change)="onFileChange($event)" style="display:none" />
                 </label>
               </div>
@@ -62,10 +69,10 @@
                 <div id="image_wrap">
                   <img [src]="uploadedImageUrl() || group().imageUrl" alt="" />
                 </div>
-                <a class="icon_link" (click)="removeImage()">
-                  <span class="bold" translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_BTN_REMOVE_IMAGE"></span>
+                <button type="button" class="icon_link" (click)="removeImage()">
+                  <span class="bold">{{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_BTN_REMOVE_IMAGE' | translate }}</span>
                   <cos-icon name="trash" [size]="24"></cos-icon>
-                </a>
+                </button>
               </div>
             }
           </div>
@@ -73,10 +80,11 @@
 
         <div class="content_section">
           <div class="section_content_wrap">
-            <div class="small_heading" translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_HEADING_CONTACT_EMAIL"></div>
-            <div translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_CONTACT_EMAIL_DESC"></div>
+            <h5 class="small_heading">{{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_HEADING_CONTACT_EMAIL' | translate }}</h5>
+            <label for="contact_email">{{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_CONTACT_EMAIL_DESC' | translate }}</label>
             <div class="input_wrap">
               <input
+                id="contact_email"
                 [placeholder]="'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_CONTACT_EMAIL' | translate"
                 [ngModel]="group().contact"
                 (ngModelChange)="group.update(g => ({ ...g, contact: $event }))"
@@ -87,25 +95,26 @@
 
         <div class="content_section">
           <div class="section_content_wrap">
-            <div class="small_heading" translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_HEADING_RULES_OF_CONDUCT"></div>
-            <div translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_RULES_OF_CONDUCT_DESC"></div>
+            <h5 class="small_heading">{{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_HEADING_RULES_OF_CONDUCT' | translate }}</h5>
+            <div>{{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_RULES_OF_CONDUCT_DESC' | translate }}</div>
 
             @for (rule of rules(); track $index) {
               <div class="rule_input input_wrap">
                 <input
+                  [attr.aria-label]="'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_RULES_OF_CONDUCT_RULE' | translate: { number: $index + 1 }"
                   [placeholder]="'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_RULES_OF_CONDUCT_RULE' | translate: { number: $index + 1 }"
                   [ngModel]="rule.rule"
                   (ngModelChange)="updateRule($index, $event)"
                 />
-                <button (click)="removeRule($index)">
+                <button type="button" (click)="removeRule($index)" [attr.aria-label]="'CONTROL.DELETE' | translate">
                   <cos-icon name="trash" [size]="16"></cos-icon>
                 </button>
               </div>
             }
 
-            <button class="btn_medium_secondary add_rule" (click)="addRule()">
+            <button type="button" class="btn_medium_secondary add_rule" (click)="addRule()">
               <cos-icon name="plus" [size]="24"></cos-icon>
-              <span translate="COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_BTN_ADD_NEW_RULE"></span>
+              <span>{{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_BTN_ADD_NEW_RULE' | translate }}</span>
             </button>
           </div>
         </div>
@@ -115,35 +124,35 @@
       @if (activeTab() === 'settings') {
         <div class="content_section">
           <div class="section_content_wrap">
-            <div translate="COMPONENTS.GROUP_SETTINGS.SETTINGS_HEADING_LOCALITY"></div>
-            <div translate="COMPONENTS.GROUP_SETTINGS.SETTINGS_LOCALITY_SELECT_DESC"></div>
+            <h5 class="small_heading">{{ 'COMPONENTS.GROUP_SETTINGS.SETTINGS_HEADING_LOCALITY' | translate }}</h5>
+            <label for="locality_country">{{ 'COMPONENTS.GROUP_SETTINGS.SETTINGS_LOCALITY_SELECT_DESC' | translate }}</label>
 
             <cos-dropdown>
-              <div selection>
+              <div id="locality_country" selection tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" aria-controls="country_options">
                 @if (!group().country) {
-                  <span translate="COMPONENTS.GROUP_SETTINGS.SETTINGS_COUNTRY_SELECT"></span>
+                  <span>{{ 'COMPONENTS.GROUP_SETTINGS.SETTINGS_COUNTRY_SELECT' | translate }}</span>
                 } @else {
                   <span>{{ group().country }}</span>
                 }
               </div>
-              <div options>
+              <div id="country_options" options role="listbox">
                 @for (country of countries; track country.iso2) {
-                  <div class="option" (click)="group.update(g => ({ ...g, country: country.name }))">{{ country.name }}</div>
+                  <div class="option" (click)="group.update(g => ({ ...g, country: country.name }))" (keydown.enter)="group.update(g => ({ ...g, country: country.name }))" role="option" tabindex="0" [attr.aria-selected]="group().country === country.name">{{ country.name }}</div>
                 }
               </div>
             </cos-dropdown>
 
             <cos-dropdown>
-              <div selection>
+              <div id="locality_language" selection tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" aria-controls="language_options">
                 @if (!group().language) {
-                  <span translate="COMPONENTS.GROUP_SETTINGS.SETTINGS_LANGUAGE_SELECT"></span>
+                  <span>{{ 'COMPONENTS.GROUP_SETTINGS.SETTINGS_LANGUAGE_SELECT' | translate }}</span>
                 } @else {
                   <span>{{ group().language }}</span>
                 }
               </div>
-              <div options>
+              <div id="language_options" options role="listbox">
                 @for (lang of languages; track lang.code) {
-                  <div class="option" (click)="group.update(g => ({ ...g, language: lang.name }))">{{ lang.name }}</div>
+                  <div class="option" (click)="group.update(g => ({ ...g, language: lang.name }))" (keydown.enter)="group.update(g => ({ ...g, language: lang.name }))" role="option" tabindex="0" [attr.aria-selected]="group().language === lang.name">{{ lang.name }}</div>
                 }
               </div>
             </cos-dropdown>
@@ -153,8 +162,8 @@
     </div>
 
     <div class="dialog_footer with_buttons">
-      <a dialogClose translate="COMPONENTS.GROUP_SETTINGS.LNK_CANCEL"></a>
-      <button class="btn_medium_submit" (click)="save()" translate="COMPONENTS.GROUP_SETTINGS.BTN_SAVE"></button>
+      <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.GROUP_SETTINGS.LNK_CANCEL' | translate }}</button>
+      <button type="submit" class="btn_medium_submit" (click)="save()">{{ 'COMPONENTS.GROUP_SETTINGS.BTN_SAVE' | translate }}</button>
     </div>
   </div>
 </div>

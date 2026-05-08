@@ -14,9 +14,9 @@
         [innerHTML]="'VIEWS.TOPICS_TOPICID.ARGUMENT_FOUND_INAPPRIOPRIATE_BY' | translate:{ usersFullName: argument().deletedBy?.name }">
       </div>
       <div class="buttons_wrap">
-        <a (click)="showReason()" translate="VIEWS.TOPICS_TOPICID.ARGUMENT_WHY"></a>
+        <button type="button" class="btn_link" (click)="showReason()">{{ 'VIEWS.TOPICS_TOPICID.ARGUMENT_WHY' | translate }}</button>
         @if (!isArgumentVisible()) {
-          <a (click)="showArgument()" translate="VIEWS.TOPICS_TOPICID.ARGUMENT_VIEW_ARGUMENT_ANYWAY"></a>
+          <button type="button" class="btn_link" (click)="showArgument()">{{ 'VIEWS.TOPICS_TOPICID.ARGUMENT_VIEW_ARGUMENT_ANYWAY' | translate }}</button>
         }
       </div>
     }
@@ -26,7 +26,7 @@
       </div>
       <div class="buttons_wrap">
         @if (!isArgumentVisible()) {
-          <a (click)="showArgument()" translate="VIEWS.TOPICS_TOPICID.ARGUMENT_VIEW_ARGUMENT_ANYWAY"></a>
+          <button type="button" class="btn_link" (click)="showArgument()">{{ 'VIEWS.TOPICS_TOPICID.ARGUMENT_VIEW_ARGUMENT_ANYWAY' | translate }}</button>
         }
       </div>
     }

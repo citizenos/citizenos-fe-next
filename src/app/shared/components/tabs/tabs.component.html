@@ -1,14 +1,16 @@
 <div class="tabs_wrap">
-  <div class="tabs_row">
+  <div class="tabs_row" role="tablist">
     @for (tab of tabs(); track tab.id) {
-      <a class="tab_item" 
+      <button type="button" class="tab_item" 
+         role="tab"
+         [attr.aria-selected]="activeTab() === tab.id"
          [class.active]="activeTab() === tab.id" 
          (click)="onTabSelect(tab.id)">
         @if (tab.icon) {
           <cos-icon [name]="tab.icon" [size]="20"></cos-icon>
         }
-        <span class="tab_text" [translate]="tab.label"></span>
-      </a>
+        <span class="tab_text">{{ tab.label | translate }}</span>
+      </button>
     }
   </div>
 

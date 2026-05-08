@@ -1,22 +1,22 @@
 <div id="create_argument_tablet_btn">
-  <button class="btn_big_submit" (click)="isOpen.set(true)">
+  <button type="button" class="btn_big_submit" (click)="isOpen.set(true)" [aria-label]="'COMPONENTS.POST_ARGUMENT.FOOTER_MENU_BTN_ADD_ARGUMENT' | translate">
     <cos-icon name="plus" size="24"></cos-icon>
   </button>
 </div>
 
 <div id="create_argument_footer_menu" [class.open]="!isOpen()" [class.closed]="isOpen()">
-  <div class="footer_title" translate="COMPONENTS.POST_ARGUMENT.FOOTER_MENU_TITLE"></div>
-  <button class="btn_medium_submit" (click)="isOpen.set(true)">
-    <span class="btn_text" translate="COMPONENTS.POST_ARGUMENT.FOOTER_MENU_BTN_ADD_ARGUMENT"></span>
+  <div class="footer_title">{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_MENU_TITLE' | translate }}</div>
+  <button type="button" class="btn_medium_submit" (click)="isOpen.set(true)">
+    <span class="btn_text">{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_MENU_BTN_ADD_ARGUMENT' | translate }}</span>
   </button>
 </div>
 
 <div id="create_argument_footer" [class.open]="isOpen()" [class.closed]="!isOpen()">
   <div id="post_argument_form_wrap">
     <div class="form_header">
-      <span translate="COMPONENTS.POST_ARGUMENT.FOOTER_FORM_TITLE"></span>
+      <span>{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_FORM_TITLE' | translate }}</span>
       <div id="close_mobile" class="mobile_show">
-        <button class="btn_small_close icon close_button mobile_show" (click)="close()">
+        <button type="button" class="btn_small_close icon close_button mobile_show" (click)="close()" [aria-label]="'CONTROL.CLOSE' | translate">
           <cos-icon name="close" size="24"></cos-icon>
         </button>
       </div>
@@ -24,13 +24,13 @@
     
     <form id="argument_form">
       <div id="type_select_wrap">
-        <div class="type_item" translate="COMPONENTS.POST_ARGUMENT.FOOTER_FORM_ARGUMENT_TYPE_TITLE"></div>
+        <div class="type_item">{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_FORM_ARGUMENT_TYPE_TITLE' | translate }}</div>
         @for (atype of types; track atype) {
           <div class="type_item" [class]="atype">
-            <label class="radio_box" (click)="argumentType.set(atype)">
-              <input type="radio" [checked]="argumentType() === atype" name="argumentType" [value]="atype">
+            <label class="radio_box">
+              <input type="radio" [checked]="argumentType() === atype" name="argumentType" [value]="atype" (change)="argumentType.set(atype)">
               <span class="radio"></span>
-              <div class="radio_lable" translate="{{ 'COMPONENTS.POST_ARGUMENT.ARGUMENT_TYPE_SELECT_OPTION_' + atype.toUpperCase() }}"></div>
+              <div class="radio_lable">{{ 'COMPONENTS.POST_ARGUMENT.ARGUMENT_TYPE_SELECT_OPTION_' + atype.toUpperCase() | translate }}</div>
             </label>
           </div>
         }
@@ -45,33 +45,31 @@
           [attr.maxlength]="ARGUMENT_SUBJECT_MAXLENGTH" required>
       </cos-input>
 
-      <div id="subject_counter" [translate]="'COMPONENTS.POST_ARGUMENT.SUBJECT_CHARACTERS_LEFT'"
-        [translateParams]="{chars: subject().length || 0, charsLeft: ARGUMENT_SUBJECT_MAXLENGTH}"></div>
+      <div id="subject_counter">{{ 'COMPONENTS.POST_ARGUMENT.SUBJECT_CHARACTERS_LEFT' | translate:{chars: subject().length || 0, charsLeft: ARGUMENT_SUBJECT_MAXLENGTH} }}</div>
       
       <textarea name="text" id="argument_text" [ngModel]="text()" (ngModelChange)="text.set($event)" class="gray_borders"
         [placeholder]="'COMPONENTS.POST_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT' | translate"
         [maxlength]="argumentMaxLength()" required rows="4"></textarea>
       
-      <div id="chars_left" [translate]="'COMPONENTS.POST_ARGUMENT.ARGUMENT_TYPE_CHARACTER_LIMIT'"
-        [translateParams]="{numberOfCharacters: argumentMaxLength() - (text().length || 0)}"></div>
+      <div id="chars_left">{{ 'COMPONENTS.POST_ARGUMENT.ARGUMENT_TYPE_CHARACTER_LIMIT' | translate:{numberOfCharacters: argumentMaxLength() - (text().length || 0)} }}</div>
 
     </form>
   </div>
 
   <div id="buttons_row">
     <div id="close_create">
-      <button class="btn_medium_submit_ghost icon close_button" (click)="close()">
+      <button type="button" class="btn_medium_submit_ghost icon close_button" (click)="close()" [aria-label]="'CONTROL.CLOSE' | translate">
         <cos-icon name="close" size="24"></cos-icon>
       </button>
     </div>
     <div id="navigate_create">
-      <button class="btn_medium_submit icon" (click)="submit()" [disabled]="!subject().trim() || !text().trim()">
-        <span class="btn_text" translate="COMPONENTS.POST_ARGUMENT.BTN_ARGUMENT_POST"></span>
+      <button type="button" class="btn_medium_submit icon" (click)="submit()" [disabled]="!subject().trim() || !text().trim()">
+        <span class="btn_text">{{ 'COMPONENTS.POST_ARGUMENT.BTN_ARGUMENT_POST' | translate }}</span>
       </button>
     </div>
   </div>
 </div>
 
 @if (isOpen()) {
-  <div class="overlay" (click)="close()"></div>
+  <div class="overlay" (click)="close()" (keydown.enter)="close()" role="button" tabindex="0" [aria-label]="'CONTROL.CLOSE' | translate"></div>
 }

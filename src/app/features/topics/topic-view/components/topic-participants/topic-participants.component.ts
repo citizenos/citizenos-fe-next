@@ -17,6 +17,9 @@ import { NotificationComponent } from '../../../../../shared/components/notifica
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { take } from 'rxjs';
 import { Topic } from '../../../../../core/interfaces/topic';
+import { Group } from '../../../../../core/interfaces/group';
+import { TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
+import { TopicInvite } from '../../../../../core/services/topic-invite-user.service';
 
 const PAGE_SIZE = 10;
 
@@ -46,13 +49,14 @@ export class TopicParticipantsComponent implements OnInit {
   private memberUserService = inject(TopicMemberUserService);
   private memberGroupService = inject(TopicMemberGroupService);
   private inviteUserService = inject(TopicInviteUserService);
+  public dialogRef = inject(DialogRef<TopicParticipantsComponent>);
 
   topic = this.data.topic;
   activeTab = signal('participants');
 
-  allUsers = signal<any[]>([]);
-  allGroups = signal<any[]>([]);
-  allInvites = signal<any[]>([]);
+  allUsers = signal<TopicMemberUser[]>([]);
+  allGroups = signal<Group[]>([]);
+  allInvites = signal<TopicInvite[]>([]);
 
   userSearch = signal('');
   groupSearch = signal('');
@@ -75,8 +79,8 @@ export class TopicParticipantsComponent implements OnInit {
     const field = this.userOrderField();
     const dir = this.userOrderDir();
     return [...list].sort((a, b) => {
-      const av = (a[field] || '').toLowerCase();
-      const bv = (b[field] || '').toLowerCase();
+      const av = ((a as any)[field] || '').toLowerCase();
+      const bv = ((b as any)[field] || '').toLowerCase();
       return dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
     });
   });
@@ -87,8 +91,8 @@ export class TopicParticipantsComponent implements OnInit {
     const field = this.groupOrderField();
     const dir = this.groupOrderDir();
     return [...list].sort((a, b) => {
-      const av = (a[field] || '').toLowerCase();
-      const bv = (b[field] || '').toLowerCase();
+      const av = ((a as any)[field] || '').toLowerCase();
+      const bv = ((b as any)[field] || '').toLowerCase();
       return dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
     });
   });
@@ -99,8 +103,8 @@ export class TopicParticipantsComponent implements OnInit {
     const field = this.inviteOrderField();
     const dir = this.inviteOrderDir();
     return [...list].sort((a, b) => {
-      const av = (a[field] || a.user?.[field] || '').toLowerCase();
-      const bv = (b[field] || b.user?.[field] || '').toLowerCase();
+      const av = ((a as any)[field] || (a as any).user?.[field] || '').toLowerCase();
+      const bv = ((b as any)[field] || (b as any).user?.[field] || '').toLowerCase();
       return dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
     });
   });

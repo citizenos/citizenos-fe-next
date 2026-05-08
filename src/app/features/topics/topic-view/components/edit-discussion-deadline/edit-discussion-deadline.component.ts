@@ -26,7 +26,7 @@ export interface EditDiscussionDeadlineData {
 })
 export class EditDiscussionDeadlineComponent {
   data = inject<EditDiscussionDeadlineData>(DIALOG_DATA);
-  private dialogRef = inject(DialogRef);
+  protected dialogRef = inject(DialogRef);
   private discussionService = inject(TopicDiscussionService);
   private topicService = inject(TopicService);
   private notification = inject(NotificationService);

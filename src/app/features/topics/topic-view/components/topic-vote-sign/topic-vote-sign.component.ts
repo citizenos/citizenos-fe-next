@@ -17,7 +17,7 @@ import { TopicVoteSignSmartidComponent } from '../topic-vote-sign-smartid/topic-
 })
 export class TopicVoteSignComponent {
   data = inject<{ topic: any; options: any[] }>(DIALOG_DATA);
-  private dialogRef = inject(DialogRef);
+  protected dialogRef = inject(DialogRef);
   private dialogService = inject(DialogService);
   private topicVoteService = inject(TopicVoteService);
 

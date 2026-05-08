@@ -14,7 +14,9 @@ import { IconComponent } from '../icon/icon.component';
            (click)="toggle()"
            (keydown.enter)="toggle()"
            (keydown.space)="toggle(); $event.preventDefault()"
-           tabindex="0">
+           role="button"
+           tabindex="0"
+           [attr.aria-label]="placeholder() || 'Toggle dropdown'">
         <div class="dropdown-content">
           @if (placeholder()) {
             <span class="dropdown-label">{{ placeholder() }}</span>

@@ -18,9 +18,9 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
       <div class="dialog">
         <div class="dialog_header">
           <div class="header_text">
-            <h4 class="title" translate="MODALS.LANGUAGES_MODAL_HEADING"></h4>
+            <h4 class="title">{{ 'MODALS.LANGUAGES_MODAL_HEADING' | translate }}</h4>
             <div class="dialog_close">
-              <button class="btn_dialog_close icon" dialogClose>
+              <button type="button" class="btn_dialog_close icon" dialogClose [attr.aria-label]="'CONTROL.CLOSE' | translate">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
@@ -33,9 +33,9 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
         <div class="dialog_content">
           <div class="language_list">
             @for (entry of languageEntries; track entry.key) {
-              <a class="language_item" [class.active]="entry.key === translate.currentLang" (click)="switchLanguage(entry.key)">
+              <button type="button" class="language_item" [class.active]="entry.key === translate.currentLang" (click)="switchLanguage(entry.key)">
                 {{ entry.value }}
-              </a>
+              </button>
             }
           </div>
         </div>
@@ -54,7 +54,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M36.0709 26.857C36.0709 26.4231 35.7191 26.0713 35.2852 26.0713C34.8512 26.0713 34.4994 26.4231 34.4994 26.857V28.2141H30.2857C29.8518 28.2141 29.5 28.5659 29.5 28.9999C29.5 29.4338 29.8518 29.7856 30.2857 29.7856H32.3569C32.3729 31.7531 33.0493 33.5765 34.1694 34.9705C33.257 35.6684 32.1604 36.0713 31 36.0713C30.5661 36.0713 30.2143 36.4231 30.2143 36.857C30.2143 37.2909 30.5661 37.6427 31 37.6427C32.6204 37.6427 34.0966 37.0646 35.2854 36.0965C36.4743 37.0646 37.9504 37.6427 39.5709 37.6427C40.0048 37.6427 40.3566 37.2909 40.3566 36.857C40.3566 36.4231 40.0048 36.0713 39.5709 36.0713C38.4104 36.0713 37.3139 35.6684 36.4014 34.9705C37.5216 33.5765 38.198 31.7531 38.214 29.7856H40.2857C40.7197 29.7856 41.0714 29.4338 41.0714 28.9999C41.0714 28.5659 40.7197 28.2141 40.2857 28.2141H36.0709V26.857ZM35.2854 33.8498C34.4568 32.7656 33.9435 31.3562 33.9284 29.7856H36.6425C36.6274 31.3562 36.1141 32.7656 35.2854 33.8498Z" fill="#2C3B47"/>
                 </svg>
               </div>
-              <div class="help_us_text" translate="MODALS.LANGUAGES_MODAL_HELP_US_TRANSLATE"></div>
+              <div class="help_us_text">{{ 'MODALS.LANGUAGES_MODAL_HELP_US_TRANSLATE' | translate }}</div>
               <div>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path

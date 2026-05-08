@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
+import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { Topic } from '../../../../../core/interfaces/topic';
 
@@ -18,4 +18,5 @@ export interface DuplicateTopicDialogData {
 })
 export class DuplicateTopicDialogComponent {
   topic = inject<DuplicateTopicDialogData>(DIALOG_DATA).topic;
+  dialogRef = inject(DialogRef);
 }

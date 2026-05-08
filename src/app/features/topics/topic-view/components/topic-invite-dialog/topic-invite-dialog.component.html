@@ -2,10 +2,10 @@
   <div class="dialog">
     <div class="dialog_header">
       <div class="header_text">
-        <h3 class="title" translate="MODALS.TOPIC_INVITE_HEADING"></h3>
+        <h3 class="title">{{ 'MODALS.TOPIC_INVITE_HEADING' | translate }}</h3>
       </div>
       <div class="dialog_close">
-        <button class="btn_dialog_close icon" dialogClose>
+        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
           <cos-icon name="nav-close"></cos-icon>
         </button>
       </div>
@@ -13,12 +13,12 @@
 
     <div class="dialog_tabs_wrap">
       @if (canInvite()) {
-        <div class="dialog_tab" [class.active]="activeTab() === 'invite'" (click)="activeTab.set('invite')">
-          <span translate="COMPONENTS.TOPIC_INVITE.TAB_INVITE"></span>
+        <div class="dialog_tab" [class.active]="activeTab() === 'invite'" (click)="activeTab.set('invite')" (keydown.enter)="activeTab.set('invite')" tabindex="0" role="tab" [aria-selected]="activeTab() === 'invite'">
+          <span>{{ 'COMPONENTS.TOPIC_INVITE.TAB_INVITE' | translate }}</span>
         </div>
       }
-      <div class="dialog_tab" [class.active]="activeTab() === 'share'" (click)="activeTab.set('share')">
-        <span translate="COMPONENTS.TOPIC_INVITE.TAB_SHARE"></span>
+      <div class="dialog_tab" [class.active]="activeTab() === 'share'" (click)="activeTab.set('share')" (keydown.enter)="activeTab.set('share')" tabindex="0" role="tab" [aria-selected]="activeTab() === 'share'">
+        <span>{{ 'COMPONENTS.TOPIC_INVITE.TAB_SHARE' | translate }}</span>
       </div>
     </div>
 
@@ -39,7 +39,7 @@
               @if (searchResults().length > 0) {
                 <div class="search_results">
                   @for (result of searchResults(); track result.id) {
-                    <div class="search_result_item" (click)="addMember(result)">
+                    <div class="search_result_item" (click)="addMember(result)" (keydown.enter)="addMember(result)" tabindex="0" role="button">
                       <div class="user_avatar">
                         @if (result.imageUrl) {
                           <img [src]="result.imageUrl" [alt]="result.name">
@@ -62,7 +62,7 @@
             @if (selectedMembers().length > 0) {
               <div class="selected_members_wrap">
                 <div class="global_level_select">
-                  <span translate="COMPONENTS.TOPIC_INVITE.LBL_ALL_INVITEES_LEVEL"></span>
+                  <span>{{ 'COMPONENTS.TOPIC_INVITE.LBL_ALL_INVITEES_LEVEL' | translate }}</span>
                   <cos-tooltip
                     [title]="'VIEWS.TOPIC_INVITE.TOOLTIP_MEMBERS_PERMISSIONS_HEADING' | translate"
                     [description]="'VIEWS.TOPIC_INVITE.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate">
@@ -73,7 +73,7 @@
                     </div>
                     <div options>
                       @for (level of allowedLevels(); track level) {
-                        <div class="option" (click)="updateAllLevels(level)">
+                        <div class="option" (click)="updateAllLevels(level)" (keydown.enter)="updateAllLevels(level)" tabindex="0" role="button">
                           {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                         </div>
                       }
@@ -93,7 +93,7 @@
                             </div>
                             <div options>
                               @for (level of allowedLevels(); track level) {
-                                <div class="option" (click)="updateMemberLevel(member, level)">
+                                <div class="option" (click)="updateMemberLevel(member, level)" (keydown.enter)="updateMemberLevel(member, level)" tabindex="0" role="button">
                                   {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                                 </div>
                               }
@@ -101,7 +101,7 @@
                           </cos-dropdown>
                         </div>
                       </div>
-                      <button class="remove_btn" (click)="removeMember(member)">
+                      <button type="button" class="remove_btn" (click)="removeMember(member)" [aria-label]="'CONTROL.REMOVE' | translate">
                         <cos-icon name="nav-close" size="16"></cos-icon>
                       </button>
                     </div>
@@ -131,7 +131,7 @@
       <div class="dialog_footer with_buttons">
         <div class="info_row tablet_hidden">
           <cos-icon name="info" size="16"></cos-icon>
-          <span translate="COMPONENTS.TOPIC_INVITE.TXT_INVITE_INFO"></span>
+          <span>{{ 'COMPONENTS.TOPIC_INVITE.TXT_INVITE_INFO' | translate }}</span>
         </div>
         <div class="button_row">
           <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_INVITE.BTN_CANCEL"></cos-button>

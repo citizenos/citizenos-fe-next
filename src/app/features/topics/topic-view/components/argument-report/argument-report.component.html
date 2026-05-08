@@ -5,10 +5,10 @@
         <div class="icon_notification">
           <cos-icon name="warning-filled" [size]="40"></cos-icon>
         </div>
-        <h4 class="title" translate="COMPONENTS.ARGUMENT_REPORT.HEADING"></h4>
+        <h4 class="title">{{ 'COMPONENTS.ARGUMENT_REPORT.HEADING' | translate }}</h4>
       </div>
       <div class="dialog_close">
-        <button class="btn_dialog_close icon" dialogClose>
+        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
           <cos-icon name="nav-close"></cos-icon>
         </button>
       </div>
@@ -18,11 +18,11 @@
       <div class="dialog_info_wrap">
         <div class="dialog_info row">
           <div class="delete_info_button_wrap">
-            <div class="delete_info_text" translate="COMPONENTS.ARGUMENT_REPORT.MESSAGE_MAIN"></div>
+            <div class="delete_info_text">{{ 'COMPONENTS.ARGUMENT_REPORT.MESSAGE_MAIN' | translate }}</div>
           </div>
           <div class="profile_image_wrap">
             @if (argument.creator?.imageUrl) {
-              <img class="profile_image" [src]="argument.creator.imageUrl">
+              <img class="profile_image" [src]="argument.creator.imageUrl" alt="">
             } @else {
               <div class="profile_image_filler">
                 @if (argument.creator?.name) {
@@ -37,14 +37,14 @@
 
       <form [formGroup]="reportForm">
         <div class="form_group">
-          <label translate="COMPONENTS.ARGUMENT_REPORT.LABLE_REASON"></label>
+          <label for="report_reason">{{ 'COMPONENTS.ARGUMENT_REPORT.LABLE_REASON' | translate }}</label>
           <cos-dropdown>
-            <div selection class="selected_item">
+            <div id="report_reason" selection class="selected_item" tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" aria-controls="report_reason_options">
               {{ 'TXT_REPORT_TYPES_' + (reportForm.value.type | uppercase) | translate }}
             </div>
-            <div options>
+            <div id="report_reason_options" options role="listbox">
               @for (type of reportTypes; track type) {
-                <div class="option" (click)="selectReportType(type)">
+                <div class="option" (click)="selectReportType(type)" (keydown.enter)="selectReportType(type)" role="option" tabindex="0" [attr.aria-selected]="reportForm.value.type === type">
                   {{ 'TXT_REPORT_TYPES_' + (type | uppercase) | translate }}
                 </div>
               }
@@ -53,15 +53,15 @@
         </div>
 
         <div class="form_group">
-          <label translate="COMPONENTS.ARGUMENT_REPORT.PLACEHOLDER_REPORT_TEXT"></label>
-          <textarea formControlName="text"
+          <label for="report_text">{{ 'COMPONENTS.ARGUMENT_REPORT.PLACEHOLDER_REPORT_TEXT' | translate }}</label>
+          <textarea id="report_text" formControlName="text"
                     [placeholder]="'COMPONENTS.ARGUMENT_REPORT.PLACEHOLDER_REPORT_TEXT' | translate"
                     rows="5" maxlength="2048"
                     [class.error_input]="reportForm.controls['text'].errors?.['required'] && reportForm.controls['text'].touched">
           </textarea>
           @if (reportForm.controls['text'].errors?.['required'] && reportForm.controls['text'].touched) {
             <div class="error_label">
-              <span translate="COMPONENTS.ARGUMENT_REPORT.ERROR_TEXT"></span>
+              <span>{{ 'COMPONENTS.ARGUMENT_REPORT.ERROR_TEXT' | translate }}</span>
             </div>
           }
         </div>
@@ -70,8 +70,8 @@
 
     <div class="dialog_footer with_buttons">
       <div class="button_row">
-        <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.ARGUMENT_REPORT.BTN_CANCEL"></cos-button>
-        <cos-button variant="primary" (clicked)="doReport()" [isDisabled]="reportForm.invalid || isLoading()" translate="COMPONENTS.ARGUMENT_REPORT.BTN_SUBMIT"></cos-button>
+        <cos-button variant="secondary" (clicked)="close()">{{ 'COMPONENTS.ARGUMENT_REPORT.BTN_CANCEL' | translate }}</cos-button>
+        <cos-button variant="primary" (clicked)="doReport()" [isDisabled]="reportForm.invalid || isLoading()">{{ 'COMPONENTS.ARGUMENT_REPORT.BTN_SUBMIT' | translate }}</cos-button>
       </div>
     </div>
   </div>

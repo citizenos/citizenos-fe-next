@@ -2,7 +2,8 @@
   <div class="follow_up_header">
     <div class="header_division">
       <cos-icon name="status-follow-up" [size]="32" style="color: var(--color-follow-up)"></cos-icon>
-      <div class="follow_up_title" translate="COMPONENTS.TOPIC_MILESTONES.CREATE_A_MILESTONE">
+      <div class="follow_up_title">
+        {{ 'COMPONENTS.TOPIC_MILESTONES.CREATE_A_MILESTONE' | translate }}
         <cos-tooltip [description]="'COMPONENTS.TOPIC_MILESTONES.TOOLTIP_CREATE' | translate">
         </cos-tooltip>
       </div>
@@ -15,11 +16,11 @@
           <div class="milestone_header">
             <div class="title_wrap">
               <div class="circle">{{ $index + 1 }}</div>
-              <div class="small_heading" translate="COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE"></div>
+              <div class="small_heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE' | translate }}</div>
             </div>
           </div>
           <div class="section_content">
-            <div class="heading" translate="COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_TITLE"></div>
+            <div class="heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_TITLE' | translate }}</div>
             <cos-input [placeholder]="'COMPONENTS.TOPIC_MILESTONES.PLACEHOLDER_SUBJECT' | translate">
               <input id="create_milestone_title" [(ngModel)]="evt.subject" [class.error_input]="errors()?.subject"
                 [placeholder]="'COMPONENTS.TOPIC_MILESTONES.PLACEHOLDER_SUBJECT' | translate"
@@ -27,11 +28,11 @@
               @if (errors()?.subject) {
                 <label for="create_milestone_title" class="error_label">
                   <cos-icon name="warning" size="16"></cos-icon>
-                  <span translate="{{ errors()?.subject }}"></span>
+                  <span>{{ errors()?.subject || '' | translate }}</span>
                 </label>
               }
             </cos-input>
-            <div class="heading" translate="COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_CONTENT"></div>
+            <div class="heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_CONTENT' | translate }}</div>
             <cos-input [placeholder]="'VIEWS.TOPICS_TOPICID.ADD_MILESTONES_PLACEHOLDER_TEXT' | translate">
               <textarea id="create_milestone_textarea" class="gray_borders" [class.error_input]="errors()?.text"
                 [(ngModel)]="evt.text"
@@ -40,17 +41,17 @@
               @if (errors()?.text) {
                 <label for="create_milestone_textarea" class="error_label">
                   <cos-icon name="warning" size="16"></cos-icon>
-                  <span translate="{{ errors()?.text }}"></span>
+                  <span>{{ errors()?.text || '' | translate }}</span>
                 </label>
               }
             </cos-input>
           </div>
           <div class="section_buttons">
-            <a translate="COMPONENTS.TOPIC_MILESTONES.LNK_CANCEL"
-              (click)="toggleEditMode(evt)">
-            </a>
-            <button class="btn_medium_submit bold" translate="COMPONENTS.TOPIC_MILESTONES.EDIT_MILESTONE"
-              (click)="editEvent(evt)">
+            <button type="button" class="btn_link" (click)="toggleEditMode(evt)">
+              {{ 'COMPONENTS.TOPIC_MILESTONES.LNK_CANCEL' | translate }}
+            </button>
+            <button type="button" class="btn_medium_submit bold" (click)="editEvent(evt)">
+              {{ 'COMPONENTS.TOPIC_MILESTONES.EDIT_MILESTONE' | translate }}
             </button>
           </div>
         } @else {
@@ -58,8 +59,7 @@
             <div class="title_wrap">
               <div class="circle">{{ $index + 1 }}</div>
               <div class="title_text_area mobile_hidden">
-                <div class="title_description" translate="COMPONENTS.TOPIC_MILESTONES.MILESTONE_TITLE"
-                  [translateParams]="{ number: countTotal() - $index }"></div>
+                <div class="title_description">{{ 'COMPONENTS.TOPIC_MILESTONES.MILESTONE_TITLE' | translate:{ number: countTotal() - $index } }}</div>
                 <div class="title" [innerHTML]="evt.subject"></div>
               </div>
             </div>
@@ -70,18 +70,18 @@
               </div>
               @if (canDelete()) {
                 <div class="dropdown button_dropdown" cosDropdown>
-                  <button class="btn_medium_close icon">
+                  <button type="button" class="btn_medium_close icon" [aria-label]="'CONTROL.MORE' | translate">
                     <cos-icon name="more-vertical" size="24"></cos-icon>
                   </button>
                   <div class="options">
-                    <button class="option" (click)="toggleEditMode(evt)">
+                    <button type="button" class="option" (click)="toggleEditMode(evt)">
                       <div class="icon_wrap"><cos-icon name="edit" size="16"></cos-icon></div>
-                      <span translate="COMPONENTS.TOPIC_MILESTONES.OPT_EDIT_DETAILS"></span>
+                      <span>{{ 'COMPONENTS.TOPIC_MILESTONES.OPT_EDIT_DETAILS' | translate }}</span>
                     </button>
                     <div class="line_separator"></div>
-                    <button class="option error_text" (click)="deleteEvent(evt)">
+                    <button type="button" class="option error_text" (click)="deleteEvent(evt)">
                       <div class="icon_wrap"><cos-icon name="trash" size="16"></cos-icon></div>
-                      <span translate="COMPONENTS.TOPIC_MILESTONES.OPT_REMOVE_MILESTONE"></span>
+                      <span>{{ 'COMPONENTS.TOPIC_MILESTONES.OPT_REMOVE_MILESTONE' | translate }}</span>
                     </button>
                   </div>
                 </div>
@@ -90,8 +90,7 @@
           </div>
           <div class="section_content">
             <div class="title_text_area mobile_show">
-              <div class="title_description" translate="COMPONENTS.TOPIC_MILESTONES.MILESTONE_TITLE"
-                [translateParams]="{ number: countTotal() - $index }"></div>
+              <div class="title_description">{{ 'COMPONENTS.TOPIC_MILESTONES.MILESTONE_TITLE' | translate:{ number: countTotal() - $index } }}</div>
               <div class="title small_heading" [innerHTML]="evt.subject"></div>
             </div>
             <div class="milestone_description_text" [innerHTML]="evt.text"></div>
@@ -106,11 +105,11 @@
           <div class="milestone_header">
             <div class="title_wrap">
               <div class="circle">{{ countTotal() + 1 }}</div>
-              <div class="small_heading" translate="COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE"></div>
+              <div class="small_heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE' | translate }}</div>
             </div>
           </div>
           <div class="section_content">
-            <div class="heading" translate="COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_TITLE"></div>
+            <div class="heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_TITLE' | translate }}</div>
             <cos-input [placeholder]="'COMPONENTS.TOPIC_MILESTONES.PLACEHOLDER_SUBJECT' | translate">
               <input id="create_milestone_title" [(ngModel)]="event.subject" [class.error_input]="errors()?.subject"
                 [placeholder]="'COMPONENTS.TOPIC_MILESTONES.PLACEHOLDER_SUBJECT' | translate" class="gray_borders"
@@ -118,11 +117,11 @@
               @if (errors()?.subject) {
                 <label for="create_milestone_title" class="error_label">
                   <cos-icon name="warning" size="16"></cos-icon>
-                  <span translate="{{ errors()?.subject }}"></span>
+                  <span>{{ errors()?.subject || '' | translate }}</span>
                 </label>
               }
             </cos-input>
-            <div class="heading" translate="COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_CONTENT"></div>
+            <div class="heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_CONTENT' | translate }}</div>
             <cos-input [placeholder]="'VIEWS.TOPICS_TOPICID.ADD_MILESTONES_PLACEHOLDER_TEXT' | translate">
               <textarea id="create_milestone_textarea" class="gray_borders" [class.error_input]="errors()?.text"
                 [(ngModel)]="event.text" [placeholder]="'VIEWS.TOPICS_TOPICID.ADD_MILESTONES_PLACEHOLDER_TEXT' | translate"
@@ -130,7 +129,7 @@
               @if (errors()?.text) {
                 <label for="create_milestone_textarea" class="error_label">
                   <cos-icon name="warning" size="16"></cos-icon>
-                  <span translate="{{ errors()?.text }}"></span>
+                  <span>{{ errors()?.text || '' | translate }}</span>
                 </label>
               }
             </cos-input>
@@ -138,8 +137,8 @@
         </div>
 
         <div class="section_buttons">
-          <button class="btn_medium_submit bold" translate="COMPONENTS.TOPIC_MILESTONES.ADD_MILESTONE"
-            (click)="submitEvent()">
+          <button type="button" class="btn_medium_submit bold" (click)="submitEvent()">
+            {{ 'COMPONENTS.TOPIC_MILESTONES.ADD_MILESTONE' | translate }}
           </button>
         </div>
       }

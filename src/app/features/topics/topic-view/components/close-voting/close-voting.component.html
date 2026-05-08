@@ -1,4 +1,4 @@
-<div class="overlay" dialogClose></div>
+<div class="overlay" dialogClose (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
 <div class="dialog_wrap">
   <div class="dialog">
     <div class="dialog_header warning">
@@ -6,12 +6,12 @@
         <div class="icon_notification">
             <cos-icon name="warning-filled" [size]="40"></cos-icon>
         </div>
-        <h4 class="title" translate="COMPONENTS.CLOSE_VOTING_CONFIRM.HEADING"></h4>
+        <h4 class="title">{{ 'COMPONENTS.CLOSE_VOTING_CONFIRM.HEADING' | translate }}</h4>
       </div>
       <div class="dialog_close">
-        <a class="btn_dialog_close icon" dialogClose>
+        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="close" [size]="24"></cos-icon>
-        </a>
+        </button>
       </div>
     </div>
     <div class="dialog_content">
@@ -24,8 +24,8 @@
     }
     <div class="dialog_content no_footer">
       <div class="button_wrap">
-        <button class="btn_big_submit" [dialogClose]="true" translate="COMPONENTS.CLOSE_VOTING_CONFIRM.CONFIRM_YES"></button>
-        <a dialogClose translate="COMPONENTS.CLOSE_VOTING_CONFIRM.CONFIRM_NO"></a>
+        <button type="button" class="btn_big_submit" [dialogClose]="true">{{ 'COMPONENTS.CLOSE_VOTING_CONFIRM.CONFIRM_YES' | translate }}</button>
+        <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.CLOSE_VOTING_CONFIRM.CONFIRM_NO' | translate }}</button>
       </div>
     </div>
     <div class="dialog_footer"></div>

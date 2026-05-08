@@ -23,23 +23,23 @@ interface IdeationFolderDialogData {
     IconComponent
   ],
   template: `
-    <div class="overlay" (click)="dialogRef.close()"></div>
+    <div class="overlay" (click)="dialogRef.close()" (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
     <div class="dialog_wrap">
       <div class="dialog">
         <div class="dialog_header ideation">
           <div class="header_text">
-            <div class="title" [translate]="'COMPONENTS.CREATE_IDEA_FOLDER.HEADING'"></div>
+            <div class="title">{{ 'COMPONENTS.CREATE_IDEA_FOLDER.HEADING' | translate }}</div>
             <div class="dialog_close">
-              <a class="btn_dialog_close icon" (click)="dialogRef.close()">
+              <button type="button" class="btn_dialog_close icon" (click)="dialogRef.close()" [aria-label]="'CONTROL.CLOSE' | translate">
                 <cos-icon name="close"></cos-icon>
-              </a>
+              </button>
             </div>
           </div>
         </div>
         <div class="dialog_content">
           <div class="content_section">
             <div class="section_content_wrap">
-              <div class="bold" [translate]="'COMPONENTS.CREATE_IDEA_FOLDER.LBL_NAME'"></div>
+              <label class="bold" for="name">{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LBL_NAME' | translate }}</label>
               <form [formGroup]="form">
                 <cos-input
                   [placeholder]="'COMPONENTS.CREATE_IDEA_FOLDER.PLACEHOLDER_NAME' | translate"
@@ -53,18 +53,18 @@ interface IdeationFolderDialogData {
               </form>
 
               @if (ideas().length > 0) {
-                <div class="bold" [translate]="'COMPONENTS.CREATE_IDEA_FOLDER.LBL_IDEAS_SELECTION'"></div>
+                <div class="bold">{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LBL_IDEAS_SELECTION' | translate }}</div>
                 <div class="idea_selection_wrap">
                   <div class="idea_selection_header">
-                    <div class="checkbox_wrap" (click)="toggleAllIdeas()">
-                      <label class="checkbox" [class.selected]="allChecked()">
+                    <div class="checkbox_wrap" (click)="toggleAllIdeas()" (keydown.enter)="toggleAllIdeas()" tabindex="0" role="button" [attr.aria-label]="'COMPONENTS.CREATE_IDEA_FOLDER.LBL_IDEAS' | translate:{count: ideas().length}">
+                      <div class="checkbox" [class.selected]="allChecked()">
                         <span class="checkmark"></span>
-                      </label>
-                      <div [translate]="'COMPONENTS.CREATE_IDEA_FOLDER.LBL_IDEAS'" [translateParams]="{count: ideas().length}">
+                      </div>
+                      <div>{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LBL_IDEAS' | translate:{count: ideas().length} }}
                       </div>
                     </div>
                     <div class="likes_wrap">
-                      <span [translate]="'COMPONENTS.CREATE_IDEA_FOLDER.LBL_LIKES'"></span>
+                      <span>{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LBL_LIKES' | translate }}</span>
                       <cos-icon name="arrow-down" [size]="20"></cos-icon>
                     </div>
                   </div>
@@ -72,10 +72,10 @@ interface IdeationFolderDialogData {
                   <div class="ideas_wrap">
                     @for (idea of ideas(); track idea.id) {
                       <div class="idea_row">
-                        <div class="checkbox_wrap" (click)="toggleIdea(idea)">
-                          <label class="checkbox" [class.selected]="isIdeaSelected(idea)">
+                        <div class="checkbox_wrap" (click)="toggleIdea(idea)" (keydown.enter)="toggleIdea(idea)" tabindex="0" role="button" [attr.aria-label]="idea.statement">
+                          <div class="checkbox" [class.selected]="isIdeaSelected(idea)">
                             <span class="checkmark"></span>
-                          </label>
+                          </div>
                           <div class="statement" [innerHTML]="idea.statement"></div>
                         </div>
                         <div class="votes">{{ idea.votes.up.count || 0 }}</div>
@@ -89,9 +89,10 @@ interface IdeationFolderDialogData {
         </div>
 
         <div class="dialog_footer with_buttons">
-          <a (click)="dialogRef.close()" [translate]="'COMPONENTS.CREATE_IDEA_FOLDER.LNK_CANCEL'"></a>
-          <button class="btn_big_submit" (click)="createFolder()" [disabled]="form.invalid || loading()"
-            [translate]="'COMPONENTS.CREATE_IDEA_FOLDER.BTN_CREATE'"></button>
+          <button type="button" class="btn_link" (click)="dialogRef.close()">{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LNK_CANCEL' | translate }}</button>
+          <button type="button" class="btn_big_submit" (click)="createFolder()" [disabled]="form.invalid || loading()">
+            {{ 'COMPONENTS.CREATE_IDEA_FOLDER.BTN_CREATE' | translate }}
+          </button>
         </div>
       </div>
     </div>

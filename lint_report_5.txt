@@ -1,0 +1,1785 @@
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/app.routes.ts
+  22:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/components/shell/global-search-panel/global-search-panel.component.spec.ts
+  77:79  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/components/shell/global-search-panel/global-search-panel.component.ts
+  308:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  360:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  364:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/components/shell/help/help.component.ts
+  348:14  warning  '_err' is defined but never used          @typescript-eslint/no-unused-vars
+  378:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/components/shell/nav/nav.component.spec.ts
+  16:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/components/shell/onboarding/onboarding.component.ts
+  32:17  error  <button> should have content                                                            @angular-eslint/template/elements-content
+  35:17  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  35:17  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  35:17  error  <a> should have content                                                                 @angular-eslint/template/elements-content
+  40:9   error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  40:9   error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/components/shell/page-header/page-header.component.spec.ts
+  12:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/interfaces/api-response.ts
+  1:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/interfaces/group.ts
+  13:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/interfaces/idea.ts
+  28:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/interfaces/topic.ts
+  35:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  48:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/interfaces/user.ts
+  10:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/activity.service.ts
+   12:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   96:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  100:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  104:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  105:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  130:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  131:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  134:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  144:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  157:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  158:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  172:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  216:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  216:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  217:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  243:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  244:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  247:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  247:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  255:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  266:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  274:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  322:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  322:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  327:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  338:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  353:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  360:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  372:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  379:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  390:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  390:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  407:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  407:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  415:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  443:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  456:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/group-detail.service.ts
+  30:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  38:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  46:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/group-invite-user.service.ts
+  22:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  23:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:78  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  30:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  36:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:66  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  51:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/group-join.service.ts
+  14:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:74  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  35:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  36:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/group-member-topic.service.ts
+  58:73  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  65:70  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/group-member-user.service.ts
+  40:75  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  48:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/group-request-topic.service.ts
+  14:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:87  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  35:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  36:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/items-list.service.ts
+  36:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  56:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  72:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  74:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/public-group.service.ts
+  25:60  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/public-topic.service.ts
+  27:60  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/search.service.ts
+  18:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic-argument.service.ts
+   32:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   78:62   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:17   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:46   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   94:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   97:25   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   97:42   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   99:17   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  105:33   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  108:51   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  124:36   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  131:17   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  132:28   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  148:64   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  153:14   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  153:31   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  155:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  159:16   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  159:33   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  162:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  166:16   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  166:33   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  169:41   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  173:14   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  173:31   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  176:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  180:15   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  180:32   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  190:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  194:16   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  194:33   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  197:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  201:104  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  203:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  209:119  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  209:138  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  211:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic-discussion.service.ts
+  44:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic-event.service.ts
+  26:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  37:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:82  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  62:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  62:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  72:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  79:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  83:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  83:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  86:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic-ideation.service.ts
+   64:25   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   64:42   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   71:62   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   77:106  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   78:53   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   85:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   89:17   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   89:34   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   91:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   95:16   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   95:33   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   98:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  102:14   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  102:31   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  104:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  108:22   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  108:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  111:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  115:16   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  115:33   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  118:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  122:16   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  122:33   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  125:41   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  135:74   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  135:116  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  142:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  152:74   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  159:90   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  166:91   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  168:41   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  172:104  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  175:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  179:94   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  179:121  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  187:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  194:100  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  196:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  200:105  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  202:41   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  206:118  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  209:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  215:76   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  215:103  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  215:117  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  222:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  226:92   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  228:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  232:111  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  235:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  239:130  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  242:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  246:95   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  248:41   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  252:126  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  255:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  259:119  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  261:41   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  265:127  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  268:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  272:103  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  272:117  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  274:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  280:97   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  280:124  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  280:138  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  287:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  291:95   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  291:114  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  294:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  298:116  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  298:135  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  301:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  305:117  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  307:41   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  311:130  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  314:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  318:144  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  321:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  325:125  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  327:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  333:118  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  333:137  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  335:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  341:44   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  348:51   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic-invite-user.service.ts
+  28:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  35:57  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  36:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:66  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:87  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic-join.service.ts
+  18:34   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:35   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:43   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:85   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  46:102  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  48:38   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic-member-group.service.ts
+  19:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:79  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:81  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:66  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic-member-user.service.ts
+  44:70  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  51:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  52:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic-notification.service.ts
+  19:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic-report.service.ts
+  37:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:70  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  68:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  75:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  75:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic-vote.service.ts
+   36:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   36:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   47:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   47:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   49:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   53:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   53:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   56:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   60:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   60:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   62:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   66:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   66:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   69:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   73:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   73:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   76:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   80:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   80:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   84:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   86:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   91:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   95:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   95:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   98:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  101:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  101:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  104:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  108:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  121:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  128:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/topic.service.ts
+   90:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   98:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  103:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  105:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  126:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  128:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  143:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  143:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  146:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  150:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  159:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  161:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  165:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  167:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  236:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  312:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  313:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  319:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  320:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  326:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  327:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  333:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  333:66  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  334:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  341:71  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  342:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/tour.service.ts
+  21:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/upload.service.ts
+  11:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:60  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/user-group.service.spec.ts
+  59:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/user-group.service.ts
+  28:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  63:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/user-topic.service.ts
+  31:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  49:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/user.service.ts
+   21:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   28:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   37:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   43:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   43:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   57:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   61:75  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   69:67  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   73:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   78:66  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   87:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   87:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   97:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  100:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  111:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  115:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  119:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  120:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  125:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/services/vote-delegation.service.ts
+  14:79  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/state/user.store.spec.ts
+  11:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/state/user.store.ts
+   28:18  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+   49:18  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+   54:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  120:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  131:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/core/translate/json-pointer.compiler.ts
+   7:42  warning  'lang' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  16:53  warning  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  16:58  warning  'lang' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  16:73  warning  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  26:55  warning  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  26:80  warning  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  69:43  warning  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/add-eid/add-eid.component.html
+  15:9   error  <h4> should have content                                                                @angular-eslint/template/elements-content
+  29:11  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  29:11  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  41:11  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  41:11  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  61:9   error  <button> should have content                                                            @angular-eslint/template/elements-content
+  62:9   error  <a> should have content                                                                 @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/add-email/add-email.component.html
+  40:9  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  40:9  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/add-email/add-email.component.spec.ts
+  70:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/add-email/add-email.component.ts
+  41:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/connect-eid/connect-eid.component.html
+  12:9  error  <h4> should have content  @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/connect-eid/connect-eid.component.spec.ts
+  17:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/connect-smart-id/connect-smart-id.component.html
+  12:9  error  <h4> should have content  @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/connect-smart-id/connect-smart-id.component.spec.ts
+  17:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/privacy-policy/privacy-policy.component.html
+  17:9  error  <h4> should have content                                                                @angular-eslint/template/elements-content
+  41:9  error  <button> should have content                                                            @angular-eslint/template/elements-content
+  42:9  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  42:9  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  42:9  error  <a> should have content                                                                 @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/privacy-policy/privacy-policy.component.spec.ts
+  27:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  30:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/privacy-policy/privacy-policy.component.ts
+  14:9   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:92  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:67  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/verify-email-dialog/verify-email-dialog.component.html
+  66:9  error  <button> should have content  @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/components/verify-email-dialog/verify-email-dialog.component.spec.ts
+  9:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/login/esteid/esteid.component.spec.ts
+   22:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   90:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  100:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/login/esteid/esteid.component.ts
+  240:21  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+  254:19  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+  276:17  warning  'err' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/login/login.component.spec.ts
+    8:10  warning  'of' is defined but never used. Allowed unused vars must match /^_/u                   @typescript-eslint/no-unused-vars
+    8:14  warning  'throwError' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   16:22  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+   17:24  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+   18:7   warning  'mockRouter' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   18:19  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+  105:60  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/login/login.component.ts
+  257:16  warning  'err' is defined but never used           @typescript-eslint/no-unused-vars
+  257:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   31:7   error    <h1> should have content                  @angular-eslint/template/elements-content
+   81:13  error    <a> should have content                   @angular-eslint/template/elements-content
+   98:11  error    <a> should have content                   @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/login/smart-id/smart-id.component.spec.ts
+  16:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/login/smart-id/smart-id.component.ts
+  194:21  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+  215:17  warning  'err' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/password-forgot/password-forgot.component.spec.ts
+  13:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/password-forgot/password-forgot.component.ts
+    3:10  warning  'RouterLink' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  154:21  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+   30:7   error    <h1> should have content                                                      @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/password-reset/password-reset.component.spec.ts
+  14:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/password-reset/password-reset.component.ts
+  191:16  warning  'err' is defined but never used           @typescript-eslint/no-unused-vars
+  191:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   24:7   error    <h1> should have content                  @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/profile/profile.component.html
+  160:13  error  <button> should have content  @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/profile/profile.component.spec.ts
+  39:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/profile/profile.component.ts
+   77:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  125:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  160:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  204:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  234:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/register/register.component.spec.ts
+  15:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  16:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/account/register/register.component.ts
+  408:16  warning  'err' is defined but never used           @typescript-eslint/no-unused-vars
+  408:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   44:7   error    <h1> should have content                  @angular-eslint/template/elements-content
+  128:17  error    <a> should have content                   @angular-eslint/template/elements-content
+  129:17  error    <a> should have content                   @angular-eslint/template/elements-content
+  157:13  error    <a> should have content                   @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/dashboard/dashboard.component.html
+  26:11  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  26:11  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/dialogs/group-add-topics-dialog/group-add-topics-dialog.component.html
+   6:9   error  <h4> should have content                                                                @angular-eslint/template/elements-content
+  34:21  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  34:21  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  54:9   error  <a> should have content                                                                 @angular-eslint/template/elements-content
+  55:9   error  <button> should have content                                                            @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/dialogs/group-add-topics-dialog/group-add-topics-dialog.component.ts
+  35:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/dialogs/group-invite-dialog/group-invite-dialog.component.html
+  50:75  error  The div with role="option" does not have required ARIA properties: aria-selected  @angular-eslint/template/role-has-required-aria
+  68:17  error  A label component must be associated with a form element                          @angular-eslint/template/label-has-associated-control
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/dialogs/group-invite-dialog/group-invite-dialog.component.ts
+   14:10  warning  'ConfirmDialogComponent' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   63:25  warning  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+   65:26  warning  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+   88:20  warning  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+   99:18  warning  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  114:22  warning  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  122:21  warning  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/dialogs/group-request-topics-dialog/group-request-topics-dialog.component.html
+   6:9  error  <h4> should have content                                  @angular-eslint/template/elements-content
+  39:9  error  A label component must be associated with a form element  @angular-eslint/template/label-has-associated-control
+  56:9  error  <a> should have content                                   @angular-eslint/template/elements-content
+  57:9  error  <button> should have content                              @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/dialogs/group-request-topics-dialog/group-request-topics-dialog.component.spec.ts
+  64:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/dialogs/group-request-topics-dialog/group-request-topics-dialog.component.ts
+  34:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.ts
+  45:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.html
+   6:9   error  <h4> should have content      @angular-eslint/template/elements-content
+  33:17  error  <button> should have content  @angular-eslint/template/elements-content
+  34:17  error  <button> should have content  @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.ts
+   1:62  warning  'output' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  29:21  warning  Unexpected any. Specify a different type                                  @typescript-eslint/no-explicit-any
+  43:19  warning  Unexpected any. Specify a different type                                  @typescript-eslint/no-explicit-any
+  50:19  warning  Unexpected any. Specify a different type                                  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-create/components/group-create-help/group-create-help.component.html
+  30:5  error  <a> should have content  @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-create/components/step-info/step-info.component.spec.ts
+  25:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-create/components/step-invite/step-invite.component.html
+  27:13  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  27:13  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  54:19  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  54:19  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-create/components/step-invite/step-invite.component.ts
+  28:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  49:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  63:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-create/components/step-settings/step-settings.component.html
+  16:7   error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  16:7   error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  27:7   error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  27:7   error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  62:13  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  62:13  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  73:13  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  73:13  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-create/components/step-topics/step-topics.component.html
+  27:13  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  27:13  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-create/components/step-topics/step-topics.component.spec.ts
+  36:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  71:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  83:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  91:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-create/group-create.component.html
+   7:5  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+   7:5  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  10:5  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  10:5  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  13:5  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  13:5  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  16:5  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  16:5  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-create/group-create.component.spec.ts
+  10:27  warning  'TranslateService' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-create/group-create.component.ts
+  137:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  138:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  139:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-detail/components/group-invite-user/group-invite-user.component.spec.ts
+  10:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  16:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  75:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-detail/components/group-invite-user/group-invite-user.component.ts
+  21:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-detail/components/group-member-user/group-member-user.component.spec.ts
+  10:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  16:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  75:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-detail/components/group-member-user/group-member-user.component.ts
+  22:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-detail/components/group-share/group-share.component.html
+  27:13  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  27:13  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-detail/components/group-share/group-share.component.spec.ts
+   11:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   19:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   20:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   21:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   22:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   50:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   69:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  118:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-detail/group-detail.component.html
+  41:11  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  41:11  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-detail/group-detail.component.spec.ts
+   40:35  warning  Unexpected any. Specify a different type                                         @typescript-eslint/no-explicit-any
+  113:29  warning  Unexpected any. Specify a different type                                         @typescript-eslint/no-explicit-any
+  177:11  warning  'comp' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-invitation/group-invitation.component.spec.ts
+   28:12  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+   29:17  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+   30:18  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+   32:17  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+  120:13  warning  'routerMock' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-join/group-join.component.spec.ts
+  29:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  30:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/group-join/group-join.component.ts
+   93:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/my-groups/my-groups.component.ts
+  263:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  265:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  271:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  280:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  281:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/groups/public-groups/public-groups.component.ts
+  175:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  183:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  184:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/home/components/feature-box/feature-box.component.spec.ts
+  14:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/home/home.component.spec.ts
+   18:22  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+   19:25  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+   20:25  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+   21:24  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+  137:11  warning  'routerLink' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.spec.ts
+  24:137  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:104  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  38:105  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:103  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.ts
+   1:61  warning  'signal' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   1:69  warning  'computed' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+   5:10  warning  'Topic' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   8:10  warning  'ButtonComponent' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  18:9   error    A label component must be associated with a form element                           @angular-eslint/template/label-has-associated-control
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/my-topics/my-topics.component.ts
+  174:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  176:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  178:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  181:82  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  182:90  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  184:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  189:67  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/public-topics/public-topics.component.ts
+  149:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  151:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  154:67  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-create/components/step-topic-info/step-topic-info.component.html
+   4:5  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+   4:5  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  30:5  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  30:5  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  49:5  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  49:5  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  70:5  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  70:5  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-create/components/step-topic-info/step-topic-info.component.spec.ts
+  24:71  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-create/components/step-topic-preview/step-topic-preview.component.spec.ts
+  4:10  warning  'runInInjectionContext' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-create/components/step-topic-settings/step-topic-settings.component.spec.ts
+  16:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-create/topic-create.component.ts
+  289:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-edit/topic-edit.component.spec.ts
+  129:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  136:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  143:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-edit/topic-edit.component.ts
+  332:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-invitation/topic-invitation.component.spec.ts
+  27:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  30:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-invitation/topic-invitation.component.ts
+   60:96  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  105:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/add-idea-folder/add-idea-folder.component.spec.ts
+  27:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/add-idea-folder/add-idea-folder.component.ts
+    3:27  warning  'TranslateService' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+    9:26  warning  'of' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+  246:20  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  275:56  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  287:24  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  297:28  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  320:20  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/add-idea/add-idea.component.spec.ts
+  10:70  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:87  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  13:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  38:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/add-ideas-to-folder/add-ideas-to-folder.component.spec.ts
+  25:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  88:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  98:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/add-ideas-to-folder/add-ideas-to-folder.component.ts
+    2:27  warning  'TranslateService' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   12:11  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  274:20  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/anonymous-dialog/anonymous-dialog.component.spec.ts
+  25:56  warning  Unexpected empty method 'close'  @typescript-eslint/no-empty-function
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument-deleted/argument-deleted.component.spec.ts
+  20:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument-deleted/argument-deleted.component.ts
+  16:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument-edits/argument-edits.component.spec.ts
+  3:10  warning  'By' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument-edits/argument-edits.component.ts
+  14:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.ts
+  28:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument-reply/argument-reply.component.ts
+  20:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  30:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument-report-moderate/argument-report-moderate.component.ts
+   8:23  warning  'DialogRef' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  13:14  warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
+  14:11  warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument-report/argument-report.component.spec.ts
+  12:10  warning  'IconComponent' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+  13:10  warning  'ButtonComponent' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  14:10  warning  'DropdownComponent' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  15:10  warning  'InitialsComponent' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  18:62  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument-report/argument-report.component.ts
+  16:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument-why-dialog/argument-why-dialog.component.ts
+  8:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument/argument.component.spec.ts
+  51:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  52:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/argument/argument.component.ts
+   36:29  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+   39:16  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+  133:12  warning  'event' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/big-graph/big-graph.component.spec.ts
+  18:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/big-graph/big-graph.component.ts
+  12:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/create-idea-folder/create-idea-folder.component.spec.ts
+  26:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  86:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/create-idea-folder/create-idea-folder.component.ts
+  1:47  warning  'effect' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  3:27  warning  'TranslateService' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/download-vote-results/download-vote-results.component.spec.ts
+  30:11  warning  'labels' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  30:45  warning  Unexpected any. Specify a different type                                           @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts
+  3:10  warning  'By' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.ts
+  20:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/edit-discussion-deadline/edit-discussion-deadline.component.spec.ts
+  18:41  warning  Unexpected empty method 'dispose'         @typescript-eslint/no-empty-function
+  19:74  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/edit-discussion-deadline/edit-discussion-deadline.component.ts
+  45:70  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/edit-idea-folder/edit-idea-folder.component.spec.ts
+   26:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   27:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   28:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   96:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  109:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  123:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  124:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/edit-idea-folder/edit-idea-folder.component.ts
+    3:27  warning  'TranslateService' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+    9:26  warning  'of' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   14:11  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  301:24  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-dialog/idea-dialog.component.spec.ts
+  37:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.spec.ts
+  12:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  13:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.ts
+  27:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.spec.ts
+   1:10  warning  'ComponentFixture' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  11:28  warning  'ComponentRef' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+  26:28  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  27:25  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  28:22  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  29:19  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  66:42  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.ts
+  24:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  46:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-reply-report/idea-reply-report.component.spec.ts
+  55:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  56:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-reply-report/idea-reply-report.component.ts
+   5:21  warning  'DialogCloseDirective' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  13:13  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  40:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  58:70  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-reply/idea-reply.component.spec.ts
+   1:10  warning  'ComponentFixture' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  10:28  warning  'ComponentRef' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+  23:28  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  24:25  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  25:22  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  26:19  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  27:22  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  28:19  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  40:23  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+  69:36  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-reply/idea-reply.component.ts
+    1:51  warning  'output' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  375:29  warning  Unexpected any. Specify a different type                                  @typescript-eslint/no-explicit-any
+  376:16  warning  Unexpected any. Specify a different type                                  @typescript-eslint/no-explicit-any
+  405:41  warning  Unexpected any. Specify a different type                                  @typescript-eslint/no-explicit-any
+  414:29  warning  Unexpected any. Specify a different type                                  @typescript-eslint/no-explicit-any
+  414:37  warning  Unexpected any. Specify a different type                                  @typescript-eslint/no-explicit-any
+  474:20  warning  'event' is defined but never used. Allowed unused args must match /^_/u   @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-report-moderate/idea-report-moderate.component.spec.ts
+   6:10  warning  'By' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  15:41  warning  Unexpected any. Specify a different type                              @typescript-eslint/no-explicit-any
+  22:47  warning  Unexpected any. Specify a different type                              @typescript-eslint/no-explicit-any
+  34:16  warning  Unexpected any. Specify a different type                              @typescript-eslint/no-explicit-any
+  36:24  warning  Unexpected any. Specify a different type                              @typescript-eslint/no-explicit-any
+  37:22  warning  Unexpected any. Specify a different type                              @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-report-moderate/idea-report-moderate.component.ts
+  13:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  14:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts
+  55:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  56:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/idea-report/idea-report.component.ts
+  274:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  291:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/ideabox/ideabox.component.spec.ts
+  12:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  13:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:6   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/ideabox/ideabox.component.ts
+  46:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.spec.ts
+  17:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  23:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  23:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  35:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  37:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  38:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.ts
+   51:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   52:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   80:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  108:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  146:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  150:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  193:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  193:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/missing-discussion/missing-discussion.component.spec.ts
+  17:41  warning  Unexpected empty method 'dispose'  @typescript-eslint/no-empty-function
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/missing-discussion/missing-discussion.component.ts
+  46:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts
+  30:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.ts
+  45:81  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-add-groups-dialog/topic-add-groups-dialog.component.spec.ts
+  108:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-content/topic-content.component.spec.ts
+   2:16  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+   3:13  warning  Unexpected empty method 'observe'                                                        @typescript-eslint/no-empty-function
+   4:15  warning  Unexpected empty method 'unobserve'                                                      @typescript-eslint/no-empty-function
+   5:16  warning  Unexpected empty method 'disconnect'                                                     @typescript-eslint/no-empty-function
+   7:16  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  18:7   warning  'componentRef' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-content/topic-content.component.ts
+  4:10  warning  'TopicService' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-discussion-create-dialog/topic-discussion-create-dialog.component.spec.ts
+  17:41  warning  Unexpected empty method 'dispose'  @typescript-eslint/no-empty-function
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-discussion-create-dialog/topic-discussion-create-dialog.component.ts
+  48:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.spec.ts
+  10:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  13:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  56:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.ts
+   93:75  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  156:60  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  188:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-follow-up-create-dialog/topic-follow-up-create-dialog.component.spec.ts
+  10:81  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts
+    9:10   warning  'IconComponent' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   10:10   warning  'ButtonComponent' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   11:10   warning  'TooltipComponent' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   12:10   warning  'ActivitiesButtonComponent' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   22:19   warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   30:18   warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   61:7    warning  'componentRef' is assigned a value but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+  176:48   warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  215:146  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-header/topic-header.component.ts
+  1:21  warning  'input' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-ideation/topic-ideation.component.spec.ts
+   13:55   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   14:86   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   15:149  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   16:149  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   55:16   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   56:16   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  122:39   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-ideation/topic-ideation.component.ts
+    3:34  warning  'takeUntilDestroyed' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+    6:30  warning  'map' is defined but never used. Allowed unused vars must match /^_/u                 @typescript-eslint/no-unused-vars
+   76:38  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+   87:56  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  184:17  warning  'idea' is defined but never used. Allowed unused args must match /^_/u                @typescript-eslint/no-unused-vars
+  188:17  warning  'idea' is defined but never used. Allowed unused args must match /^_/u                @typescript-eslint/no-unused-vars
+  192:15  warning  'idea' is defined but never used. Allowed unused args must match /^_/u                @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-info-sidebar/topic-info-sidebar.component.spec.ts
+   31:7   warning  'componentRef' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   75:46  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+   91:46  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  100:46  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  107:48  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  115:48  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  121:48  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  129:46  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  136:48  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  144:48  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  150:48  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  158:51  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  167:49  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  176:46  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  185:46  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  193:59  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  202:49  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  210:49  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  223:49  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  234:55  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  243:49  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+  251:49  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-info-sidebar/topic-info-sidebar.component.ts
+   1:21  warning  'input' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  40:23  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+  41:18  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+  51:31  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+  66:50  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.ts
+    1:62  warning  'computed' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+    6:14  warning  'switchMap' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+    6:48  warning  'forkJoin' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+    6:58  warning  'Observable' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   63:26  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+   64:28  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  104:21  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  132:24  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  155:24  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  159:29  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-member-group/topic-member-group.component.ts
+  31:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-member-invite-delete/topic-member-invite-delete.component.spec.ts
+  26:76  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-member-invite-delete/topic-member-invite-delete.component.ts
+  21:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-member-invite/topic-member-invite.component.ts
+  29:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  30:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-member-user/topic-member-user.component.spec.ts
+  186:83  warning  Unexpected empty arrow function  @typescript-eslint/no-empty-function
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-member-user/topic-member-user.component.ts
+  32:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-milestones/topic-milestones.component.ts
+   46:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  138:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-notification-settings/topic-notification-settings.component.spec.ts
+  83:111  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  92:112  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  99:111  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-notification-settings/topic-notification-settings.component.ts
+   3:27  warning  'TranslateService' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   4:10  warning  'map' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+  66:26  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-onboarding/topic-onboarding.component.spec.ts
+  9:41  warning  Unexpected empty method 'dispose'  @typescript-eslint/no-empty-function
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-participants-section/topic-participants-section.component.ts
+  20:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-participants/topic-participants.component.spec.ts
+  19:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-participants/topic-participants.component.ts
+   82:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   83:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   94:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   95:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  106:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  106:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-report-form/topic-report-form.component.spec.ts
+  20:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-report-reason/topic-report-reason.component.spec.ts
+  26:56  warning  Unexpected empty method 'close'  @typescript-eslint/no-empty-function
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts
+  11:10  warning  'ButtonComponent' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  12:10  warning  'ToggleComponent' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  13:10  warning  'DropdownComponent' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  14:10  warning  'IconComponent' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+  15:10  warning  'TooltipComponent' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+  23:18  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  24:19  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  32:18  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  40:19  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  41:20  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  42:21  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  43:24  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  48:21  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  56:17  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.ts
+   52:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   54:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   75:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  141:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  160:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  230:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-share/topic-share.component.spec.ts
+  23:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:8   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-share/topic-share.component.ts
+   1:46  warning  'input' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  67:17  warning  Unexpected empty constructor                                             @typescript-eslint/no-empty-function
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.spec.ts
+  29:7  warning  'componentRef' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts
+   1:21  warning  'input' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+   1:44  warning  'computed' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  10:10  warning  'toSignal' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  26:20  warning  Unexpected any. Specify a different type                                    @typescript-eslint/no-explicit-any
+  27:16  warning  Unexpected any. Specify a different type                                    @typescript-eslint/no-explicit-any
+  62:33  warning  Unexpected any. Specify a different type                                    @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.spec.ts
+   35:43  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+   66:12  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+   67:12  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  100:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  101:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  108:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  118:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  126:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  134:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  146:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  169:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  176:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  187:11  warning  'locationSpy' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  190:10  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  197:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts
+   34:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   58:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   84:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   97:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  104:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  112:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  113:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  120:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  132:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  144:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  247:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-deadline/topic-vote-deadline.component.ts
+  20:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.ts
+  23:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  46:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-reminder-dialog/topic-vote-reminder-dialog.component.spec.ts
+   3:10  warning  'TranslateModule' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  16:24  warning  Unexpected any. Specify a different type                                           @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-reminder-dialog/topic-vote-reminder-dialog.component.ts
+  17:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.spec.ts
+   4:10  warning  'TranslateModule' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  24:20  warning  Unexpected any. Specify a different type                                           @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.ts
+   14:23  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+   24:26  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+   24:40  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+   53:67  warning  'err' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+   68:52  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+   75:89  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+   93:14  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+  105:23  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+  106:17  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-sign-smartid/topic-vote-sign-smartid.component.spec.ts
+  4:10  warning  'TranslateModule' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-sign-smartid/topic-vote-sign-smartid.component.ts
+  23:26  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+  23:40  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+  48:67  warning  'err' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  64:23  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+  65:17  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-sign/topic-vote-sign.component.spec.ts
+  4:10  warning  'TranslateModule' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-vote-sign/topic-vote-sign.component.ts
+  19:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/topic-view.component.spec.ts
+    2:16  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+    3:13  warning  Unexpected empty method 'observe'                                                            @typescript-eslint/no-empty-function
+    4:15  warning  Unexpected empty method 'unobserve'                                                          @typescript-eslint/no-empty-function
+    5:16  warning  Unexpected empty method 'disconnect'                                                         @typescript-eslint/no-empty-function
+   21:10  warning  'TopicHeaderComponent' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+   22:10  warning  'TopicContentComponent' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+   23:10  warning  'TopicInfoSidebarComponent' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   24:10  warning  'TopicStateItemsComponent' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+   25:10  warning  'TopicIdeationComponent' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+   26:10  warning  'TopicDiscussionComponent' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+   27:10  warning  'TopicVoteCastComponent' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+   28:10  warning  'TopicMilestonesComponent' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+   29:10  warning  'ActivitiesButtonComponent' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   30:10  warning  'IconComponent' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   35:18  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   36:19  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   41:19  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   42:24  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   43:20  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   44:25  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   45:42  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   46:22  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   47:28  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   48:23  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   49:26  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   50:27  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   51:28  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   52:24  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   53:31  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   54:26  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   55:24  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   56:25  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   57:23  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   58:24  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   59:25  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   64:19  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   65:23  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   66:25  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   71:19  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   72:20  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   73:25  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   74:21  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   75:42  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   76:25  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   77:28  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   78:23  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   79:26  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   80:27  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   81:28  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   82:23  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   83:24  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   84:26  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   85:31  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   90:19  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   91:22  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   92:18  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   93:24  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   94:25  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   95:24  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   96:28  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   97:22  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   98:27  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  108:19  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  109:25  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  114:19  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  115:22  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  116:25  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  121:19  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  122:18  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  123:25  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  128:19  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  129:28  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  282:38  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  287:40  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  292:39  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/topic-view.component.ts
+    1:97  warning  'computed' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+    5:10  warning  'takeUntilDestroyed' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   98:23  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  138:46  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  156:27  warning  'queryParams' is defined but never used. Allowed unused args must match /^_/u         @typescript-eslint/no-unused-vars
+  166:25  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  204:50  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  235:21  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  239:22  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  248:30  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  259:30  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  282:44  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  303:50  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  351:46  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  419:34  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/vote-create/components/step-vote-settings/step-vote-settings.component.spec.ts
+  21:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/vote-create/components/step-vote-settings/step-vote-settings.component.ts
+   32:9   error  A label component must be associated with a form element  @angular-eslint/template/label-has-associated-control
+  117:17  error  A label component must be associated with a form element  @angular-eslint/template/label-has-associated-control
+  125:17  error  A label component must be associated with a form element  @angular-eslint/template/label-has-associated-control
+  139:9   error  A label component must be associated with a form element  @angular-eslint/template/label-has-associated-control
+  177:9   error  A label component must be associated with a form element  @angular-eslint/template/label-has-associated-control
+  198:9   error  A label component must be associated with a form element  @angular-eslint/template/label-has-associated-control
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/vote-create/vote-create-dialog.component.spec.ts
+  3:25  warning  'Router' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/activity-item/activity-item.component.ts
+  27:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  55:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/button/button.component.ts
+  1:21  warning  'input' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/confirm-dialog/confirm-dialog.component.spec.ts
+  12:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/confirm-dialog/confirm-dialog.component.ts
+    6:32  warning  'DialogRef' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   53:15  error    <h4> should have content                                                     @angular-eslint/template/elements-content
+  103:15  error    <button> should have content                                                 @angular-eslint/template/elements-content
+  106:15  error    <a> should have content                                                      @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/create-menu/create-menu.component.spec.ts
+  11:16  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  12:13  warning  Unexpected empty method 'observe'                                                       @typescript-eslint/no-empty-function
+  13:15  warning  Unexpected empty method 'unobserve'                                                     @typescript-eslint/no-empty-function
+  14:16  warning  Unexpected empty method 'disconnect'                                                    @typescript-eslint/no-empty-function
+  20:7   warning  'translateServiceMock' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  20:29  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/create-wizard-shell/create-wizard-shell.component.spec.ts
+   8:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/dropdown/dropdown.component.spec.ts
+  1:10  warning  'vi' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/dropdown/dropdown.component.ts
+  10:10  error  The div with role="combobox" does not have required ARIA properties: aria-controls      @angular-eslint/template/role-has-required-aria
+  33:9   error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  33:9   error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/group-card/group-card.component.ts
+  97:5  error  Parsing error: Unexpected closing tag "a". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/icon/icon.component.spec.ts
+   4:10  warning  'vi' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  54:37  warning  Unexpected any. Specify a different type                              @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/icon/icon.registry.spec.ts
+  25:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/image-upload/image-upload.component.spec.ts
+  10:7  warning  'notificationService' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/initials/initials.component.spec.ts
+  9:7  warning  'ref' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/initials/initials.component.ts
+  1:21  warning  'input' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/input/input.component.spec.ts
+   1:10  warning  'vi' is defined but never used. Allowed unused vars must match /^_/u                      @typescript-eslint/no-unused-vars
+  14:7   warning  'ref' is assigned a value but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  40:11  warning  'input' is assigned a value but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+  46:11  warning  'injectedInput' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/input/input.component.ts
+  1:54  warning  'input' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/list-filter-toolbar/list-filter-toolbar.component.spec.ts
+  23:7  warning  'componentRef' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/list-filter-toolbar/list-filter-toolbar.component.ts
+  210:18  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+   38:21  error    click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+   38:21  error    Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+   68:25  error    click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+   68:25  error    Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/member-editors-panel/member-editors-panel.component.spec.ts
+  12:7  warning  'ref' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/member-editors-panel/member-editors-panel.component.ts
+  189:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  190:19  warning  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+   38:13  error    click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+   38:13  error    Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+   38:13  error    <a> should have content                                                                 @angular-eslint/template/elements-content
+   51:21  error    <img/> element must have a text alternative                                             @angular-eslint/template/alt-text
+   75:21  error    <img/> element must have a text alternative                                             @angular-eslint/template/alt-text
+   92:9   error    <button> should have content                                                            @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/notification/notification.component.spec.ts
+  10:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/notification/notification.component.ts
+  4:36  warning  'Notification' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/page-list-header/page-list-header.component.spec.ts
+   3:28  warning  'output' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+   4:10  warning  'IconComponent' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  13:18  warning  Unexpected any. Specify a different type                                         @typescript-eslint/no-explicit-any
+  19:21  warning  Unexpected any. Specify a different type                                         @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/pagination/pagination.component.spec.ts
+  11:18  warning  Unexpected any. Specify a different type                                        @typescript-eslint/no-explicit-any
+  17:7   warning  'ref' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/pagination/pagination.component.ts
+  1:21  warning  'input' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/tabs/tabs.component.spec.ts
+   8:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/topic-attachments/topic-attachments.component.html
+  2:3  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  2:3  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/topic-attachments/topic-attachments.component.spec.ts
+  49:11  warning  'mockFile' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/topic-attachments/topic-attachments.component.ts
+   9:10  warning  'catchError' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   9:22  warning  'of' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+   9:26  warning  'takeWhile' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+  31:24  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  59:24  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  71:24  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  82:24  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/topic-card/topic-card.component.ts
+  440:39  warning  'fragment' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/topic-preview/topic-preview.component.spec.ts
+   1:10  warning  'vi' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  12:7   warning  'ref' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  77:51  warning  Unexpected any. Specify a different type                                        @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts
+   14:7   warning  'ref' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  123:52  warning  Unexpected any. Specify a different type                                        @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/topic-settings-panel/topic-settings-panel.component.ts
+   1:21  warning  'input' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  19:18  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/tour/tour.component.spec.ts
+  15:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/components/tour/tour.component.ts
+    1:41  warning  'signal' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  187:24  warning  Unexpected any. Specify a different type                                  @typescript-eslint/no-explicit-any
+   33:17  error    <button> should have content                                              @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/dialog/dialog-ref.ts
+  22:24  warning  'T' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/directives/components/markdown-link-dialog/markdown-link-dialog.component.html
+   6:9  error  <h4> should have content      @angular-eslint/template/elements-content
+  63:7  error  <a> should have content       @angular-eslint/template/elements-content
+  64:7  error  <button> should have content  @angular-eslint/template/elements-content
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/directives/dragndrop.directive.spec.ts
+  52:29  warning  Unexpected empty method 'preventDefault'   @typescript-eslint/no-empty-function
+  53:30  warning  Unexpected empty method 'stopPropagation'  @typescript-eslint/no-empty-function
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/directives/etherpad.directive.ts
+  15:33  warning  Unexpected any. Specify a different type                                                                                 @typescript-eslint/no-explicit-any
+  33:34  warning  Unexpected any. Specify a different type                                                                                 @typescript-eslint/no-explicit-any
+  37:26  error    The `Function` type accepts any function-like value.
+Prefer explicitly defining any function parameters and return type  @typescript-eslint/no-unsafe-function-type
+  38:16  warning  Unexpected any. Specify a different type                                                                                 @typescript-eslint/no-explicit-any
+  39:22  warning  Unexpected any. Specify a different type                                                                                 @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/directives/markdown.directive.ts
+   26:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   32:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   41:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   48:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   60:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  112:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  113:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  127:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  127:66  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  193:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  216:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/directives/tour-item.directive.ts
+  43:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/pipes/any.pipe.ts
+  8:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ilmar/citizenos/citizenos-fe-next/src/app/shared/testing/mocks.ts
+  1:28  warning  'Output' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  1:36  warning  'EventEmitter' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/ilmar/citizenos/citizenos-fe-next/src/test-setup.ts
+  29:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  30:13  warning  Unexpected empty method 'observe'         @typescript-eslint/no-empty-function
+  31:15  warning  Unexpected empty method 'unobserve'       @typescript-eslint/no-empty-function
+  32:16  warning  Unexpected empty method 'disconnect'      @typescript-eslint/no-empty-function
+
+✖ 1243 problems (115 errors, 1128 warnings)
+

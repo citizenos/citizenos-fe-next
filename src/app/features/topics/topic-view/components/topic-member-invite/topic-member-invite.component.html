@@ -1,7 +1,7 @@
 <div class="row_cell">
   <div class="profile_image_wrap">
     @if (invite().user.imageUrl) {
-      <img class="profile_image" [src]="invite().user.imageUrl">
+      <img class="profile_image" [src]="invite().user.imageUrl" alt="">
     }
     @if (!invite().user.imageUrl) {
       <div class="profile_image_filler">
@@ -21,16 +21,15 @@
         @if (invite().user.email) {
           <span> • </span>
         }
-        <span translate="COMPONENTS.TOPIC_MEMBER_INVITE.INVITE_PENDING"></span>
+        <span>{{ 'COMPONENTS.TOPIC_MEMBER_INVITE.INVITE_PENDING' | translate }}</span>
       </span>
     </div>
     <div class="via">
       @if (invite().expiresAt) {
-        <span translate="COMPONENTS.TOPIC_MEMBER_INVITE.INIVTE_EXPIRES"
-          [translateParams]="{expiresAt: (invite().expiresAt | date:'shortDate')}"></span>
+        <span>{{ 'COMPONENTS.TOPIC_MEMBER_INVITE.INIVTE_EXPIRES' | translate:{expiresAt: (invite().expiresAt | date:'shortDate')} }}</span>
       }
       @if (invite().expiresAt && isExpired(invite().expiresAt)) {
-        <span class="red_text" translate="COMPONENTS.TOPIC_MEMBER_INVITE.INVITE_EXPIRED"></span>
+        <span class="red_text">{{ 'COMPONENTS.TOPIC_MEMBER_INVITE.INVITE_EXPIRED' | translate }}</span>
       }
     </div>
   </div>
@@ -45,13 +44,15 @@
     </div>
   </div>
   <div class="dropdown button_dropdown" cosDropdown>
-    <button>
+    <button type="button" [aria-label]="'CONTROL.MORE' | translate">
       <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M9.81738 4.00033C9.81738 3.26699 9.21738 2.66699 8.48405 2.66699C7.75072 2.66699 7.15072 3.26699 7.15072 4.00033C7.15072 4.73366 7.75072 5.33366 8.48405 5.33366C9.21738 5.33366 9.81738 4.73366 9.81738 4.00033ZM9.81738 12.0003C9.81738 11.267 9.21738 10.667 8.48405 10.667C7.75072 10.667 7.15072 11.267 7.15072 12.0003C7.15072 12.7337 7.75072 13.3337 8.48405 13.3337C9.21738 13.3337 9.81738 12.7337 9.81738 12.0003ZM8.48405 6.66699C9.21738 6.66699 9.81738 7.26699 9.81738 8.00033C9.81738 8.73366 9.21738 9.33366 8.48405 9.33366C7.75072 9.33366 7.15072 8.73366 7.15072 8.00033C7.15072 7.26699 7.75072 6.66699 8.48405 6.66699Z" fill="#2C3B47" />
       </svg>
     </button>
     <div class="options">
-      <div class="option" (click)="doDeleteInviteUser()" translate="COMPONENTS.TOPIC_MEMBER_INVITE.OPT_REMOVE_USER"></div>
+      <div class="option" (click)="doDeleteInviteUser()" (keydown.enter)="doDeleteInviteUser()" role="button" tabindex="0">
+        {{ 'COMPONENTS.TOPIC_MEMBER_INVITE.OPT_REMOVE_USER' | translate }}
+      </div>
     </div>
   </div>
 </div>

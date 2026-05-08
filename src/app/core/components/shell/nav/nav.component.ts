@@ -55,7 +55,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
 
     <!-- Overlay for tablet/mobile -->
     @if (showNav()) {
-      <div class="nav_overlay" (click)="toggleNav()"></div>
+      <div class="nav_overlay" (click)="toggleNav()" (keydown.enter)="toggleNav()" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.NAV_TOGGLE' | translate"></div>
     }
 
     <!-- Mobile/Tablet Bottom Nav -->
@@ -68,17 +68,17 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
             <cos-icon name="topic"></cos-icon>
           </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_MY_GROUPS' | translate">
             <cos-icon name="groups"></cos-icon>
           </a>
-          <a id="tablet_create" class="btn_nav_create icon" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true">
+          <button type="button" id="tablet_create" class="btn_nav_create icon" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true" [attr.aria-label]="'DEFAULT.NAV.BTN_CREATE' | translate">
             @if (!showCreateMenu()) {
               <cos-icon name="nav-create" [size]="40"></cos-icon>
             } @else {
               <cos-icon name="nav-create-active" [size]="40"></cos-icon>
             }
-          </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
+          </button>
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_PUBLIC_TOPICS' | translate">
             <cos-icon name="public-topic"></cos-icon>
           </a>
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
@@ -89,25 +89,25 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
             <cos-icon name="home"></cos-icon>
           </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_MY_TOPICS' | translate">
             <cos-icon name="topic"></cos-icon>
           </a>
-          <a id="mobile_create" class="btn_nav_create icon" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true">
+          <button type="button" id="mobile_create" class="btn_nav_create icon" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true" [attr.aria-label]="'DEFAULT.NAV.BTN_CREATE' | translate">
             @if (!showCreateMenu()) {
               <cos-icon name="nav-create" [size]="40"></cos-icon>
             } @else {
               <cos-icon name="nav-create-active" [size]="40"></cos-icon>
             }
-          </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
+          </button>
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_MY_GROUPS' | translate">
             <cos-icon name="groups"></cos-icon>
           </a>
         </div>
       </div>
     } @else {
       <div id="mobile_login">
-        <button class="btn_big_submit" [routerLink]="['/', translate.currentLang, 'account', 'login']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
-        <button class="btn_big_submit_ghost" [routerLink]="['/', translate.currentLang, 'account', 'signup']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
+        <button type="button" class="btn_big_submit" [routerLink]="['/', translate.currentLang, 'account', 'login']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
+        <button type="button" class="btn_big_submit_ghost" [routerLink]="['/', translate.currentLang, 'account', 'signup']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
       </div>
     }
 
@@ -126,7 +126,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
           <!-- Create menu -->
           @if (userStore.isAuthenticated()) {
             <div class="nav_create_wrap">
-              <button class="nav_create_btn" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true"
+              <button type="button" class="nav_create_btn" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true"
                 [cosTourItem]="{tourid: 'dashboard', index: 1, position: 'right'}">
                 <cos-icon name="plus" [size]="16"></cos-icon>
                 <span>{{ 'DEFAULT.NAV.BTN_CREATE' | translate }}</span>
@@ -151,7 +151,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
               <div class="profile_text">
                 <div class="user_name">{{ userStore.user()?.name }}</div>
                 <div class="profile_dropdown" [class.open]="showProfileDropdown()">
-                  <button class="profile_dropdown_trigger" (click)="toggleProfileDropdown()" [attr.aria-expanded]="showProfileDropdown()" aria-haspopup="true">
+                  <button type="button" class="profile_dropdown_trigger" (click)="toggleProfileDropdown()" [attr.aria-expanded]="showProfileDropdown()" aria-haspopup="true">
                     <span>{{ 'DEFAULT.NAV.LNK_MY_ACCOUNT' | translate }}</span>
                     <cos-icon name="chevron-down" [size]="16"></cos-icon>
                   </button>
@@ -177,7 +177,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
                         <span>{{ 'DEFAULT.NAV.OPT_NOTIFICATION_SETTINGS' | translate }}</span>
                       </a>
                       <div class="separator"></div>
-                      <button class="dropdown_option logout" (click)="logout()">
+                      <button type="button" class="dropdown_option logout" (click)="logout()">
                         <cos-icon name="logout" [size]="16"></cos-icon>
                         <span>{{ 'DEFAULT.NAV.LNK_LOG_OUT' | translate }}</span>
                       </button>
@@ -214,8 +214,8 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
 
           @if (!userStore.isAuthenticated()) {
             <div class="big_button_wrap">
-              <button class="btn_big_submit" [routerLink]="['/', translate.currentLang, 'account', 'login']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
-              <button class="btn_big_submit_ghost" [routerLink]="['/', translate.currentLang, 'account', 'signup']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
+              <button type="button" class="btn_big_submit" [routerLink]="['/', translate.currentLang, 'account', 'login']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
+              <button type="button" class="btn_big_submit_ghost" [routerLink]="['/', translate.currentLang, 'account', 'signup']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
             </div>
           }
           <!-- Public nav links -->
@@ -239,13 +239,13 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
 
           <!-- Legacy #nav_items_constant equivalents -->
           <div class="nav_items_wrap">
-            <button class="nav_item" (click)="openLanguageSelect()">
+            <button type="button" class="nav_item" (click)="openLanguageSelect()" [attr.aria-label]="'MODALS.LANGUAGES_MODAL_HEADING' | translate">
               <div class="icon_wrap">
                  <cos-icon name="globe" [size]="16"></cos-icon>
               </div>
               <span>{{ currentLanguageLabel }}</span>
             </button>
-            <button class="nav_item" (click)="uiState.showHelp.set(true); closeNav()">
+            <button type="button" class="nav_item" (click)="uiState.showHelp.set(true); closeNav()">
               <div class="icon_wrap">
                 <cos-icon name="help" [size]="16"></cos-icon>
                 @if (helpExtraInfo()) {
@@ -266,13 +266,13 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
               </div>
               <span>{{ 'DEFAULT.NAV.LNK_FAQ' | translate }}</span>
             </a>
-            <button class="nav_item" (click)="uiState.showFeedback.set(true); closeNav()">
+            <button type="button" class="nav_item" (click)="uiState.showFeedback.set(true); closeNav()">
               <div class="icon_wrap">
                 <cos-icon name="nav-feedback" [size]="16"></cos-icon>
               </div>
               <span>{{ 'DEFAULT.NAV.LNK_FEEDBACK' | translate }}</span>
             </button>
-            <button class="nav_item" (click)="uiState.showAccessibility.set(true); closeNav()">
+            <button type="button" class="nav_item" (click)="uiState.showAccessibility.set(true); closeNav()">
               <div class="icon_wrap">
                 <cos-icon name="accessibility" [size]="16"></cos-icon>
               </div>

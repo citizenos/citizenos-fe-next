@@ -46,23 +46,23 @@ export interface IdeaReportData {
                 />
               </svg>
             </div>
-            <h4 class="title" [translate]="'COMPONENTS.IDEA_REPORT.HEADING'"></h4>
+            <h4 class="title">{{ 'COMPONENTS.IDEA_REPORT.HEADING' | translate }}</h4>
           </div>
           <div class="dialog_close">
-            <a class="btn_dialog_close icon" dialogClose>
+            <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
               <cos-icon name="nav-close"></cos-icon>
-            </a>
+            </button>
           </div>
         </div>
         <div class="dialog_content">
           <div class="dialog_info_wrap">
             <div class="dialog_info row">
               <div class="delete_info_button_wrap">
-                <div class="delete_info_text" [translate]="'COMPONENTS.IDEA_REPORT.MESSAGE_MAIN'"></div>
+                <div class="delete_info_text">{{ 'COMPONENTS.IDEA_REPORT.MESSAGE_MAIN' | translate }}</div>
               </div>
               <div class="profile_image_wrap">
                 @if (data.idea.author?.imageUrl) {
-                  <img class="profile_image" [src]="data.idea.author?.imageUrl" />
+                  <img class="profile_image" [src]="data.idea.author?.imageUrl" alt="" />
                 } @else {
                   <div class="profile_image_filler">
                     <cos-initials [name]="data.idea.author?.name || ''"></cos-initials>
@@ -76,10 +76,12 @@ export interface IdeaReportData {
           <form [formGroup]="report">
             <cos-input [placeholder]="'COMPONENTS.IDEA_REPORT.LABLE_REASON' | translate">
               <cos-dropdown selection>
-                <div selection class="selected_item" [translate]="'TXT_REPORT_TYPES_' + report.get('type')?.value?.toUpperCase()"></div>
+                <div selection class="selected_item">{{ 'TXT_REPORT_TYPES_' + report.get('type')?.value?.toUpperCase() | translate }}</div>
                 <div options>
                   @for (type of reportTypes; track type) {
-                    <div class="option" (click)="selectReportType(type)" [translate]="'TXT_REPORT_TYPES_' + type.toUpperCase()"></div>
+                    <div class="option" (click)="selectReportType(type)" (keydown.enter)="selectReportType(type)" role="button" tabindex="0">
+                      {{ 'TXT_REPORT_TYPES_' + type.toUpperCase() | translate }}
+                    </div>
                   }
                 </div>
               </cos-dropdown>
@@ -96,8 +98,10 @@ export interface IdeaReportData {
         </div>
         <div class="dialog_content no_footer">
           <div class="button_wrap">
-            <button class="btn_big_submit" [class.disabled]="report.invalid" [translate]="'COMPONENTS.IDEA_REPORT.BTN_SUBMIT'" (click)="doReport()"></button>
-            <a dialogClose [translate]="'COMPONENTS.IDEA_REPORT.BTN_CANCEL'"></a>
+            <button type="button" class="btn_big_submit" [class.disabled]="report.invalid" (click)="doReport()">
+              {{ 'COMPONENTS.IDEA_REPORT.BTN_SUBMIT' | translate }}
+            </button>
+            <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.IDEA_REPORT.BTN_CANCEL' | translate }}</button>
           </div>
         </div>
         <div class="dialog_footer"></div>

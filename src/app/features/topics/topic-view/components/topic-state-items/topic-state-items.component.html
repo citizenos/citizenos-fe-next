@@ -1,21 +1,21 @@
 <div class="state_items_wrap">
   <!-- IDEATION STATE -->
   @if (topic().ideationId) {
-    <div class="state_item ideation" (click)="navigateTab.emit('ideation')">
+    <div class="state_item ideation" (click)="navigateTab.emit('ideation')" (keydown.enter)="navigateTab.emit('ideation')" tabindex="0" role="button">
       @if (ideation()) {
         <div class="item_header">
           <div class="item_title_with_description">
-            <span translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_HEADING"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_HEADING' | translate }}</span>
           </div>
           
           @if (ideation().deadline && !topicIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
-            <div class="item_title" [translateParams]="{ count: ideation().ideas?.count || 0 }" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_IDEAS"></div>
+            <div class="item_title">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_IDEAS' | translate:{ count: ideation().ideas?.count || 0 } }}</div>
           }
           @if (!ideation().deadline && !topicIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
-            <div class="item_title" [translateParams]="{ count: ideation().ideas?.count || 0 }" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_STATUS_ACTIVE"></div>
+            <div class="item_title">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_STATUS_ACTIVE' | translate:{ count: ideation().ideas?.count || 0 } }}</div>
           }
           @if (topicIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
-            <div translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_STATUS_ENDED"></div>
+            <div>{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_STATUS_ENDED' | translate }}</div>
           }
         </div>
         
@@ -23,7 +23,7 @@
           <div class="graph_wrap">
             @if (!ideation().deadline || topicIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
               <div class="legend">
-                <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_IDEAS_COLLECTED"></div>
+                <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_IDEAS_COLLECTED' | translate }}</div>
                 <div>
                   <span class="bold">{{ ideation().ideas?.count || 0 }}</span>
                 </div>
@@ -33,7 +33,7 @@
               <div class="legend wide">
                 <div class="legend_row">
                   <div class="legend_item">
-                    <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_DAYS_LEFT"></div>
+                    <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_DAYS_LEFT' | translate }}</div>
                     <div>{{ getDaysUntil(ideation().deadline) }}</div>
                   </div>
                 </div>
@@ -57,7 +57,9 @@
   @if (topic().discussionId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress].includes(topic().status)) {
     <div class="state_item discussion" 
       [ngClass]="{ empty: topic().status === STATUSES.ideation && !argumentCount.value.total }"
-      (click)="topic().status === STATUSES.ideation && canUpdate(topic()) ? startDiscussion.emit(topic()) : navigateTab.emit('discussion')">
+      (click)="topic().status === STATUSES.ideation && canUpdate(topic()) ? startDiscussion.emit(topic()) : navigateTab.emit('discussion')"
+      (keydown.enter)="topic().status === STATUSES.ideation && canUpdate(topic()) ? startDiscussion.emit(topic()) : navigateTab.emit('discussion')"
+      tabindex="0" role="button">
       
       @if (topic().status === STATUSES.ideation && !argumentCount.value.total) {
         <div class="icon_wrap">
@@ -65,18 +67,18 @@
         </div>
         <div class="state_item_text">
           @if (topic().permission.level === topicService.LEVELS.admin) {
-            <div class="item_heading" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_DISCUSSION"></div>
-            <div class="item_description" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_DISCUSSION_DESC"></div>
+            <div class="item_heading">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_DISCUSSION' | translate }}</div>
+            <div class="item_description">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_DISCUSSION_DESC' | translate }}</div>
           } @else {
-            <div class="item_heading" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_NO_DISCUSSION"></div>
+            <div class="item_heading">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_NO_DISCUSSION' | translate }}</div>
           }
         </div>
       }
 
       @if (topic().status !== STATUSES.ideation || argumentCount.value.total) {
         <div class="item_header">
-          <div class="item_title" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_DISCUSSION_HEADING"></div>
-          <div class="item_title" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_DISCUSSION_CONTRIBUTION" [translateParams]="{ count: argumentCount.value.total }"></div>
+          <div class="item_title">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_DISCUSSION_HEADING' | translate }}</div>
+          <div class="item_title">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_DISCUSSION_CONTRIBUTION' | translate:{ count: argumentCount.value.total } }}</div>
         </div>
         <div class="item_content">
           <div class="graph_wrap">
@@ -84,24 +86,24 @@
               <div class="legend_row">
                 <div class="legend_item pro">
                   <div class="dot"></div>
-                  <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_PRO"></div>
+                  <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_PRO' | translate }}</div>
                   <span>{{ argumentCount.value.pro }}</span>
                 </div>
                 <div class="legend_item">
                   <div class="dot"></div>
-                  <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_INFO"></div>
+                  <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_INFO' | translate }}</div>
                   <span>{{ argumentCount.value.poi }}</span>
                 </div>
               </div>
               <div class="legend_row">
                 <div class="legend_item con">
                   <div class="dot"></div>
-                  <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_CON"></div>
+                  <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_CON' | translate }}</div>
                   <span>{{ argumentCount.value.con }}</span>
                 </div>
                 <div class="legend_item reply">
                   <div class="dot"></div>
-                  <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_REPLIES"></div>
+                  <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_REPLIES' | translate }}</div>
                   <span>{{ argumentCount.value.reply }}</span>
                 </div>
               </div>
@@ -118,7 +120,10 @@
 
   <!-- VOTING STATE -->
   @if (topic().voteId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress, STATUSES.voting].includes(topic().status)) {
-    <div class="state_item vote" [ngClass]="{ empty: !topic().voteId }" (click)="!topic().voteId && canUpdate(topic()) ? startVote.emit(topic()) : navigateTab.emit('voting')">
+    <div class="state_item vote" [ngClass]="{ empty: !topic().voteId }" 
+      (click)="!topic().voteId && canUpdate(topic()) ? startVote.emit(topic()) : navigateTab.emit('voting')"
+      (keydown.enter)="!topic().voteId && canUpdate(topic()) ? startVote.emit(topic()) : navigateTab.emit('voting')"
+      tabindex="0" role="button">
       @if (!topic().voteId) {
         <div class="icon_wrap">
            <!-- Hand icon indicating vote -->
@@ -126,24 +131,24 @@
         </div>
         <div class="state_item_text">
           @if (topic().permission.level === topicService.LEVELS.admin) {
-            <div class="item_heading" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_VOTING"></div>
-            <div class="item_description" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_VOTING_DESC"></div>
+            <div class="item_heading">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_VOTING' | translate }}</div>
+            <div class="item_description">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_VOTING_DESC' | translate }}</div>
           } @else {
-            <div class="item_heading" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_NO_VOTING"></div>
+            <div class="item_heading">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_NO_VOTING' | translate }}</div>
           }
         </div>
       }
       @if (vote()) {
         <div class="item_header">
           <div class="item_title_with_description">
-            <span translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_HEADING"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_HEADING' | translate }}</span>
           </div>
-          <div class="item_title" [translate]="!topicVoteService.hasVoteEndedExpired(topic(), vote()) ? 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_STATUS_ACTIVE' : 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_STATUS_ENDED'"></div>
+          <div class="item_title">{{ (!topicVoteService.hasVoteEndedExpired(topic(), vote()) ? 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_STATUS_ACTIVE' : 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_STATUS_ENDED') | translate }}</div>
         </div>
         <div class="item_content">
           <div class="graph_wrap">
             <div class="legend">
-              <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_VOTES_COLLECTED"></div>
+              <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_VOTES_COLLECTED' | translate }}</div>
               <div><span class="bold">{{ vote().votersCount || 0 }}</span></div>
             </div>
             <!-- In legacy this was commented out, potentially add a bar here -->
@@ -154,25 +159,28 @@
   }
 
   <!-- FOLLOW UP STATE -->
-  <div class="state_item follow-up" [ngClass]="{ empty: topic().status !== STATUSES.followUp }" (click)="topic().status !== STATUSES.followUp && canUpdate(topic()) ? sendToFollowUp.emit(topic()) : navigateTab.emit('followUp')">
+  <div class="state_item follow-up" [ngClass]="{ empty: topic().status !== STATUSES.followUp }" 
+    (click)="topic().status !== STATUSES.followUp && canUpdate(topic()) ? sendToFollowUp.emit(topic()) : navigateTab.emit('followUp')"
+    (keydown.enter)="topic().status !== STATUSES.followUp && canUpdate(topic()) ? sendToFollowUp.emit(topic()) : navigateTab.emit('followUp')"
+    tabindex="0" role="button">
     @if (topic().status !== STATUSES.followUp) {
       <div class="icon_wrap">
         <cos-domain-icon type="follow-up" [size]="32"></cos-domain-icon>
       </div>
       <div class="state_item_text">
         @if (topic().permission.level !== topicService.LEVELS.admin) {
-          <div class="item_heading" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_NO_FOLLOW_UP"></div>
+          <div class="item_heading">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_NO_FOLLOW_UP' | translate }}</div>
         } @else {
-          <div class="item_heading" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_FOLLOW_UP"></div>
-          <div class="item_description" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_FOLLOW_UP_DESC"></div>
+          <div class="item_heading">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_FOLLOW_UP' | translate }}</div>
+          <div class="item_description">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_ADD_FOLLOW_UP_DESC' | translate }}</div>
         }
       </div>
     } @else {
       <div class="item_header">
         <div class="item_title_with_description">
-          <span translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_FOLLOW_UP_HEADING"></span>
+          <span>{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_FOLLOW_UP_HEADING' | translate }}</span>
           <div class="description">
-            @if (topic().endsAt) { <span translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_FOLLOW_UP_DEADLINE"></span> }
+            @if (topic().endsAt) { <span>{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_FOLLOW_UP_DEADLINE' | translate }}</span> }
             {{ topic().endsAt | date: 'y-MM-dd HH:mm' }}
           </div>
         </div>
@@ -180,7 +188,7 @@
       <div class="item_content">
         <div class="graph_wrap">
           <div class="legend">
-            <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_FOLLOW_UP_MILESTONE"></div>
+            <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_FOLLOW_UP_MILESTONE' | translate }}</div>
             <div><span class="bold">{{ eventCount() }}</span></div>
           </div>
         </div>

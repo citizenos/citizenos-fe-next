@@ -15,10 +15,10 @@
   </div>
 
   <div class="tabs_row mobile_hidden">
-    <button class="tab_item" (click)="selectTab('profile')" [class.active]="activeTab() === 'profile'"
-      translate="VIEWS.ACCOUNT.TAB_PROFILE"></button>
-    <button class="tab_item" (click)="selectTab('notifications')" [class.active]="activeTab() === 'notifications'"
-      translate="VIEWS.ACCOUNT.TAB_NOTIFICATIONS"></button>
+    <button type="button" class="tab_item" (click)="selectTab('profile')" [class.active]="activeTab() === 'profile'">{{
+      'VIEWS.ACCOUNT.TAB_PROFILE' | translate }}</button>
+    <button type="button" class="tab_item" (click)="selectTab('notifications')"
+      [class.active]="activeTab() === 'notifications'">{{ 'VIEWS.ACCOUNT.TAB_NOTIFICATIONS' | translate }}</button>
   </div>
 
   <div id="tab_dropdown" class="dropdown mobile_show">
@@ -30,8 +30,10 @@
         </svg>
       </div>
       <div options>
-        <div class="option" (click)="selectTab('profile')" translate="VIEWS.ACCOUNT.TAB_PROFILE"></div>
-        <div class="option" (click)="selectTab('notifications')" translate="VIEWS.ACCOUNT.TAB_NOTIFICATIONS"></div>
+        <div class="option" (click)="selectTab('profile')" (keydown.enter)="selectTab('profile')" tabindex="0"
+          role="button">{{ 'VIEWS.ACCOUNT.TAB_PROFILE' | translate }}</div>
+        <div class="option" (click)="selectTab('notifications')" (keydown.enter)="selectTab('notifications')"
+          tabindex="0" role="button">{{ 'VIEWS.ACCOUNT.TAB_NOTIFICATIONS' | translate }}</div>
       </div>
     </cos-dropdown>
   </div>
@@ -42,7 +44,8 @@
       <div id="profile_image_area">
         <div id="profile_image_wrap">
           @if (form.imageUrl || tmpImageUrl) {
-          <a id="remove_profile_image" (click)="deleteUserImage()">
+          <button type="button" id="remove_profile_image" (click)="deleteUserImage()"
+            (keydown.enter)="deleteUserImage()" [aria-label]="'VIEWS.ACCOUNT.UPLOAD_AVATAR' | translate">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 9H11V17H9V9Z" fill="#ef4025" />
               <path d="M15 9H13V17H15V9Z" fill="#ef4025" />
@@ -50,7 +53,7 @@
                 d="M17 5V4C17 2.89543 16.1046 2 15 2H9C7.89543 2 7 2.89543 7 4V5H4C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H5V18C5 19.6569 6.34315 21 8 21H16C17.6569 21 19 19.6569 19 18V7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H17ZM15 4H9V5H15V4ZM17 7H7V18C7 18.5523 7.44772 19 8 19H16C16.5523 19 17 18.5523 17 18V7Z"
                 fill="#ef4025" />
             </svg>
-          </a>
+          </button>
           }
 
           @if (tmpImageUrl) {
@@ -64,11 +67,12 @@
           }
         </div>
         <input type="file" #imageUpload id="profile_image_input" hidden (change)="fileUpload($event)" />
-        <a (click)="triggerUploadImage()" translate="VIEWS.ACCOUNT.UPLOAD_AVATAR" class="blue_link"></a>
+        <button type="button" class="btn_link blue_link" (click)="triggerUploadImage()">{{ 'VIEWS.ACCOUNT.UPLOAD_AVATAR'
+          | translate }}</button>
       </div>
 
       <div id="profile_data_area">
-        <h4 class="small_heading" translate="VIEWS.ACCOUNT.HEADING_ACCOUNT_DETAILS"></h4>
+        <h4 class="small_heading">{{ 'VIEWS.ACCOUNT.HEADING_ACCOUNT_DETAILS' | translate }}</h4>
         <form id="profile_form" (submit)="doUpdateProfile(); $event.preventDefault()">
           <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_NAME' | translate" [hasError]="!!errors.name">
             <input id="name" name="name" [(ngModel)]="form.name" required [maxlength]="255">
@@ -150,14 +154,15 @@
           </cos-input>
           }
 
-          <a (click)="toggleResetPassword()" translate="VIEWS.ACCOUNT.RESET_PASSWORD" class="blue_link"></a>
+          <button type="button" class="btn_link blue_link" (click)="toggleResetPassword()">{{
+            'VIEWS.ACCOUNT.RESET_PASSWORD' | translate }}</button>
           <div>
             <button type="submit" class="btn_big_submit" translate="VIEWS.ACCOUNT.BTN_SAVE"
               [disabled]="store.isLoading()"></button>
           </div>
         </form>
 
-        <h4 class="small_heading" translate="VIEWS.ACCOUNT.TAB_PREFERENCES"></h4>
+        <h4 class="small_heading">{{ 'VIEWS.ACCOUNT.TAB_PREFERENCES' | translate }}</h4>
 
         <div class="prefrence_box">
           <div class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_PROFILE_LANGUAEG"></div>
@@ -170,7 +175,8 @@
             </ng-container>
             <ng-container options>
               @for (language of languages | keyvalue; track language.key) {
-              <div class="option" (click)="setProfileLanguage(language.key)">{{language.value}}</div>
+              <div class="option" (click)="setProfileLanguage(language.key)"
+                (keydown.enter)="setProfileLanguage(language.key)" tabindex="0" role="button">{{language.value}}</div>
               }
             </ng-container>
           </cos-dropdown>
@@ -201,14 +207,15 @@
                 d="M17 5V4C17 2.89543 16.1046 2 15 2H9C7.89543 2 7 2.89543 7 4V5H4C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H5V18C5 19.6569 6.34315 21 8 21H16C17.6569 21 19 19.6569 19 18V7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H17ZM15 4H9V5H15V4ZM17 7H7V18C7 18.5523 7.44772 19 8 19H16C16.5523 19 17 18.5523 17 18V7Z"
                 fill="#ef4025" />
             </svg>
-            <a (click)="doDeleteAccount()" class="bold btn_delete" translate="VIEWS.ACCOUNT.LNK_DELETE"></a>
+            <button type="button" class="btn_link bold btn_delete" (click)="doDeleteAccount()">{{
+              'VIEWS.ACCOUNT.LNK_DELETE' | translate }}</button>
           </div>
         </div>
       </div>
     </div>
     } @else if (activeTab() === 'notifications') {
     <div class="profile_area_section">
-      <h4 class="small_heading" translate="VIEWS.ACCOUNT.NOTIFICATIONS_HEADING"></h4>
+      <h4 class="small_heading">{{ 'VIEWS.ACCOUNT.NOTIFICATIONS_HEADING' | translate }}</h4>
       <div class="filter_section">
         <div class="input_area">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -230,9 +237,12 @@
               </svg>
             </div>
             <div options>
-              <div class="option" (click)="topicNotificationService.setParam('limit', 5)">5</div>
-              <div class="option" (click)="topicNotificationService.setParam('limit', 10)">10</div>
-              <div class="option" (click)="topicNotificationService.setParam('limit', 15)">15</div>
+              <div class="option" (click)="topicNotificationService.setParam('limit', 5)"
+                (keydown.enter)="topicNotificationService.setParam('limit', 5)" tabindex="0" role="button">5</div>
+              <div class="option" (click)="topicNotificationService.setParam('limit', 10)"
+                (keydown.enter)="topicNotificationService.setParam('limit', 10)" tabindex="0" role="button">10</div>
+              <div class="option" (click)="topicNotificationService.setParam('limit', 15)"
+                (keydown.enter)="topicNotificationService.setParam('limit', 15)" tabindex="0" role="button">15</div>
             </div>
           </cos-dropdown>
         </cos-input>
@@ -241,8 +251,8 @@
       <div class="content_section">
         <div class="row_header">
           <div class="row_cell">
-            <a (click)="topicNotificationService.doOrder('title')">
-              <span translate="VIEWS.ACCOUNT.TABLE_HEADER_TOPIC"></span>
+            <button type="button" class="btn_link" (click)="topicNotificationService.doOrder('title')">
+              <span>{{ 'VIEWS.ACCOUNT.TABLE_HEADER_TOPIC' | translate }}</span>
               @if ((topicNotificationService.params | async)?.orderBy === 'title') {
               @if ((topicNotificationService.params | async)?.order === 'ASC') {
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -255,7 +265,7 @@
               </svg>
               }
               }
-            </a>
+            </button>
           </div>
           <div class="row_cell" translate="VIEWS.ACCOUNT.TABLE_HEADER_NOTIFICATIONS"></div>
         </div>

@@ -4,42 +4,42 @@
       <div class="question">{{vote().description}}</div>
       @if (canUpdate() && (canEditDeadline() || !hasVoteEndedExpired())) {
         <div class="setting_button dropdown button_dropdown" cosDropdown>
-          <button class="btn_medium_close mobile_hidden">
+          <button type="button" class="btn_medium_close mobile_hidden">
             <cos-icon name="more-vertical" size="24"></cos-icon>
-            <span translate="COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS"></span>
+            <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate }}</span>
           </button>
-          <button id="mobile_actions" class="btn_medium_close icon mobile_show" [attr.aria-label]="'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate">
+          <button type="button" id="mobile_actions" class="btn_medium_close icon mobile_show" [attr.aria-label]="'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate">
             <cos-icon name="more-vertical" size="24"></cos-icon>
           </button>
           <div class="options">
             @if (canEditDeadline()) {
-              <div class="option" (click)="editDeadline()">
+              <div class="option" (click)="editDeadline()" (keydown.enter)="editDeadline()" tabindex="0" role="button">
                 <div class="icon_wrap">
                   <cos-icon name="edit" size="16"></cos-icon>
                 </div>
                 @if (!vote().endsAt) {
-                  <span translate="COMPONENTS.TOPIC_VOTE_CAST.OPT_ADD_DEADLINE"></span>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_ADD_DEADLINE' | translate }}</span>
                 } @else {
-                  <span translate="COMPONENTS.TOPIC_VOTE_CAST.OPT_EDIT_DEADLINE"></span>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_EDIT_DEADLINE' | translate }}</span>
                 }
               </div>
             }
             @if (!hasVoteEndedExpired()) {
               <div class="line_separator"></div>
-              <div class="option" (click)="closeVoting()">
+              <div class="option" (click)="closeVoting()" (keydown.enter)="closeVoting()" tabindex="0" role="button">
                 <div class="icon_wrap">
                   <cos-icon name="close" size="16"></cos-icon>
                 </div>
-                <span translate="COMPONENTS.TOPIC_VOTE_CAST.OPT_CLOSE_VOTING"></span>
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_CLOSE_VOTING' | translate }}</span>
               </div>
             }
             @if (!vote().reminderSent && (topic().members.users.count || 0) > 1 && !hasVoteEndedExpired()) {
               <div class="line_separator"></div>
-              <div class="option" (click)="sendVoteReminder()">
+              <div class="option" (click)="sendVoteReminder()" (keydown.enter)="sendVoteReminder()" tabindex="0" role="button">
                 <div class="icon_wrap">
                   <cos-icon name="bell" [size]="16"></cos-icon>
                 </div>
-                <span translate="COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER"></span>
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</span>
               </div>
             }
           </div>
@@ -49,17 +49,17 @@
     <div class="data_section">
       @if (vote().endsAt) {
         <div class="data_cell">
-          <div class="title" translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_DEADLINE"></div>
+          <div class="title">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_DEADLINE' | translate }}</div>
           <div class="data_item">
             <span class="bold">{{vote().endsAt | date:'y-MM-dd HH:mm'}}</span>
             @if (canUpdate() && !hasVoteEndedExpired() && (topic().members.users.count || 0) > 1 && !vote().reminderSent) {
-              <a (click)="sendVoteReminder()" translate="COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER"></a>
+            <button type="button" class="btn_link" (click)="sendVoteReminder()" (keydown.enter)="sendVoteReminder()">{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</button>
             }
           </div>
         </div>
       }
       <div class="data_cell">
-        <div class="title" translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES"></div>
+        <div class="title">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES' | translate }}</div>
         <div class="data_item">
           <span class="bold">{{vote().votersCount || 0}}</span>
         </div>
@@ -74,13 +74,12 @@
           <!-- Vote still on, not yet voted or editing -->
           @if (!hasVoteEndedExpired() && (!userHasVoted() || editVote())) {
             <div class="text_area">
-              <div class="heading bold" translate="COMPONENTS.TOPIC_VOTE_CAST.CAST_YOUR_VOTE"></div>
+              <div class="heading bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.CAST_YOUR_VOTE' | translate }}</div>
               @if (vote().type === 'regular' || (vote().type === 'multiple' && vote().maxChoices === 1)) {
-                <span translate="COMPONENTS.TOPIC_VOTE_CAST.PREVIEW_VOTE_TYPE_REGULAR"></span>
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.PREVIEW_VOTE_TYPE_REGULAR' | translate }}</span>
               }
               @if (vote().type === 'multiple' && vote().maxChoices > 1) {
-                <span translate="COMPONENTS.TOPIC_VOTE_CAST.TXT_YOU_CAN_CHOOSE_OPTIONS"
-                  [translateParams]="{range: (vote().maxChoices !== vote().minChoices) ? (vote().minChoices + '-' + vote().maxChoices) : vote().maxChoices}"></span>
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.TXT_YOU_CAN_CHOOSE_OPTIONS' | translate:{range: (vote().maxChoices !== vote().minChoices) ? (vote().minChoices + '-' + vote().maxChoices) : vote().maxChoices} }}</span>
               }
             </div>
           }
@@ -88,17 +87,17 @@
           <!-- Already voted, still open -->
           @if (userHasVoted() && !editVote() && !hasVoteEndedExpired()) {
             <div class="text_area">
-              <div class="heading bold" translate="COMPONENTS.TOPIC_VOTE_CAST.HEADING_VOTE_REGISTERED"></div>
-              <div translate="COMPONENTS.TOPIC_VOTE_CAST.VOTE_TXT_VOTE_REGISTERED"></div>
+              <div class="heading bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.HEADING_VOTE_REGISTERED' | translate }}</div>
+              <div>{{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_TXT_VOTE_REGISTERED' | translate }}</div>
               <div class="links_wrap">
-                <a (click)="editVote.set(true)">
+                <button type="button" class="btn_link" (click)="editVote.set(true)" (keydown.enter)="editVote.set(true)">
                   <cos-icon name="edit" size="16"></cos-icon>
-                  <span translate="COMPONENTS.TOPIC_VOTE_CAST.LNK_EDIT_VOTE"></span>
-                </a>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.LNK_EDIT_VOTE' | translate }}</span>
+                </button>
                 @if (vote().authType === VOTE_AUTH_TYPES.hard && vote().downloads?.bdocVote) {
-                  <a [href]="vote().downloads.bdocVote" download>
+                  <a [href]="vote().downloads.bdocVote" download [aria-label]="'COMPONENTS.TOPIC_VOTE_CAST.BTN_DOWNLOAD_USER_BDOC' | translate">
                     <cos-icon name="download" size="16"></cos-icon>
-                    <span translate="COMPONENTS.TOPIC_VOTE_CAST.BTN_DOWNLOAD_USER_BDOC"></span>
+                    <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.BTN_DOWNLOAD_USER_BDOC' | translate }}</span>
                   </a>
                 }
               </div>
@@ -108,10 +107,10 @@
           <!-- Vote ended -->
           @if (hasVoteEndedExpired() && (!userHasVoted() || !editVote())) {
             <div class="text_area">
-              <div class="heading bold" translate="COMPONENTS.TOPIC_VOTE_CAST.HEADING_VOTE_ENDED"></div>
+              <div class="heading bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.HEADING_VOTE_ENDED' | translate }}</div>
               @if (canUpdate()) {
                 <div class="with_tooltip">
-                  <span translate="COMPONENTS.TOPIC_VOTE_CAST.VOTE_TXT_VOTE_ENDED"></span>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_TXT_VOTE_ENDED' | translate }}</span>
                   <cos-tooltip
                     [title]="'COMPONENTS.TOPIC_VOTE_CAST.TOOLTIP_VOTE_CLOSED_TITLE' | translate"
                     [description]="'COMPONENTS.TOPIC_VOTE_CAST.TOOLTIP_VOTE_CLOSED_CONTENT' | translate">
@@ -121,26 +120,26 @@
               @if (canDelete()) {
                 <div class="links_wrap">
                   @if (vote().authType === VOTE_AUTH_TYPES.hard && vote().downloads?.bdocVote) {
-                    <a [href]="vote().downloads.bdocVote" download>
+                    <a [href]="vote().downloads.bdocVote" download [aria-label]="'COMPONENTS.TOPIC_VOTE_CAST.BTN_DOWNLOAD_USER_BDOC' | translate">
                       <cos-icon name="download" size="16"></cos-icon>
-                      <span translate="COMPONENTS.TOPIC_VOTE_CAST.BTN_DOWNLOAD_USER_BDOC"></span>
+                      <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.BTN_DOWNLOAD_USER_BDOC' | translate }}</span>
                     </a>
                   }
                   @if (vote().authType === VOTE_AUTH_TYPES.hard) {
-                    <a (click)="triggerFinalDownload('bdoc', false)">
+                    <button type="button" class="btn_link" (click)="triggerFinalDownload('bdoc', false)" (keydown.enter)="triggerFinalDownload('bdoc', false)">
                       <cos-icon name="download" size="16"></cos-icon>
-                      <span translate="COMPONENTS.TOPIC_VOTE_CAST.FINAL_OPTION_WITHOUT_CSV"></span>
-                    </a>
-                    <a (click)="triggerFinalDownload('bdoc', true)">
+                      <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.FINAL_OPTION_WITHOUT_CSV' | translate }}</span>
+                    </button>
+                    <button type="button" class="btn_link" (click)="triggerFinalDownload('bdoc', true)" (keydown.enter)="triggerFinalDownload('bdoc', true)">
                       <cos-icon name="download" size="16"></cos-icon>
-                      <span translate="COMPONENTS.TOPIC_VOTE_CAST.FINAL_OPTION_WITH_CSV"></span>
-                    </a>
+                      <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.FINAL_OPTION_WITH_CSV' | translate }}</span>
+                    </button>
                   }
                   @if (vote().authType === VOTE_AUTH_TYPES.soft) {
-                    <a (click)="triggerFinalDownload('zip'); $event.stopPropagation()">
+                    <button type="button" class="btn_link" (click)="triggerFinalDownload('zip'); $event.stopPropagation()" (keydown.enter)="triggerFinalDownload('zip'); $event.stopPropagation()">
                       <cos-icon name="download" size="16"></cos-icon>
-                      <span translate="COMPONENTS.TOPIC_VOTE_CAST.BTN_DOWNLOAD_FINAL_ZIP"></span>
-                    </a>
+                      <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.BTN_DOWNLOAD_FINAL_ZIP' | translate }}</span>
+                    </button>
                   }
                 </div>
               }
@@ -162,7 +161,7 @@
                 </svg>
               </div>
               <div class="text_area">
-                <span translate="COMPONENTS.TOPIC_VOTE_CAST.PREVIEW_VOTE_TYPE_REGULAR"></span>
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.PREVIEW_VOTE_TYPE_REGULAR' | translate }}</span>
               </div>
             }
             @if (vote().type === 'multiple' && vote().maxChoices > 1) {
@@ -180,8 +179,7 @@
                 </svg>
               </div>
               <div class="text_area">
-                <span translate="COMPONENTS.TOPIC_VOTE_CAST.TXT_YOU_CAN_CHOOSE_OPTIONS"
-                  [translateParams]="{range: (vote().maxChoices !== vote().minChoices) ? (vote().minChoices + '-' + vote().maxChoices) : vote().maxChoices}"></span>
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.TXT_YOU_CAN_CHOOSE_OPTIONS' | translate:{range: (vote().maxChoices !== vote().minChoices) ? (vote().minChoices + '-' + vote().maxChoices) : vote().maxChoices} }}</span>
               </div>
             }
           </div>
@@ -198,7 +196,7 @@
             <div class="text_area">
               <div><span translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES"></span> <span class="bold">{{vote().votersCount || 0}}</span></div>
               @if (canUpdate() && !hasVoteEndedExpired() && (topic().members.users.count || 0) > 1 && !vote().reminderSent) {
-                <a (click)="sendVoteReminder()" translate="COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER"></a>
+                <button type="button" class="btn_link" (click)="sendVoteReminder()" (keydown.enter)="sendVoteReminder()">{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</button>
               }
             </div>
           </div>
@@ -207,7 +205,7 @@
         <div class="vote_options">
           @for (option of vote().options?.rows; track option.id) {
             <div class="vote_option radio_wrap voting" [class.selected]="option.selected"
-              [attr.disabled]="!canVote() || null" (click)="selectOption(option)">
+              [attr.disabled]="!canVote() || null" (click)="selectOption(option)" (keydown.enter)="selectOption(option)" tabindex="0" role="button">
               <div class="radio_text_wrap">
                 <div class="radio_lable_wrap">
                   <label [class]="vote().maxChoices === 1 ? 'radio_box' : 'checkbox'">
@@ -220,7 +218,7 @@
               </div>
               @if (option.ideaId) {
                 <div class="view_idea_wrap">
-                  <a (click)="$event.stopPropagation(); viewIdea(option)" translate="COMPONENTS.TOPIC_VOTE_CAST.LNK_VIEW_IDEA"></a>
+                  <button type="button" class="btn_link" (click)="$event.stopPropagation(); viewIdea(option)" (keydown.enter)="$event.stopPropagation(); viewIdea(option)">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LNK_VIEW_IDEA' | translate }}</button>
                 </div>
               }
             </div>
@@ -229,16 +227,16 @@
 
         <div class="vote_buttons_wrap">
           @if (canDelegate() && vote().authType !== VOTE_AUTH_TYPES.hard) {
-            <button class="btn_medium_close" [class.active]="vote().delegation" (click)="delegate()">
+            <button type="button" class="btn_medium_close" [class.active]="vote().delegation" (click)="delegate()">
               <cos-icon name="users" [size]="24"></cos-icon>
-              <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CAST.VOTE_HEADING_DELEGATE"></span>
+              <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_HEADING_DELEGATE' | translate }}</span>
             </button>
           } @else {
             <div></div>
           }
           @if (!vote().delegation || canSubmit()) {
-            <button class="btn_medium_submit bold" [class.disabled]="!canSubmit()" (click)="doVote()"
-              translate="COMPONENTS.TOPIC_VOTE_CAST.VOTE_SUBMIT">
+            <button type="button" class="btn_medium_submit bold" [class.disabled]="!canSubmit()" (click)="doVote()">
+              {{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_SUBMIT' | translate }}
             </button>
           }
         </div>
@@ -247,7 +245,7 @@
       <!-- Already voted, still open: show chosen and unchosen options -->
       @if (userHasVoted() && !editVote() && !hasVoteEndedExpired()) {
         <div class="vote_options">
-          <div class="vote_section_heading" translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_YOUR_CHOSE_OPTIONS"></div>
+          <div class="vote_section_heading">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_YOUR_CHOSE_OPTIONS' | translate }}</div>
           @if (vote().delegation) {
             <div class="vote_delegation">
               <div class="delegation_left">
@@ -256,7 +254,7 @@
                 </div>
                 <div class="delegation_text_wrap">
                   <div class="delegation_row">
-                    <div class="bold" translate="COMPONENTS.TOPIC_VOTE_CAST.VOTE_DELEGATED_TO"></div>
+                    <div class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_DELEGATED_TO' | translate }}</div>
                     <div class="profile_image_wrap">
                       @if (vote().delegation.imageUrl) {
                         <img class="profile_image" [src]="vote().delegation.imageUrl" [alt]="vote().delegation.name">
@@ -270,11 +268,11 @@
                       <div class="bold">{{vote().delegation.name}}</div>
                     </div>
                   </div>
-                  <div translate="COMPONENTS.TOPIC_VOTE_CAST.INFO_DELEGATION_DESCRIPTION"></div>
+                  <div>{{ 'COMPONENTS.TOPIC_VOTE_CAST.INFO_DELEGATION_DESCRIPTION' | translate }}</div>
                 </div>
               </div>
-              <button class="btn_medium_close bold" (click)="doRevokeDelegation()"
-                translate="COMPONENTS.TOPIC_VOTE_CAST.VOTE_REVOKE_DELEGATION"></button>
+              <button type="button" class="btn_medium_close bold" (click)="doRevokeDelegation()">
+                {{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_REVOKE_DELEGATION' | translate }}</button>
             </div>
           }
           @for (option of vote().options?.rows; track option.id) {
@@ -298,7 +296,7 @@
         <div class="line_separator vote mobile_show"></div>
 
         <div class="vote_options">
-          <div class="vote_section_heading" translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_OPTIONS_YOU_DIDNT_CHOOSE"></div>
+          <div class="vote_section_heading">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_OPTIONS_YOU_DIDNT_CHOOSE' | translate }}</div>
           @for (option of vote().options?.rows; track option.id) {
             @if (!option.selected) {
               <div class="vote_option radio_wrap disabled">
@@ -332,12 +330,12 @@
               </svg>
             </div>
             <div class="text_area">
-              <div><span translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES"></span> <span class="bold">{{vote().votersCount || 0}}</span></div>
+              <div><span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES' | translate }}</span> <span class="bold">{{vote().votersCount || 0}}</span></div>
             </div>
           </div>
         </div>
 
-        <div class="bold" translate="VIEWS.TOPICS_TOPICID.LBL_VOTE_RESULTS"></div>
+        <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.LBL_VOTE_RESULTS' | translate }}</div>
         <app-big-graph [options]="vote().options"></app-big-graph>
       }
     </div>

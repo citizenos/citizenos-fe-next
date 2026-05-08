@@ -5,22 +5,22 @@
         <div class="icon_notification">
           <cos-icon name="info-filled" [size]="40"></cos-icon>
         </div>
-        <h3 class="title" translate="MODALS.TOPIC_REPORT_REVIEW_HEADING"></h3>
+        <h3 class="title">{{ 'MODALS.TOPIC_REPORT_REVIEW_HEADING' | translate }}</h3>
       </div>
       <div class="dialog_close">
-        <button class="btn_dialog_close icon" dialogClose>
+        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
           <cos-icon name="nav-close"></cos-icon>
         </button>
       </div>
     </div>
 
     <div class="dialog_content">
-      <div class="content_text" translate="MODALS.TOPIC_REPORT_REVIEW_DESCRIPTION"></div>
+      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_REVIEW_DESCRIPTION' | translate }}</div>
 
       <form [formGroup]="reviewForm" (ngSubmit)="doReview()">
         <div class="form_group">
-          <label translate="COMPONENTS.TOPIC_REPORT_REVIEW.LBL_REVIEW_TEXT"></label>
-          <textarea formControlName="text"
+          <label for="review_text">{{ 'COMPONENTS.TOPIC_REPORT_REVIEW.LBL_REVIEW_TEXT' | translate }}</label>
+          <textarea id="review_text" formControlName="text"
                     [placeholder]="'COMPONENTS.TOPIC_REPORT_REVIEW.PLACEHOLDER_REVIEW_TEXT' | translate"
                     maxlength="2024"></textarea>
           <div class="char_count">{{ reviewForm.get('text')?.value?.length || 0 }}/2024</div>

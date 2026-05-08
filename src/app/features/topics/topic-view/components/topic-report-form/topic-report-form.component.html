@@ -5,28 +5,28 @@
         <div class="icon_notification">
           <cos-icon name="warning-filled" [size]="40"></cos-icon>
         </div>
-        <h3 class="title" translate="MODALS.TOPIC_REPORT_HEADING"></h3>
+        <h3 class="title">{{ 'MODALS.TOPIC_REPORT_HEADING' | translate }}</h3>
       </div>
       <div class="dialog_close">
-        <button class="btn_dialog_close icon" dialogClose>
+        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
           <cos-icon name="nav-close"></cos-icon>
         </button>
       </div>
     </div>
 
     <div class="dialog_content">
-      <div class="content_text" translate="MODALS.TOPIC_REPORT_DESCRIPTION"></div>
+      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_DESCRIPTION' | translate }}</div>
 
       <form [formGroup]="reportForm" (ngSubmit)="doReport()">
         <div class="form_group">
-          <label translate="COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TYPE"></label>
-          <cos-dropdown>
+          <label for="report_type">{{ 'COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TYPE' | translate }}</label>
+          <cos-dropdown id="report_type">
             <div selection class="selected_item">
               {{ 'TXT_REPORT_TYPES_' + (reportForm.value.type | uppercase) | translate }}
             </div>
             <div options>
               @for (type of reportTypes; track type) {
-                <div class="option" (click)="changeType(type)">
+                <div class="option" (click)="changeType(type)" (keydown.enter)="changeType(type)" tabindex="0" role="button">
                   {{ 'TXT_REPORT_TYPES_' + (type | uppercase) | translate }}
                 </div>
               }
@@ -35,8 +35,8 @@
         </div>
 
         <div class="form_group">
-          <label translate="COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TEXT"></label>
-          <textarea formControlName="text"
+          <label for="report_text">{{ 'COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TEXT' | translate }}</label>
+          <textarea id="report_text" formControlName="text"
                     [placeholder]="'COMPONENTS.TOPIC_REPORT_FORM.PLACEHOLDER_REPORT_TEXT' | translate"
                     maxlength="2024"></textarea>
           <div class="char_count">{{ reportForm.get('text')?.value?.length || 0 }}/2024</div>

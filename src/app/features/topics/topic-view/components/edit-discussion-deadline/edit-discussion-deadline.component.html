@@ -1,22 +1,22 @@
-<div class="overlay" dialogClose></div>
+<div class="overlay" dialogClose (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
 <div class="dialog_wrap">
   <div class="dialog">
     <div class="dialog_header discussion">
       <div class="header_text">
         @if (isNew) {
-          <div class="small_heading" translate="COMPONENTS.EDIT_DISCUSSION_DEADLINE.DIALOG_HEADING_ADD"></div>
+          <div class="small_heading">{{ 'COMPONENTS.EDIT_DISCUSSION_DEADLINE.DIALOG_HEADING_ADD' | translate }}</div>
         } @else {
-          <div class="small_heading" translate="COMPONENTS.EDIT_DISCUSSION_DEADLINE.DIALOG_HEADING"></div>
+          <div class="small_heading">{{ 'COMPONENTS.EDIT_DISCUSSION_DEADLINE.DIALOG_HEADING' | translate }}</div>
         }
         <div class="dialog_close">
-          <a class="btn_dialog_close icon" dialogClose>
+          <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="close" [size]="24"></cos-icon>
-          </a>
+          </button>
         </div>
       </div>
     </div>
     <div class="dialog_content">
-      <div class="dialog_description" translate="COMPONENTS.EDIT_DISCUSSION_DEADLINE.LBL_EDIT_DISCUSSION_DEADLINE_DESC"></div>
+      <div class="dialog_description">{{ 'COMPONENTS.EDIT_DISCUSSION_DEADLINE.LBL_EDIT_DISCUSSION_DEADLINE_DESC' | translate }}</div>
       <div class="deadline_wrap">
         <cos-deadline-picker
           [deadline]="deadline()"
@@ -25,9 +25,9 @@
       </div>
     </div>
     <div class="dialog_footer with_buttons">
-      <a dialogClose translate="COMPONENTS.EDIT_DISCUSSION_DEADLINE.LNK_CANCEL"></a>
+      <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.EDIT_DISCUSSION_DEADLINE.LNK_CANCEL' | translate }}</button>
       <div class="button_row">
-        <button class="btn_medium_submit" (click)="save()">{{ "COMPONENTS.EDIT_DISCUSSION_DEADLINE.BTN_SAVE" | translate }}</button>
+        <button type="button" class="btn_medium_submit" (click)="save()">{{ "COMPONENTS.EDIT_DISCUSSION_DEADLINE.BTN_SAVE" | translate }}</button>
       </div>
     </div>
   </div>

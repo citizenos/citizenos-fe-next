@@ -14,9 +14,9 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
           <div class="dialog">
             <div class="dialog_header">
               <div class="header_text">
-                <h4 class="title" translate="COMPONENTS.ACCESSIBILITY.MODAL_HEADING"></h4>
+                <h4 class="title">{{ 'COMPONENTS.ACCESSIBILITY.MODAL_HEADING' | translate }}</h4>
                 <div class="dialog_close">
-                  <button class="btn_dialog_close" (click)="uiState.showAccessibility.set(false)">
+                  <button type="button" class="btn_dialog_close" (click)="uiState.showAccessibility.set(false)" [attr.aria-label]="'CONTROL.CLOSE' | translate">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="#2C3B47"/>
                     </svg>
@@ -26,15 +26,15 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
             </div>
             <div class="dialog_content">
               <div class="accessibility_options_wrap">
-                <h4 translate="COMPONENTS.ACCESSIBILITY.HEADING_CONTRAST"></h4>
+                <h4>{{ 'COMPONENTS.ACCESSIBILITY.HEADING_CONTRAST' | translate }}</h4>
 
-                <div class="radio_wrap" (click)="setContrast('default')">
+                <div class="radio_wrap" (click)="setContrast('default')" (keydown.enter)="setContrast('default')" role="button" tabindex="0">
                   <div class="radio_text_wrap">
                     <div class="radio_lable_wrap">
                       <label class="radio_box">
-                        <input type="radio" [checked]="uiState.accessibility().contrast === 'default'" name="contrast" value="default">
+                        <input type="radio" [checked]="uiState.accessibility().contrast === 'default'" name="contrast" value="default" tabindex="-1">
                         <span class="radio"></span>
-                        <div class="radio_lable" translate="COMPONENTS.ACCESSIBILITY.OPT_CONTRAST_DEFAULT"></div>
+                        <div class="radio_lable">{{ 'COMPONENTS.ACCESSIBILITY.OPT_CONTRAST_DEFAULT' | translate }}</div>
                       </label>
                     </div>
                   </div>
@@ -49,13 +49,13 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
                   </div>
                 </div>
                 
-                <div class="radio_wrap" (click)="setContrast('high_contrast')">
+                <div class="radio_wrap" (click)="setContrast('high_contrast')" (keydown.enter)="setContrast('high_contrast')" role="button" tabindex="0">
                   <div class="radio_text_wrap">
                     <div class="radio_lable_wrap">
                       <label class="radio_box">
-                        <input type="radio" [checked]="uiState.accessibility().contrast === 'high_contrast'" name="contrast" value="high_contrast">
+                        <input type="radio" [checked]="uiState.accessibility().contrast === 'high_contrast'" name="contrast" value="high_contrast" tabindex="-1">
                         <span class="radio"></span>
-                        <div class="radio_lable" translate="COMPONENTS.ACCESSIBILITY.OPT_CONTRAST_HIGH"></div>
+                        <div class="radio_lable">{{ 'COMPONENTS.ACCESSIBILITY.OPT_CONTRAST_HIGH' | translate }}</div>
                       </label>
                     </div>
                   </div>
@@ -68,15 +68,15 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
                   </div>
                 </div>
 
-                <h4 translate="COMPONENTS.ACCESSIBILITY.HEADING_TEXT_SIZE"></h4>
+                <h4>{{ 'COMPONENTS.ACCESSIBILITY.HEADING_TEXT_SIZE' | translate }}</h4>
 
-                <div class="radio_wrap" (click)="setTextSize('')">
+                <div class="radio_wrap" (click)="setTextSize('')" (keydown.enter)="setTextSize('')" role="button" tabindex="0">
                   <div class="radio_text_wrap">
                     <div class="radio_lable_wrap">
                       <label class="radio_box">
-                        <input type="radio" [checked]="uiState.accessibility().text === ''" name="textSize" value="">
+                        <input type="radio" [checked]="uiState.accessibility().text === ''" name="textSize" value="" tabindex="-1">
                         <span class="radio"></span>
-                        <div class="radio_lable" translate="COMPONENTS.ACCESSIBILITY.OPT_TEXT_SIZE_DEFAULT"></div>
+                        <div class="radio_lable">{{ 'COMPONENTS.ACCESSIBILITY.OPT_TEXT_SIZE_DEFAULT' | translate }}</div>
                       </label>
                     </div>
                   </div>
@@ -85,13 +85,13 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
                   </div>
                 </div>
 
-                <div class="radio_wrap" (click)="setTextSize('large')">
+                <div class="radio_wrap" (click)="setTextSize('large')" (keydown.enter)="setTextSize('large')" role="button" tabindex="0">
                   <div class="radio_text_wrap">
                     <div class="radio_lable_wrap">
                       <label class="radio_box">
-                        <input type="radio" [checked]="uiState.accessibility().text === 'large'" name="textSize" value="large">
+                        <input type="radio" [checked]="uiState.accessibility().text === 'large'" name="textSize" value="large" tabindex="-1">
                         <span class="radio"></span>
-                        <div class="radio_lable" translate="COMPONENTS.ACCESSIBILITY.OPT_TEXT_SIZE_LARGE"></div>
+                        <div class="radio_lable">{{ 'COMPONENTS.ACCESSIBILITY.OPT_TEXT_SIZE_LARGE' | translate }}</div>
                       </label>
                     </div>
                   </div>
@@ -100,13 +100,13 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
                   </div>
                 </div>
 
-                <div class="radio_wrap" (click)="setTextSize('extra_large')">
+                <div class="radio_wrap" (click)="setTextSize('extra_large')" (keydown.enter)="setTextSize('extra_large')" role="button" tabindex="0">
                   <div class="radio_text_wrap">
                     <div class="radio_lable_wrap">
                       <label class="radio_box">
-                        <input type="radio" [checked]="uiState.accessibility().text === 'extra_large'" name="textSize" value="extra_large">
+                        <input type="radio" [checked]="uiState.accessibility().text === 'extra_large'" name="textSize" value="extra_large" tabindex="-1">
                         <span class="radio"></span>
-                        <div class="radio_lable" translate="COMPONENTS.ACCESSIBILITY.OPT_TEXT_SIZE_EXTRA_LARGE"></div>
+                        <div class="radio_lable">{{ 'COMPONENTS.ACCESSIBILITY.OPT_TEXT_SIZE_EXTRA_LARGE' | translate }}</div>
                       </label>
                     </div>
                   </div>
@@ -118,24 +118,24 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
             </div>
             <div class="dialog_info_wrap">
               <div class="dialog_info">
-                <div class="bold" translate="COMPONENTS.ACCESSIBILITY.HEADING_HAVING_ISSUES"></div>
+                <div class="bold">{{ 'COMPONENTS.ACCESSIBILITY.HEADING_HAVING_ISSUES' | translate }}</div>
                 <div class="row">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15 12V14L19 11.5L15 9V11H6V12H15Z" fill="#2C3B47" />
                   </svg>
-                  <a href="https://citizenos.com/contact/" target="_blank" translate="COMPONENTS.ACCESSIBILITY.READ_STATEMENT"></a>
+                  <a href="https://citizenos.com/contact/" target="_blank">{{ 'COMPONENTS.ACCESSIBILITY.READ_STATEMENT' | translate }}</a>
                 </div>
                 <div class="row">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15 12V14L19 11.5L15 9V11H6V12H15Z" fill="#2C3B47" />
                   </svg>
-                  <a href="https://citizenos.com/contact/" target="_blank" translate="COMPONENTS.ACCESSIBILITY.CONTACT_US"></a>
+                  <a href="https://citizenos.com/contact/" target="_blank">{{ 'COMPONENTS.ACCESSIBILITY.CONTACT_US' | translate }}</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div id="close_lightbox" (click)="uiState.showAccessibility.set(false)"></div>
+        <div id="close_lightbox" (click)="uiState.showAccessibility.set(false)" (keydown.enter)="uiState.showAccessibility.set(false)" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
       </div>
     }
   `,

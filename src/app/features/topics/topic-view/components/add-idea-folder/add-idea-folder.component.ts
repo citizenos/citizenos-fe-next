@@ -24,16 +24,16 @@ interface AddIdeaFolderDialogData {
     IconComponent
   ],
   template: `
-    <div class="overlay" (click)="dialogRef.close()"></div>
+    <div class="overlay" (click)="dialogRef.close()" (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
     <div class="dialog_wrap">
       <div class="dialog">
         <div class="dialog_header ideation">
           <div class="header_text">
-            <div class="title" [translate]="'COMPONENTS.ADD_IDEA_FOLDER.HEADING'"></div>
+            <div class="title">{{ 'COMPONENTS.ADD_IDEA_FOLDER.HEADING' | translate }}</div>
             <div class="dialog_close">
-              <a class="btn_dialog_close icon" (click)="dialogRef.close()">
+              <button type="button" class="btn_dialog_close icon" (click)="dialogRef.close()" [aria-label]="'CONTROL.CLOSE' | translate">
                 <cos-icon name="close"></cos-icon>
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@ interface AddIdeaFolderDialogData {
           <div class="content_section">
             <div class="section_content_wrap">
               <div class="idea_info_wrap">
-                <div [translate]="'COMPONENTS.ADD_IDEA_FOLDER.LBL_IDEA_TO_ADD'"></div>
+                <div>{{ 'COMPONENTS.ADD_IDEA_FOLDER.LBL_IDEA_TO_ADD' | translate }}</div>
                 <div class="idea_wrap">
                   <div class="icon">
                     <cos-icon name="idea" [size]="24" color="#E4B722"></cos-icon>
@@ -52,14 +52,14 @@ interface AddIdeaFolderDialogData {
 
               @if (folders().length > 0) {
                 <div class="folder_list_wrap">
-                  <div class="bold" [translate]="'COMPONENTS.ADD_IDEA_FOLDER.LBL_FOLDER_SELECTION'"></div>
+                  <div class="bold">{{ 'COMPONENTS.ADD_IDEA_FOLDER.LBL_FOLDER_SELECTION' | translate }}</div>
                   <div class="idea_selection_wrap">
                     <div class="idea_selection_header">
-                      <div class="checkbox_wrap" (click)="toggleAllFolders()">
-                        <label class="checkbox" [class.selected]="allChecked()">
+                      <div class="checkbox_wrap" (click)="toggleAllFolders()" (keydown.enter)="toggleAllFolders()" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.ADD_IDEA_FOLDER.LBL_FOLDERS' | translate:{count: folders().length}">
+                        <div class="checkbox" [class.selected]="allChecked()">
                           <span class="checkmark"></span>
-                        </label>
-                        <div [translate]="'COMPONENTS.ADD_IDEA_FOLDER.LBL_FOLDERS'" [translateParams]="{count: folders().length}">
+                        </div>
+                        <div>{{ 'COMPONENTS.ADD_IDEA_FOLDER.LBL_FOLDERS' | translate:{count: folders().length} }}
                         </div>
                       </div>
                     </div>
@@ -67,10 +67,10 @@ interface AddIdeaFolderDialogData {
                     <div class="ideas_wrap">
                       @for (folder of folders(); track folder.id) {
                         <div class="idea_row">
-                          <div class="checkbox_wrap" (click)="toggleFolder(folder)">
-                            <label class="checkbox" [class.selected]="isFolderSelected(folder)">
+                          <div class="checkbox_wrap" (click)="toggleFolder(folder)" (keydown.enter)="toggleFolder(folder)" role="button" tabindex="0" [attr.aria-label]="folder.name">
+                            <div class="checkbox" [class.selected]="isFolderSelected(folder)">
                               <span class="checkmark"></span>
-                            </label>
+                            </div>
                             <div class="name_wrap">
                               <span class="folder_name" [innerHTML]="folder.name"></span>
                             </div>
@@ -82,11 +82,11 @@ interface AddIdeaFolderDialogData {
                 </div>
               }
 
-              <div class="new_folder_toggle checkbox_wrap" (click)="showFolderInput.set(!showFolderInput())">
-                <label class="checkbox" [class.selected]="showFolderInput()">
+              <div class="new_folder_toggle checkbox_wrap" (click)="showFolderInput.set(!showFolderInput())" (keydown.enter)="showFolderInput.set(!showFolderInput())" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.ADD_IDEA_FOLDER.LBL_ADD_TO_A_NEW_FOLDER' | translate">
+                <div class="checkbox" [class.selected]="showFolderInput()">
                   <span class="checkmark"></span>
-                </label>
-                <div class="bold" [translate]="'COMPONENTS.ADD_IDEA_FOLDER.LBL_ADD_TO_A_NEW_FOLDER'"></div>
+                </div>
+                <div class="bold">{{ 'COMPONENTS.ADD_IDEA_FOLDER.LBL_ADD_TO_A_NEW_FOLDER' | translate }}</div>
               </div>
 
               @if (showFolderInput()) {
@@ -107,9 +107,9 @@ interface AddIdeaFolderDialogData {
         </div>
 
         <div class="dialog_footer with_buttons">
-          <a (click)="dialogRef.close()" [translate]="'COMPONENTS.ADD_IDEA_FOLDER.LNK_CANCEL'"></a>
-          <button class="btn_big_submit" (click)="save()" [disabled]="loading() || loadingData() || (showFolderInput() && form.invalid) || (!showFolderInput() && selectedFolderIds().size === 0 && initialFolderIds.size === 0)"
-            [translate]="'COMPONENTS.ADD_IDEA_FOLDER.BTN_ADD'"></button>
+          <button type="button" class="btn_link" (click)="dialogRef.close()">{{ 'COMPONENTS.ADD_IDEA_FOLDER.LNK_CANCEL' | translate }}</button>
+          <button type="button" class="btn_big_submit" (click)="save()" [disabled]="loading() || loadingData() || (showFolderInput() && form.invalid) || (!showFolderInput() && selectedFolderIds().size === 0 && initialFolderIds.size === 0)">
+            {{ 'COMPONENTS.ADD_IDEA_FOLDER.BTN_ADD' | translate }}</button>
         </div>
       </div>
     </div>

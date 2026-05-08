@@ -9,28 +9,28 @@
           [value]="joinUrl()"
           [disabled]="joinDisabled()"
           [placeholder]="'COMPONENTS.TOPIC_SHARE.PLACEHOLDER_CREATE_NEW_LINK' | translate"
+          [aria-label]="'COMPONENTS.TOPIC_SHARE.PLACEHOLDER_CREATE_NEW_LINK' | translate"
         >
         @if (canUpdate()) {
           <cos-button id="reload" variant="light" (clicked)="generateTokenJoin()" icon="refresh" size="sm"></cos-button>
         }
       </div>
     </div>
-    <div class="level_select_wrap">
-      <span class="bold">
+      <label for="share_access_level" class="bold">
         {{ 'COMPONENTS.TOPIC_SHARE.LBL_ACCESS_LEVEL' | translate }}
         <cos-tooltip
           [title]="'COMPONENTS.TOPIC_INVITE_EDITORS.TOOLTIP_TOPIC_ROLES_HEADING' | translate"
           [description]="'COMPONENTS.TOPIC_INVITE_EDITORS.TOOLTIP_TOPIC_ROLES_DESCRIPTION' | translate">
         </cos-tooltip>
-      </span>
+      </label>
 
       <cos-dropdown [class.disabled]="!canUpdate()">
-        <div selection class="selected_item">
+        <div id="share_access_level" selection class="selected_item" tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" aria-controls="share_access_level_options">
           {{ 'TXT_TOPIC_LEVELS_' + (join().level) | uppercase | translate }}
         </div>
-        <div options>
+        <div id="share_access_level_options" options role="listbox">
           @for (level of LEVELS; track level) {
-            <div class="option" (click)="doUpdateJoinToken(level)">
+            <div class="option" (click)="doUpdateJoinToken(level)" (keydown.enter)="doUpdateJoinToken(level)" tabindex="0" role="option" [attr.aria-selected]="join().level === level">
               {{ 'TXT_TOPIC_LEVELS_' + level | uppercase | translate }}
             </div>
           }
@@ -43,9 +43,8 @@
       {{ 'COMPONENTS.TOPIC_SHARE.COPY_LINK' | translate }}
     </cos-button>
   </div>
-</div>
 
-@if (copySuccess()) {
+  @if (copySuccess()) {
   <div class="notification_inline success">
     <div class="icon_notification">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

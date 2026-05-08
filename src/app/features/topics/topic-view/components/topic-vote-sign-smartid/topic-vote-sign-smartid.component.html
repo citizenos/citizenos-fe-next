@@ -1,20 +1,20 @@
-<div class="overlay" dialogClose></div>
+<div class="overlay" dialogClose (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
 <div class="dialog_wrap">
   <div class="dialog">
     <div class="dialog_header voting">
       <div class="header_text">
-        <h4 class="title" translate="MODALS.TOPIC_VOTE_SIGN_SMARTID_HEADING"></h4>
+        <h4 class="title">{{ 'MODALS.TOPIC_VOTE_SIGN_SMARTID_HEADING' | translate }}</h4>
         <div class="dialog_close">
-          <a class="btn_dialog_close icon" dialogClose>
+          <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="close" [size]="24"></cos-icon>
-          </a>
+          </button>
         </div>
       </div>
     </div>
     <div class="dialog_content no_footer">
       <div class="vote_options">
         @if (data.options.length === 1) {
-          <span translate="MODALS.TOPIC_VOTE_SIGN_TXT_VOTING_FOR" [translateParams]="{ optionSelected: data.options[0] }"></span>
+          <span>{{ 'MODALS.TOPIC_VOTE_SIGN_TXT_VOTING_FOR' | translate:{ optionSelected: data.options[0] } }}</span>
         }
         @for (option of data.options; track option.id) {
           @if (option.selected) {
@@ -22,8 +22,7 @@
               <div class="radio_text_wrap">
                 <div class="radio_lable_wrap">
                   <label class="checkbox">
-                    <span [translate]="'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_' + option.value | uppercase"
-                      [translateParams]="{ default: option.value }"></span>
+                    <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_' + option.value | uppercase | translate:{ default: option.value } }}</span>
                     <input type="checkbox" [checked]="true" />
                     <span class="checkmark"></span>
                   </label>
@@ -50,14 +49,13 @@
           }
           @if (challengeID()) {
             <div class="control_code_wrap">
-              <div class="code" translate="MODALS.TOPIC_VOTE_SIGN_SMARTID_TXT_CONTROL_CODE"
-                [translateParams]="{ code: challengeID() }"></div>
-              <div class="code_text" translate="MODALS.TOPIC_VOTE_SIGN_SMARTID_TXT_CHECK_CONTROL_CODE"></div>
+              <div class="code">{{ 'MODALS.TOPIC_VOTE_SIGN_SMARTID_TXT_CONTROL_CODE' | translate:{ code: challengeID() } }}</div>
+              <div class="code_text">{{ 'MODALS.TOPIC_VOTE_SIGN_SMARTID_TXT_CHECK_CONTROL_CODE' | translate }}</div>
               <div class="loader_wrap"><div class="loader"></div></div>
             </div>
           }
           <button type="button" (click)="doSignWithSmartId()" [disabled]="isLoading() || signForm.invalid" class="btn_big_submit">
-            <span translate="MODALS.TOPIC_VOTE_SIGN_SMARTID_BTN_SIGN"></span>
+            <span>{{ 'MODALS.TOPIC_VOTE_SIGN_SMARTID_BTN_SIGN' | translate }}</span>
           </button>
         </form>
       </div>

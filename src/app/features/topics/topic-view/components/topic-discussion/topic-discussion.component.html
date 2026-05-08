@@ -8,9 +8,9 @@
 
       @if (canUpdate() && (canEditDeadline() || !hasDiscussionEndedExpired())) {
       <div class="setting_button dropdown button_dropdown" cosDropdown>
-        <button class="btn_medium_close" trigger>
+        <button type="button" class="btn_medium_close" trigger>
           <cos-icon name="more-vertical" size="24"></cos-icon>
-          <span class="mobile_hidden" translate="COMPONENTS.TOPIC_ARGUMENTS.BTN_DISCUSSION_ACTIONS"></span>
+          <span class="mobile_hidden">{{ 'COMPONENTS.TOPIC_ARGUMENTS.BTN_DISCUSSION_ACTIONS' | translate }}</span>
         </button>
         <div class="options">
           @if (canEditDeadline()) {
@@ -18,26 +18,26 @@
             <div class="icon_wrap">
               <cos-icon name="edit" size="16"></cos-icon>
             </div>
-            <span translate="COMPONENTS.TOPIC_ARGUMENTS.OPT_EDIT_DISCUSSION"></span>
+            <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.OPT_EDIT_DISCUSSION' | translate }}</span>
           </a>
-          <div class="option" (click)="openEditDeadline()">
+          <div class="option" (click)="openEditDeadline()" (keydown.enter)="openEditDeadline()" tabindex="0" role="button">
             <div class="icon_wrap">
               <cos-icon name="calendar" size="16"></cos-icon>
             </div>
             @if (!discussion()?.deadline) {
-            <span translate="COMPONENTS.TOPIC_ARGUMENTS.OPT_ADD_DEADLINE"></span>
+            <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.OPT_ADD_DEADLINE' | translate }}</span>
             } @else {
-            <span translate="COMPONENTS.TOPIC_ARGUMENTS.OPT_EDIT_DEADLINE"></span>
+            <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.OPT_EDIT_DEADLINE' | translate }}</span>
             }
           </div>
           }
           @if (!hasDiscussionEndedExpired()) {
           <div class="line_separator"></div>
-          <div class="option" (click)="closeDiscussion()">
+          <div class="option" (click)="closeDiscussion()" (keydown.enter)="closeDiscussion()" tabindex="0" role="button">
             <div class="icon_wrap">
               <cos-icon name="close" size="16"></cos-icon>
             </div>
-            <span translate="COMPONENTS.TOPIC_ARGUMENTS.OPT_CLOSE_DISCUSSION"></span>
+            <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.OPT_CLOSE_DISCUSSION' | translate }}</span>
           </div>
           }
         </div>
@@ -47,14 +47,14 @@
 
     @if (discussion()?.deadline || canEditDeadline()) {
     <div class="data_section">
-      <div class="title" translate="COMPONENTS.TOPIC_ARGUMENTS.LBL_DEADLINE"></div>
+      <div class="title">{{ 'COMPONENTS.TOPIC_ARGUMENTS.LBL_DEADLINE' | translate }}</div>
       <div class="deadline">
         @if (discussion()?.deadline) {
         <span class="bold">{{ discussion()?.deadline | date:'y-MM-dd HH:mm' }}</span>
         } @else if (canEditDeadline()) {
-        <a class="deadline-edit-link" (click)="openEditDeadline()">
-          <span translate="COMPONENTS.TOPIC_ARGUMENTS.OPT_ADD_DEADLINE"></span>
-        </a>
+        <button type="button" class="deadline-edit-link btn_link" (click)="openEditDeadline()" (keydown.enter)="openEditDeadline()">
+          <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.OPT_ADD_DEADLINE' | translate }}</span>
+        </button>
         }
       </div>
     </div>
@@ -65,46 +65,46 @@
     @if (hasDiscussionEndedExpired()) {
     <div class="discussion_info_text_wrap">
       <div class="text_area">
-        <div class="bold" translate="COMPONENTS.TOPIC_ARGUMENTS.HEADING_DISCUSSION_ENDED"></div>
-        <div translate="COMPONENTS.TOPIC_ARGUMENTS.TXT_DISCUSSION_ENDED"></div>
+        <div class="bold">{{ 'COMPONENTS.TOPIC_ARGUMENTS.HEADING_DISCUSSION_ENDED' | translate }}</div>
+        <div>{{ 'COMPONENTS.TOPIC_ARGUMENTS.TXT_DISCUSSION_ENDED' | translate }}</div>
       </div>
     </div>
     }
 
     <div class="section_header">
       <div class="title_wrap">
-        <div class="title" translate="COMPONENTS.TOPIC_ARGUMENTS.TITLE" [translateParams]="{count: counts().total}">
-        </div>
+        <div class="title">{{ 'COMPONENTS.TOPIC_ARGUMENTS.TITLE' | translate:{count: counts().total} }}</div>
       </div>
       @if (canPost()) {
-      <button class="btn_medium_submit" (click)="showPostForm.set(true)" [disabled]="hasDiscussionEndedExpired()"
-        translate="COMPONENTS.TOPIC_ARGUMENTS.BTN_ADD_YOUR_ARGUMENT"></button>
+      <button type="button" class="btn_medium_submit" (click)="showPostForm.set(true)" [disabled]="hasDiscussionEndedExpired()">
+        {{ 'COMPONENTS.TOPIC_ARGUMENTS.BTN_ADD_YOUR_ARGUMENT' | translate }}
+      </button>
       }
     </div>
 
     <div class="argument_graph_wrap">
       <div class="graph_header">
-        <div class="graph_title" translate="COMPONENTS.TOPIC_ARGUMENTS.GRAPH_TITLE"></div>
+        <div class="graph_title">{{ 'COMPONENTS.TOPIC_ARGUMENTS.GRAPH_TITLE' | translate }}</div>
         <div>
           <div class="legend">
             <div class="legend_item pro">
               <div class="dot"></div>
-              <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_PRO"></div>
+              <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_PRO' | translate }}</div>
               <span>{{counts().pro}}</span>
             </div>
             <div class="legend_item con">
               <div class="dot"></div>
-              <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_CON"></div>
+              <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_CON' | translate }}</div>
               <span>{{counts().con}}</span>
             </div>
             <div class="legend_item">
               <div class="dot"></div>
-              <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_INFO"></div>
+              <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_INFO' | translate }}</div>
               <span>{{counts().poi}}</span>
             </div>
             <div class="legend_item reply">
               <div class="dot"></div>
-              <div class="bold" translate="VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_REPLIES"></div>
+              <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_REPLIES' | translate }}</div>
               <span>{{counts().reply}}</span>
             </div>
           </div>
@@ -157,7 +157,7 @@
             </ng-container>
             <ng-container options>
               @for (option of orderByOptions; track option.value) {
-              <div class="option" (click)="setOrder(option.value)">{{ option.title | translate | uppercase }}</div>
+              <div class="option" (click)="setOrder(option.value)" (keydown.enter)="setOrder(option.value)" tabindex="0" role="button">{{ option.title | translate | uppercase }}</div>
               }
             </ng-container>
           </cos-dropdown>
@@ -215,13 +215,13 @@
             </clipPath>
           </defs>
         </svg>
-        <div class="description_heading" translate="COMPONENTS.TOPIC_ARGUMENTS.NO_DISCUSSION_YET"></div>
+        <div class="description_heading">{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_DISCUSSION_YET' | translate }}</div>
         <div class="no_feature_description">
           <div class="description_text">
-            <div class="description_heading" translate="COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_HEADING"></div>
+            <div class="description_heading">{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_HEADING' | translate }}</div>
             <div>
-              <span translate="COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_BEFORE"></span><br /><br />
-              <span translate="COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_AFTER"></span>
+              <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_BEFORE' | translate }}</span><br /><br />
+              <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_AFTER' | translate }}</span>
             </div>
           </div>
         </div>

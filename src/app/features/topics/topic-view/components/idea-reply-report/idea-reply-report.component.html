@@ -3,9 +3,9 @@
     <div class="header_title">
       <h2 [innerHTML]="'COMPONENTS.IDEA_REPORT.HEADING_REPORT_IDEA' | translate"></h2>
     </div>
-    <div class="header_close" cosDialogClose>
+    <button type="button" class="header_close" cosDialogClose [aria-label]="'CONTROL.CLOSE' | translate">
       <cos-icon name="close"></cos-icon>
-    </div>
+    </button>
   </div>
 
   <div class="dialog_content">
@@ -21,14 +21,14 @@
 
     <form [formGroup]="report" (ngSubmit)="doReport()">
       <div class="form_group">
-        <label [innerHTML]="'COMPONENTS.IDEA_REPORT.LABEL_REPORT_TYPE' | translate"></label>
+        <label for="report_type" [innerHTML]="'COMPONENTS.IDEA_REPORT.LABEL_REPORT_TYPE' | translate"></label>
         <cos-dropdown>
-          <div selection>
+          <div id="report_type" selection tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" aria-controls="report_type_options">
             {{ 'COMPONENTS.IDEA_REPORT.REPORT_TYPE_' + report.get('type')?.value?.toUpperCase() | translate }}
           </div>
-          <div options>
+          <div id="report_type_options" options role="listbox">
             @for (type of reportTypes; track type) {
-              <div class="option" (click)="selectReportType(type)">
+              <div class="option" (click)="selectReportType(type)" (keydown.enter)="selectReportType(type)" tabindex="0" role="option" [attr.aria-selected]="report.get('type')?.value === type">
                 {{ 'COMPONENTS.IDEA_REPORT.REPORT_TYPE_' + type.toUpperCase() | translate }}
               </div>
             }
@@ -37,13 +37,13 @@
       </div>
 
       <div class="form_group">
-        <label [innerHTML]="'COMPONENTS.IDEA_REPORT.LABEL_REPORT_TEXT' | translate"></label>
+        <label for="report_text" [innerHTML]="'COMPONENTS.IDEA_REPORT.LABEL_REPORT_TEXT' | translate"></label>
         <cos-input
           [placeholder]="'COMPONENTS.IDEA_REPORT.PLACEHOLDER_REPORT_TEXT' | translate"
           [hasError]="!!(report.get('text')?.touched && report.get('text')?.invalid)"
           [errorMessage]="'COMPONENTS.IDEA_REPORT.ERROR_TEXT' | translate"
         >
-          <textarea formControlName="text" [placeholder]="'COMPONENTS.IDEA_REPORT.PLACEHOLDER_REPORT_TEXT' | translate" [maxlength]="2048" rows="5"></textarea>
+          <textarea id="report_text" formControlName="text" [placeholder]="'COMPONENTS.IDEA_REPORT.PLACEHOLDER_REPORT_TEXT' | translate" [maxlength]="2048" rows="5"></textarea>
         </cos-input>
         @if (errors()?.text) {
           <div class="error">{{ errors().text | translate }}</div>

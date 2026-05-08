@@ -1,7 +1,7 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
-import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
+import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -20,6 +20,7 @@ export class TopicFollowUpCreateDialogComponent {
   private data = inject<{ topic: Topic }>(DIALOG_DATA);
 
   topic = this.data.topic;
+  dialogRef = inject(DialogRef);
 
   startFollowUp() {
     return this.topicService.changeState(this.topic, 'followUp');

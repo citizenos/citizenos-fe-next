@@ -2,10 +2,10 @@
   <div class="dialog">
     <div class="dialog_header">
       <div class="header_text">
-        <h3 class="title" translate="MODALS.TOPIC_ADD_GROUPS_HEADING"></h3>
+        <h3 class="title">{{ 'MODALS.TOPIC_ADD_GROUPS_HEADING' | translate }}</h3>
       </div>
       <div class="dialog_close">
-        <button class="btn_dialog_close icon" dialogClose>
+        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
           <cos-icon name="nav-close"></cos-icon>
         </button>
       </div>
@@ -26,7 +26,7 @@
             @if (searchResults().length > 0) {
               <div class="search_results">
                 @for (group of searchResults(); track group.id) {
-                  <div class="search_result_item" (click)="addGroup(group)">
+                  <div class="search_result_item" (click)="addGroup(group)" (keydown.enter)="addGroup(group)" role="button" tabindex="0">
                     <div class="group_info">
                       <div class="name">{{ group.name }}</div>
                     </div>
@@ -39,7 +39,7 @@
           @if (selectedGroups().length > 0) {
             <div class="selected_members_wrap">
               <div class="global_level_select">
-                <span translate="COMPONENTS.TOPIC_ADD_GROUPS.LBL_ALL_GROUPS_LEVEL"></span>
+                <span>{{ 'COMPONENTS.TOPIC_ADD_GROUPS.LBL_ALL_GROUPS_LEVEL' | translate }}</span>
                 <cos-tooltip
                   [title]="'COMPONENTS.TOPIC_ADD_GROUPS.TOOLTIP_GROUP_PERMISSIONS_TITLE' | translate"
                   [description]="'COMPONENTS.TOPIC_ADD_GROUPS.TOOLTIP_GROUP_PERMISSIONS_CONTENT' | translate">
@@ -50,7 +50,7 @@
                   </div>
                   <div options>
                     @for (level of LEVELS; track level) {
-                      <div class="option" (click)="updateAllLevels(level)">
+                      <div class="option" (click)="updateAllLevels(level)" (keydown.enter)="updateAllLevels(level)" role="button" tabindex="0">
                         {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                       </div>
                     }
@@ -70,7 +70,7 @@
                           </div>
                           <div options>
                             @for (level of LEVELS; track level) {
-                              <div class="option" (click)="updateGroupLevel(group, level)">
+                              <div class="option" (click)="updateGroupLevel(group, level)" (keydown.enter)="updateGroupLevel(group, level)" role="button" tabindex="0">
                                 {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                               </div>
                             }
@@ -78,7 +78,7 @@
                         </cos-dropdown>
                       </div>
                     </div>
-                    <button class="remove_btn" (click)="removeGroup(group)">
+                    <button type="button" class="remove_btn" (click)="removeGroup(group)" [aria-label]="'CONTROL.REMOVE' | translate">
                       <cos-icon name="nav-close" size="16"></cos-icon>
                     </button>
                   </div>
@@ -94,7 +94,7 @@
       <div class="dialog_footer with_buttons">
         <div class="info_row tablet_hidden">
           <cos-icon name="info" size="16"></cos-icon>
-          <span translate="COMPONENTS.TOPIC_ADD_GROUPS.TXT_ADD_GROUPS_INFO"></span>
+          <span>{{ 'COMPONENTS.TOPIC_ADD_GROUPS.TXT_ADD_GROUPS_INFO' | translate }}</span>
         </div>
         <div class="button_row">
           <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_ADD_GROUPS.BTN_CANCEL"></cos-button>

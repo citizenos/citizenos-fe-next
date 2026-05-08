@@ -1,7 +1,7 @@
 <div [class]="'edits_wrap ' + argument().type">
   <div class="edits_header">
-    <div class="small_heading" translate="COMPONENTS.ARGUMENT_EDITS.HEADING"></div>
-    <a (click)="hideEdits()" translate="COMPONENTS.ARGUMENT_EDITS.LNK_HIDE_EDITS"></a>
+    <div class="small_heading">{{ 'COMPONENTS.ARGUMENT_EDITS.HEADING' | translate }}</div>
+    <button type="button" class="btn_link" (click)="hideEdits()">{{ 'COMPONENTS.ARGUMENT_EDITS.LNK_HIDE_EDITS' | translate }}</button>
   </div>
   <div class="edits_content">
     @for (entry of editsEntries(); track entry[0]) {

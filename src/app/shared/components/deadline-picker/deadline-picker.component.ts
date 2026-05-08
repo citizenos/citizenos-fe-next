@@ -10,9 +10,9 @@ import { inject } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="deadline-picker">
-      <div class="deadline-toggle" (click)="toggleDeadline()">
+      <div class="deadline-toggle">
         <label class="toggle-label">
-          <input type="checkbox" [checked]="enabled()" (click)="$event.stopPropagation()">
+          <input type="checkbox" [checked]="enabled()" (change)="toggleDeadline()">
           <span>{{ toggleLabel() | translate }}</span>
         </label>
       </div>
@@ -31,8 +31,8 @@ import { inject } from '@angular/core';
 
           <div class="time-row">
             <div class="time-field">
-              <label>{{ 'VIEWS.DEADLINE_PICKER.HOURS' | translate }}</label>
-              <select [ngModel]="hours()" (ngModelChange)="setHours($event)">
+              <label for="deadline_hours">{{ 'VIEWS.DEADLINE_PICKER.HOURS' | translate }}</label>
+              <select id="deadline_hours" [ngModel]="hours()" (ngModelChange)="setHours($event)">
                 @for (h of hourOptions(); track h) {
                   <option [value]="h">{{ formatTime(h) }}</option>
                 }
@@ -40,8 +40,8 @@ import { inject } from '@angular/core';
             </div>
             <div class="time-separator">:</div>
             <div class="time-field">
-              <label>{{ 'VIEWS.DEADLINE_PICKER.MINUTES' | translate }}</label>
-              <select [ngModel]="minutes()" (ngModelChange)="setMinutes($event)">
+              <label for="deadline_minutes">{{ 'VIEWS.DEADLINE_PICKER.MINUTES' | translate }}</label>
+              <select id="deadline_minutes" [ngModel]="minutes()" (ngModelChange)="setMinutes($event)">
                 @for (m of minuteOptions; track m) {
                   <option [value]="m">{{ formatTime(m) }}</option>
                 }
@@ -63,9 +63,11 @@ import { inject } from '@angular/core';
               </label>
               @if (reminderEnabled() && availableReminders().length) {
                 <select
+                  id="deadline_reminder"
                   class="reminder-select"
                   [ngModel]="selectedReminderIndex()"
                   (ngModelChange)="onReminderSelect($event)"
+                  [attr.aria-label]="'VIEWS.DEADLINE_PICKER.SET_REMINDER' | translate"
                 >
                   @for (opt of availableReminders(); track $index; let i = $index) {
                     <option [value]="i">{{ getReminderLabel(opt) }}</option>

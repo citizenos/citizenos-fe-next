@@ -1,18 +1,18 @@
-<div class="overlay" dialogClose></div>
+<div class="overlay" dialogClose (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
 <div class="dialog_wrap">
   <div class="dialog">
     <div class="dialog_header voting">
       <div class="header_text">
-        <h4 class="title" translate="MODALS.TOPIC_VOTE_SIGN_HEADING"></h4>
+        <h4 class="title">{{ 'MODALS.TOPIC_VOTE_SIGN_HEADING' | translate }}</h4>
         <div class="dialog_close">
-          <a class="btn_dialog_close icon" dialogClose>
+          <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="close" [size]="24"></cos-icon>
-          </a>
+          </button>
         </div>
       </div>
     </div>
     <div class="dialog_content no_footer">
-      <button class="btn_big_plain" (click)="doSignEsteId()">
+      <button type="button" class="btn_big_plain" (click)="doSignEsteId()">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="20" fill="#F9FBFD" />
           <path fill-rule="evenodd" clip-rule="evenodd"
@@ -22,10 +22,10 @@
             d="M7.5 30H9.78261V27.6471H7.5V30ZM10.9239 30H13.2065V27.6471H10.9239V30ZM7.5 26.4706H9.78261V24.1176H7.5V26.4706ZM10.9239 26.4706H13.2065V24.1176H10.9239V26.4706ZM7.5 22.9412H9.78261V20.5882H7.5V22.9412ZM10.9239 22.9412H13.2065V20.5882H10.9239V22.9412ZM7.5 19.4118H9.78261V17.0588H7.5V19.4118ZM10.9239 19.4118H13.2065V17.0588H10.9239V19.4118ZM7.5 15.8824H9.78261V13.5294H7.5V15.8824ZM10.9239 15.8824H13.2065V13.5294H10.9239V15.8824ZM7.5 12.3529H9.78261V10H7.5V12.3529ZM10.9239 12.3529H13.2065V10H10.9239V12.3529Z"
             fill="#F5762D" />
         </svg>
-        <span translate="MODALS.TOPIC_VOTE_SIGN_BTN_SIGN_ESTEID"></span>
+        <span>{{ 'MODALS.TOPIC_VOTE_SIGN_BTN_SIGN_ESTEID' | translate }}</span>
       </button>
 
-      <button class="btn_big_plain" (click)="doSignSmartId()">
+      <button type="button" class="btn_big_plain" (click)="doSignSmartId()">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="20" fill="#F9FBFD" />
           <path
@@ -38,7 +38,7 @@
             d="M20 33.7507C12.4159 33.7507 6.25 27.5709 6.25 20.0316C6.25 15.6749 8.34641 11.5344 11.861 8.9698C12.2309 8.69171 12.7242 8.7844 12.9709 9.12429C13.2175 9.46418 13.1558 9.95856 12.8167 10.2367C9.67209 12.4923 7.82231 16.1692 7.82231 20.0316C7.82231 26.7367 13.2791 32.1749 20 32.1749C20.5858 32.1749 21.1715 32.144 21.7573 32.0513V20.7732C21.7573 20.3406 22.0964 20.0007 22.5589 20.0007C22.9905 20.0007 23.3604 20.3406 23.3604 20.7732V32.7001C23.3604 33.0709 23.083 33.4108 22.713 33.4726C21.8189 33.658 20.9249 33.7507 20 33.7507Z"
             fill="#00AFAA" />
         </svg>
-        <span translate="MODALS.TOPIC_VOTE_SIGN_BTN_SIGN_SMARTID"></span>
+        <span>{{ 'MODALS.TOPIC_VOTE_SIGN_BTN_SIGN_SMARTID' | translate }}</span>
       </button>
     </div>
     <div class="dialog_footer"></div>

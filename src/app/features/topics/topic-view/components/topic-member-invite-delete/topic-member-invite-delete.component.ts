@@ -19,7 +19,7 @@ import { InitialsComponent } from '../../../../../shared/components/initials/ini
 })
 export class TopicMemberInviteDeleteComponent {
   user = inject<{ user: any }>(DIALOG_DATA).user;
-  private dialogRef = inject(DialogRef);
+  protected dialogRef = inject(DialogRef);
 
   invitesToDelete: string | null = null;
 

@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { DialogCloseDirective } from '../../../../../shared/dialog';
+import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog';
 
 @Component({
   selector: 'app-close-without-saving-dialog',
@@ -9,4 +9,6 @@ import { DialogCloseDirective } from '../../../../../shared/dialog';
   imports: [TranslateModule, DialogCloseDirective],
   templateUrl: './close-without-saving-dialog.component.html',
 })
-export class CloseWithoutSavingDialogComponent {}
+export class CloseWithoutSavingDialogComponent {
+  dialogRef = inject(DialogRef);
+}

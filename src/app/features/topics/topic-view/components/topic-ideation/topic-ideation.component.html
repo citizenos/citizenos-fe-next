@@ -5,26 +5,26 @@
 
       @if (canUpdate() && (canEditDeadline() || !hasIdeationEndedExpired())) {
         <div class="setting_button dropdown button_dropdown" cosDropdown>
-          <button class="btn_medium_close mobile_hidden">
+          <button type="button" class="btn_medium_close mobile_hidden" trigger>
             <cos-icon name="more-vertical" [size]="24"></cos-icon>
-            <span translate="COMPONENTS.TOPIC_IDEATION.BTN_IDEATION_ACTIONS"></span>
+            <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_IDEATION_ACTIONS' | translate }}</span>
           </button>
           <div class="options">
             @if (canEdit()) {
-              <div class="option" (click)="exportIdeas()">
+              <div class="option" (click)="exportIdeas()" (keydown.enter)="exportIdeas()" tabindex="0" role="button">
                 <div class="icon_wrap">
                   <cos-icon name="download" [size]="16"></cos-icon>
                 </div>
-                <span translate="COMPONENTS.TOPIC_IDEATION.OPT_DOWNLOAD_IDEAS"></span>
+                <span>{{ 'COMPONENTS.TOPIC_IDEATION.OPT_DOWNLOAD_IDEAS' | translate }}</span>
               </div>
             }
             @if (!hasIdeationEndedExpired()) {
               <div class="line_separator"></div>
-              <div class="option" (click)="closeIdeation()">
+              <div class="option" (click)="closeIdeation()" (keydown.enter)="closeIdeation()" tabindex="0" role="button">
                 <div class="icon_wrap">
                   <cos-icon name="close" [size]="16"></cos-icon>
                 </div>
-                <span translate="COMPONENTS.TOPIC_IDEATION.OPT_CLOSE_IDEATION"></span>
+                <span>{{ 'COMPONENTS.TOPIC_IDEATION.OPT_CLOSE_IDEATION' | translate }}</span>
               </div>
             }
           </div>
@@ -34,7 +34,7 @@
 
     @if (ideation().deadline) {
       <div class="ideation_deadline">
-        <span translate="COMPONENTS.TOPIC_IDEATION.LBL_DEADLINE"></span>
+        <span>{{ 'COMPONENTS.TOPIC_IDEATION.LBL_DEADLINE' | translate }}</span>
         <span>{{ ideation().deadline | date:'y-MM-dd' }}</span>
       </div>
     }
@@ -46,8 +46,8 @@
     <app-list-filter-toolbar [filters]="filterConfig()" (filterChange)="onFilterChange($event)" />
 
     @if (!hasIdeationEnded()) {
-      <button class="btn_medium" (click)="showAddIdea.set(true)">
-        <span translate="COMPONENTS.TOPIC_IDEATION.BTN_ADD_IDEA"></span>
+      <button type="button" class="btn_medium" (click)="showAddIdea.set(true)">
+        <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_IDEA' | translate }}</span>
       </button>
     }
   </div>
@@ -62,7 +62,7 @@
 
   <div class="ideas_list">
     @if (loading() && !ideas().length) {
-      <div class="loading" translate="COMPONENTS.TOPIC_IDEATION.LBL_LOADING"></div>
+      <div class="loading">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_LOADING' | translate }}</div>
     }
 
     @for (idea of ideas(); track idea.id) {
@@ -74,7 +74,7 @@
         (ideaUpdated)="onIdeaUpdated($event)" />
     } @empty {
       @if (!loading()) {
-        <div class="empty_state" translate="COMPONENTS.TOPIC_IDEATION.LBL_NO_IDEAS"></div>
+        <div class="empty_state">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_NO_IDEAS' | translate }}</div>
       }
     }
   </div>

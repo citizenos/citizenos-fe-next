@@ -16,9 +16,10 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
       <!-- Section 1: Vote question -->
       <div class="form-group">
-        <label translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTING_QUESTION"></label>
+        <label for="voteQuestion">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTING_QUESTION' | translate }}</label>
         <cos-input [placeholder]="'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_QUESTION_PLACEHOLDER' | translate">
           <textarea
+            id="voteQuestion"
             [ngModel]="vote().question"
             (ngModelChange)="onUpdate({question: $event})"
             rows="3"
@@ -28,13 +29,16 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
       <!-- Section 2: Vote type -->
       <div class="form-group">
-        <label translate="COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM"></label>
+        <label>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM' | translate }}</label>
         <p class="section-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM_DESC"></p>
         <div class="radio-cards">
           <div
             class="radio-card"
             [class.selected]="vote().type === 'regular'"
             (click)="setType('regular')"
+            (keydown.enter)="setType('regular')"
+            tabindex="0"
+            role="button"
           >
             <label class="radio-box">
               <input type="radio" [checked]="vote().type === 'regular'" name="voteType" value="regular">
@@ -47,6 +51,9 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
             class="radio-card"
             [class.selected]="vote().type === 'multiple'"
             (click)="setType('multiple')"
+            (keydown.enter)="setType('multiple')"
+            tabindex="0"
+            role="button"
           >
             <label class="radio-box">
               <input type="radio" [checked]="vote().type === 'multiple'" name="voteType" value="multiple">
@@ -60,8 +67,8 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
       <!-- Section 3: Vote options -->
       <div class="options-section">
-        <h3 translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEFINE_VOTE_ANSWERS"></h3>
-
+        <h3>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEFINE_VOTE_ANSWERS' | translate }}</h3>
+  
         @if (vote().type === 'regular') {
           <div class="predefined-options">
             @for (opt of predefined; track opt) {
@@ -69,6 +76,9 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
                 class="predefined-row"
                 [class.selected]="isPredefinedSelected(opt)"
                 (click)="togglePredefined(opt)"
+                (keydown.enter)="togglePredefined(opt)"
+                tabindex="0"
+                role="button"
               >
                 <label class="checkbox-label">
                   <input type="checkbox" [checked]="isPredefinedSelected(opt)" (click)="$event.stopPropagation()">
@@ -100,23 +110,23 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
           <!-- Min/Max choices for multiple type -->
           <div class="min-max-section">
-            <h4 translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_MIN_MAX"></h4>
+            <h4>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_MIN_MAX' | translate }}</h4>
             <p class="section-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.VOTE_TXT_DESCRIPTION_CHOICE_RANGE"></p>
             <div class="min-max-row">
               <div class="counter-group">
-                <label translate="VIEWS.TOPICS_TOPICID.VOTE_LBL_MIN_CHOICES"></label>
+                <label>{{ 'VIEWS.TOPICS_TOPICID.VOTE_LBL_MIN_CHOICES' | translate }}</label>
                 <div class="counter">
-                  <button class="counter-btn" (click)="adjustCount('min', -1)">−</button>
+                  <button type="button" class="counter-btn" (click)="adjustCount('min', -1)">−</button>
                   <span class="counter-value">{{ vote().minChoices || 1 }}</span>
-                  <button class="counter-btn" (click)="adjustCount('min', 1)">+</button>
+                  <button type="button" class="counter-btn" (click)="adjustCount('min', 1)">+</button>
                 </div>
               </div>
               <div class="counter-group">
-                <label translate="VIEWS.TOPICS_TOPICID.VOTE_LBL_MAX_CHOICES"></label>
+                <label>{{ 'VIEWS.TOPICS_TOPICID.VOTE_LBL_MAX_CHOICES' | translate }}</label>
                 <div class="counter">
-                  <button class="counter-btn" (click)="adjustCount('max', -1)">−</button>
+                  <button type="button" class="counter-btn" (click)="adjustCount('max', -1)">−</button>
                   <span class="counter-value">{{ vote().maxChoices || getOptionsLimit() }}</span>
-                  <button class="counter-btn" (click)="adjustCount('max', 1)">+</button>
+                  <button type="button" class="counter-btn" (click)="adjustCount('max', 1)">+</button>
                 </div>
               </div>
             </div>
@@ -126,13 +136,16 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
       <!-- Section 4: Auth type -->
       <div class="form-group">
-        <label translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS"></label>
+        <label>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS' | translate }}</label>
         <p class="section-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS_DESC"></p>
         <div class="radio-cards">
           <div
             class="radio-card"
             [class.selected]="vote().authType === 'soft'"
             (click)="onUpdate({authType: 'soft'})"
+            (keydown.enter)="onUpdate({authType: 'soft'})"
+            tabindex="0"
+            role="button"
           >
             <label class="radio-box">
               <input type="radio" [checked]="vote().authType === 'soft'" name="authType" value="soft">
@@ -145,6 +158,9 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
             class="radio-card"
             [class.selected]="vote().authType === 'hard'"
             (click)="onUpdate({authType: 'hard', delegationIsAllowed: false})"
+            (keydown.enter)="onUpdate({authType: 'hard', delegationIsAllowed: false})"
+            tabindex="0"
+            role="button"
           >
             <label class="radio-box">
               <input type="radio" [checked]="vote().authType === 'hard'" name="authType" value="hard">
@@ -158,13 +174,16 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
       <!-- Section 5: Delegation -->
       <div class="form-group">
-        <label translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION"></label>
+        <label>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION' | translate }}</label>
         <p class="section-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION_DESC"></p>
         <div
           class="radio-card"
           [class.selected]="vote().delegationIsAllowed"
           [class.disabled]="vote().authType === 'hard'"
           (click)="toggleDelegation()"
+          (keydown.enter)="toggleDelegation()"
+          tabindex="0"
+          role="button"
         >
           <label class="checkbox-label">
             <input type="checkbox" [checked]="vote().delegationIsAllowed" [disabled]="vote().authType === 'hard'">
@@ -176,7 +195,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
       <!-- Section 6: Deadline -->
       <div class="form-group">
-        <label translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEADLINE"></label>
+        <label>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEADLINE' | translate }}</label>
         <p class="section-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEADLINE_DESC"></p>
         <cos-deadline-picker
           [deadline]="getVoteDeadlineDate()"

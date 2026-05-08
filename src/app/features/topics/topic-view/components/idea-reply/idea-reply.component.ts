@@ -33,7 +33,7 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
 <div class="argument">
   <div class="argument_wrap idea_reply" [id]="argument().id">
     <div class="argument_content_wrap">
-      <div class="argument_header" (click)="toggleReplies()">
+      <div class="argument_header" (click)="toggleReplies()" (keydown.enter)="toggleReplies()" role="button" tabindex="0">
         <div class="header_left">
           <div class="author_wrap">
             <div class="image_wrap">
@@ -55,28 +55,28 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
           <div class="created_at">{{ argument().createdAt | date : 'y-MM-dd HH:mm' }}</div>
           
           <div class="dropdown button_dropdown mobile_hidden" cosDropdown>
-            <button class="btn_argument_actions" (click)="$event.stopPropagation()">
+            <button type="button" class="btn_argument_actions" (click)="$event.stopPropagation()" [aria-label]="'COMPONENTS.ARGUMENT.LBL_ARGUMENT_ACTIONS' | translate">
               <cos-icon name="more-vertical" size="16"></cos-icon>
             </button>
             <div class="options">
               @if (canEdit()) {
-                <button class="option" (click)="toggleEdit(); $event.stopPropagation()">
+                <button type="button" class="option" (click)="toggleEdit(); $event.stopPropagation()" (keydown.enter)="toggleEdit(); $event.stopPropagation()" role="button" tabindex="0">
                   <cos-icon name="edit" size="16"></cos-icon>
-                  <span translate="COMPONENTS.ARGUMENT.OPTION_EDIT"></span>
+                  <span>{{ 'COMPONENTS.ARGUMENT.OPTION_EDIT' | translate }}</span>
                 </button>
               }
-              <button class="option" (click)="copyArgumentLink($event); $event.stopPropagation()">
+              <button type="button" class="option" (click)="copyArgumentLink($event); $event.stopPropagation()" (keydown.enter)="copyArgumentLink($event); $event.stopPropagation()" role="button" tabindex="0">
                 <cos-icon name="link" size="16"></cos-icon>
-                <span translate="LNK_DIRECT_LINK"></span>
+                <span>{{ 'LNK_DIRECT_LINK' | translate }}</span>
               </button>
-              <button class="option" (click)="doArgumentReport(); $event.stopPropagation()">
+              <button type="button" class="option" (click)="doArgumentReport(); $event.stopPropagation()" (keydown.enter)="doArgumentReport(); $event.stopPropagation()" role="button" tabindex="0">
                 <cos-icon name="warning" size="16"></cos-icon>
-                <span translate="COMPONENTS.ARGUMENT.OPTION_REPORT"></span>
+                <span>{{ 'COMPONENTS.ARGUMENT.OPTION_REPORT' | translate }}</span>
               </button>
               @if (canEdit()) {
-                <button class="option error_text" (click)="doShowDeleteArgument(); $event.stopPropagation()">
+                <button type="button" class="option error_text" (click)="doShowDeleteArgument(); $event.stopPropagation()" (keydown.enter)="doShowDeleteArgument(); $event.stopPropagation()" role="button" tabindex="0">
                   <cos-icon name="trash" size="16"></cos-icon>
-                  <span translate="COMPONENTS.ARGUMENT.OPTION_DELETE"></span>
+                  <span>{{ 'COMPONENTS.ARGUMENT.OPTION_DELETE' | translate }}</span>
                 </button>
               }
             </div>
@@ -104,18 +104,18 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
       <div class="argument_footer">
         <div class="footer_left">
           <div class="button_group">
-            <button class="btn_vote_argument" (click)="doArgumentVote(1)" [class.selected]="argument().votes?.up?.selected">
+            <button type="button" class="btn_vote_argument" (click)="doArgumentVote(1)" [class.selected]="argument().votes?.up?.selected" [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_UP' | translate">
               <cos-icon name="thumbs-up" size="16"></cos-icon>
             </button>
-            <button class="btn_small_plain count_pro" (click)="doShowVotersList()" [class.bold]="argument().votes?.up?.selected">
+            <button type="button" class="btn_small_plain count_pro" (click)="doShowVotersList()" [class.bold]="argument().votes?.up?.selected">
               {{ argument().votes?.up?.count || 0 }}
             </button>
           </div>
           <div class="button_group">
-            <button class="btn_vote_argument" (click)="doArgumentVote(-1)" [class.selected]="argument().votes?.down?.selected">
+            <button type="button" class="btn_vote_argument" (click)="doArgumentVote(-1)" [class.selected]="argument().votes?.down?.selected" [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_DOWN' | translate">
               <cos-icon name="thumbs-down" size="16"></cos-icon>
             </button>
-            <button class="btn_small_plain count_con" (click)="doShowVotersList()" [class.bold]="argument().votes?.down?.selected">
+            <button type="button" class="btn_small_plain count_con" (click)="doShowVotersList()" [class.bold]="argument().votes?.down?.selected">
               {{ argument().votes?.down?.count || 0 }}
             </button>
           </div>
@@ -123,13 +123,15 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
 
         <div class="footer_right">
           @if (argument().replies?.count > 0) {
-            <button class="btn_ghost_reply_argument" (click)="showReplies.set(!showReplies())">
+            <button type="button" class="btn_ghost_reply_argument" (click)="showReplies.set(!showReplies())">
               {{ (showReplies() ? 'COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES' : 'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES') | translate:{ count: argument().replies.count } }}
             </button>
           }
           
           @if (userStore.isAuthenticated()) {
-            <button class="btn_reply_argument" (click)="showReplyInput.set(!showReplyInput())" translate="COMPONENTS.ARGUMENT.BTN_REPLY"></button>
+            <button type="button" class="btn_reply_argument" (click)="showReplyInput.set(!showReplyInput())">
+              {{ 'COMPONENTS.ARGUMENT.BTN_REPLY' | translate }}
+            </button>
           }
         </div>
       </div>
@@ -469,7 +471,7 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
     });
   }
 
-  copyArgumentLink(event: MouseEvent) {
+  copyArgumentLink(event: Event) {
     const arg = this.argument();
     const id = arg.id + '_v' + ((arg.edits?.length || 1) - 1);
     const url = `${window.location.origin}${this.router.url.split('?')[0]}?replyId=${id}`;

@@ -1,4 +1,4 @@
-<div class="overlay" dialogClose></div>
+<div class="overlay" dialogClose (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
 <div class="dialog_wrap">
   <div class="dialog">
     <div class="dialog_header discussion">
@@ -14,14 +14,14 @@
               fill="white" />
           </svg>
         </div>
-        <h4 class="title" translate="COMPONENTS.MISSING_DISCUSSION.TITLE"></h4>
+        <h4 class="title">{{ 'COMPONENTS.MISSING_DISCUSSION.TITLE' | translate }}</h4>
       </div>
     </div>
     <div class="dialog_content">
       <div [innerHTML]="'COMPONENTS.MISSING_DISCUSSION.DESCRIPTION' | translate"></div>
       <div class="content_section">
         <div class="section_content_wrap">
-          <div class="bold" translate="COMPONENTS.MISSING_DISCUSSION.HEADING_DISCUSSION_QUESTION"></div>
+          <div class="bold">{{ 'COMPONENTS.MISSING_DISCUSSION.HEADING_DISCUSSION_QUESTION' | translate }}</div>
           <div class="section_content_description">
             <cos-input [placeholder]="'COMPONENTS.MISSING_DISCUSSION.DISCUSSION_QUESTION_PLACEHOLDER' | translate">
               <input
@@ -35,7 +35,7 @@
       <div class="content_section">
         <div class="section_content_wrap">
           <div class="header_wrap">
-            <div class="bold" translate="COMPONENTS.MISSING_DISCUSSION.HEADING_DISCUSSION_DEADLINE"></div>
+            <div class="bold">{{ 'COMPONENTS.MISSING_DISCUSSION.HEADING_DISCUSSION_DEADLINE' | translate }}</div>
           </div>
           @if (canEditDiscussion()) {
             <cos-deadline-picker
@@ -48,9 +48,9 @@
     </div>
     <div class="dialog_content no_footer">
       <div class="button_wrap">
-        <button class="btn_medium_submit" (click)="save()" translate="COMPONENTS.MISSING_DISCUSSION.BTN_START_DISCUSSION"></button>
+        <button type="button" class="btn_medium_submit" (click)="save()">{{ 'COMPONENTS.MISSING_DISCUSSION.BTN_START_DISCUSSION' | translate }}</button>
         @if (!topic.discussionId) {
-          <a dialogClose translate="COMPONENTS.MISSING_DISCUSSION.LNK_CANCEL"></a>
+          <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.MISSING_DISCUSSION.LNK_CANCEL' | translate }}</button>
         }
       </div>
     </div>

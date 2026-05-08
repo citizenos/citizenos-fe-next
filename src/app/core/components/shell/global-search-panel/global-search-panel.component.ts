@@ -24,12 +24,12 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
   imports: [TranslateModule, IconComponent, UpperCasePipe],
   template: `
     @if (globalSearch.showSearch()) {
-      <div class="search_overlay" (click)="globalSearch.showSearch.set(false)"></div>
+      <div class="search_overlay" (click)="globalSearch.showSearch.set(false)" (keydown.enter)="globalSearch.showSearch.set(false)" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
     }
     <div id="search" [class.open]="globalSearch.showSearch()">
       <div class="search_header">
-        <div class="small_heading" translate="COMPONENTS.SEARCH.TITLE"></div>
-        <button class="btn_medium_close icon" (click)="globalSearch.showSearch.set(false)" aria-label="Close search">
+        <label for="search_field_input" class="small_heading">{{ 'COMPONENTS.SEARCH.TITLE' | translate }}</label>
+        <button type="button" class="btn_medium_close icon" (click)="globalSearch.showSearch.set(false)" [attr.aria-label]="'CONTROL.CLOSE' | translate">
           <cos-icon name="close"></cos-icon>
         </button>
       </div>
@@ -39,6 +39,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
         </div>
         <input
           #searchField
+          id="search_field_input"
           type="text"
           class="search_field"
           [value]="searchInput()"
@@ -46,7 +47,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
           [placeholder]="'LAYOUTS.MAIN.PLACEHOLDER_SEARCH_TOPICS_USERS_GROUPS' | translate"
         />
         @if (searchInput()) {
-          <button class="clear_search" (click)="clearSearch()" translate="COMPONENTS.SEARCH.LNK_CLEAR"></button>
+          <button type="button" class="clear_search" (click)="clearSearch()">{{ 'COMPONENTS.SEARCH.LNK_CLEAR' | translate }}</button>
         }
       </div>
 
@@ -54,24 +55,24 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
         <div id="start_search">
           <div class="illustration_search"></div>
           <div id="text_wrap">
-            <div class="small_heading" translate="COMPONENTS.SEARCH.HEADING_START_SEARCH"></div>
-            <div translate="COMPONENTS.SEARCH.DESC_START_SEARCH"></div>
+            <div class="small_heading">{{ 'COMPONENTS.SEARCH.HEADING_START_SEARCH' | translate }}</div>
+            <div>{{ 'COMPONENTS.SEARCH.DESC_START_SEARCH' | translate }}</div>
           </div>
         </div>
         <div id="donate_wrap">
           <div class="donate_item" id="donate_icon"></div>
-          <div class="donate_item" id="donate_text" translate="DONATE_TXT"></div>
-          <a class="donate_item" id="donate_button" target="_blank" [href]="lnkDonate()" translate="DONATE_BTN"></a>
+          <div class="donate_item" id="donate_text">{{ 'DONATE_TXT' | translate }}</div>
+          <a class="donate_item" id="donate_button" target="_blank" [href]="lnkDonate()">{{ 'DONATE_BTN' | translate }}</a>
         </div>
       }
 
       @if (showResults()) {
         <div id="results_area">
-          <div class="results_header" translate="COMPONENTS.SEARCH.HEADING_SEARCH_RESULTS"></div>
+          <div class="results_header">{{ 'COMPONENTS.SEARCH.HEADING_SEARCH_RESULTS' | translate }}</div>
           @if (noResults()) {
             <div class="results_no_results_wrap">
-              <span class="results_no_results_text" translate="COMPONENTS.SEARCH.TXT_NO_RESULTS_FOUND"></span>
-              <span class="results_no_results_link" (click)="toggleHelp()" translate="COMPONENTS.SEARCH.LNK_HELP_PANEL"></span>
+              <span class="results_no_results_text">{{ 'COMPONENTS.SEARCH.TXT_NO_RESULTS_FOUND' | translate }}</span>
+              <button type="button" class="btn_link results_no_results_link" (click)="toggleHelp()">{{ 'COMPONENTS.SEARCH.LNK_HELP_PANEL' | translate }}</button>
             </div>
           }
           @for (context of contexts; track context) {
@@ -80,12 +81,12 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
                 <div class="result_group_wrap">
                   <div class="category bold">{{ 'LBL_CONTEXT_' + context + '_' + model | uppercase | translate }}</div>
                   @for (row of resultRows(context, model); track row.id) {
-                    <a class="blue_link result_link" (click)="goToView(row, context)">
+                    <button type="button" class="btn_link blue_link result_link" (click)="goToView(row, context)">
                       {{ row.name || row.title }}
-                    </a>
+                    </button>
                   }
                   @if (resultCount(context, model) > resultRows(context, model).length) {
-                    <a class="more_results" (click)="viewMore(context, model)" translate="COMPONENTS.SEARCH.LNK_VIEW_MORE_RESULTS"></a>
+                    <button type="button" class="btn_link more_results" (click)="viewMore(context, model)">{{ 'COMPONENTS.SEARCH.LNK_VIEW_MORE_RESULTS' | translate }}</button>
                   }
                 </div>
                 <div class="line_separator"></div>

@@ -33,12 +33,14 @@
 
         <div class="like_wrap" [class.selected]="idea().votes.up.selected">
           <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate" pos="top">
-            <button trigger class="btn_idea_like" [class.disabled]="!canVote()" (click)="vote(1)">
+            <button type="button" trigger class="btn_idea_like" [class.disabled]="!canVote()" (click)="vote(1)" [aria-label]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate">
               <cos-icon name="thumbs-up" />
             </button>
           </cos-tooltip>
           <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE_COUNT' | translate" pos="top">
-            <span trigger class="like_counter_wrap" (click)="showReactions()">{{ idea().votes.up.count }}</span>
+            <button type="button" trigger class="like_counter_wrap btn_link" (click)="showReactions()" [aria-label]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE_COUNT' | translate">
+              {{ idea().votes.up.count }}
+            </button>
           </cos-tooltip>
         </div>
 
@@ -47,7 +49,7 @@
           <cos-tooltip [noIcon]="true"
             [title]="(idea().favourite ? 'COMPONENTS.IDEABOX.TOOLTIP_SAVED_TO_FAVOURITE' : 'COMPONENTS.IDEABOX.TOOLTIP_FAVOURITE') | translate"
             pos="top">
-            <button trigger class="btn_small_plain" (click)="$event.preventDefault(); $event.stopPropagation(); toggleFavourite()">
+            <button type="button" trigger class="btn_small_plain" (click)="$event.preventDefault(); $event.stopPropagation(); toggleFavourite()" [aria-label]="(idea().favourite ? 'COMPONENTS.IDEABOX.TOOLTIP_SAVED_TO_FAVOURITE' : 'COMPONENTS.IDEABOX.TOOLTIP_FAVOURITE') | translate">
               <cos-icon name="heart" />
             </button>
           </cos-tooltip>
@@ -55,7 +57,7 @@
       } @else {
         <div class="draft_label">
             <cos-icon name="edit" />
-          <span translate="COMPONENTS.IDEABOX.IDEA_DRAFT"></span>
+          <span>{{ 'COMPONENTS.IDEABOX.IDEA_DRAFT' | translate }}</span>
         </div>
       }
     </div>
@@ -63,12 +65,12 @@
     @if (userStore.user()) {
       <div class="idea_header_right">
         <div class="dropdown button_dropdown" cosDropdown>
-           <button class="btn_small_plain icon">
+           <button type="button" class="btn_small_plain icon" [aria-label]="'COMPONENTS.IDEABOX.IDEA_ACTIONS' | translate">
                <cos-icon name="more-vertical" />
            </button>
            <div class="options">
             @if (!isDraft()) {
-              <button class="option" (click)="toggleFavourite()">
+              <button type="button" class="option" (click)="toggleFavourite()">
                 <cos-icon name="heart" size="16"/>
                 <span>{{ (idea().favourite ? 'COMPONENTS.IDEABOX.OPTION_UNFAVOURITE' : 'COMPONENTS.IDEABOX.OPTION_FAVOURITE') | translate }}</span>
               </button>
@@ -78,9 +80,9 @@
               @if (!isDraft()) {
                 <div class="line_separator"></div>
               }
-              <button class="option error_text" (click)="confirmDelete()">
+              <button type="button" class="option error_text" (click)="confirmDelete()">
                 <cos-icon name="trash" size="16"/>
-                <span translate="COMPONENTS.IDEABOX.OPTION_REMOVE"></span>
+                <span>{{ 'COMPONENTS.IDEABOX.OPTION_REMOVE' | translate }}</span>
               </button>
             }
           </div>
@@ -96,9 +98,9 @@
   <div class="idea_footer">
     @if (!isDraft()) {
       <div class="date">{{ idea().createdAt | date:'y-MM-dd HH:mm' }}</div>
-      <div class="replies_count" (click)="toggleReplies()">
+      <button type="button" class="replies_count btn_link" (click)="toggleReplies()">
         {{ 'COMPONENTS.IDEABOX.REPLIES' | translate:{ count: idea().replies?.count ?? 0 } }}
-      </div>
+      </button>
     } @else {
       <div class="date">{{ 'COMPONENTS.IDEABOX.DRAFT_UPDATED_AT' | translate:{ date: (idea().updatedAt | date:'y-MM-dd HH:mm') } }}</div>
     }
@@ -107,10 +109,10 @@
   @if (showReplies()) {
     <div class="replies_section">
         @if (userStore.isAuthenticated()) {
-            <div class="reply_form_toggle" (click)="showReplyInput.set(!showReplyInput())">
+            <button type="button" class="reply_form_toggle btn_link" (click)="showReplyInput.set(!showReplyInput())">
                 <cos-icon name="edit" size="16"></cos-icon>
-                <span translate="COMPONENTS.IDEA_REPLY.BTN_REPLY"></span>
-            </div>
+                <span>{{ 'COMPONENTS.IDEA_REPLY.BTN_REPLY' | translate }}</span>
+            </button>
             @if (showReplyInput()) {
                 <app-idea-reply-form
                     [topicId]="topic().id"
@@ -131,7 +133,7 @@
                     [ideaId]="idea().id">
                 </app-idea-reply>
             } @empty {
-                <div class="no_replies" translate="COMPONENTS.IDEABOX.NO_REPLIES"></div>
+                <div class="no_replies">{{ 'COMPONENTS.IDEABOX.NO_REPLIES' | translate }}</div>
             }
         </div>
     </div>

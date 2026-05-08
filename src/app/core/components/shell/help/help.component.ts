@@ -17,7 +17,7 @@ import { TermsLinksComponent } from '../../../../shared/components/terms-links/t
   imports: [TranslateModule, FormsModule, ReactiveFormsModule, IconComponent, TermsLinksComponent],
   template: `
     @if (uiState.showHelp() || helptooltip()) {
-      <div id="dark_overlay" class="help_overlay" (click)="toggleHelp()"></div>
+      <div id="dark_overlay" class="help_overlay" (click)="toggleHelp()" (keydown.enter)="toggleHelp()" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
     }
 
     @if (uiState.showHelp()) {
@@ -25,9 +25,9 @@ import { TermsLinksComponent } from '../../../../shared/components/terms-links/t
         <div class="help_header_wrap">
           <div></div>
           <div class="help_title_text_wrapper">
-            <div class="help_title_text" translate="HELP_WIDGET.HEADER_TITLE"></div>
+            <div class="help_title_text">{{ 'HELP_WIDGET.HEADER_TITLE' | translate }}</div>
           </div>
-          <button class="btn_small_plain icon" (click)="toggleHelp()">
+          <button type="button" class="btn_small_plain icon" (click)="toggleHelp()" [attr.aria-label]="'CONTROL.CLOSE' | translate">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M5.29289 17.2929C4.90237 17.6834 4.90237 18.3166 5.29289 18.7071C5.68342 19.0976 6.31658 19.0976 6.70711 18.7071L12 13.4142L17.2929 18.7071C17.6834 19.0976 18.3166 19.0976 18.7071 18.7071C19.0976 18.3166 19.0976 17.6834 18.7071 17.2929L13.4142 12L18.7071 6.70711C19.0976 6.31658 19.0976 5.68342 18.7071 5.29289C18.3166 4.90237 17.6834 4.90237 17.2929 5.29289L12 10.5858L6.70711 5.29289C6.31658 4.90237 5.68342 4.90237 5.29289 5.29289C4.90237 5.68342 4.90237 6.31658 5.29289 6.70711L10.5858 12L5.29289 17.2929Z"
@@ -50,42 +50,43 @@ import { TermsLinksComponent } from '../../../../shared/components/terms-links/t
                     fill="white" />
                 </svg>
               </div>
-              <div class="small_heading" translate="HELP_WIDGET.EXTRA_INFO_TOUR_HEADING"></div>
+              <div class="small_heading">{{ 'HELP_WIDGET.EXTRA_INFO_TOUR_HEADING' | translate }}</div>
             </div>
-            <div class="description" translate="HELP_WIDGET.EXTRA_INFO_TOUR_DESCRIPTION"></div>
-            <button (click)="startTour()" class="start_btn" translate="HELP_WIDGET.EXTRA_INFO_TOUR_BTN_START"></button>
+            <div class="description">{{ 'HELP_WIDGET.EXTRA_INFO_TOUR_DESCRIPTION' | translate }}</div>
+            <button type="button" (click)="startTour()" class="start_btn">{{ 'HELP_WIDGET.EXTRA_INFO_TOUR_BTN_START' | translate }}</button>
           </div>
         }
 
         <div class="help_content">
           <form id="help_form" [formGroup]="helpForm" (ngSubmit)="sendHelpRequest()">
             <div class="help_form_text_wrap">
-              <div class="help_form_heading small_heading" translate="HELP_WIDGET.TITLE"></div>
-              <div class="help_form_heading" translate="HELP_WIDGET.DESCRIPTION"></div>
+              <div class="help_form_heading small_heading">{{ 'HELP_WIDGET.TITLE' | translate }}</div>
+              <div class="help_form_heading">{{ 'HELP_WIDGET.DESCRIPTION' | translate }}</div>
             </div>
             <div class="help_form_input_wrap">
-              <textarea formControlName="description"
+              <label for="help_description" class="visually_hidden">{{ 'HELP_WIDGET.PLACEHOLDER_WRITE_YOUR_MESSAGE' | translate }}</label>
+              <textarea id="help_description" formControlName="description"
                 [placeholder]="'HELP_WIDGET.PLACEHOLDER_WRITE_YOUR_MESSAGE' | translate" [maxlength]="2048"
                 rows="5"></textarea>
               
-              <div class="bold" translate="HELP_WIDGET.WANT_A_RESPONCE"></div>
-              <input formControlName="email" type="email"
+              <label for="help_email" class="bold">{{ 'HELP_WIDGET.WANT_A_RESPONCE' | translate }}</label>
+              <input id="help_email" formControlName="email" type="email"
                 placeholder="{{'HELP_WIDGET.PLACEHOLDER_WRITE_YOUR_EMAIL' | translate}}" [maxlength]="254">
               
               <button type="submit" [disabled]="helpForm.invalid"
-                class="btn_big_submit" translate="HELP_WIDGET.BTN_SEND"></button>
+                class="btn_big_submit">{{ 'HELP_WIDGET.BTN_SEND' | translate }}</button>
             </div>
           </form>
         </div>
 
         <div class="links_content">
-          <div class="bold links_content_title" translate="HELP_WIDGET.LINKS_TITLE"></div>
+          <div class="bold links_content_title">{{ 'HELP_WIDGET.LINKS_TITLE' | translate }}</div>
           <cos-terms-links />
         </div>
       </div>
     }
 
-    <div id="help_bubble" (click)="toggleHelp();">
+    <button type="button" id="help_bubble" (click)="toggleHelp();" [attr.aria-label]="'HELP_WIDGET.HEADER_TITLE' | translate">
       <svg width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
         <title>icon_bubble_help</title>
         <g filter="url(#filter0_dd_7017_69077)">
@@ -115,7 +116,7 @@ import { TermsLinksComponent } from '../../../../shared/components/terms-links/t
           </filter>
         </defs>
       </svg>
-    </div>
+    </button>
   `,
   styles: [`
     @use "mixins";

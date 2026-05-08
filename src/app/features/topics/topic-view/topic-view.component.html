@@ -19,41 +19,46 @@
 
     <!-- Mobile/Tablet Tabs -->
     @if (wWidth() <= 1024) { <div id="tabs_tablet" class="topic_tabs tablet tabs_wrap tablet_show">
-      <a class="topic_tab" (click)="tabTablet.set('')" [class.active]="!tabTablet()">
+      <button type="button" class="topic_tab" (click)="tabTablet.set('')" (keydown.enter)="tabTablet.set('')"
+        [class.active]="!tabTablet()" [aria-label]="'VIEWS.TOPICS_TOPICID.TAB_INFO' | translate">
         <cos-domain-icon type="topic" [size]="32" />
-      </a>
-      <a class="topic_tab discussion" (click)="tabTablet.set('discussion')"
-        [class.active]="tabTablet() === 'discussion'"
-        [class.disabled]="topic()?.status === 'draft' || topic()?.status === 'inProgress'">
+      </button>
+      <button type="button" class="topic_tab discussion" (click)="tabTablet.set('discussion')"
+        (keydown.enter)="tabTablet.set('discussion')" [class.active]="tabTablet() === 'discussion'"
+        [class.disabled]="topic()?.status === 'draft' || topic()?.status === 'inProgress'"
+        [aria-label]="'VIEWS.TOPICS_TOPICID.TAB_DISCUSSION' | translate">
         <cos-domain-icon type="topic" [size]="32" />
-      </a>
+      </button>
   </div>
   }
 
   <!-- Desktop Tabs -->
   <div class="topic_tabs mobile_hidden">
     @if (topic()?.ideationId || topic()?.status === STATUSES.ideation) {
-    <a class="topic_tab ideation" (click)="selectTab('ideation')" [class.active]="tabSelected() === 'ideation'">
+    <button type="button" class="topic_tab ideation" (click)="selectTab('ideation')"
+      (keydown.enter)="selectTab('ideation')" [class.active]="tabSelected() === 'ideation'">
       <cos-domain-icon type="ideation" [size]="32" />
-      <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_IDEATION"></span>
-    </a>
+      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_IDEATION' | translate }}</span>
+    </button>
     }
-    <a class="topic_tab discussion" (click)="selectTab('discussion')"
-      [class.active]="tabSelected() === 'discussion' || !tabSelected()">
+    <button type="button" class="topic_tab discussion" (click)="selectTab('discussion')"
+      (keydown.enter)="selectTab('discussion')" [class.active]="tabSelected() === 'discussion' || !tabSelected()">
       <cos-domain-icon type="topic" [size]="32" />
-      <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_DISCUSSION"></span>
-    </a>
+      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_DISCUSSION' | translate }}</span>
+    </button>
     @if (topic()?.voteId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress,
     STATUSES.voting].includes(topic()?.status || '')) {
-    <a class="topic_tab voting" (click)="selectTab('voting')" [class.active]="tabSelected() === 'voting'">
+    <button type="button" class="topic_tab voting" (click)="selectTab('voting')" (keydown.enter)="selectTab('voting')"
+      [class.active]="tabSelected() === 'voting'">
       <cos-domain-icon type="vote" [size]="32" />
-      <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_VOTING"></span>
-    </a>
+      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_VOTING' | translate }}</span>
+    </button>
     }
-    <a class="topic_tab follow_up" (click)="selectTab('followUp')" [class.active]="tabSelected() === 'followUp'">
+    <button type="button" class="topic_tab follow_up" (click)="selectTab('followUp')"
+      (keydown.enter)="selectTab('followUp')" [class.active]="tabSelected() === 'followUp'">
       <cos-domain-icon type="follow-up" [size]="32" />
-      <span class="tab_text" translate="VIEWS.TOPICS_TOPICID.TAB_FOLLOW_UP"></span>
-    </a>
+      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_FOLLOW_UP' | translate }}</span>
+    </button>
     <div id="activities_button_wrap">
       <cos-activities-button [topicId]="topic()!.id"></cos-activities-button>
     </div>
@@ -69,40 +74,44 @@
           <cos-icon name="warning" [size]="24" color="white"></cos-icon>
         </div>
         <div class="message">
-          <div class="title" translate="VIEWS.TOPICS_TOPICID.HEADING_REPORTED"></div>
+          <div class="title">{{ 'VIEWS.TOPICS_TOPICID.HEADING_REPORTED' | translate }}</div>
           <div class="content">
-            <div class="content_description"
-              [translate]="topicService.canEdit(topic()!) ? 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED_ADMIN' : 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED'">
+            <div class="content_description">
+              {{ (topicService.canEdit(topic()!) ? 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED_ADMIN' : 'VIEWS.TOPICS_TOPICID.DESCRIPTION_REPORTED') | translate }}
             </div>
             <div class="content_items_wrap">
               @if (topic()?.report?.type && !topic()?.report?.moderatedReasonType) {
               <div class="content_item">
-                <a (click)="moderateTopic(topic()!)">
+                <div class="option" (click)="moderateTopic(topic()!)" (keydown.enter)="moderateTopic(topic()!)"
+                  tabindex="0" role="button">
                   <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
-                  <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_MODERATE"></span>
-                </a>
+                  <span>{{ 'VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_MODERATE' | translate }}</span>
+                </div>
               </div>
               }
               <div class="content_item">
-                <a (click)="reportReasonDialog(topic()!)">
+                <div class="option" (click)="reportReasonDialog(topic()!)"
+                  (keydown.enter)="reportReasonDialog(topic()!)" tabindex="0" role="button">
                   <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
-                  <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_VIEW_REPORT_DETAILS"></span>
-                </a>
+                  <span>{{ 'VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_VIEW_REPORT_DETAILS' | translate }}</span>
+                </div>
               </div>
               @if (topic()?.report?.type) {
               <div class="content_item">
-                <a (click)="resolveTopic(topic()!)">
+                <div class="option" (click)="resolveTopic(topic()!)" (keydown.enter)="resolveTopic(topic()!)"
+                  tabindex="0" role="button">
                   <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
-                  <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_RESOLVE"></span>
-                </a>
+                  <span>{{ 'VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_RESOLVE' | translate }}</span>
+                </div>
               </div>
               }
               @if (topicService.canEdit(topic()!) && topic()?.report?.moderatedReasonType) {
               <div class="content_item">
-                <a (click)="reviewTopic(topic()!)">
+                <div class="option" (click)="reviewTopic(topic()!)" (keydown.enter)="reviewTopic(topic()!)" tabindex="0"
+                  role="button">
                   <div class="icon"><cos-icon name="arrow-next" [size]="24" color="#1168A8"></cos-icon></div>
-                  <span translate="VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_SUBMIT_FOR_REVIEW"></span>
-                </a>
+                  <span>{{ 'VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_SUBMIT_FOR_REVIEW' | translate }}</span>
+                </div>
               </div>
               }
             </div>
@@ -118,10 +127,14 @@
             <div>
               <cos-icon name="warning" [size]="40" color="#F39129"></cos-icon>
             </div>
-            <div class="notification_title" translate="COMPONENTS.TOPICBOX.NOTIFICATION_TITLE"></div>
+            <div class="notification_title">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_TITLE' | translate }}</div>
             <div class="notification_links">
-              <a (click)="reportReasonDialog(topic()!)">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_LNK_WHY' | translate }}</a>
-              <a (click)="hideTopicContent.set(false)">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_LNK_VIEW' | translate }}</a>
+              <button type="button" class="btn_link" (click)="reportReasonDialog(topic()!)"
+                (keydown.enter)="reportReasonDialog(topic()!)">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_LNK_WHY' | translate
+                }}</button>
+              <button type="button" class="btn_link" (click)="hideTopicContent.set(false)"
+                (keydown.enter)="hideTopicContent.set(false)">{{ 'COMPONENTS.TOPICBOX.NOTIFICATION_LNK_VIEW' | translate
+                }}</button>
             </div>
           </div>
         </div>
@@ -168,22 +181,22 @@
                 </clipPath>
               </defs>
             </svg>
-            <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_VOTING_HEADING"></div>
+            <div class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_VOTING_HEADING' | translate }}</div>
             @if (topicService.canDelete(topic()!) && topic()?.status !== STATUSES.followUp && topic()?.status !==
             STATUSES.closed) {
             <div class="button">
-              <button class="btn_medium_submit animate" (click)="startVote(topic()!)">
+              <button type="button" class="btn_medium_submit animate" (click)="startVote(topic()!)">
                 <cos-icon name="plus" [size]="20"></cos-icon>
-                <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_BTN_ADD"></span>
+                <span>{{ 'VIEWS.TOPICS_TOPICID.NO_VOTING_BTN_ADD' | translate }}</span>
               </button>
             </div>
             }
             <div class="no_feature_description">
               <div class="description_text">
-                <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_HEADING"></div>
+                <div class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_HEADING' | translate }}</div>
                 <div>
-                  <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_BEFORE"></span><br /><br />
-                  <span translate="VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_AFTER"></span>
+                  <span>{{ 'VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_BEFORE' | translate }}</span><br /><br />
+                  <span>{{ 'VIEWS.TOPICS_TOPICID.NO_VOTING_DESC_AFTER' | translate }}</span>
                 </div>
               </div>
             </div>
@@ -218,21 +231,21 @@
                 </clipPath>
               </defs>
             </svg>
-            <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_UP_HEADING"></div>
+            <div class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_FOLLOW_UP_HEADING' | translate }}</div>
             @if (topicService.canDelete(topic()!) && topic()?.status !== STATUSES.closed) {
             <div class="button">
-              <button class="btn_medium_submit animate" (click)="sendToFollowUp(topic()!)">
+              <button type="button" class="btn_medium_submit animate" (click)="sendToFollowUp(topic()!)">
                 <cos-icon name="plus" [size]="20"></cos-icon>
-                <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_BTN_ADD"></span>
+                <span>{{ 'VIEWS.TOPICS_TOPICID.NO_FOLLOW_BTN_ADD' | translate }}</span>
               </button>
             </div>
             }
             <div class="no_feature_description">
               <div class="description_text">
-                <div class="description_heading" translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_HEADING"></div>
+                <div class="description_heading">{{ 'VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_HEADING' | translate }}</div>
                 <div>
-                  <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_BEFORE"></span><br /><br />
-                  <span translate="VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_AFTER"></span>
+                  <span>{{ 'VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_BEFORE' | translate }}</span><br /><br />
+                  <span>{{ 'VIEWS.TOPICS_TOPICID.NO_FOLLOW_DESC_AFTER' | translate }}</span>
                 </div>
               </div>
             </div>
@@ -263,12 +276,12 @@
       <div class="info_section notifications">
         <div class="info_items_wrap">
           <div class="info_header">
-            <div class="info_title" translate="VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_HEADING"></div>
+            <div class="info_title">{{ 'VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_HEADING' | translate }}</div>
           </div>
-          <div class="info_item" translate="VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_DESC"></div>
-          <button class="btn_medium_secondary bold" (click)="appTopicNotificationSettings()">
+          <div class="info_item">{{ 'VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_DESC' | translate }}</div>
+          <button type="button" class="btn_medium_secondary bold" (click)="appTopicNotificationSettings()">
             <div class="icon"><cos-icon name="bell" size="16"></cos-icon></div>
-            <span translate="VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_BTN"></span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.SECTION_NOTIFICATIONS_BTN' | translate }}</span>
           </button>
         </div>
       </div>

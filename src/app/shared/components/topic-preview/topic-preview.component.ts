@@ -28,14 +28,14 @@ import { Vote } from '../../../core/interfaces/vote';
 
         @if (ideation(); as i) {
           <div class="preview-ideation">
-            <h3 translate="COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_IDEATION"></h3>
+            <h3>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_IDEATION' | translate }}</h3>
             <p class="preview-question">{{ i.question }}</p>
           </div>
         }
 
         @if (vote(); as v) {
           <div class="preview-vote">
-            <h3 translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTING_QUESTION"></h3>
+            <h3>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTING_QUESTION' | translate }}</h3>
             <p class="preview-question">{{ v.question }}</p>
             <div class="preview-options">
               @for (opt of v.options; track opt.value) {
@@ -51,7 +51,7 @@ import { Vote } from '../../../core/interfaces/vote';
         <div class="preview-meta">
           @if (t.categories.length) {
             <div class="meta-row">
-              <span class="meta-label" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_CATEGORY_AND_LOCALITY"></span>
+              <span class="meta-label">{{ 'VIEWS.TOPIC_CREATE.SETTINGS_HEADING_CATEGORY_AND_LOCALITY' | translate }}</span>
               <div class="category-tags">
                 @for (cat of t.categories; track cat) {
                   <span class="category-tag">{{ cat }}</span>
@@ -61,20 +61,20 @@ import { Vote } from '../../../core/interfaces/vote';
           }
 
           <div class="meta-row">
-            <span class="meta-label" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_VISIBILITY"></span>
+            <span class="meta-label">{{ 'VIEWS.TOPIC_CREATE.SETTINGS_HEADING_VISIBILITY' | translate }}</span>
             <span class="meta-value">{{ t.visibility }}</span>
           </div>
 
           @if (t.country) {
             <div class="meta-row">
-              <span class="meta-label" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_LOCALITY"></span>
+              <span class="meta-label">{{ 'VIEWS.TOPIC_CREATE.SETTINGS_HEADING_LOCALITY' | translate }}</span>
               <span class="meta-value">{{ t.country }}</span>
             </div>
           }
 
           @if (t.language) {
             <div class="meta-row">
-              <span class="meta-label" translate="VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_LOCALITY_TITLE"></span>
+              <span class="meta-label">{{ 'VIEWS.TOPIC_CREATE.TOOLTIP_TOPIC_LOCALITY_TITLE' | translate }}</span>
               <span class="meta-value">{{ t.language }}</span>
             </div>
           }
@@ -82,7 +82,7 @@ import { Vote } from '../../../core/interfaces/vote';
 
         @if (topicGroups().length) {
           <div class="preview-groups">
-            <h3 translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_GROUP_LIST"></h3>
+            <h3>{{ 'VIEWS.TOPIC_CREATE.SETTINGS_HEADING_GROUP_LIST' | translate }}</h3>
             @for (group of topicGroups(); track group.id) {
               <div class="group-chip">{{ group.name }}</div>
             }

@@ -15,10 +15,13 @@ export interface StepConfig {
   imports: [TranslateModule, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="step-navigator">
+    <div class="step-navigator" role="tablist">
       @for (step of steps(); track step.key; let i = $index) {
-        <a
+        <button
+          type="button"
           class="step-tab"
+          role="tab"
+          [attr.aria-selected]="currentStep() === step.key"
           [class.active]="currentStep() === step.key"
           [class.completed]="isCompleted(i)"
           (click)="stepChange.emit(step.key)"
@@ -28,7 +31,7 @@ export interface StepConfig {
           <div class="step-icon-mobile">
             <cos-icon [name]="step.icon"></cos-icon>
           </div>
-        </a>
+        </button>
       }
       <div class="step-actions">
         <ng-content select="[actions]"></ng-content>

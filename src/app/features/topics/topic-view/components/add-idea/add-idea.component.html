@@ -1,7 +1,7 @@
 <div class="add_idea_wrap">
   <div class="add_idea_header">
-    <h3 translate="COMPONENTS.ADD_IDEA.HEADING"></h3>
-    <button class="btn_close" (click)="close()">
+    <h3>{{ 'COMPONENTS.ADD_IDEA.HEADING' | translate }}</h3>
+    <button type="button" class="btn_close" (click)="close()" [aria-label]="'CONTROL.CLOSE' | translate">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path d="M18 6L6 18M6 6L18 18" stroke="#2C3B47" stroke-width="2" stroke-linecap="round"/>
       </svg>
@@ -10,8 +10,9 @@
 
   <div class="add_idea_form">
     <div class="field_wrap" [class.error]="errors()['statement']">
-      <label translate="COMPONENTS.ADD_IDEA.LBL_STATEMENT"></label>
+      <label for="idea_statement">{{ 'COMPONENTS.ADD_IDEA.LBL_STATEMENT' | translate }}</label>
       <input
+        id="idea_statement"
         type="text"
         class="field"
         [maxlength]="STATEMENT_MAXLENGTH"
@@ -19,33 +20,34 @@
         (ngModelChange)="onStatementChange($event)"
         placeholder="{{ 'COMPONENTS.ADD_IDEA.PLACEHOLDER_STATEMENT' | translate }}" />
       @if (errors()['statement']) {
-        <div class="error_message" translate="COMPONENTS.ADD_IDEA.ERROR_STATEMENT_REQUIRED"></div>
+        <div class="error_message">{{ 'COMPONENTS.ADD_IDEA.ERROR_STATEMENT_REQUIRED' | translate }}</div>
       }
       <div class="char_count">{{ statement().length }}/{{ STATEMENT_MAXLENGTH }}</div>
     </div>
 
     <div class="field_wrap" [class.error]="errors()['description']">
-      <label translate="COMPONENTS.ADD_IDEA.LBL_DESCRIPTION"></label>
+      <label for="idea_description">{{ 'COMPONENTS.ADD_IDEA.LBL_DESCRIPTION' | translate }}</label>
       <textarea
+        id="idea_description"
         class="field"
         rows="6"
         [ngModel]="description()"
         (ngModelChange)="onDescriptionChange($event)"
         placeholder="{{ 'COMPONENTS.ADD_IDEA.PLACEHOLDER_DESCRIPTION' | translate }}"></textarea>
       @if (errors()['description']) {
-        <div class="error_message" translate="COMPONENTS.ADD_IDEA.ERROR_DESCRIPTION_REQUIRED"></div>
+        <div class="error_message">{{ 'COMPONENTS.ADD_IDEA.ERROR_DESCRIPTION_REQUIRED' | translate }}</div>
       }
     </div>
 
     @if (isAutosaving()) {
-      <div class="autosave_indicator" translate="COMPONENTS.ADD_IDEA.LBL_AUTOSAVING"></div>
+      <div class="autosave_indicator">{{ 'COMPONENTS.ADD_IDEA.LBL_AUTOSAVING' | translate }}</div>
     }
 
     <div class="form_actions">
-      <button class="btn_medium_plain" (click)="saveDraft()" translate="COMPONENTS.ADD_IDEA.BTN_SAVE_DRAFT"></button>
+      <button type="button" class="btn_medium_plain" (click)="saveDraft()">{{ 'COMPONENTS.ADD_IDEA.BTN_SAVE_DRAFT' | translate }}</button>
       <div class="spacer"></div>
-      <button class="btn_medium_plain" (click)="close()" translate="COMPONENTS.ADD_IDEA.BTN_CANCEL"></button>
-      <button class="btn_medium" (click)="publish()" translate="COMPONENTS.ADD_IDEA.BTN_PUBLISH"></button>
+      <button type="button" class="btn_medium_plain" (click)="close()">{{ 'COMPONENTS.ADD_IDEA.BTN_CANCEL' | translate }}</button>
+      <button type="button" class="btn_medium" (click)="publish()">{{ 'COMPONENTS.ADD_IDEA.BTN_PUBLISH' | translate }}</button>
     </div>
   </div>
 </div>

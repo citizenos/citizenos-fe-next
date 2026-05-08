@@ -16,7 +16,7 @@ import { ButtonComponent } from '../button/button.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, TranslateModule, InitialsComponent, DatePipe, IconComponent, ButtonComponent],
   template: `
-    <a class="group" [class]="mode()" (click)="viewGroup()" [attr.aria-label]="group().name">
+    <div class="group" [class]="mode()" (click)="viewGroup()" (keydown.enter)="viewGroup()" role="button" tabindex="0" [attr.aria-label]="group().name">
       <div class="group_header">
         <div class="image_area">
           @if (group().imageUrl) {

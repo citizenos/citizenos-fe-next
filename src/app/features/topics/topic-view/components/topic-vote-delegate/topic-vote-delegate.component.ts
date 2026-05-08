@@ -21,7 +21,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
 })
 export class TopicVoteDelegateComponent {
   data = inject<{ topic: any }>(DIALOG_DATA);
-  private dialogRef = inject(DialogRef);
+  protected dialogRef = inject(DialogRef);
   private memberUserService = inject(TopicMemberUserService);
   private voteDelegationService = inject(VoteDelegationService);
   private topicService = inject(TopicService);

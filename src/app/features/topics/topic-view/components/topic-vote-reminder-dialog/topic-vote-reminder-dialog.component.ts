@@ -2,7 +2,7 @@ import { Component, inject, ChangeDetectionStrategy, computed } from '@angular/c
 import { DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
-import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
+import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { UserStore } from '../../../../../core/state/user.store';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
@@ -15,6 +15,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 })
 export class TopicVoteReminderDialogComponent {
   data = inject<{ topic: any; vote: any }>(DIALOG_DATA);
+  dialogRef = inject(DialogRef);
   private userStore = inject(UserStore);
 
   user = computed(() => this.userStore.user());

@@ -33,7 +33,7 @@ import { SeoService } from '../../../core/services/seo.service';
   template: `
     <div class="page_content">
       <app-page-list-header>
-        <span title translate="VIEWS.PUBLIC_GROUPS.TITLE"></span>
+        <span title>{{ 'VIEWS.PUBLIC_GROUPS.TITLE' | translate }}</span>
         @if (isAuthenticated()) {
           <cos-activities-button activities></cos-activities-button>
         }
@@ -52,8 +52,8 @@ import { SeoService } from '../../../core/services/seo.service';
           <cos-group-card [group]="group" mode="public"></cos-group-card>
         } @empty {
           <div class="no_groups">
-            <div class="no_groups_heading" translate="VIEWS.PUBLIC_GROUPS.HEADING_GET_STARTED"></div>
-            <div class="no_groups_desc" translate="VIEWS.PUBLIC_GROUPS.HEADING_NO_RESUTS"></div>
+            <div class="no_groups_heading">{{ 'VIEWS.PUBLIC_GROUPS.HEADING_GET_STARTED' | translate }}</div>
+            <div class="no_groups_desc">{{ 'VIEWS.PUBLIC_GROUPS.HEADING_NO_RESUTS' | translate }}</div>
           </div>
         }
       </div>

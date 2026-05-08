@@ -5,17 +5,17 @@
         <div class="icon_notification">
           <cos-icon name="info-filled" [size]="40"></cos-icon>
         </div>
-        <h3 class="title" translate="MODALS.TOPIC_REPORT_RESOLVE_HEADING"></h3>
+        <h3 class="title">{{ 'MODALS.TOPIC_REPORT_RESOLVE_HEADING' | translate }}</h3>
       </div>
       <div class="dialog_close">
-        <button class="btn_dialog_close icon" dialogClose>
+        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
           <cos-icon name="nav-close"></cos-icon>
         </button>
       </div>
     </div>
 
     <div class="dialog_content">
-      <div class="content_text" translate="MODALS.TOPIC_REPORT_RESOLVE_DESCRIPTION"></div>
+      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_RESOLVE_DESCRIPTION' | translate }}</div>
     </div>
 
     <div class="dialog_footer with_buttons">

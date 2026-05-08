@@ -18,17 +18,15 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
           <div id="lightbox_wrap">
             <div id="lightbox_header">
               <div id="lightbox_header_text">
-                <div class="title" translate="MODALS.GIVE_FEEDBACK_HEADING"></div>
-                <div class="description" translate="MODALS.GIVE_FEEDBACK_DESC"></div>
+                <div class="title">{{ 'MODALS.GIVE_FEEDBACK_HEADING' | translate }}</div>
+                <div class="description">{{ 'MODALS.GIVE_FEEDBACK_DESC' | translate }}</div>
               </div>
-              <div id="lightbox_close" (click)="uiState.showFeedback.set(false)">
-                <div class="table_cell ngdialog-close">
-                  <div class="sprite sprite-btn-popup-close2x ngdialog-close">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="#2C3B47"/>
-                    </svg>
-                  </div>
-                </div>
+              <div id="lightbox_close">
+                <button type="button" class="btn_dialog_close" (click)="uiState.showFeedback.set(false)" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="#2C3B47"/>
+                  </svg>
+                </button>
               </div>
               <div class="line lightest_line"></div>
             </div>
@@ -40,25 +38,25 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
 
               @if (!isSubmitted()) {
                 <div class="lightbox_section">
-                  <label class="bold" translate="MODALS.GIVE_FEEDBACK_LBL_NAME"></label>
-                  <input class="feedback_input" [(ngModel)]="name">
+                  <label class="bold" for="feedback_name">{{ 'MODALS.GIVE_FEEDBACK_LBL_NAME' | translate }}</label>
+                  <input id="feedback_name" class="feedback_input" [(ngModel)]="name">
                   
-                  <label class="bold" translate="MODALS.GIVE_FEEDBACK_LBL_EMAIL"></label>
-                  <input class="feedback_input" [(ngModel)]="email">
+                  <label class="bold" for="feedback_email">{{ 'MODALS.GIVE_FEEDBACK_LBL_EMAIL' | translate }}</label>
+                  <input id="feedback_email" class="feedback_input" [(ngModel)]="email">
                   
-                  <label class="bold" translate="MODALS.GIVE_FEEDBACK_LBL_GROUP_OR_ORG"></label>
-                  <input class="feedback_input" [(ngModel)]="org">
+                  <label class="bold" for="feedback_org">{{ 'MODALS.GIVE_FEEDBACK_LBL_GROUP_OR_ORG' | translate }}</label>
+                  <input id="feedback_org" class="feedback_input" [(ngModel)]="org">
                   
-                  <div class="bold" translate="MODALS.GIVE_FEEDBACK_QUESTION_1"></div>
-                  <textarea class="feedback_info_textarea" [class.error_input]="error() && !message" [(ngModel)]="message"
+                  <label class="bold" for="feedback_message">{{ 'MODALS.GIVE_FEEDBACK_QUESTION_1' | translate }}</label>
+                  <textarea id="feedback_message" class="feedback_info_textarea" [class.error_input]="error() && !message" [(ngModel)]="message"
                     [placeholder]="'MODALS.GIVE_FEEDBACK_PLACEHOLDER_TEXTAREA' | translate"></textarea>
 
-                  <div class="bold" translate="MODALS.GIVE_FEEDBACK_QUESTION_2"></div>
+                  <div class="bold">{{ 'MODALS.GIVE_FEEDBACK_QUESTION_2' | translate }}</div>
 
                   <label class="checkcontainer">
                     <input type="checkbox" class="checkbox" [checked]="allowContact" (change)="allowContact = !allowContact">
                     <span class="option_checkbox"></span>
-                    <span class="bold" translate="MODALS.GIVE_FEEDBACK_LBL_CHECKBOX"></span>
+                    <span class="bold">{{ 'MODALS.GIVE_FEEDBACK_LBL_CHECKBOX' | translate }}</span>
                   </label>
                   
                   <p class="feedback_info_text" [innerHtml]="'MODALS.GIVE_FEEDBACK_BE_CAREFULL' | translate"></p>
@@ -87,17 +85,17 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
               <div class="lightbox_section">
                 <div class="footer_button_wrap right">
                   @if (!isSubmitted()) {
-                    <div class="blue_link" (click)="uiState.showFeedback.set(false)" translate="MODALS.GIVE_FEEDBACK_BTN_CANCEL"></div>
-                    <div class="blue_button" (click)="submitFeedback()" translate="MODALS.GIVE_FEEDBACK_BTN_SUBMIT"></div>
+                    <button type="button" class="btn_link" (click)="uiState.showFeedback.set(false)">{{ 'MODALS.GIVE_FEEDBACK_BTN_CANCEL' | translate }}</button>
+                    <button type="button" class="btn_medium_submit" (click)="submitFeedback()">{{ 'MODALS.GIVE_FEEDBACK_BTN_SUBMIT' | translate }}</button>
                   } @else {
-                    <div class="blue_button" (click)="uiState.showFeedback.set(false)" translate="MODALS.GIVE_FEEDBACK_BTN_CLOSE"></div>
+                    <button type="button" class="btn_medium_submit" (click)="uiState.showFeedback.set(false)">{{ 'MODALS.GIVE_FEEDBACK_BTN_CLOSE' | translate }}</button>
                   }
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div id="close_lightbox" (click)="uiState.showFeedback.set(false)"></div>
+        <div id="close_lightbox" (click)="uiState.showFeedback.set(false)" (keydown.enter)="uiState.showFeedback.set(false)" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
       </div>
     }
   `,

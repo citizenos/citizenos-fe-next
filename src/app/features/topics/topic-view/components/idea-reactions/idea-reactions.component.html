@@ -1,8 +1,8 @@
 <div class="dialog_header">
   <div class="header_text">
-    <h4 class="title" [translate]="'MODALS.TOPIC_IDEA_REACTIONS_HEADING'"></h4>
+    <h4 class="title">{{ 'MODALS.TOPIC_IDEA_REACTIONS_HEADING' | translate }}</h4>
     <div class="dialog_close">
-      <button class="btn_dialog_close icon" (click)="close()">
+      <button type="button" class="btn_dialog_close icon" (click)="close()" [aria-label]="'CONTROL.CLOSE' | translate">
         <cos-icon name="close" />
       </button>
     </div>
@@ -17,7 +17,7 @@
           <div class="row_cell">
             <div class="profile_image_wrap">
               @if (member.imageUrl) {
-                <img class="profile_image" [src]="member.imageUrl">
+                <img class="profile_image" [src]="member.imageUrl" alt="">
               } @else {
                 <div class="profile_image_filler">
                   <cos-initials class="table_cell" [name]="member.name" />
@@ -35,7 +35,7 @@
           </div>
         </div>
       } @empty {
-        <div [translate]="'MODALS.TOPIC_IDEA_REACTIONS_NO_REACTIONS_YET'"></div>
+        <div>{{ 'MODALS.TOPIC_IDEA_REACTIONS_NO_REACTIONS_YET' | translate }}</div>
       }
     </div>
   </div>

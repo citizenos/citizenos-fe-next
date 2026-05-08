@@ -5,14 +5,14 @@ import { Component, input, output, ViewEncapsulation } from '@angular/core';
   standalone: true,
   imports: [],
   template: `
-    <div class="toggle-container" [class.on]="model()" (click)="toggle()">
+    <button type="button" class="toggle-container" [class.on]="model()" (click)="toggle()" role="switch" [attr.aria-checked]="model()" [attr.aria-label]="model() ? textOn() : textOff()">
       <div class="toggle-track">
         <div class="toggle-handle"></div>
       </div>
       <div class="toggle-text">
         {{ model() ? textOn() : textOff() }}
       </div>
-    </div>
+    </button>
   `,
   styles: [`
     .toggle-container {
