@@ -21,9 +21,9 @@ export class CosTabsComponent {
   tabs = input.required<TabItem[]>();
   activeTab = input<string>();
   
-  select = output<string>();
+  selectTab = output<string>();
 
   onTabSelect(tabId: string) {
-    this.select.emit(tabId);
+    this.selectTab.emit(tabId);
   }
 }

@@ -61,7 +61,7 @@ import { SeoService } from '../../../core/services/seo.service';
       <cos-pagination
         [page]="currentPage()"
         [totalPages]="totalPages()"
-        (select)="onPageChange($event)"
+        (selectPage)="onPageChange($event)"
       ></cos-pagination>
     </div>
   `,

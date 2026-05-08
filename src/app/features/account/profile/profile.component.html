@@ -281,7 +281,7 @@
 
       <div class="filter_section">
         <div></div>
-        <cos-pagination class="pagination" (select)="topicNotificationService.loadPage($event)"
+        <cos-pagination class="pagination" (selectPage)="topicNotificationService.loadPage($event)"
           [totalPages]="(topicNotificationService.totalPages | async) || 0"
           [page]="(topicNotificationService.page | async) || 0"></cos-pagination>
       </div>

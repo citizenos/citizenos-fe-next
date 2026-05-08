@@ -27,7 +27,7 @@ export class TopicRequestsDialogComponent {
 
   group = this.data.group;
   requests = signal<any[]>([]);
-  onClose = output();
+  close = output();
   translate = inject(TranslateService);
 
   constructor() {

@@ -133,7 +133,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
               </button>
               @if (showCreateMenu()) {
                 <div class="nav_create_menu">
-                  <cos-create-menu (onClose)="closeCreateMenu()" />
+                  <cos-create-menu (close)="closeCreateMenu()" />
                 </div>
               }
             </div>

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, Input, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgClass, UpperCasePipe } from '@angular/common';
@@ -64,14 +64,8 @@ import { UserStore } from '../../../../core/state/user.store';
   styleUrls: ['./feature-box.component.scss']
 })
 export class FeatureBoxComponent {
-  private _feature = signal('discussion');
-  private _items = signal(0);
-
-  @Input('feature') set featureInput(val: string) { this._feature.set(val); }
-  @Input('items') set itemsInput(val: number) { this._items.set(val); }
-
-  feature = this._feature.asReadonly();
-  items = this._items.asReadonly();
+  feature = input<string>('discussion');
+  items = input<number>(0);
 
   private router = inject(Router);
   private translate = inject(TranslateService);

@@ -1,9 +1,9 @@
 import { OverlayRef } from '@angular/cdk/overlay';
-import { Directive, ElementRef, HostListener, inject, Injectable, Input } from '@angular/core';
+import { Directive, HostListener, inject, Injectable, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-// eslint-disable-next-line @angular-eslint/directive-selector -- widely used across templates, rename deferred
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[dialogClose]',
   standalone: true,
 })

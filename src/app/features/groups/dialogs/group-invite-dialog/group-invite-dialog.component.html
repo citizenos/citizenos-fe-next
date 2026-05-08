@@ -38,7 +38,7 @@
 
             <cos-typeahead
               [placeholder]="'COMPONENTS.GROUP_INVITE.PLACEHOLDER_SEARCH' | translate"
-              (search)="onSearch($event)"
+              (searchQuery)="onSearch($event)"
               (enterAction)="addEmail($event.text)"
             >
               @for (user of searchResults(); track user.userId) {

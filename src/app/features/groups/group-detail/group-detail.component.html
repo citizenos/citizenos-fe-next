@@ -197,7 +197,7 @@
     </div>
 
     <!-- TABS -->
-    <cos-tabs [tabs]="groupTabs()" [activeTab]="tabSelected()" (select)="selectTab($event)">
+    <cos-tabs [tabs]="groupTabs()" [activeTab]="tabSelected()" (selectTab)="selectTab($event)">
       <!-- Topics tab: create/manage button -->
     </cos-tabs>
 
@@ -254,7 +254,7 @@
       <cos-pagination
         [page]="topicsPage()"
         [totalPages]="totalTopicPages()"
-        (select)="onTopicPageChange($event)"
+        (selectPage)="onTopicPageChange($event)"
       ></cos-pagination>
     }
 
@@ -325,7 +325,7 @@
       <cos-pagination
         [page]="membersPage()"
         [totalPages]="totalMemberPages()"
-        (select)="onMemberPageChange($event)"
+        (selectPage)="onMemberPageChange($event)"
       ></cos-pagination>
     }
 

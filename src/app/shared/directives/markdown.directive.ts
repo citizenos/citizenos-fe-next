@@ -1,7 +1,7 @@
 import {
   Directive,
   ElementRef,
-  Input,
+  input,
   OnInit,
   OnChanges,
   OnDestroy,
@@ -18,13 +18,12 @@ import EasyMDE from 'easymde';
   standalone: true,
 })
 export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
-  @Input() item = '';
-  @Input() initialValue?: string | null = null;
+  item = input<string>('');
+  initialValue = input<string | null | undefined>(null);
   itemChange = output<string>();
-  @Input() limit = 100;
-  @Input() placeholder?: string;
-  @Input('cosmarkdowntranslatecharacterstatuskey')
-  cosMarkdownTranslateCharacterStatusKey: any;
+  limit = input<number>(100);
+  placeholder = input<string | undefined>();
+  cosMarkdownTranslateCharacterStatusKey = input<any>(undefined);
 
   private el = inject(ElementRef);
   private translate = inject(TranslateService);
@@ -36,7 +35,7 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     const placeholder =
-      this.placeholder ??
+      this.placeholder() ??
       this.el.nativeElement.attributes.getNamedItem('placeholder')?.value;
 
     const config: any = {
@@ -116,7 +115,7 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
       ],
       minHeight: window.innerWidth < 560 ? '100px' : '100px',
       element: this.el.nativeElement,
-      initialValue: this.initialValue ?? this.item,
+      initialValue: this.initialValue() ?? this.item(),
     };
 
     if (placeholder) {
@@ -126,7 +125,7 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
     this.easymde = new EasyMDE(config);
 
     this.easymde.codemirror.on('beforeChange', (cm: any, change: any) => {
-      const maxLength = cm.getOption('maxLength') || this.limit;
+      const maxLength = cm.getOption('maxLength') || this.limit();
       if (maxLength && change?.update && change?.text.length) {
         let str = change.text.join('\n');
         let delta =
@@ -148,8 +147,8 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    if (this.easymde && this.item === this.initialValue) {
-      this.easymde.value(this.initialValue);
+    if (this.easymde && this.item() === this.initialValue()) {
+      this.easymde.value(this.initialValue());
     }
   }
 
@@ -211,17 +210,17 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
   }
 
   private getCharLength() {
-    return this.item?.length ?? 0;
+    return this.item()?.length ?? 0;
   }
 
   private updateCharacterCount(el: any) {
-    if (this.cosMarkdownTranslateCharacterStatusKey && this.limit) {
+    if (this.cosMarkdownTranslateCharacterStatusKey() && this.limit()) {
       el.innerHTML =
-        this.translate.instant(this.cosMarkdownTranslateCharacterStatusKey, {
-          numberOfCharacters: this.limit,
+        this.translate.instant(this.cosMarkdownTranslateCharacterStatusKey(), {
+          numberOfCharacters: this.limit(),
         }) +
         ' (' +
-        (this.limit - this.getCharLength()) +
+        (this.limit() - this.getCharLength()) +
         ')';
     }
   }

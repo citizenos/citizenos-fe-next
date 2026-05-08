@@ -50,7 +50,7 @@ import { SeoService } from '../../../core/services/seo.service';
       </app-page-list-header>
 
       <div id="create_menu_wrap" [class.hidden]="!showCreate()">
-        <cos-create-menu (onClose)="showCreate.set(false)"></cos-create-menu>
+        <cos-create-menu (close)="showCreate.set(false)"></cos-create-menu>
         <div id="close_create" (click)="showCreate.set(false)"></div>
       </div>
 
@@ -87,7 +87,7 @@ import { SeoService } from '../../../core/services/seo.service';
       <cos-pagination
         [page]="currentPage()"
         [totalPages]="totalPages()"
-        (select)="onPageChange($event)"
+        (selectPage)="onPageChange($event)"
       ></cos-pagination>
     </div>
   `,

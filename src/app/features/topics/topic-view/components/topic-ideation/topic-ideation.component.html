@@ -83,6 +83,6 @@
     <cos-pagination
       [page]="currentPage()"
       [totalPages]="Math.ceil(ideasCount() / 15)"
-      (select)="onPageChange($event)" />
+      (selectPage)="onPageChange($event)" />
   }
 </div>

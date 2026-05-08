@@ -128,8 +128,8 @@ export class TypeaheadComponent {
   selectLimit = input<number | null>(null);
   term = model<string>('');
 
-  search = output<string>();
-  select = output<TypeaheadItem>();
+  searchQuery = output<string>();
+  selectItem = output<TypeaheadItem>();
   enterAction = output<{ text: string; limit: boolean }>();
 
   focused = signal(false);
@@ -162,7 +162,7 @@ export class TypeaheadComponent {
     this.term.set('');
     this.registeredItems = [];
     this.activeItem = null;
-    this.select.emit(item);
+    this.selectItem.emit(item);
   }
 
   doEnterAction() {
@@ -180,7 +180,7 @@ export class TypeaheadComponent {
       t.split(',').filter((p) => p.length > 1).length > 1;
     this.showEnterHint.set(multiWord);
 
-    this.search.emit(t);
+    this.searchQuery.emit(t);
   }
 
   onFocus() {

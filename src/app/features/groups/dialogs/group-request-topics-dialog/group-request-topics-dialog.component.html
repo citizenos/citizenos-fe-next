@@ -15,7 +15,7 @@
     <div class="dialog_content">
       <cos-typeahead
         [placeholder]="'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.PLACEHOLDER_SEARCH' | translate"
-        (search)="onSearch($event)"
+        (searchQuery)="onSearch($event)"
       >
         @for (topic of searchResults(); track topic.id) {
           <div class="typeahead-item" (mousedown)="addTopic(topic)">{{ topic.title }}</div>

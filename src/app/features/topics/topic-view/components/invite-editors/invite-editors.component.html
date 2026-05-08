@@ -226,7 +226,7 @@
                     </div>
                   </div>
                 </div>
-                <cos-pagination class="pagination" (select)="loadPage($event)" [totalPages]="totalPages()" [page]="membersPage()"></cos-pagination>
+                <cos-pagination class="pagination" (selectPage)="loadPage($event)" [totalPages]="totalPages()" [page]="membersPage()"></cos-pagination>
               </div>
             }
           </div>

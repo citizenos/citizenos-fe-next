@@ -14,7 +14,7 @@ import { DomainIconComponent } from '../domain-icon/domain-icon.component';
     <div class="create_menu_container">
       <div class="create_menu_heading">{{ 'COMPONENTS.CREATE.HEADING' | translate }}</div>
 
-      <div class="create_menu_item" [routerLink]="['/', translate.currentLang, 'topics', 'ideation', 'create']" routerLinkActive="active" (click)="onClose.emit()">
+      <div class="create_menu_item" [routerLink]="['/', translate.currentLang, 'topics', 'ideation', 'create']" routerLinkActive="active" (click)="close.emit()">
         <div class="left_wrap">
           <div class="icon_wrap">
             <cos-domain-icon type="ideation" [size]="32" />
@@ -29,7 +29,7 @@ import { DomainIconComponent } from '../domain-icon/domain-icon.component';
         </div>
       </div>
 
-      <div class="create_menu_item" [routerLink]="['/', translate.currentLang, 'topics', 'create']" routerLinkActive="active" (click)="onClose.emit()">
+      <div class="create_menu_item" [routerLink]="['/', translate.currentLang, 'topics', 'create']" routerLinkActive="active" (click)="close.emit()">
         <div class="left_wrap">
           <div class="icon_wrap">
             <cos-domain-icon type="topic" [size]="32" />
@@ -44,7 +44,7 @@ import { DomainIconComponent } from '../domain-icon/domain-icon.component';
         </div>
       </div>
 
-      <div class="create_menu_item" [routerLink]="['/', translate.currentLang, 'topics', 'vote', 'create']" routerLinkActive="active" (click)="onClose.emit()">
+      <div class="create_menu_item" [routerLink]="['/', translate.currentLang, 'topics', 'vote', 'create']" routerLinkActive="active" (click)="close.emit()">
         <div class="left_wrap">
           <div class="icon_wrap">
             <cos-domain-icon type="vote" [size]="32" />
@@ -61,7 +61,7 @@ import { DomainIconComponent } from '../domain-icon/domain-icon.component';
 
       <div class="line_separator"></div>
 
-      <div class="create_menu_item" [routerLink]="['/', translate.currentLang, 'my', 'groups', 'create']" routerLinkActive="active" (click)="onClose.emit()">
+      <div class="create_menu_item" [routerLink]="['/', translate.currentLang, 'my', 'groups', 'create']" routerLinkActive="active" (click)="close.emit()">
         <div class="left_wrap">
           <div class="icon_wrap">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -95,5 +95,5 @@ import { DomainIconComponent } from '../domain-icon/domain-icon.component';
 })
 export class CreateMenuComponent {
   translate = inject(TranslateService);
-  onClose = output();
+  close = output();
 }

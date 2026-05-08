@@ -17,7 +17,7 @@ export interface IdeaReplyReportData {
 }
 
 @Component({
-  selector: 'idea-reply-report',
+  selector: 'cos-idea-reply-report',
   standalone: true,
   imports: [
     TranslateModule,

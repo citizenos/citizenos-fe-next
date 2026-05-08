@@ -24,7 +24,7 @@ import { TranslateModule } from '@ngx-translate/core';
           <button
             class="pagination-btn"
             [class.active]="p === page()"
-            (click)="select.emit(p)"
+            (click)="selectPage.emit(p)"
           >{{ p }}</button>
         }
 
@@ -84,7 +84,7 @@ export class PaginationComponent {
   totalPages = model<number>(0);
   page = model<number>(1);
 
-  select = output<number>();
+  selectPage = output<number>();
 
   pages = computed(() => {
     const total = this.totalPages();
@@ -105,10 +105,10 @@ export class PaginationComponent {
   });
 
   prev() {
-    if (this.page() > 1) this.select.emit(this.page() - 1);
+    if (this.page() > 1) this.selectPage.emit(this.page() - 1);
   }
 
   next() {
-    if (this.page() < this.totalPages()) this.select.emit(this.page() + 1);
+    if (this.page() < this.totalPages()) this.selectPage.emit(this.page() + 1);
   }
 }
