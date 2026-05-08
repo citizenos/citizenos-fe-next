@@ -1,39 +1,59 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { Component } from '@angular/core';
-import { OverlayRef } from '@angular/cdk/overlay';
+import { DuplicateTopicDialogComponent } from './duplicate-topic-dialog.component';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
-import { DuplicateTopicDialogComponent } from './duplicate-topic-dialog.component';
 
-@Component({ template: '', standalone: true })
-class EmptyComponent {}
-
-const mockOverlayRef = { dispose: () => {} } as unknown as OverlayRef;
 const mockTopic = { id: 'topic-1', title: 'Test Topic', status: 'inProgress', categories: [] };
 
 describe('DuplicateTopicDialogComponent', () => {
   let component: DuplicateTopicDialogComponent;
+  let fixture: ComponentFixture<DuplicateTopicDialogComponent>;
+  const mockDialogRef = { close: vi.fn() };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+  beforeEach(async () => {
+    vi.clearAllMocks();
+    await TestBed.configureTestingModule({
+      imports: [DuplicateTopicDialogComponent, TranslateModule.forRoot()],
       providers: [
-        provideRouter([{ path: '**', component: EmptyComponent }]),
-        { provide: DialogRef, useValue: new DialogRef(mockOverlayRef) },
-        { provide: DIALOG_DATA, useValue: { topic: mockTopic } }
-      ]
-    });
-    component = TestBed.runInInjectionContext(() => new DuplicateTopicDialogComponent());
+        { provide: DialogRef, useValue: mockDialogRef },
+        { provide: DIALOG_DATA, useValue: { topic: mockTopic } },
+      ],
+    })
+      .overrideComponent(DuplicateTopicDialogComponent, { set: { schemas: [NO_ERRORS_SCHEMA] } })
+      .compileComponents();
+
+    fixture = TestBed.createComponent(DuplicateTopicDialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  it('should create', () => expect(component).toBeTruthy());
 
   it('should expose topic from dialog data', () => {
     expect(component.topic.title).toBe('Test Topic');
+  });
+
+  it('should display topic title in the template', () => {
+    expect(fixture.nativeElement.textContent).toContain('Test Topic');
+  });
+
+  it('should render the heading', () => {
+    const heading = fixture.nativeElement.querySelector('[translate="COMPONENTS.DUPLICATE_TOPIC.HEADING"]');
+    expect(heading).toBeTruthy();
+  });
+
+  it('confirm button should close dialog with true', () => {
+    const btn = fixture.nativeElement.querySelector('button[translate="COMPONENTS.DUPLICATE_TOPIC.BTN_SUBMIT"]') as HTMLElement;
+    btn.click();
+    expect(mockDialogRef.close).toHaveBeenCalledWith(true);
+  });
+
+  it('cancel link should close dialog', () => {
+    const cancel = fixture.nativeElement.querySelector('a[translate="COMPONENTS.DUPLICATE_TOPIC.BTN_CANCEL"]') as HTMLElement;
+    cancel.click();
+    expect(mockDialogRef.close).toHaveBeenCalled();
   });
 });

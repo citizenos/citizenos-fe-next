@@ -130,7 +130,7 @@ describe('TopicShareComponent', () => {
 
   it('should show QR code when generate button is clicked', async () => {
     const buttons = fixture.debugElement.queryAll(By.css('cos-button'));
-    let genButton = buttons.find(btn => btn.nativeElement.textContent.includes('QR'));
+    const genButton = buttons.find(btn => btn.nativeElement.textContent.includes('QR'));
     
     if (genButton) {
       genButton.triggerEventHandler('clicked', null);
@@ -142,7 +142,7 @@ describe('TopicShareComponent', () => {
   it('should copy link when copy button is clicked', () => {
     const spy = vi.spyOn(component, 'copyInviteLink');
     const buttons = fixture.debugElement.queryAll(By.css('cos-button'));
-    let copyButton = buttons.find(btn => btn.nativeElement.textContent.includes('COPY'));
+    const copyButton = buttons.find(btn => btn.nativeElement.textContent.includes('COPY'));
 
     if (copyButton) {
       copyButton.triggerEventHandler('clicked', null);

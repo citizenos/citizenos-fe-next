@@ -1,6 +1,6 @@
-import { ElementRef, Injectable, signal, computed, inject } from '@angular/core';
+import { ElementRef, Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, combineLatest, of, switchMap, take } from 'rxjs';
+import { combineLatest, of, switchMap } from 'rxjs';
 
 export interface TourItem {
   index: number;

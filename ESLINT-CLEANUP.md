@@ -44,18 +44,18 @@ Run `npm run lint` to see current status.
 
 These can be fixed with `--fix` or are actual bugs that need manual attention.
 
-### [ ] 1. Auto-fix: `prefer-const` + `no-inferrable-types` + `consistent-indexed-object-style`
+### [x] 1. Auto-fix: `prefer-const` + `no-inferrable-types` + `consistent-indexed-object-style`
 
 **45 issues, ~20 files — run `npx ng lint --fix`**
 
 These are trivially auto-fixable by ESLint. One command cleans them all.
 
-### [ ] 2. Bug: `no-self-assign` — self-assignment in help component
+### [x] 2. Bug: `no-self-assign` — self-assignment in help component
 
 - `src/app/core/components/shell/help/help.component.ts` (line 350)
   - `this.helpFrame.nativeElement.src` is assigned to itself — likely a bug or workaround that needs investigation.
 
-### [ ] 3. Bug: `no-unused-expressions` — expression used as statement
+### [x] 3. Bug: `no-unused-expressions` — expression used as statement
 
 - `src/app/core/state/activity-feed.state.ts` (line 20)
   - Expression statement that does nothing — likely a missing function call.
@@ -81,7 +81,7 @@ Delete unused imports, variables, and function parameters. For unused callback p
 - Multiple spec files with unused `vi`, `of`, `throwError` imports
 - Multiple components with unused `err` callback params (prefix with `_err`)
 
-### [ ] 5. Remove empty lifecycle methods (`no-empty-lifecycle-method`) — 7 errors in 7 files
+### [x] 5. Remove empty lifecycle methods (`no-empty-lifecycle-method`) — 7 errors in 7 files
 
 Remove empty `ngOnInit()`, `ngOnDestroy()` etc. or add actual logic.
 
@@ -122,7 +122,7 @@ Directives and components must use `app-` or `cos-` prefix.
 - `src/app/features/home/components/feature-box/feature-box.component.ts` (×2)
 - `src/app/shared/directives/markdown.directive.ts`
 
-### [ ] 9. Replace `@ts-ignore` with `@ts-expect-error` (`ban-ts-comment`) — 3 errors in 3 files
+### [x] 9. Replace `@ts-ignore` with `@ts-expect-error` (`ban-ts-comment`) — 3 errors in 3 files
 
 - `src/app/features/account/login/login.component.spec.ts`
 - `src/app/features/groups/group-create/components/group-create-help/group-create-help.component.spec.ts`

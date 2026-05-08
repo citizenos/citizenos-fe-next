@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, signal, effect } from '@angular/core';
-import { toSignal, toObservable } from '@angular/core/rxjs-interop';
-import { switchMap, scan, tap, filter } from 'rxjs';
+import { tap } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivityService, ActivityGroup } from '../../services/activity.service';
 import { ActivityFeedState } from '../../state/activity-feed.state';

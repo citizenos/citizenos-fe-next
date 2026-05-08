@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, exhaustMap, shareReplay, Subject, map, tap } from 'rxjs';
 
 import { Topic } from '../interfaces/topic';
-import { TopicVote } from '../interfaces/topic';
 import { TopicService } from './topic.service';
 import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';

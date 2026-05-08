@@ -1,6 +1,6 @@
-import { signalStore, withState, withMethods, patchState, withComputed, withHooks } from '@ngrx/signals';
+import { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';
 import { computed, inject } from '@angular/core';
-import { User, UserState } from '../interfaces/user';
+import { UserState } from '../interfaces/user';
 import { UserService } from '../services/user.service';
 import { firstValueFrom } from 'rxjs';
 

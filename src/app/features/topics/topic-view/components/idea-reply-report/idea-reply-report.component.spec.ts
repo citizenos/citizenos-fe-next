@@ -19,7 +19,7 @@ import { DropdownComponent } from '../../../../../shared/components/dropdown/dro
   template: ''
 })
 class MockInitialsComponent {
-  @Input() name: string = '';
+  @Input() name = '';
 }
 
 @Component({
@@ -28,7 +28,7 @@ class MockInitialsComponent {
   template: ''
 })
 class MockIconComponent {
-  @Input() name: string = '';
+  @Input() name = '';
 }
 
 @Component({
@@ -37,9 +37,9 @@ class MockIconComponent {
   template: '<ng-content></ng-content>'
 })
 class MockInputComponent {
-  @Input() placeholder: string = '';
-  @Input() hasError: boolean = false;
-  @Input() errorMessage: string = '';
+  @Input() placeholder = '';
+  @Input() hasError = false;
+  @Input() errorMessage = '';
 }
 
 @Component({

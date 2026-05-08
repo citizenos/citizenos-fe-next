@@ -29,11 +29,25 @@ describe('OnboardingComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call tourService.show and hide onboarding on takeTour (desktop)', () => {
+  it('takeTour() on desktop should call tourService.show with dashboard tour and hide onboarding', () => {
     Object.defineProperty(window, 'innerWidth', { value: 1200, writable: true });
     const component = TestBed.runInInjectionContext(() => new OnboardingComponent());
     component.takeTour();
     expect(mockUiState.showOnboarding()).toBe(false);
     expect(mockTourService.show).toHaveBeenCalledWith('dashboard', 1);
+  });
+
+  it('takeTour() on tablet should use dashboard_tablet tour', () => {
+    Object.defineProperty(window, 'innerWidth', { value: 768, writable: true });
+    const component = TestBed.runInInjectionContext(() => new OnboardingComponent());
+    component.takeTour();
+    expect(mockTourService.show).toHaveBeenCalledWith('dashboard_tablet', 1);
+  });
+
+  it('takeTour() on mobile should use dashboard_mobile tour', () => {
+    Object.defineProperty(window, 'innerWidth', { value: 400, writable: true });
+    const component = TestBed.runInInjectionContext(() => new OnboardingComponent());
+    component.takeTour();
+    expect(mockTourService.show).toHaveBeenCalledWith('dashboard_mobile', 1);
   });
 });

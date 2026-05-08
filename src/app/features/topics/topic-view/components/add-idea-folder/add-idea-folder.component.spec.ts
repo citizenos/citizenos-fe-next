@@ -16,9 +16,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
   template: ''
 })
 class MockIconComponent {
-  @Input() name: string = '';
+  @Input() name = '';
   @Input() size: number | string = 24;
-  @Input() color: string = '';
+  @Input() color = '';
 }
 
 describe('AddIdeaFolderComponent', () => {

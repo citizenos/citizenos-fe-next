@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, exhaustMap, shareReplay, switchMap, map, of, take, Subject, startWith } from 'rxjs';
+import { Observable, shareReplay, switchMap, map, take, Subject, startWith } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { Topic } from '../interfaces/topic';
@@ -232,7 +232,7 @@ export class TopicService {
     return !!(topic?.report?.type && !topic.report?.moderatedReasonType);
   }
 
-  changeState(topic: Topic, state: keyof typeof this.STATUSES, stateSuccess?: string) {
+  changeState(topic: Topic, state: keyof typeof this.STATUSES, _stateSuccess?: string) {
     const templates: any = {
       closed: {
         level: 'delete',

@@ -18,7 +18,7 @@ class MockNotificationsComponent {}
 class MockTopicMemberUserComponent {
   @Input() member: any;
   @Input() topic: any;
-  @Input() withEmail: boolean = true;
+  @Input() withEmail = true;
 }
 
 @Component({ selector: 'app-topic-member-group', standalone: true, template: '' })

@@ -1,32 +1,49 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { Component } from '@angular/core';
-import { OverlayRef } from '@angular/cdk/overlay';
-import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { TopicSettingsDisabledDialogComponent } from './topic-settings-disabled-dialog.component';
-
-@Component({ template: '', standalone: true })
-class EmptyComponent {}
-
-const mockOverlayRef = { dispose: () => {} } as unknown as OverlayRef;
+import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 
 describe('TopicSettingsDisabledDialogComponent', () => {
   let component: TopicSettingsDisabledDialogComponent;
+  let fixture: ComponentFixture<TopicSettingsDisabledDialogComponent>;
+  const mockDialogRef = { close: vi.fn() };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      providers: [
-        provideRouter([{ path: '**', component: EmptyComponent }]),
-        { provide: DialogRef, useValue: new DialogRef(mockOverlayRef) }
-      ]
-    });
-    component = TestBed.runInInjectionContext(() => new TopicSettingsDisabledDialogComponent());
+  beforeEach(async () => {
+    vi.clearAllMocks();
+    await TestBed.configureTestingModule({
+      imports: [TopicSettingsDisabledDialogComponent, TranslateModule.forRoot()],
+      providers: [{ provide: DialogRef, useValue: mockDialogRef }],
+    })
+      .overrideComponent(TopicSettingsDisabledDialogComponent, { set: { schemas: [NO_ERRORS_SCHEMA] } })
+      .compileComponents();
+
+    fixture = TestBed.createComponent(TopicSettingsDisabledDialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should create', () => expect(component).toBeTruthy());
+
+  it('should render the heading', () => {
+    const heading = fixture.nativeElement.querySelector('[translate="MODALS.TOPIC_SETTINGS_DISABLED_HEADING"]');
+    expect(heading).toBeTruthy();
+  });
+
+  it('should render the description', () => {
+    const desc = fixture.nativeElement.querySelector('[translate="MODALS.TOPIC_SETTINGS_DISABLED_DESCRIPTION"]');
+    expect(desc).toBeTruthy();
+  });
+
+  it('should have a close button with dialogClose attribute', () => {
+    const btn = fixture.nativeElement.querySelector('button[dialogClose]');
+    expect(btn).toBeTruthy();
+  });
+
+  it('close button should call dialogRef.close when clicked', () => {
+    const btn = fixture.nativeElement.querySelector('button[dialogClose]') as HTMLElement;
+    btn.click();
+    expect(mockDialogRef.close).toHaveBeenCalled();
   });
 });

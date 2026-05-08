@@ -18,7 +18,7 @@ const mockGlobalSearch = { showSearch: signal(false) };
 const mockSearchService = { search: vi.fn() };
 const mockUserStore = { isAuthenticated: signal(false), user: signal(null) };
 const mockConfigStore = { links: { donate: signal({ en: 'http://donate.test' }) } };
-const mockUiState = {};
+const mockUiState = { showHelp: { set: vi.fn() } };
 const mockTranslate = { instant: vi.fn((k: string) => k), currentLang: 'en', onLangChange: { subscribe: vi.fn() } };
 
 describe('GlobalSearchPanelComponent', () => {
@@ -51,5 +51,43 @@ describe('GlobalSearchPanelComponent', () => {
   it('should initialize with empty searchInput', () => {
     const component = TestBed.runInInjectionContext(() => new GlobalSearchPanelComponent());
     expect(component.searchInput()).toBe('');
+  });
+
+  it('clearSearch() should reset searchInput to empty string', () => {
+    const component = TestBed.runInInjectionContext(() => new GlobalSearchPanelComponent());
+    component.searchInput.set('hello');
+    component.clearSearch();
+    expect(component.searchInput()).toBe('');
+  });
+
+  it('clearSearch() should hide results', () => {
+    const component = TestBed.runInInjectionContext(() => new GlobalSearchPanelComponent());
+    component.showResults.set(true);
+    component.clearSearch();
+    expect(component.showResults()).toBe(false);
+  });
+
+  it('resultCount() should return 0 when searchResults is null', () => {
+    const component = TestBed.runInInjectionContext(() => new GlobalSearchPanelComponent());
+    expect(component.resultCount('my', 'topics')).toBe(0);
+  });
+
+  it('resultCount() should return count from searchResults', () => {
+    const component = TestBed.runInInjectionContext(() => new GlobalSearchPanelComponent());
+    component.searchResults.set({ my: { topics: { count: 5, rows: [] } } } as any);
+    expect(component.resultCount('my', 'topics')).toBe(5);
+  });
+
+  it('resultRows() should return empty array when searchResults is null', () => {
+    const component = TestBed.runInInjectionContext(() => new GlobalSearchPanelComponent());
+    expect(component.resultRows('my', 'topics')).toEqual([]);
+  });
+
+  it('toggleHelp() should close search and open help panel', () => {
+    const component = TestBed.runInInjectionContext(() => new GlobalSearchPanelComponent());
+    mockGlobalSearch.showSearch.set(true);
+    component.toggleHelp();
+    expect(mockGlobalSearch.showSearch()).toBe(false);
+    expect(mockUiState.showHelp.set).toHaveBeenCalledWith(true);
   });
 });

@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
-import { provideRouter, Router } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -46,10 +46,24 @@ describe('HelpComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should toggle help visibility', () => {
+  it('toggleHelp() should set showHelp to true when it was false', () => {
     mockUiState.showHelp.set(false);
     const component = TestBed.runInInjectionContext(() => new HelpComponent());
     component.toggleHelp();
     expect(mockUiState.showHelp()).toBe(true);
+  });
+
+  it('toggleHelp() should set showHelp to false when it was true', () => {
+    mockUiState.showHelp.set(true);
+    const component = TestBed.runInInjectionContext(() => new HelpComponent());
+    component.toggleHelp();
+    expect(mockUiState.showHelp()).toBe(false);
+  });
+
+  it('startTour() should toggle help closed', () => {
+    mockUiState.showHelp.set(true);
+    const component = TestBed.runInInjectionContext(() => new HelpComponent());
+    component.startTour();
+    expect(mockUiState.showHelp()).toBe(false);
   });
 });

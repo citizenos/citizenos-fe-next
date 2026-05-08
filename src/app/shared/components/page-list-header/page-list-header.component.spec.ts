@@ -48,14 +48,29 @@ describe('PageListHeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit searchToggle and update globalSearch on click', () => {
+  it('should render the search button', () => {
+    expect(fixture.nativeElement.querySelector('#show_search')).toBeTruthy();
+  });
+
+  it('should emit searchToggle and toggle globalSearch.showSearch on click', () => {
     const spy = vi.fn();
     component.searchToggle.subscribe(spy);
-    
+
     const searchBtn = fixture.debugElement.query(By.css('#show_search'));
     searchBtn.triggerEventHandler('click', null);
-    
+
     expect(globalSearch.showSearch()).toBe(true);
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('second click should toggle showSearch back to false', () => {
+    const searchBtn = fixture.debugElement.query(By.css('#show_search'));
+    searchBtn.triggerEventHandler('click', null);
+    searchBtn.triggerEventHandler('click', null);
+    expect(globalSearch.showSearch()).toBe(false);
+  });
+
+  it('should have a slot for title content projection', () => {
+    expect(fixture.nativeElement.querySelector('.small_heading')).toBeTruthy();
   });
 });

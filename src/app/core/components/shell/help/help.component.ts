@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, signal, computed, ViewChild } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -344,7 +344,7 @@ export class HelpComponent {
       const helpUrl = links[lang] || links['en'];
       const helpDomain = new URL(helpUrl);
       this.helpFrame?.nativeElement.contentWindow.postMessage('back', helpDomain.origin);
-    } catch (err) {
+    } catch (_err) {
       if (this.helpFrame) {
         // eslint-disable-next-line no-self-assign -- intentional: forces iframe reload
         this.helpFrame.nativeElement.src = this.helpFrame.nativeElement.src;

@@ -8,7 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { UpperCasePipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { debounceTime, distinctUntilChanged, Subject, switchMap, of, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, switchMap, of } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { GlobalSearchService } from '../../../services/global-search.service';
 import { SearchService } from '../../../services/search.service';
@@ -360,7 +360,7 @@ export class GlobalSearchPanelComponent {
     return this.searchResults()?.[context]?.[model]?.rows ?? [];
   }
 
-  goToView(item: any, context: string) {
+  goToView(item: any, _context: string) {
     const lang = this.translate.currentLang;
     const isGroup = Object.hasOwn(item, 'name');
     this.globalSearch.showSearch.set(false);

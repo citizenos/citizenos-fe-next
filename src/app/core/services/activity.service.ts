@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, BehaviorSubject, exhaustMap, shareReplay, of } from 'rxjs';
+import { map, Observable, BehaviorSubject, exhaustMap, shareReplay } from 'rxjs';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import * as jsonpatch from 'fast-json-patch';

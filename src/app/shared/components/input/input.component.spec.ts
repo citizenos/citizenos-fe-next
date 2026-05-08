@@ -1,3 +1,4 @@
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { InputComponent } from './input.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -51,5 +52,29 @@ describe('InputComponent Accessibility', () => {
     const error = fixture.nativeElement.querySelector('.error-message');
     expect(error).toBeTruthy();
     expect(error.id).toBe(component.errorId);
+  });
+
+  it('should render label text when label is set', () => {
+    expect(fixture.nativeElement.querySelector('.input-label').textContent.trim()).toBe('Full Name');
+  });
+
+  it('should show error message text when hasError and errorMessage are set', () => {
+    expect(fixture.nativeElement.querySelector('.error-message')?.textContent).toContain('Error here');
+  });
+
+  it('should apply has-error class to container when hasError is true', () => {
+    expect(fixture.nativeElement.querySelector('.input-container').classList).toContain('has-error');
+  });
+
+  it('should not show error message when hasError is false', () => {
+    component.hasError.set(false);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.error-message')).toBeNull();
+  });
+
+  it('should not render label element when label is empty', () => {
+    component.label.set('');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.input-label')).toBeNull();
   });
 });
