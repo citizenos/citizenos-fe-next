@@ -1,6 +1,6 @@
 # ESLint Cleanup Tasks
 
-**Total: 1940 issues (769 errors, 1171 warnings) across ~207 files**
+**Total: 1809 issues (685 errors, 1124 warnings) across ~200 files**
 
 Run `npm run lint` to see current status.
 
@@ -10,33 +10,33 @@ Run `npm run lint` to see current status.
 
 | Rule | Errors | Warns | Files | Auto-fix | Priority |
 |------|-------:|------:|------:|:--------:|:--------:|
-| `@typescript-eslint/no-explicit-any` | 0 | 967 | 207 | ❌ | P3 |
+| `@typescript-eslint/no-explicit-any` | 0 | 954 | 200 | ❌ | P3 |
 | `@angular-eslint/template/interactive-supports-focus` | 226 | 0 | 78 | ❌ | P2 |
 | `@angular-eslint/template/click-events-have-key-events` | 224 | 0 | 77 | ❌ | P2 |
 | `@angular-eslint/template/elements-content` | 183 | 0 | 83 | ❌ | P2 |
-| `@typescript-eslint/no-unused-vars` | 0 | 167 | 95 | ❌ | P1 |
+| `@typescript-eslint/no-unused-vars` | 0 | 145 | 80 | ❌ | P1 |
 | `@angular-eslint/template/label-has-associated-control` | 38 | 0 | 18 | ❌ | P2 |
-| `@typescript-eslint/no-empty-function` | 0 | 33 | 22 | ❌ | P1 |
-| `@typescript-eslint/no-inferrable-types` | 32 | 0 | 14 | ✅ | P0 |
+| `@typescript-eslint/no-empty-function` | 0 | 25 | 15 | ❌ | P1 |
+| `@typescript-eslint/no-inferrable-types` | 0 | 0 | 0 | ✅ | P0 |
 | `@angular-eslint/template/alt-text` | 12 | 0 | 11 | ❌ | P2 |
-| `@angular-eslint/directive-selector` | 10 | 0 | 10 | ❌ | P1 |
-| `prefer-const` | 8 | 0 | 6 | ✅ | P0 |
-| `@angular-eslint/no-empty-lifecycle-method` | 7 | 0 | 7 | ❌ | P1 |
-| `@typescript-eslint/consistent-indexed-object-style` | 5 | 0 | 3 | ✅ | P0 |
-| `@angular-eslint/no-output-native` | 5 | 0 | 4 | ❌ | P1 |
-| `@angular-eslint/use-lifecycle-interface` | 0 | 4 | 4 | ❌ | P1 |
-| `@typescript-eslint/ban-ts-comment` | 3 | 0 | 3 | ❌ | P1 |
-| `@angular-eslint/no-input-rename` | 3 | 0 | 2 | ❌ | P1 |
-| `@angular-eslint/no-output-on-prefix` | 2 | 0 | 2 | ❌ | P1 |
-| `@typescript-eslint/prefer-for-of` | 2 | 0 | 2 | ❌ | P1 |
-| `no-prototype-builtins` | 1 | 0 | 1 | ❌ | P1 |
-| `no-self-assign` | 1 | 0 | 1 | ❌ | P0 |
-| `no-empty` | 1 | 0 | 1 | ❌ | P1 |
-| `@typescript-eslint/no-unused-expressions` | 1 | 0 | 1 | ❌ | P0 |
-| `@angular-eslint/component-selector` | 1 | 0 | 1 | ❌ | P1 |
-| `@angular-eslint/template/prefer-control-flow` | 1 | 0 | 1 | ❌ | P1 |
+| `@angular-eslint/directive-selector` | 0 | 0 | 0 | ❌ | P1 |
+| `prefer-const` | 0 | 0 | 0 | ✅ | P0 |
+| `@angular-eslint/no-empty-lifecycle-method` | 0 | 0 | 0 | ❌ | P1 |
+| `@typescript-eslint/consistent-indexed-object-style` | 0 | 0 | 0 | ✅ | P0 |
+| `@angular-eslint/no-output-native` | 0 | 0 | 0 | ❌ | P1 |
+| `@angular-eslint/use-lifecycle-interface` | 0 | 0 | 0 | ❌ | P1 |
+| `@typescript-eslint/ban-ts-comment` | 0 | 0 | 0 | ❌ | P1 |
+| `@angular-eslint/no-input-rename` | 0 | 0 | 0 | ❌ | P1 |
+| `@angular-eslint/no-output-on-prefix` | 0 | 0 | 0 | ❌ | P1 |
+| `@typescript-eslint/prefer-for-of` | 0 | 0 | 0 | ❌ | P1 |
+| `no-prototype-builtins` | 0 | 0 | 0 | ❌ | P1 |
+| `no-self-assign` | 0 | 0 | 0 | ✅ | P0 |
+| `no-empty` | 0 | 0 | 0 | ❌ | P1 |
+| `@typescript-eslint/no-unused-expressions` | 0 | 0 | 0 | ❌ | P0 |
+| `@angular-eslint/component-selector` | 0 | 0 | 0 | ❌ | P1 |
+| `@angular-eslint/template/prefer-control-flow` | 0 | 0 | 0 | ❌ | P1 |
 | `@angular-eslint/template/role-has-required-aria` | 1 | 0 | 1 | ❌ | P2 |
-| `@angular-eslint/prefer-inject` | 1 | 0 | 1 | ❌ | P1 |
+| `@angular-eslint/prefer-inject` | 0 | 0 | 0 | ❌ | P1 |
 
 ---
 
@@ -64,7 +64,7 @@ These are trivially auto-fixable by ESLint. One command cleans them all.
 
 ## P1 — Quick Manual Fixes (small effort, high value)
 
-### [ ] 4. Remove unused imports and variables (`no-unused-vars`) — 167 warnings in 95 files
+### [/] 4. Remove unused imports and variables (`no-unused-vars`) — 145 warnings in 80 files
 
 Delete unused imports, variables, and function parameters. For unused callback params, prefix with `_`.
 
@@ -93,7 +93,7 @@ Remove empty `ngOnInit()`, `ngOnDestroy()` etc. or add actual logic.
 - `src/app/features/topics/topic-view/topic-view.component.ts`
 - `src/app/shared/directives/etherpad.directive.ts`
 
-### [ ] 6. Fix directive/component selector prefixes — 11 errors in 11 files
+### [x] 6. Fix directive/component selector prefixes — CLEARED
 
 Directives and components must use `app-` or `cos-` prefix.
 
@@ -105,7 +105,7 @@ Directives and components must use `app-` or `cos-` prefix.
 - `src/app/features/topics/topic-view/components/idea-reply-report/idea-reply-report.component.ts` (component-selector)
 - Spec files with mock directives (3 files) — use `app-` or `cos-` prefix for stubs
 
-### [ ] 7. Fix output naming issues — 7 errors in 6 files
+### [x] 7. Fix output naming issues — CLEARED
 
 **`no-output-native`** — output names clash with native DOM events:
 - `src/app/features/account/profile/profile.component.spec.ts`
@@ -117,7 +117,7 @@ Directives and components must use `app-` or `cos-` prefix.
 - `src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.ts`
 - `src/app/shared/components/create-menu/create-menu.component.ts`
 
-### [ ] 8. Fix input rename issues (`no-input-rename`) — 3 errors in 2 files
+### [x] 8. Fix input rename issues (`no-input-rename`) — CLEARED
 
 - `src/app/features/home/components/feature-box/feature-box.component.ts` (×2)
 - `src/app/shared/directives/markdown.directive.ts`
@@ -128,7 +128,7 @@ Directives and components must use `app-` or `cos-` prefix.
 - `src/app/features/groups/group-create/components/group-create-help/group-create-help.component.spec.ts`
 - `src/app/shared/components/topic-attachments/topic-attachments.component.spec.ts`
 
-### [ ] 10. Misc single-issue fixes — 5 errors in 5 files
+### [x] 10. Misc single-issue fixes — CLEARED
 
 - **`no-prototype-builtins`**: `src/app/core/components/shell/global-search-panel/global-search-panel.component.ts`
   - Replace `obj.hasOwnProperty(x)` with `Object.hasOwn(obj, x)` or `Object.prototype.hasOwnProperty.call(obj, x)`
@@ -141,7 +141,7 @@ Directives and components must use `app-` or `cos-` prefix.
   - Use `inject()` instead of constructor injection
 - **`use-lifecycle-interface`**: 4 files — add lifecycle interface (e.g., `implements OnInit`)
 
-### [ ] 11. Empty functions in non-lifecycle methods (`no-empty-function`) — 33 warnings in 22 files
+### [/] 11. Empty functions in non-lifecycle methods (`no-empty-function`) — 25 warnings in 15 files
 
 Review empty methods — add `// intentionally empty` comment or actual logic.
 

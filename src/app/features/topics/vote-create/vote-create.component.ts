@@ -82,7 +82,7 @@ export class VoteCreateComponent implements OnInit {
         if (topic.voteId) {
           this.voteService.get({ topicId: topic.id, voteId: topic.voteId }).subscribe({
             next: (vote) => this.vote.set({ ...vote, question: vote.description }),
-            error: () => {}
+            error: () => { /* intentionally empty */ }
           });
         }
         this.isLoading.set(false);

@@ -18,7 +18,7 @@
           @for (request of requests(); track request.id) {
             <div class="row_list">
               <div class="name">
-                <a class="topic_title" [routerLink]="['/', translate.currentLang, 'topics', request.topic.id]" (click)="onClose.emit()">
+                <a class="topic_title" [routerLink]="['/', translate.currentLang, 'topics', request.topic.id]" (click)="close()">
                   {{ request.topic.title || request.topic.id }}
                 </a>
                 <div class="text">{{ request.text }}</div>

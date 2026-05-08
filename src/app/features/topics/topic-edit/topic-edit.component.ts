@@ -127,19 +127,19 @@ export class TopicEditComponent implements OnInit {
         if (topic.discussionId) {
           this.discussionService.get(topicId, topic.discussionId).subscribe({
             next: (d) => this.discussion.set({ question: d.question, deadline: d.deadline }),
-            error: () => {}
+            error: () => { /* intentionally empty */ }
           });
         }
         if (topic.ideationId) {
           this.ideationService.get({ topicId, ideationId: topic.ideationId }).subscribe({
             next: (i) => this.ideation.set(i),
-            error: () => {}
+            error: () => { /* intentionally empty */ }
           });
         }
         if (topic.voteId) {
           this.voteService.get({ topicId, voteId: topic.voteId }).subscribe({
             next: (v) => this.vote.set({ ...v, question: v.description }),
-            error: () => {}
+            error: () => { /* intentionally empty */ }
           });
         }
         this.isLoading.set(false);

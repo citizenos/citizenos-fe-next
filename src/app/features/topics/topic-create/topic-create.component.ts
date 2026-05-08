@@ -110,7 +110,7 @@ export class TopicCreateComponent implements OnInit {
         if (topic.discussionId) {
           this.discussionService.get(topicId, topic.discussionId).subscribe({
             next: (d) => this.discussion.set({ question: d.question, deadline: d.deadline }),
-            error: () => {}
+            error: () => { /* intentionally empty */ }
           });
         }
         this.isLoading.set(false);

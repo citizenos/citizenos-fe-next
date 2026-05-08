@@ -80,7 +80,7 @@ export class IdeationCreateComponent implements OnInit {
         if (topic.ideationId) {
           this.ideationService.get({ topicId: topic.id, ideationId: topic.ideationId }).subscribe({
             next: (ideation) => this.ideation.set(ideation),
-            error: () => {}
+            error: () => { /* intentionally empty */ }
           });
         }
         this.isLoading.set(false);

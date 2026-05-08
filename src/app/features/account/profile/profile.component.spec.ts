@@ -16,7 +16,7 @@ import { NO_ERRORS_SCHEMA, Component, Input, Output, EventEmitter, signal } from
 class MockInitialsComponent { @Input() name?: string; }
 
 @Component({ selector: 'cos-pagination', standalone: true, template: '' })
-class MockPaginationComponent { @Input() totalPages = 0; @Input() page = 0; @Output() select = new EventEmitter<number>(); }
+class MockPaginationComponent { @Input() totalPages = 0; @Input() page = 0; @Output() selectPage = new EventEmitter<number>(); }
 
 @Component({ selector: 'cos-terms-links', standalone: true, template: '' })
 class MockTermsLinksComponent {}

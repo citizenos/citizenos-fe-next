@@ -27,7 +27,7 @@ export class TopicRequestsDialogComponent {
 
   group = this.data.group;
   requests = signal<any[]>([]);
-  close = output();
+
   translate = inject(TranslateService);
 
   constructor() {
@@ -52,5 +52,8 @@ export class TopicRequestsDialogComponent {
       this.notification.success('COMPONENTS.TOPIC_REQUESTS.MSG_REJECT_SUCCESS');
       this.requests.update(r => r.filter(x => x.id !== request.id));
     });
+  }
+  close() {
+    this.dialogRef.close();
   }
 }
