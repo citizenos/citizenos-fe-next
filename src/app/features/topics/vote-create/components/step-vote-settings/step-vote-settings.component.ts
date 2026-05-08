@@ -29,7 +29,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
       <!-- Section 2: Vote type -->
       <div class="form-group">
-        <label>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM' | translate }}</label>
+        <p class="section-label">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM' | translate }}</p>
         <p class="section-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM_DESC"></p>
         <div class="radio-cards">
           <div
@@ -114,7 +114,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
             <p class="section-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.VOTE_TXT_DESCRIPTION_CHOICE_RANGE"></p>
             <div class="min-max-row">
               <div class="counter-group">
-                <label>{{ 'VIEWS.TOPICS_TOPICID.VOTE_LBL_MIN_CHOICES' | translate }}</label>
+                <p class="section-label">{{ 'VIEWS.TOPICS_TOPICID.VOTE_LBL_MIN_CHOICES' | translate }}</p>
                 <div class="counter">
                   <button type="button" class="counter-btn" (click)="adjustCount('min', -1)">−</button>
                   <span class="counter-value">{{ vote().minChoices || 1 }}</span>
@@ -122,7 +122,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
                 </div>
               </div>
               <div class="counter-group">
-                <label>{{ 'VIEWS.TOPICS_TOPICID.VOTE_LBL_MAX_CHOICES' | translate }}</label>
+                <p class="section-label">{{ 'VIEWS.TOPICS_TOPICID.VOTE_LBL_MAX_CHOICES' | translate }}</p>
                 <div class="counter">
                   <button type="button" class="counter-btn" (click)="adjustCount('max', -1)">−</button>
                   <span class="counter-value">{{ vote().maxChoices || getOptionsLimit() }}</span>
@@ -136,7 +136,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
       <!-- Section 4: Auth type -->
       <div class="form-group">
-        <label>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS' | translate }}</label>
+        <p class="section-label">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS' | translate }}</p>
         <p class="section-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS_DESC"></p>
         <div class="radio-cards">
           <div
@@ -174,7 +174,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
       <!-- Section 5: Delegation -->
       <div class="form-group">
-        <label>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION' | translate }}</label>
+        <p class="section-label">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION' | translate }}</p>
         <p class="section-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION_DESC"></p>
         <div
           class="radio-card"
@@ -195,7 +195,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 
       <!-- Section 6: Deadline -->
       <div class="form-group">
-        <label>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEADLINE' | translate }}</label>
+        <p class="section-label">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEADLINE' | translate }}</p>
         <p class="section-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEADLINE_DESC"></p>
         <cos-deadline-picker
           [deadline]="getVoteDeadlineDate()"

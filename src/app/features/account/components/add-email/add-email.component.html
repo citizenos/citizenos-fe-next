@@ -37,7 +37,7 @@
         <button class="btn_big_submit" (click)="doUpdateProfile()" [disabled]="form.invalid">
           {{ 'MODALS.ADD_EMAIL_LOG_IN' | translate }}
         </button>
-        <a (click)="logout()">{{ 'MODALS.ADD_EMAIL_LNK_CANCEL' | translate }}</a>
+        <button type="button" class="btn_link" (click)="logout()">{{ 'MODALS.ADD_EMAIL_LNK_CANCEL' | translate }}</button>
       </div>
       <div class="dialog_footer"></div>
     </div>

@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
 
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
-import { DIALOG_DATA, DialogRef, DialogCloseDirective, DialogService } from '../../../../../shared/dialog';
+import { DIALOG_DATA, DialogCloseDirective, DialogService } from '../../../../../shared/dialog';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 

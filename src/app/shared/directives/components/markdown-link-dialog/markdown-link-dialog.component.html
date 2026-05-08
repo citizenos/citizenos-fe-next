@@ -3,7 +3,7 @@
   <div class="dialog">
     <div class="dialog_header">
       <div class="header_text">
-        <h4 class="title" translate="MODALS.MARKDOWN_ADD_LINK_HEADING"></h4>
+        <h4 class="title">{{ 'MODALS.MARKDOWN_ADD_LINK_HEADING' | translate }}</h4>
         <div class="dialog_close">
           <a class="btn_dialog_close icon" dialogClose>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,8 +60,8 @@
       </form>
     </div>
     <div class="dialog_footer with_buttons">
-      <a dialogClose translate="MODALS.MARKDOWN_ADD_LINK_BTN_CANCEL"></a>
-      <button class="btn_big_submit" translate="MODALS.MARKDOWN_ADD_LINK_BTN_SAVE" (click)="save()"></button>
+      <button type="button" class="btn_link" dialogClose>{{ 'MODALS.MARKDOWN_ADD_LINK_BTN_CANCEL' | translate }}</button>
+      <button class="btn_big_submit" (click)="save()">{{ 'MODALS.MARKDOWN_ADD_LINK_BTN_SAVE' | translate }}</button>
     </div>
   </div>
 </div>

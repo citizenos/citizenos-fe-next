@@ -29,15 +29,15 @@ import { UserStore } from '../../../state/user.store';
               </div>
               <div class="content" translate="MODALS.ONBOARDING_CONTENT"></div>
               <div class="button_wrap">
-                <button class="btn_big_submit" (click)="takeTour()" translate="MODALS.ONBOARDING_BTN_TOUR"></button>
+                <button class="btn_big_submit" type="button" (click)="takeTour()">{{ 'MODALS.ONBOARDING_BTN_TOUR' | translate }}</button>
               </div>
               <div class="button_wrap">
-                <a class="blue_link" (click)="uiState.showOnboarding.set(false)" translate="MODALS.ONBOARDING_LNK_SKIP"></a>
+                <button type="button" class="btn_link blue_link" (click)="uiState.showOnboarding.set(false)">{{ 'MODALS.ONBOARDING_LNK_SKIP' | translate }}</button>
               </div>
             </div>
           </div>
         </div>
-        <div id="close_lightbox" (click)="uiState.showOnboarding.set(false)"></div>
+        <div id="close_lightbox" role="button" [attr.aria-label]="'CONTROL.CLOSE' | translate" tabindex="0" (click)="uiState.showOnboarding.set(false)" (keydown.enter)="uiState.showOnboarding.set(false)"></div>
       </div>
     }
   `,

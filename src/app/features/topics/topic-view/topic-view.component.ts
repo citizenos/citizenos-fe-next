@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, HostListener, ChangeDetectionStrategy, PLATFORM_ID, computed, DestroyRef } from '@angular/core';
+import { Component, OnInit, inject, signal, HostListener, ChangeDetectionStrategy, PLATFORM_ID, DestroyRef } from '@angular/core';
 import { NgClass, isPlatformBrowser } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';

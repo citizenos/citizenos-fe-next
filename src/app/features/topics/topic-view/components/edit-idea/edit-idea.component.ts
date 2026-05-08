@@ -313,8 +313,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       return;
     }
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
+    for (const file of files) {
       if (allowedTypes.indexOf(file.type) < 0) {
         this.notificationService.error(
           this.translate.instant('MSG_ERROR_FILE_TYPE_NOT_ALLOWED', { allowedFileTypes: allowedTypes.toString() })

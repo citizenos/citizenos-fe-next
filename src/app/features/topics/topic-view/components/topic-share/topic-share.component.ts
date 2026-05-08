@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input, inject, signal, computed, ElementRef, ViewChild, OnInit, model } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed, ElementRef, ViewChild, OnInit, model } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UpperCasePipe } from '@angular/common';
 import { QRCodeComponent } from 'angularx-qrcode';

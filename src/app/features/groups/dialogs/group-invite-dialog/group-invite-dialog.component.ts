@@ -11,7 +11,6 @@ import { GroupJoinService } from '../../../../core/services/group-join.service';
 import { GroupMemberUserService } from '../../../../core/services/group-member-user.service';
 import { SearchService } from '../../../../core/services/search.service';
 import { NotificationService } from '../../../../core/services/notification.service';
-import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DialogService } from '../../../../shared/dialog/dialog.service';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { DropdownComponent } from '../../../../shared/components/dropdown/dropdown.component';

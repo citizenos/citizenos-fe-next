@@ -46,14 +46,14 @@
         <div class="header_line_bottom"></div>
       </div>
       <div class="dialog_close">
-        <a class="btn_dialog_close icon" [dialogClose]="undefined">
+        <a class="btn_dialog_close icon" [dialogClose]="undefined" [aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="close" [size]="24"></cos-icon>
         </a>
       </div>
     </div>
     <div class="dialog_content">
       <div class="title_wrap">
-        <div id="title" translate="COMPONENTS.VERIFY_EMAIL.HEADING"></div>
+        <h1 id="title">{{ 'COMPONENTS.VERIFY_EMAIL.HEADING' | translate }}</h1>
       </div>
       <div class="content">
         <span translate="COMPONENTS.VERIFY_EMAIL.DESCRIPTION"></span>
@@ -63,7 +63,7 @@
     </div>
     <div class="dialog_content no_footer">
       <div class="button_wrap">
-        <button class="btn_big_submit" translate="COMPONENTS.VERIFY_EMAIL.BTN_OK" [dialogClose]="undefined"></button>
+        <button type="button" class="btn_big_submit" [dialogClose]="undefined">{{ 'COMPONENTS.VERIFY_EMAIL.BTN_OK' | translate }}</button>
       </div>
     </div>
   </div>

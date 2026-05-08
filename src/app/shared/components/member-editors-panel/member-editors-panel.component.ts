@@ -35,7 +35,7 @@ export interface TopicInvite {
         <div class="topic_editors_header">
           <div class="title" translate="VIEWS.TOPIC_CREATE.CO_EDITORS_TITLE"></div>
           @if (topicService.canDelete(topic())) {
-            <a (click)="manageMembers.emit()" translate="VIEWS.TOPIC_CREATE.CO_EDITORS_LNK_MANAGE"></a>
+            <button type="button" class="btn_link" (click)="manageMembers.emit()">{{ 'VIEWS.TOPIC_CREATE.CO_EDITORS_LNK_MANAGE' | translate }}</button>
           }
         </div>
 
@@ -48,7 +48,7 @@ export interface TopicInvite {
               <div class="topic_member">
                 <div class="profile_image_wrap">
                   @if (member.imageUrl) {
-                    <img class="profile_image" [src]="member.imageUrl">
+                    <img class="profile_image" [src]="member.imageUrl" [attr.alt]="member.name || ''">
                   } @else {
                     <div class="profile_image_filler small">
                       @if (member.name) {
@@ -72,7 +72,7 @@ export interface TopicInvite {
               <div class="topic_member disabled">
                 <div class="profile_image_wrap">
                   @if (invite.user?.imageUrl) {
-                    <img class="profile_image" [src]="invite.user!.imageUrl">
+                    <img class="profile_image" [src]="invite.user!.imageUrl" [attr.alt]="invite.user?.name || ''">
                   } @else {
                     <div class="profile_image_filler small">
                       @if (invite.user?.name) {
@@ -89,8 +89,7 @@ export interface TopicInvite {
       }
 
       @if (topicService.canDelete(topic())) {
-        <button class="btn_medium_secondary bold" (click)="inviteEditors.emit()"
-          translate="VIEWS.TOPIC_CREATE.BTN_INVITE_CO_EDITORS"></button>
+        <button class="btn_medium_secondary bold" (click)="inviteEditors.emit()">{{ 'VIEWS.TOPIC_CREATE.BTN_INVITE_CO_EDITORS' | translate }}</button>
       }
     </div>
   `,

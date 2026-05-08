@@ -1,5 +1,5 @@
 import { Component, inject, signal, computed } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';

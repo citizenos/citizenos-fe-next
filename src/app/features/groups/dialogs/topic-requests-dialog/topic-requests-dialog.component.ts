@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, signal, output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { UpperCasePipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';

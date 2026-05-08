@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { map, take, catchError, EMPTY } from 'rxjs';
 import { A11yModule } from '@angular/cdk/a11y';
 

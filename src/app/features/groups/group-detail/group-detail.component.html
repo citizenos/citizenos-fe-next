@@ -38,7 +38,7 @@
 
         <!-- Desktop action dropdown -->
         @if (isLoggedIn()) {
-          <div class="dropdown button_dropdown mobile_hidden" [class.dropdown_active]="groupActionsOpen()" (click)="$event.stopPropagation()">
+          <div class="dropdown button_dropdown mobile_hidden" [class.dropdown_active]="groupActionsOpen()" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" tabindex="-1">
             <button type="button" class="btn_medium_close icon group_actions_dropdown" (click)="groupActionsOpen.update(v => !v)" [attr.aria-label]="'VIEWS.GROUP.LBL_GROUP_ACTIONS' | translate" [attr.aria-expanded]="groupActionsOpen()">
               <cos-icon name="more-vertical" [size]="24"></cos-icon>
             </button>

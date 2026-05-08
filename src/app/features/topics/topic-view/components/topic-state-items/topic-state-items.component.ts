@@ -1,4 +1,4 @@
-import { Component, input, output, inject, computed, ChangeDetectionStrategy, model } from '@angular/core';
+import { Component, output, inject, computed, ChangeDetectionStrategy, model } from '@angular/core';
 import { NgClass, DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';

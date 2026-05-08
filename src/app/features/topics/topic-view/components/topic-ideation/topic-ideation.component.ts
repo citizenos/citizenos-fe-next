@@ -1,6 +1,6 @@
 import { Component, input, inject, signal, effect, computed, ChangeDetectionStrategy, PLATFORM_ID } from '@angular/core';
 import { DatePipe, isPlatformBrowser } from '@angular/common';
-import { toSignal, toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { of, tap, switchMap, map, take } from 'rxjs';

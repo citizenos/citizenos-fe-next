@@ -1,7 +1,6 @@
 import { Component, signal, ViewChild, ElementRef, AfterViewInit, OnDestroy, inject, ChangeDetectionStrategy, model } from '@angular/core';
 import { NgClass, UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { TopicService } from '../../../../../core/services/topic.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';

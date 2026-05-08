@@ -12,10 +12,10 @@
         <div>
           <cos-icon name="info-filled" [size]="40"></cos-icon>
         </div>
-        <h4 class="title" translate="MODALS.ADD_EID_HEADING"></h4>
+        <h4 class="title">{{ 'MODALS.ADD_EID_HEADING' | translate }}</h4>
       </div>
       <div class="dialog_close">
-        <a class="btn_dialog_close icon" [dialogClose]="undefined">
+        <a class="btn_dialog_close icon" [dialogClose]="undefined" [aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="close" [size]="24"></cos-icon>
         </a>
       </div>
@@ -26,7 +26,7 @@
     <div class="dialog_content">
       <div class="dialog_info_wrap">
         <div class="dialog_info">
-          <a (click)="doConnectEsteId()">
+          <a (click)="doConnectEsteId()" role="button" tabindex="0" (keydown.enter)="doConnectEsteId()" [aria-label]="'MODALS.ADD_EID_BTN_CONNECT_ID_CARD_MID' | translate">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="32" height="32" rx="16" fill="#F9FBFD" />
               <path fill-rule="evenodd" clip-rule="evenodd"
@@ -38,7 +38,7 @@
             </svg>
             <span translate="MODALS.ADD_EID_BTN_CONNECT_ID_CARD_MID"></span>
           </a>
-          <a (click)="doConnectSmartId()">
+          <a (click)="doConnectSmartId()" role="button" tabindex="0" (keydown.enter)="doConnectSmartId()" [aria-label]="'MODALS.ADD_EID_BTN_CONNECT_SMART_ID' | translate">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="32" height="32" rx="16" fill="#F9FBFD" />
               <path
@@ -58,8 +58,8 @@
     </div>
     <div class="dialog_content no_footer">
       <div class="button_wrap">
-        <button class="btn_big_submit" [dialogClose]="undefined" translate="MODALS.ADD_EID_BTN_CONTINUE"></button>
-        <a [dialogClose]="undefined" translate="MODALS.ADD_EID_LNK_BACK"></a>
+        <button type="button" class="btn_big_submit" [dialogClose]="undefined">{{ 'MODALS.ADD_EID_BTN_CONTINUE' | translate }}</button>
+        <button type="button" class="btn_link" [dialogClose]="undefined">{{ 'MODALS.ADD_EID_LNK_BACK' | translate }}</button>
       </div>
     </div>
     <div class="dialog_footer"></div>

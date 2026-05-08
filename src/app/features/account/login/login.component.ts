@@ -28,26 +28,26 @@ import { UserService } from '../../../core/services/user.service';
         </cos-button>
       </nav>
 
-      <h1 class="main_heading" translate="VIEWS.LOGIN.LOGIN_TITLE"></h1>
+      <h1 class="main_heading">{{ 'VIEWS.LOGIN.LOGIN_TITLE' | translate }}</h1>
 
       <div class="auth-methods">
         <div class="icons_wrap">
-          <button class="login_icon" (click)="doLoginPartner('facebook')" aria-label="Facebook Login">
+          <button type="button" class="login_icon" (click)="doLoginPartner('facebook')" aria-label="Facebook Login">
             <cos-icon name="facebook" [size]="20"></cos-icon>
           </button>
-          <button class="login_icon" (click)="doLoginPartner('google')" aria-label="Google Login">
+          <button type="button" class="login_icon" (click)="doLoginPartner('google')" aria-label="Google Login">
             <cos-icon name="google" [size]="32"></cos-icon>
           </button>
-          <button class="login_icon" [routerLink]="['smartid']" aria-label="Smart-ID Login">
+          <button type="button" class="login_icon" [routerLink]="['smartid']" aria-label="Smart-ID Login">
             <cos-icon name="smart-id" [size]="32"></cos-icon>
           </button>
-          <button class="login_icon" [routerLink]="['estid']" aria-label="Estonian ID Login">
+          <button type="button" class="login_icon" [routerLink]="['estid']" aria-label="Estonian ID Login">
             <cos-icon name="est-id" [size]="32"></cos-icon>
           </button>
         </div>
 
         <div class="separator">
-           <span translate="COMPONENTS.LOGIN_FORM.LOGIN_OR"></span>
+           <span>{{ 'COMPONENTS.LOGIN_FORM.LOGIN_OR' | translate }}</span>
         </div>
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -72,13 +72,13 @@ import { UserService } from '../../../core/services/user.service';
             [errorMessage]="'Password is required'"
           >
             <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate">
-            <button type="button" class="view_password" (click)="togglePassword()">
+            <button type="button" class="view_password" (click)="togglePassword()" [attr.aria-label]="(showPassword() ? 'CONTROL.HIDE' : 'CONTROL.SHOW') | translate">
                <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
             </button>
           </cos-input>
 
           <div class="forgot-password">
-            <a [routerLink]="['..', 'password', 'forgot']" translate="COMPONENTS.LOGIN_FORM.LOGIN_LNK_FORGOT_PASSWORD"></a>
+            <a [routerLink]="['..', 'password', 'forgot']">{{ 'COMPONENTS.LOGIN_FORM.LOGIN_LNK_FORGOT_PASSWORD' | translate }}</a>
           </div>
 
           <div class="form-actions">
@@ -95,7 +95,7 @@ import { UserService } from '../../../core/services/user.service';
         </form>
 
         <footer class="login-footer">
-          <a [routerLink]="['..', 'signup']" translate="COMPONENTS.LOGIN_FORM.LOGIN_LNK_NO_ACCOUNT_REGISTER"></a>
+          <a [routerLink]="['..', 'signup']">{{ 'COMPONENTS.LOGIN_FORM.LOGIN_LNK_NO_ACCOUNT_REGISTER' | translate }}</a>
         </footer>
       </div>
 

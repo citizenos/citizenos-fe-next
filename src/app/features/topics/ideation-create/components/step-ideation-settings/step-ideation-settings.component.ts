@@ -1,4 +1,4 @@
-import { Component, input, output, ChangeDetectionStrategy, signal, computed } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy, computed } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { Ideation } from '../../../../../core/interfaces/ideation';
@@ -15,9 +15,10 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
   template: `
     <div class="step-container">
       <div class="form-section">
-        <label translate="VIEWS.IDEATION_CREATE.SETTINGS_HEADING_IDEATION_QUESTION"></label>
+        <label for="ideation-question" translate="VIEWS.IDEATION_CREATE.SETTINGS_HEADING_IDEATION_QUESTION"></label>
         <cos-input [placeholder]="'VIEWS.IDEATION_CREATE.SETTINGS_IDEATION_QUESTION_PLACEHOLDER' | translate">
           <textarea
+            id="ideation-question"
             [(ngModel)]="ideation().question"
             (ngModelChange)="onIdeationUpdate()"
             rows="3"

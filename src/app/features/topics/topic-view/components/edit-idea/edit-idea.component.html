@@ -67,12 +67,12 @@
                     </div>
                     <div class="options">
                       @for (option of residenceItems; track option.value) {
-                        <div class="option" (click)="setResidenceValue(option.value)">
+                        <div class="option" (click)="setResidenceValue(option.value)" (keydown.enter)="setResidenceValue(option.value)" tabindex="0" role="button">
                           <span>{{ option.title }}</span>
                         </div>
                       }
                       <hr class="options_line" />
-                      <div class="option" (click)="setResidenceValue('other')">
+                      <div class="option" (click)="setResidenceValue('other')" (keydown.enter)="setResidenceValue('other')" tabindex="0" role="button">
                         <span>{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_OTHER' | translate }}</span>
                       </div>
                     </div>
@@ -127,7 +127,7 @@
                   </div>
                   <div class="options">
                     @for (option of genderItems; track option.value) {
-                      <div class="option" (click)="setGenderValue(option.value)">
+                      <div class="option" (click)="setGenderValue(option.value)" (keydown.enter)="setGenderValue(option.value)" tabindex="0" role="button">
                         <span>{{ option.title | translate }}</span>
                       </div>
                     }

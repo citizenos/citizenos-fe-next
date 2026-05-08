@@ -1,6 +1,6 @@
 <div class="page_content">
   <div class="page_header">
-    <h1 class="page_title" translate="VIEWS.ACCOUNT.HEADING"></h1>
+    <h1 class="page_title">{{ 'VIEWS.ACCOUNT.HEADING' | translate }}</h1>
     <button type="button" class="btn_medium_close" (click)="store.logout()" [attr.aria-label]="'VIEWS.ACCOUNT.BTN_LOG_OUT' | translate">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -157,15 +157,15 @@
           <button type="button" class="btn_link blue_link" (click)="toggleResetPassword()">{{
             'VIEWS.ACCOUNT.RESET_PASSWORD' | translate }}</button>
           <div>
-            <button type="submit" class="btn_big_submit" translate="VIEWS.ACCOUNT.BTN_SAVE"
-              [disabled]="store.isLoading()"></button>
+            <button type="submit" class="btn_big_submit"
+              [disabled]="store.isLoading()">{{ 'VIEWS.ACCOUNT.BTN_SAVE' | translate }}</button>
           </div>
         </form>
 
         <h2 class="small_heading">{{ 'VIEWS.ACCOUNT.TAB_PREFERENCES' | translate }}</h2>
 
         <div class="prefrence_box">
-          <h3 class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_PROFILE_LANGUAEG"></h3>
+          <h3 class="preference_title bold">{{ 'VIEWS.ACCOUNT.LBL_PROFILE_LANGUAEG' | translate }}</h3>
           <div class="preference_description" translate="VIEWS.ACCOUNT.LBL_PROFILE_LANGUAEG_DESCRIPTION"></div>
 
           <cos-dropdown class="toolbar-dropdown"
@@ -182,7 +182,7 @@
           </cos-dropdown>
         </div>
         <div class="prefrence_box">
-          <h3 class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_SHOW_IN_SEARCH"></h3>
+          <h3 class="preference_title bold">{{ 'VIEWS.ACCOUNT.LBL_SHOW_IN_SEARCH' | translate }}</h3>
           <div class="preference_header">
             <div class="preference_description" translate="VIEWS.ACCOUNT.LBL_SHOW_IN_SEARCH_DESCRIPTION"></div>
           </div>
@@ -191,13 +191,13 @@
         </div>
 
         <div class="prefrence_box">
-          <h3 class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_LINKS_TITLE"></h3>
+          <h3 class="preference_title bold">{{ 'VIEWS.ACCOUNT.LBL_LINKS_TITLE' | translate }}</h3>
           <div class="preference_description" translate="VIEWS.ACCOUNT.LBL_LINKS_DESCRIPTION"></div>
           <cos-terms-links></cos-terms-links>
         </div>
 
         <div class="prefrence_box">
-          <h3 class="preference_title bold" translate="VIEWS.ACCOUNT.LBL_DELETE_ACCOUNT"></h3>
+          <h3 class="preference_title bold">{{ 'VIEWS.ACCOUNT.LBL_DELETE_ACCOUNT' | translate }}</h3>
           <div class="preference_description" translate="VIEWS.ACCOUNT.LBL_DELETE_ACCOUNT_DESCRIPTION"></div>
           <div class="delete_account">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

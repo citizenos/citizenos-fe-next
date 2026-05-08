@@ -1,4 +1,4 @@
-import { Component, input, output, computed, ChangeDetectionStrategy, ViewEncapsulation, model } from '@angular/core';
+import { Component, output, computed, ChangeDetectionStrategy, ViewEncapsulation, model } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { TranslateModule } from '@ngx-translate/core';
 

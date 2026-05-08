@@ -1,4 +1,4 @@
-import { Component, ElementRef, AfterContentChecked, input, signal, ViewEncapsulation, inject, model } from '@angular/core';
+import { Component, ElementRef, AfterContentChecked, signal, ViewEncapsulation, inject, model } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { TranslateModule } from '@ngx-translate/core';
 

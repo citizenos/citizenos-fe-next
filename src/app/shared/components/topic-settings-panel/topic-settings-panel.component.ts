@@ -1,4 +1,4 @@
-import { Component, input, output, signal, inject, ChangeDetectionStrategy, effect, model } from '@angular/core';
+import { Component, output, signal, inject, ChangeDetectionStrategy, effect, model } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { UpperCasePipe } from '@angular/common';

@@ -9,9 +9,9 @@
     </div>
     <div class="dialog_header">
       <div class="header_text">
-        <h4 class="title" translate="MODALS.ADD_EID_BTN_CONNECT_SMART_ID"></h4>
+        <h4 class="title">{{ 'MODALS.ADD_EID_BTN_CONNECT_SMART_ID' | translate }}</h4>
         <div class="dialog_close">
-          <a class="btn_dialog_close icon" [dialogClose]="undefined">
+          <a class="btn_dialog_close icon" [dialogClose]="undefined" [aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="close" [size]="24"></cos-icon>
           </a>
         </div>

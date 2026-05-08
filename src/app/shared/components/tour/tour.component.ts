@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal, computed, ViewChild, Renderer2, HostListener, effect, OnDestroy } from '@angular/core';
+import { Component, ElementRef, inject, computed, ViewChild, Renderer2, HostListener, effect, OnDestroy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TourService } from '../../../core/services/tour.service';
@@ -30,7 +30,7 @@ import { IconComponent } from '../icon/icon.component';
             </div>
             <div class="tour_actions">
               @if (activeIndex() > 0) {
-                <button class="btn_prev" (click)="prevItem($event)" translate="COMPONENTS.TOUR.BTN_PREVIOUS"></button>
+                <button class="btn_prev" (click)="prevItem($event)">{{ 'COMPONENTS.TOUR.BTN_PREVIOUS' | translate }}</button>
               }
               <button class="btn_next" (click)="nextItem($event)">
                 {{ (activeIndex() === itemIndexes().length - 1 ? 'COMPONENTS.TOUR.BTN_FINISH' : 'COMPONENTS.TOUR.BTN_NEXT') | translate }}

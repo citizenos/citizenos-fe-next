@@ -9,7 +9,8 @@ import { IconComponent } from '../icon/icon.component';
     <div class="dropdown-wrapper" [class.open]="isOpen()"
          role="combobox"
          [attr.aria-expanded]="isOpen()"
-         aria-haspopup="listbox">
+         aria-haspopup="listbox"
+         aria-controls="dropdown-options-panel">
       <div class="dropdown-selection"
            (click)="toggle()"
            (keydown.enter)="toggle()"
@@ -30,7 +31,7 @@ import { IconComponent } from '../icon/icon.component';
         </div>
       </div>
       @if (isOpen()) {
-        <div class="dropdown-options" role="listbox" (click)="isOpen.set(false)">
+        <div id="dropdown-options-panel" class="dropdown-options" role="listbox" (click)="isOpen.set(false)" (keydown.escape)="isOpen.set(false)" tabindex="-1">
           <ng-content select="[options]"></ng-content>
         </div>
       }

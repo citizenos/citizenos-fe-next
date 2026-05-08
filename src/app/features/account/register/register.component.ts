@@ -41,7 +41,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
         </cos-button>
       </nav>
 
-      <h1 class="main_heading" translate="VIEWS.REGISTER.REGISTER_TITLE"></h1>
+      <h1 class="main_heading">{{ 'VIEWS.REGISTER.REGISTER_TITLE' | translate }}</h1>
       <p class="description" translate="VIEWS.REGISTER.REGISTER_DESCRIPTION"></p>
 
       @if (selectedMethod() === 'default') {
@@ -125,8 +125,8 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
               </label>
               <div class="checkbox_description">
                 <span translate="COMPONENTS.REGISTER_FORM.LBL_TERMS_AND_CONDITIONS_DESCRIPTION"></span>
-                <a class="bold" href="#" target="_blank" translate="COMPONENTS.REGISTER_FORM.PRIVACY_POLICY_LNK_TERMS_OF_USE"></a>
-                <a class="bold" href="#" target="_blank" translate="COMPONENTS.REGISTER_FORM.PRIVACY_POLICY_LNK_PRIVACY_POLICY"></a>
+                <a class="bold" href="#" target="_blank">{{ 'COMPONENTS.REGISTER_FORM.PRIVACY_POLICY_LNK_TERMS_OF_USE' | translate }}</a>
+                <a class="bold" href="#" target="_blank">{{ 'COMPONENTS.REGISTER_FORM.PRIVACY_POLICY_LNK_PRIVACY_POLICY' | translate }}</a>
               </div>
             </div>
 
@@ -154,7 +154,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
           </form>
 
           <footer class="register-footer">
-            <a [routerLink]="['..', 'login']" translate="COMPONENTS.REGISTER_FORM.HAVE_AN_ACCOUNT"></a>
+            <a [routerLink]="['..', 'login']">{{ 'COMPONENTS.REGISTER_FORM.HAVE_AN_ACCOUNT' | translate }}</a>
           </footer>
         </div>
       } @else if (selectedMethod() === 'smartid') {

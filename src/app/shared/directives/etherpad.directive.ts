@@ -34,9 +34,9 @@ export class EtherpadDirective {
     return (value + '').indexOf('%') < 0;
   }
 
-  private debounce(func: Function, timeout = 300) {
-    let timer: any;
-    return (...args: any) => {
+  private debounce(func: (...args: unknown[]) => unknown, timeout = 300) {
+    let timer: ReturnType<typeof setTimeout>;
+    return (...args: unknown[]) => {
       clearTimeout(timer);
       timer = setTimeout(() => { func.apply(this, args); }, timeout);
     };

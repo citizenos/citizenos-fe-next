@@ -1,7 +1,7 @@
 import { Component, inject, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from '../icon/icon.component';
-import { NotificationService, type Notification } from '../../../core/services/notification.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'cos-notifications',

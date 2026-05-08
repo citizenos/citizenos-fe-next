@@ -21,7 +21,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
   ],
   template: `
     <div id="password_reset_wrap">
-      <h1 class="main_heading" translate="VIEWS.PASSWORD_RESET.PASSWORD_RESET_TITLE"></h1>
+      <h1 class="main_heading">{{ 'VIEWS.PASSWORD_RESET.PASSWORD_RESET_TITLE' | translate }}</h1>
 
       @if (success()) {
         <div class="success-banner" role="alert">

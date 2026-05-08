@@ -1,4 +1,4 @@
-import { Component, input, output, model } from '@angular/core';
+import { Component, output, model } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { IconName } from '../icon/icon.registry';
 

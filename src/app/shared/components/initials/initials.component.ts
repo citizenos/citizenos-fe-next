@@ -1,4 +1,4 @@
-import { Component, input, computed, ChangeDetectionStrategy, ViewEncapsulation, model } from '@angular/core';
+import { Component, computed, ChangeDetectionStrategy, ViewEncapsulation, model } from '@angular/core';
 
 @Component({
   selector: 'cos-initials',

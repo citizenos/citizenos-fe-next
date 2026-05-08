@@ -47,7 +47,7 @@
               (enterAction)="addEmail($event.text)"
             >
               @for (user of searchResults(); track user.userId) {
-                <div class="typeahead-item" (mousedown)="addMember(user)" role="option" tabindex="0" (keydown.enter)="addMember(user)">{{ user.name }}</div>
+                <div class="typeahead-item" (mousedown)="addMember(user)" role="option" tabindex="0" (keydown.enter)="addMember(user)" aria-selected="false">{{ user.name }}</div>
               }
             </cos-typeahead>
 
@@ -65,7 +65,7 @@
 
             @if (pendingUsers().length) {
               <div class="level_row">
-                <label id="all_levels_label" class="level_row_label">{{ 'COMPONENTS.GROUP_INVITE.LBL_ALL_LEVEL' | translate }}</label>
+                <p id="all_levels_label" class="level_row_label">{{ 'COMPONENTS.GROUP_INVITE.LBL_ALL_LEVEL' | translate }}</p>
                 <cos-tooltip
                   [title]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_HEADING' | translate"
                   [description]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate">

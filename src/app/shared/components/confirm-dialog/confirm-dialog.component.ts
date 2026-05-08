@@ -3,7 +3,7 @@ import { NgClass } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { A11yModule } from '@angular/cdk/a11y';
-import { DialogCloseDirective, DialogRef } from '../../dialog';
+import { DialogCloseDirective } from '../../dialog';
 import { DIALOG_DATA } from '../../dialog/dialog-tokens';
 import { IconComponent } from '../icon/icon.component';
 
@@ -50,7 +50,7 @@ export interface ConfirmDialogData {
               }
             </div>
             @if (data.heading) {
-              <h4 id="dialog-title" class="title" [translate]="data.heading"></h4>
+              <h4 id="dialog-title" class="title">{{ data.heading | translate }}</h4>
             }
           </div>
 
@@ -100,10 +100,10 @@ export interface ConfirmDialogData {
         <div class="dialog_content no_footer">
           <div class="button_wrap">
             @if (data.confirmBtn) {
-              <button class="btn_big_submit" [dialogClose]="true" [translate]="data.confirmBtn"></button>
+              <button class="btn_big_submit" [dialogClose]="true">{{ data.confirmBtn | translate }}</button>
             }
             @if (data.closeBtn) {
-              <a [dialogClose]="false" [translate]="data.closeBtn"></a>
+              <a [dialogClose]="false">{{ data.closeBtn | translate }}</a>
             }
           </div>
         </div>

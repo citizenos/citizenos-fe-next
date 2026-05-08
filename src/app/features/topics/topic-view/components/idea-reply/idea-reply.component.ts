@@ -1,4 +1,4 @@
-import { Component, inject, signal, input, model, output, ChangeDetectionStrategy, OnInit, AfterViewInit, ViewChild, ElementRef, forwardRef } from '@angular/core';
+import { Component, inject, signal, input, model, ChangeDetectionStrategy, OnInit, AfterViewInit, ViewChild, ElementRef, forwardRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';

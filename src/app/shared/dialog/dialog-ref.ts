@@ -19,7 +19,7 @@ export class DialogCloseDirective {
 }
 
 @Injectable()
-export class DialogRef<T = unknown, R = unknown> {
+export class DialogRef<_T = unknown, R = unknown> {
   private afterClosedSubject = new Subject<R | undefined>();
   component?: { name: string };
 

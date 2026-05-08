@@ -1,6 +1,6 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
@@ -27,7 +27,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
         </cos-button>
       </nav>
 
-      <h1 class="main_heading" translate="VIEWS.PASSWORD_FORGOT.PASSWORD_FORGOT_TITLE"></h1>
+      <h1 class="main_heading">{{ 'VIEWS.PASSWORD_FORGOT.PASSWORD_FORGOT_TITLE' | translate }}</h1>
 
       @if (success()) {
         <div class="success-banner" role="alert">
