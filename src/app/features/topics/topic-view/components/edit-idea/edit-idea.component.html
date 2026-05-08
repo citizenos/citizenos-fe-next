@@ -1,99 +1,270 @@
 <div class="edit_idea_wrap">
-  <div class="edit_idea_header">
-    <h3>{{ (idea().status === 'draft' ? 'COMPONENTS.EDIT_IDEA.FOOTER_FORM_TITLE' : 'COMPONENTS.EDIT_IDEA.BTN_IDEA_UPDATE') | translate }}</h3>
+  <div class="add_idea_header">
+    <h3>{{ 'COMPONENTS.EDIT_IDEA.FOOTER_FORM_TITLE' | translate }}</h3>
     <div class="header_actions">
       @if (isAutosaving()) {
         <div class="autosave_indicator">
           <div class="loader"></div>
-          <span>{{ 'COMPONENTS.IDEA_DIALOG.AUTOSAVING' | translate }}</span>
+          <span class="bold loader_text">{{ 'COMPONENTS.IDEA_DIALOG.AUTOSAVING' | translate }}</span>
         </div>
       }
-      <button type="button" class="btn_close" (click)="close()" [aria-label]="'CONTROL.CLOSE' | translate">
-        <cos-icon name="close" [size]="24"></cos-icon>
+      @if (ideation().allowAnonymous) {
+        <div class="anonymous_info" title="{{ 'COMPONENTS.EDIT_IDEA.FOOTER_FORM_ANONYMOUS_INFO' | translate }}">
+          {{ 'COMPONENTS.EDIT_IDEA.FOOTER_FORM_ANONYMOUS_INFO' | translate }}
+        </div>
+      }
+      <button type="button" class="btn_small_close icon close_button" (click)="close()" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5.29311 17.2929C4.90258 17.6834 4.90258 18.3166 5.29311 18.7071C5.68363 19.0976 6.3168 19.0976 6.70732 18.7071L12.0002 13.4142L17.2931 18.7071C17.6836 19.0976 18.3168 19.0976 18.7073 18.7071C19.0978 18.3166 19.0978 17.6834 18.7073 17.2929L13.4144 12L18.7073 6.70711C19.0978 6.31658 19.0978 5.68342 18.7073 5.29289C18.3168 4.90237 17.6836 4.90237 17.2931 5.29289L12.0002 10.5858L6.70732 5.29289C6.3168 4.90237 5.68363 4.90237 5.29311 5.29289C4.90258 5.68342 4.90258 6.31658 5.29311 6.70711L10.586 12L5.29311 17.2929Z" fill="#2C3B47"/>
+        </svg>
       </button>
     </div>
   </div>
 
-  <div class="edit_idea_form">
-    <div class="field_wrap" [class.error]="errors()['statement']">
-      <label for="idea_statement">{{ 'COMPONENTS.EDIT_IDEA.PLACEHOLDER_ADD_STATEMENT_TO_IDEA' | translate }}</label>
+  <form id="idea_form" [attr.disabled]="!loggedIn()">
+    <cos-input
+      [placeholder]="'COMPONENTS.EDIT_IDEA.PLACEHOLDER_ADD_STATEMENT_TO_IDEA' | translate"
+      [hasError]="!!errors()['statement']"
+      [errorMessage]="'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY' | translate"
+    >
       <input
         id="idea_statement"
         type="text"
-        class="field"
+        class="gray_borders"
+        [class.error_input]="errors()['statement']"
+        autocomplete="off"
         [maxlength]="STATEMENT_MAXLENGTH"
         [ngModel]="statement()"
         (ngModelChange)="onStatementChange($event)"
-        placeholder="{{ 'COMPONENTS.EDIT_IDEA.PLACEHOLDER_ADD_STATEMENT_TO_IDEA' | translate }}" />
-      @if (errors()['statement']) {
-        <div class="error_message">{{ 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY' | translate }}</div>
-      }
-      <div class="char_count">{{ statement().length }}/{{ STATEMENT_MAXLENGTH }}</div>
-    </div>
+        placeholder="{{ 'COMPONENTS.EDIT_IDEA.PLACEHOLDER_ADD_STATEMENT_TO_IDEA' | translate }}"
+        required
+      />
+    </cos-input>
 
-    @if (ideation().allowAnonymous && ideation().demographicsConfig) {
-      <div class="demographics_wrap">
-        <!-- Simplified demographics for now, can be expanded -->
-         @for (key of ideation().demographicsConfig | keyvalue; track key.key) {
-            <div class="field_wrap">
-                <label [for]="'demographics_' + key.key">{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_' + (key.key | uppercase) | translate }}</label>
-                <input [id]="'demographics_' + key.key" type="text" class="field" [(ngModel)]="key.value.value" />
-            </div>
-         }
+    @if (ideation().allowAnonymous && getDemographicKeys().length > 0) {
+      <div class="anonymous_info demographics_section">
+        @for (key of getDemographicKeys(); track key) {
+          @switch (key) {
+            @case ('residence') {
+              <div class="gender_wrapper">
+                @if (isCountryEstonia()) {
+                  <div class="dropdown" cosDropdown>
+                    <div class="selection" [class.error_input]="residenceError()">
+                      <div class="selected_item">
+                        @if (!residenceValue()) {
+                          <span class="selected_item_placeholder">{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE' | translate }}</span>
+                        }
+                        @if (residenceValue() && residenceValue() !== 'other') {
+                          <span>{{ residenceValue() }}</span>
+                        }
+                        @if (residenceValue() === 'other') {
+                          <span>{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_OTHER' | translate }}</span>
+                        }
+                      </div>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round"/>
+                      </svg>
+                    </div>
+                    <div class="options">
+                      @for (option of residenceItems; track option.value) {
+                        <div class="option" (click)="setResidenceValue(option.value)">
+                          <span>{{ option.title }}</span>
+                        </div>
+                      }
+                      <hr class="options_line" />
+                      <div class="option" (click)="setResidenceValue('other')">
+                        <span>{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_OTHER' | translate }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  @if (residenceValue() === 'other') {
+                    <input
+                      [id]="'demographics_' + key"
+                      [name]="'demographics_' + key"
+                      [ngModel]="demographicValues()[key]"
+                      (ngModelChange)="setDemographicValue(key, $event)"
+                      autocomplete="off"
+                      placeholder="{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_PLACEHOLDER' | translate }}"
+                      class="gray_borders"
+                    />
+                  }
+                  @if (residenceError()) {
+                    <label [for]="'demographics_' + key" class="error_label">
+                      <span class="error_text" translate="COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY"></span>
+                    </label>
+                  }
+                } @else {
+                  <cos-input [placeholder]="'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE' | translate">
+                    <input
+                      [id]="'demographics_' + key"
+                      [name]="'demographics_' + key"
+                      autocomplete="off"
+                      placeholder="{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE' | translate }}"
+                      class="gray_borders"
+                      [ngModel]="demographicValues()[key]"
+                      (ngModelChange)="setDemographicValue(key, $event)"
+                    />
+                  </cos-input>
+                }
+              </div>
+            }
+
+            @case ('gender') {
+              <div class="gender_wrapper">
+                <div class="dropdown" cosDropdown>
+                  <div class="selection" [class.error_input]="genderError()">
+                    <div class="selected_item">
+                      @if (!genderValue()) {
+                        <span class="selected_item_placeholder">{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER' | translate }}</span>
+                      }
+                      @if (genderValue()) {
+                        <span>{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_' + (genderValue() | uppercase) | translate }}</span>
+                      }
+                    </div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <div class="options">
+                    @for (option of genderItems; track option.value) {
+                      <div class="option" (click)="setGenderValue(option.value)">
+                        <span>{{ option.title | translate }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+                @if (genderValue() === 'other') {
+                  <input
+                    [id]="'demographics_' + key"
+                    [name]="'demographics_' + key"
+                    [ngModel]="demographicValues()[key]"
+                    (ngModelChange)="setDemographicValue(key, $event)"
+                    autocomplete="off"
+                    placeholder="{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_PLACEHOLDER' | translate }}"
+                    class="gray_borders"
+                  />
+                }
+                @if (genderError() || (genderValue() === 'other' && errors()['gender'])) {
+                  <label [for]="'demographics_' + key" class="error_label">
+                    <span class="error_text" translate="COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY"></span>
+                  </label>
+                }
+              </div>
+            }
+
+            @case ('age') {
+              <cos-input [placeholder]="'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_AGE' | translate">
+                <input
+                  [id]="'demographics_' + key"
+                  [name]="'demographics_' + key"
+                  autocomplete="off"
+                  placeholder="{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_AGE' | translate }}"
+                  class="gray_borders"
+                  type="number"
+                  [ngModel]="demographicValues()[key]"
+                  (ngModelChange)="onAgeChange($event)"
+                  (keypress)="numberOnly($event)"
+                />
+              </cos-input>
+            }
+          }
+        }
       </div>
     }
 
-    <div class="field_wrap" [class.error]="errors()['description']">
-      <label for="idea_description">{{ 'COMPONENTS.EDIT_IDEA.PLACEHOLDER_EXPLAIN_YOUR_IDEA' | translate }}</label>
-      <textarea
-        id="idea_description"
-        class="field"
-        rows="8"
-        [ngModel]="description()"
-        (ngModelChange)="onDescriptionChange($event)"
-        placeholder="{{ 'COMPONENTS.EDIT_IDEA.PLACEHOLDER_EXPLAIN_YOUR_IDEA' | translate }}"></textarea>
-      @if (errors()['description']) {
-        <div class="error_message">{{ 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY' | translate }}</div>
-      }
-    </div>
+    <textarea
+      cosMarkdown
+      id="idea_description"
+      name="description"
+      [item]="description()"
+      (itemChange)="onDescriptionChange($event)"
+      cosMarkdownTranslateCharacterStatusKey="COMPONENTS.EDIT_IDEA.IDEA_TYPE_CHARACTER_LIMIT"
+      class="gray_borders"
+      [class.error_input]="errors()['description']"
+      placeholder="COMPONENTS.EDIT_IDEA.PLACEHOLDER_EXPLAIN_YOUR_IDEA"
+      [limit]="0"
+      required
+    ></textarea>
+    @if (errors()['description']) {
+      <label for="idea_description" class="error_label">
+        <span class="error_text" translate="COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY"></span>
+      </label>
+    }
 
     @if (images().length || newImages().length) {
       <div class="idea_images_wrap">
-        @for (image of images(); track image.id; let i = $index) {
-          <div class="image_item">
-            <img [src]="image.link" [alt]="image.name" />
-            <span class="image_name">{{ image.name }}</span>
-            <button type="button" class="btn_remove" (click)="removeImage(image, i)" [aria-label]="'CONTROL.REMOVE' | translate">
-              <cos-icon name="close" [size]="16"></cos-icon>
+        @for (image of newImages(); track i; let i = $index) {
+          <div class="image">
+            <div class="image_data">
+              <img [src]="image.link" [alt]="image.name" />
+              <a class="name">{{ image.name }}</a>
+            </div>
+            <button type="button" class="btn_small_plain icon" (click)="removeNewImage(i)">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 13.9997H15.3333L15.3333 19.333H14L14 13.9997Z" fill="#2C3B47"/>
+                <path d="M18 13.9997H16.6667V19.333H18V13.9997Z" fill="#2C3B47"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M19.3333 11.333V10.6663C19.3333 9.92996 18.7364 9.33301 18 9.33301L14 9.33301C13.2636 9.33301 12.6667 9.92996 12.6667 10.6663V11.333H10.6667C10.2985 11.333 10 11.6315 10 11.9997C10 12.3679 10.2985 12.6663 10.6667 12.6663H11.3333L11.3333 19.9997C11.3333 21.1043 12.2288 21.9997 13.3333 21.9997H18.6667C19.7713 21.9997 20.6667 21.1043 20.6667 19.9997V12.6663H21.3333C21.7015 12.6663 22 12.3679 22 11.9997C22 11.6315 21.7015 11.333 21.3333 11.333H19.3333ZM18 10.6663L14 10.6663V11.333L18 11.333V10.6663ZM19.3333 12.6663L12.6667 12.6663L12.6667 19.9997C12.6667 20.3679 12.9651 20.6663 13.3333 20.6663H18.6667C19.0349 20.6663 19.3333 20.3679 19.3333 19.9997V12.6663Z" fill="#2C3B47"/>
+              </svg>
             </button>
           </div>
         }
-        @for (image of newImages(); track i; let i = $index) {
-          <div class="image_item new">
-            <img [src]="image.link" [alt]="image.name" />
-            <span class="image_name">{{ image.name }}</span>
-            <button type="button" class="btn_remove" (click)="removeNewImage(i)" [aria-label]="'CONTROL.REMOVE' | translate">
-              <cos-icon name="close" [size]="16"></cos-icon>
+        @for (image of images(); track image.id; let i = $index) {
+          <div class="image">
+            <div class="image_data">
+              <img [src]="image.link" [alt]="image.name" />
+              <a class="name">{{ image.name }}</a>
+            </div>
+            <button type="button" class="btn_small_plain icon" (click)="removeImage(image, i)">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 13.9997H15.3333L15.3333 19.333H14L14 13.9997Z" fill="#2C3B47"/>
+                <path d="M18 13.9997H16.6667V19.333H18V13.9997Z" fill="#2C3B47"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M19.3333 11.333V10.6663C19.3333 9.92996 18.7364 9.33301 18 9.33301L14 9.33301C13.2636 9.33301 12.6667 9.92996 12.6667 10.6663V11.333H10.6667C10.2985 11.333 10 11.6315 10 11.9997C10 12.3679 10.2985 12.6663 10.6667 12.6663H11.3333L11.3333 19.9997C11.3333 21.1043 12.2288 21.9997 13.3333 21.9997H18.6667C19.7713 21.9997 20.6667 21.1043 20.6667 19.9997V12.6663H21.3333C21.7015 12.6663 22 12.3679 22 11.9997C22 11.6315 21.7015 11.333 21.3333 11.333H19.3333ZM18 10.6663L14 10.6663V11.333L18 11.333V10.6663ZM19.3333 12.6663L12.6667 12.6663L12.6667 19.9997C12.6667 20.3679 12.9651 20.6663 13.3333 20.6663H18.6667C19.0349 20.6663 19.3333 20.3679 19.3333 19.9997V12.6663Z" fill="#2C3B47"/>
+              </svg>
             </button>
           </div>
         }
       </div>
     }
 
-    <div class="form_actions">
-      <input #imageUpload type="file" class="hidden" multiple (change)="fileUpload($event)" accept="image/*" />
-      <button type="button" class="btn_medium_plain" (click)="imageUpload.click()">
-        <cos-icon name="image" [size]="20"></cos-icon>
-        <span>{{ 'COMPONENTS.EDIT_IDEA.BTN_ADD_IMAGE' | translate }}</span>
+    <input
+      id="image_upload_input"
+      #imageUpload
+      multiple
+      type="file"
+      class="hidden"
+      accept="image/gif,image/jpeg,image/png,image/svg+xml"
+      (change)="fileUpload($event)"
+    />
+  </form>
+
+  <div id="buttons_row">
+    <div class="btn_row_left">
+      <button type="button" class="btn_medium_submit_ghost icon close_button" (click)="close()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5.29311 17.2929C4.90258 17.6834 4.90258 18.3166 5.29311 18.7071C5.68363 19.0976 6.3168 19.0976 6.70732 18.7071L12.0002 13.4142L17.2931 18.7071C17.6836 19.0976 18.3168 19.0976 18.7073 18.7071C19.0978 18.3166 19.0978 17.6834 18.7073 17.2929L13.4144 12L18.7073 6.70711C19.0978 6.31658 19.0978 5.68342 18.7073 5.29289C18.3168 4.90237 17.6836 4.90237 17.2931 5.29289L12.0002 10.5858L6.70732 5.29289C6.3168 4.90237 5.68363 4.90237 5.29311 5.29289C4.90258 5.68342 4.90258 6.31658 5.29311 6.70711L10.586 12L5.29311 17.2929Z" fill="#2C3B47"/>
+        </svg>
       </button>
-      <div class="spacer"></div>
-      @if (idea().status === 'draft') {
-        <button type="button" class="btn_medium_plain" (click)="saveDraft()">{{ 'COMPONENTS.ADD_IDEA.BTN_SAVE_DRAFT' | translate }}</button>
+      @if (isDraft()) {
+        <button type="button" class="option error_text btn_medium_error" (click)="deleteDraft()">
+          <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M10 3H6V4H10V3ZM11 4V3C11 2.44772 10.5523 2 10 2H6C5.44772 2 5 2.44772 5 3V4H4H2.5C2.22386 4 2 4.22386 2 4.5C2 4.77614 2.22386 5 2.5 5H4V13C4 13.5523 4.44772 14 5 14H11C11.5523 14 12 13.5523 12 13V5H13.5C13.7761 5 14 4.77614 14 4.5C14 4.22386 13.7761 4 13.5 4H12H11ZM7 7H6V11H7V7ZM10 7H9V11H10V7Z" fill="#2C3B47"/>
+          </svg>
+          <span class="btn_text" translate="COMPONENTS.ADD_IDEA.BTN_DELETE_DRAFT"></span>
+        </button>
       }
-      <button type="button" class="btn_medium" (click)="publish()">
-        {{ (idea().status === 'draft' ? 'COMPONENTS.EDIT_IDEA.BTN_IDEA_POST' : 'COMPONENTS.EDIT_IDEA.BTN_IDEA_UPDATE') | translate }}
+    </div>
+    <div class="btn_row_right">
+      <button type="button" class="btn_medium_submit_ghost" (click)="uploadImage()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.42058 17.0297H16.6588C16.8706 17.0297 17.0206 16.9414 17.1088 16.7649C17.1971 16.5885 17.1794 16.412 17.0559 16.2355L14.5412 12.9002C14.4353 12.7591 14.3029 12.6885 14.1441 12.6885C13.9853 12.6885 13.8618 12.7591 13.7735 12.9002L11.1794 16.262L9.45882 14.0385C9.35293 13.9149 9.22058 13.8532 9.06176 13.8532C8.90293 13.8532 8.7794 13.9238 8.69117 14.0649L7.02352 16.2355C6.89999 16.412 6.88693 16.5885 6.98434 16.7649C7.08105 16.9414 7.22646 17.0297 7.42058 17.0297Z" fill="#2C3B47"/>
+          <rect x="4" y="4" width="16" height="16" rx="1" stroke="#2C3B47" stroke-width="2"/>
+        </svg>
+        <span translate="COMPONENTS.EDIT_IDEA.BTN_ADD_IMAGE"></span>
+      </button>
+      <button type="button" class="btn_medium_submit icon" (click)="publish()">
+        <span class="btn_text" [translate]="isDraft() ? 'COMPONENTS.EDIT_IDEA.BTN_IDEA_POST' : 'COMPONENTS.EDIT_IDEA.BTN_IDEA_UPDATE'"></span>
       </button>
     </div>
   </div>
 </div>
-<div class="overlay" (click)="close()"></div>
+<div class="overlay"></div>
