@@ -195,11 +195,17 @@ Or better: replace `<div (click)>` / `<span (click)>` with `<button>`.
 - `topic-add-groups-dialog.component.html`
 - `topic-report-form.component.html`
 - `topic-report-reason.component.html`
+- `argument.component.html`
+- `idea-reply-form.component.html`
+- `post-argument-form.component.html`
+- `topic-discussion.component.html`
+- `topic-discussion-create-dialog.component.html`
+- `topic-vote-deadline.component.html`
+- `topic-notification-settings.component.html`
 
 **Remaining top offenders:**
-- `argument.component.html` — 10 issues
-- `idea-reply-form.component.html` — 8 issues
-- `post-argument-form.component.html` — 6 issues
+- `topic-milestones.component.html` — 4 issues
+- `topic-content.component.html` — 4 issues
 
 ### [/] 13. `elements-content` — 120 errors in 60 files
 

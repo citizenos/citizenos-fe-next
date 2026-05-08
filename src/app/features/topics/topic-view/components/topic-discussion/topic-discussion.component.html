@@ -47,7 +47,7 @@
 
     @if (discussion()?.deadline || canEditDeadline()) {
     <div class="data_section">
-      <div class="title">{{ 'COMPONENTS.TOPIC_ARGUMENTS.LBL_DEADLINE' | translate }}</div>
+      <h3 class="title">{{ 'COMPONENTS.TOPIC_ARGUMENTS.LBL_DEADLINE' | translate }}</h3>
       <div class="deadline">
         @if (discussion()?.deadline) {
         <span class="bold">{{ discussion()?.deadline | date:'y-MM-dd HH:mm' }}</span>
@@ -65,7 +65,7 @@
     @if (hasDiscussionEndedExpired()) {
     <div class="discussion_info_text_wrap">
       <div class="text_area">
-        <div class="bold">{{ 'COMPONENTS.TOPIC_ARGUMENTS.HEADING_DISCUSSION_ENDED' | translate }}</div>
+        <h2 class="bold">{{ 'COMPONENTS.TOPIC_ARGUMENTS.HEADING_DISCUSSION_ENDED' | translate }}</h2>
         <div>{{ 'COMPONENTS.TOPIC_ARGUMENTS.TXT_DISCUSSION_ENDED' | translate }}</div>
       </div>
     </div>
@@ -73,7 +73,7 @@
 
     <div class="section_header">
       <div class="title_wrap">
-        <div class="title">{{ 'COMPONENTS.TOPIC_ARGUMENTS.TITLE' | translate:{count: counts().total} }}</div>
+        <h1 class="title">{{ 'COMPONENTS.TOPIC_ARGUMENTS.TITLE' | translate:{count: counts().total} }}</h1>
       </div>
       @if (canPost()) {
       <button type="button" class="btn_medium_submit" (click)="showPostForm.set(true)" [disabled]="hasDiscussionEndedExpired()">
@@ -84,7 +84,7 @@
 
     <div class="argument_graph_wrap">
       <div class="graph_header">
-        <div class="graph_title">{{ 'COMPONENTS.TOPIC_ARGUMENTS.GRAPH_TITLE' | translate }}</div>
+        <h2 class="graph_title">{{ 'COMPONENTS.TOPIC_ARGUMENTS.GRAPH_TITLE' | translate }}</h2>
         <div>
           <div class="legend">
             <div class="legend_item pro">
@@ -120,7 +120,7 @@
       <div class="filter-dropdowns">
         <div class="dropdown_wrap">
           <div class="dropdown" cosDropdown [multipleChoice]="true">
-            <div class="selection" trigger>
+            <div class="selection" trigger role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_TYPE' | translate">
               <div class="selected_item">
                 @if (selectedTypes().length === 1) {
                 {{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_' + selectedTypes()[0].toUpperCase() | translate | uppercase
@@ -215,10 +215,10 @@
             </clipPath>
           </defs>
         </svg>
-        <div class="description_heading">{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_DISCUSSION_YET' | translate }}</div>
+        <h2 class="description_heading">{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_DISCUSSION_YET' | translate }}</h2>
         <div class="no_feature_description">
           <div class="description_text">
-            <div class="description_heading">{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_HEADING' | translate }}</div>
+            <h3 class="description_heading">{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_HEADING' | translate }}</h3>
             <div>
               <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_BEFORE' | translate }}</span><br /><br />
               <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_AFTER' | translate }}</span>

@@ -3,7 +3,7 @@
   <div class="dialog" cdkTrapFocus [cdkTrapFocusAutoCapture]="true" role="dialog" aria-modal="true">
     <div class="dialog_header">
       <div class="header_text">
-        <h4 class="title">{{ 'MODALS.TOPIC_NOTIFICATION_SETTINGS_TITLE' | translate }}</h4>
+        <h1 class="title">{{ 'MODALS.TOPIC_NOTIFICATION_SETTINGS_TITLE' | translate }}</h1>
         <div class="dialog_close">
           <button type="button" class="btn_dialog_close icon" (click)="doSaveSettings()" [aria-label]="'CONTROL.CLOSE' | translate">
             <cos-icon name="close"></cos-icon>
@@ -31,7 +31,7 @@
       
       <div class="dialog_content">
         <div class="line_separator"></div>
-        <div class="bold">{{ 'MODALS.TOPIC_NOTIFICATION_SETTINGS_LBL_NOTIFY_ME_ABOUT' | translate }}</div>
+        <h2 class="bold">{{ 'MODALS.TOPIC_NOTIFICATION_SETTINGS_LBL_NOTIFY_ME_ABOUT' | translate }}</h2>
         <label class="checkbox"><span>{{ 'MODALS.TOPIC_NOTIFICATION_SETTINGS_LBL_ALL_ACTIONS' | translate }}</span>
           <input type="checkbox" [checked]="allChecked()" (change)="toggleAllNotifications()">
           <span class="checkmark"></span>

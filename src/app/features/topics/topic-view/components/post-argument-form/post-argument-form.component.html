@@ -5,7 +5,7 @@
 </div>
 
 <div id="create_argument_footer_menu" [class.open]="!isOpen()" [class.closed]="isOpen()">
-  <div class="footer_title">{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_MENU_TITLE' | translate }}</div>
+  <h2 class="footer_title">{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_MENU_TITLE' | translate }}</h2>
   <button type="button" class="btn_medium_submit" (click)="isOpen.set(true)">
     <span class="btn_text">{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_MENU_BTN_ADD_ARGUMENT' | translate }}</span>
   </button>
@@ -14,7 +14,7 @@
 <div id="create_argument_footer" [class.open]="isOpen()" [class.closed]="!isOpen()">
   <div id="post_argument_form_wrap">
     <div class="form_header">
-      <span>{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_FORM_TITLE' | translate }}</span>
+      <h3>{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_FORM_TITLE' | translate }}</h3>
       <div id="close_mobile" class="mobile_show">
         <button type="button" class="btn_small_close icon close_button mobile_show" (click)="close()" [aria-label]="'CONTROL.CLOSE' | translate">
           <cos-icon name="close" size="24"></cos-icon>
@@ -47,6 +47,7 @@
 
       <div id="subject_counter">{{ 'COMPONENTS.POST_ARGUMENT.SUBJECT_CHARACTERS_LEFT' | translate:{chars: subject().length || 0, charsLeft: ARGUMENT_SUBJECT_MAXLENGTH} }}</div>
       
+      <label class="hidden" for="argument_text">{{ 'COMPONENTS.POST_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT' | translate }}</label>
       <textarea name="text" id="argument_text" [ngModel]="text()" (ngModelChange)="text.set($event)" class="gray_borders"
         [placeholder]="'COMPONENTS.POST_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT' | translate"
         [maxlength]="argumentMaxLength()" required rows="4"></textarea>

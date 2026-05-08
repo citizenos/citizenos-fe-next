@@ -4,9 +4,9 @@
     <div class="dialog_header voting">
       <div class="header_text">
         @if (isNew) {
-          <div class="small_heading">{{ 'COMPONENTS.TOPIC_VOTE_DEADLINE.DIALOG_HEADING_ADD' | translate }}</div>
+          <h1 class="small_heading">{{ 'COMPONENTS.TOPIC_VOTE_DEADLINE.DIALOG_HEADING_ADD' | translate }}</h1>
         } @else {
-          <div class="small_heading">{{ 'COMPONENTS.TOPIC_VOTE_DEADLINE.DIALOG_HEADING' | translate }}</div>
+          <h1 class="small_heading">{{ 'COMPONENTS.TOPIC_VOTE_DEADLINE.DIALOG_HEADING' | translate }}</h1>
         }
         <div class="dialog_close">
           <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">

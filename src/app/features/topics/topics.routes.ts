@@ -58,6 +58,10 @@ export const TOPICS_ROUTES: Routes = [
         loadComponent: () => import('./topic-invitation/topic-invitation.component').then(m => m.TopicInvitationComponent)
       },
       {
+        path: 'ideations/:ideationId/ideas/:ideaId/comments/:commentId/reports/:reportId/moderate',
+        loadComponent: () => import('./topic-view/components/idea-reply-report-moderate/idea-reply-report-moderate.component').then(m => m.IdeaReplyReportModerateDialogComponent)
+      },
+      {
         path: 'votes',
         children: [
           { path: ':voteId', loadComponent: () => import('./vote-create/vote-create.component').then(m => m.VoteCreateComponent) }

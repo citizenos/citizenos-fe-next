@@ -86,8 +86,10 @@
 
         @if (showEdit()) {
           <div class="edit-form">
-            <input [ngModel]="editSubject()" (ngModelChange)="editSubject.set($event)" class="edit-subject-input" [placeholder]="'COMPONENTS.POST_ARGUMENT.SUBJECT_PLACEHOLDER' | translate">
-            <textarea [ngModel]="editText()" (ngModelChange)="editText.set($event)" class="edit-text-input" rows="4"></textarea>
+            <label class="hidden" for="editSubject">{{ 'COMPONENTS.POST_ARGUMENT.SUBJECT_PLACEHOLDER' | translate }}</label>
+            <input id="editSubject" [ngModel]="editSubject()" (ngModelChange)="editSubject.set($event)" class="edit-subject-input" [placeholder]="'COMPONENTS.POST_ARGUMENT.SUBJECT_PLACEHOLDER' | translate">
+            <label class="hidden" for="editText">{{ 'COMPONENTS.ARGUMENT.LBL_ARGUMENT_TEXT' | translate }}</label>
+            <textarea id="editText" [ngModel]="editText()" (ngModelChange)="editText.set($event)" class="edit-text-input" rows="4"></textarea>
             <div class="edit-actions">
               <button type="button" class="btn-cancel" (click)="showEdit.set(false)">{{ 'BTN_CANCEL' | translate }}</button>
               <button type="button" class="btn-save" (click)="saveEdit()">{{ 'BTN_SAVE' | translate }}</button>
@@ -129,7 +131,9 @@
 
     @if (showReplyForm()) {
       <div class="post-form-container">
+        <label class="hidden" for="replyText">{{ 'VIEWS.TOPICS_TOPICID.PLACEHOLDER_WRITE_REPLY_HERE' | translate }}</label>
         <textarea
+          id="replyText"
           [ngModel]="replyText()"
           (ngModelChange)="replyText.set($event)"
           class="reply-textarea"
