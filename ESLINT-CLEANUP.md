@@ -202,10 +202,11 @@ Or better: replace `<div (click)>` / `<span (click)>` with `<button>`.
 - `topic-discussion-create-dialog.component.html`
 - `topic-vote-deadline.component.html`
 - `topic-notification-settings.component.html`
+- `topic-milestones.component.html`
+- `topic-content.component.html`
 
 **Remaining top offenders:**
-- `topic-milestones.component.html` — 4 issues
-- `topic-content.component.html` — 4 issues
+None. All major P2 offenders remediated.
 
 ### [/] 13. `elements-content` — 120 errors in 60 files
 

@@ -2,11 +2,11 @@
   <div class="follow_up_header">
     <div class="header_division">
       <cos-icon name="status-follow-up" [size]="32" style="color: var(--color-follow-up)"></cos-icon>
-      <div class="follow_up_title">
+      <h1 class="follow_up_title">
         {{ 'COMPONENTS.TOPIC_MILESTONES.CREATE_A_MILESTONE' | translate }}
         <cos-tooltip [description]="'COMPONENTS.TOPIC_MILESTONES.TOOLTIP_CREATE' | translate">
         </cos-tooltip>
-      </div>
+      </h1>
     </div>
   </div>
   <div class="follow_up_content">
@@ -16,11 +16,11 @@
           <div class="milestone_header">
             <div class="title_wrap">
               <div class="circle">{{ $index + 1 }}</div>
-              <div class="small_heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE' | translate }}</div>
+              <h2 class="small_heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE' | translate }}</h2>
             </div>
           </div>
           <div class="section_content">
-            <div class="heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_TITLE' | translate }}</div>
+            <label class="heading bold" for="create_milestone_title">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_TITLE' | translate }}</label>
             <cos-input [placeholder]="'COMPONENTS.TOPIC_MILESTONES.PLACEHOLDER_SUBJECT' | translate">
               <input id="create_milestone_title" [(ngModel)]="evt.subject" [class.error_input]="errors()?.subject"
                 [placeholder]="'COMPONENTS.TOPIC_MILESTONES.PLACEHOLDER_SUBJECT' | translate"
@@ -32,7 +32,7 @@
                 </label>
               }
             </cos-input>
-            <div class="heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_CONTENT' | translate }}</div>
+            <label class="heading bold" for="create_milestone_textarea">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_CONTENT' | translate }}</label>
             <cos-input [placeholder]="'VIEWS.TOPICS_TOPICID.ADD_MILESTONES_PLACEHOLDER_TEXT' | translate">
               <textarea id="create_milestone_textarea" class="gray_borders" [class.error_input]="errors()?.text"
                 [(ngModel)]="evt.text"
@@ -105,11 +105,11 @@
           <div class="milestone_header">
             <div class="title_wrap">
               <div class="circle">{{ countTotal() + 1 }}</div>
-              <div class="small_heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE' | translate }}</div>
+              <h2 class="small_heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE' | translate }}</h2>
             </div>
           </div>
           <div class="section_content">
-            <div class="heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_TITLE' | translate }}</div>
+            <label class="heading bold" for="create_milestone_title">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_TITLE' | translate }}</label>
             <cos-input [placeholder]="'COMPONENTS.TOPIC_MILESTONES.PLACEHOLDER_SUBJECT' | translate">
               <input id="create_milestone_title" [(ngModel)]="event.subject" [class.error_input]="errors()?.subject"
                 [placeholder]="'COMPONENTS.TOPIC_MILESTONES.PLACEHOLDER_SUBJECT' | translate" class="gray_borders"
@@ -121,7 +121,7 @@
                 </label>
               }
             </cos-input>
-            <div class="heading">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_CONTENT' | translate }}</div>
+            <label class="heading bold" for="create_milestone_textarea">{{ 'COMPONENTS.TOPIC_MILESTONES.HEADING_MILESTONE_CONTENT' | translate }}</label>
             <cos-input [placeholder]="'VIEWS.TOPICS_TOPICID.ADD_MILESTONES_PLACEHOLDER_TEXT' | translate">
               <textarea id="create_milestone_textarea" class="gray_borders" [class.error_input]="errors()?.text"
                 [(ngModel)]="event.text" [placeholder]="'VIEWS.TOPICS_TOPICID.ADD_MILESTONES_PLACEHOLDER_TEXT' | translate"

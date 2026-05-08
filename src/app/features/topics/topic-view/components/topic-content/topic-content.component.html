@@ -15,7 +15,7 @@
 
   <div id="topic_text_wrap" #topicText [@readMore]="readMore() ? 'open' : 'closed'">
     <div class="topic_title" [ngClass]="{ tablet_tab_open: !!tabTablet() }">
-      <div class="main_heading" [innerHTML]="topic().title"></div>
+      <h1 class="main_heading" [innerHTML]="topic().title"></h1>
     </div>
     
     @if (topic().intro && !tabTablet()) {
@@ -28,7 +28,7 @@
     
     @if (readMoreButton() && !tabTablet()) {
       <div class="button_wrap" [ngClass]="{ open: readMore() }">
-        <button class="btn_medium_secondary" (click)="toggleReadMore()">
+        <button type="button" class="btn_medium_secondary" (click)="toggleReadMore()" [attr.aria-expanded]="readMore()">
           @if (!readMore()) {
             <cos-icon name="chevron-down" [size]="24" color="#1168A8"></cos-icon>
             <span translate="VIEWS.TOPICS_TOPICID.BTN_READ_MORE"></span>
