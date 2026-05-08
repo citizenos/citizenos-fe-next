@@ -14,7 +14,7 @@ import { MarkdownLinkDialogComponent } from './components/markdown-link-dialog/m
 import EasyMDE from 'easymde';
 
 @Directive({
-  selector: '[cosmarkdown]',
+  selector: '[cosMarkdown]',
   standalone: true,
 })
 export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {

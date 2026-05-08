@@ -1,7 +1,7 @@
 import { Directive, ElementRef, inject, AfterViewInit } from '@angular/core';
 
 @Directive({
-  selector: '[download]',
+  selector: '[cosDownload]',
   standalone: true,
 })
 export class DownloadDirective implements AfterViewInit {

@@ -17,6 +17,7 @@ class InputStub { @Input() placeholder: any; }
 @Directive({ selector: '[cosDropdown]', standalone: true })
 class CosDropdownStub {}
 
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[dialogClose]', standalone: true })
 class DialogCloseStub { @Input() dialogClose: any; }
 

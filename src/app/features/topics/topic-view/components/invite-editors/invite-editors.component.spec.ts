@@ -25,6 +25,7 @@ class PaginationStub { @Input() totalPages: any; @Input() page: any; }
 @Directive({ selector: '[cosDropdown]', standalone: true })
 class CosDropdownStub {}
 
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[dialogClose]', standalone: true })
 class DialogCloseStub {}
 

@@ -1,7 +1,7 @@
 import { Directive, ElementRef, inject, AfterViewInit } from '@angular/core';
 
 @Directive({
-  selector: '[htmlwrap]',
+  selector: '[cosHtmlwrap]',
   standalone: true,
 })
 export class HtmlDirective implements AfterViewInit {

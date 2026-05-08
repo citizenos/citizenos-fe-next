@@ -14,6 +14,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 @Component({ selector: 'cos-terms-links', template: '', standalone: true })
 class TermsLinksStub {}
 
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[dialogClose]', standalone: true })
 class DialogCloseStub {}
 

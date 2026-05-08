@@ -1,7 +1,7 @@
 import { Directive, HostListener, output } from '@angular/core';
 
 @Directive({
-  selector: '[dragndrop]',
+  selector: '[cosDragndrop]',
   standalone: true,
 })
 export class DragndropDirective {

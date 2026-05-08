@@ -23,7 +23,7 @@ describe('DragndropDirective', () => {
     }).compileComponents();
     fixture = TestBed.createComponent(HostComponent);
     fixture.detectChanges();
-    el = fixture.nativeElement.querySelector('[dragndrop]');
+    el = fixture.nativeElement.querySelector('[cosDragndrop]');
   });
 
   it('should create', () => {

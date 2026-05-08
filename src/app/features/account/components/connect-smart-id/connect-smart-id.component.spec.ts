@@ -11,6 +11,7 @@ class SmartIdStub {}
 @Component({ selector: 'cos-notifications', template: '', standalone: true })
 class CosNotificationsStub {}
 
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[dialogClose]', standalone: true })
 class DialogCloseStub {
   @Input() dialogClose: any;
