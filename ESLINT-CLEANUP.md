@@ -1,6 +1,6 @@
 # ESLint Cleanup Tasks
 
-**Total: 1809 issues (685 errors, 1124 warnings) across ~200 files**
+**Total: 802 problems (0 errors, 802 warnings) — all remaining are `no-explicit-any` P3 warnings**
 
 Run `npm run lint` to see current status.
 
@@ -35,6 +35,7 @@ Run `npm run lint` to see current status.
 | `@angular-eslint/component-selector` | 0 | 0 | 0 | ❌ | P1 |
 | `@angular-eslint/template/prefer-control-flow` | 0 | 0 | 0 | ❌ | P1 |
 | `@angular-eslint/template/role-has-required-aria` | 1 | 0 | 1 | ❌ | P2 |
+| `@typescript-eslint/consistent-type-definitions` | 0 | 0 | 0 | ✅ | P0 |
 | `@angular-eslint/prefer-inject` | 0 | 0 | 0 | ❌ | P1 |
 
 ---
@@ -63,7 +64,7 @@ These are trivially auto-fixable by ESLint. One command cleans them all.
 
 ## P1 — Quick Manual Fixes (small effort, high value)
 
-### [/] 4. Remove unused imports and variables (`no-unused-vars`) — 145 warnings in 80 files
+### [x] 4. Remove unused imports and variables (`no-unused-vars`) — 145 warnings in 80 files
 
 Delete unused imports, variables, and function parameters. For unused callback params, prefix with `_`.
 
@@ -140,7 +141,7 @@ Directives and components must use `app-` or `cos-` prefix.
   - Use `inject()` instead of constructor injection
 - **`use-lifecycle-interface`**: 4 files — add lifecycle interface (e.g., `implements OnInit`)
 
-### [/] 11. Empty functions in non-lifecycle methods (`no-empty-function`) — 25 warnings in 15 files
+### [x] 11. Empty functions in non-lifecycle methods (`no-empty-function`) — 25 warnings in 15 files
 
 Review empty methods — add `// intentionally empty` comment or actual logic.
 
@@ -152,7 +153,7 @@ Review empty methods — add `// intentionally empty` comment or actual logic.
 
 These are real accessibility issues. Fix by adding keyboard event handlers, ARIA attributes, and semantic HTML.
 
-### [/] 12. `click-events-have-key-events` + `interactive-supports-focus` — 148 errors in 48 files
+### [x] 12. `click-events-have-key-events` + `interactive-supports-focus` — 148 errors in 48 files
 
 Every `(click)` handler on a non-interactive element needs:
 1. A `(keydown.enter)` or `(keyup)` handler
@@ -208,22 +209,22 @@ Or better: replace `<div (click)>` / `<span (click)>` with `<button>`.
 **Remaining top offenders:**
 None. All major P2 offenders remediated.
 
-### [/] 13. `elements-content` — 120 errors in 60 files
+### [x] 13. `elements-content` — 120 errors in 60 files
 
 Elements like `<button>`, `<a>`, `<h1>`–`<h6>` must have text content or `aria-label`.
 
 For icon-only buttons: add `aria-label="description"`.
 For headings with translated content: ensure `{{ 'KEY' | translate }}` is inside the tag.
 
-### [/] 14. `label-has-associated-control` — 25 errors in 12 files
+### [x] 14. `label-has-associated-control` — 25 errors in 12 files
 
 `<label>` elements must be linked to a form control via `for="id"` or by wrapping the control.
 
-### [/] 15. `alt-text` — 8 errors in 7 files
+### [x] 15. `alt-text` — 8 errors in 7 files
 
 Add `alt` attributes to `<img>` elements. Use descriptive text or `alt=""` for decorative images.
 
-### [ ] 16. `role-has-required-aria` — 1 error in 1 file
+### [x] 16. `role-has-required-aria` — 1 error in 1 file
 
 Ensure elements with ARIA `role` have required ARIA attributes.
 
@@ -231,7 +232,7 @@ Ensure elements with ARIA `role` have required ARIA attributes.
 
 ## P3 — Type Safety (gradual, ongoing)
 
-### [ ] 17. Replace `any` types (`no-explicit-any`) — 967 warnings in 207 files
+### [/] 17. Replace `any` types (`no-explicit-any`) — 802 warnings in ~200 files
 
 This is the largest category and should be addressed gradually, service by service and component by component.
 
