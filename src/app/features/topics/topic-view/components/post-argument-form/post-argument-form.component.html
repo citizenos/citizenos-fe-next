@@ -1,6 +1,6 @@
 <div id="create_argument_tablet_btn">
   <button type="button" class="btn_big_submit" (click)="isOpen.set(true)" [aria-label]="'COMPONENTS.POST_ARGUMENT.FOOTER_MENU_BTN_ADD_ARGUMENT' | translate">
-    <cos-icon name="plus" size="24"></cos-icon>
+    <cos-icon name="plus" [size]="24"></cos-icon>
   </button>
 </div>
 
@@ -17,7 +17,7 @@
       <h3>{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_FORM_TITLE' | translate }}</h3>
       <div id="close_mobile" class="mobile_show">
         <button type="button" class="btn_small_close icon close_button mobile_show" (click)="close()" [aria-label]="'CONTROL.CLOSE' | translate">
-          <cos-icon name="close" size="24"></cos-icon>
+          <cos-icon name="close" [size]="24"></cos-icon>
         </button>
       </div>
     </div>
@@ -48,11 +48,16 @@
       <div id="subject_counter">{{ 'COMPONENTS.POST_ARGUMENT.SUBJECT_CHARACTERS_LEFT' | translate:{chars: subject().length || 0, charsLeft: ARGUMENT_SUBJECT_MAXLENGTH} }}</div>
       
       <label class="hidden" for="argument_text">{{ 'COMPONENTS.POST_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT' | translate }}</label>
-      <textarea name="text" id="argument_text" [ngModel]="text()" (ngModelChange)="text.set($event)" class="gray_borders"
-        [placeholder]="'COMPONENTS.POST_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT' | translate"
-        [maxlength]="argumentMaxLength()" required rows="4"></textarea>
-      
-      <div id="chars_left">{{ 'COMPONENTS.POST_ARGUMENT.ARGUMENT_TYPE_CHARACTER_LIMIT' | translate:{numberOfCharacters: argumentMaxLength() - (text().length || 0)} }}</div>
+      <textarea cosMarkdown
+        id="argument_text"
+        class="gray_borders"
+        [item]="text()"
+        [initialValue]="''"
+        (itemChange)="text.set($event)"
+        [limit]="argumentMaxLength()"
+        [cosMarkdownTranslateCharacterStatusKey]="'COMPONENTS.POST_ARGUMENT.ARGUMENT_TYPE_CHARACTER_LIMIT'"
+        placeholder="COMPONENTS.POST_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT"
+      ></textarea>
 
     </form>
   </div>
@@ -60,7 +65,7 @@
   <div id="buttons_row">
     <div id="close_create">
       <button type="button" class="btn_medium_submit_ghost icon close_button" (click)="close()" [aria-label]="'CONTROL.CLOSE' | translate">
-        <cos-icon name="close" size="24"></cos-icon>
+        <cos-icon name="close" [size]="24"></cos-icon>
       </button>
     </div>
     <div id="navigate_create">

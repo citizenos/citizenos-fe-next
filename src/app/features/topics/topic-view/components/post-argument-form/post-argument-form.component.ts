@@ -9,12 +9,13 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
 
 @Component({
   selector: 'cos-post-argument-form',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, TranslateModule, InputComponent, ButtonComponent, IconComponent],
+  imports: [FormsModule, TranslateModule, InputComponent, ButtonComponent, IconComponent, MarkdownDirective],
   templateUrl: './post-argument-form.component.html',
   styleUrls: ['./post-argument-form.component.scss']
 })
