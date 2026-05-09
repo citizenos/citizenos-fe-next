@@ -36,6 +36,7 @@
             ],
             "styles": [
               "src/styles.scss",
+              "node_modules/easymde/dist/easymde.min.css",
               {
                 "input": "src/assets/styles/etherpad.scss",
                 "inject": false,
