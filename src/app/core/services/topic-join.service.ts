@@ -15,37 +15,37 @@ export class TopicJoinService {
     return this.configStore.api.baseUrl();
   }
 
-  get(token: string): Observable<any> {
+  get(token: string): Observable<unknown> {
     const path = `${this.apiUrl}/api/topics/join/${token}`;
-    return this.http.get<ApiResponse<any>>(path, { withCredentials: true }).pipe(
+    return this.http.get<ApiResponse<unknown>>(path, { withCredentials: true }).pipe(
       map(res => res.data)
     );
   }
 
-  join(token: string): Observable<any> {
+  join(token: string): Observable<unknown> {
     const path = `${this.apiUrl}/api/topics/join/${token}`;
-    return this.http.post<ApiResponse<any>>(path, {}, { withCredentials: true }).pipe(
+    return this.http.post<ApiResponse<unknown>>(path, {}, { withCredentials: true }).pipe(
       map(res => res.data)
     );
   }
 
-  joinPublic(topicId: string): Observable<any> {
+  joinPublic(topicId: string): Observable<unknown> {
     const path = `${this.apiUrl}/api/users/self/topics/${topicId}/join`;
-    return this.http.post<ApiResponse<any>>(path, {}, { withCredentials: true }).pipe(
+    return this.http.post<ApiResponse<unknown>>(path, {}, { withCredentials: true }).pipe(
       map(res => res.data)
     );
   }
 
-  save(data: { topicId: string; userId: string; level: string | null }): Observable<any> {
+  save(data: { topicId: string; userId: string; level: string | null }): Observable<unknown> {
     const path = `${this.apiUrl}/api/users/self/topics/${data.topicId}/join`;
-    return this.http.put<ApiResponse<any>>(path, data, { withCredentials: true }).pipe(
+    return this.http.put<ApiResponse<unknown>>(path, data, { withCredentials: true }).pipe(
       map(res => res.data)
     );
   }
 
-  update(data: { topicId: string; userId: string; level: string; token: string | null }): Observable<any> {
+  update(data: { topicId: string; userId: string; level: string; token: string | null }): Observable<unknown> {
     const path = `${this.apiUrl}/api/users/self/topics/${data.topicId}/join/${data.token}`;
-    return this.http.put<ApiResponse<any>>(path, data, { withCredentials: true }).pipe(
+    return this.http.put<ApiResponse<unknown>>(path, data, { withCredentials: true }).pipe(
       map(res => res.data)
     );
   }

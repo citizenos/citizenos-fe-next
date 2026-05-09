@@ -28,13 +28,13 @@ const MOCK_TOPIC: Topic = {
   visibility: 'public', hashtag: null, join: { token: '', level: '' }, categories: [],
   endsAt: null, createdAt: '2024-01-01', updatedAt: '2024-01-01',
   sourcePartnerId: null, sourcePartnerObjectId: null, permission: { level: 'admin' },
-  creator: {}, lastActivity: null, country: null, language: null,
+  creator: { id: '', name: '' }, lastActivity: null, country: null, language: null,
   members: { users: { count: 0 }, groups: { count: 0 } },
   voteId: null, discussionId: null, comments: null, padUrl: null, authors: [], imageUrl: null,
 };
 
 const MOCK_GROUPS = [
-  { id: 'g1', name: 'Group 1', visibility: 'public', join: { token: '', level: '' }, description: '', createdAt: '', updatedAt: '', sourcePartnerId: null, sourcePartnerObjectId: null, permission: { level: 'admin' }, creator: {}, lastActivity: null, members: {}, userLevel: 'admin', imageUrl: null, language: null, country: null, categories: null, rules: [], contact: null, inviteMessage: null },
+  { id: 'g1', name: 'Group 1', visibility: 'public', join: { token: '', level: '' }, description: '', createdAt: '', updatedAt: '', sourcePartnerId: null, sourcePartnerObjectId: null, permission: { level: 'admin' }, creator: { id: '', name: '' }, lastActivity: null, members: { users: { count: 0 }, groups: { count: 0 } }, userLevel: 'admin', imageUrl: null, language: null, country: null, categories: null, rules: [], contact: null, inviteMessage: null },
 ];
 
 describe('TopicAddGroupsDialogComponent', () => {

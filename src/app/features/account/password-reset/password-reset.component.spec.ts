@@ -11,8 +11,8 @@ import { provideRouter } from '@angular/router';
 describe('PasswordResetComponent', () => {
   let component: PasswordResetComponent;
   let fixture: ComponentFixture<PasswordResetComponent>;
-  let mockUserStore: any;
-  let mockActivatedRoute: any;
+  let mockUserStore: unknown;
+  let mockActivatedRoute: unknown;
 
   beforeEach(async () => {
     mockUserStore = {
@@ -76,11 +76,11 @@ describe('PasswordResetComponent', () => {
       password: 'newpassword123',
       passwordConfirm: 'newpassword123'
     });
-    mockUserStore.resetPassword.mockResolvedValue({});
+    (mockUserStore as { resetPassword: vi.Mock }).resetPassword.mockResolvedValue({});
     
     await component.onSubmit();
     
-    expect(mockUserStore.resetPassword).toHaveBeenCalledWith('newpassword123', 'test-code');
+    expect((mockUserStore as { resetPassword: vi.Mock }).resetPassword).toHaveBeenCalledWith('newpassword123', 'test-code');
     expect(component.success()).toBeTruthy();
   });
 
@@ -89,7 +89,7 @@ describe('PasswordResetComponent', () => {
       password: 'newpassword123',
       passwordConfirm: 'newpassword123'
     });
-    mockUserStore.resetPassword.mockRejectedValue(new Error('Reset failed'));
+    (mockUserStore as { resetPassword: vi.Mock }).resetPassword.mockRejectedValue(new Error('Reset failed'));
     
     await component.onSubmit();
     
@@ -98,7 +98,7 @@ describe('PasswordResetComponent', () => {
   });
 
   it('should show error if reset code is missing', () => {
-    mockActivatedRoute.snapshot.params.passwordResetCode = '';
+    (mockActivatedRoute as { snapshot: { params: { passwordResetCode: string } } }).snapshot.params.passwordResetCode = '';
     fixture = TestBed.createComponent(PasswordResetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

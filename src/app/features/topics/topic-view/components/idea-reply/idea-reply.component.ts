@@ -471,7 +471,7 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
     });
   }
 
-  copyArgumentLink(event: Event) {
+  copyArgumentLink(_event: Event) {
     const arg = this.argument();
     const id = arg.id + '_v' + ((arg.edits?.length || 1) - 1);
     const url = `${window.location.origin}${this.router.url.split('?')[0]}?replyId=${id}`;

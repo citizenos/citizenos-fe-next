@@ -26,8 +26,6 @@ describe('DownloadVoteResultsComponent', () => {
   });
 
   it('should render edit deadline button', () => {
-    const btns = fixture.nativeElement.querySelectorAll('button');
-    const labels = Array.from(btns).map((b: any) => b.getAttribute('ng-reflect-dialog-close') || b.textContent);
     expect(fixture.nativeElement.textContent).toContain('COMPONENTS.DOWNLOAD_VOTING_RESULTS.BTN_EDIT_DEADLINE');
   });
 

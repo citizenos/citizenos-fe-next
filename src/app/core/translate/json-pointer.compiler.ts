@@ -4,7 +4,7 @@ export class JSONPointerCompiler extends TranslateCompiler {
   /**
    * Needed by ngx-translate
    */
-  public override compile(value: string, lang: string): string {
+  public override compile(value: string, _lang: string): string {
     return value;
   }
 
@@ -13,7 +13,7 @@ export class JSONPointerCompiler extends TranslateCompiler {
    * Initiates recursive this.parseReferencePointers()
    * Returns modified translations object for ngx-translate to process
    */
-  public override compileTranslations(translations: any, lang: string): any {
+  public override compileTranslations(translations: Record<string, unknown>, _lang: string): Record<string, unknown> {
     this.parseReferencePointers(translations, translations);
     return translations;
   }
@@ -23,10 +23,10 @@ export class JSONPointerCompiler extends TranslateCompiler {
    * Recursively loops through an object,
    * replacing any property value that has a string starting with "@:" with the referenced value.
    */
-  private parseReferencePointers(currentTranslations: any, masterLanguageFile: any) {
+  private parseReferencePointers(currentTranslations: Record<string, unknown>, masterLanguageFile: Record<string, unknown>) {
     Object.keys(currentTranslations).forEach((key) => {
       if (currentTranslations[key] !== null && typeof currentTranslations[key] === 'object') {
-        this.parseReferencePointers(currentTranslations[key], masterLanguageFile);
+        this.parseReferencePointers(currentTranslations[key] as Record<string, unknown>, masterLanguageFile);
         return;
       }
 
@@ -66,13 +66,13 @@ export class JSONPointerCompiler extends TranslateCompiler {
    * i.e. "APP_CORE.LABEL.LOCATION"
    * and returns the property value of the input objects property
    */
-  private getDescendantPropertyValue(obj: any, desc: string) {
+  private getDescendantPropertyValue(obj: Record<string, unknown>, desc: string): unknown {
     const arr = desc.split('.');
-    let current = obj;
+    let current: unknown = obj;
     while (arr.length) {
       const key = arr.shift();
-      if (key && current[key] !== undefined) {
-        current = current[key];
+      if (key && current !== null && typeof current === 'object' && (current as Record<string, unknown>)[key] !== undefined) {
+        current = (current as Record<string, unknown>)[key];
       } else {
         return undefined;
       }

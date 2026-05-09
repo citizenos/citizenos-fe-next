@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListFilterToolbarComponent, FilterConfig } from './list-filter-toolbar.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { ComponentRef, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { DropdownComponent } from '../dropdown/dropdown.component';
 import { IconComponent } from '../icon/icon.component';
@@ -20,7 +20,6 @@ class MockSearchInputComponent { @Input() placeholder = ''; @Input() value = '';
 describe('ListFilterToolbarComponent', () => {
   let component: ListFilterToolbarComponent;
   let fixture: ComponentFixture<ListFilterToolbarComponent>;
-  let componentRef: ComponentRef<ListFilterToolbarComponent>;
 
   const mockFilters: FilterConfig[] = [
     {
@@ -57,8 +56,7 @@ describe('ListFilterToolbarComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(ListFilterToolbarComponent);
-    component = fixture.componentInstance; 
-    componentRef = fixture.componentRef;
+    component = fixture.componentInstance;
     component.filters.set(mockFilters);
     fixture.detectChanges();
   });

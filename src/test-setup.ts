@@ -27,7 +27,7 @@ beforeEach(() => {
 
 // Mock ResizeObserver
 (globalThis as any).ResizeObserver = class {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() { return; }
+  unobserve() { return; }
+  disconnect() { return; }
 };

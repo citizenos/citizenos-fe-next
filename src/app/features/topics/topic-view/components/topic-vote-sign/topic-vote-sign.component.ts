@@ -16,7 +16,7 @@ import { TopicVoteSignSmartidComponent } from '../topic-vote-sign-smartid/topic-
   templateUrl: './topic-vote-sign.component.html'
 })
 export class TopicVoteSignComponent {
-  data = inject<{ topic: any; options: any[] }>(DIALOG_DATA);
+  data = inject<{ topic: Topic; options: { id: string; optionId?: string; selected?: boolean }[] }>(DIALOG_DATA);
   protected dialogRef = inject(DialogRef);
   private dialogService = inject(DialogService);
   private topicVoteService = inject(TopicVoteService);

@@ -18,7 +18,7 @@ export class TourService {
   activeItem = signal(0);
   
   private overlay = document.createElement('div');
-  templates = signal<Record<string, { index: number; template: any }[]>>({});
+  templates = signal<Record<string, { index: number; template: unknown }[]>>({});
 
   constructor() {
     this.overlay.classList.add('tour_overlay');
@@ -55,7 +55,7 @@ export class TourService {
     });
   }
 
-  addTemplate(id: string, index: number, template: any) {
+  addTemplate(id: string, index: number, template: unknown) {
     this.templates.update(prev => {
       const updated = { ...prev };
       const templateData = Array.isArray(template) ? [...template] : [template];

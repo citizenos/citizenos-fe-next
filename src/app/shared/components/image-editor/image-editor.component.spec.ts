@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
 import { vi } from 'vitest';
 import { ImageEditorComponent } from './image-editor.component';
 
@@ -40,7 +39,7 @@ describe('ImageEditorComponent', () => {
   });
 
   it('onMouseMove calls draw() when isDragging is true', () => {
-    const drawSpy = vi.spyOn(component, 'draw').mockImplementation(() => {});
+    const drawSpy = vi.spyOn(component, 'draw').mockImplementation(() => { return; });
     (component as any).isDragging = true;
     (component as any).canvas = component.canvasElement.nativeElement;
     vi.spyOn(component.canvasElement.nativeElement, 'getContext').mockReturnValue({} as any);
@@ -50,7 +49,7 @@ describe('ImageEditorComponent', () => {
   });
 
   it('onMouseMove does not call draw() when isDragging is false', () => {
-    const drawSpy = vi.spyOn(component, 'draw').mockImplementation(() => {});
+    const drawSpy = vi.spyOn(component, 'draw').mockImplementation(() => { return; });
     (component as any).isDragging = false;
     const event = new MouseEvent('mousemove', { clientX: 15, clientY: 25 });
     component.onMouseMove(event);

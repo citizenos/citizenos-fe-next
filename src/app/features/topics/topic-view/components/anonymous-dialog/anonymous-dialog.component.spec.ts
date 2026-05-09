@@ -22,7 +22,7 @@ describe('AnonymousDialogComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AnonymousDialogComponent, TranslateModule.forRoot()],
       providers: [
-        { provide: DialogRef, useValue: { close: () => {} } }
+        { provide: DialogRef, useValue: { close: () => { return; } } }
       ]
     })
     .overrideComponent(AnonymousDialogComponent, {

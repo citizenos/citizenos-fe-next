@@ -6,10 +6,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PageHeaderComponent } from './page-header.component';
 import { UserStore } from '../../../state/user.store';
 
+import { User } from '../../../interfaces/user';
+
 describe('PageHeaderComponent', () => {
   let component: PageHeaderComponent;
   let fixture: ComponentFixture<PageHeaderComponent>;
-  const mockUserStore = { user: signal<any>(null) };
+  const mockUserStore = { user: signal<User | null>(null) };
 
   beforeEach(async () => {
     vi.clearAllMocks();

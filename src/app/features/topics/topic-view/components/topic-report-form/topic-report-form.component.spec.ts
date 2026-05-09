@@ -24,7 +24,7 @@ const MOCK_TOPIC: Topic = {
   visibility: 'public', hashtag: null, join: { token: '', level: '' }, categories: [],
   endsAt: null, createdAt: '2024-01-01', updatedAt: '2024-01-01',
   sourcePartnerId: null, sourcePartnerObjectId: null, permission: { level: 'read' },
-  creator: {}, lastActivity: null, country: null, language: null,
+  creator: { id: '', name: '' }, lastActivity: null, country: null, language: null,
   members: { users: { count: 0 }, groups: { count: 0 } },
   voteId: null, discussionId: null, comments: null, padUrl: null, authors: [], imageUrl: null,
 };

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { StepTopicPreviewComponent } from './step-topic-preview.component';
-import { runInInjectionContext } from '@angular/core';
+
 
 describe('StepTopicPreviewComponent', () => {
   let component: StepTopicPreviewComponent;

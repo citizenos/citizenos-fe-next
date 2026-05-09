@@ -11,36 +11,36 @@ export class GroupJoinService {
 
   private get baseUrl() { return this.configStore.api.baseUrl(); }
 
-  generateToken(groupId: string, level: string): Observable<any> {
-    return this.http.put<ApiResponse<any>>(
+  generateToken(groupId: string, level: string): Observable<unknown> {
+    return this.http.put<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${groupId}/join`,
       { level }, { withCredentials: true }
     ).pipe(map(r => r.data));
   }
 
-  updateLevel(groupId: string, token: string, level: string): Observable<any> {
-    return this.http.put<ApiResponse<any>>(
+  updateLevel(groupId: string, token: string, level: string): Observable<unknown> {
+    return this.http.put<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${groupId}/join`,
       { level, token }, { withCredentials: true }
     ).pipe(map(r => r.data));
   }
 
-  get(token: string): Observable<any> {
-    return this.http.get<ApiResponse<any>>(
+  get(token: string): Observable<unknown> {
+    return this.http.get<ApiResponse<unknown>>(
       `${this.baseUrl}/api/groups/join/${token}`,
       { withCredentials: true }
     ).pipe(map(r => r.data));
   }
 
-  join(token: string): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  join(token: string): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/groups/join/${token}`,
       {}, { withCredentials: true }
     ).pipe(map(r => r.data));
   }
 
-  joinPublic(groupId: string): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  joinPublic(groupId: string): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${groupId}/join`,
       {}, { withCredentials: true }
     ).pipe(map(r => r.data));

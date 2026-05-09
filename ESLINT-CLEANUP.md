@@ -1,6 +1,6 @@
 # ESLint Cleanup Tasks
 
-**Total: 802 problems (0 errors, 802 warnings) — all remaining are `no-explicit-any` P3 warnings**
+**Total: 390 problems (0 errors, 390 warnings) — all remaining are `no-explicit-any` P3 warnings**
 
 Run `npm run lint` to see current status.
 
@@ -10,7 +10,7 @@ Run `npm run lint` to see current status.
 
 | Rule | Errors | Warns | Files | Auto-fix | Priority |
 |------|-------:|------:|------:|:--------:|:--------:|
-| `@typescript-eslint/no-explicit-any` | 0 | 954 | 200 | ❌ | P3 |
+| `@typescript-eslint/no-explicit-any` | 0 | 390 | ~130 | ❌ | P3 |
 | `@angular-eslint/template/interactive-supports-focus` | 150 | 0 | 50 | ❌ | P2 |
 | `@angular-eslint/template/click-events-have-key-events` | 148 | 0 | 48 | ❌ | P2 |
 | `@angular-eslint/template/elements-content` | 120 | 0 | 60 | ❌ | P2 || `@typescript-eslint/no-unused-vars` | 0 | 145 | 80 | ❌ | P1 |
@@ -232,7 +232,7 @@ Ensure elements with ARIA `role` have required ARIA attributes.
 
 ## P3 — Type Safety (gradual, ongoing)
 
-### [/] 17. Replace `any` types (`no-explicit-any`) — 802 warnings in ~200 files
+### [/] 17. Replace `any` types (`no-explicit-any`) — 390 warnings in ~130 files
 
 This is the largest category and should be addressed gradually, service by service and component by component.
 

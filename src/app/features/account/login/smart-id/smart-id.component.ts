@@ -191,8 +191,9 @@ export class SmartIdComponent implements OnDestroy {
           this.challengeID.set(res.challengeID);
           this.startPolling(res.token);
         }
-      } catch (err: any) {
-        this.error.set(err.error?.status?.message || 'Login failed. Please try again.');
+      } catch (err: unknown) {
+        const error = err as { error?: { status?: { message?: string } } };
+        this.error.set(error.error?.status?.message || 'Login failed. Please try again.');
       }
     }
   }
@@ -212,7 +213,7 @@ export class SmartIdComponent implements OnDestroy {
              window.location.reload();
           }
         },
-        error: (err) => {
+        error: (_err) => {
           this.error.set('Authentication failed or timed out.');
           this.challengeID.set(null);
         }

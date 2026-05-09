@@ -43,7 +43,7 @@ export class TopicMilestonesComponent implements OnInit {
     topicId: ''
   };
 
-  errors = signal<any>(null);
+  errors = signal<Record<string, string> | null>(null);
   topicEvents = signal<TopicEvent[]>([]);
   countTotal = computed(() => this.topicEvents().length);
   
@@ -135,7 +135,7 @@ export class TopicMilestonesComponent implements OnInit {
       }
     });
 
-    deleteDialog.afterClosed().subscribe((result: any) => {
+    deleteDialog.afterClosed().subscribe((result: boolean | undefined) => {
       if (result === true) {
         this.topicEventService
           .delete({ ...evt, topicId: this.topic().id })

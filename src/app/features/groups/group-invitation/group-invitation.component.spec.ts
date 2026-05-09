@@ -117,7 +117,7 @@ describe('GroupInvitationComponent', () => {
   });
 
   it('navigates to login when logged in but user ID does not match after dialog confirm', () => {
-    const { routerMock, userStoreMock } = setup({
+    const { userStoreMock } = setup({
       isAuthenticated: true,
       currentUser: { id: 'other-user' },
     });

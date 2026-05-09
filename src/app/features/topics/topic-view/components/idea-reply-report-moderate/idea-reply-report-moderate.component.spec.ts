@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -10,8 +9,6 @@ import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 
-@Component({ selector: 'cos-dropdown', template: '', standalone: true })
-class CosDropdownStub {}
 
 const mockArgument = { id: 'comment1', subject: 'Test subject', text: 'Test text' };
 const mockReport = { id: 'report1', type: 'spam', text: 'Spam content' };

@@ -8,9 +8,12 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
+import { Topic } from '../../../../../core/interfaces/topic';
+import { Idea } from '../../../../../core/interfaces/idea';
+import { Ideation } from '../../../../../core/interfaces/ideation';
 
-const mockTopic = { id: 't1', status: 'ideation' } as any;
-const mockIdeation = { id: 'i1' } as any;
+const mockTopic = { id: 't1', status: 'ideation' } as unknown as Topic;
+const mockIdeation = { id: 'i1' } as unknown as Ideation;
 const mockIdea = {
   id: 'idea1', ideationId: 'i1', statement: 'Test idea', description: 'Desc',
   status: 'published', createdAt: '2024-01-01', updatedAt: '2024-01-01',
@@ -19,7 +22,8 @@ const mockIdea = {
   author: { id: 'u1', name: 'Alice', company: null, email: null, imageUrl: null },
   votes: { up: { count: 2, selected: false }, down: { count: 0, selected: false }, count: 2 },
   replies: { count: 1 }, report: { id: null }, favourite: false,
-} as any;
+} as unknown as Idea;
+
 
 const mockIdeationService = {
   voteIdea: vi.fn().mockReturnValue(of({ up: { count: 3, selected: true }, down: { count: 0, selected: false }, count: 3 })),
@@ -55,9 +59,9 @@ describe('IdeaboxComponent', () => {
     return runInInjectionContext(injector, () => {
       const comp = new IdeaboxComponent();
       TestBed.runInInjectionContext(() => {
-        (comp as any).idea = vi.fn().mockReturnValue(mockIdea);
-        (comp as any).topic = vi.fn().mockReturnValue(mockTopic);
-        (comp as any).ideation = vi.fn().mockReturnValue(mockIdeation);
+        (comp as unknown as { idea: vi.Mock }).idea = vi.fn().mockReturnValue(mockIdea);
+        (comp as unknown as { topic: vi.Mock }).topic = vi.fn().mockReturnValue(mockTopic);
+        (comp as unknown as { ideation: vi.Mock }).ideation = vi.fn().mockReturnValue(mockIdeation);
       });
       return comp;
     });

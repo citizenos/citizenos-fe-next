@@ -19,7 +19,7 @@ export const routes: Routes = [
       }
       return null;
     },
-    redirectTo: (pos: any) => `/en/${(Array.isArray(pos.url) ? pos.url.join('/') : pos.url).replace(/,/g, '/')}`
+    redirectTo: (pos: { url: UrlSegment[] | string }) => `/en/${(Array.isArray(pos.url) ? pos.url.join('/') : pos.url).replace(/,/g, '/')}`
   },
   
   // The main layout wrapping all localized routes

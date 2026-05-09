@@ -56,8 +56,8 @@ describe('UserGroupService', () => {
     initialReq.flush({ data: { rows: [], count: 0 } });
     await promise1;
 
-    service.setParam('visibility' as any, 'private');
-    service.setParam('search' as any, 'query');
+    service.setParam('visibility', 'private');
+    service.setParam('search', 'query');
     
     const promise2 = firstValueFrom(service.items$);
     await new Promise(resolve => setTimeout(resolve, 0));

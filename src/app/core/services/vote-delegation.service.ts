@@ -11,15 +11,15 @@ export class VoteDelegationService {
 
   private get baseUrl() { return this.configStore.api.baseUrl(); }
 
-  save(data: { topicId: string; voteId: string; userId: string }): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  save(data: { topicId: string; voteId: string; userId: string }): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${data.topicId}/votes/${data.voteId}/delegations`,
       data, { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
-  delete(data: { topicId: string; voteId: string }): Observable<any> {
-    return this.http.delete<ApiResponse<any>>(
+  delete(data: { topicId: string; voteId: string }): Observable<unknown> {
+    return this.http.delete<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${data.topicId}/votes/${data.voteId}/delegations`,
       { withCredentials: true }
     ).pipe(map(res => res.data));

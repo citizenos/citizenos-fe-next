@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { IdeaReplyFormComponent } from './idea-reply-form.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -8,7 +8,7 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { Router, ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { Component, Input, ComponentRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 

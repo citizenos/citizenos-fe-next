@@ -13,8 +13,8 @@ class EmptyComponent {}
 describe('NavComponent', () => {
   let fixture: ComponentFixture<NavComponent>;
   let component: NavComponent;
-  let userStoreMock: any;
-  let dialogServiceMock: any;
+  let userStoreMock: unknown;
+  let dialogServiceMock: unknown;
 
   beforeEach(async () => {
     userStoreMock = {
@@ -79,7 +79,7 @@ describe('NavComponent', () => {
   it('logout() should call userStore.logout and close nav', async () => {
     component.showNav.set(true);
     await component.logout();
-    expect(userStoreMock.logout).toHaveBeenCalled();
+    expect((userStoreMock as { logout: () => void }).logout).toHaveBeenCalled();
     expect(component.showNav()).toBe(false);
   });
 });

@@ -64,8 +64,6 @@ export class TopicShareComponent implements OnInit {
   showQR = signal(false);
   copySuccess = signal(false);
 
-  constructor() {}
-
   ngOnInit(): void {
     const t = this.topic();
     if (t?.join) {

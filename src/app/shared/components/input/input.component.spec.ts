@@ -1,9 +1,9 @@
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { InputComponent } from './input.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from '../icon/icon.component';
-import { Component, Input, ComponentRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent { @Input() name = ''; @Input() size = 24; }
@@ -11,7 +11,6 @@ class MockIconComponent { @Input() name = ''; @Input() size = 24; }
 describe('InputComponent Accessibility', () => {
   let component: InputComponent;
   let fixture: ComponentFixture<InputComponent>;
-  let ref: ComponentRef<InputComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,7 +24,6 @@ describe('InputComponent Accessibility', () => {
 
     fixture = TestBed.createComponent(InputComponent);
     component = fixture.componentInstance;
-    ref = fixture.componentRef;
     
     // Set some defaults
     component.label.set('Full Name');
@@ -37,14 +35,10 @@ describe('InputComponent Accessibility', () => {
 
   it('should associate label with input via for/id', () => {
     const label = fixture.nativeElement.querySelector('.input-label');
-    const input = fixture.nativeElement.querySelector('input');
-    
     expect(label).toBeTruthy();
     // We need to project an input for it to find one
     fixture.nativeElement.querySelector('.input-wrapper').innerHTML += '<input id="test-id">';
     fixture.detectChanges();
-    const injectedInput = fixture.nativeElement.querySelector('#test-id');
-    
     expect(label.getAttribute('for')).toBe(component.inputId);
   });
 

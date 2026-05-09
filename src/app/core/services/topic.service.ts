@@ -10,6 +10,35 @@ import { UserStore } from '../state/user.store';
 import { DialogService } from '../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 
+interface ConfirmDialogTemplate {
+  level?: string;
+  heading: string;
+  title: string;
+  description: string;
+  points: string[];
+  closeBtn: string;
+  confirmBtn: string;
+}
+
+type TopicUpdateFields = Pick<Topic, 'visibility' | 'status' | 'categories' | 'endsAt' | 'hashtag' | 'imageUrl' | 'title' | 'intro' | 'contact' | 'country' | 'language'>;
+type TopicWithId = Partial<TopicUpdateFields> & { id?: string; topicId?: string };
+
+export interface TopicAttachment {
+  id: string;
+  name?: string;
+  link?: string;
+  type?: string;
+  source?: string;
+  [key: string]: unknown;
+}
+
+export interface TopicGroup {
+  id: string;
+  name?: string;
+  level?: string;
+  [key: string]: unknown;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -87,7 +116,7 @@ export class TopicService {
       .pipe(map(res => res.data!));
   }
 
-  save(data: any): Observable<Topic> {
+  save(data: Partial<Topic>): Observable<Topic> {
     const path = this.getAbsoluteUrlApi('/api/users/self/topics');
     return this.http.post<ApiResponse<Topic>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
@@ -95,18 +124,18 @@ export class TopicService {
 
   readDescription(id: string, rev?: string): Observable<Topic> {
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${id}/description`);
-    const params: any = rev ? { rev } : {};
+    const params: Record<string, string> = rev ? { rev } : {};
     return this.http.get<ApiResponse<Topic>>(path, { withCredentials: true, params, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
 
-  update(data: any): Observable<Topic> {
-    const updateFields = ['visibility', 'status', 'categories', 'endsAt', 'hashtag', 'imageUrl', 'title', 'intro', 'contact', 'country', 'language'];
-    const sendData: any = {};
+  update(data: TopicWithId): Observable<Topic> {
+    const updateFields: (keyof TopicUpdateFields)[] = ['visibility', 'status', 'categories', 'endsAt', 'hashtag', 'imageUrl', 'title', 'intro', 'contact', 'country', 'language'];
+    const sendData: Partial<TopicUpdateFields> = {};
 
     updateFields.forEach((field) => {
       if (field in data) {
-        sendData[field] = data[field];
+        (sendData as Record<string, unknown>)[field] = data[field];
       }
     });
 
@@ -123,13 +152,13 @@ export class TopicService {
       .pipe(map(res => res.data!));
   }
 
-  patch(data: any): Observable<Topic> {
-    const updateFields = ['title', 'visibility', 'status', 'categories', 'endsAt', 'hashtag', 'imageUrl', 'intro', 'contact', 'country', 'language'];
-    const sendData: any = {};
+  patch(data: TopicWithId): Observable<Topic> {
+    const updateFields: (keyof TopicUpdateFields)[] = ['title', 'visibility', 'status', 'categories', 'endsAt', 'hashtag', 'imageUrl', 'intro', 'contact', 'country', 'language'];
+    const sendData: Partial<TopicUpdateFields> = {};
 
     updateFields.forEach((field) => {
       if (field in data) {
-        sendData[field] = data[field];
+        (sendData as Record<string, unknown>)[field] = data[field];
       }
     });
 
@@ -140,14 +169,14 @@ export class TopicService {
       .pipe(map(res => res.data!));
   }
 
-  delete(data: any): Observable<any> {
+  delete(data: TopicWithId): Observable<unknown> {
     const topicId = data.id || data.topicId;
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}`);
-    return this.http.delete<ApiResponse<any>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+    return this.http.delete<ApiResponse<unknown>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
 
-  duplicate(data: any): Observable<Topic> {
+  duplicate(data: TopicWithId): Observable<Topic> {
     const topicId = data.topicId || data.id;
     const payload = { ...data, topicId };
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/duplicate`);
@@ -156,15 +185,15 @@ export class TopicService {
       .pipe(map(res => res.data!));
   }
 
-  addToFavourites(topicId: string): Observable<any> {
+  addToFavourites(topicId: string): Observable<unknown> {
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/favourite`);
-    return this.http.post<ApiResponse<any>>(path, {}, { withCredentials: true, observe: 'body', responseType: 'json' })
+    return this.http.post<ApiResponse<unknown>>(path, {}, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
-  removeFromFavourites(topicId: string): Observable<any> {
+  removeFromFavourites(topicId: string): Observable<unknown> {
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/favourite`);
-    return this.http.delete<ApiResponse<any>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+    return this.http.delete<ApiResponse<unknown>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
@@ -233,7 +262,7 @@ export class TopicService {
   }
 
   changeState(topic: Topic, state: keyof typeof this.STATUSES, _stateSuccess?: string) {
-    const templates: any = {
+    const templates: Record<string, ConfirmDialogTemplate> = {
       closed: {
         level: 'delete',
         heading: 'MODALS.TOPIC_CLOSE_CONFIRM_HEADING_CLOSE_TOPIC',
@@ -309,37 +338,37 @@ export class TopicService {
     });
   }
 
-  joinPublic(topicId: string): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  joinPublic(topicId: string): Observable<{ userLevel: string }> {
+    return this.http.post<ApiResponse<{ userLevel: string }>>(
       this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/join`),
       {}, { withCredentials: true }
-    ).pipe(map(res => res.data));
+    ).pipe(map(res => res.data!));
   }
 
-  loadGroups(topicId: string): Observable<any[]> {
-    return this.http.get<ApiResponse<any>>(
+  loadGroups(topicId: string): Observable<TopicGroup[]> {
+    return this.http.get<ApiResponse<{ rows: TopicGroup[] }>>(
       this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/members/groups`),
       { withCredentials: true }
     ).pipe(map(res => res.data?.rows ?? []));
   }
 
-  loadAttachments(topicId: string): Observable<any[]> {
-    return this.http.get<ApiResponse<any>>(
+  loadAttachments(topicId: string): Observable<TopicAttachment[]> {
+    return this.http.get<ApiResponse<{ rows: TopicAttachment[] }>>(
       this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/attachments`),
       { withCredentials: true }
     ).pipe(map(res => res.data?.rows ?? []));
   }
 
-  updateAttachment(topicId: string, attachment: any): Observable<any> {
-    return this.http.put<ApiResponse<any>>(
+  updateAttachment(topicId: string, attachment: TopicAttachment): Observable<TopicAttachment> {
+    return this.http.put<ApiResponse<TopicAttachment>>(
       this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/attachments/${attachment.id}`),
       attachment,
       { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
-  deleteAttachment(topicId: string, attachmentId: string): Observable<any> {
-    return this.http.delete<ApiResponse<any>>(
+  deleteAttachment(topicId: string, attachmentId: string): Observable<unknown> {
+    return this.http.delete<ApiResponse<unknown>>(
       this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/attachments/${attachmentId}`),
       { withCredentials: true }
     ).pipe(map(res => res.data));

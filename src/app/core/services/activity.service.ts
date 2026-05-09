@@ -7,7 +7,21 @@ import * as jsonpatch from 'fast-json-patch';
 import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';
 
-interface ActivityObject extends Record<string, unknown> { '@type'?: string; type?: string }
+interface ActivityObject extends Record<string, unknown> {
+  '@type'?: string;
+  type?: string;
+  id?: string;
+  title?: string;
+  name?: string;
+  text?: string;
+  value?: number | string | null;
+  topicId?: string;
+  groupId?: string;
+  connectionId?: string;
+  userName?: string;
+  object?: ActivityObject;
+  moderatedReasonType?: string;
+}
 interface JsonPatchItem { path: string; value?: unknown; op: string }
 
 interface ActivityData {
@@ -138,7 +152,7 @@ export class ActivityService {
         !activity.data.target &&
         obj &&
         (objFirst?.['@type'] === 'Vote' ||
-          (Array.isArray(obj) && obj[0]?.['@type'] === 'VoteOption'))
+          (Array.isArray(obj) && (obj[0] as ActivityObject)?.['@type'] === 'VoteOption'))
       ) {
         return;
       }
@@ -208,7 +222,7 @@ export class ActivityService {
         case 'inReplyTo': parts.push('IN_REPLY_TO', (value as ActivityObject)['@type'] as string); break;
         case 'object': {
           const v = value as ActivityObject | ActivityObject[];
-          parts.push(Array.isArray(v) ? v[0]['@type'] as string : ((v['@type'] || v['type']) as string));
+          parts.push(Array.isArray(v) ? (v[0] as ActivityObject)['@type'] as string : ((v['@type'] || v['type']) as string));
           if (!Array.isArray(v) && v['object']) parts.push(((v['object'] as ActivityObject)['@type']) as string);
           break;
         }
@@ -257,8 +271,8 @@ export class ActivityService {
       this.getActivityUserLevel(activity, values);
 
       let obj = activity.data.object;
-      if (Array.isArray(obj)) obj = obj[0];
-      if (obj['@type'] === 'CommentVote' && activity.data.type === 'Create') {
+      if (Array.isArray(obj)) obj = obj[0] as ActivityObject;
+      if (obj && obj['@type'] === 'CommentVote' && activity.data.type === 'Create') {
         const str = 'ACTIVITY_FEED.ACTIVITY_COMMENTVOTE_FIELD_VALUE_';
         let val = 'UP';
         if (obj['value'] === -1) val = 'DOWN';
@@ -411,7 +425,7 @@ export class ActivityService {
 
   private getActivityUserConnectionName(activity: ActivityItem): string | undefined {
     let obj = activity.data.object;
-    if (Array.isArray(obj)) obj = obj[0];
+    if (Array.isArray(obj)) obj = obj[0] as ActivityObject;
     if (obj?.['@type'] !== 'UserConnection') return undefined;
     const key = ('ACTIVITY_FEED.ACTIVITY_USERCONNECTION_CONNECTION_NAME_' + obj['connectionId']).toUpperCase();
     const t = this.translate.instant(key);
@@ -423,7 +437,7 @@ export class ActivityService {
 
   private getActivityUsers(activity: ActivityItem, values: Record<string, unknown>): void {
     let obj = activity.data.object;
-    if (Array.isArray(obj)) obj = obj[0];
+    if (Array.isArray(obj)) obj = obj[0] as ActivityObject;
     if (activity.data.actor?.['name']) values['userName'] = activity.data.actor['name'];
     if (obj?.['@type'] === 'User') {
       values['userName2'] = obj['name'];

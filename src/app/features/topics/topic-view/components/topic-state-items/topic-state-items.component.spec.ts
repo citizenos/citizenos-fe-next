@@ -7,7 +7,7 @@ import { TopicArgumentService } from '../../../../../core/services/topic-argumen
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { TranslateModule } from '@ngx-translate/core';
-import { ComponentRef } from '@angular/core';
+
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DomainIconComponent } from '../../../../../shared/components/domain-icon/domain-icon.component';
@@ -26,7 +26,6 @@ class MockDomainIconComponent {
 describe('TopicStateItemsComponent', () => {
   let component: TopicStateItemsComponent;
   let fixture: ComponentFixture<TopicStateItemsComponent>;
-  let componentRef: ComponentRef<TopicStateItemsComponent>;
 
   const mockUserStore = {
     isAuthenticated: () => true
@@ -91,15 +90,14 @@ describe('TopicStateItemsComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(TopicStateItemsComponent);
-    component = fixture.componentInstance; componentRef = fixture.componentRef;
-    componentRef = fixture.componentRef;
+    component = fixture.componentInstance;
     
     component.topic.set({
       id: '123', status: 'inProgress', permission: { level: 'admin' },
       discussionId: '456', voteId: '789',
       title: null, intro: null, description: '', visibility: 'public', hashtag: null,
       join: { token: '', level: '' }, categories: [], endsAt: null, createdAt: '',
-      updatedAt: '', sourcePartnerId: null, sourcePartnerObjectId: null, creator: {},
+      updatedAt: '', sourcePartnerId: null, sourcePartnerObjectId: null, creator: { id: '', name: '' },
       lastActivity: null, country: null, language: null,
       members: { users: { count: 1 }, groups: { count: 0 } },
       comments: null, padUrl: '', imageUrl: null, authors: []

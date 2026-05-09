@@ -6,7 +6,7 @@ import { TopicIdeationService } from '../../../../../core/services/topic-ideatio
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Idea } from '../../../../../core/interfaces/idea';
-import { take, forkJoin, of } from 'rxjs';
+import { take, forkJoin } from 'rxjs';
 
 interface AddIdeaFolderDialogData {
   topicId: string;

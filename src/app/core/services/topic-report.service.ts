@@ -34,7 +34,7 @@ export class TopicReportService {
     other: 'other'
   };
 
-  loadItems(topicId: string, params: any = {}): Observable<TopicReport[]> {
+  loadItems(topicId: string, params: Record<string, string> = {}): Observable<TopicReport[]> {
     return this.http.get<ApiResponse<TopicReport[]>>(
       `${this.baseUrl}/api/users/self/topics/${topicId}/reports`,
       { withCredentials: true, params }
@@ -56,24 +56,24 @@ export class TopicReportService {
     ).pipe(map(res => res.data));
   }
 
-  moderate(topicId: string, reportId: string, data: any): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  moderate(topicId: string, reportId: string, data: Record<string, unknown>): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${topicId}/reports/${reportId}/moderate`,
       data,
       { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
-  review(topicId: string, reportId: string, data: any): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  review(topicId: string, reportId: string, data: Record<string, unknown>): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${topicId}/reports/${reportId}/review`,
       data,
       { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
-  resolve(topicId: string, reportId: string, data: any): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  resolve(topicId: string, reportId: string, data: Record<string, unknown>): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${topicId}/reports/${reportId}/resolve`,
       data,
       { withCredentials: true }

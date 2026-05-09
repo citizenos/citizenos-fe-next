@@ -345,7 +345,7 @@ export class HelpComponent {
       const helpUrl = links[lang] || links['en'];
       const helpDomain = new URL(helpUrl);
       this.helpFrame?.nativeElement.contentWindow.postMessage('back', helpDomain.origin);
-    } catch (_err) {
+    } catch {
       if (this.helpFrame) {
         // eslint-disable-next-line no-self-assign -- intentional: forces iframe reload
         this.helpFrame.nativeElement.src = this.helpFrame.nativeElement.src;
@@ -375,7 +375,7 @@ export class HelpComponent {
       const mailData = {
         ...this.helpForm.value,
         userAgent: window.navigator.userAgent,
-        platform: (window.navigator as any).platform,
+        platform: window.navigator.platform,
         height: window.innerHeight,
         width: window.innerWidth,
         location: window.location.href

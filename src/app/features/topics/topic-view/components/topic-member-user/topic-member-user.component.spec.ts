@@ -183,7 +183,7 @@ describe('TopicMemberUserComponent', () => {
 
   it('calls doLeaveTopic when member is current user', () => {
     userStoreMock.user.mockReturnValue({ id: 'user-1', name: 'Test User' });
-    const leaveSpy = vi.spyOn(component, 'doLeaveTopic').mockImplementation(() => {});
+    const leaveSpy = vi.spyOn(component, 'doLeaveTopic').mockImplementation(() => { return; });
     component.doDeleteMemberUser();
     expect(leaveSpy).toHaveBeenCalled();
   });

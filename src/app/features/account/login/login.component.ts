@@ -254,7 +254,7 @@ export class LoginComponent {
       try {
         await this.userStore.login(email!, password!);
         this.router.navigate(['/']);
-      } catch (err: any) {
+      } catch {
         this.error.set('Login failed. Please check your credentials.');
       }
     }

@@ -11,6 +11,8 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicDiscussionService } from '../../../../../core/services/topic-discussion.service';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
+import { Argument } from '../../../../../core/interfaces/discussion';
+import { Discussion } from '../../../../../core/interfaces/discussion';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog';
@@ -90,7 +92,7 @@ export class TopicDiscussionComponent {
     )
   );
 
-  arguments = toSignal(this.argumentService.items$, { initialValue: [] as any[] });
+  arguments = toSignal(this.argumentService.items$, { initialValue: [] as Argument[] });
   loading = toSignal(this.argumentService.isLoading$, { initialValue: false });
 
   private argumentCount = toSignal(this.argumentService.count, { initialValue: { total: 0, pro: 0, con: 0, poi: 0, reply: 0 } });
@@ -153,7 +155,7 @@ export class TopicDiscussionComponent {
   }
 
   reload() {
-    this.argumentService.loadPage((this.argumentService as any).page.value);
+    this.argumentService.loadPage((this.argumentService as unknown as { page: { value: number } }).page.value);
   }
 
   openEditDeadline() {
@@ -185,7 +187,7 @@ export class TopicDiscussionComponent {
     });
   }
 
-  saveDiscussion(discussion: any) {
+  saveDiscussion(discussion: Discussion) {
     const payload = {
       deadline: discussion.deadline
     };
@@ -196,7 +198,7 @@ export class TopicDiscussionComponent {
           this.topicService.reloadTopic();
           this.dialog.closeAll();
         },
-        error: (res) => {
+        error: (res: { errors?: Record<string, string>; message?: string }) => {
           if (res.errors) {
             Object.values(res.errors).forEach((message) => {
               if (typeof message === 'string')

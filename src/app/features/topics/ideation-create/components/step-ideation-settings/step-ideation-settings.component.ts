@@ -1,11 +1,9 @@
-import { Component, input, output, ChangeDetectionStrategy, computed } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { Ideation } from '../../../../../core/interfaces/ideation';
-import { Topic } from '../../../../../core/interfaces/topic';
 
 import { InputComponent } from '../../../../../shared/components/input/input.component';
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-step-ideation-settings',

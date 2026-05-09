@@ -14,7 +14,7 @@ export interface PublicGroupParams extends ListParams {
 }
 
 @Injectable({ providedIn: 'root' })
-export class PublicGroupService extends ItemsListService {
+export class PublicGroupService extends ItemsListService<PublicGroupParams, Group> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
 
@@ -22,7 +22,7 @@ export class PublicGroupService extends ItemsListService {
     return this.configStore.api.baseUrl();
   }
 
-  override getItems(params: PublicGroupParams): Observable<any> {
+  override getItems(params: PublicGroupParams): Observable<{ rows: Group[]; countTotal: number }> {
     let httpParams = new HttpParams()
       .set('limit', String(params.limit))
       .set('offset', String(params.offset ?? 0));

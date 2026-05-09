@@ -3,7 +3,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { of, switchMap, take, map, catchError, forkJoin, Observable } from 'rxjs';
+import { of, take, map, catchError } from 'rxjs';
 import { isEmail } from 'validator';
 
 import { Topic } from '../../../../../core/interfaces/topic';
@@ -25,6 +25,13 @@ export interface TopicInviteDialogData {
   topic: Topic;
   allowedLevels?: string[];
   tab?: 'invite' | 'share';
+}
+
+interface InviteMember {
+  id: string;
+  name: string;
+  email?: string;
+  level: string;
 }
 
 @Component({
@@ -60,8 +67,8 @@ export class TopicInviteDialogComponent implements OnInit {
   activeTab = signal<'invite' | 'share'>(this.data.tab || 'invite');
   
   searchString = signal('');
-  searchResults = signal<any[]>([]);
-  selectedMembers = signal<any[]>([]);
+  searchResults = signal<InviteMember[]>([]);
+  selectedMembers = signal<InviteMember[]>([]);
   inviteMessage = signal('');
   
   allowedLevels = signal<string[]>(this.data.allowedLevels || Object.keys(this.topicService.LEVELS));
@@ -95,13 +102,13 @@ export class TopicInviteDialogComponent implements OnInit {
           }),
           catchError(() => of([]))
         )
-        .subscribe(results => this.searchResults.set(results));
+        .subscribe(results => this.searchResults.set(results as InviteMember[]));
     } else {
       this.searchResults.set([]);
     }
   }
 
-  addMember(member: any) {
+  addMember(member: InviteMember) {
     if (this.selectedMembers().length >= this.maxUsers) {
       this.notificationService.error('MSG_ERROR_INVITE_MEMBER_COUNT_OVER_LIMIT');
       return;
@@ -129,7 +136,7 @@ export class TopicInviteDialogComponent implements OnInit {
     if (!input) return;
 
     const emails = input.replace(this.EMAIL_SEPARATOR_REGEXP, ',').split(',');
-    const validEmails: any[] = [];
+    const validEmails: InviteMember[] = [];
     
     emails.forEach(email => {
       const trimmed = email.trim();
@@ -152,11 +159,11 @@ export class TopicInviteDialogComponent implements OnInit {
     }
   }
 
-  removeMember(member: any) {
+  removeMember(member: InviteMember) {
     this.selectedMembers.update(members => members.filter(m => m !== member));
   }
 
-  updateMemberLevel(member: any, level: string) {
+  updateMemberLevel(member: InviteMember, level: string) {
     this.selectedMembers.update(members => members.map(m => m === member ? { ...m, level } : m));
   }
 

@@ -7,7 +7,7 @@ export interface User {
   company?: string;
   preferences?: {
     showInSearch?: boolean;
-    notifications?: any;
+    notifications?: Record<string, boolean | string>;
   };
   loggedIn?: boolean;
 }

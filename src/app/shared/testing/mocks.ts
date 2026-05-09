@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 
 @Component({
   selector: 'cos-button',

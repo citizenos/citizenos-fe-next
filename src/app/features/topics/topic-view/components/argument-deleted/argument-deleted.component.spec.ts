@@ -52,7 +52,7 @@ describe('ArgumentDeletedComponent', () => {
 
   it('should show WHY link when moderator deleted', () => {
     const el: HTMLElement = fixture.nativeElement;
-    const links = el.querySelectorAll('.buttons_wrap a');
+    const links = el.querySelectorAll('.buttons_wrap button.btn_link');
     expect(links.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -77,7 +77,7 @@ describe('ArgumentDeletedComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     const el: HTMLElement = fixture.nativeElement;
-    const links = el.querySelectorAll('.buttons_wrap a');
+    const links = el.querySelectorAll('.buttons_wrap button.btn_link');
     expect(links.length).toBe(1); // only WHY remains
   });
 
@@ -91,7 +91,7 @@ describe('ArgumentDeletedComponent', () => {
   it('should not show WHY link in self-deleted block', () => {
     setup({ ...BASE_ARG, deletedBy: { id: 'user1', name: 'Alice' }, deletedReasonType: null, deletedReasonText: null });
     const el: HTMLElement = fixture.nativeElement;
-    const links = el.querySelectorAll('.buttons_wrap a');
+    const links = el.querySelectorAll('.buttons_wrap button.btn_link');
     expect(links.length).toBe(1); // only VIEW ANYWAY
   });
 });

@@ -305,7 +305,7 @@ export class GlobalSearchPanelComponent {
   searchInput = signal('');
   showResults = signal(false);
   noResults = signal(true);
-  searchResults = signal<Record<string, any>>({});
+  searchResults = signal<Record<string, Record<string, { count: number; rows: { id: string; name?: string; title?: string }[] }>>>({});
 
   lnkDonate = computed(() => {
     const links = this.configStore.links.donate();
@@ -357,11 +357,11 @@ export class GlobalSearchPanelComponent {
     return this.searchResults()?.[context]?.[model]?.count ?? 0;
   }
 
-  resultRows(context: string, model: string): any[] {
+  resultRows(context: string, model: string): { id: string; name?: string; title?: string }[] {
     return this.searchResults()?.[context]?.[model]?.rows ?? [];
   }
 
-  goToView(item: any, _context: string) {
+  goToView(item: { id: string; name?: string; title?: string }, _context: string) {
     const lang = this.translate.currentLang;
     const isGroup = Object.hasOwn(item, 'name');
     this.globalSearch.showSearch.set(false);

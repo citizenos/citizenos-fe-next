@@ -1,4 +1,4 @@
-import { Component, output, inject, computed, ChangeDetectionStrategy, model } from '@angular/core';
+import { Component, output, inject, ChangeDetectionStrategy, model } from '@angular/core';
 import { NgClass, DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -7,7 +7,7 @@ import { TopicArgumentService } from '../../../../../core/services/topic-argumen
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { Topic } from '../../../../../core/interfaces/topic';
-import { toSignal } from '@angular/core/rxjs-interop';
+
 import { DomainIconComponent } from '../../../../../shared/components/domain-icon/domain-icon.component';
 
 @Component({

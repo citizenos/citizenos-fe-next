@@ -34,7 +34,7 @@ export class ImageEditorComponent implements AfterViewInit, OnChanges {
     this.setInitialImage();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(_changes: SimpleChanges) {
     if (this.canvasElement) {
       this.setInitialImage();
     }

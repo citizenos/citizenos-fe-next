@@ -1,6 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { ComponentRef } from '@angular/core';
 import { MemberEditorsPanelComponent } from './member-editors-panel.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -9,14 +8,13 @@ import { Topic } from '../../../core/interfaces/topic';
 describe('MemberEditorsPanelComponent', () => {
   let component: MemberEditorsPanelComponent;
   let fixture: ComponentFixture<MemberEditorsPanelComponent>;
-  let ref: ComponentRef<MemberEditorsPanelComponent>;
 
   const mockTopic: Topic = {
     id: 'topic-1', title: 'Test', intro: null, description: '', status: 'draft',
     visibility: 'private', hashtag: null, join: { token: '', level: '' },
     categories: [], endsAt: null, createdAt: '', updatedAt: '',
     sourcePartnerId: null, sourcePartnerObjectId: null,
-    permission: { level: 'admin' }, creator: {}, lastActivity: null,
+    permission: { level: 'admin' }, creator: { id: '', name: '' }, lastActivity: null,
     country: null, language: null, members: { users: { count: 1 }, groups: { count: 0 } },
     voteId: null, discussionId: null, comments: null, padUrl: '',
     imageUrl: null, authors: [],
@@ -29,7 +27,6 @@ describe('MemberEditorsPanelComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(MemberEditorsPanelComponent);
-    ref = fixture.componentRef;
     component = fixture.componentInstance;
   });
 

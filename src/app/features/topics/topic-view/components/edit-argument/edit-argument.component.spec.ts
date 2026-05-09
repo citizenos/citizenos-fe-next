@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+
 import { EditArgumentComponent } from './edit-argument.component';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { TranslateModule } from '@ngx-translate/core';

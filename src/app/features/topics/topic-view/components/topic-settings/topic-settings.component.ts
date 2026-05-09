@@ -49,9 +49,9 @@ export class TopicSettingsComponent implements OnInit {
   private dialog = inject(DialogService);
 
   topic = signal<Topic>({ ...this.dialogData.topic });
-  groups = signal<any[]>([]);
+  groups = signal<Group[]>([]);
   tabSelected = signal('settings');
-  errors = signal<any>({});
+  errors = signal<Record<string, string>>({});
   
   VISIBILITY = this.topicService.VISIBILITY;
   CATEGORIES = Object.keys(this.topicService.CATEGORIES);
@@ -72,7 +72,7 @@ export class TopicSettingsComponent implements OnInit {
       this.topicVoteService.get({ topicId: t.id, voteId: t.voteId })
         .pipe(take(1))
         .subscribe((vote) => {
-          this.topic.update(current => ({ ...current, vote: vote as any }));
+          this.topic.update(current => ({ ...current, vote: vote as Topic['vote'] }));
           if (vote.reminderTime && !vote.reminderSent) {
             this.reminder.set(true);
           }
@@ -138,7 +138,7 @@ export class TopicSettingsComponent implements OnInit {
     return null;
   });
 
-  isVisibleReminderOption(time: any) {
+  isVisibleReminderOption(time: { value: number; unit: string }) {
     const t = this.topic();
     if (t.vote?.endsAt) {
       const timeItem = new Date(t.vote.endsAt);
@@ -157,7 +157,7 @@ export class TopicSettingsComponent implements OnInit {
     return false;
   }
 
-  setVoteReminder(time: any) {
+  setVoteReminder(time: { value: number; unit: string }) {
     const t = this.topic();
     if (t.vote) {
       const deadline = t.vote.endsAt || new Date();
@@ -227,12 +227,12 @@ export class TopicSettingsComponent implements OnInit {
   doSaveTopic() {
     this.errors.set({});
     const t = this.topic();
-    const topicUpdate: any = { ...t };
+    const topicUpdate: Partial<Topic> & { endsAt?: string | null } = { ...t };
     
     // Cleanup as in legacy
     if (topicUpdate.endsAt) delete topicUpdate.endsAt;
 
-    this.topicService.update(topicUpdate)
+    this.topicService.update(topicUpdate as Topic)
       .pipe(take(1))
       .subscribe({
         next: () => {

@@ -8,7 +8,7 @@ import { map, Observable } from 'rxjs';
 export class UploadService {
   private http = inject(HttpClient);
 
-  upload(path: string, file: File, data?: any): Observable<any> {
+  upload(path: string, file: File, data?: Record<string, unknown>): Observable<unknown> {
     const formData: FormData = new FormData();
     formData.append('file', file);
     
@@ -24,8 +24,8 @@ export class UploadService {
       responseType: 'json',
     });
 
-    return this.http.request(req).pipe(
-      map((event: HttpEvent<any>) => {
+    return this.http.request<ApiResponse<unknown>>(req).pipe(
+      map((event: HttpEvent<ApiResponse<unknown>>) => {
         if (event.type === HttpEventType.Response) {
           return event.body?.data || event.body;
         }

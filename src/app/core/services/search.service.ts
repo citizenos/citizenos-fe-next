@@ -15,21 +15,21 @@ export class SearchService {
     return this.configStore.api.baseUrl();
   }
 
-  searchUsers(str: string): Observable<any> {
+  searchUsers(str: string): Observable<unknown> {
     const params = new HttpParams().set('str', str);
-    return this.http.get<ApiResponse<any>>(
+    return this.http.get<ApiResponse<unknown>>(
       `${this.apiUrl}/api/users/self/search/users`,
       { withCredentials: true, params }
     ).pipe(map(res => res.data));
   }
 
-  search(str: string, options: any = {}): Observable<any> {
+  search(str: string, options: Record<string, string | number | boolean> = {}): Observable<unknown> {
     let params = new HttpParams().set('str', str);
     Object.keys(options).forEach(key => {
-      params = params.set(key, options[key]);
+      params = params.set(key, String(options[key]));
     });
 
-    return this.http.get<ApiResponse<any>>(
+    return this.http.get<ApiResponse<unknown>>(
       `${this.apiUrl}/api/search`,
       { withCredentials: true, params }
     ).pipe(map(res => res.data));

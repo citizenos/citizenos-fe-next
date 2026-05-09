@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentRef, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TranslateModule } from '@ngx-translate/core';
 import { PaginationComponent } from './pagination.component';
@@ -14,20 +14,18 @@ class MockIconComponent {
 describe('PaginationComponent', () => {
   let fixture: ComponentFixture<PaginationComponent>;
   let component: PaginationComponent;
-  let ref: ComponentRef<PaginationComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ 
-      imports: [PaginationComponent, TranslateModule.forRoot(), MockIconComponent] 
+    await TestBed.configureTestingModule({
+      imports: [PaginationComponent, TranslateModule.forRoot(), MockIconComponent]
     })
     .overrideComponent(PaginationComponent, {
       remove: { imports: [IconComponent] },
       add: { imports: [MockIconComponent] }
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(PaginationComponent);
-    ref = fixture.componentRef;
     component = fixture.componentInstance;
   });
 

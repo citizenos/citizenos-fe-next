@@ -405,7 +405,7 @@ export class RegisterComponent {
       try {
         await this.userStore.signup(data);
         this.router.navigate(['/']);
-      } catch (err: any) {
+      } catch {
         this.error.set('Registration failed. Please try again.');
       }
     }

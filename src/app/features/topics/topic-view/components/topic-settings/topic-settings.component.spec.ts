@@ -8,11 +8,7 @@ import { TopicVoteService } from '../../../../../core/services/topic-vote.servic
 import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
 import { DIALOG_DATA, DialogRef, DialogService } from '../../../../../shared/dialog';
 import { Component, Input, output } from '@angular/core';
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
-import { ToggleComponent } from '../../../../../shared/components/toggle/toggle.component';
-import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
+
 import { CommonModule, UpperCasePipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { A11yModule } from '@angular/cdk/a11y';

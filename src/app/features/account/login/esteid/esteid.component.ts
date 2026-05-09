@@ -237,8 +237,9 @@ export class EstEidComponent implements OnDestroy {
           this.challengeID.set(res.challengeID);
           this.startPolling(res.token);
         }
-      } catch (err: any) {
-        this.error.set(err.error?.status?.message || 'Login failed. Please try again.');
+      } catch (err: unknown) {
+        const error = err as { error?: { status?: { message?: string } } };
+        this.error.set(error.error?.status?.message || 'Login failed. Please try again.');
       }
     }
   }
@@ -251,8 +252,9 @@ export class EstEidComponent implements OnDestroy {
       const authResponse = await webeid.authenticate(nonce, { lang: 'et' });
       await this.userStore.loginIdCard(authResponse);
       window.location.reload();
-    } catch (err: any) {
-      this.error.set(err.message || 'ID-card authentication failed.');
+    } catch (err: unknown) {
+      const error = err as { message?: string };
+      this.error.set(error.message || 'ID-card authentication failed.');
     } finally {
       this.isLoadingIdCard.set(false);
     }
@@ -273,7 +275,7 @@ export class EstEidComponent implements OnDestroy {
             window.location.reload();
           }
         },
-        error: (err) => {
+        error: (_err) => {
           this.error.set('Authentication failed or timed out.');
           this.challengeID.set(null);
         }

@@ -1,3 +1,11 @@
+export interface TopicCreator {
+  id: string;
+  name: string;
+  imageUrl?: string | null;
+  email?: string | null;
+  company?: string | null;
+}
+
 export interface TopicReport {
   id: string;
   type: string | null;
@@ -32,7 +40,7 @@ export interface Topic {
   sourcePartnerId: string | null;
   sourcePartnerObjectId: string | null;
   permission: { level: string; levelGroup?: string };
-  creator: any;
+  creator: TopicCreator;
   lastActivity: string | null;
   country: string | null;
   language: string | null;
@@ -42,9 +50,9 @@ export interface Topic {
   ideationId?: string | null;
   discussionId: string | null;
   comments: { count: number } | null;
-  padUrl: any;
+  padUrl: string | null;
   favourite?: boolean | null;
   imageUrl: string | null;
-  authors: any[];
+  authors: TopicCreator[];
   report?: TopicReport;
 }

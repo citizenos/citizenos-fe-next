@@ -1,8 +1,9 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-(globalThis as any).ResizeObserver = class {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+// @ts-expect-error - ResizeObserver is not defined in all environments
+globalThis.ResizeObserver = class {
+  observe() { return; }
+  unobserve() { return; }
+  disconnect() { return; }
 };
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TopicViewComponent } from './topic-view.component';
@@ -18,84 +19,75 @@ import { TopicIdeationService } from '../../../core/services/topic-ideation.serv
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { TopicEventService } from '../../../core/services/topic-event.service';
 import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
-import { TopicHeaderComponent } from './components/topic-header/topic-header.component';
-import { TopicContentComponent } from './components/topic-content/topic-content.component';
-import { TopicInfoSidebarComponent } from './components/topic-info-sidebar/topic-info-sidebar.component';
-import { TopicStateItemsComponent } from './components/topic-state-items/topic-state-items.component';
-import { TopicIdeationComponent } from './components/topic-ideation/topic-ideation.component';
-import { TopicDiscussionComponent } from './components/topic-discussion/topic-discussion.component';
-import { TopicVoteCastComponent } from './components/topic-vote-cast/topic-vote-cast.component';
-import { TopicMilestonesComponent } from './components/topic-milestones/topic-milestones.component';
-import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
-import { IconComponent } from '../../../shared/components/icon/icon.component';
+
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent {
   @Input() name = '';
-  @Input() size: any;
-  @Input() color: any;
+  @Input() size?: string | number;
+  @Input() color?: string;
 }
 
 @Component({ selector: 'app-topic-header', standalone: true, template: '' })
 class MockTopicHeaderComponent {
-  @Input() topic: any;
-  @Input() navigation: any;
-  @Input() wWidth: any;
-  @Input() cosTourItem: any;
-  @Input() appTopicNotificationSettings: any;
-  joinTopic = output<any>();
-  toggleFavourite = output<any>();
-  leaveTopic = output<any>();
-  inviteEditors = output<any>();
-  duplicateTopic = output<any>();
-  addGroupsDialog = output<any>();
-  reportTopic = output<any>();
-  reportReasonDialog = output<any>();
-  moderateTopic = output<any>();
-  reviewTopic = output<any>();
-  resolveTopic = output<any>();
-  closeTopic = output<any>();
-  deleteTopic = output<any>();
-  openSettings = output<any>();
+  @Input() topic: Topic | null = null;
+  @Input() navigation: unknown;
+  @Input() wWidth = 1280;
+  @Input() cosTourItem: unknown;
+  @Input() appTopicNotificationSettings: unknown;
+  joinTopic = output<Topic>();
+  toggleFavourite = output<Topic>();
+  leaveTopic = output<Topic>();
+  inviteEditors = output<Topic>();
+  duplicateTopic = output<Topic>();
+  addGroupsDialog = output<Topic>();
+  reportTopic = output<Topic>();
+  reportReasonDialog = output<Topic>();
+  moderateTopic = output<Topic>();
+  reviewTopic = output<Topic>();
+  resolveTopic = output<Topic>();
+  closeTopic = output<Topic>();
+  deleteTopic = output<Topic>();
+  openSettings = output<Topic>();
 }
 
 @Component({ selector: 'app-topic-content', standalone: true, template: '' })
 class MockTopicContentComponent {
-  @Input() topic: any;
-  @Input() tabTablet: any;
-  @Input() cosTourItem: any;
+  @Input() topic: Topic | null = null;
+  @Input() tabTablet = '';
+  @Input() cosTourItem: unknown;
 }
 
 @Component({ selector: 'app-topic-info-sidebar', standalone: true, template: '' })
 class MockTopicInfoSidebarComponent {
-  @Input() topic: any;
-  @Input() groups: any;
-  @Input() attachments: any;
-  @Input() members: any;
-  @Input() appTopicNotificationSettings: any;
-  @Input() cosTourItem: any;
-  toggleFavourite = output<any>();
-  leaveTopic = output<any>();
-  inviteEditors = output<any>();
-  duplicateTopic = output<any>();
-  addGroupsDialog = output<any>();
-  closeTopic = output<any>();
-  deleteTopic = output<any>();
-  inviteMembers = output<any>();
-  downloadAttachment = output<any>();
+  @Input() topic: Topic | null = null;
+  @Input() groups: unknown[] = [];
+  @Input() attachments: unknown[] = [];
+  @Input() members: unknown[] = [];
+  @Input() appTopicNotificationSettings: unknown;
+  @Input() cosTourItem: unknown;
+  toggleFavourite = output<Topic>();
+  leaveTopic = output<Topic>();
+  inviteEditors = output<Topic>();
+  duplicateTopic = output<Topic>();
+  addGroupsDialog = output<Topic>();
+  closeTopic = output<Topic>();
+  deleteTopic = output<Topic>();
+  inviteMembers = output<Topic>();
+  downloadAttachment = output<unknown>();
 }
 
 @Component({ selector: 'app-topic-state-items', standalone: true, template: '' })
 class MockTopicStateItemsComponent {
-  @Input() topic: any;
-  @Input() ideation: any;
-  @Input() vote: any;
-  @Input() eventCount: any;
-  @Input() cosTourItem: any;
-  navigateTab = output<any>();
-  startDiscussion = output<any>();
-  startVote = output<any>();
-  sendToFollowUp = output<any>();
+  @Input() topic: Topic | null = null;
+  @Input() ideation: unknown;
+  @Input() vote: unknown;
+  @Input() eventCount = 0;
+  @Input() cosTourItem: unknown;
+  navigateTab = output<string>();
+  startDiscussion = output<Topic>();
+  startVote = output<Topic>();
+  sendToFollowUp = output<Topic>();
 }
 
 @Component({ selector: 'cos-activities-button', standalone: true, template: '' })
@@ -105,28 +97,28 @@ class MockActivitiesButtonComponent {
 
 @Component({ selector: 'cos-topic-discussion', standalone: true, template: '' })
 class MockTopicDiscussionComponent {
-  @Input() topic: any;
-  @Input() cosTourItem: any;
+  @Input() topic: Topic | null = null;
+  @Input() cosTourItem: unknown;
 }
 
 @Component({ selector: 'app-topic-ideation', standalone: true, template: '' })
 class MockTopicIdeationComponent {
-  @Input() topic: any;
-  @Input() ideation: any;
-  @Input() cosTourItem: any;
+  @Input() topic: Topic | null = null;
+  @Input() ideation: unknown;
+  @Input() cosTourItem: unknown;
 }
 
 @Component({ selector: 'app-topic-vote-cast', standalone: true, template: '' })
 class MockTopicVoteCastComponent {
-  @Input() topic: any;
-  @Input() vote: any;
-  @Input() cosTourItem: any;
+  @Input() topic: Topic | null = null;
+  @Input() vote: unknown;
+  @Input() cosTourItem: unknown;
 }
 
 @Component({ selector: 'app-topic-milestones', standalone: true, template: '' })
 class MockTopicMilestonesComponent {
-  @Input() topic: any;
-  @Input() isStatusClosed: any;
+  @Input() topic: Topic | null = null;
+  @Input() isStatusClosed = false;
 }
 
 describe('TopicViewComponent', () => {
@@ -279,18 +271,18 @@ describe('TopicViewComponent', () => {
   });
 
   it('should call joinTopic service method', () => {
-    component.joinTopic(mockTopic as any);
+    component.joinTopic(mockTopic as unknown as Topic);
     expect(mockTopicService.joinPublic).toHaveBeenCalledWith('123');
   });
 
   it('should call deleteTopic service', () => {
-    component.deleteTopic(mockTopic as any);
+    component.deleteTopic(mockTopic as unknown as Topic);
     expect(mockTopicService.doDeleteTopic).toHaveBeenCalled();
   });
 
   it('should call closeTopic service', () => {
-    component.closeTopic(mockTopic as any);
-    expect(mockTopicService.changeState).toHaveBeenCalledWith(mockTopic, 'closed');
+    component.closeTopic(mockTopic as unknown as Topic);
+    expect(mockTopicService.changeState).toHaveBeenCalledWith(mockTopic as unknown as Topic, 'closed');
   });
 
   it('should call startVote when canUpdate', () => {

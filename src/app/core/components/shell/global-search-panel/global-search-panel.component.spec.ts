@@ -74,7 +74,7 @@ describe('GlobalSearchPanelComponent', () => {
 
   it('resultCount() should return count from searchResults', () => {
     const component = TestBed.runInInjectionContext(() => new GlobalSearchPanelComponent());
-    component.searchResults.set({ my: { topics: { count: 5, rows: [] } } } as any);
+    component.searchResults.set({ my: { topics: { count: 5, rows: [] } } } as unknown as any);
     expect(component.resultCount('my', 'topics')).toBe(5);
   });
 

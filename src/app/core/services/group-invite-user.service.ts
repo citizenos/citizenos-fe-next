@@ -19,36 +19,36 @@ export class GroupInviteUserService {
 
   LEVELS = ['read', 'admin'];
 
-  invite(groupId: string, invites: GroupInvite[]): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  invite(groupId: string, invites: GroupInvite[]): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${groupId}/invites/users`,
       invites, { withCredentials: true }
     ).pipe(map(r => r.data));
   }
 
-  updateInvite(groupId: string, inviteId: string, level: string): Observable<any> {
-    return this.http.put<ApiResponse<any>>(
+  updateInvite(groupId: string, inviteId: string, level: string): Observable<unknown> {
+    return this.http.put<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${groupId}/invites/users/${inviteId}`,
       { level }, { withCredentials: true }
     ).pipe(map(r => r.data));
   }
 
-  deleteInvite(groupId: string, inviteId: string): Observable<any> {
+  deleteInvite(groupId: string, inviteId: string): Observable<unknown> {
     return this.http.delete(
       `${this.baseUrl}/api/users/self/groups/${groupId}/invites/users/${inviteId}`,
       { withCredentials: true }
     );
   }
 
-  get(params: { groupId: string; inviteId: string }): Observable<any> {
-    return this.http.get<ApiResponse<any>>(
+  get(params: { groupId: string; inviteId: string }): Observable<unknown> {
+    return this.http.get<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${params.groupId}/invites/users/${params.inviteId}`,
       { withCredentials: true }
     ).pipe(map(r => r.data));
   }
 
-  accept(params: { groupId: string; inviteId: string }): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  accept(params: { groupId: string; inviteId: string }): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${params.groupId}/invites/users/${params.inviteId}/accept`,
       {}, { withCredentials: true }
     ).pipe(map(r => r.data));

@@ -1,15 +1,12 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentRef } from '@angular/core';
+
 import { provideRouter, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicHeaderComponent } from './topic-header.component';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
-import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
-import { ActivitiesButtonComponent } from '../../../../../shared/components/activities-button/activities-button.component';
+
 import { Component, Input, output } from '@angular/core';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { UpperCasePipe } from '@angular/common';
@@ -58,7 +55,6 @@ const BASE_TOPIC: Topic = {
 describe('TopicHeaderComponent', () => {
   let component: TopicHeaderComponent;
   let fixture: ComponentFixture<TopicHeaderComponent>;
-  let componentRef: ComponentRef<TopicHeaderComponent>;
 
   const mockUserStore = { isAuthenticated: () => true };
 
@@ -100,7 +96,6 @@ describe('TopicHeaderComponent', () => {
 
     fixture = TestBed.createComponent(TopicHeaderComponent);
     component = fixture.componentInstance;
-    componentRef = fixture.componentRef;
     component.topic.set({ ...BASE_TOPIC });
     component.navigation.set({ title: 'Back', link: ['/'] });
     fixture.detectChanges();

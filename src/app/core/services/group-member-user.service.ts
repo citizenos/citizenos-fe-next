@@ -37,18 +37,18 @@ export class GroupMemberUserService {
     ).pipe(map(res => ({ rows: res.data?.rows ?? [], count: res.data?.count ?? 0 })));
   }
 
-  updateLevel(groupId: string, userId: string, level: string): Observable<any> {
-    return this.http.put(
+  updateLevel(groupId: string, userId: string, level: string): Observable<unknown> {
+    return this.http.put<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${groupId}/members/users/${userId}`,
       { level },
       { withCredentials: true }
-    );
+    ).pipe(map(res => res.data));
   }
 
-  removeMember(groupId: string, userId: string): Observable<any> {
-    return this.http.delete(
+  removeMember(groupId: string, userId: string): Observable<unknown> {
+    return this.http.delete<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${groupId}/members/users/${userId}`,
       { withCredentials: true }
-    );
+    ).pipe(map(res => res.data));
   }
 }

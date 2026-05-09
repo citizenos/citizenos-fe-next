@@ -130,7 +130,7 @@ export class ArgumentComponent implements OnInit {
     });
   }
 
-  copyLink(event: MouseEvent) {
+  copyLink(_event: MouseEvent) {
     const id = this.argumentId();
     const url = `${window.location.origin}${window.location.pathname}?argumentId=${id}`;
     navigator.clipboard.writeText(url).then(() =>

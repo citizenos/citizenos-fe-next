@@ -6,9 +6,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
+import { TopicMemberUserService, TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
 import { VoteDelegationService } from '../../../../../core/services/vote-delegation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
+import { Topic } from '../../../../../core/interfaces/topic';
 import { UserStore } from '../../../../../core/state/user.store';
 import { NotificationService } from '../../../../../core/services/notification.service';
 
@@ -20,7 +21,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
   templateUrl: './topic-vote-delegate.component.html'
 })
 export class TopicVoteDelegateComponent {
-  data = inject<{ topic: any }>(DIALOG_DATA);
+  data = inject<{ topic: Topic }>(DIALOG_DATA);
   protected dialogRef = inject(DialogRef);
   private memberUserService = inject(TopicMemberUserService);
   private voteDelegationService = inject(VoteDelegationService);
@@ -30,7 +31,7 @@ export class TopicVoteDelegateComponent {
   private translate = inject(TranslateService);
 
   searchStr = signal('');
-  delegateUser = signal<any>(null);
+  delegateUser = signal<TopicMemberUser | null>(null);
 
   private search$ = new Subject<string>();
 
@@ -43,7 +44,7 @@ export class TopicVoteDelegateComponent {
         return this.memberUserService.query({ topicId: this.data.topic.id, search: str }).pipe(
           switchMap(res => {
             const me = this.userStore.user();
-            const filtered = (res.rows || []).filter((u: any) => u.id !== me?.id);
+            const filtered = (res.rows || []).filter((u: TopicMemberUser) => u.id !== me?.id);
             return of(filtered);
           })
         );
@@ -57,7 +58,7 @@ export class TopicVoteDelegateComponent {
     this.search$.next(val);
   }
 
-  selectUser(user: any) {
+  selectUser(user: TopicMemberUser) {
     this.delegateUser.set(user);
     this.search$.next('');
     this.searchStr.set('');

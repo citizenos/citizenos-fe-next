@@ -17,7 +17,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
   templateUrl: './topic-vote-deadline.component.html'
 })
 export class TopicVoteDeadlineComponent {
-  data = inject<{ vote: any; topic: any }>(DIALOG_DATA);
+  data = inject<{ vote: TopicVote; topic: Topic }>(DIALOG_DATA);
   private dialogRef = inject(DialogRef);
   private topicVoteService = inject(TopicVoteService);
   private topicService = inject(TopicService);

@@ -38,7 +38,7 @@ export class AddEmailComponent {
     email: new FormControl('', [Validators.email]),
   });
 
-  errors?: any;
+  errors?: Record<string, string> | null;
 
   doUpdateProfile() {
     this.errors = null;

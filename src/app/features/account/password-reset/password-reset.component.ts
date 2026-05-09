@@ -188,7 +188,7 @@ export class PasswordResetComponent implements OnInit {
       try {
         await this.userStore.resetPassword(password!, this.resetCode);
         this.success.set(true);
-      } catch (err: any) {
+      } catch {
         this.error.set('Failed to reset password. The link may have expired.');
       }
     }

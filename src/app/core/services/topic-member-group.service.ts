@@ -16,29 +16,29 @@ export class TopicMemberGroupService {
     admin: 'admin'
   };
 
-  loadItems(topicId: string): Observable<any[]> {
-    return this.http.get<ApiResponse<any[]>>(
+  loadItems(topicId: string): Observable<unknown[]> {
+    return this.http.get<ApiResponse<unknown[]>>(
       `${this.baseUrl}/api/users/self/topics/${topicId}/members/groups`,
       { withCredentials: true }
     ).pipe(map(res => res.data ?? []));
   }
 
-  save(data: { topicId: string; groupId: string; level: string }): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  save(data: { topicId: string; groupId: string; level: string }): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${data.topicId}/members/groups`,
       data, { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
-  update(data: { topicId: string; groupId: string; level: string }): Observable<any> {
-    return this.http.put<ApiResponse<any>>(
+  update(data: { topicId: string; groupId: string; level: string }): Observable<unknown> {
+    return this.http.put<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${data.topicId}/members/groups/${data.groupId}`,
       data, { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
-  delete(data: { topicId: string; groupId: string }): Observable<any> {
-    return this.http.delete<ApiResponse<any>>(
+  delete(data: { topicId: string; groupId: string }): Observable<unknown> {
+    return this.http.delete<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${data.topicId}/members/groups/${data.groupId}`,
       { withCredentials: true }
     ).pipe(map(res => res.data));

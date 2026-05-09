@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentRef, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
@@ -28,7 +28,6 @@ const BASE_TOPIC: Topic = {
 describe('TopicInfoSidebarComponent', () => {
   let component: TopicInfoSidebarComponent;
   let fixture: ComponentFixture<TopicInfoSidebarComponent>;
-  let componentRef: ComponentRef<TopicInfoSidebarComponent>;
 
   const mockUserStore = { isAuthenticated: vi.fn().mockReturnValue(true) };
   const mockTopicService = {
@@ -60,7 +59,6 @@ describe('TopicInfoSidebarComponent', () => {
 
     fixture = TestBed.createComponent(TopicInfoSidebarComponent);
     component = fixture.componentInstance;
-    componentRef = fixture.componentRef;
 
     component.topic.set({ ...BASE_TOPIC });
     component.attachments.set([]);

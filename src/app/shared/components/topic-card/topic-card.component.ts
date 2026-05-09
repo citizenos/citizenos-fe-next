@@ -433,11 +433,6 @@ export class TopicCardComponent {
   topicLink = computed(() => {
     const t = this.topic();
     const lang = this.translate.currentLang;
-    let fragment = 'discussion';
-    if (t.status === 'draft') fragment = 'info';
-    else if (t.status === 'ideation') fragment = 'ideation';
-    else if (t.status === 'voting') fragment = 'voting';
-    else if (t.status === 'followUp') fragment = 'followUp';
     return ['/', lang, 'topics', t.id];
   });
 

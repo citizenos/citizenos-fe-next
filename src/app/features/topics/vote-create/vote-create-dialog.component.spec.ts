@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { VoteCreateDialogComponent } from './vote-create-dialog.component';
 import { DIALOG_DATA } from '../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../shared/dialog/dialog-ref';

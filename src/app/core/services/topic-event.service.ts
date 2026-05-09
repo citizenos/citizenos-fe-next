@@ -10,6 +10,18 @@ export interface TopicEventParams extends ListParams {
   topicId?: string | null;
 }
 
+export interface TopicEvent {
+  id: string;
+  topicId: string;
+  type: string;
+  [key: string]: unknown;
+}
+
+export interface TopicEventListResponse {
+  rows: TopicEvent[];
+  count: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,9 +35,9 @@ export class TopicEventService extends ItemsListService {
     return this.configStore.api.baseUrl();
   }
 
-  loadEvents(params: any): Observable<any[]> {
+  loadEvents(params: TopicEventParams): Observable<TopicEvent[]> {
     return this.loadEvents$.pipe(
-      exhaustMap(() => this.getItems(params)),
+      exhaustMap(() => this.getItems(params).pipe(map(res => res.rows))),
       shareReplay(1)
     );
   }
@@ -34,56 +46,57 @@ export class TopicEventService extends ItemsListService {
     this.loadEvents$.next();
   }
 
-  override getItems(params: TopicEventParams): Observable<any> {
+  override getItems(params: TopicEventParams): Observable<TopicEventListResponse> {
     let httpParams = new HttpParams()
       .set('limit', String(params.limit))
       .set('offset', String(params.offset ?? 0));
     
     // Add other params to HttpParams dynamically if needed.
     Object.keys(params).forEach(key => {
-      if (key !== 'limit' && key !== 'offset' && key !== 'topicId' && (params as any)[key] !== null) {
-        httpParams = httpParams.set(key, (params as any)[key]);
+      const val = (params as unknown as Record<string, unknown>)[key];
+      if (key !== 'limit' && key !== 'offset' && key !== 'topicId' && val !== null) {
+        httpParams = httpParams.set(key, String(val));
       }
     });
 
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/events`);
-    return this.http.get<ApiResponse<any>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
-      .pipe(map(res => ({ rows: res.data?.rows ?? res.data ?? [], count: res.data?.count ?? 0 })));
+    return this.http.get<ApiResponse<TopicEventListResponse>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
+      .pipe(map(res => ({ rows: res.data?.rows ?? [], count: res.data?.count ?? 0 })));
   }
 
-  queryPublic(params: Record<string, any>): Observable<any> {
+  queryPublic(params: Record<string, unknown>): Observable<unknown> {
     const path = this.getAbsoluteUrlApi('/api/topics');
     const queryParams = Object.fromEntries(Object.entries(params).filter((i) => i[1] !== null));
 
-    return this.http.get<ApiResponse<any>>(path, { withCredentials: true, params: queryParams, observe: 'body', responseType: 'json' })
+    return this.http.get<ApiResponse<unknown>>(path, { withCredentials: true, params: queryParams as Record<string, string>, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
-  query(params: Record<string, any>): Observable<any> {
+  query(params: Record<string, unknown>): Observable<unknown> {
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params['topicId']}/events`);
     const queryParams = Object.fromEntries(Object.entries(params).filter((i) => i[1] !== null));
     
-    return this.http.get<ApiResponse<any>>(path, { withCredentials: true, params: queryParams, observe: 'body', responseType: 'json' })
+    return this.http.get<ApiResponse<unknown>>(path, { withCredentials: true, params: queryParams as Record<string, string>, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
-  save(data: any): Observable<any> {
+  save(data: { topicId: string; [key: string]: unknown }): Observable<TopicEvent> {
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${data.topicId}/events`);
-    return this.http.post<ApiResponse<any>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
-      .pipe(map(res => res.data));
+    return this.http.post<ApiResponse<TopicEvent>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
   }
 
-  update(data: any): Observable<any> {
+  update(data: { topicId: string; eventId?: string; id?: string; [key: string]: unknown }): Observable<TopicEvent> {
     const eventId = data.eventId || data.id;
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${data.topicId}/events/${eventId}`);
-    return this.http.put<ApiResponse<any>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
-      .pipe(map(res => res.data));
+    return this.http.put<ApiResponse<TopicEvent>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
   }
 
-  delete(data: any): Observable<any> {
+  delete(data: { topicId: string; eventId?: string; id?: string }): Observable<unknown> {
     const eventId = data.eventId || data.id;
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${data.topicId}/events/${eventId}`);
-    return this.http.delete<ApiResponse<any>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+    return this.http.delete<ApiResponse<unknown>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 

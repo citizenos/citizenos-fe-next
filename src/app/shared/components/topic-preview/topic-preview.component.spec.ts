@@ -1,6 +1,5 @@
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { ComponentRef } from '@angular/core';
 import { TopicPreviewComponent } from './topic-preview.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -9,7 +8,6 @@ import { Topic } from '../../../core/interfaces/topic';
 describe('TopicPreviewComponent', () => {
   let component: TopicPreviewComponent;
   let fixture: ComponentFixture<TopicPreviewComponent>;
-  let ref: ComponentRef<TopicPreviewComponent>;
 
   const mockTopic: Topic = {
     id: 'topic-1', title: 'Preview Topic', intro: 'Introduction text',
@@ -17,7 +15,7 @@ describe('TopicPreviewComponent', () => {
     hashtag: null, join: { token: '', level: '' },
     categories: ['education', 'science'], endsAt: null, createdAt: '', updatedAt: '',
     sourcePartnerId: null, sourcePartnerObjectId: null,
-    permission: { level: 'admin' }, creator: {}, lastActivity: null,
+    permission: { level: 'admin' }, creator: { id: '', name: '' }, lastActivity: null,
     country: 'Estonia', language: 'Estonian',
     members: { users: { count: 1 }, groups: { count: 0 } },
     voteId: null, discussionId: null, comments: null, padUrl: '',
@@ -31,7 +29,6 @@ describe('TopicPreviewComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TopicPreviewComponent);
-    ref = fixture.componentRef; component = fixture.componentInstance;
     component = fixture.componentInstance;
   });
 

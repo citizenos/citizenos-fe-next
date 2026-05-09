@@ -10,9 +10,9 @@ export interface Group {
   sourcePartnerId: string | null;
   sourcePartnerObjectId: string | null;
   permission: { level: string };
-  creator: any;
+  creator: { id: string; name: string; imageUrl?: string | null };
   lastActivity: string | null;
-  members: any;
+  members: { users: { count: number }; groups: { count: number } };
   userLevel: string | null;
   imageUrl: string | null;
   language: string | null;

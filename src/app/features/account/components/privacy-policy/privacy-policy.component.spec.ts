@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Directive } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideRouter } from '@angular/router';
@@ -24,11 +24,11 @@ class EmptyComponent {}
 const mockUser = { id: 'user1', name: 'Test User' };
 
 describe('PrivacyPolicyComponent', () => {
-  let fixture: any;
+  let fixture: ComponentFixture<PrivacyPolicyComponent>;
   let component: PrivacyPolicyComponent;
-  let userService: any;
-  let dialogService: any;
-  let userStore: any;
+  let userService: unknown;
+  let dialogService: unknown;
+  let userStore: unknown;
 
   function setup(isNew = false) {
     userService = {
@@ -79,7 +79,7 @@ describe('PrivacyPolicyComponent', () => {
   it('calls updateTermsVersion on accept', () => {
     setup();
     component.accept();
-    expect(userService.updateTermsVersion).toHaveBeenCalled();
+    expect((userService as { updateTermsVersion: () => void }).updateTermsVersion).toHaveBeenCalled();
   });
 
   it('sets isNew to true when new flag is passed', () => {
@@ -90,7 +90,7 @@ describe('PrivacyPolicyComponent', () => {
   it('opens confirm dialog on reject', () => {
     setup();
     component.reject();
-    expect(dialogService.open).toHaveBeenCalledWith(ConfirmDialogComponent, expect.anything());
+    expect((dialogService as { open: () => void }).open).toHaveBeenCalledWith(ConfirmDialogComponent, expect.anything());
   });
 
   it('accept button triggers accept()', () => {

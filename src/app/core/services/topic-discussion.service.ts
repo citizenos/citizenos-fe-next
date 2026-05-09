@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map, EMPTY } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response';
 import { Discussion, DiscussionData } from '../interfaces/discussion';
+import { Topic } from '../interfaces/topic';
 import { ConfigStore } from '../state/config.store';
 
 @Injectable({ providedIn: 'root' })
@@ -41,7 +42,7 @@ export class TopicDiscussionService {
       .pipe(map(r => r.data!));
   }
 
-  hasDiscussionEndedExpired(topic: any, discussion: any) {
-    return (['draft', 'followUp', 'closed'].indexOf(topic.status) > -1) || (discussion.deadline && (new Date() > new Date(discussion.deadline)));
+  hasDiscussionEndedExpired(topic: Topic, discussion: Discussion) {
+    return (['draft', 'followUp', 'closed'].indexOf(topic.status) > -1) || (!!discussion.deadline && (new Date() > new Date(discussion.deadline)));
   }
 }

@@ -14,7 +14,7 @@ export interface ListParams {
 @Injectable({
   providedIn: 'root'
 })
-export abstract class ItemsListService<T extends ListParams = ListParams> {
+export abstract class ItemsListService<T extends ListParams = ListParams, U = unknown> {
   protected defaultParams: T = {
     page: 1,
     offset: 0,
@@ -33,13 +33,13 @@ export abstract class ItemsListService<T extends ListParams = ListParams> {
   hasMore = new BehaviorSubject<boolean>(false);
   isLoading$ = new BehaviorSubject<boolean>(false);
 
-  items$: Observable<any[]>;
+  items$: Observable<U[]>;
 
   constructor() {
     this.items$ = this.loadItems();
   }
 
-  public loadItems(): Observable<any[]> {
+  public loadItems(): Observable<U[]> {
     return combineLatest([this.page, this.params]).pipe(
       debounceTime(0),
       switchMap(([page, paramsValue]) => {
@@ -53,7 +53,7 @@ export abstract class ItemsListService<T extends ListParams = ListParams> {
           })
         );
       }),
-      map((res: any) => {
+      map((res: { rows: U[]; countTotal?: number; count?: number }) => {
         const count = res.countTotal || res.count || 0;
         this.countTotal.next(count);
         const limit = this.params.value.limit;
@@ -69,9 +69,9 @@ export abstract class ItemsListService<T extends ListParams = ListParams> {
     );
   }
 
-  abstract getItems(params: ListParams): Observable<any>;
+  abstract getItems(params: T): Observable<{ rows: U[]; countTotal?: number; count?: number }>;
 
-  setParam(param: keyof T, value: any) {
+  setParam<K extends keyof T>(param: K, value: T[K]) {
     const current = this.params.value;
     this.params.next({ ...current, [param]: value });
     this.page.next(1); // Reset to first page on param change

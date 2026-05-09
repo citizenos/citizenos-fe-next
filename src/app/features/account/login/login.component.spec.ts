@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
 import { UserService } from '../../../core/services/user.service';
-import { of, throwError } from 'rxjs';
+
 import { signal, NO_ERRORS_SCHEMA } from '@angular/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { provideRouter } from '@angular/router';
@@ -13,9 +13,8 @@ import { provideRouter } from '@angular/router';
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let mockUserStore: any;
-  let mockUserService: any;
-  let mockRouter: any;
+  let mockUserStore: unknown;
+  let mockUserService: unknown;
 
   beforeEach(async () => {
     mockUserStore = {
@@ -25,10 +24,6 @@ describe('LoginComponent', () => {
     mockUserService = {
       getPartnerLoginUrl: vi.fn().mockReturnValue('http://partner-login.url')
     };
-    mockRouter = {
-      navigate: vi.fn()
-    };
-
     await TestBed.configureTestingModule({
       imports: [LoginComponent, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [
@@ -75,7 +70,7 @@ describe('LoginComponent', () => {
       password: 'password123'
     });
 
-    mockUserStore.login.mockResolvedValue({});
+    (mockUserStore as { login: vi.Mock }).login.mockResolvedValue({});
 
     await component.onSubmit();
 
@@ -89,7 +84,7 @@ describe('LoginComponent', () => {
       password: 'wrong-password'
     });
 
-    mockUserStore.login.mockRejectedValue(new Error('Login failed'));
+    (mockUserStore as { login: vi.Mock }).login.mockRejectedValue(new Error('Login failed'));
 
     await component.onSubmit();
 
@@ -101,8 +96,8 @@ describe('LoginComponent', () => {
     // but we can test that the service is called.
     const originalLocation = window.location;
     // @ts-expect-error - test override
-    delete window.location;
-    window.location = { ...originalLocation, href: '' } as any;
+    delete (window as { location?: Location }).location;
+    window.location = { ...originalLocation, href: '' } as unknown as Location;
 
     component.doLoginPartner('google');
 

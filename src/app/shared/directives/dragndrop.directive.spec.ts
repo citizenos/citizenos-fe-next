@@ -49,8 +49,8 @@ describe('DragndropDirective', () => {
     const mockFileList = { 0: file, length: 1, item: () => file } as unknown as FileList;
     const dropEvent = Object.assign(new Event('drop', { bubbles: true, cancelable: true }), {
       dataTransfer: { files: mockFileList },
-      preventDefault: () => {},
-      stopPropagation: () => {},
+      preventDefault: () => { return; },
+      stopPropagation: () => { return; },
     });
     el.dispatchEvent(dropEvent);
     fixture.detectChanges();

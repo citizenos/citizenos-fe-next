@@ -1,21 +1,20 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 (globalThis as any).ResizeObserver = class {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() { return; }
+  unobserve() { return; }
+  disconnect() { return; }
 };
 (globalThis as any).HTMLElement.prototype.scrollIntoView = vi.fn();
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TopicContentComponent } from './topic-content.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { ComponentRef } from '@angular/core';
+
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Topic } from '../../../../../core/interfaces/topic';
 
 describe('TopicContentComponent', () => {
   let component: TopicContentComponent;
   let fixture: ComponentFixture<TopicContentComponent>;
-  let componentRef: ComponentRef<TopicContentComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,8 +26,7 @@ describe('TopicContentComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TopicContentComponent);
-    component = fixture.componentInstance; componentRef = fixture.componentRef;
-    componentRef = fixture.componentRef;
+    component = fixture.componentInstance;
     
     component.topic.set({
       id: '123', title: 'Topic Title', intro: 'Short intro',
@@ -36,7 +34,7 @@ describe('TopicContentComponent', () => {
       updatedAt: '2023', permission: { level: 'admin' }, status: 'inProgress',
       visibility: 'public', hashtag: null, join: { token: '', level: '' }, categories: [],
       endsAt: null, createdAt: '', sourcePartnerId: null, sourcePartnerObjectId: null,
-      creator: {}, lastActivity: null, country: null, language: null,
+      creator: { id: '', name: '' }, lastActivity: null, country: null, language: null,
       members: { users: { count: 1 }, groups: { count: 0 } },
       voteId: null, discussionId: null, comments: null, padUrl: '', authors: []
     } as Topic);

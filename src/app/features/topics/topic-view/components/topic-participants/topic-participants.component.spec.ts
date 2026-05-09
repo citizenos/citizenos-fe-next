@@ -183,7 +183,7 @@ describe('TopicParticipantsComponent', () => {
 
   it('should render heading', () => {
     const el: HTMLElement = fixture.nativeElement;
-    const heading = el.querySelector('h4.title');
+    const heading = el.querySelector('h1.title');
     expect(heading).toBeTruthy();
   });
 });

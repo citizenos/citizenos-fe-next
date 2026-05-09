@@ -36,11 +36,11 @@ class MockIconComponent { @Input() name = ''; }
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
-  let mockUserStore: any;
-  let mockTopicNotificationService: any;
-  let mockConfigStore: any;
-  let mockDialogService: any;
-  let mockRouter: any;
+  let mockUserStore: unknown;
+  let mockTopicNotificationService: unknown;
+  let mockConfigStore: unknown;
+  let mockDialogService: unknown;
+  let mockRouter: unknown;
 
   beforeEach(async () => {
     mockUserStore = {
@@ -141,7 +141,7 @@ describe('ProfileComponent', () => {
 
   it('should switch tabs', () => {
     component.selectTab('notifications');
-    expect(mockRouter.navigate).toHaveBeenCalledWith([], { fragment: 'notifications' });
+    expect((mockRouter as { navigate: vi.Mock }).navigate).toHaveBeenCalledWith([], { fragment: 'notifications' });
   });
 
   it('should toggle password reset mode', () => {
@@ -153,7 +153,7 @@ describe('ProfileComponent', () => {
   it('should update profile', async () => {
     component.form.name = 'Updated Name';
     await component.doUpdateProfile();
-    expect(mockUserStore.updateProfile).toHaveBeenCalledWith(expect.objectContaining({
+    expect((mockUserStore as { updateProfile: vi.Mock }).updateProfile).toHaveBeenCalledWith(expect.objectContaining({
       name: 'Updated Name'
     }));
   });
@@ -177,52 +177,52 @@ describe('ProfileComponent', () => {
   it('should set profile language', async () => {
     await component.setProfileLanguage('et');
     expect(component.form.language).toBe('et');
-    expect(mockConfigStore.setLanguage).toHaveBeenCalledWith('et');
-    expect(mockUserStore.updateProfile).toHaveBeenCalledWith({ language: 'et' });
+    expect((mockConfigStore as { setLanguage: vi.Mock }).setLanguage).toHaveBeenCalledWith('et');
+    expect((mockUserStore as { updateProfile: vi.Mock }).updateProfile).toHaveBeenCalledWith({ language: 'et' });
   });
 
   it('should delete account after confirmation', async () => {
     const afterClosedSubject = new Subject<boolean>();
-    mockDialogService.open.mockReturnValue({
+    (mockDialogService as { open: vi.Mock }).open.mockReturnValue({
       afterClosed: () => afterClosedSubject.asObservable()
     });
 
     await component.doDeleteAccount();
-    expect(mockDialogService.open).toHaveBeenCalled();
+    expect((mockDialogService as { open: vi.Mock }).open).toHaveBeenCalled();
 
     afterClosedSubject.next(true);
     // Wait for microtasks
     await new Promise(resolve => setTimeout(resolve, 0));
 
-    expect(mockUserStore.deleteAccount).toHaveBeenCalled();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
+    expect((mockUserStore as { deleteAccount: vi.Mock }).deleteAccount).toHaveBeenCalled();
+    expect((mockRouter as { navigate: vi.Mock }).navigate).toHaveBeenCalledWith(['/']);
   });
 
   it('should delete user image', async () => {
     component.form.imageUrl = 'some-url';
     await component.deleteUserImage();
     expect(component.form.imageUrl).toBe('');
-    expect(mockUserStore.updateProfile).toHaveBeenCalledWith({ imageUrl: '' });
+    expect((mockUserStore as { updateProfile: vi.Mock }).updateProfile).toHaveBeenCalledWith({ imageUrl: '' });
   });
 
   it('should search topics in notifications tab', () => {
     component.topicSearch.set('test search');
     component.searchTopics();
-    expect(mockTopicNotificationService.setParam).toHaveBeenCalledWith('search', 'test search');
+    expect((mockTopicNotificationService as { setParam: vi.Mock }).setParam).toHaveBeenCalledWith('search', 'test search');
   });
 
   it('should toggle topic notifications (delete)', async () => {
     const afterClosedSubject = new Subject<boolean>();
-    mockDialogService.open.mockReturnValue({
+    (mockDialogService as { open: vi.Mock }).open.mockReturnValue({
       afterClosed: () => afterClosedSubject.asObservable()
     });
 
     const mockTopic = { topicId: '123', allowNotifications: false };
     component.toggleTopicNotifications(mockTopic);
     
-    expect(mockDialogService.open).toHaveBeenCalled();
+    expect((mockDialogService as { open: vi.Mock }).open).toHaveBeenCalled();
     afterClosedSubject.next(true);
     
-    expect(mockTopicNotificationService.delete).toHaveBeenCalledWith('123');
+    expect((mockTopicNotificationService as { delete: vi.Mock }).delete).toHaveBeenCalledWith('123');
   });
 });

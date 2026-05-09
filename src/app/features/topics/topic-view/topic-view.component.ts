@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal, HostListener, ChangeDetectionStrateg
 import { NgClass, isPlatformBrowser } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { takeUntilDestroyed, toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { switchMap, combineLatest, map, of, tap, catchError, startWith, take } from 'rxjs';
 
 import { TopicService } from '../../../core/services/topic.service';
@@ -95,7 +95,7 @@ export class TopicViewComponent implements OnInit {
       switchMap(topic => {
         if (topic && (topic.status === this.topicService.STATUSES.followUp || topic.status === this.topicService.STATUSES.closed)) {
           return this.topicEventService.query({ topicId: topic.id }).pipe(
-            map((res: any) => res.count || 0),
+            map((res: { count?: number; countTotal?: number }) => res.count || res.countTotal || 0),
             catchError(() => of(0))
           );
         }
@@ -153,7 +153,7 @@ export class TopicViewComponent implements OnInit {
       this.route.queryParams,
       this.translate.onLangChange.pipe(startWith(null))
     ]).pipe(
-      switchMap(([params, queryParams]) => {
+      switchMap(([params, _queryParams]) => {
         const topicId = params['topicId'];
         if (topicId) {
           this.topicId = topicId;
@@ -163,7 +163,7 @@ export class TopicViewComponent implements OnInit {
             link: ['/', this.translate.currentLang, 'my', 'topics']
           });
           return this.topicService.loadTopic(topicId).pipe(
-            tap((topic: any) => {
+            tap((topic: Topic) => {
               this.topic.set(topic);
               this.hideTopicContent.set(!!topic.report?.moderatedReasonType);
               this.seoService.setPageTitle(topic.title);
@@ -201,7 +201,7 @@ export class TopicViewComponent implements OnInit {
 
   // loadRelatedData has been refactored to declarative signal derivations.
 
-  private updateNavigation(topic: Topic, groups: any[]) {
+  private updateNavigation(topic: Topic, groups: TopicGroup[]) {
     const isPrivate = topic.visibility === this.topicService.VISIBILITY.private;
     if (groups.length > 1) {
       this.navigation.set({
@@ -232,11 +232,11 @@ export class TopicViewComponent implements OnInit {
     this.topicService.joinPublic(topic.id)
       .pipe(take(1))
       .subscribe({
-        next: (res: any) => {
+        next: (res: { userLevel: string }) => {
           topic.permission.level = res.userLevel;
           this.topicService.reloadTopic();
         },
-        error: (err: any) => console.error('Failed to join topic', err)
+        error: (err: Error) => console.error('Failed to join topic', err)
       });
   }
 
@@ -245,7 +245,7 @@ export class TopicViewComponent implements OnInit {
     import('../topic-create/components/step-topic-discussion/step-topic-discussion.component').then(m => {
       this.dialogService.open(m.StepTopicDiscussionComponent, { data: { topic } })
         .afterClosed()
-        .subscribe((created: any) => {
+        .subscribe((created: unknown) => {
           if (created) this.topicService.reloadTopic();
         });
     });
@@ -256,7 +256,7 @@ export class TopicViewComponent implements OnInit {
     import('../vote-create/vote-create-dialog.component').then(m => {
       this.dialogService.open(m.VoteCreateDialogComponent, { data: { topic } })
         .afterClosed()
-        .subscribe((created: any) => {
+        .subscribe((created: unknown) => {
           if (created) this.topicService.reloadTopic();
         });
     });
@@ -279,7 +279,7 @@ export class TopicViewComponent implements OnInit {
     import('./components/topic-settings/topic-settings.component').then(m => {
       this.dialogService.open(m.TopicSettingsComponent, {
         data: { topic }
-      }).afterClosed().subscribe((updated: any) => {
+      }).afterClosed().subscribe((updated: unknown) => {
         if (updated) this.topicService.reloadTopic();
       });
     });
@@ -300,7 +300,7 @@ export class TopicViewComponent implements OnInit {
         closeBtn: 'MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_BTN_NO'
       }
     });
-    leaveDialog.afterClosed().subscribe((result: any) => {
+    leaveDialog.afterClosed().subscribe((result: boolean | undefined) => {
       if (result === true) {
         this.topicMemberUserService.delete(topic.id, this.userStore.user()!.id)
           .pipe(take(1))
@@ -348,7 +348,7 @@ export class TopicViewComponent implements OnInit {
         closeBtn: 'MODALS.TOPIC_DUPLICATE_CONFIRM_BTN_NO'
       }
     });
-    confirm.afterClosed().subscribe((result: any) => {
+    confirm.afterClosed().subscribe((result: boolean | undefined) => {
       if (result === true) {
         this.topicService.duplicate(topic)
           .pipe(take(1))
@@ -416,7 +416,7 @@ export class TopicViewComponent implements OnInit {
     this.topicService.doDeleteTopic(topic, ['/', this.translate.currentLang, 'my', 'topics']);
   }
 
-  downloadAttachment(attachment: any) {
+  downloadAttachment(attachment: TopicAttachment) {
     if (attachment.source === 'upload') {
       const url = `${this.topicService['apiUrl']}/api/users/self/topics/${this.topicId}/attachments/${attachment.id}/download`;
       window.open(url, '_blank');

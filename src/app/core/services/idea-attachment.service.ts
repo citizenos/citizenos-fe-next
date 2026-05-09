@@ -6,10 +6,6 @@ import { Attachment } from '../interfaces/attachment';
 import { ConfigStore } from '../state/config.store';
 import { ItemsListService, ListParams } from './items-list.service';
 
-declare let google: any;
-declare let gapi: any;
-declare let Dropbox: any;
-declare let OneDrive: any;
 
 export interface IdeaAttachmentParams extends ListParams {
   topicId: string;
@@ -35,7 +31,7 @@ export class IdeaAttachmentService extends ItemsListService<IdeaAttachmentParams
     return this.configStore.api.baseUrl();
   }
 
-  override getItems(params: IdeaAttachmentParams): Observable<any> {
+  override getItems(params: IdeaAttachmentParams): Observable<{ rows: Attachment[]; countTotal: number }> {
     let httpParams = new HttpParams()
       .set('limit', String(params.limit))
       .set('offset', String(params.offset ?? 0));
@@ -45,14 +41,14 @@ export class IdeaAttachmentService extends ItemsListService<IdeaAttachmentParams
 
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations/${params.ideationId}/ideas/${params.ideaId}/attachments`);
 
-    return this.http.get<ApiResponse<any>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
+    return this.http.get<ApiResponse<{ rows: Attachment[]; count: number }>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
       .pipe(map(res => ({
-        rows: res.data?.rows ?? res.data ?? [],
+        rows: res.data?.rows ?? (res.data as unknown as Attachment[]) ?? [],
         countTotal: res.data?.count ?? 0
       })));
   }
 
-  save(data: { topicId: string; ideationId: string; ideaId: string; [key: string]: any }): Observable<Attachment> {
+  save(data: { topicId: string; ideationId: string; ideaId: string; [key: string]: unknown }): Observable<Attachment> {
     const { topicId, ideationId, ideaId, ...body } = data;
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/attachments`);
 
@@ -60,12 +56,12 @@ export class IdeaAttachmentService extends ItemsListService<IdeaAttachmentParams
       .pipe(map(res => res.data as Attachment));
   }
 
-  update(data: { topicId: string; ideationId: string; ideaId: string; attachmentId: string; [key: string]: any }): Observable<Attachment> {
+  update(data: { topicId: string; ideationId: string; ideaId: string; attachmentId: string; [key: string]: unknown }): Observable<Attachment> {
     const { topicId, ideationId, ideaId, attachmentId, ...body } = data;
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/attachments/${attachmentId}`);
 
     // Filter out object properties as per legacy code
-    const requestObject: any = {};
+    const requestObject: Record<string, unknown> = {};
     Object.keys(body).forEach(key => {
       if (typeof body[key] !== 'object') {
         requestObject[key] = body[key];
@@ -76,14 +72,14 @@ export class IdeaAttachmentService extends ItemsListService<IdeaAttachmentParams
       .pipe(map(res => res.data as Attachment));
   }
 
-  delete(params: { topicId: string; ideationId: string; ideaId: string; attachmentId: string }): Observable<any> {
+  delete(params: { topicId: string; ideationId: string; ideaId: string; attachmentId: string }): Observable<unknown> {
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations/${params.ideationId}/ideas/${params.ideaId}/attachments/${params.attachmentId}`);
 
-    return this.http.delete<ApiResponse<any>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
+    return this.http.delete<ApiResponse<unknown>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
-  googleDriveSelect(): Promise<any> {
+  googleDriveSelect(): Promise<unknown> {
     // Ported from legacy, requires global gapi/google
     return new Promise((resolve) => {
         // ... (Skipping full implementation for now as it depends on external config and scripts)
@@ -92,13 +88,13 @@ export class IdeaAttachmentService extends ItemsListService<IdeaAttachmentParams
     });
   }
 
-  dropboxSelect(): Promise<any> {
+  dropboxSelect(): Promise<unknown> {
     return new Promise((resolve) => {
         resolve(null);
     });
   }
 
-  oneDriveSelect(): Promise<any> {
+  oneDriveSelect(): Promise<unknown> {
     return new Promise((resolve) => {
         resolve(null);
     });

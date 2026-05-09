@@ -6,7 +6,6 @@ import { UploadService } from '../../../core/services/upload.service';
 import { CosDropdownDirective } from '../../directives/cos-dropdown.directive';
 import { Topic } from '../../../core/interfaces/topic';
 import { NotificationService } from '../../../core/services/notification.service';
-import { of, takeWhile } from 'rxjs';
 
 import { ButtonComponent } from '../button/button.component';
 

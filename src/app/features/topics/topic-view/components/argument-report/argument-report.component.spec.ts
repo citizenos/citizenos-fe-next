@@ -9,10 +9,7 @@ import { of } from 'rxjs';
 import { Component, Input, output } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
-import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
-import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
+
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent { @Input() name = ''; @Input() size: any; }

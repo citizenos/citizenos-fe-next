@@ -55,17 +55,17 @@ export class GroupMemberTopicService {
     ).pipe(map(res => ({ rows: res.data?.rows ?? [], count: res.data?.count ?? 0 })));
   }
 
-  addTopic(groupId: string, topicId: string, level: string): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  addTopic(groupId: string, topicId: string, level: string): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${groupId}/members/topics`,
       { topicId, level }, { withCredentials: true }
     ).pipe(map(r => r.data));
   }
 
-  removeTopicFromGroup(groupId: string, topicId: string): Observable<any> {
-    return this.http.delete(
+  removeTopicFromGroup(groupId: string, topicId: string): Observable<unknown> {
+    return this.http.delete<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${groupId}/members/topics/${topicId}`,
       { withCredentials: true }
-    );
+    ).pipe(map(r => r.data));
   }
 }

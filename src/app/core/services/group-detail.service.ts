@@ -27,34 +27,34 @@ export class GroupDetailService {
       .pipe(map(res => res.data!));
   }
 
-  addFavourite(groupId: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/api/users/self/groups/${groupId}/favourite`, {}, { withCredentials: true });
+  addFavourite(groupId: string): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(`${this.baseUrl}/api/users/self/groups/${groupId}/favourite`, {}, { withCredentials: true }).pipe(map(res => res.data));
   }
 
-  removeFavourite(groupId: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/api/users/self/groups/${groupId}/favourite`, { withCredentials: true });
+  removeFavourite(groupId: string): Observable<unknown> {
+    return this.http.delete<ApiResponse<unknown>>(`${this.baseUrl}/api/users/self/groups/${groupId}/favourite`, { withCredentials: true }).pipe(map(res => res.data));
   }
 
-  joinPublic(groupId: string): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  joinPublic(groupId: string): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/groups/${groupId}/join`,
       {},
       { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
-  leaveGroup(groupId: string, userId: string): Observable<any> {
-    return this.http.delete(
+  leaveGroup(groupId: string, userId: string): Observable<unknown> {
+    return this.http.delete<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${groupId}/members/users/${userId}`,
       { withCredentials: true }
-    );
+    ).pipe(map(res => res.data));
   }
 
-  deleteGroup(groupId: string): Observable<any> {
-    return this.http.delete(
+  deleteGroup(groupId: string): Observable<unknown> {
+    return this.http.delete<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/groups/${groupId}`,
       { withCredentials: true }
-    );
+    ).pipe(map(res => res.data));
   }
 
   update(group: Partial<Group>): Observable<Group> {
@@ -64,7 +64,7 @@ export class GroupDetailService {
     ).pipe(map(res => res.data!));
   }
 
-  uploadGroupImage(file: File, groupId: string): Observable<any> {
+  uploadGroupImage(file: File, groupId: string): Observable<unknown> {
     return this.uploadService.upload(
       `${this.baseUrl}/api/users/self/groups/${groupId}/image`, file
     );

@@ -23,7 +23,7 @@ describe('TopicReportReasonComponent', () => {
       imports: [TopicReportReasonComponent, TranslateModule.forRoot()],
       providers: [
         { provide: DIALOG_DATA, useValue: MOCK_DATA },
-        { provide: DialogRef, useValue: { close: () => {} } },
+        { provide: DialogRef, useValue: { close: () => { return; } } },
       ],
     })
       .overrideComponent(TopicReportReasonComponent, { set: { imports: [TranslateModule, UpperCasePipe, MockIconComponent] } })

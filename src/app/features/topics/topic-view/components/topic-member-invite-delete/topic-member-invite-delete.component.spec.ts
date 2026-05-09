@@ -94,15 +94,15 @@ describe('TopicMemberInviteDeleteComponent', () => {
     expect(dialogRefMock.close).toHaveBeenCalledWith('all');
   });
 
-  it('sets invitesToDelete to "1" when first radio wrap clicked', () => {
-    const radioWraps = fixture.nativeElement.querySelectorAll('.radio_wrap');
-    radioWraps[0].click();
+  it('sets invitesToDelete to "1" when first radio input changed', () => {
+    const inputs = fixture.nativeElement.querySelectorAll('input[type="radio"]');
+    inputs[0].dispatchEvent(new Event('change'));
     expect(component.invitesToDelete).toBe('1');
   });
 
-  it('sets invitesToDelete to "all" when second radio wrap clicked', () => {
-    const radioWraps = fixture.nativeElement.querySelectorAll('.radio_wrap');
-    radioWraps[1].click();
+  it('sets invitesToDelete to "all" when second radio input changed', () => {
+    const inputs = fixture.nativeElement.querySelectorAll('input[type="radio"]');
+    inputs[1].dispatchEvent(new Event('change'));
     expect(component.invitesToDelete).toBe('all');
   });
 });

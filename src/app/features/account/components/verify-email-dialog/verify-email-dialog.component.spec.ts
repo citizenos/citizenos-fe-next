@@ -6,7 +6,7 @@ import { VerifyEmailDialogComponent } from './verify-email-dialog.component';
 import { DIALOG_DATA } from '../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../shared/dialog/dialog-ref';
 
-function createFixture(data: any = { email: 'test@example.com' }): ComponentFixture<VerifyEmailDialogComponent> {
+function createFixture(data: { email: string } = { email: 'test@example.com' }): ComponentFixture<VerifyEmailDialogComponent> {
   TestBed.configureTestingModule({
     imports: [VerifyEmailDialogComponent, TranslateModule.forRoot()],
     providers: [

@@ -151,8 +151,9 @@ export class PasswordForgotComponent {
       try {
         await this.userStore.sendPasswordReset(email!);
         this.success.set(true);
-      } catch (err: any) {
-        this.error.set(err.error?.status?.message || 'Failed to send reset link.');
+      } catch (err: unknown) {
+        const error = err as { error?: { status?: { message?: string } } };
+        this.error.set(error.error?.status?.message || 'Failed to send reset link.');
       }
     }
   }

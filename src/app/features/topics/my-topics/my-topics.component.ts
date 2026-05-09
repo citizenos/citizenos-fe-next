@@ -171,22 +171,22 @@ export class MyTopicsComponent {
     const f = this.selectedFilters();
 
     if (f['visibility'] === 'showModerated') {
-      this.topicService.setParam('showModerated' as any, 'showModerated');
+      this.topicService.setParam('showModerated', 'showModerated');
     } else if (f['visibility'] === 'favourite') {
-      this.topicService.setParam('favourite' as any, 'favourite');
+      this.topicService.setParam('favourite', 'favourite');
     } else if (f['visibility']) {
-      this.topicService.setParam('visibility' as any, f['visibility']);
+      this.topicService.setParam('visibility', f['visibility']);
     }
-
-    if (f['engagement'] === 'hasVoted') this.topicService.setParam('hasVoted' as any, true);
-    else if (f['engagement'] === 'hasNotVoted') this.topicService.setParam('hasVoted' as any, false);
-
-    if (f['status']) this.topicService.setParam('statuses' as any, [f['status']]);
+ 
+    if (f['engagement'] === 'hasVoted') this.topicService.setParam('hasVoted', true);
+    else if (f['engagement'] === 'hasNotVoted') this.topicService.setParam('hasVoted', false);
+ 
+    if (f['status']) this.topicService.setParam('statuses', [f['status']]);
     if (f['orderBy']) {
       this.topicService.setParam('orderBy', f['orderBy']);
       this.topicService.setParam('order', 'desc');
     }
-    if (f['category']) this.topicService.setParam('categories' as any, [f['category']]);
+    if (f['category']) this.topicService.setParam('categories', [f['category']]);
     if (this.searchValue()) this.topicService.setParam('search', this.searchValue());
   }
 

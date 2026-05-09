@@ -8,10 +8,12 @@ import { TermsLinksComponent } from '../../../../shared/components/terms-links/t
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { UserService } from '../../../../core/services/user.service';
 import { UserStore } from '../../../../core/state/user.store';
+import { User } from '../../../../core/interfaces/user';
+import { UserConnection } from '../../../../core/services/user.service';
 import { AddEidComponent } from '../add-eid/add-eid.component';
 
 export interface PrivacyPolicyData {
-  user: any;
+  user: User;
   new?: boolean;
 }
 
@@ -38,8 +40,8 @@ export class PrivacyPolicyComponent {
       const userId = this.userStore.user()?.id;
       this.dialog.closeAll();
       if (userId) {
-        this.userService.listUserConnections(userId).pipe(take(1)).subscribe((connections: any) => {
-          const filtered = (connections?.rows ?? []).filter((con: any) =>
+        this.userService.listUserConnections(userId).pipe(take(1)).subscribe((connections: { rows: UserConnection[] }) => {
+          const filtered = (connections?.rows ?? []).filter((con: UserConnection) =>
             ['esteid', 'smartid'].includes(con.connectionId)
           );
           if (!filtered.length && navigator.languages.includes('et')) {

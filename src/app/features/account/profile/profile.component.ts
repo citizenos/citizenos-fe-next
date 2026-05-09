@@ -74,7 +74,7 @@ export class ProfileComponent implements OnInit {
     }
   };
 
-  errors: any = {};
+  errors: Record<string, string> = {};
   resetPasswordMode = signal<boolean>(false);
   topicSearch = signal<string>('');
   imageFile: File | null = null;
@@ -122,7 +122,7 @@ export class ProfileComponent implements OnInit {
 
   async doUpdateProfile() {
     this.errors = {};
-    const params: any = {
+    const params: Record<string, unknown> = {
       name: this.form.name,
       email: this.form.email,
       company: this.form.company,
@@ -142,7 +142,7 @@ export class ProfileComponent implements OnInit {
 
     if (this.imageFile) {
       try {
-        const res = await firstValueFrom(this.userService.uploadUserImage(this.imageFile));
+        const res = await firstValueFrom(this.userService.uploadUserImage(this.imageFile)) as { imageUrl: string };
         params.imageUrl = res.imageUrl; // The legacy component used res.link, but UserStore expects res.imageUrl or similar based on its logic. Let's check service.
       } catch (err) {
         console.error('Image upload failed', err);
@@ -157,8 +157,9 @@ export class ProfileComponent implements OnInit {
       this.form.passwordConfirm = '';
       this.imageFile = null;
       this.tmpImageUrl = null;
-    } catch (err: any) {
-      this.errors = err.error?.errors || { general: 'ERRORS.GENERAL' };
+    } catch (err: unknown) {
+      const error = err as { error?: { errors?: Record<string, string> } };
+      this.errors = error.error?.errors || { general: 'ERRORS.GENERAL' };
     }
   }
 
@@ -201,7 +202,7 @@ export class ProfileComponent implements OnInit {
     this.topicNotificationService.setParam('search', this.topicSearch());
   }
 
-  toggleTopicNotifications(topic: any) {
+  toggleTopicNotifications(topic: { topicId: string, allowNotifications: boolean }) {
     if (!topic.allowNotifications) {
       const removeDialog = this.dialog.open(ConfirmDialogComponent, {
         data: {
@@ -231,8 +232,9 @@ export class ProfileComponent implements OnInit {
     this.fileInput?.nativeElement.click();
   }
 
-  async fileUpload(event: any) {
-    const file = event.target.files[0];
+  async fileUpload(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = async () => {

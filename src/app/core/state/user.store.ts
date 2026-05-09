@@ -25,7 +25,7 @@ export const UserStore = signalStore(
         try {
           const user = await firstValueFrom(userService.status());
           patchState(store, { user, isAuthenticated: !!user, isLoading: false });
-        } catch (error) {
+        } catch {
           patchState(store, { user: null, isAuthenticated: false, isLoading: false });
         }
       },
@@ -46,12 +46,12 @@ export const UserStore = signalStore(
         try {
           await firstValueFrom(userService.logout());
           patchState(store, { user: null, isAuthenticated: false, isLoading: false });
-        } catch (error) {
+        } catch {
           patchState(store, { isLoading: false });
         }
       },
 
-      async signup(data: any) {
+      async signup(data: Record<string, unknown>) {
         patchState(store, { isLoading: true });
         try {
           await firstValueFrom(userService.signUp(data));
@@ -117,7 +117,7 @@ export const UserStore = signalStore(
         return firstValueFrom(userService.loginSmartIdStatus(token));
       },
 
-      async loginIdCard(data: any) {
+      async loginIdCard(data: Record<string, unknown>) {
         patchState(store, { isLoading: true });
         try {
           await firstValueFrom(userService.loginIdCard(data));
@@ -128,7 +128,7 @@ export const UserStore = signalStore(
         }
       },
 
-      async updateProfile(params: any) {
+      async updateProfile(params: Record<string, unknown>) {
         patchState(store, { isLoading: true });
         try {
           await firstValueFrom(userService.update(params));

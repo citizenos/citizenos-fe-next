@@ -13,7 +13,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
 describe('SmartIdComponent', () => {
   let component: SmartIdComponent;
   let fixture: ComponentFixture<SmartIdComponent>;
-  let mockUserStore: any;
+  let mockUserStore: unknown;
 
   beforeEach(async () => {
     mockUserStore = {
@@ -70,22 +70,22 @@ describe('SmartIdComponent', () => {
   it('should call loginSmartIdInit on submit and start polling', async () => {
     vi.useFakeTimers();
     const initResponse = { challengeID: 1234, token: 'test-token' };
-    mockUserStore.loginSmartIdInit.mockResolvedValue(initResponse);
-    mockUserStore.loginSmartIdStatus.mockReturnValue(of({ status: { code: 20001 } }));
+    (mockUserStore as { loginSmartIdInit: vi.Mock }).loginSmartIdInit.mockResolvedValue(initResponse);
+    (mockUserStore as { loginSmartIdStatus: vi.Mock }).loginSmartIdStatus.mockReturnValue(of({ status: { code: 20001 } }));
 
     component.smartIdForm.controls.pid.setValue('12345678901');
     await component.onSubmit();
     
-    expect(mockUserStore.loginSmartIdInit).toHaveBeenCalledWith('12345678901');
+    expect((mockUserStore as { loginSmartIdInit: vi.Mock }).loginSmartIdInit).toHaveBeenCalledWith('12345678901');
     expect(component.challengeID()).toBe(1234);
     
     await vi.advanceTimersByTimeAsync(3001);
-    expect(mockUserStore.loginSmartIdStatus).toHaveBeenCalledWith('test-token');
+    expect((mockUserStore as { loginSmartIdStatus: vi.Mock }).loginSmartIdStatus).toHaveBeenCalledWith('test-token');
     vi.useRealTimers();
   });
 
   it('should show error when init fails', async () => {
-    mockUserStore.loginSmartIdInit.mockRejectedValue({ error: { status: { message: 'Error' } } });
+    (mockUserStore as { loginSmartIdInit: vi.Mock }).loginSmartIdInit.mockRejectedValue({ error: { status: { message: 'Error' } } });
 
     component.smartIdForm.controls.pid.setValue('12345678901');
     await component.onSubmit();

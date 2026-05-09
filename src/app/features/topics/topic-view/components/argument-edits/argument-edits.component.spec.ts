@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+
 import { ArgumentEditsComponent } from './argument-edits.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -76,7 +76,7 @@ describe('ArgumentEditsComponent', () => {
 
   it('should have a hide edits link', () => {
     const el: HTMLElement = fixture.nativeElement;
-    const link = el.querySelector('.edits_header a');
+    const link = el.querySelector('.edits_header button.btn_link');
     expect(link).toBeTruthy();
   });
 

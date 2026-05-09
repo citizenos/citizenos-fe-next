@@ -1,17 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentRef } from '@angular/core';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { InitialsComponent } from './initials.component';
 
 describe('InitialsComponent', () => {
   let fixture: ComponentFixture<InitialsComponent>;
   let component: InitialsComponent;
-  let ref: ComponentRef<InitialsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({ imports: [InitialsComponent] }).compileComponents();
     fixture = TestBed.createComponent(InitialsComponent);
-    ref = fixture.componentRef;
     component = fixture.componentInstance;
   });
 

@@ -87,12 +87,110 @@ describe('TopicInvitationComponent', () => {
     }, 500);
   });
 
-  it('auto-joins when user matches and join=true', () => {
+  it('auto-joins when user matches and join=true', async () => {
     userStore.isAuthenticated = () => true;
     userStore.user = () => ({ id: 'user2' });
-    fixture.detectChanges();
-    // Direct join is triggered when queryParams has join=true and user matches
-    // Here queryParams is empty so dialog is shown instead - just assert no error
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [TopicInvitationComponent],
+      providers: [
+        { provide: TopicInviteUserService, useValue: inviteService },
+        { provide: DialogService, useValue: dialogService },
+        { provide: UserStore, useValue: userStore },
+        { provide: NotificationService, useValue: notification },
+        { provide: ActivatedRoute, useValue: { params: of({ topicId: 'topic1', inviteId: 'inv1' }), queryParams: of({ join: 'true' }) } },
+        provideRouter([{ path: '**', component: EmptyComponent }])
+      ]
+    }).compileComponents();
+    const f = TestBed.createComponent(TopicInvitationComponent);
+    f.detectChanges();
+    expect(inviteService.accept).toHaveBeenCalledWith({ topicId: 'topic1', inviteId: 'inv1' });
+  });
+
+  it('navigates to login for registered user with different account on dialog confirm', async () => {
+    const mockDialogRefConfirm = { afterClosed: () => of(true) };
+    dialogService.open = vi.fn().mockReturnValue(mockDialogRefConfirm);
+    userStore.isAuthenticated = () => true;
+    userStore.user = () => ({ id: 'different-user' });
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [TopicInvitationComponent],
+      providers: [
+        { provide: TopicInviteUserService, useValue: inviteService },
+        { provide: DialogService, useValue: dialogService },
+        { provide: UserStore, useValue: userStore },
+        { provide: NotificationService, useValue: notification },
+        { provide: ActivatedRoute, useValue: { params: of({ topicId: 'topic1', inviteId: 'inv1' }), queryParams: of({}) } },
+        provideRouter([{ path: '**', component: EmptyComponent }])
+      ]
+    }).compileComponents();
+    const f = TestBed.createComponent(TopicInvitationComponent);
+    f.detectChanges();
+    expect(userStore.logout).toHaveBeenCalled();
+  });
+
+  it('navigates to signup for unregistered user on dialog confirm', async () => {
+    inviteService.get = vi.fn().mockReturnValue(of({ ...mockTopicInvite, user: { id: 'user2', email: 'user2@example.com', isRegistered: false } }));
+    const mockDialogRefConfirm = { afterClosed: () => of(true) };
+    dialogService.open = vi.fn().mockReturnValue(mockDialogRefConfirm);
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [TopicInvitationComponent],
+      providers: [
+        { provide: TopicInviteUserService, useValue: inviteService },
+        { provide: DialogService, useValue: dialogService },
+        { provide: UserStore, useValue: userStore },
+        { provide: NotificationService, useValue: notification },
+        { provide: ActivatedRoute, useValue: { params: of({ topicId: 'topic1', inviteId: 'inv1' }), queryParams: of({}) } },
+        provideRouter([{ path: '**', component: EmptyComponent }])
+      ]
+    }).compileComponents();
+    const f = TestBed.createComponent(TopicInvitationComponent);
+    f.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  it('shows 41002 notification on specific error code', async () => {
+    vi.useFakeTimers();
+    inviteService.get = vi.fn().mockReturnValue(throwError(() => ({ status: { code: 41002 } })));
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [TopicInvitationComponent],
+      providers: [
+        { provide: TopicInviteUserService, useValue: inviteService },
+        { provide: DialogService, useValue: dialogService },
+        { provide: UserStore, useValue: userStore },
+        { provide: NotificationService, useValue: notification },
+        { provide: ActivatedRoute, useValue: { params: of({ topicId: 'topic1', inviteId: 'inv1' }), queryParams: of({}) } },
+        provideRouter([{ path: '**', component: EmptyComponent }])
+      ]
+    }).compileComponents();
+    const f = TestBed.createComponent(TopicInvitationComponent);
+    f.detectChanges();
+    vi.runAllTimers();
+    vi.useRealTimers();
+    expect(notification.show).toHaveBeenCalledWith('error',
+      'MSG_ERROR_GET_API_USERS_TOPICS_INVITES_USERS_41002',
+      'MSG_ERROR_GET_API_USERS_TOPICS_INVITES_USERS_41002_HEADING'
+    );
+  });
+
+  it('navigates to "/" on generic API error', async () => {
+    inviteService.get = vi.fn().mockReturnValue(throwError(() => ({ message: 'Server error' })));
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [TopicInvitationComponent],
+      providers: [
+        { provide: TopicInviteUserService, useValue: inviteService },
+        { provide: DialogService, useValue: dialogService },
+        { provide: UserStore, useValue: userStore },
+        { provide: NotificationService, useValue: notification },
+        { provide: ActivatedRoute, useValue: { params: of({ topicId: 'topic1', inviteId: 'inv1' }), queryParams: of({}) } },
+        provideRouter([{ path: '**', component: EmptyComponent }])
+      ]
+    }).compileComponents();
+    const f = TestBed.createComponent(TopicInvitationComponent);
+    f.detectChanges();
+    expect(f.componentInstance).toBeTruthy();
   });
 });

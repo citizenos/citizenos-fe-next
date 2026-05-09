@@ -174,7 +174,7 @@ describe('GroupDetailComponent', () => {
   });
 
   it('group loads when route params emitted', () => {
-    const comp = makeComp();
+    makeComp();
     paramsSubject.next({ groupId: 'group1' });
     expect(mockGroupDetailService.loadGroup).toHaveBeenCalledWith('group1');
   });

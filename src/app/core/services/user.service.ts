@@ -4,6 +4,14 @@ import { ConfigStore } from '../state/config.store';
 import { map, Observable } from 'rxjs';
 import { User } from '../interfaces/user';
 import { UploadService } from './upload.service';
+import { ApiResponse } from '../interfaces/api-response';
+
+export interface UserConnection {
+  id: string;
+  userId: string;
+  connectionId: string;
+  [key: string]: unknown;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -18,15 +26,15 @@ export class UserService {
   }
 
   status(): Observable<User | null> {
-    return this.http.get<any>(`${this.apiUrl}/api/auth/status`, {
+    return this.http.get<ApiResponse<User>>(`${this.apiUrl}/api/auth/status`, {
       withCredentials: true
     }).pipe(
       map(res => res.data || null)
     );
   }
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/auth/login`, {
+  login(email: string, password: string): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/login`, {
       email,
       password
     }, {
@@ -34,14 +42,14 @@ export class UserService {
     });
   }
 
-  logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/auth/logout`, {}, {
+  logout(): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/logout`, {}, {
       withCredentials: true
     });
   }
 
-  signUp(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/auth/signup`, data);
+  signUp(data: Record<string, unknown>): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/signup`, data);
   }
 
   getPartnerLoginUrl(partnerId: string, redirectSuccess?: string): string {
@@ -54,38 +62,38 @@ export class UserService {
     return url;
   }
 
-  sendPasswordReset(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/auth/password/reset/send`, { email });
+  sendPasswordReset(email: string): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/password/reset/send`, { email });
   }
 
-  resetPassword(password: string, passwordResetToken: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/auth/password/reset`, {
+  resetPassword(password: string, passwordResetToken: string): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/password/reset`, {
       password,
       passwordResetToken
     });
   }
 
   // Mobiil-ID
-  loginMobiilIdInit(pid: string, phoneNumber: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/auth/mobile/init`, { pid, phoneNumber });
+  loginMobiilIdInit(pid: string, phoneNumber: string): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/mobile/init`, { pid, phoneNumber });
   }
 
-  loginMobiilIdStatus(token: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/auth/mobile/status`, { params: { token } });
+  loginMobiilIdStatus(token: string): Observable<unknown> {
+    return this.http.get<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/mobile/status`, { params: { token } });
   }
 
   // Smart-ID
-  loginSmartIdInit(pid: string, countryCode: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/auth/smartid/init`, { pid, countryCode });
+  loginSmartIdInit(pid: string, countryCode: string): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/smartid/init`, { pid, countryCode });
   }
 
-  loginSmartIdStatus(token: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/auth/smartid/status`, { params: { token } });
+  loginSmartIdStatus(token: string): Observable<unknown> {
+    return this.http.get<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/smartid/status`, { params: { token } });
   }
 
   // ID-card
-  loginIdCard(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/auth/id`, data);
+  loginIdCard(data: Record<string, unknown>): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/id`, data);
   }
 
   update(params: {
@@ -94,35 +102,35 @@ export class UserService {
     password?: string;
     company?: string;
     imageUrl?: string;
-    preferences?: any;
+    preferences?: Record<string, unknown>;
     language?: string;
     newPassword?: string;
-  }): Observable<any> {
-    return this.http.put(`${this.apiUrl}/api/users/self`, {
+  }): Observable<unknown> {
+    return this.http.put<ApiResponse<unknown>>(`${this.apiUrl}/api/users/self`, {
       ...params,
       redirectSuccess: window.location.origin + '/'
     }, { withCredentials: true });
   }
 
-  updateLanguage(language: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/api/users/self`, { language }, { withCredentials: true });
+  updateLanguage(language: string): Observable<unknown> {
+    return this.http.put<ApiResponse<unknown>>(`${this.apiUrl}/api/users/self`, { language }, { withCredentials: true });
   }
 
-  deleteUser(): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/users/self`, { withCredentials: true });
+  deleteUser(): Observable<unknown> {
+    return this.http.delete<ApiResponse<unknown>>(`${this.apiUrl}/api/users/self`, { withCredentials: true });
   }
 
-  updateTermsVersion(termsVersion: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/api/users/self`, { termsVersion }, { withCredentials: true });
+  updateTermsVersion(termsVersion: string): Observable<unknown> {
+    return this.http.put<ApiResponse<unknown>>(`${this.apiUrl}/api/users/self`, { termsVersion }, { withCredentials: true });
   }
 
-  listUserConnections(userId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/users/${userId}/userconnections`, { withCredentials: true }).pipe(
+  listUserConnections(userId: string): Observable<UserConnection[]> {
+    return this.http.get<ApiResponse<UserConnection[]>>(`${this.apiUrl}/api/users/${userId}/userconnections`, { withCredentials: true }).pipe(
       map(res => res.data)
     );
   }
 
-  uploadUserImage(file: File): Observable<any> {
+  uploadUserImage(file: File): Observable<unknown> {
     const path = `${this.apiUrl}/api/users/self/upload`;
     return this.uploadService.upload(path, file);
   }

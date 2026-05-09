@@ -25,7 +25,7 @@ export interface Idea {
     email: string | null;
     imageUrl: string | null;
   };
-  edits?: any[];
+  edits?: { subject?: string | null; text?: string | null; createdAt?: string }[] | Record<string, { subject?: string | null; text?: string | null; createdAt?: string }>;
   replies?: { count: number };
   report?: { id: string | null };
   votes: {

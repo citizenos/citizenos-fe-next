@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageListHeaderComponent } from './page-list-header.component';
-import { Component, Input, output, signal } from '@angular/core';
-import { IconComponent } from '../icon/icon.component';
+import { Component, Input, signal } from '@angular/core';
 import { GlobalSearchService } from '../../../core/services/global-search.service';
 import { TourItemDirective } from '../../directives/tour-item.directive';
 import { By } from '@angular/platform-browser';

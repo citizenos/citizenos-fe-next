@@ -47,7 +47,7 @@
 
       <div id="subject_counter">{{ 'COMPONENTS.POST_ARGUMENT.SUBJECT_CHARACTERS_LEFT' | translate:{chars: subject().length || 0, charsLeft: ARGUMENT_SUBJECT_MAXLENGTH} }}</div>
       
-      <label class="hidden" for="argument_text">{{ 'COMPONENTS.POST_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT' | translate }}</label>
+      <label class="sr-only" for="argument_text">{{ 'COMPONENTS.POST_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT' | translate }}</label>
       <textarea cosMarkdown
         id="argument_text"
         class="gray_borders"

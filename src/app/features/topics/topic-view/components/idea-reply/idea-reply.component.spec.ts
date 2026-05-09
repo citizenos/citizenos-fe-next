@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { IdeaReplyComponent } from './idea-reply.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -7,7 +7,7 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { of } from 'rxjs';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { Component, Input, ComponentRef, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';

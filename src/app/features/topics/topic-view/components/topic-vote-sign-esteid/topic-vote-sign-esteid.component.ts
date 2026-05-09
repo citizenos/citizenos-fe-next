@@ -8,10 +8,12 @@ import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/di
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
-import { TopicService } from '../../../../../core/services/topic.service';
-import { NotificationService } from '../../../../../core/services/notification.service';
+import { Topic, TopicVoteCast } from '../../../../../core/interfaces/topic';
 
-declare let hwcrypto: any;
+declare let hwcrypto: {
+  getCertificate: (options: Record<string, unknown>) => Promise<{ hex: string }>;
+  sign: (certificate: { hex: string }, data: { hex: string; type: string }, options: Record<string, unknown>) => Promise<{ hex: string }>;
+};
 
 @Component({
   selector: 'app-topic-vote-sign-esteid',
@@ -21,7 +23,7 @@ declare let hwcrypto: any;
   templateUrl: './topic-vote-sign-esteid.component.html'
 })
 export class TopicVoteSignEsteidComponent {
-  data = inject<{ topic: any; options: any[] }>(DIALOG_DATA);
+  data = inject<{ topic: Topic; options: TopicVoteCast['options'] }>(DIALOG_DATA);
   protected dialogRef = inject(DialogRef);
   private topicVoteService = inject(TopicVoteService);
   private topicService = inject(TopicService);
@@ -50,10 +52,10 @@ export class TopicVoteSignEsteidComponent {
       phoneNumber: phone,
       certificate: null
     };
-    this.topicVoteService.cast(userVote).pipe(take(1), catchError(err => {
+    this.topicVoteService.cast(userVote).pipe(take(1), catchError(_err => {
       this.isLoading.set(false);
       return of(null);
-    })).subscribe(result => {
+    })).subscribe((result: { challengeID?: number; token?: string } | null) => {
       this.isLoading.set(false);
       if (!result) return;
       if (result.challengeID && result.token) {
@@ -65,14 +67,14 @@ export class TopicVoteSignEsteidComponent {
 
   doSignWithCard() {
     this.isLoadingIdCard.set(true);
-    hwcrypto.getCertificate({}).then((certificate: any) => {
+    hwcrypto.getCertificate({}).then((certificate: { hex: string }) => {
       const userVote = {
         voteId: this.data.topic.voteId,
         topicId: this.data.topic.id,
         options: this.data.options,
         certificate: certificate.hex
       };
-      this.topicVoteService.cast(userVote).pipe(take(1)).subscribe(async (voteResponse: any) => {
+      this.topicVoteService.cast(userVote).pipe(take(1)).subscribe(async (voteResponse: { signedInfoDigest?: string; token?: string; signedInfoHashType?: string } | null) => {
         if (voteResponse?.signedInfoDigest && voteResponse?.token && voteResponse?.signedInfoHashType) {
           const signature = await hwcrypto.sign(certificate, { hex: voteResponse.signedInfoDigest, type: voteResponse.signedInfoHashType }, {});
           this.topicVoteService.sign({
@@ -90,7 +92,7 @@ export class TopicVoteSignEsteidComponent {
           });
         }
       });
-    }, (err: any) => {
+    }, (err: Error | { status?: { message?: string } }) => {
       this.isLoading.set(false);
       this.isLoadingIdCard.set(false);
       this.challengeID.set(null);
@@ -101,9 +103,9 @@ export class TopicVoteSignEsteidComponent {
 
   private pollMobileStatus(token: string) {
     interval(10000).pipe(
-      switchMap(() => this.topicVoteService.status({ topicId: this.data.topic.id, voteId: this.data.topic.voteId, token })),
-      takeWhile((res: any) => res?.status?.code === 20001, true),
-      map((res: any) => res?.data || {})
+      switchMap(() => this.topicVoteService.status({ topicId: this.data.topic.id, voteId: this.data.topic.voteId!, token })),
+      takeWhile((res: { status?: { code?: number } }) => res?.status?.code === 20001, true),
+      map((res: { data?: unknown }) => res?.data || {})
     ).subscribe({
       next: () => {
         this.isLoading.set(false);

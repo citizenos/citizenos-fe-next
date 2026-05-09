@@ -2,12 +2,11 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ImageUploadComponent } from './image-upload.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { NotificationService } from '../../../core/services/notification.service';
+
 
 describe('ImageUploadComponent', () => {
   let component: ImageUploadComponent;
   let fixture: ComponentFixture<ImageUploadComponent>;
-  let notificationService: NotificationService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -16,7 +15,6 @@ describe('ImageUploadComponent', () => {
 
     fixture = TestBed.createComponent(ImageUploadComponent);
     component = fixture.componentInstance;
-    notificationService = TestBed.inject(NotificationService);
     fixture.detectChanges();
   });
 

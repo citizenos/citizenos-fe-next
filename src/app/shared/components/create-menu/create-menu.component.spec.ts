@@ -9,15 +9,14 @@ import { Component } from '@angular/core';
 class EmptyComponent {}
 
 (globalThis as any).ResizeObserver = class {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() { return; }
+  unobserve() { return; }
+  disconnect() { return; }
 };
 
 describe('CreateMenuComponent', () => {
   let fixture: ComponentFixture<CreateMenuComponent>;
   let component: CreateMenuComponent;
-  let translateServiceMock: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

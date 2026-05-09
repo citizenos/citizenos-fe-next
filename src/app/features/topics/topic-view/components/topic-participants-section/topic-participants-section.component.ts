@@ -23,7 +23,9 @@ export class TopicParticipantsSectionComponent {
   private dialogService = inject(DialogService);
 
   manageParticipants(): void {
-    // ilmar-249: open TopicParticipantsComponent dialog once migrated
+    import('../topic-participants/topic-participants.component').then(m => {
+      this.dialogService.open(m.TopicParticipantsComponent, { data: { topic: this.topic() } });
+    });
   }
 
   inviteMembers(): void {

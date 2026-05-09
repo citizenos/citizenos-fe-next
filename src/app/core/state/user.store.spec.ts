@@ -8,7 +8,7 @@ import { UserService } from '../services/user.service';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 describe('UserStore', () => {
-  let store: any;
+  let store: InstanceType<typeof UserStore>;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {

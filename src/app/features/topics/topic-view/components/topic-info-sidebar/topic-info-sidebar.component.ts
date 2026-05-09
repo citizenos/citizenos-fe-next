@@ -1,7 +1,7 @@
 import { Component, output, inject, ChangeDetectionStrategy, computed, model } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
-import { TopicService } from '../../../../../core/services/topic.service';
+import { TopicService, TopicAttachment, TopicGroup } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
@@ -37,8 +37,8 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
 })
 export class TopicInfoSidebarComponent {
   topic = model.required<Topic>();
-  attachments = model<any[]>([]);
-  groups = model<any[]>([]);
+  attachments = model<TopicAttachment[]>([]);
+  groups = model<TopicGroup[]>([]);
   appTopicNotificationSettings = model<() => void>();
 
   toggleFavourite = output<Topic>();
@@ -48,7 +48,7 @@ export class TopicInfoSidebarComponent {
   addGroupsDialog = output<Topic>();
   closeTopic = output<Topic>();
   deleteTopic = output<Topic>();
-  downloadAttachment = output<any>();
+  downloadAttachment = output<TopicAttachment>();
 
   topicService = inject(TopicService);
   userStore = inject(UserStore);
@@ -63,7 +63,7 @@ export class TopicInfoSidebarComponent {
     return this.userStore.isAuthenticated();
   }
 
-  onDownloadAttachment(event: Event, attachment: any) {
+  onDownloadAttachment(event: Event, attachment: TopicAttachment) {
     event.preventDefault();
     this.downloadAttachment.emit(attachment);
   }

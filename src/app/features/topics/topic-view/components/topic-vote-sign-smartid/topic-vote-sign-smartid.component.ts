@@ -10,7 +10,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicService } from '../../../../../core/services/topic.service';
-import { NotificationService } from '../../../../../core/services/notification.service';
+import { Topic, TopicVoteCast } from '../../../../../core/interfaces/topic';
 
 @Component({
   selector: 'app-topic-vote-sign-smartid',
@@ -20,7 +20,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
   templateUrl: './topic-vote-sign-smartid.component.html'
 })
 export class TopicVoteSignSmartidComponent {
-  data = inject<{ topic: any; options: any[] }>(DIALOG_DATA);
+  data = inject<{ topic: Topic; options: TopicVoteCast['options'] }>(DIALOG_DATA);
   protected dialogRef = inject(DialogRef);
   private topicVoteService = inject(TopicVoteService);
   private topicService = inject(TopicService);
@@ -45,10 +45,10 @@ export class TopicVoteSignSmartidComponent {
       pid: this.signForm.value.pid,
       countryCode: this.signForm.value.countryCode
     };
-    this.topicVoteService.cast(userVote).pipe(take(1), catchError(err => {
+    this.topicVoteService.cast(userVote).pipe(take(1), catchError(_err => {
       this.isLoading.set(false);
       return of(null);
-    })).subscribe(result => {
+    })).subscribe((result: { challengeID?: number; token?: string } | null) => {
       if (!result) return;
       this.isLoading.set(false);
       if (result.challengeID && result.token) {
@@ -60,9 +60,9 @@ export class TopicVoteSignSmartidComponent {
 
   private pollStatus(token: string) {
     interval(10000).pipe(
-      switchMap(() => this.topicVoteService.status({ topicId: this.data.topic.id, voteId: this.data.topic.voteId, token })),
-      takeWhile((res: any) => res?.status?.code === 20001, true),
-      map((res: any) => res?.data || {})
+      switchMap(() => this.topicVoteService.status({ topicId: this.data.topic.id, voteId: this.data.topic.voteId!, token })),
+      takeWhile((res: { status?: { code?: number } }) => res?.status?.code === 20001, true),
+      map((res: { data?: unknown }) => res?.data || {})
     ).subscribe({
       next: () => {
         this.isLoading.set(false);

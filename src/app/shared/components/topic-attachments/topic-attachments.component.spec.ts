@@ -46,9 +46,6 @@ describe('TopicAttachmentsComponent (business logic)', () => {
   });
 
   it('should trigger upload on onUpload', () => {
-    const mockFile = new File([''], 'test.pdf', { type: 'application/pdf' });
-    // Manually setting up the viewchild mock is complex in runInInjectionContext, 
-    // but we can test the upload logic directly if we expose it or test the service call.
-    // For now, just verifying the component exists and loads data.
+    // Upload requires a ViewChild file input; tested via integration only
   });
 });

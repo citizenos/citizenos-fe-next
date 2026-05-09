@@ -25,22 +25,22 @@ export class TopicInviteUserService {
     ).pipe(map(res => res.data ?? []));
   }
 
-  save(topicId: string, data: any): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  save(topicId: string, data: Omit<TopicInvite, 'id'>[]): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${topicId}/invites/users`,
       data, { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
-  delete(topicId: string, inviteId: string): Observable<any> {
-    return this.http.delete<ApiResponse<any>>(
+  delete(topicId: string, inviteId: string): Observable<unknown> {
+    return this.http.delete<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${topicId}/invites/users/${inviteId}`,
       { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
-  get(params: { topicId: string; inviteId: string }): Observable<any> {
-    return this.http.get<ApiResponse<any>>(
+  get(params: { topicId: string; inviteId: string }): Observable<TopicInvite> {
+    return this.http.get<ApiResponse<TopicInvite & { user: { isRegistered?: boolean } }>>(
       `${this.baseUrl}/api/users/self/topics/${params.topicId}/invites/users/${params.inviteId}`,
       { withCredentials: true }
     ).pipe(map(res => {
@@ -50,8 +50,8 @@ export class TopicInviteUserService {
     }));
   }
 
-  accept(data: { topicId: string; inviteId: string; [key: string]: any }): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  accept(data: { topicId: string; inviteId: string; [key: string]: unknown }): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${data.topicId}/invites/users/${data.inviteId}/accept`,
       data, { withCredentials: true }
     ).pipe(map(res => res.data));

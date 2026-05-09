@@ -18,7 +18,7 @@ export interface UserTopicParams extends ListParams {
 }
 
 @Injectable({ providedIn: 'root' })
-export class UserTopicService extends ItemsListService {
+export class UserTopicService extends ItemsListService<UserTopicParams, Topic> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
 
@@ -28,7 +28,7 @@ export class UserTopicService extends ItemsListService {
     return this.configStore.api.baseUrl();
   }
 
-  override getItems(params: UserTopicParams): Observable<any> {
+  override getItems(params: UserTopicParams): Observable<{ rows: Topic[]; countTotal: number }> {
     let httpParams = new HttpParams()
       .set('limit', String(params.limit))
       .set('offset', String(params.offset ?? 0));
@@ -46,7 +46,7 @@ export class UserTopicService extends ItemsListService {
     if (params.order) httpParams = httpParams.set('order', params.order);
     if (params.search) httpParams = httpParams.set('search', params.search);
 
-    return this.http.get<ApiResponse<{ rows: any[]; count: number }>>(
+    return this.http.get<ApiResponse<{ rows: Topic[]; count: number }>>(
       `${this.apiUrl}/api/users/self/topics`,
       { withCredentials: true, params: httpParams }
     ).pipe(map(res => ({ rows: res.data?.rows ?? [], countTotal: res.data?.count ?? 0 })));

@@ -134,9 +134,6 @@ describe('HomeComponent', () => {
   it('should navigate to signup when signup button is clicked', () => {
     createComponent();
     const signupBtn = fixture.debugElement.query(By.css('.btn_big_submit'));
-    const routerLink = signupBtn.injector.get(RouterLink);
-    // RouterLink in Angular 21 might have a different way to access the value if it's a signal
-    // but usually it's still available via the directive instance.
     expect(signupBtn).toBeTruthy();
   });
 

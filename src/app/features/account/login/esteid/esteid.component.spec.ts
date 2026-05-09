@@ -19,7 +19,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
 describe('EstEidComponent', () => {
   let component: EstEidComponent;
   let fixture: ComponentFixture<EstEidComponent>;
-  let mockUserStore: any;
+  let mockUserStore: unknown;
 
   beforeEach(async () => {
     mockUserStore = {
@@ -71,14 +71,14 @@ describe('EstEidComponent', () => {
   it('should call loginMobiilIdInit and start polling', async () => {
     vi.useFakeTimers();
     const initResponse = { challengeID: 1234, token: 'test-token' };
-    mockUserStore.loginMobiilIdInit.mockResolvedValue(initResponse);
-    mockUserStore.loginMobiilIdStatus.mockReturnValue(of({ status: { code: 20001 } }));
+    (mockUserStore as { loginMobiilIdInit: vi.Mock }).loginMobiilIdInit.mockResolvedValue(initResponse);
+    (mockUserStore as { loginMobiilIdStatus: vi.Mock }).loginMobiilIdStatus.mockReturnValue(of({ status: { code: 20001 } }));
 
     component.mobileIdForm.controls.pid.setValue('12345678901');
     component.mobileIdForm.controls.phoneNumber.setValue('+3725555555');
     await component.onMobileSubmit();
     
-    expect(mockUserStore.loginMobiilIdInit).toHaveBeenCalledWith('12345678901', '+3725555555');
+    expect((mockUserStore as { loginMobiilIdInit: vi.Mock }).loginMobiilIdInit).toHaveBeenCalledWith('12345678901', '+3725555555');
     expect(component.challengeID()).toBe(1234);
     
     await vi.advanceTimersByTimeAsync(3001);
@@ -87,17 +87,17 @@ describe('EstEidComponent', () => {
   });
 
   it('should call authIdCard', async () => {
-    (webeid.authenticate as any).mockResolvedValue({ response: 'test' });
-    mockUserStore.loginIdCard.mockResolvedValue(undefined);
+    (webeid.authenticate as vi.Mock).mockResolvedValue({ response: 'test' });
+    (mockUserStore as { loginIdCard: vi.Mock }).loginIdCard.mockResolvedValue(undefined);
 
     await component.authIdCard();
 
     expect(webeid.authenticate).toHaveBeenCalled();
-    expect(mockUserStore.loginIdCard).toHaveBeenCalledWith({ response: 'test' });
+    expect((mockUserStore as { loginIdCard: vi.Mock }).loginIdCard).toHaveBeenCalledWith({ response: 'test' });
   });
 
   it('should handle ID-card authentication error', async () => {
-    (webeid.authenticate as any).mockRejectedValue(new Error('Auth failed'));
+    (webeid.authenticate as vi.Mock).mockRejectedValue(new Error('Auth failed'));
 
     await component.authIdCard();
 

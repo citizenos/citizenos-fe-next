@@ -3,7 +3,7 @@ import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
-import { of, tap, switchMap, map, take } from 'rxjs';
+import { of, tap, switchMap, take } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -73,7 +73,7 @@ export class TopicIdeationComponent {
       switchMap(({ search, type, order, page, topic, ideation }) => {
         if (!topic?.id || !ideation?.id) return of({ rows: [] as Idea[], count: 0 });
         this.loading.set(true);
-        const params: Record<string, any> = {
+        const params: Record<string, string | number | boolean | null | undefined> = {
           topicId: topic.id,
           ideationId: ideation.id,
           limit: PAGE_SIZE,
@@ -84,7 +84,7 @@ export class TopicIdeationComponent {
         if (type === 'favourite') params['favourite'] = true;
         else if (type === 'iCreated') params['authorId'] = this.userStore.user()?.id;
 
-        return this.ideationService.getIdeas(params as any).pipe(
+        return this.ideationService.getIdeas(params as { topicId: string; ideationId: string; [key: string]: string | number | boolean | null | undefined }).pipe(
           tap(() => this.loading.set(false))
         );
       })
@@ -181,15 +181,15 @@ export class TopicIdeationComponent {
     this.currentPage.set(p);
   }
 
-  onIdeaDeleted(idea: Idea) {
+  onIdeaDeleted(_idea: Idea) {
     this.refreshTrigger.update(n => n + 1);
   }
 
-  onIdeaUpdated(idea: Idea) {
+  onIdeaUpdated(_idea: Idea) {
     this.refreshTrigger.update(n => n + 1);
   }
 
-  onIdeaAdded(idea: Idea) {
+  onIdeaAdded(_idea: Idea) {
     this.showAddIdea.set(false);
     this.currentPage.set(1);
     this.refreshTrigger.update(n => n + 1);

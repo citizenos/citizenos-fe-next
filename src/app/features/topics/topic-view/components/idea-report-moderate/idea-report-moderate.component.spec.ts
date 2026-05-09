@@ -3,7 +3,7 @@ import { Component, Directive, Input } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { By } from '@angular/platform-browser';
+
 import { of } from 'rxjs';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 

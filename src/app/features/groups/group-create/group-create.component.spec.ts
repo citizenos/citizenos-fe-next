@@ -7,7 +7,7 @@ import { GroupInviteUserService } from '../../../core/services/group-invite-user
 import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { provideRouter, Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 const mockGroup = { id: 'g1', name: 'New Group', imageUrl: null };

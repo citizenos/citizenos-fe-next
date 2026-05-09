@@ -16,7 +16,7 @@ export interface UserGroupParams extends ListParams {
 }
 
 @Injectable({ providedIn: 'root' })
-export class UserGroupService extends ItemsListService {
+export class UserGroupService extends ItemsListService<UserGroupParams, Group> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
   private uploadService = inject(UploadService);
@@ -25,7 +25,7 @@ export class UserGroupService extends ItemsListService {
     return this.configStore.api.baseUrl();
   }
 
-  override getItems(params: UserGroupParams): Observable<any> {
+  override getItems(params: UserGroupParams): Observable<{ rows: Group[]; countTotal: number }> {
     let httpParams = new HttpParams()
       .set('limit', String(params.limit))
       .set('offset', String(params.offset ?? 0));
@@ -60,7 +60,7 @@ export class UserGroupService extends ItemsListService {
     ).pipe(map(res => res.data!));
   }
 
-  uploadGroupImage(file: File, groupId: string): Observable<any> {
+  uploadGroupImage(file: File, groupId: string): Observable<unknown> {
     return this.uploadService.upload(`${this.apiUrl}/api/users/self/groups/${groupId}/image`, file);
   }
 }

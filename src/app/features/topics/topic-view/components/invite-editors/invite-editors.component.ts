@@ -21,6 +21,13 @@ export interface InviteEditorsData {
   topic: Topic;
 }
 
+interface EditorMember {
+  id: string;
+  name: string;
+  email?: string;
+  level: string;
+}
+
 @Component({
   selector: 'app-invite-editors',
   standalone: true,
@@ -48,8 +55,8 @@ export class InviteEditorsComponent {
   readonly inviteMessageMaxLength = 1000;
 
   searchString = signal('');
-  searchResults = signal<any[]>([]);
-  members = signal<any[]>([]);
+  searchResults = signal<EditorMember[]>([]);
+  members = signal<EditorMember[]>([]);
   invalid = signal<string[]>([]);
   topicLevel = signal<string>(this.LEVELS[0]);
 
@@ -71,13 +78,13 @@ export class InviteEditorsComponent {
           return res.results.public.users.rows;
         }),
         catchError(() => of([]))
-      ).subscribe(results => this.searchResults.set(results));
+      ).subscribe(results => this.searchResults.set(results as EditorMember[]));
     } else {
       this.searchResults.set([]);
     }
   }
 
-  addTopicMember(member?: any) {
+  addTopicMember(member?: EditorMember) {
     if (this.members().length >= 550) {
       this.notificationService.error('MSG_ERROR_INVITE_MEMBER_COUNT_OVER_LIMIT');
       return;
@@ -105,7 +112,7 @@ export class InviteEditorsComponent {
     if (!input) return;
 
     const emails = input.replace(this.EMAIL_SEPARATOR_REGEXP, ',').split(',');
-    const added: any[] = [];
+    const added: EditorMember[] = [];
     const invalid: string[] = [];
 
     emails.forEach(raw => {
@@ -143,11 +150,11 @@ export class InviteEditorsComponent {
     this.invalid.update(list => list.filter((_, i) => i !== index));
   }
 
-  removeTopicMemberUser(member: any) {
+  removeTopicMemberUser(member: EditorMember) {
     this.members.update(list => list.filter(m => m !== member));
   }
 
-  updateTopicMemberUserLevel(member: any, level: string) {
+  updateTopicMemberUserLevel(member: EditorMember, level: string) {
     this.members.update(list => list.map(m => m === member ? { ...m, level } : m));
   }
 
@@ -190,6 +197,6 @@ export class InviteEditorsComponent {
   }
 }
 
-function byName(a: any, b: any): number {
+function byName(a: EditorMember, b: EditorMember): number {
   return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
 }

@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { ComponentRef, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopicSettingsPanelComponent } from './topic-settings-panel.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -11,7 +11,6 @@ import { FormsModule } from '@angular/forms';
 describe('TopicSettingsPanelComponent', () => {
   let component: TopicSettingsPanelComponent;
   let fixture: ComponentFixture<TopicSettingsPanelComponent>;
-  let ref: ComponentRef<TopicSettingsPanelComponent>;
 
   const mockTopic: Topic = {
     id: 'topic-1', title: 'Test Topic', intro: null,
@@ -19,7 +18,7 @@ describe('TopicSettingsPanelComponent', () => {
     visibility: 'private', hashtag: null, join: { token: '', level: '' },
     categories: ['education'], endsAt: null, createdAt: '', updatedAt: '',
     sourcePartnerId: null, sourcePartnerObjectId: null,
-    permission: { level: 'admin' }, creator: {}, lastActivity: null,
+    permission: { level: 'admin' }, creator: { id: '', name: '' }, lastActivity: null,
     country: null, language: null,
     members: { users: { count: 1 }, groups: { count: 0 } },
     voteId: null, discussionId: null, comments: null, padUrl: '',
@@ -44,7 +43,6 @@ describe('TopicSettingsPanelComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(TopicSettingsPanelComponent);
-    ref = fixture.componentRef;
     component = fixture.componentInstance;
   });
 

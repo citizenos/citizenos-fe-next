@@ -10,7 +10,7 @@ import { provideRouter } from '@angular/router';
 describe('PasswordForgotComponent', () => {
   let component: PasswordForgotComponent;
   let fixture: ComponentFixture<PasswordForgotComponent>;
-  let mockUserStore: any;
+  let mockUserStore: unknown;
 
   beforeEach(async () => {
     mockUserStore = {
@@ -51,17 +51,17 @@ describe('PasswordForgotComponent', () => {
 
   it('should call sendPasswordReset on UserStore when form is submitted', async () => {
     component.forgotForm.setValue({ email: 'test@example.com' });
-    mockUserStore.sendPasswordReset.mockResolvedValue({});
+    (mockUserStore as { sendPasswordReset: vi.Mock }).sendPasswordReset.mockResolvedValue({});
     
     await component.onSubmit();
     
-    expect(mockUserStore.sendPasswordReset).toHaveBeenCalledWith('test@example.com');
+    expect((mockUserStore as { sendPasswordReset: vi.Mock }).sendPasswordReset).toHaveBeenCalledWith('test@example.com');
     expect(component.success()).toBeTruthy();
   });
 
   it('should handle sendPasswordReset error', async () => {
     component.forgotForm.setValue({ email: 'test@example.com' });
-    mockUserStore.sendPasswordReset.mockRejectedValue({ error: { status: { message: 'User not found' } } });
+    (mockUserStore as { sendPasswordReset: vi.Mock }).sendPasswordReset.mockRejectedValue({ error: { status: { message: 'User not found' } } });
     
     await component.onSubmit();
     

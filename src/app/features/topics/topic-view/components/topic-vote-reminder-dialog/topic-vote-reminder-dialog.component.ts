@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { UserStore } from '../../../../../core/state/user.store';
+import { Topic, TopicVote } from '../../../../../core/interfaces/topic';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
@@ -14,7 +15,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
   templateUrl: './topic-vote-reminder-dialog.component.html'
 })
 export class TopicVoteReminderDialogComponent {
-  data = inject<{ topic: any; vote: any }>(DIALOG_DATA);
+  data = inject<{ topic: Topic; vote: TopicVote }>(DIALOG_DATA);
   dialogRef = inject(DialogRef);
   private userStore = inject(UserStore);
 
