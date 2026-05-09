@@ -271,7 +271,7 @@ export class IdeaReportComponent {
   private TopicIdeationService = inject(TopicIdeationService);
 
   reportTypes = Object.keys(this.TopicIdeationService.IDEA_REPORT_TYPES);
-  errors = signal<any>(null);
+  errors = signal<Record<string, string[]> | null>(null);
 
   report = new FormGroup({
     type: new FormControl(this.reportTypes[0], Validators.required),
@@ -288,7 +288,13 @@ export class IdeaReportComponent {
   doReport() {
     if (this.report.invalid) return;
 
-    this.TopicIdeationService.reportIdea(this.report.value as any).subscribe({
+    this.TopicIdeationService.reportIdea({
+      type: this.report.value.type!,
+      text: this.report.value.text ?? undefined,
+      topicId: this.data.topicId,
+      ideaId: this.data.idea.id,
+      ideationId: this.data.ideationId
+    }).subscribe({
       next: () => {
         this.dialogRef.close();
       },

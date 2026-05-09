@@ -12,8 +12,8 @@ import { provideRouter } from '@angular/router';
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
-  let mockUserStore: any;
-  let mockUserService: any;
+  let mockUserStore: { signup: ReturnType<typeof vi.fn>; isLoading: ReturnType<typeof signal<boolean>> };
+  let mockUserService: { getPartnerLoginUrl: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     mockUserStore = {
@@ -51,7 +51,7 @@ describe('RegisterComponent', () => {
     const email = component.registerForm.controls.email;
     email.setValue('invalid-email');
     expect(email.hasError('email')).toBeTruthy();
-    
+
     email.setValue('test@example.com');
     expect(email.hasError('email')).toBeFalsy();
   });
@@ -60,7 +60,7 @@ describe('RegisterComponent', () => {
     const password = component.registerForm.controls.password;
     password.setValue('short');
     expect(password.hasError('minlength')).toBeTruthy();
-    
+
     password.setValue('longenoughpassword');
     expect(password.hasError('minlength')).toBeFalsy();
   });
@@ -71,7 +71,7 @@ describe('RegisterComponent', () => {
       passwordConfirm: 'password456'
     });
     expect(component.registerForm.hasError('passwordMismatch')).toBeTruthy();
-    
+
     component.registerForm.patchValue({
       password: 'password123',
       passwordConfirm: 'password123'
@@ -83,7 +83,7 @@ describe('RegisterComponent', () => {
     const agree = component.registerForm.controls.agreeToTerms;
     agree.setValue(false);
     expect(agree.hasError('required')).toBeTruthy();
-    
+
     agree.setValue(true);
     expect(agree.hasError('required')).toBeFalsy();
   });
@@ -91,7 +91,7 @@ describe('RegisterComponent', () => {
   it('should call signup on UserStore when form is submitted', async () => {
     const router = TestBed.inject(Router);
     const navigateSpy = vi.spyOn(router, 'navigate');
-    
+
     component.registerForm.patchValue({
       name: 'Test User',
       email: 'test@example.com',
@@ -99,11 +99,11 @@ describe('RegisterComponent', () => {
       passwordConfirm: 'password123',
       agreeToTerms: true
     });
-    
+
     mockUserStore.signup.mockResolvedValue({});
-    
+
     await component.onSubmit();
-    
+
     expect(mockUserStore.signup).toHaveBeenCalled();
     expect(navigateSpy).toHaveBeenCalledWith(['/']);
   });
@@ -116,11 +116,11 @@ describe('RegisterComponent', () => {
       passwordConfirm: 'password123',
       agreeToTerms: true
     });
-    
+
     mockUserStore.signup.mockRejectedValue(new Error('Signup failed'));
-    
+
     await component.onSubmit();
-    
+
     expect(component.error()).toBe('Registration failed. Please try again.');
   });
 

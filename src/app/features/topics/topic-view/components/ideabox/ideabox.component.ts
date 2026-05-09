@@ -13,7 +13,7 @@ import { InitialsComponent } from '../../../../../shared/components/initials/ini
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { IdeaReactionsComponent } from '../idea-reactions/idea-reactions.component';
 import { Topic } from '../../../../../core/interfaces/topic';
-import { Ideation } from '../../../../../core/interfaces/ideation';
+import { Ideation, IdeaComment } from '../../../../../core/interfaces/ideation';
 import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
 import { IdeaReplyComponent } from '../idea-reply/idea-reply.component';
 import { IdeaReplyFormComponent } from '../idea-reply-form/idea-reply-form.component';
@@ -43,7 +43,7 @@ export class IdeaboxComponent {
   IdeaStatus = IdeaStatus;
   showReplies = signal(false);
   showReplyInput = signal(false);
-  replies = signal<any[]>([]);
+  replies = signal<IdeaComment[]>([]);
 
   isDraft() {
     return this.idea().status === IdeaStatus.draft;

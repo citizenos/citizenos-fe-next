@@ -10,6 +10,7 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
 import { TopicDiscussionService } from '../../../../../core/services/topic-discussion.service';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { Topic } from '../../../../../core/interfaces/topic';
+import { DiscussionData } from '../../../../../core/interfaces/discussion';
 
 export interface MissingDiscussionData {
   topic: Topic;
@@ -43,7 +44,7 @@ export class MissingDiscussionComponent {
 
   save() {
     const t = this.topic;
-    const payload: any = {
+    const payload: DiscussionData = {
       topicId: t.id,
       question: this.question(),
       deadline: this.deadline()

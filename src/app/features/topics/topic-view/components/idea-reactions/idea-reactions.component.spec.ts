@@ -9,8 +9,8 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { EnvironmentInjector, runInInjectionContext } from '@angular/core';
 
 describe('IdeaReactionsComponent', () => {
-  let mockIdeationService: any;
-  let mockDialogRef: any;
+  let mockIdeationService: { getIdeaVotes: ReturnType<typeof vi.fn> };
+  let mockDialogRef: { close: ReturnType<typeof vi.fn> };
   let injector: EnvironmentInjector;
 
   beforeEach(() => {

@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
+import { TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { TopicInviteDialogComponent } from '../topic-invite-dialog/topic-invite-dialog.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
@@ -17,7 +18,7 @@ import { InitialsComponent } from '../../../../../shared/components/initials/ini
 })
 export class TopicParticipantsSectionComponent {
   topic = input.required<Topic>();
-  members = input.required<any[]>();
+  members = input.required<TopicMemberUser[]>();
 
   readonly topicService = inject(TopicService);
   private dialogService = inject(DialogService);

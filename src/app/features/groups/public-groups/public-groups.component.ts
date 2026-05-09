@@ -172,7 +172,7 @@ export class PublicGroupsComponent {
     const f = this.selectedFilters();
 
     if (f['visibility'] === 'favourite') {
-      this.groupService.setParam('favourite' as any, true);
+      this.groupService.setParam('favourite', true);
     }
 
     if (f['orderBy']) {
@@ -180,8 +180,8 @@ export class PublicGroupsComponent {
       this.groupService.setParam('order', 'desc');
     }
 
-    if (f['country']) this.groupService.setParam('country' as any, f['country']);
-    if (f['language']) this.groupService.setParam('language' as any, f['language']);
+    if (f['country']) this.groupService.setParam('country', f['country']);
+    if (f['language']) this.groupService.setParam('language', f['language']);
     if (this.searchValue()) this.groupService.setParam('search', this.searchValue());
   }
 

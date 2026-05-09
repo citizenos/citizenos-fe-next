@@ -43,7 +43,7 @@ export class TopicMilestonesComponent implements OnInit {
     topicId: ''
   };
 
-  errors = signal<Record<string, string> | null>(null);
+  errors = signal<{ subject?: string; text?: string } | null>(null);
   topicEvents = signal<TopicEvent[]>([]);
   countTotal = computed(() => this.topicEvents().length);
   

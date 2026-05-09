@@ -146,12 +146,12 @@ export class PublicTopicsComponent {
     const f = this.selectedFilters();
 
     if (f['status'] === 'showModerated') {
-      this.topicService.setParam('showModerated' as any, 'showModerated');
+      this.topicService.setParam('showModerated', 'showModerated');
     } else if (f['status']) {
-      this.topicService.setParam('statuses' as any, [f['status']]);
+      this.topicService.setParam('statuses', [f['status']]);
     }
 
-    if (f['category']) this.topicService.setParam('categories' as any, [f['category']]);
+    if (f['category']) this.topicService.setParam('categories', [f['category']]);
     if (f['orderBy']) {
       this.topicService.setParam('orderBy', f['orderBy']);
       this.topicService.setParam('order', 'desc');

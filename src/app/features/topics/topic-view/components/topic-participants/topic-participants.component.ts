@@ -79,8 +79,8 @@ export class TopicParticipantsComponent implements OnInit {
     const field = this.userOrderField();
     const dir = this.userOrderDir();
     return [...list].sort((a, b) => {
-      const av = String((a as Record<string, unknown>)[field] || '').toLowerCase();
-      const bv = String((b as Record<string, unknown>)[field] || '').toLowerCase();
+      const av = String((a as unknown as Record<string, unknown>)[field] || '').toLowerCase();
+      const bv = String((b as unknown as Record<string, unknown>)[field] || '').toLowerCase();
       return dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
     });
   });
@@ -91,8 +91,8 @@ export class TopicParticipantsComponent implements OnInit {
     const field = this.groupOrderField();
     const dir = this.groupOrderDir();
     return [...list].sort((a, b) => {
-      const av = String((a as Record<string, unknown>)[field] || '').toLowerCase();
-      const bv = String((b as Record<string, unknown>)[field] || '').toLowerCase();
+      const av = String((a as unknown as Record<string, unknown>)[field] || '').toLowerCase();
+      const bv = String((b as unknown as Record<string, unknown>)[field] || '').toLowerCase();
       return dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
     });
   });
@@ -103,8 +103,10 @@ export class TopicParticipantsComponent implements OnInit {
     const field = this.inviteOrderField();
     const dir = this.inviteOrderDir();
     return [...list].sort((a, b) => {
-      const av = String((a as Record<string, unknown>)[field] || ((a as Record<string, unknown>).user as Record<string, unknown>)?.[field] || '').toLowerCase();
-      const bv = String((b as Record<string, unknown>)[field] || ((b as Record<string, unknown>).user as Record<string, unknown>)?.[field] || '').toLowerCase();
+      const ar = a as unknown as Record<string, unknown>;
+      const br = b as unknown as Record<string, unknown>;
+      const av = String(ar[field] || (ar['user'] as Record<string, unknown>)?.[field] || '').toLowerCase();
+      const bv = String(br[field] || (br['user'] as Record<string, unknown>)?.[field] || '').toLowerCase();
       return dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
     });
   });

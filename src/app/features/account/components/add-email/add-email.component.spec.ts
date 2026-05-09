@@ -67,7 +67,7 @@ describe('AddEmailComponent', () => {
   it('has cancel link', () => {
     const fixture = createFixture();
     const links = fixture.nativeElement.querySelectorAll('a');
-    const cancelLink = Array.from(links).find((a: any) => a.textContent?.includes('MODALS.ADD_EMAIL_LNK_CANCEL'));
+    const cancelLink = Array.from(links).find((a) => (a as HTMLAnchorElement).textContent?.includes('MODALS.ADD_EMAIL_LNK_CANCEL'));
     expect(cancelLink || links.length > 0).toBeTruthy();
   });
 

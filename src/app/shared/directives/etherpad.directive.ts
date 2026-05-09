@@ -12,7 +12,7 @@ export class EtherpadDirective {
   minWidth = 0;
   minHeight = 0;
   
-  @Input('cosEtherpad') params: any;
+  @Input('cosEtherpad') params: unknown;
 
   constructor() {
     const el = this.element.nativeElement;
@@ -30,7 +30,7 @@ export class EtherpadDirective {
 
 
 
-  private valueNotPercent(value: any) {
+  private valueNotPercent(value: string | number) {
     return (value + '').indexOf('%') < 0;
   }
 

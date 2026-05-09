@@ -5,17 +5,17 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input, output } from '@angular/core';
 
 @Component({ selector: 'cos-domain-icon', standalone: true, template: '' })
-class MockDomainIconComponent { @Input() type: any; }
+class MockDomainIconComponent { @Input() type?: string; }
 
 @Component({ selector: 'cos-step-navigator', standalone: true, template: '' })
 class MockStepNavigatorComponent {
-  @Input() steps: any[] = [];
+  @Input() steps: { key: string; label: string }[] = [];
   @Input() currentStep = '';
   stepChange = output<string>();
 }
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
-class MockIconComponent { @Input() name = ''; @Input() size: any; }
+class MockIconComponent { @Input() name = ''; @Input() size?: string | number; }
 
 const MOCK_STEPS = [
   { key: 'step1', label: 'Step 1' },

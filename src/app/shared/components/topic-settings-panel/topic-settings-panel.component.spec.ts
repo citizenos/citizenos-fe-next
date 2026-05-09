@@ -118,7 +118,7 @@ describe('TopicSettingsPanelComponent', () => {
     component.topic.set(mockTopic);
     component.groups.set([]);
     fixture.detectChanges();
-    const group = { id: 'g1', name: 'Group 1' } as any;
+    const group = { id: 'g1', name: 'Group 1' };
     component.addGroup(group);
     expect(component.addedGroups().length).toBe(1);
     expect(component.isGroupAdded(group)).toBe(true);

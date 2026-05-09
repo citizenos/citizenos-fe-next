@@ -2,6 +2,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmDialogComponent } from './confirm-dialog.component';
 import { DIALOG_DATA, DialogRef } from '../../dialog';
+import { ConfirmDialogData } from './confirm-dialog.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 describe('ConfirmDialogComponent', () => {
@@ -9,7 +10,7 @@ describe('ConfirmDialogComponent', () => {
   let fixture: ComponentFixture<ConfirmDialogComponent>;
   const mockDialogRef = { close: vi.fn() };
 
-  function setup(data: any) {
+  function setup(data: ConfirmDialogData) {
     TestBed.overrideProvider(DIALOG_DATA, { useValue: data });
     fixture = TestBed.createComponent(ConfirmDialogComponent);
     component = fixture.componentInstance;

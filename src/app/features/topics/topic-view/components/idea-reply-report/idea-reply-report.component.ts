@@ -8,9 +8,10 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { IdeaComment } from '../../../../../core/interfaces/ideation';
 
 export interface IdeaReplyReportData {
-  argument: any;
+  argument: IdeaComment;
   topicId: string;
   ideaId: string;
   ideationId: string;
@@ -37,7 +38,7 @@ export class IdeaReplyReportComponent {
   private TopicIdeationService = inject(TopicIdeationService);
 
   reportTypes = Object.keys(this.TopicIdeationService.COMMENT_REPORT_TYPES);
-  errors = signal<any>(null);
+  errors = signal<{ text?: string } | null>(null);
 
   report = new FormGroup({
     type: new FormControl(this.reportTypes[0], Validators.required),
@@ -55,7 +56,7 @@ export class IdeaReplyReportComponent {
   doReport() {
     if (this.report.invalid) return;
 
-    this.TopicIdeationService.reportIdeaComment(this.report.value as any).subscribe({
+    this.TopicIdeationService.reportIdeaComment(this.report.value as { topicId: string; ideationId: string; ideaId: string; commentId: string; type: string; text: string }).subscribe({
       next: () => {
         this.dialogRef.close();
       },

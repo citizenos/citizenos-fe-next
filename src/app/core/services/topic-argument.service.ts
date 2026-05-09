@@ -38,7 +38,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
   };
 
   readonly ARGUMENT_SUBJECT_MAXLENGTH = 128;
-  readonly ARGUMENT_TYPES_MAXLENGTH: Record<string, number> = {
+  readonly ARGUMENT_TYPES_MAXLENGTH: { pro: number; con: number; poi: number; reply: number; [key: string]: number } = {
     'pro': 2048,
     'con': 2048,
     'poi': 2048,
@@ -91,7 +91,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
   query(params: TopicArgumentParams): Observable<ApiResponse<{ rows: Argument[]; count: ArgumentCount }>> {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
-      const val = (params as Record<string, ParamValue>)[key];
+      const val = (params as unknown as Record<string, ParamValue>)[key];
       if (key !== 'topicId' && key !== 'discussionId' && val !== null && val !== undefined) {
         httpParams = httpParams.set(key, String(val));
       }
@@ -105,7 +105,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
   }
 
   getArguments(params?: TopicArgumentParams): Observable<ArgumentListResponse> {
-    return this.query(params ?? {}).pipe(
+    return this.query(params ?? this.params.value).pipe(
       map((res: ApiResponse<{ rows: Argument[]; count: ArgumentCount }>) => {
         if (res.data?.count) {
           this.count.next(res.data.count);
@@ -144,7 +144,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
         if (paramsValue.types?.length) {
           let totalCount = 0;
           const types = (!Array.isArray(paramsValue.types)) ? [paramsValue.types] : paramsValue.types;
-          types.forEach((type: string) => totalCount += ((res.count as Record<string, number>)?.[type] || 0));
+          types.forEach((type: string) => totalCount += ((res.count as unknown as Record<string, number>)?.[type] || 0));
           this.countTotal.next(totalCount);
         }
 

@@ -10,7 +10,7 @@ import { DialogService } from '../../../shared/dialog/dialog.service';
 import { of, Subject, throwError } from 'rxjs';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 
 const mockGroup = {
   id: 'group1',
@@ -37,7 +37,7 @@ const mockGroup = {
   inviteMessage: null,
 };
 
-const paramsSubject = new Subject<any>();
+const paramsSubject = new Subject<Params>();
 const fragmentSubject = new Subject<string | null>();
 
 const mockRoute = {
@@ -110,6 +110,7 @@ describe('GroupDetailComponent', () => {
 
   it('selectTab navigates to fragment', () => {
     const comp = makeComp();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const router = (comp as any).router;
     const spy = vi.spyOn(router, 'navigate');
     comp.selectTab('members');

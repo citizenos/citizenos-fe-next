@@ -185,8 +185,8 @@ export class MemberEditorsPanelComponent {
   topicService = inject(TopicService);
 
   topic = model.required<Topic>();
-  members = model<any[]>([]);
-  invites = model<any[]>([]);
+  members = model<TopicMember[]>([]);
+  invites = model<TopicInvite[]>([]);
 
   inviteEditors = output<void>();
   manageMembers = output<void>();

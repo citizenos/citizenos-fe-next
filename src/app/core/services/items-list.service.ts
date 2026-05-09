@@ -53,8 +53,8 @@ export abstract class ItemsListService<T extends ListParams = ListParams, U = un
           })
         );
       }),
-      map((res: { rows: U[]; countTotal?: number; count?: number }) => {
-        const count = res.countTotal || res.count || 0;
+      map((res: { rows: U[]; countTotal?: number; count?: unknown }) => {
+        const count = res.countTotal || (typeof res.count === 'number' ? res.count : 0);
         this.countTotal.next(count);
         const limit = this.params.value.limit;
         const total = Math.ceil(count / limit);
@@ -69,7 +69,7 @@ export abstract class ItemsListService<T extends ListParams = ListParams, U = un
     );
   }
 
-  abstract getItems(params: T): Observable<{ rows: U[]; countTotal?: number; count?: number }>;
+  abstract getItems(params: T): Observable<{ rows: U[]; countTotal?: number; count?: unknown }>;
 
   setParam<K extends keyof T>(param: K, value: T[K]) {
     const current = this.params.value;

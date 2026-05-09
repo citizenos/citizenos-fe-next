@@ -19,9 +19,9 @@ class MockIconComponent { @Input() name = ''; @Input() size = 24; }
 @Component({ selector: 'cos-button', standalone: true, template: '<ng-content></ng-content>' })
 class MockButtonComponent { @Input() variant = ''; @Input() isDisabled = false; }
 @Component({ selector: 'cos-dropdown', standalone: true, template: '' })
-class MockDropdownComponent {}
+class MockDropdownComponent { }
 @Component({ selector: 'cos-tooltip', standalone: true, template: '' })
-class MockTooltipComponent {}
+class MockTooltipComponent { }
 
 const MOCK_TOPIC: Topic = {
   id: 'topic-1', title: 'Test', intro: null, description: '', status: 'inProgress',
@@ -105,7 +105,7 @@ describe('TopicAddGroupsDialogComponent', () => {
   });
 
   it('onSearchChange() with empty string should clear results', () => {
-    component.searchResults.set(MOCK_GROUPS as any);
+    component.searchResults.set(MOCK_GROUPS);
     component.onSearchChange('');
     expect(component.searchResults()).toEqual([]);
   });

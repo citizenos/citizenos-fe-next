@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
+import { TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
 import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 
@@ -18,7 +19,7 @@ import { InitialsComponent } from '../../../../../shared/components/initials/ini
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopicMemberInviteDeleteComponent {
-  user = inject<{ user: any }>(DIALOG_DATA).user;
+  user = inject<{ user: TopicMemberUser }>(DIALOG_DATA).user;
   protected dialogRef = inject(DialogRef);
 
   invitesToDelete: string | null = null;

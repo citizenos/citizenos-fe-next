@@ -1,9 +1,11 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (globalThis as any).ResizeObserver = class {
   observe() { return; }
   unobserve() { return; }
   disconnect() { return; }
 };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (globalThis as any).HTMLElement.prototype.scrollIntoView = vi.fn();
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TopicContentComponent } from './topic-content.component';

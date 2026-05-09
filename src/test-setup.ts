@@ -26,6 +26,7 @@ beforeEach(() => {
 });
 
 // Mock ResizeObserver
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (globalThis as any).ResizeObserver = class {
   observe() { return; }
   unobserve() { return; }

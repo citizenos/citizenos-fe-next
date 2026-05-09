@@ -6,8 +6,9 @@ import { TopicFollowUpCreateDialogComponent } from './topic-follow-up-create-dia
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { TopicService } from '../../../../../core/services/topic.service';
+import { Topic } from '../../../../../core/interfaces/topic';
 
-const mockTopic = { id: 'topic-1', title: 'Test Topic', status: 'followUp' } as any;
+const mockTopic = { id: 'topic-1', title: 'Test Topic', status: 'followUp' } as unknown as Topic;
 
 const topicServiceMock = { changeState: vi.fn() };
 const dialogRefMock = { close: vi.fn() };

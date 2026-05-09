@@ -22,7 +22,7 @@ describe('IconRegistryService', () => {
   });
 
   it('should return undefined for invalid icon name', () => {
-    const icon = service.getIcon('non-existent' as any);
+    const icon = service.getIcon('non-existent' as never);
     expect(icon).toBeUndefined();
   });
 

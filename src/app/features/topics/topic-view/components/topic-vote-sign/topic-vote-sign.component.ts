@@ -5,6 +5,7 @@ import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/di
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
+import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicVoteSignEsteidComponent } from '../topic-vote-sign-esteid/topic-vote-sign-esteid.component';
 import { TopicVoteSignSmartidComponent } from '../topic-vote-sign-smartid/topic-vote-sign-smartid.component';
 

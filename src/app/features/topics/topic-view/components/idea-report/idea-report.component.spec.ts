@@ -12,6 +12,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { Idea } from '../../../../../core/interfaces/idea';
 
 @Component({
   selector: 'cos-initials',
@@ -52,11 +53,11 @@ class MockDropdownComponent {}
 describe('IdeaReportComponent', () => {
   let component: IdeaReportComponent;
   let fixture: ComponentFixture<IdeaReportComponent>;
-  let mockIdeaService: any;
-  let mockDialogRef: any;
+  let mockIdeaService: Partial<TopicIdeationService>;
+  let mockDialogRef: Partial<DialogRef<unknown>>;
 
   const mockData: IdeaReportData = {
-    idea: { id: 'idea1', author: { name: 'Test User' } } as any,
+    idea: { id: 'idea1', author: { name: 'Test User' } } as unknown as Idea,
     ideationId: 'ideation1',
     topicId: 'topic1'
   };

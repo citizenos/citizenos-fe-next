@@ -51,7 +51,7 @@ describe('IconComponent', () => {
   });
 
   it('should render empty content for invalid icon name', () => {
-    component.name.set('invalid' as any);
+    component.name.set('invalid' as never);
     fixture.detectChanges();
     
     const svgElement = fixture.nativeElement.querySelector('svg');

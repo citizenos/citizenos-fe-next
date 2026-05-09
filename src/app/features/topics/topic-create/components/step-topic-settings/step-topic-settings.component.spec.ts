@@ -1,6 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { StepTopicSettingsComponent } from './step-topic-settings.component';
+import { Topic } from '../../../../../core/interfaces/topic';
 
 describe('StepTopicSettingsComponent (business logic)', () => {
   let component: StepTopicSettingsComponent;
@@ -13,7 +14,7 @@ describe('StepTopicSettingsComponent (business logic)', () => {
       categories: [],
       country: null,
       language: null
-    } as any);
+    } as unknown as Topic);
   });
 
   it('should create', () => {

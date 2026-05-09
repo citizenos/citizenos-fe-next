@@ -74,7 +74,7 @@ export class ProfileComponent implements OnInit {
     }
   };
 
-  errors: Record<string, string> = {};
+  errors: { name?: string; company?: string; email?: string; password?: string; newPassword?: string; general?: string } = {};
   resetPasswordMode = signal<boolean>(false);
   topicSearch = signal<string>('');
   imageFile: File | null = null;
@@ -136,14 +136,14 @@ export class ProfileComponent implements OnInit {
         this.errors.newPassword = 'MODALS.PASSWORD_MISMATCH';
         return;
       }
-      params.password = this.form.password;
-      params.newPassword = this.form.newPassword;
+      params['password'] = this.form.password;
+      params['newPassword'] = this.form.newPassword;
     }
 
     if (this.imageFile) {
       try {
         const res = await firstValueFrom(this.userService.uploadUserImage(this.imageFile)) as { imageUrl: string };
-        params.imageUrl = res.imageUrl; // The legacy component used res.link, but UserStore expects res.imageUrl or similar based on its logic. Let's check service.
+        params['imageUrl'] = res.imageUrl; // The legacy component used res.link, but UserStore expects res.imageUrl or similar based on its logic. Let's check service.
       } catch (err) {
         console.error('Image upload failed', err);
       }
@@ -158,7 +158,7 @@ export class ProfileComponent implements OnInit {
       this.imageFile = null;
       this.tmpImageUrl = null;
     } catch (err: unknown) {
-      const error = err as { error?: { errors?: Record<string, string> } };
+      const error = err as { error?: { errors?: { name?: string; company?: string; email?: string; password?: string; newPassword?: string } } };
       this.errors = error.error?.errors || { general: 'ERRORS.GENERAL' };
     }
   }

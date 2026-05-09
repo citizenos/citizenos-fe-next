@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpEvent } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
+import { ApiResponse } from '../interfaces/api-response';
 
 @Injectable({
   providedIn: 'root'

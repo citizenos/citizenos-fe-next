@@ -211,7 +211,7 @@ export class EstEidComponent implements OnDestroy {
   private fb = inject(FormBuilder);
   userStore = inject(UserStore);
 
-  challengeID = signal<number | null>(null);
+  challengeID = signal<string | number | null>(null);
   isLoadingIdCard = signal(false);
   error = signal<string | null>(null);
   private pollSubscription?: Subscription;
@@ -232,8 +232,9 @@ export class EstEidComponent implements OnDestroy {
       const { pid, phoneNumber } = this.mobileIdForm.getRawValue();
       this.error.set(null);
       try {
-        const res = await this.userStore.loginMobiilIdInit(pid!, phoneNumber!);
-        if (res.challengeID && res.token) {
+        const rawRes = await this.userStore.loginMobiilIdInit(pid!, phoneNumber!);
+        const res = rawRes as { challengeID?: string; token?: string } | undefined;
+        if (res?.challengeID && res?.token) {
           this.challengeID.set(res.challengeID);
           this.startPolling(res.token);
         }
@@ -265,10 +266,14 @@ export class EstEidComponent implements OnDestroy {
     this.pollSubscription = interval(3000)
       .pipe(
         switchMap(() => this.userStore.loginMobiilIdStatus(token)),
-        takeWhile((res) => !res || res.status?.code === 20001, true)
+        takeWhile((rawRes) => {
+          const res = rawRes as { status?: { code?: number } } | undefined;
+          return !res || res.status?.code === 20001;
+        }, true)
       )
       .subscribe({
-        next: (res) => {
+        next: (rawRes) => {
+          const res = rawRes as { status?: { code?: number } } | undefined;
           if (res && res.status?.code !== 20001) {
             this.userStore.checkStatus();
             this.challengeID.set(null);

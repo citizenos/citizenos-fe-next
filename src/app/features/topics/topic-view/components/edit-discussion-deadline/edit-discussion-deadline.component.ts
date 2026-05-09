@@ -8,7 +8,7 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
 import { TopicDiscussionService } from '../../../../../core/services/topic-discussion.service';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
-import { Discussion } from '../../../../../core/interfaces/discussion';
+import { Discussion, UpdateTopicDiscussion } from '../../../../../core/interfaces/discussion';
 import { Topic } from '../../../../../core/interfaces/topic';
 
 export interface EditDiscussionDeadlineData {
@@ -42,7 +42,7 @@ export class EditDiscussionDeadlineComponent {
     const { discussion, topic } = this.data;
     const update = { topicId: topic.id, discussionId: discussion.id, deadline: this.deadline() };
 
-    this.discussionService.update(topic.id, discussion.id, update as any)
+    this.discussionService.update(topic.id, discussion.id, update as unknown as UpdateTopicDiscussion)
       .pipe(take(1))
       .subscribe({
         next: () => {

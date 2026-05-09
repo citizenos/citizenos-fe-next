@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ArgumentDeletedComponent } from './argument-deleted.component';
 import { DialogService } from '../../../../../shared/dialog';
 import { TranslateModule } from '@ngx-translate/core';
+import { Argument } from '../../../../../core/interfaces/discussion';
 
 const BASE_ARG = {
   id: 'arg1',
@@ -17,7 +18,7 @@ describe('ArgumentDeletedComponent', () => {
   let fixture: ComponentFixture<ArgumentDeletedComponent>;
   const mockDialogService = { open: vi.fn().mockReturnValue({ afterClosed: () => ({ subscribe: vi.fn() }) }) };
 
-  function setup(argument: any) {
+  function setup(argument: Argument) {
     fixture.componentRef.setInput('argument', argument);
     fixture.detectChanges();
   }

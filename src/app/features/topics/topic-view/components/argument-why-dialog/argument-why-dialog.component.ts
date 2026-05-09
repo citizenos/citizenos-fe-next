@@ -2,10 +2,11 @@ import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { Argument } from '../../../../../core/interfaces/discussion';
 import { DIALOG_DATA, DialogCloseDirective } from '../../../../../shared/dialog';
 
 interface ArgumentWhyDialogData {
-  argument: any;
+  argument: Argument;
 }
 
 @Component({

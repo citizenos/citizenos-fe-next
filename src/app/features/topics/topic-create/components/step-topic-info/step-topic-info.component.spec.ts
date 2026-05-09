@@ -1,6 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { StepTopicInfoComponent } from './step-topic-info.component';
+import { Topic } from '../../../../../core/interfaces/topic';
 
 describe('StepTopicInfoComponent (business logic)', () => {
   let component: StepTopicInfoComponent;
@@ -21,7 +22,7 @@ describe('StepTopicInfoComponent (business logic)', () => {
   });
 
   it('should return title from signal', () => {
-    vi.spyOn(component, 'topic').mockReturnValue({ title: 'Mock' } as any);
+    vi.spyOn(component, 'topic').mockReturnValue({ title: 'Mock' } as unknown as Topic);
     expect(component.topic().title).toBe('Mock');
   });
 });

@@ -207,7 +207,7 @@ export class ListFilterToolbarComponent {
 
   extraRows = computed(() => {
     const ex = this.filtersExtra();
-    const items: any[] = [
+    const items: (FilterConfig & { type: string } | { type: string })[] = [
       ...ex.map(f => ({ ...f, type: 'filter' })),
       { type: 'search' }
     ];

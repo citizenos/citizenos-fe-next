@@ -24,9 +24,9 @@ class MockIconComponent {
 describe('AddIdeaFolderComponent', () => {
   let component: AddIdeaFolderComponent;
   let fixture: ComponentFixture<AddIdeaFolderComponent>;
-  let mockIdeationService: any;
-  let mockDialogRef: any;
-  let mockDialogData: any;
+  let mockIdeationService: Partial<TopicIdeationService>;
+  let mockDialogRef: Partial<DialogRef<unknown>>;
+  let mockDialogData: { topicId: string; ideationId: string; idea: { id: string; statement: string } };
 
   beforeEach(async () => {
     mockIdeationService = {

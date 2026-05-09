@@ -14,11 +14,11 @@ class CosNotificationsStub {}
 // eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[dialogClose]', standalone: true })
 class DialogCloseStub {
-  @Input() dialogClose: any;
+  @Input() dialogClose: string | null = null;
 }
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
-class MockIconComponent { @Input() name = ''; @Input() size: any; }
+class MockIconComponent { @Input() name = ''; @Input() size: string | number = 24; }
 
 function createFixture(): ComponentFixture<ConnectEidComponent> {
   TestBed.overrideComponent(ConnectEidComponent, {

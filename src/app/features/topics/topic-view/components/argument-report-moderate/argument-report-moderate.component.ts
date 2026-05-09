@@ -4,14 +4,15 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
 
+import { Argument, ArgumentReport } from '../../../../../core/interfaces/discussion';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { DIALOG_DATA, DialogCloseDirective, DialogService } from '../../../../../shared/dialog';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 
 interface ArgumentReportModerateData {
-  argument?: any;
-  report: any;
+  argument?: Argument;
+  report: ArgumentReport;
   topicId: string;
   discussionId: string;
   commentId: string;

@@ -6,9 +6,10 @@ import { ApiResponse } from '../interfaces/api-response';
 
 export interface TopicInvite {
   id: string;
-  user?: { name: string; email?: string };
+  user: { id: string; name: string; email?: string; imageUrl?: string };
   email?: string;
   level: string;
+  expiresAt?: string;
 }
 
 @Injectable({ providedIn: 'root' })

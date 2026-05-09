@@ -20,7 +20,7 @@ interface VoteCastResponse {
   [key: string]: unknown;
 }
 
-interface VoteWithOptions extends Vote {
+interface VoteWithOptions extends Omit<Vote, 'options'> {
   options: { rows: VoteOption[]; count?: number } | VoteOption[];
   votersCount?: number;
 }
@@ -108,7 +108,7 @@ export class TopicVoteService {
             window.location.reload();
           }
         }),
-        map((res: HttpResponse<ApiResponse<VoteCastResponse>>) => res?.body?.data ?? res.body as VoteCastResponse)
+        map((res: HttpResponse<ApiResponse<VoteCastResponse>>) => res?.body?.data ?? res.body as unknown as VoteCastResponse)
       );
   }
 

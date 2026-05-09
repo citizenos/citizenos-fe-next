@@ -1,4 +1,4 @@
-import { TranslateCompiler } from '@ngx-translate/core';
+import { TranslateCompiler, InterpolatableTranslationObject } from '@ngx-translate/core';
 
 export class JSONPointerCompiler extends TranslateCompiler {
   /**
@@ -13,9 +13,9 @@ export class JSONPointerCompiler extends TranslateCompiler {
    * Initiates recursive this.parseReferencePointers()
    * Returns modified translations object for ngx-translate to process
    */
-  public override compileTranslations(translations: Record<string, unknown>, _lang: string): Record<string, unknown> {
+  public override compileTranslations(translations: Record<string, unknown>, _lang: string): InterpolatableTranslationObject {
     this.parseReferencePointers(translations, translations);
-    return translations;
+    return translations as unknown as InterpolatableTranslationObject;
   }
 
   /**
@@ -44,7 +44,7 @@ export class JSONPointerCompiler extends TranslateCompiler {
           // Follow nested references
           while (typeof replacementProperty === 'string' && replacementProperty.startsWith('@:')) {
             i++;
-            const tryProp = replacementProperty;
+            const tryProp: string = replacementProperty as string;
             replacementProperty = this.getDescendantPropertyValue(masterLanguageFile, tryProp.substring(2));
 
             if (tryProp === replacementProperty || i > 10) {

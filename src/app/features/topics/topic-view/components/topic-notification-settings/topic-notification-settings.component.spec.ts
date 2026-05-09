@@ -10,6 +10,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { TopicService } from '../../../../../core/services/topic.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { Topic } from '../../../../../core/interfaces/topic';
+import { NotificationPreferences } from '../../../../../core/interfaces/notification-preferences';
 
 const MOCK_TOPIC: Topic = {
   id: 'topic-1', title: 'Test', intro: null, description: '', status: 'inProgress',
@@ -80,7 +81,7 @@ describe('TopicNotificationSettingsComponent', () => {
   });
 
   it('allChecked() returns true only when all preferences are true', () => {
-    component.preferences.set(Object.fromEntries(Object.keys(component.preferences()).map(k => [k, true])) as any);
+    component.preferences.set(Object.fromEntries(Object.keys(component.preferences()).map(k => [k, true])) as unknown as NotificationPreferences);
     expect(component.allChecked()).toBe(true);
   });
 
@@ -89,14 +90,14 @@ describe('TopicNotificationSettingsComponent', () => {
   });
 
   it('toggleAllNotifications() sets all preferences to true when currently false', () => {
-    component.preferences.set(Object.fromEntries(Object.keys(component.preferences()).map(k => [k, false])) as any);
+    component.preferences.set(Object.fromEntries(Object.keys(component.preferences()).map(k => [k, false])) as unknown as NotificationPreferences);
     component.toggleAllNotifications();
     expect(component.allChecked()).toBe(true);
     expect(component.allowNotifications()).toBe(true);
   });
 
   it('toggleAllNotifications() sets all preferences to false when all are true', () => {
-    component.preferences.set(Object.fromEntries(Object.keys(component.preferences()).map(k => [k, true])) as any);
+    component.preferences.set(Object.fromEntries(Object.keys(component.preferences()).map(k => [k, true])) as unknown as NotificationPreferences);
     component.toggleAllNotifications();
     expect(component.allChecked()).toBe(false);
   });

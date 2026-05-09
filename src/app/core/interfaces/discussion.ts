@@ -58,3 +58,9 @@ export interface Argument {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface UpdateTopicDiscussion {
+  topicId?: string;
+  discussionId?: string;
+  deadline?: string | null;
+}

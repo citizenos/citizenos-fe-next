@@ -20,6 +20,7 @@ import { TopicSettingsDisabledDialogComponent } from '../topic-view/components/t
 import { TopicSettingsLockedComponent } from '../topic-view/components/topic-settings-locked/topic-settings-locked.component';
 import { TopicEditDisabledDialogComponent } from '../topic-view/components/topic-edit-disabled-dialog/topic-edit-disabled-dialog.component';
 import { TopicEditComponent } from './topic-edit.component';
+import { Topic } from '../../../core/interfaces/topic';
 
 const mockTopic = { id: 'topic-1', title: 'Existing Topic', visibility: 'public', status: 'inProgress', categories: [], discussionId: 'disc-1' };
 const mockTopicService = {
@@ -126,21 +127,21 @@ describe('TopicEditComponent', () => {
 
   it('should open TopicSettingsLockedComponent when navigating to discussion if canEditDescription is false', () => {
     mockTopicService.canEditDescription.mockReturnValue(false);
-    component.topic.set(mockTopic as any);
+    component.topic.set(mockTopic as unknown as Topic);
     component.onStepChange('discussion');
     expect(mockDialogService.open).toHaveBeenCalledWith(TopicSettingsLockedComponent);
   });
 
   it('should open TopicEditDisabledDialogComponent when navigating to info if canEditDescription is false', () => {
     mockTopicService.canEditDescription.mockReturnValue(false);
-    component.topic.set(mockTopic as any);
+    component.topic.set(mockTopic as unknown as Topic);
     component.onStepChange('info');
     expect(mockDialogService.open).toHaveBeenCalledWith(TopicEditDisabledDialogComponent);
   });
 
   it('should open TopicSettingsDisabledDialogComponent when navigating to settings if canDelete is false', () => {
     mockTopicService.canDelete.mockReturnValue(false);
-    component.topic.set(mockTopic as any);
+    component.topic.set(mockTopic as unknown as Topic);
     component.onStepChange('settings');
     expect(mockDialogService.open).toHaveBeenCalledWith(TopicSettingsDisabledDialogComponent);
   });

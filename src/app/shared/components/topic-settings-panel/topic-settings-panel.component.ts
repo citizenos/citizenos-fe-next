@@ -16,7 +16,7 @@ export interface TopicMemberGroup {
   name: string;
   level?: string;
   visibility?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 @Component({

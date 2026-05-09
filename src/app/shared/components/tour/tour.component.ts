@@ -184,7 +184,7 @@ export class TourComponent implements OnDestroy {
      this.tourService.hide();
   }
 
-  setContent(template: any) {
+  setContent(template: Node[]) {
     if (this.contentEl) {
       const el = this.contentEl.nativeElement;
       while (el.firstChild) el.removeChild(el.firstChild);

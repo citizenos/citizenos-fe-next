@@ -6,7 +6,7 @@ import { take } from 'rxjs';
 
 import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
-import { TopicMemberGroupService } from '../../../../../core/services/topic-member-group.service';
+import { TopicMemberGroupService, TopicMemberGroup } from '../../../../../core/services/topic-member-group.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
@@ -28,9 +28,9 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
 })
 export class TopicMemberGroupComponent implements OnInit {
   topic = input.required<Topic>();
-  group = input.required<any>();
-  canUpdate = input<any>();
-  fields = input<any>();
+  group = input.required<TopicMemberGroup>();
+  canUpdate = input<boolean>(false);
+  fields = input<string[]>([]);
 
   readonly topicService = inject(TopicService);
   private topicMemberGroupService = inject(TopicMemberGroupService);

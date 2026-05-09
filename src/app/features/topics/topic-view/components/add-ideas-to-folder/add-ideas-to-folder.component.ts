@@ -4,12 +4,14 @@ import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Idea } from '../../../../../core/interfaces/idea';
-import { take, forkJoin } from 'rxjs';
+import { Observable, take, forkJoin } from 'rxjs';
+
+import { IdeationFolder } from '../../../../../core/interfaces/ideation';
 
 interface IdeationFolderDialogData {
   topicId: string;
   ideationId: string;
-  folder: any;
+  folder: IdeationFolder;
 }
 
 @Component({
@@ -271,7 +273,7 @@ export class AddIdeasToFolderComponent {
     const ideasToAdd = Array.from(currentSelected).filter(id => !this.initialIdeaIds.has(id));
     const ideasToRemove = Array.from(this.initialIdeaIds).filter(id => !currentSelected.has(id));
 
-    const actions: any[] = [];
+    const actions: Observable<unknown>[] = [];
     if (ideasToAdd.length > 0) {
       actions.push(this.ideationService.addIdeaToFolder({ topicId, ideationId, folderId }, ideasToAdd));
     }

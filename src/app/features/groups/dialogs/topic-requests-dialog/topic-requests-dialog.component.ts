@@ -6,7 +6,7 @@ import { DIALOG_DATA } from '../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../shared/dialog/dialog-ref';
 import { DialogCloseDirective } from '../../../../shared/dialog';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
-import { GroupRequestTopicService } from '../../../../core/services/group-request-topic.service';
+import { GroupRequestTopicService, TopicRequest } from '../../../../core/services/group-request-topic.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { Group } from '../../../../core/interfaces/group';
 import { take } from 'rxjs';
@@ -26,7 +26,7 @@ export class TopicRequestsDialogComponent {
   private notification = inject(NotificationService);
 
   group = this.data.group;
-  requests = signal<any[]>([]);
+  requests = signal<TopicRequest[]>([]);
 
   translate = inject(TranslateService);
 
@@ -40,14 +40,14 @@ export class TopicRequestsDialogComponent {
     });
   }
 
-  accept(request: any) {
+  accept(request: TopicRequest) {
     this.requestService.accept(this.group.id, request.id).pipe(take(1)).subscribe(() => {
       this.notification.success('COMPONENTS.TOPIC_REQUESTS.MSG_ACCEPT_SUCCESS');
       this.requests.update(r => r.filter(x => x.id !== request.id));
     });
   }
 
-  reject(request: any) {
+  reject(request: TopicRequest) {
     this.requestService.reject(this.group.id, request.id).pipe(take(1)).subscribe(() => {
       this.notification.success('COMPONENTS.TOPIC_REQUESTS.MSG_REJECT_SUCCESS');
       this.requests.update(r => r.filter(x => x.id !== request.id));

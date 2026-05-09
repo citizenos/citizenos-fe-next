@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { map, Observable, BehaviorSubject, exhaustMap, shareReplay } from 'rxjs';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -214,7 +214,7 @@ export class ActivityService {
     const keys = Object.keys(activity.data);
     ['actor', 'type', 'object', 'origin', 'target', 'inReplyTo'].forEach(key => {
       if (!keys.includes(key)) return;
-      const value = (activity.data as Record<string, unknown>)[key] as ActivityObject | ActivityObject[] | string;
+      const value = (activity.data as unknown as Record<string, unknown>)[key] as ActivityObject | ActivityObject[] | string;
       switch (key) {
         case 'actor': parts.push((value as ActivityObject)['type'] as string); break;
         case 'type': parts.push(value as string); break;
@@ -232,7 +232,7 @@ export class ActivityService {
           if (parts.includes(vType)) break;
           parts.push(vType);
           if (
-            activity.data.object?.['@type'] &&
+            (activity.data.object as ActivityObject | undefined)?.['@type'] &&
             activity.data.result?.[0]?.path.includes('level') &&
             activity.data.result[0].value === 'none'
           ) {
@@ -244,7 +244,7 @@ export class ActivityService {
     });
 
     if (
-      activity.data.object?.['@type'] === 'CommentVote' &&
+      (activity.data.object as ActivityObject | undefined)?.['@type'] === 'CommentVote' &&
       activity.data.type !== 'Delete'
     ) {
       const res = activity.data.resultObject;

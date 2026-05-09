@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { take } from 'rxjs';
 
+import { Argument } from '../../../../../core/interfaces/discussion';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
@@ -13,7 +14,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 
 export interface ArgumentReportData {
-  argument: any;
+  argument: Argument;
   topicId: string;
 }
 

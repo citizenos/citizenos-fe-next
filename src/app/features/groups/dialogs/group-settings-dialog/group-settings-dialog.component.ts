@@ -42,7 +42,7 @@ export class GroupSettingsDialogComponent {
   rules = signal<{ rule: string }[]>(
     (this.data.group.rules ?? []).map(r => ({ rule: r }))
   );
-  errors = signal<any>(null);
+  errors = signal<Record<string, string[]> | null>(null);
 
   imageFile = signal<File | null>(null);
   uploadedImageUrl = signal<string | null>(null);

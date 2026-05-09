@@ -81,7 +81,7 @@ export class VoteCreateComponent implements OnInit {
         this.topic.set(topic);
         if (topic.voteId) {
           this.voteService.get({ topicId: topic.id, voteId: topic.voteId }).subscribe({
-            next: (vote) => this.vote.set({ ...vote, question: vote.description }),
+            next: (vote) => this.vote.set({ ...vote, question: vote.description ?? undefined }),
             error: () => { /* intentionally empty */ }
           });
         }
@@ -114,7 +114,7 @@ export class VoteCreateComponent implements OnInit {
       })
     ).subscribe({
       next: (savedVote) => {
-        this.vote.set({ ...savedVote, question: savedVote.description });
+        this.vote.set({ ...savedVote, question: savedVote.description ?? undefined });
         this.isLoading.set(false);
         this.router.navigate([this.topic().id], {
           relativeTo: this.route,
@@ -185,7 +185,7 @@ export class VoteCreateComponent implements OnInit {
     this.isLoading.set(true);
     this.topicService.patch(t).subscribe({
       next: () => {
-        if (this.vote().id) {
+        if (this.vote().id && t.id) {
           const voteData = { ...this.vote(), topicId: t.id, description: this.vote().question };
           this.voteService.update(voteData).pipe(take(1)).subscribe();
         }
@@ -206,6 +206,7 @@ export class VoteCreateComponent implements OnInit {
     this.isLoading.set(true);
     this.topicService.patch({ ...t, status: 'voting' }).subscribe({
       next: () => {
+        if (!t.id) return;
         const voteData = { ...this.vote(), topicId: t.id, description: this.vote().question };
         this.voteService.update(voteData).pipe(take(1)).subscribe({
           next: () => {

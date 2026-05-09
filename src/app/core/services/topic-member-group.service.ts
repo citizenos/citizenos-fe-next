@@ -3,6 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';
+import { Group } from '../interfaces/group';
+
+export interface TopicMemberGroup extends Partial<Group> {
+  id: string;
+  name: string;
+  level: string;
+  userId?: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class TopicMemberGroupService {

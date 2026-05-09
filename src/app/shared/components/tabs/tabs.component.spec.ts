@@ -5,11 +5,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input } from '@angular/core';
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
-class MockIconComponent { @Input() name = ''; @Input() size: any; }
+class MockIconComponent { @Input() name = ''; @Input() size: string | number = 24; }
 
 const TABS: TabItem[] = [
   { id: 'tab1', label: 'TAB_ONE' },
-  { id: 'tab2', label: 'TAB_TWO', icon: 'home' as any },
+  { id: 'tab2', label: 'TAB_TWO', icon: 'home' },
 ];
 
 describe('CosTabsComponent', () => {

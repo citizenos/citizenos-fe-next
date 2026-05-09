@@ -2,6 +2,8 @@ import { Component, input, output, ChangeDetectionStrategy } from '@angular/core
 import { DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { Argument } from '../../../../../core/interfaces/discussion';
+
 @Component({
   selector: 'app-argument-edits',
   standalone: true,
@@ -11,11 +13,11 @@ import { TranslateModule } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArgumentEditsComponent {
-  argument = input.required<any>();
+  argument = input.required<Argument>();
   topicId = input.required<string>();
   showEditsChange = output<boolean>();
 
-  editsEntries(): [string, any][] {
+  editsEntries(): [string, { subject?: string | null; text?: string | null; createdAt?: string }][] {
     return Object.entries(this.argument().edits || {});
   }
 

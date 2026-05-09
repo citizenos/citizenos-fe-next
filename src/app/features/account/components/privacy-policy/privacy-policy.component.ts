@@ -40,7 +40,8 @@ export class PrivacyPolicyComponent {
       const userId = this.userStore.user()?.id;
       this.dialog.closeAll();
       if (userId) {
-        this.userService.listUserConnections(userId).pipe(take(1)).subscribe((connections: { rows: UserConnection[] }) => {
+        this.userService.listUserConnections(userId).pipe(take(1)).subscribe((rawConnections: unknown) => {
+          const connections = rawConnections as { rows?: UserConnection[] } | undefined;
           const filtered = (connections?.rows ?? []).filter((con: UserConnection) =>
             ['esteid', 'smartid'].includes(con.connectionId)
           );

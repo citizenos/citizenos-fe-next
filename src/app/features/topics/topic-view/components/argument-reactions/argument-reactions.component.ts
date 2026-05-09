@@ -25,7 +25,7 @@ export class ArgumentReactionsComponent implements OnInit {
   private data = inject<ArgumentReactionsData>(DIALOG_DATA);
   private argumentService = inject(TopicArgumentService);
 
-  members = signal<any[]>([]);
+  members = signal<{ id: string; name: string; value: number }[]>([]);
   page = signal(1);
   totalPages = signal(0);
   private itemsPerPage = 10;

@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
+import { IdeaVoter } from '../../../../../core/interfaces/ideation';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
@@ -24,7 +25,7 @@ export class IdeaReactionsComponent implements OnInit {
   private dialogRef = inject(DialogRef);
   private ideationService = inject(TopicIdeationService);
 
-  voteItems = signal<any[]>([]);
+  voteItems = signal<IdeaVoter[]>([]);
   page = signal(1);
   totalPages = signal(0);
   itemsPerPage = 10;

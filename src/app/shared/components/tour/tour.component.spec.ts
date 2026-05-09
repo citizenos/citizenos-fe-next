@@ -5,14 +5,14 @@ import { signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { NEVER } from 'rxjs';
 import { TourComponent } from './tour.component';
-import { TourService } from '../../../core/services/tour.service';
+import { TourService, TourItem } from '../../../core/services/tour.service';
 import { UserStore } from '../../../core/state/user.store';
 
 const mockTourService = {
   showTour: signal(false),
   activeTour: signal(''),
   activeItem: signal(0),
-  items: signal<Record<string, any[]>>({}),
+  items: signal<Record<string, TourItem[]>>({}),
   activeTemplate$: NEVER,
   hide: vi.fn(),
   next: vi.fn(),

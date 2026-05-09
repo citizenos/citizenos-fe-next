@@ -8,6 +8,8 @@ import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/di
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
+import { TopicService } from '../../../../../core/services/topic.service';
+import { NotificationService } from '../../../../../core/services/notification.service';
 import { Topic, TopicVoteCast } from '../../../../../core/interfaces/topic';
 
 declare let hwcrypto: {
@@ -104,8 +106,8 @@ export class TopicVoteSignEsteidComponent {
   private pollMobileStatus(token: string) {
     interval(10000).pipe(
       switchMap(() => this.topicVoteService.status({ topicId: this.data.topic.id, voteId: this.data.topic.voteId!, token })),
-      takeWhile((res: { status?: { code?: number } }) => res?.status?.code === 20001, true),
-      map((res: { data?: unknown }) => res?.data || {})
+      takeWhile((res) => res?.status?.code === 20001, true),
+      map((res) => res?.data || {})
     ).subscribe({
       next: () => {
         this.isLoading.set(false);

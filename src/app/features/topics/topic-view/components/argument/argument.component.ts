@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { take } from 'rxjs';
 
+import { Argument } from '../../../../../core/interfaces/discussion';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { NotificationService } from '../../../../../core/services/notification.service';
@@ -33,10 +34,10 @@ import { ArgumentReportComponent } from '../argument-report/argument-report.comp
   styleUrls: ['./argument.component.scss']
 })
 export class ArgumentComponent implements OnInit {
-  argument = input.required<any>();
+  argument = input.required<Argument>();
   topicId = input.required<string>();
   discussionId = input.required<string>();
-  root = input<any>(null);
+  root = input<Argument | null>(null);
   deleted = output<void>();
 
   @ViewChild('argumentBody') argumentBody?: ElementRef;
@@ -66,12 +67,12 @@ export class ArgumentComponent implements OnInit {
 
   argumentId() {
     const arg = this.argument();
-    const version = (arg.edits?.length || 1) - 1;
+    const version = (Object.keys(arg.edits || {}).length || 1) - 1;
     return arg.id + '_v' + version;
   }
 
   isEdited() {
-    return (this.argument().edits?.length || 0) > 1;
+    return (Object.keys(this.argument().edits || {}).length || 0) > 1;
   }
 
   canEdit() {

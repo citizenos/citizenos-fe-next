@@ -19,7 +19,7 @@ import EasyMDE from 'easymde';
 })
 export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
   item = input<string>('');
-  initialValue = input<string | null | undefined>(null);
+  initialValue = input<string>('');
   itemChange = output<string>();
   limit = input<number>(100);
   placeholder = input<string | undefined>();
@@ -43,12 +43,10 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
       toolbar: [
         {
           name: 'write',
-          text: this.translate.instant('MDEDITOR_TOOLTIP_WRITE'),
           className: 'no-disable tab-active tab-action',
           action: (editor: EasyMDE) => {
             if (editor.isPreviewActive()) {
-              EasyMDE.togglePreview(editor);
-              editor.toolbarElements.write.classList.add('tab-active');
+              EasyMDE.togglePreview(editor)
             }
           },
           title: this.translate.instant('MDEDITOR_TOOLTIP_WRITE'),
@@ -56,11 +54,9 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
         {
           name: 'preview',
           className: 'no-disable tab-action',
-          text: this.translate.instant('MDEDITOR_TOOLTIP_PREVIEW'),
           action: (editor: EasyMDE) => {
             if (!editor.isPreviewActive()) {
-              EasyMDE.togglePreview(editor);
-              editor.toolbarElements.write.classList.remove('tab-active');
+              EasyMDE.togglePreview(editor)
             }
           },
           title: this.translate.instant('MDEDITOR_TOOLTIP_PREVIEW'),
@@ -124,6 +120,7 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
 
     this.easymde = new EasyMDE(config);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.easymde.codemirror.on('beforeChange', (cm: any, change: any) => { // CodeMirror types are complex, keeping any for now but narrowed in logic
       const maxLength = cm.getOption('maxLength') || this.limit();
       if (maxLength && change?.update && change?.text.length) {
@@ -173,24 +170,26 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
   }
 
   private toggleStrikethrough() {
-    return () => { this.trimSelection(); EasyMDE.toggleStrikethrough(this.easymde); };
+    return () => { this.trimSelection(); if (this.easymde) EasyMDE.toggleStrikethrough(this.easymde); };
   }
 
   private toggleItalic() {
-    return () => { this.trimSelection(); EasyMDE.toggleItalic(this.easymde); };
+    return () => { this.trimSelection(); if (this.easymde) EasyMDE.toggleItalic(this.easymde); };
   }
 
   private toggleBold() {
-    return () => { this.trimSelection(); EasyMDE.toggleBold(this.easymde); };
+    return () => { this.trimSelection(); if (this.easymde) EasyMDE.toggleBold(this.easymde); };
   }
 
   private toggleLink() {
     return () => {
+      if (!this.easymde) return;
       const selected = this.easymde.codemirror.getSelection();
       this.dialog.open(MarkdownLinkDialogComponent, { data: { selected } })
         .afterClosed()
         .subscribe({
-          next: (data: { link?: string; linktext?: string }) => {
+          next: (rawData: unknown) => {
+            const data = rawData as { link?: string; linktext?: string } | undefined;
             if (!data?.link) return;
             if (data.link.indexOf('http') === -1) data.link = `http://${data.link}`;
             const editor = this.easymde;
@@ -216,7 +215,7 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
   private updateCharacterCount(el: HTMLElement) {
     if (this.cosMarkdownTranslateCharacterStatusKey() && this.limit()) {
       const currentLength = this.easymde ? this.easymde.value().length : this.getCharLength();
-      el.innerHTML = this.translate.instant(this.cosMarkdownTranslateCharacterStatusKey(), {
+      el.innerHTML = this.translate.instant(this.cosMarkdownTranslateCharacterStatusKey()!, {
         numberOfCharacters: this.limit() - currentLength,
       });
     }

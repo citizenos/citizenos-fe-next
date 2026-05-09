@@ -1,6 +1,7 @@
 import { Component, inject, signal, output, ChangeDetectionStrategy, effect, model } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { IdeaComment } from '../../../../../core/interfaces/ideation';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { NotificationService } from '../../../../../core/services/notification.service';
@@ -21,7 +22,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 })
 export class IdeaReplyFormComponent {
   // Inputs as signals
-  argument = model<any>(null);
+  argument = model<IdeaComment | null>(null);
   topicId = model<string>('');
   ideationId = model<string>('');
   ideaId = model<string>('');
@@ -43,7 +44,7 @@ export class IdeaReplyFormComponent {
     text: new FormControl('', [Validators.required, Validators.maxLength(this.ideationService.COMMENT_TYPES_MAXLENGTH.reply)])
   });
 
-  errors = signal<any>({});
+  errors = signal<Record<string, string[]>>({});
 
   constructor() {
     effect(() => {

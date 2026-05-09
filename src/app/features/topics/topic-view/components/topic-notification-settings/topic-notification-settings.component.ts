@@ -63,9 +63,10 @@ export class TopicNotificationSettingsComponent implements OnInit {
       });
 
       this.topicNotificationService.get(this.data.topicId).pipe(take(1)).subscribe({
-        next: (settings: any) => {
-          this.allowNotifications.set(settings.allowNotifications);
-          this.preferences.set({ ...TopicNotificationSettingsComponent.DEFAULT_PREFERENCES, ...settings.preferences });
+        next: (settings: unknown) => {
+          const s = settings as { allowNotifications: boolean; preferences: NotificationPreferences };
+          this.allowNotifications.set(s.allowNotifications);
+          this.preferences.set({ ...TopicNotificationSettingsComponent.DEFAULT_PREFERENCES, ...s.preferences });
         },
         error: (err) => {
           console.error('Error loading notification settings', err);

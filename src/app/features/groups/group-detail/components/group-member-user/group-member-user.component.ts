@@ -4,7 +4,7 @@ import { UpperCasePipe } from '@angular/common';
 import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Group } from '../../../../../core/interfaces/group';
-import { GroupMemberUserService } from '../../../../../core/services/group-member-user.service';
+import { GroupMemberUserService, GroupMember } from '../../../../../core/services/group-member-user.service';
 import { GroupDetailService } from '../../../../../core/services/group-detail.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -19,7 +19,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
   templateUrl: './group-member-user.component.html'
 })
 export class GroupMemberUserComponent {
-  member = input.required<any>();
+  member = input.required<GroupMember>();
   group = input.required<Group>();
   fields = input<string[]>([]);
 

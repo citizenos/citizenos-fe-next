@@ -1,18 +1,18 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NotificationComponent } from './notification.component';
-import { NotificationService } from '../../../core/services/notification.service';
+import { NotificationService, Notification } from '../../../core/services/notification.service';
 import { signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input } from '@angular/core';
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
-class MockIconComponent { @Input() name = ''; @Input() size: any; }
+class MockIconComponent { @Input() name = ''; @Input() size: string | number = 24; }
 
 describe('NotificationComponent', () => {
   let component: NotificationComponent;
   let fixture: ComponentFixture<NotificationComponent>;
-  const mockNotifications = signal<any[]>([]);
+  const mockNotifications = signal<Notification[]>([]);
   const mockService = {
     notifications: mockNotifications.asReadonly(),
     dismiss: vi.fn(),

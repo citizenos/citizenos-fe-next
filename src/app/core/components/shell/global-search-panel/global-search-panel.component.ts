@@ -332,9 +332,10 @@ export class GlobalSearchPanelComponent {
         return this.searchService.search(str, { include: include.join(','), limit: 2 });
       }),
       takeUntilDestroyed()
-    ).subscribe(data => {
-      if (!data) return;
-      this.searchResults.set(data.results ?? data);
+    ).subscribe((rawData: unknown) => {
+      if (!rawData) return;
+      const data = rawData as Record<string, Record<string, { count: number; rows: { id: string; name?: string; title?: string }[] }>>;
+      this.searchResults.set(data);
       this.showResults.set(true);
       const total = this.contexts.reduce((sum, ctx) =>
         sum + this.models.reduce((s, m) => s + (this.resultCount(ctx, m)), 0), 0);
@@ -377,8 +378,8 @@ export class GlobalSearchPanelComponent {
     if (!str) return;
     const include = `${context}.${model === 'topics' ? 'topic' : 'group'}`;
     const offset = this.resultRows(context, model).length;
-    this.searchService.search(str, { include, limit: 5, offset }).subscribe(data => {
-      const more = data.results ?? data;
+    this.searchService.search(str, { include, limit: 5, offset }).subscribe((rawData: unknown) => {
+      const more = rawData as Record<string, Record<string, { count: number; rows: { id: string; name?: string; title?: string }[] }>>;
       this.searchResults.update(prev => {
         const updated = { ...prev };
         if (!updated[context]) updated[context] = {};

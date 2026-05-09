@@ -11,7 +11,7 @@ describe('FeatureBoxComponent', () => {
   let component: FeatureBoxComponent;
   let fixture: ComponentFixture<FeatureBoxComponent>;
   let componentRef: ComponentRef<FeatureBoxComponent>;
-  let mockUserStore: any;
+  let mockUserStore: unknown;
 
   beforeEach(async () => {
     mockUserStore = {
@@ -26,12 +26,12 @@ describe('FeatureBoxComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(FeatureBoxComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
-    
+
     const translate = TestBed.inject(TranslateService);
     translate.use('en');
   });
@@ -69,7 +69,7 @@ describe('FeatureBoxComponent', () => {
 
   it('should navigate to login when clicking button and not authenticated', async () => {
     await setup('voting', 2);
-    
+
     const router = TestBed.inject(Router);
     const navigateSpy = vi.spyOn(router, 'navigate');
     mockUserStore.isAuthenticated.set(false);
@@ -82,7 +82,7 @@ describe('FeatureBoxComponent', () => {
 
   it('should navigate to create topic when authenticated', async () => {
     await setup('discussion', 2);
-    
+
     const router = TestBed.inject(Router);
     const navigateSpy = vi.spyOn(router, 'navigate');
     mockUserStore.isAuthenticated.set(true);

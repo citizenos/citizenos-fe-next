@@ -22,7 +22,7 @@ describe('StepInfoComponent', () => {
 
   function makeComp(group = baseGroup): StepInfoComponent {
     const comp = runInInjectionContext(injector, () => new StepInfoComponent());
-    (comp as any)._group = () => group;
+    (comp as unknown as { _group: () => unknown })._group = () => group;
     Object.defineProperty(comp, 'group', { value: () => group });
     return comp;
   }

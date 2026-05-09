@@ -9,6 +9,7 @@ import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
+import { Topic } from '../../../../../core/interfaces/topic';
 
 const mockIdea: Idea = {
   id: 'idea-1',
@@ -34,7 +35,7 @@ const baseData: IdeaDialogData = {
   topicId: 'topic-1',
   ideationId: 'ideation-1',
   ideaId: 'idea-1',
-  topic: { id: 'topic-1' } as any,
+  topic: { id: 'topic-1' } as unknown as Topic
 };
 
 const ideationServiceMock = {

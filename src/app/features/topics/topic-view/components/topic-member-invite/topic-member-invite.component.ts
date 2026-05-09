@@ -4,7 +4,7 @@ import { DatePipe, UpperCasePipe } from '@angular/common';
 import { take } from 'rxjs';
 
 import { Topic } from '../../../../../core/interfaces/topic';
-import { TopicInviteUserService } from '../../../../../core/services/topic-invite-user.service';
+import { TopicInviteUserService, TopicInvite } from '../../../../../core/services/topic-invite-user.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
@@ -26,8 +26,8 @@ import { TopicMemberInviteDeleteComponent } from '../topic-member-invite-delete/
 })
 export class TopicMemberInviteComponent {
   topic = input.required<Topic>();
-  invite = input.required<any>();
-  fields = input<any>();
+  invite = input.required<TopicInvite>();
+  fields = input<string[]>();
 
   deleteAllInvitesForUser = output<string>();
 

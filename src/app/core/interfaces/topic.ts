@@ -6,6 +6,10 @@ export interface TopicCreator {
   company?: string | null;
 }
 
+export interface TopicVoteCast {
+  options: { id: string; optionId?: string; selected?: boolean }[];
+}
+
 export interface TopicReport {
   id: string;
   type: string | null;
@@ -16,11 +20,20 @@ export interface TopicReport {
 
 export interface TopicVote {
   id: string;
-  votersCount: number;
-  type: string;
+  votersCount?: number;
+  type?: string;
   endsAt?: string | Date | null;
   reminderTime?: string | Date | null;
   reminderSent?: string | Date | null;
+  options?: { rows: { id: string; value: string; voteCount?: number; selected?: boolean; optionId?: string; ideaId?: string; winner?: boolean }[]; count?: number };
+  delegation?: { userId: string; toUserId: string; voteId: string; byProxy?: boolean } | null;
+  maxChoices?: number;
+  minChoices?: number;
+  authType?: string;
+  downloads?: { bdocFinal?: string; zipFinal?: string; [k: string]: unknown };
+  description?: string | null;
+  question?: string | null;
+  delegationIsAllowed?: boolean;
   [key: string]: unknown;
 }
 
@@ -44,6 +57,7 @@ export interface Topic {
   lastActivity: string | null;
   country: string | null;
   language: string | null;
+  contact?: string | null;
   members: { users: { count: number }; groups: { count: number } };
   voteId: string | null;
   vote?: TopicVote;

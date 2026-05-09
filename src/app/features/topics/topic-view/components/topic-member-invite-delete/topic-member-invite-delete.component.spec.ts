@@ -23,7 +23,7 @@ const MOCK_USER = {
 describe('TopicMemberInviteDeleteComponent', () => {
   let fixture: ComponentFixture<TopicMemberInviteDeleteComponent>;
   let component: TopicMemberInviteDeleteComponent;
-  let dialogRefMock: { close: ReturnType<typeof vi.fn>; afterClosed: () => any };
+  let dialogRefMock: { close: ReturnType<typeof vi.fn>; afterClosed: () => unknown };
 
   beforeEach(async () => {
     dialogRefMock = {

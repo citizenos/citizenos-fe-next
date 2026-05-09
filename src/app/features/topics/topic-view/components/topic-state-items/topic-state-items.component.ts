@@ -7,6 +7,8 @@ import { TopicArgumentService } from '../../../../../core/services/topic-argumen
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { Topic } from '../../../../../core/interfaces/topic';
+import { Ideation } from '../../../../../core/interfaces/ideation';
+import { Vote } from '../../../../../core/interfaces/vote';
 
 import { DomainIconComponent } from '../../../../../shared/components/domain-icon/domain-icon.component';
 
@@ -23,8 +25,8 @@ export class TopicStateItemsComponent {
   
   // These could be passed down, but the component could also query them if it has id.
   // For UI representation, let's allow passing signals or objects
-  ideation = model<any>(null);
-  vote = model<any>(null);
+  ideation = model<Ideation | null>(null);
+  vote = model<Vote | null>(null);
   eventCount = model<number>(0);
   
   // We can inject services to check logic
@@ -59,7 +61,7 @@ export class TopicStateItemsComponent {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
 
-  ideationDeadlineBar(ideation: any) {
+  ideationDeadlineBar(ideation: Ideation | null) {
     if (ideation && ideation.deadline) {
       const createdAt = new Date(ideation.createdAt).getTime();
       const deadline = new Date(ideation.deadline).getTime();

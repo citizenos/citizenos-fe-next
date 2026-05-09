@@ -1,6 +1,7 @@
 import { Component, input, output, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { Argument } from '../../../../../core/interfaces/discussion';
 import { DialogService } from '../../../../../shared/dialog';
 import { ArgumentWhyDialogComponent } from '../argument-why-dialog/argument-why-dialog.component';
 
@@ -13,7 +14,7 @@ import { ArgumentWhyDialogComponent } from '../argument-why-dialog/argument-why-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArgumentDeletedComponent {
-  argument = input.required<any>();
+  argument = input.required<Argument>();
   showDeletedArgument = output<boolean>();
 
   isArgumentVisible = signal(false);

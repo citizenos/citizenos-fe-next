@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgClass } from '@angular/common';
 import { take, combineLatest, switchMap } from 'rxjs';
 
+import { IdeaComment, IdeaReport } from '../../../../../core/interfaces/ideation';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
@@ -12,8 +13,8 @@ import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 
 export interface IdeaReplyReportModerateData {
-  argument: any;
-  report: any;
+  argument: IdeaComment;
+  report: IdeaReport;
   topicId: string;
   ideationId: string;
   ideaId: string;

@@ -1,6 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { BigGraphComponent } from './big-graph.component';
+import { signal } from '@angular/core';
 
 const mockRows = [
   { id: '1', value: 'Yes', voteCount: 10, winner: true },
@@ -15,7 +16,7 @@ describe('BigGraphComponent', () => {
     vi.clearAllMocks();
     TestBed.configureTestingModule({});
     component = TestBed.runInInjectionContext(() => new BigGraphComponent());
-    (component as any).options = vi.fn().mockReturnValue({ rows: mockRows });
+    (component as unknown as { options: unknown }).options = signal({ rows: mockRows });
   });
 
   it('should create', () => {
@@ -42,12 +43,12 @@ describe('BigGraphComponent', () => {
   });
 
   it('getVoteValuePercentage should return "0" when rows are empty', () => {
-    (component as any).options = vi.fn().mockReturnValue({ rows: [] });
+    (component as unknown as { options: unknown }).options = signal({ rows: [] });
     expect(component.getVoteValuePercentage(5)).toBe('0');
   });
 
   it('sortedOptions should handle options with equal voteCount', () => {
-    (component as any).options = vi.fn().mockReturnValue({
+    (component as unknown as { options: unknown }).options = signal({
       rows: [{ id: 'a', voteCount: 3 }, { id: 'b', voteCount: 3 }]
     });
     const sorted = component.sortedOptions();

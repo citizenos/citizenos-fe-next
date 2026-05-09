@@ -52,8 +52,8 @@ class MockDropdownComponent {}
 describe('IdeaReplyReportComponent', () => {
   let component: IdeaReplyReportComponent;
   let fixture: ComponentFixture<IdeaReplyReportComponent>;
-  let mockIdeaService: any;
-  let mockDialogRef: any;
+  let mockIdeaService: { reportIdeaComment: ReturnType<typeof vi.fn> };
+  let mockDialogRef: { close: ReturnType<typeof vi.fn> };
 
   const mockData: IdeaReplyReportData = {
     argument: { id: 'arg1', creator: { name: 'Test Author' }, text: 'Test text' },

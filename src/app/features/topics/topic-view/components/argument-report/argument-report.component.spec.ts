@@ -12,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
-class MockIconComponent { @Input() name = ''; @Input() size: any; }
+class MockIconComponent { @Input() name = ''; @Input() size: string | number = 24; }
 
 @Component({ selector: 'cos-button', standalone: true, template: '<button (click)="clicked.emit($event)"><ng-content></ng-content></button>' })
 class MockButtonComponent {

@@ -61,7 +61,7 @@ describe('GroupRequestTopicsDialogComponent', () => {
 
   it('removeTopic removes the topic', () => {
     const comp = makeComp();
-    const topic = { id: 't1', title: 'T1' } as any;
+    const topic = { id: 't1', title: 'T1' } as unknown as import('../../../../../core/interfaces/topic').Topic;
     comp.addTopic(topic);
     comp.removeTopic(topic);
     expect(comp.topicsToRequest()).toEqual([]);

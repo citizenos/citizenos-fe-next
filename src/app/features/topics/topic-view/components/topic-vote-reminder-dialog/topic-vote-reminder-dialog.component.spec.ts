@@ -5,6 +5,7 @@ import { TopicVoteReminderDialogComponent } from './topic-vote-reminder-dialog.c
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { UserStore } from '../../../../../core/state/user.store';
+import { Vote } from '../../../../../core/interfaces/vote';
 
 const mockUser = { id: 'u1', name: 'Alice' };
 const mockUserStore = { user: vi.fn(() => mockUser) };
@@ -13,7 +14,7 @@ describe('TopicVoteReminderDialogComponent', () => {
   const futureDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
   let component: TopicVoteReminderDialogComponent;
 
-  function setup(vote: any) {
+  function setup(vote: Partial<Vote>) {
     TestBed.configureTestingModule({
       providers: [
         { provide: DIALOG_DATA, useValue: { topic: { id: 't1' }, vote } },

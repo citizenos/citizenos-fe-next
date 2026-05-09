@@ -11,7 +11,7 @@ export interface TopicRequest {
   level: string;
   text?: string;
   status?: string;
-  topic?: Record<string, unknown>;
+  topic?: { id?: string; title?: string | null; visibility?: string };
 }
 
 @Injectable({ providedIn: 'root' })

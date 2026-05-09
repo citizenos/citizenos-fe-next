@@ -71,7 +71,7 @@ describe('TopicPreviewComponent', () => {
     component.topic.set(mockTopic);
     fixture.detectChanges();
     const metaValues = fixture.nativeElement.querySelectorAll('.meta-value');
-    const texts = Array.from(metaValues).map((el: any) => el.textContent.trim());
+    const texts = Array.from(metaValues).map((el) => (el as HTMLElement).textContent?.trim());
     expect(texts).toContain('public');
     expect(texts).toContain('Estonia');
     expect(texts).toContain('Estonian');

@@ -9,13 +9,13 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent {
   @Input() name = '';
-  @Input() size: any;
+  @Input() size: string | number = 24;
 }
 
 describe('PageListHeaderComponent', () => {
   let component: PageListHeaderComponent;
   let fixture: ComponentFixture<PageListHeaderComponent>;
-  let globalSearch: any;
+  let globalSearch: Partial<GlobalSearchService>;
 
   beforeEach(async () => {
     globalSearch = {

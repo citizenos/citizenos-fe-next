@@ -286,7 +286,7 @@ export class TopicCreateComponent implements OnInit {
       })
     ).subscribe((result) => {
       if (!result) return;
-      const savedTopic = (result as any).topic ?? result as Topic;
+      const savedTopic = (result as { topic?: Topic }).topic ?? result as Topic;
       this.isLoading.set(false);
       this.notification.showRaw('success', 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');
       this.router.navigate(['/topics', savedTopic.id]);

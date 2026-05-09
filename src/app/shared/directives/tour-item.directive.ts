@@ -9,7 +9,7 @@ import { TourService } from '../../core/services/tour.service';
 export class TourItemTemplateComponent implements AfterViewInit {
   @Input({ required: true }) data!: { tourid: string; index: number };
   @ViewChild('template') template?: ElementRef;
-  
+
   private tourService = inject(TourService);
 
   ngAfterViewInit() {
@@ -26,21 +26,21 @@ export class TourItemTemplateComponent implements AfterViewInit {
 })
 export class TourItemDirective implements OnInit {
   @Input('cosTourItem') data!: { tourid: string | string[]; index: number | number[]; position: string | string[] };
-  
+
   private el = inject(ElementRef);
   private tourService = inject(TourService);
 
   ngOnInit(): void {
     const ids = Array.isArray(this.data.tourid) ? this.data.tourid : [this.data.tourid];
-    
+
     ids.forEach((id, index) => {
       const itemIndex = this.getValue(this.data.index, index);
       const itemPosition = this.getValue(this.data.position, index);
-      this.tourService.register(id, itemIndex, this.el, itemPosition);
+      this.tourService.register(id, itemIndex as number, this.el, itemPosition as string);
     });
   }
 
-  private getValue(item: any, index: number) {
+  private getValue(item: string | number | string[] | number[], index: number) {
     if (Array.isArray(item)) {
       return item[index] !== undefined ? item[index] : item[0];
     }

@@ -64,9 +64,9 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
     return this.configStore.api.baseUrl();
   }
 
-  loadIdeation(params?: TopicIdeationParams): Observable<Ideation[]> {
+  loadIdeation(params?: TopicIdeationParams): Observable<{ rows: Ideation[]; countTotal: number }> {
     return this.loadIdeations$.pipe(
-      exhaustMap(() => this.getItems(params)),
+      exhaustMap(() => this.getItems(params ?? this.params.value)),
       shareReplay(1)
     );
   }
@@ -77,7 +77,7 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
       .set('offset', String(params.offset ?? 0));
 
     Object.keys(params).forEach(key => {
-      const val = (params as Record<string, ParamValue>)[key];
+      const val = (params as unknown as Record<string, ParamValue>)[key];
       if (key !== 'limit' && key !== 'offset' && key !== 'topicId' && key !== 'ideationId' && val !== null) {
         httpParams = httpParams.set(key, String(val));
       }
@@ -92,7 +92,7 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
 
   query(params: TopicIdeationParams): Observable<Ideation[]> {
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations`);
-    return this.http.get<ApiResponse<Ideation[]>>(path, { withCredentials: true, params: params as Record<string, ParamValue>, observe: 'body', responseType: 'json' })
+    return this.http.get<ApiResponse<Ideation[]>>(path, { withCredentials: true, params: params as unknown as Record<string, ParamValue>, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 

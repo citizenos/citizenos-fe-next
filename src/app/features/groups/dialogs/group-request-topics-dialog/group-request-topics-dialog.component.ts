@@ -31,18 +31,18 @@ export class GroupRequestTopicsDialogComponent {
   group = this.data.group;
 
   topicsToRequest = signal<Topic[]>([]);
-  searchResults = signal<any[]>([]);
+  searchResults = signal<Topic[]>([]);
   message = signal('');
   noTopicsSelected = signal(false);
 
   onSearch(str: string) {
     if (str.length < 2) { this.searchResults.set([]); return; }
     this.searchService.search(str, { include: 'my.topic', 'my.topic.level': 'admin' }).pipe(
-      switchMap(data => of(data?.results?.my?.topics?.rows ?? []))
+      switchMap((data: unknown) => of((data as { results?: { my?: { topics?: { rows: Topic[] } } } })?.results?.my?.topics?.rows ?? []))
     ).subscribe(rows => this.searchResults.set(rows));
   }
 
-  addTopic(topic: any) {
+  addTopic(topic: Topic) {
     this.searchResults.set([]);
     if (!topic?.id) return;
     if (!this.topicsToRequest().find(t => t.id === topic.id)) {
@@ -58,7 +58,7 @@ export class GroupRequestTopicsDialogComponent {
     const topics = this.topicsToRequest();
     if (!topics.length) { this.noTopicsSelected.set(true); return; }
 
-    const requests: Record<string, any> = {};
+    const requests: Record<string, Observable<unknown>> = {};
     topics.forEach(topic => {
       requests[topic.id] = this.requestService.request(this.group.id, topic.id, 'read', this.message() || undefined);
     });

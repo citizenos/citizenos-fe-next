@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';
 import { ItemsListService, ListParams } from './items-list.service';
+import { Topic } from '../interfaces/topic';
 
 export interface UserTopicParams extends ListParams {
   statuses?: string[];

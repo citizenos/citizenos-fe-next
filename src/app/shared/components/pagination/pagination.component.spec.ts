@@ -8,7 +8,7 @@ import { IconComponent } from '../icon/icon.component';
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent {
   @Input() name = '';
-  @Input() size: any;
+  @Input() size: string | number = 24;
 }
 
 describe('PaginationComponent', () => {

@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 
+import { Argument } from '../../../../../core/interfaces/discussion';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { UserStore } from '../../../../../core/state/user.store';
@@ -17,7 +18,7 @@ import { UserStore } from '../../../../../core/state/user.store';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArgumentReplyComponent {
-  argument = input.required<any>();
+  argument = input.required<Argument>();
   topicId = input.required<string>();
   showReplyChange = output<boolean>();
 
@@ -27,7 +28,7 @@ export class ArgumentReplyComponent {
   userStore = inject(UserStore);
 
   replyText = signal('');
-  errors = signal<any>(null);
+  errors = signal<{ text?: string[] } | null>(null);
 
   readonly ARGUMENT_TYPES_MAXLENGTH = this.argumentService.ARGUMENT_TYPES_MAXLENGTH;
 

@@ -4,6 +4,7 @@ import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
 
+import { Argument } from '../../../../../core/interfaces/discussion';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 
@@ -17,7 +18,7 @@ import { InputComponent } from '../../../../../shared/components/input/input.com
 })
 export class EditArgumentComponent implements OnInit {
   topicId = input.required<string>();
-  argument = input.required<any>();
+  argument = input.required<Argument>();
   showEdit = output<boolean | null>();
 
   private argumentService = inject(TopicArgumentService);
@@ -28,7 +29,7 @@ export class EditArgumentComponent implements OnInit {
   editSubject = signal('');
   editText = signal('');
   editType = signal('');
-  errors: any = null;
+  errors: Record<string, string[]> | null = null;
 
   ngOnInit() {
     const arg = this.argument();

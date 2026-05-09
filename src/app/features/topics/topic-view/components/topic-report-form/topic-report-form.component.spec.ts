@@ -17,7 +17,7 @@ class MockIconComponent { @Input() name = ''; @Input() size = 24; }
 @Component({ selector: 'cos-button', standalone: true, template: '<ng-content></ng-content>' })
 class MockButtonComponent { @Input() variant = ''; @Input() isDisabled = false; }
 @Component({ selector: 'cos-dropdown', standalone: true, template: '' })
-class MockDropdownComponent { @Input() items: any[] = []; }
+class MockDropdownComponent { @Input() items: { value: string; label?: string }[] = []; }
 
 const MOCK_TOPIC: Topic = {
   id: 'topic-1', title: 'Test', intro: null, description: '', status: 'inProgress',

@@ -13,6 +13,8 @@ import { Group } from '../../../core/interfaces/group';
 import { UserGroupService } from '../../../core/services/user-group.service';
 import { GroupInviteUserService } from '../../../core/services/group-invite-user.service';
 import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
+import { GroupMember } from '../../../core/services/group-member-user.service';
+import { Topic } from '../../../core/interfaces/topic';
 import { NotificationService } from '../../../core/services/notification.service';
 import { StepInfoComponent } from './components/step-info/step-info.component';
 import { StepSettingsComponent } from './components/step-settings/step-settings.component';
@@ -134,9 +136,10 @@ export class GroupCreateComponent {
         );
       }),
       switchMap(created => {
-        const users: any[] = groupData.members?.users ?? [];
-        const topics: any[] = groupData.members?.topics?.rows ?? [];
-        const obs$: Observable<any>[] = [];
+        const members = groupData.members as unknown as { users: GroupMember[]; topics: { rows: Topic[] } };
+        const users = members?.users ?? [];
+        const topics = members?.topics?.rows ?? [];
+        const obs$: Observable<unknown>[] = [];
 
         if (users.length) {
           obs$.push(this.groupInviteUserService.invite(created.id, users.map(u => ({

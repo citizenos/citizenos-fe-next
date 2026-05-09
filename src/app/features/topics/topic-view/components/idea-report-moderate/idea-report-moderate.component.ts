@@ -4,14 +4,16 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
 
+import { IdeaReport } from '../../../../../core/interfaces/ideation';
+import { Idea } from '../../../../../core/interfaces/idea';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { DIALOG_DATA, DialogCloseDirective, DialogService } from '../../../../../shared/dialog';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 
 interface IdeaReportModerateData {
-  idea?: any;
-  report: any;
+  idea?: Idea;
+  report: IdeaReport;
   topicId: string;
   ideationId: string;
   ideaId: string;

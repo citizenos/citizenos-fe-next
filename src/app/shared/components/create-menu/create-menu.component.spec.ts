@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 @Component({ template: '', standalone: true })
 class EmptyComponent {}
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (globalThis as any).ResizeObserver = class {
   observe() { return; }
   unobserve() { return; }

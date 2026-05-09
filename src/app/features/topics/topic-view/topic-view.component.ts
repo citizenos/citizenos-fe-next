@@ -30,6 +30,7 @@ import { TopicVoteCastComponent } from './components/topic-vote-cast/topic-vote-
 import { TopicMilestonesComponent } from './components/topic-milestones/topic-milestones.component';
 
 import { Topic } from '../../../core/interfaces/topic';
+import { TopicAttachment } from '../../../core/services/topic.service';
 
 @Component({
   selector: 'app-topic-view',
@@ -135,7 +136,7 @@ export class TopicViewComponent implements OnInit {
 
   wWidth = signal<number>(isPlatformBrowser(this.platformId) ? window.innerWidth : 1280);
 
-  navigation = signal<{ title: string, link: any[] }>({
+  navigation = signal<{ title: string, link: unknown[] }>({
     title: 'DEFAULT.NAV.HEADING_TOPICS',
     link: ['/']
   });
@@ -300,7 +301,7 @@ export class TopicViewComponent implements OnInit {
         closeBtn: 'MODALS.TOPIC_MEMBER_USER_LEAVE_CONFIRM_BTN_NO'
       }
     });
-    leaveDialog.afterClosed().subscribe((result: boolean | undefined) => {
+    leaveDialog.afterClosed().subscribe((result: unknown) => {
       if (result === true) {
         this.topicMemberUserService.delete(topic.id, this.userStore.user()!.id)
           .pipe(take(1))
@@ -348,7 +349,7 @@ export class TopicViewComponent implements OnInit {
         closeBtn: 'MODALS.TOPIC_DUPLICATE_CONFIRM_BTN_NO'
       }
     });
-    confirm.afterClosed().subscribe((result: boolean | undefined) => {
+    confirm.afterClosed().subscribe((result: unknown) => {
       if (result === true) {
         this.topicService.duplicate(topic)
           .pipe(take(1))

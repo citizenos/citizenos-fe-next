@@ -18,7 +18,7 @@ describe('StepVoteSettingsComponent (business logic)', () => {
     TestBed.configureTestingModule({});
     component = TestBed.runInInjectionContext(() => new StepVoteSettingsComponent());
     // Mock the required input signal
-    vi.spyOn(component, 'vote').mockReturnValue(defaultVote as any);
+    vi.spyOn(component, 'vote').mockReturnValue(defaultVote as unknown as Vote);
   });
 
   it('should create', () => {
@@ -44,7 +44,7 @@ describe('StepVoteSettingsComponent (business logic)', () => {
     vi.spyOn(component, 'vote').mockReturnValue({
       question: 'Q?',
       options: [{ value: 'Y' }, { value: 'N' }]
-    } as any);
+    } as unknown as Vote);
     expect(component.isValid()).toBe(true);
   });
 });

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { take, combineLatest } from 'rxjs';
 
 import { UserStore } from '../../../core/state/user.store';
-import { TopicInviteUserService } from '../../../core/services/topic-invite-user.service';
+import { TopicInviteUserService, TopicInvite } from '../../../core/services/topic-invite-user.service';
 import { DialogService } from '../../../shared/dialog';
 import { InvitationDialogComponent, InviteDialogData } from '../../../shared/components/invitation-dialog/invitation-dialog.component';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -57,7 +57,7 @@ export class TopicInvitationComponent implements OnInit {
           };
 
           this.router.navigate(['dashboard']);
-          const invitationDialog = this.dialog.open(InvitationDialogComponent, { data: data as any });
+          const invitationDialog = this.dialog.open(InvitationDialogComponent, { data });
 
           invitationDialog.afterClosed().pipe(take(1)).subscribe((res) => {
             if (res !== true) return;
@@ -102,7 +102,7 @@ export class TopicInvitationComponent implements OnInit {
     });
   }
 
-  private joinTopic(topicInvite: any) {
+  private joinTopic(topicInvite: TopicInvite) {
     this.topicInviteUserService.accept({
       topicId: topicInvite.topicId,
       inviteId: topicInvite.id

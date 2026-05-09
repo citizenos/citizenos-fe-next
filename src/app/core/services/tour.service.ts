@@ -3,7 +3,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { combineLatest, of, switchMap } from 'rxjs';
 
 export interface TourItem {
-  index: number;
+  index: number | string;
   elements: { el: ElementRef; position: string }[];
   position: string;
 }
@@ -16,7 +16,7 @@ export class TourService {
   showTour = signal(false);
   activeTour = signal('');
   activeItem = signal(0);
-  
+
   private overlay = document.createElement('div');
   templates = signal<Record<string, { index: number; template: unknown }[]>>({});
 
@@ -41,7 +41,7 @@ export class TourService {
         const item = { ...tourItems[itemIndex] };
         const elements = [...item.elements];
         const elIdx = elements.findIndex(e => e.el.nativeElement.id === element.nativeElement.id);
-        
+
         if (elIdx !== -1) {
           elements[elIdx] = { el: element, position };
         } else {
@@ -59,7 +59,7 @@ export class TourService {
     this.templates.update(prev => {
       const updated = { ...prev };
       const templateData = Array.isArray(template) ? [...template] : [template];
-      
+
       if (!updated[id]) {
         updated[id] = [{ index, template: templateData }];
         return updated;
@@ -130,7 +130,7 @@ export class TourService {
     const tourId = this.activeTour();
     const index = this.activeItem();
     const tourItems = this.items()[tourId];
-    
+
     if (tourItems) {
       const itemIndexes = tourItems.map(item => item.index).sort((a, b) => a - b);
       const curIdxInSorted = itemIndexes.indexOf(index);
@@ -146,7 +146,7 @@ export class TourService {
     const tourId = this.activeTour();
     const index = this.activeItem();
     const tourItems = this.items()[tourId];
-    
+
     if (tourItems) {
       const itemIndexes = tourItems.map(item => item.index).sort((a, b) => a - b);
       const curIdxInSorted = itemIndexes.indexOf(index);
