@@ -6,7 +6,8 @@ import { TopicIdeationService } from '../../../../../core/services/topic-ideatio
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Idea } from '../../../../../core/interfaces/idea';
-import { take, forkJoin } from 'rxjs';
+import { IdeationFolder } from '../../../../../core/interfaces/ideation';
+import { take, forkJoin, Observable } from 'rxjs';
 
 interface AddIdeaFolderDialogData {
   topicId: string;
@@ -243,7 +244,7 @@ export class AddIdeaFolderComponent {
     name: new FormControl('', [Validators.required, Validators.maxLength(254)]),
   });
 
-  folders = signal<any[]>([]);
+  folders = signal<IdeationFolder[]>([]);
   selectedFolderIds = signal<Set<string>>(new Set());
   initialFolderIds = new Set<string>();
   loading = signal(false);
@@ -272,7 +273,7 @@ export class AddIdeaFolderComponent {
     }).pipe(take(1)).subscribe({
       next: (res) => {
         this.folders.set(res.allFolders.rows);
-        const folderIds = res.ideaFolders.rows.map((f: any) => f.id);
+        const folderIds = res.ideaFolders.rows.map((f: IdeationFolder) => f.id);
         this.initialFolderIds = new Set(folderIds);
         this.selectedFolderIds.set(new Set(folderIds));
         this.loadingData.set(false);
@@ -284,7 +285,7 @@ export class AddIdeaFolderComponent {
     });
   }
 
-  toggleFolder(folder: any) {
+  toggleFolder(folder: IdeationFolder) {
     const selected = new Set(this.selectedFolderIds());
     if (selected.has(folder.id)) {
       selected.delete(folder.id);
@@ -294,7 +295,7 @@ export class AddIdeaFolderComponent {
     this.selectedFolderIds.set(selected);
   }
 
-  isFolderSelected(folder: any): boolean {
+  isFolderSelected(folder: IdeationFolder): boolean {
     return this.selectedFolderIds().has(folder.id);
   }
 
@@ -317,7 +318,7 @@ export class AddIdeaFolderComponent {
     const foldersToAdd = Array.from(currentSelected).filter(id => !this.initialFolderIds.has(id));
     const foldersToRemove = Array.from(this.initialFolderIds).filter(id => !currentSelected.has(id));
 
-    const actions: any[] = [];
+    const actions: Observable<unknown>[] = [];
 
     // 1. Handle existing folder changes
     if (foldersToAdd.length > 0) {

@@ -32,17 +32,20 @@ export class GroupAddTopicsDialogComponent {
   LEVELS = LEVELS;
 
   topicsToAdd = signal<(Topic & { selectedLevel: string })[]>([]);
-  searchResults = signal<any[]>([]);
+  searchResults = signal<Topic[]>([]);
   noTopicsSelected = signal(false);
 
   onSearch(str: string) {
     if (str.length < 2) { this.searchResults.set([]); return; }
     this.searchService.search(str, { include: 'my.topic', 'my.topic.level': 'admin' }).pipe(
-      switchMap(data => of(data?.results?.my?.topics?.rows ?? []))
-    ).subscribe(rows => this.searchResults.set(rows));
+      switchMap((data: unknown) => {
+        const res = data as { results?: { my?: { topics?: { rows: Topic[] } } } };
+        return of(res.results?.my?.topics?.rows ?? []);
+      })
+    ).subscribe((rows: Topic[]) => this.searchResults.set(rows));
   }
 
-  addTopic(topic: any) {
+  addTopic(topic: Topic) {
     this.searchResults.set([]);
     if (!topic?.id) return;
     const alreadyAdded = this.topicsToAdd().find(t => t.id === topic.id);
@@ -51,11 +54,11 @@ export class GroupAddTopicsDialogComponent {
     }
   }
 
-  removeTopic(topic: any) {
+  removeTopic(topic: Topic) {
     this.topicsToAdd.update(t => t.filter(x => x.id !== topic.id));
   }
 
-  updateLevel(topic: any, level: string) {
+  updateLevel(topic: Topic & { selectedLevel: string }, level: string) {
     this.topicsToAdd.update(t => t.map(x => x.id === topic.id ? { ...x, selectedLevel: level } : x));
   }
 
@@ -63,7 +66,7 @@ export class GroupAddTopicsDialogComponent {
     const topics = this.topicsToAdd();
     if (!topics.length) { this.noTopicsSelected.set(true); return; }
 
-    const requests: Record<string, any> = {};
+    const requests: Record<string, Observable<unknown>> = {};
     topics.forEach(topic => {
       requests[topic.id] = this.groupMemberTopicService.addTopic(this.group.id, topic.id, topic.selectedLevel);
     });

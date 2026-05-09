@@ -22,6 +22,22 @@ import { Group } from '../../../../core/interfaces/group';
 import { UserStore } from '../../../../core/state/user.store';
 import { of, switchMap, take } from 'rxjs';
 
+export interface GroupInviteUser {
+  userId: string;
+  name?: string;
+  email?: string;
+  level: string;
+  id?: string;
+}
+
+export interface SearchResultUser {
+  id?: string;
+  userId?: string;
+  name: string;
+  email?: string;
+  imageUrl?: string;
+}
+
 const EMAIL_SEPARATOR = /[;,\s]/ig;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 function isEmail(s: string) { return EMAIL_RE.test(s.trim()); }
@@ -59,9 +75,9 @@ export class GroupInviteDialogComponent implements OnInit {
   inviteMessage = signal('');
   inviteMessageMaxLength = 250;
 
-  pendingUsers = signal<any[]>([]);
+  pendingUsers = signal<GroupInviteUser[]>([]);
   invalidEmails = signal<string[]>([]);
-  searchResults = signal<any[]>([]);
+  searchResults = signal<SearchResultUser[]>([]);
   noUsersSelected = signal(false);
 
   join = signal({ token: this.data.group.join?.token ?? null, level: this.data.group.join?.level ?? this.LEVELS[0] });
@@ -81,21 +97,21 @@ export class GroupInviteDialogComponent implements OnInit {
         if (!rows.length && isEmail(str)) return of([{ name: str, userId: str, email: str }]);
         return of(rows);
       })
-    ).subscribe(rows => this.searchResults.set(rows));
+    ).subscribe((rows: SearchResultUser[]) => this.searchResults.set(rows));
   }
 
-  addMember(user?: any) {
+  addMember(user?: SearchResultUser) {
     this.searchResults.set([]);
     if (!user) return;
     const id = user.userId ?? user.id;
     if (!this.pendingUsers().find(u => (u.userId ?? u.id) === id)) {
-      this.pendingUsers.update(u => [...u, { ...user, userId: id, level: this.selectedLevel() }]);
+      this.pendingUsers.update(u => [...u, { ...user, userId: id, level: this.selectedLevel() } as GroupInviteUser]);
     }
   }
 
   addEmail(email: string) {
     const emails = email.replace(EMAIL_SEPARATOR, ',').split(',').map(e => e.trim()).filter(e => e);
-    const valid: any[] = [];
+    const valid: GroupInviteUser[] = [];
     const invalid: string[] = [];
     emails.forEach(e => {
       if (isEmail(e)) {
@@ -110,7 +126,7 @@ export class GroupInviteDialogComponent implements OnInit {
     if (invalid.length) this.invalidEmails.update(inv => [...inv, ...invalid]);
   }
 
-  removeMember(user: any) {
+  removeMember(user: GroupInviteUser) {
     this.pendingUsers.update(u => u.filter(m => m !== user));
   }
 
@@ -118,7 +134,7 @@ export class GroupInviteDialogComponent implements OnInit {
     this.invalidEmails.update(inv => inv.filter((_, i) => i !== index));
   }
 
-  updateLevel(user: any, level: string) {
+  updateLevel(user: GroupInviteUser, level: string) {
     this.pendingUsers.update(u => u.map(m => m === user ? { ...m, level } : m));
   }
 

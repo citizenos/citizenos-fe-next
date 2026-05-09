@@ -16,8 +16,8 @@ import { A11yModule } from '@angular/cdk/a11y';
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent {
   @Input() name = '';
-  @Input() size: any;
-  @Input() color: any;
+  @Input() size: number | string | undefined;
+  @Input() color: string | undefined;
 }
 
 @Component({ selector: 'cos-button', standalone: true, template: '<button (click)="clicked.emit($event)"><ng-content></ng-content></button>' })
@@ -25,7 +25,7 @@ class MockButtonComponent {
   @Input() variant = 'primary';
   @Input() size = 'md';
   @Input() type = 'button';
-  @Input() icon: any;
+  @Input() icon: string | undefined;
   @Input() isLoading = false;
   @Input() isDisabled = false;
   clicked = output<Event>();
@@ -33,15 +33,15 @@ class MockButtonComponent {
 
 @Component({ selector: 'cos-toggle', standalone: true, template: '' })
 class MockToggleComponent {
-  @Input() model: any;
-  @Input() textOn: any;
-  @Input() textOff: any;
-  modelChange = output<any>();
+  @Input() model: boolean | undefined;
+  @Input() textOn: string | undefined;
+  @Input() textOff: string | undefined;
+  modelChange = output<boolean>();
 }
 
 @Component({ selector: 'cos-dropdown', standalone: true, template: '<ng-content select="[selection]"></ng-content><ng-content select="[options]"></ng-content>' })
 class MockDropdownComponent {
-  @Input() options: any;
+  @Input() options: unknown;
 }
 
 @Component({ selector: 'cos-tooltip', standalone: true, template: '<ng-content></ng-content>' })
@@ -49,7 +49,7 @@ class MockTooltipComponent {
   @Input() text = '';
   @Input() title = '';
   @Input() description = '';
-  @Input() pos: any;
+  @Input() pos: string | undefined;
   @Input() noIcon = false;
 }
 

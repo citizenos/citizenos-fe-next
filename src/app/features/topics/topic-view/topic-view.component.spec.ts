@@ -19,6 +19,7 @@ import { TopicIdeationService } from '../../../core/services/topic-ideation.serv
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { TopicEventService } from '../../../core/services/topic-event.service';
 import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
+import { Topic } from '../../../core/interfaces/topic';
 
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
@@ -133,7 +134,7 @@ describe('TopicViewComponent', () => {
     permission: { level: 'admin' },
     members: { users: { count: 0 }, groups: { count: 0 } },
     categories: []
-  };
+  } as unknown as Topic;
 
   const mockTopicService = {
     STATUSES: {

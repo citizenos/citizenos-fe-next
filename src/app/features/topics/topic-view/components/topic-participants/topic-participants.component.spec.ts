@@ -7,6 +7,7 @@ import { TopicMemberGroupService } from '../../../../../core/services/topic-memb
 import { TopicInviteUserService } from '../../../../../core/services/topic-invite-user.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
+import { Topic } from '../../../../../core/interfaces/topic';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UpperCasePipe } from '@angular/common';
@@ -16,21 +17,21 @@ class MockNotificationsComponent {}
 
 @Component({ selector: 'app-topic-member-user', standalone: true, template: '' })
 class MockTopicMemberUserComponent {
-  @Input() member: any;
-  @Input() topic: any;
+  @Input() member: unknown;
+  @Input() topic: Topic | null = null;
   @Input() withEmail = true;
 }
 
 @Component({ selector: 'app-topic-member-group', standalone: true, template: '' })
 class MockTopicMemberGroupComponent {
-  @Input() topic: any;
-  @Input() group: any;
+  @Input() topic: Topic | null = null;
+  @Input() group: unknown;
 }
 
 @Component({ selector: 'app-topic-member-invite', standalone: true, template: '' })
 class MockTopicMemberInviteComponent {
-  @Input() invite: any;
-  @Input() topic: any;
+  @Input() invite: unknown;
+  @Input() topic: Topic | null = null;
 }
 
 @Component({ selector: 'cos-input', standalone: true, template: '<ng-content></ng-content>' })

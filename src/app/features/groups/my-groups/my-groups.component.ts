@@ -260,15 +260,15 @@ export class MyGroupsComponent {
     const f = this.selectedFilters();
 
     if (f['visibility'] === 'favourite') {
-      this.groupService.setParam('favourite' as any, true);
+      this.groupService.setParam('favourite', true);
     } else if (f['visibility']) {
-      this.groupService.setParam('visibility' as any, f['visibility']);
+      this.groupService.setParam('visibility', f['visibility']);
     }
 
     if (f['engagement'] === 'iCreated') {
       const user = this.userStore.user();
       if (user?.id) {
-        this.groupService.setParam('creatorId' as any, user.id);
+        this.groupService.setParam('creatorId', user.id);
       }
     }
 
@@ -277,8 +277,8 @@ export class MyGroupsComponent {
       this.groupService.setParam('order', 'desc');
     }
 
-    if (f['country']) this.groupService.setParam('country' as any, f['country']);
-    if (f['language']) this.groupService.setParam('language' as any, f['language']);
+    if (f['country']) this.groupService.setParam('country', f['country']);
+    if (f['language']) this.groupService.setParam('language', f['language']);
     if (this.searchValue()) this.groupService.setParam('search', this.searchValue());
   }
 

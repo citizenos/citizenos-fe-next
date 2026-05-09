@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Group } from '../../../../../core/interfaces/group';
 import { SearchService } from '../../../../../core/services/search.service';
+import { SearchResultUser } from '../../../../../core/interfaces/user';
+import { GroupMember } from '../../../../../core/services/group-member-user.service';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
@@ -25,8 +27,8 @@ export class StepInviteComponent implements OnInit {
   LEVELS = ['read', 'admin'];
 
   searchString = signal('');
-  searchResults = signal<any[]>([]);
-  selectedUsers = signal<any[]>([]);
+  searchResults = signal<SearchResultUser[]>([]);
+  selectedUsers = signal<Partial<GroupMember>[]>([]);
   inviteMessage = signal('');
 
   ngOnInit() {
@@ -38,29 +40,30 @@ export class StepInviteComponent implements OnInit {
   onSearch(str: string) {
     this.searchString.set(str);
     if (str.length >= 2) {
-      this.searchService.searchUsers(str).subscribe(res => {
-        this.searchResults.set(res.results?.public?.users?.rows ?? []);
+      this.searchService.searchUsers(str).subscribe((res: unknown) => {
+        const data = res as { results?: { public?: { users?: { rows: SearchResultUser[] } } } };
+        this.searchResults.set(data.results?.public?.users?.rows ?? []);
       });
     } else {
       this.searchResults.set([]);
     }
   }
 
-  addUser(user: any) {
+  addUser(user: SearchResultUser) {
     if (!this.selectedUsers().find(u => u.id === user.id || u.email === user.email)) {
-      this.selectedUsers.update(users => [...users, { ...user, level: 'read' }]);
+      this.selectedUsers.update(users => [...users, { ...user, level: 'read' } as Partial<GroupMember>]);
       this.emitChange();
     }
     this.searchString.set('');
     this.searchResults.set([]);
   }
 
-  removeUser(user: any) {
+  removeUser(user: Partial<GroupMember>) {
     this.selectedUsers.update(users => users.filter(u => u.id !== user.id && u.email !== user.email));
     this.emitChange();
   }
 
-  updateLevel(user: any, level: string) {
+  updateLevel(user: Partial<GroupMember>, level: string) {
     this.selectedUsers.update(users => users.map(u =>
       (u.id === user.id || u.email === user.email) ? { ...u, level } : u
     ));

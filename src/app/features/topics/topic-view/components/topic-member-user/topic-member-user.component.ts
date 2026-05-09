@@ -6,7 +6,7 @@ import { take } from 'rxjs';
 
 import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
-import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
+import { TopicMemberUserService, TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -29,8 +29,8 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
 })
 export class TopicMemberUserComponent implements OnInit {
   topic = input.required<Topic>();
-  member = input.required<any>();
-  fields = input<any>();
+  member = input.required<TopicMemberUser>();
+  fields = input<string[]>();
   withEmail = input<boolean>(true);
 
   readonly topicService = inject(TopicService);

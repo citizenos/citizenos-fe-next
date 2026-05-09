@@ -7,14 +7,18 @@ import { GroupDetailService } from '../../../../../core/services/group-detail.se
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { of, throwError } from 'rxjs';
 
-const mockGroup: any = { id: 'g1', permission: { level: 'admin' } };
-const mockUser: any = { name: 'Invited User', email: 'invited@test.com', invite: { id: 'inv1', level: 'read' } };
+import { Group } from '../../../../../core/interfaces/group';
+import { GroupMember } from '../../../../../core/services/group-member-user.service';
+import { signal } from '@angular/core';
+
+const mockGroup: Partial<Group> = { id: 'g1', permission: { level: 'admin' } };
+const mockUser: GroupMember = { id: 'u1', name: 'Invited User', email: 'invited@test.com', level: 'read', invite: { id: 'inv1', level: 'read' } };
 
 describe('GroupInviteUserComponent', () => {
   let component: GroupInviteUserComponent;
-  let inviteUserService: any;
-  let groupDetailService: any;
-  let dialog: any;
+  let inviteUserService: Partial<GroupInviteUserService>;
+  let groupDetailService: Partial<GroupDetailService>;
+  let dialog: Partial<DialogService>;
 
   beforeEach(() => {
     inviteUserService = {
@@ -38,8 +42,9 @@ describe('GroupInviteUserComponent', () => {
       ]
     });
     component = TestBed.runInInjectionContext(() => new GroupInviteUserComponent());
-    (component as any).user = vi.fn().mockReturnValue(mockUser);
-    (component as any).group = vi.fn().mockReturnValue(mockGroup);
+    component = TestBed.runInInjectionContext(() => new GroupInviteUserComponent());
+    (component as unknown as { user: unknown }).user = signal(mockUser);
+    (component as unknown as { group: unknown }).group = signal(mockGroup);
   });
 
   it('should create', () => {
@@ -63,7 +68,7 @@ describe('GroupInviteUserComponent', () => {
 
     it('calls updateInvite and updates invite.level', () => {
       const user = { ...mockUser, invite: { id: 'inv1', level: 'read' } };
-      (component as any).user = vi.fn().mockReturnValue(user);
+      (component as unknown as { user: unknown }).user = signal(user);
       component.doUpdateInviteUser('admin');
       expect(inviteUserService.updateInvite).toHaveBeenCalledWith('g1', 'inv1', 'admin');
       expect(user.invite.level).toBe('admin');
@@ -72,7 +77,7 @@ describe('GroupInviteUserComponent', () => {
     it('rolls back invite.level on error', () => {
       inviteUserService.updateInvite = vi.fn().mockReturnValue(throwError(() => new Error('fail')));
       const user = { ...mockUser, invite: { id: 'inv1', level: 'read' } };
-      (component as any).user = vi.fn().mockReturnValue(user);
+      (component as unknown as { user: unknown }).user = signal(user);
       component.doUpdateInviteUser('admin');
       expect(user.invite.level).toBe('read');
     });

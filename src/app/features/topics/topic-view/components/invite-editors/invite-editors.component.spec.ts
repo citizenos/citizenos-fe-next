@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Directive, Input } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,13 +14,13 @@ import { SearchService } from '../../../../../core/services/search.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 
 @Component({ selector: 'cos-input', template: '<ng-content/>', standalone: true })
-class InputStub { @Input() placeholder: any; }
+class InputStub { @Input() placeholder: string | undefined; }
 
 @Component({ selector: 'cos-initials', template: '', standalone: true })
-class InitialsStub { @Input() name: any; }
+class InitialsStub { @Input() name: string | undefined; }
 
 @Component({ selector: 'cos-pagination', template: '', standalone: true })
-class PaginationStub { @Input() totalPages: any; @Input() page: any; }
+class PaginationStub { @Input() totalPages: number | undefined; @Input() page: number | undefined; }
 
 @Directive({ selector: '[cosDropdown]', standalone: true })
 class CosDropdownStub {}
@@ -32,13 +32,13 @@ class DialogCloseStub {}
 const mockTopic = { id: 'topic1', title: 'Test Topic' };
 
 describe('InviteEditorsComponent', () => {
-  let fixture: any;
+  let fixture: ComponentFixture<InviteEditorsComponent>;
   let component: InviteEditorsComponent;
-  let topicService: any;
-  let inviteUserService: any;
-  let searchService: any;
-  let notification: any;
-  let dialogRef: any;
+  let topicService: Partial<TopicService>;
+  let inviteUserService: Partial<TopicInviteUserService>;
+  let searchService: Partial<SearchService>;
+  let notification: Partial<NotificationService>;
+  let dialogRef: Partial<DialogRef<InviteEditorsComponent>>;
 
   beforeEach(() => TestBed.resetTestingModule());
 

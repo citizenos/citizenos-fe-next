@@ -20,7 +20,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent {
   @Input() name = '';
-  @Input() size: any;
+  @Input() size?: string | number;
 }
 
 @Component({ selector: 'cos-button', standalone: true, template: '<button (click)="clicked.emit($event)"><ng-content></ng-content></button>' })
@@ -28,7 +28,7 @@ class MockButtonComponent {
   @Input() variant = 'primary';
   @Input() size = 'md';
   @Input() type = 'button';
-  @Input() icon: any;
+  @Input() icon?: string;
   @Input() isLoading = false;
   @Input() isDisabled = false;
   clicked = output<Event>();
@@ -42,7 +42,7 @@ class MockTooltipComponent {
   @Input() text = '';
   @Input() title = '';
   @Input() description = '';
-  @Input() pos: any;
+  @Input() pos?: string;
   @Input() noIcon = false;
 }
 
@@ -50,14 +50,14 @@ describe('TopicShareComponent', () => {
   let component: TopicShareComponent;
   let fixture: ComponentFixture<TopicShareComponent>;
 
-  const mockTopic = {
+  const mockTopic: Topic = {
     id: 'test-topic-id',
     title: 'Test Topic',
     visibility: 'public',
     permission: { level: 'admin' },
     status: 'ideation',
     join: { level: 'read', token: 'test-token' }
-  } as any;
+  } as unknown as Topic;
 
   beforeEach(async () => {
     // Mock document.execCommand

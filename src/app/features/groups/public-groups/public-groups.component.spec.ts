@@ -8,17 +8,17 @@ import { of, BehaviorSubject } from 'rxjs';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
-const mockGroupService = {
+const mockGroupService: Partial<PublicGroupService> = {
   items$: of([]),
-  totalPages: new BehaviorSubject(1),
+  totalPages: new BehaviorSubject(1) as unknown as BehaviorSubject<number>,
   reset: vi.fn(),
   setParam: vi.fn(),
   loadPage: vi.fn(),
 };
 
-const mockUserStore = {
-  isAuthenticated: vi.fn().mockReturnValue(false),
-  user: vi.fn().mockReturnValue(null),
+const mockUserStore: Partial<UserStore> = {
+  isAuthenticated: vi.fn().mockReturnValue(false) as unknown as () => boolean,
+  user: vi.fn().mockReturnValue(null) as unknown as () => null,
 };
 
 describe('PublicGroupsComponent', () => {

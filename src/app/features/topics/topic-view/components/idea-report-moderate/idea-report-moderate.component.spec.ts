@@ -12,14 +12,14 @@ import { DIALOG_DATA, DialogService } from '../../../../../shared/dialog';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 
 @Component({ selector: 'cos-input', template: '<ng-content/>', standalone: true })
-class InputStub { @Input() placeholder: any; }
+class InputStub { @Input() placeholder?: string; }
 
 @Directive({ selector: '[cosDropdown]', standalone: true })
 class CosDropdownStub {}
 
 // eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[dialogClose]', standalone: true })
-class DialogCloseStub { @Input() dialogClose: any; }
+class DialogCloseStub { @Input() dialogClose: unknown; }
 
 const mockData = {
   idea: { id: 'idea1', statement: 'Test idea statement', description: null },
@@ -31,10 +31,10 @@ const mockData = {
 };
 
 describe('IdeaReportModerateComponent', () => {
-  let fixture: any;
+  let fixture: ComponentFixture<IdeaReportModerateComponent>;
   let component: IdeaReportModerateComponent;
-  let ideationService: any;
-  let dialogService: any;
+  let ideationService: Partial<TopicIdeationService> & { IDEA_REPORT_TYPES: Record<string, string> };
+  let dialogService: Partial<DialogService>;
 
   beforeEach(async () => {
     ideationService = {

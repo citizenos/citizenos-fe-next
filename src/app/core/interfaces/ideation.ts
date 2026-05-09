@@ -22,15 +22,18 @@ export interface IdeaComment {
   authorId: string;
   parentId?: string | null;
   subject?: string | null;
-  text?: string | null;
-  edits?: Record<string, { subject?: string | null; text?: string | null; createdAt?: string }>;
-  replies?: { count: number };
+  text: string;
+  type?: string;
+  edits?: Record<string, { subject?: string | null; text?: string | null; createdAt?: string }> | { subject?: string | null; text?: string | null; createdAt?: string }[];
+  replies?: { count: number; rows?: IdeaComment[] };
   report?: { id: string | null };
   votes?: { up: { count: number; selected: boolean }; down: { count: number; selected: boolean }; count: number };
   author?: { id: string; name: string; imageUrl?: string | null; email?: string | null };
+  creator?: { id: string; name: string; imageUrl?: string | null; email?: string | null };
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
+  children?: IdeaComment[];
 }
 
 export interface IdeaReport {

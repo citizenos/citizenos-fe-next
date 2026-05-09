@@ -11,10 +11,12 @@ import { Router } from '@angular/router';
 
 export interface TopicMemberUser {
   id: string;
+  userId?: string;
   name: string;
   email?: string;
-  imageUrl?: string;
+  imageUrl?: string | null;
   level: string;
+  groups?: { rows: any[] };
 }
 
 @Injectable({ providedIn: 'root' })

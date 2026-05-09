@@ -12,6 +12,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { IdeaComment } from '../../../../../core/interfaces/ideation';
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent {
@@ -20,12 +21,12 @@ class MockIconComponent {
 }
 
 describe('IdeaReplyComponent', () => {
-  let mockIdeationService: any;
-  let mockNotification: any;
-  let mockUserStore: any;
-  let mockDialog: any;
-  let mockSanitizer: any;
-  let mockRouter: any;
+  let mockIdeationService: Partial<TopicIdeationService>;
+  let mockNotification: Partial<NotificationService>;
+  let mockUserStore: Partial<UserStore>;
+  let mockDialog: Partial<DialogService>;
+  let mockSanitizer: Partial<DomSanitizer>;
+  let mockRouter: Partial<Router>;
 
   beforeEach(async () => {
     mockIdeationService = {
@@ -37,7 +38,7 @@ describe('IdeaReplyComponent', () => {
     mockDialog = { open: vi.fn().mockReturnValue({ afterClosed: () => of(true) }) };
     mockSanitizer = {
       bypassSecurityTrustHtml: (val: string) => val,
-      sanitize: (ctx: any, val: string) => val
+      sanitize: (_ctx: unknown, val: string | null) => val || ''
     };
     mockRouter = { url: '/test' };
 
@@ -66,16 +67,16 @@ describe('IdeaReplyComponent', () => {
     .compileComponents();
   });
 
-  const createComponent = (inputs: any = {}) => {
+  const createComponent = (inputs: { argument?: Partial<IdeaComment> } = {}) => {
     const fixture = TestBed.createComponent(IdeaReplyComponent);
     const component = fixture.componentInstance;
     const componentRef = fixture.componentRef;
-    
-    component.argument.set(inputs.argument || { id: 'arg1', text: 'Test argument', creator: { id: 'user1', name: 'User 1' }, votes: { up: { count: 0 } } });
+
+    component.argument.set((inputs.argument || { id: 'arg1', text: 'Test argument', creator: { id: 'user1', name: 'User 1' }, votes: { up: { count: 0 } } }) as IdeaComment);
     component.topicId.set('topic1');
     component.ideationId.set('ideation1');
     component.ideaId.set('idea1');
-    
+
     fixture.detectChanges();
     return { fixture, component, componentRef };
   };

@@ -32,7 +32,7 @@ const mockTopicVoteService = {
 
 const mockVoteDelegationService = { delete: vi.fn(() => of({})) };
 const mockNotification = { success: vi.fn(), error: vi.fn() };
-const mockDialogAfterClosed = new Subject<any>();
+const mockDialogAfterClosed = new Subject<boolean | undefined>();
 const mockDialogService = {
   open: vi.fn(() => ({ afterClosed: () => mockDialogAfterClosed.asObservable() }))
 };
@@ -63,8 +63,8 @@ const mockTopic = {
 
 function buildComponent() {
   const comp = TestBed.runInInjectionContext(() => new TopicVoteCastComponent());
-  (comp as unknown as { vote: any }).vote = vi.fn().mockReturnValue(JSON.parse(JSON.stringify(mockVote)));
-  (comp as unknown as { topic: any }).topic = vi.fn().mockReturnValue({ ...mockTopic });
+  (comp as unknown as { vote: unknown }).vote = signal(JSON.parse(JSON.stringify(mockVote)));
+  (comp as unknown as { topic: unknown }).topic = signal({ ...mockTopic });
   comp.ngOnInit();
   return comp;
 }
@@ -97,7 +97,7 @@ describe('TopicVoteCastComponent', () => {
   it('userHasVoted should be true when an option is selected', () => {
     const vote = JSON.parse(JSON.stringify(mockVote));
     vote.options.rows[0].selected = true;
-    (component as unknown as { vote: any }).vote = vi.fn().mockReturnValue(vote);
+    (component as unknown as { vote: unknown }).vote = signal(vote);
     (component as unknown as { checkUserVotingStatus: () => void }).checkUserVotingStatus();
     expect(component.userHasVoted()).toBe(true);
   });
@@ -105,7 +105,7 @@ describe('TopicVoteCastComponent', () => {
   it('canSubmit should return true when one option selected (maxChoices=1)', () => {
     const vote = JSON.parse(JSON.stringify(mockVote));
     vote.options.rows[0].selected = true;
-    (component as unknown as { vote: any }).vote = vi.fn().mockReturnValue(vote);
+    (component as unknown as { vote: unknown }).vote = signal(vote);
     expect(component.canSubmit()).toBe(true);
   });
 
@@ -115,7 +115,7 @@ describe('TopicVoteCastComponent', () => {
 
   it('selectOption should select an unselected option', () => {
     const vote = JSON.parse(JSON.stringify(mockVote));
-    (component as unknown as { vote: any }).vote = vi.fn().mockReturnValue(vote);
+    (component as unknown as { vote: unknown }).vote = signal(vote);
     component.selectOption(vote.options.rows[0]);
     expect(vote.options.rows[0].selected).toBe(true);
   });
@@ -123,7 +123,7 @@ describe('TopicVoteCastComponent', () => {
   it('selectOption should deselect an already-selected option', () => {
     const vote = JSON.parse(JSON.stringify(mockVote));
     vote.options.rows[0].selected = true;
-    (component as unknown as { vote: any }).vote = vi.fn().mockReturnValue(vote);
+    (component as unknown as { vote: unknown }).vote = signal(vote);
     component.selectOption(vote.options.rows[0]);
     expect(vote.options.rows[0].selected).toBeUndefined();
   });
@@ -131,7 +131,7 @@ describe('TopicVoteCastComponent', () => {
   it('doVote should call topicVoteService.cast for soft auth', () => {
     const vote = JSON.parse(JSON.stringify(mockVote));
     vote.options.rows[0].selected = true;
-    (component as unknown as { vote: any }).vote = vi.fn().mockReturnValue(vote);
+    (component as unknown as { vote: unknown }).vote = signal(vote);
     component.doVote();
     expect(mockTopicVoteService.cast).toHaveBeenCalledWith(expect.objectContaining({
       voteId: 'v1',
@@ -143,7 +143,7 @@ describe('TopicVoteCastComponent', () => {
     const vote = JSON.parse(JSON.stringify(mockVote));
     vote.authType = 'hard';
     vote.options.rows[0].selected = true;
-    (component as unknown as { vote: any }).vote = vi.fn().mockReturnValue(vote);
+    (component as unknown as { vote: unknown }).vote = signal(vote);
     component.doVote();
     expect(mockDialogService.open).toHaveBeenCalled();
     expect(mockTopicVoteService.cast).not.toHaveBeenCalled();
@@ -166,14 +166,14 @@ describe('TopicVoteCastComponent', () => {
 
   it('delegate should open dialog when vote has no delegation', () => {
     const vote = JSON.parse(JSON.stringify(mockVote));
-    (component as unknown as { vote: any }).vote = vi.fn().mockReturnValue(vote);
+    (component as unknown as { vote: unknown }).vote = signal(vote);
     component.delegate();
     expect(mockDialogService.open).toHaveBeenCalled();
   });
 
   it('delegate should not open dialog when delegation already exists', () => {
     const vote = { ...JSON.parse(JSON.stringify(mockVote)), delegation: { id: 'u2', name: 'Bob' } };
-    (component as unknown as { vote: any }).vote = vi.fn().mockReturnValue(vote);
+    (component as unknown as { vote: unknown }).vote = signal(vote);
     component.delegate();
     expect(mockDialogService.open).not.toHaveBeenCalled();
   });
@@ -187,14 +187,14 @@ describe('TopicVoteCastComponent', () => {
     const _locationSpy = vi.spyOn(window, 'location', 'get').mockReturnValue({
       ...window.location,
       href: ''
-    } as any);
+    } as unknown as Location);
     let href = '';
     Object.defineProperty(window, 'location', {
       value: { ...window.location, set href(val: string) { href = val; } },
       writable: true
     });
     const vote = { ...JSON.parse(JSON.stringify(mockVote)), downloads: { bdocFinal: '/dl/bdoc' } };
-    (component as unknown as { vote: any }).vote = vi.fn().mockReturnValue(vote);
+    (component as unknown as { vote: unknown }).vote = signal(vote);
     component.triggerFinalDownload('bdoc', false);
     expect(href).toBe('/dl/bdoc');
   });

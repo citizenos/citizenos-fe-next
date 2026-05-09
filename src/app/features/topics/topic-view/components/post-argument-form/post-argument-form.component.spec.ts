@@ -12,7 +12,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
 class MockInputComponent { @Input() placeholder = ''; }
 
 @Component({ selector: 'cos-icon', standalone: true, template: '<i></i>' })
-class MockIconComponent { @Input() name = ''; @Input() size: any; }
+class MockIconComponent { @Input() name = ''; @Input() size?: string | number; }
 
 @Component({ selector: 'cos-button', standalone: true, template: '<ng-content></ng-content>' })
 class MockButtonComponent { @Input() variant = ''; }
@@ -24,7 +24,7 @@ class MockMarkdownDirective {
   itemChange = output<string>();
   limit = input<number>(100);
   placeholder = input<string | undefined>();
-  cosMarkdownTranslateCharacterStatusKey = input<any>(undefined);
+  cosMarkdownTranslateCharacterStatusKey = input<string | undefined>(undefined);
 }
 
 const mockArgumentService = {
@@ -52,8 +52,8 @@ describe('PostArgumentFormComponent (class)', () => {
     });
 
     component = TestBed.runInInjectionContext(() => new PostArgumentFormComponent());
-    (component as any).topicId = () => 'topic-1';
-    (component as any).discussionId = () => 'disc-1';
+    (component as unknown as { topicId: unknown }).topicId = signal('topic-1');
+    (component as unknown as { discussionId: unknown }).discussionId = signal('disc-1');
   });
 
   it('should default to pro type', () => {

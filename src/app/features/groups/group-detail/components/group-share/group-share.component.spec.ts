@@ -6,9 +6,11 @@ import { GroupJoinService } from '../../../../../core/services/group-join.servic
 import { GroupMemberUserService } from '../../../../../core/services/group-member-user.service';
 import { GroupDetailService } from '../../../../../core/services/group-detail.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
+import { Group } from '../../../../../core/interfaces/group';
+import { signal } from '@angular/core';
 import { of } from 'rxjs';
 
-const mockGroup: any = {
+const mockGroup: Partial<Group> = {
   id: 'g1',
   permission: { level: 'admin' },
   join: { token: 'abc123', level: 'read' }
@@ -16,10 +18,10 @@ const mockGroup: any = {
 
 describe('GroupShareComponent', () => {
   let component: GroupShareComponent;
-  let groupJoinService: any;
-  let memberUserService: any;
-  let groupDetailService: any;
-  let dialog: any;
+  let groupJoinService: Partial<GroupJoinService>;
+  let memberUserService: Partial<GroupMemberUserService>;
+  let groupDetailService: Partial<GroupDetailService>;
+  let dialog: Partial<DialogService>;
 
   beforeEach(() => {
     groupJoinService = {
@@ -47,7 +49,7 @@ describe('GroupShareComponent', () => {
       ]
     });
     component = TestBed.runInInjectionContext(() => new GroupShareComponent());
-    (component as any).group = vi.fn().mockReturnValue(mockGroup);
+    (component as unknown as { group: unknown }).group = signal(mockGroup);
   });
 
   it('should create', () => {
@@ -66,7 +68,7 @@ describe('GroupShareComponent', () => {
   });
 
   it('ngOnInit generates group join URL when no token', () => {
-    (component as any).group = vi.fn().mockReturnValue({ ...mockGroup, join: null });
+    (component as unknown as { group: unknown }).group = signal({ ...mockGroup, join: null });
     component.ngOnInit();
     expect(component.joinUrl()).toContain('/groups/g1/join');
   });
@@ -115,7 +117,7 @@ describe('GroupShareComponent', () => {
     });
 
     it('does nothing if no token', () => {
-      (component as any).group = vi.fn().mockReturnValue({ ...mockGroup, join: null });
+      (component as unknown as { group: unknown }).group = signal({ ...mockGroup, join: null });
       component.ngOnInit();
       component.doUpdateJoinToken('admin');
       expect(groupJoinService.updateLevel).not.toHaveBeenCalled();

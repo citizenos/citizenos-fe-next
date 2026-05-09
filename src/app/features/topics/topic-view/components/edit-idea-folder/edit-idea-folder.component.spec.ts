@@ -5,10 +5,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { of, throwError } from 'rxjs';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { vi, describe, it, expect, beforeEach, Mock } from 'vitest';
 import { Component, Input } from '@angular/core';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Idea } from '../../../../../core/interfaces/idea';
 
 @Component({
   selector: 'cos-icon',
@@ -23,9 +24,14 @@ class MockIconComponent {
 describe('EditIdeaFolderComponent', () => {
   let component: EditIdeaFolderComponent;
   let fixture: ComponentFixture<EditIdeaFolderComponent>;
-  let mockIdeationService: any;
-  let mockDialogRef: any;
-  let mockDialogData: any;
+  let mockIdeationService: {
+    getIdeas: Mock;
+    updateFolder: Mock;
+    addIdeaToFolder: Mock;
+    removeIdeaFromFolder: Mock;
+  };
+  let mockDialogRef: Partial<DialogRef<EditIdeaFolderComponent>>;
+  let mockDialogData: { topicId: string; ideationId: string; folder: { id: string; name: string } };
 
   beforeEach(async () => {
     mockIdeationService = {
@@ -93,7 +99,7 @@ describe('EditIdeaFolderComponent', () => {
 
   it('should handle idea diff on save (add new idea)', () => {
     component.form.get('name')?.setValue('Renamed Folder');
-    component.toggleIdea({ id: 'idea2' } as any); // Add idea2
+    component.toggleIdea({ id: 'idea2' } as Idea); // Add idea2
     component.editFolder();
 
     expect(mockIdeationService.updateFolder).toHaveBeenCalled();
@@ -106,7 +112,7 @@ describe('EditIdeaFolderComponent', () => {
   });
 
   it('should handle idea diff on save (remove existing idea)', () => {
-    component.toggleIdea({ id: 'idea1' } as any); // Remove idea1
+    component.toggleIdea({ id: 'idea1' } as Idea); // Remove idea1
     component.editFolder();
 
     expect(mockIdeationService.updateFolder).toHaveBeenCalled();
@@ -120,8 +126,8 @@ describe('EditIdeaFolderComponent', () => {
   });
 
   it('should handle complex diff (add and remove)', () => {
-    component.toggleIdea({ id: 'idea1' } as any); // Remove idea1
-    component.toggleIdea({ id: 'idea2' } as any); // Add idea2
+    component.toggleIdea({ id: 'idea1' } as Idea); // Remove idea1
+    component.toggleIdea({ id: 'idea2' } as Idea); // Add idea2
     component.editFolder();
 
     expect(mockIdeationService.addIdeaToFolder).toHaveBeenCalled();

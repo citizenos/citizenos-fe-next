@@ -155,7 +155,7 @@ export class TopicDiscussionComponent {
   }
 
   reload() {
-    this.argumentService.loadPage((this.argumentService as unknown as { page: { value: number } }).page.value);
+    this.argumentService.loadPage(this.argumentService.page.value);
   }
 
   openEditDeadline() {
@@ -198,14 +198,15 @@ export class TopicDiscussionComponent {
           this.topicService.reloadTopic();
           this.dialog.closeAll();
         },
-        error: (res: { errors?: Record<string, string>; message?: string }) => {
-          if (res.errors) {
-            Object.values(res.errors).forEach((message) => {
+        error: (res: { error?: { errors?: Record<string, string>; message?: string } }) => {
+          const error = res.error;
+          if (error?.errors) {
+            Object.values(error.errors).forEach((message) => {
               if (typeof message === 'string')
                 this.notification.showRaw('error', message);
             });
-          } else if (res.message) {
-            this.notification.showRaw('error', res.message);
+          } else if (error?.message) {
+            this.notification.showRaw('error', error.message);
           }
         }
       });

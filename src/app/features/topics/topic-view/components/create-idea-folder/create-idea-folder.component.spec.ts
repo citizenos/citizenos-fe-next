@@ -9,6 +9,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { Component, Input } from '@angular/core';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Idea } from '../../../../../core/interfaces/idea';
 
 @Component({
   selector: 'cos-icon',
@@ -23,9 +24,9 @@ class MockIconComponent {
 describe('CreateIdeaFolderComponent', () => {
   let component: CreateIdeaFolderComponent;
   let fixture: ComponentFixture<CreateIdeaFolderComponent>;
-  let mockIdeationService: any;
-  let mockDialogRef: any;
-  let mockDialogData: any;
+  let mockIdeationService: Partial<TopicIdeationService>;
+  let mockDialogRef: Partial<DialogRef<unknown>>;
+  let mockDialogData: { topicId: string; ideationId: string };
 
   beforeEach(async () => {
     mockIdeationService = {
@@ -83,7 +84,7 @@ describe('CreateIdeaFolderComponent', () => {
   });
 
   it('should toggle idea selection', () => {
-    const idea = { id: 'idea1' } as any;
+    const idea = { id: 'idea1' } as Idea;
     component.toggleIdea(idea);
     expect(component.isIdeaSelected(idea)).toBe(true);
     expect(component.selectedIdeaIds().size).toBe(1);

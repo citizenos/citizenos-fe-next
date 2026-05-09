@@ -34,11 +34,11 @@ describe('TopicReportModerateComponent', () => {
   let component: TopicReportModerateComponent;
   let fixture: ComponentFixture<TopicReportModerateComponent>;
   const mockDialogRef = { close: vi.fn() };
-  const mockTopicReportService = {
+  const mockTopicReportService: Partial<TopicReportService> = {
     moderate: vi.fn().mockReturnValue(of({})),
-    TYPES: { spam: 'SPAM', inappropriate: 'INAPPROPRIATE' },
+    TYPES: { spam: 'SPAM', inappropriate: 'INAPPROPRIATE' } as unknown as Record<string, string>,
   };
-  const mockNotificationService = { success: vi.fn(), error: vi.fn() };
+  const mockNotificationService: Partial<NotificationService> = { success: vi.fn(), error: vi.fn() };
 
   beforeEach(async () => {
     vi.clearAllMocks();

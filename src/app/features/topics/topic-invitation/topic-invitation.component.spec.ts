@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -24,11 +24,11 @@ const mockTopicInvite = {
 
 describe('TopicInvitationComponent', () => {
   let component: TopicInvitationComponent;
-  let fixture: any;
-  let inviteService: any;
-  let dialogService: any;
-  let userStore: any;
-  let notification: any;
+  let fixture: ComponentFixture<TopicInvitationComponent>;
+  let inviteService: Partial<TopicInviteUserService>;
+  let dialogService: Partial<DialogService>;
+  let userStore: Partial<UserStore>;
+  let notification: Partial<NotificationService>;
 
   beforeEach(() => TestBed.resetTestingModule());
 

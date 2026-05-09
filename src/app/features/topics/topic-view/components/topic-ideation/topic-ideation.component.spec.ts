@@ -9,11 +9,15 @@ import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
+import { Topic } from '../../../../../core/interfaces/topic';
+import { Ideation } from '../../../../../core/interfaces/ideation';
+import { Idea } from '../../../../../core/interfaces/idea';
+import { signal } from '@angular/core';
 
-const mockTopic = { id: 't1', status: 'ideation' } as any;
-const mockIdeation = { id: 'i1', question: 'What should we do?', deadline: null } as any;
-const mockIdea1 = { id: 'a1', status: 'published', votes: { up: { count: 0, selected: false }, down: { count: 0, selected: false }, count: 0 } } as any;
-const mockIdea2 = { id: 'a2', status: 'published', votes: { up: { count: 0, selected: false }, down: { count: 0, selected: false }, count: 0 } } as any;
+const mockTopic = { id: 't1', status: 'ideation' } as unknown as Topic;
+const mockIdeation = { id: 'i1', question: 'What should we do?', deadline: null } as unknown as Ideation;
+const mockIdea1 = { id: 'a1', status: 'published', votes: { up: { count: 0, selected: false }, down: { count: 0, selected: false }, count: 0 } } as unknown as Idea;
+const mockIdea2 = { id: 'a2', status: 'published', votes: { up: { count: 0, selected: false }, down: { count: 0, selected: false }, count: 0 } } as unknown as Idea;
 
 const mockIdeationService = {
   getIdeas: vi.fn().mockReturnValue(of({ rows: [mockIdea1, mockIdea2], count: 2 })),
@@ -52,8 +56,8 @@ describe('TopicIdeationComponent', () => {
   function makeComp() {
     return runInInjectionContext(injector, () => {
       const comp = new TopicIdeationComponent();
-      (comp as any).topic = vi.fn().mockReturnValue(mockTopic);
-      (comp as any).ideation = vi.fn().mockReturnValue(mockIdeation);
+      (comp as unknown as { topic: unknown }).topic = signal(mockTopic);
+      (comp as unknown as { ideation: unknown }).ideation = signal(mockIdeation);
       TestBed.flushEffects();
       return comp;
     });
@@ -119,7 +123,7 @@ describe('TopicIdeationComponent', () => {
   it('onIdeaAdded hides add form and reloads', () => {
     const comp = makeComp();
     comp.showAddIdea.set(true);
-    comp.onIdeaAdded({ id: 'new' } as any);
+    comp.onIdeaAdded({ id: 'new' } as Idea);
     expect(comp.showAddIdea()).toBe(false);
   });
 

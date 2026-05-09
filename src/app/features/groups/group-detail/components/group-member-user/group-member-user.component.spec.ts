@@ -2,19 +2,21 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { GroupMemberUserComponent } from './group-member-user.component';
-import { GroupMemberUserService } from '../../../../../core/services/group-member-user.service';
+import { Group } from '../../../../../core/interfaces/group';
+import { GroupMember, GroupMemberUserService } from '../../../../../core/services/group-member-user.service';
 import { GroupDetailService } from '../../../../../core/services/group-detail.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
+import { signal } from '@angular/core';
 import { of, throwError } from 'rxjs';
 
-const mockGroup: any = { id: 'g1', permission: { level: 'admin' } };
-const mockMember: any = { userId: 'u1', name: 'Test User', email: 'test@test.com', level: 'read', imageUrl: null };
+const mockGroup: Partial<Group> = { id: 'g1', permission: { level: 'admin' } };
+const mockMember: GroupMember = { id: 'u1', userId: 'u1', name: 'Test User', email: 'test@test.com', level: 'read', imageUrl: null };
 
 describe('GroupMemberUserComponent', () => {
   let component: GroupMemberUserComponent;
-  let memberUserService: any;
-  let groupDetailService: any;
-  let dialog: any;
+  let memberUserService: Partial<GroupMemberUserService>;
+  let groupDetailService: Partial<GroupDetailService>;
+  let dialog: Partial<DialogService>;
 
   beforeEach(() => {
     memberUserService = {
@@ -38,8 +40,8 @@ describe('GroupMemberUserComponent', () => {
       ]
     });
     component = TestBed.runInInjectionContext(() => new GroupMemberUserComponent());
-    (component as any).member = vi.fn().mockReturnValue(mockMember);
-    (component as any).group = vi.fn().mockReturnValue(mockGroup);
+    (component as unknown as { member: unknown }).member = signal(mockMember);
+    (component as unknown as { group: unknown }).group = signal(mockGroup);
   });
 
   it('should create', () => {
@@ -63,7 +65,7 @@ describe('GroupMemberUserComponent', () => {
 
     it('calls updateLevel and updates member.level on success', () => {
       const member = { ...mockMember };
-      (component as any).member = vi.fn().mockReturnValue(member);
+      (component as unknown as { member: unknown }).member = signal(member);
       component.doUpdateMemberUser('admin');
       expect(memberUserService.updateLevel).toHaveBeenCalledWith('g1', 'u1', 'admin');
       expect(member.level).toBe('admin');
@@ -72,7 +74,7 @@ describe('GroupMemberUserComponent', () => {
     it('rolls back level on error', () => {
       memberUserService.updateLevel = vi.fn().mockReturnValue(throwError(() => new Error('fail')));
       const member = { ...mockMember };
-      (component as any).member = vi.fn().mockReturnValue(member);
+      (component as unknown as { member: unknown }).member = signal(member);
       component.doUpdateMemberUser('admin');
       expect(member.level).toBe('read');
     });

@@ -16,7 +16,7 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
 class MockIconComponent {
   @Input() name = '';
   @Input() size = 24;
-  @Input() color: any;
+  @Input() color?: string;
 }
 
 @Component({ selector: 'cos-button', standalone: true, template: '<button (click)="clicked.emit($event)"><ng-content></ng-content></button>' })
@@ -24,7 +24,7 @@ class MockButtonComponent {
   @Input() variant = 'primary';
   @Input() size = 'md';
   @Input() type = 'button';
-  @Input() icon: any;
+  @Input() icon?: string;
   @Input() isLoading = false;
   @Input() isDisabled = false;
   clicked = output<MouseEvent>();
@@ -168,7 +168,7 @@ describe('TopicHeaderComponent', () => {
   // --- Dropdown actions ---
   it('should show leave button when user has non-none permission', () => {
     const options = fixture.nativeElement.querySelectorAll('.options button');
-    const labels = Array.from(options).map((b: any) => b.textContent?.trim());
+    const labels = Array.from(options).map((b: unknown) => (b as HTMLElement).textContent?.trim());
     expect(labels.some(l => l?.includes('BTN_LEAVE'))).toBeTruthy();
   });
 
@@ -207,7 +207,7 @@ describe('TopicHeaderComponent', () => {
   });
 
   it('should hide report button for topics with existing report', () => {
-    component.topic.set({ ...BASE_TOPIC, report: { id: 'r1', type: null, text: null, moderatedReasonType: null, moderatedReasonText: null } } as any);
+    component.topic.set({ ...BASE_TOPIC, report: { id: 'r1', type: null, text: null, moderatedReasonType: null, moderatedReasonText: null } } as unknown as Topic);
     fixture.detectChanges();
     const reportBtn = Array.from(fixture.nativeElement.querySelectorAll('.options button') as NodeListOf<HTMLElement>)
       .find(b => b.querySelector('span[translate="VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC"]'));

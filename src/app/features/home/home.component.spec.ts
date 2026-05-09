@@ -15,10 +15,10 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let mockUserStore: any;
-  let mockTopicService: any;
-  let mockGroupService: any;
-  let mockHomeService: any;
+  let mockUserStore: { isAuthenticated: ReturnType<typeof signal<boolean>> };
+  let mockTopicService: Partial<PublicTopicService>;
+  let mockGroupService: Partial<PublicGroupService>;
+  let mockHomeService: Partial<HomeService>;
 
   beforeEach(async () => {
     mockUserStore = {

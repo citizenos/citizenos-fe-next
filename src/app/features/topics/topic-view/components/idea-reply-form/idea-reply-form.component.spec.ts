@@ -11,6 +11,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { Component, Input } from '@angular/core';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { IdeaComment } from '../../../../../core/interfaces/ideation';
 
 @Component({
   selector: 'cos-icon',
@@ -23,17 +24,17 @@ class MockIconComponent {
 }
 
 describe('IdeaReplyFormComponent', () => {
-  let mockIdeationService: any;
-  let mockNotification: any;
-  let mockUserStore: any;
-  let mockRouter: any;
+  let mockIdeationService: Partial<TopicIdeationService>;
+  let mockNotification: Partial<NotificationService>;
+  let mockUserStore: Partial<UserStore>;
+  let mockRouter: Partial<Router>;
 
   beforeEach(async () => {
     mockIdeationService = {
       COMMENT_TYPES_MAXLENGTH: { reply: 2048 },
       saveIdeaComment: vi.fn().mockReturnValue(of({ id: 'new-comment' })),
       updateIdeaComment: vi.fn().mockReturnValue(of({ id: 'updated-comment' }))
-    };
+    } as unknown as TopicIdeationService;
     mockNotification = { success: vi.fn(), error: vi.fn() };
     mockUserStore = { isAuthenticated: vi.fn().mockReturnValue(true), user: vi.fn().mockReturnValue({ id: 'user1' }) };
     mockRouter = { navigate: vi.fn() };
@@ -63,7 +64,7 @@ describe('IdeaReplyFormComponent', () => {
     .compileComponents();
   });
 
-  const createComponent = async (inputs: any = {}) => {
+  const createComponent = async (inputs: { topicId?: string; ideationId?: string; ideaId?: string; editMode?: boolean; argument?: Partial<IdeaComment> } = {}) => {
     const fixture = TestBed.createComponent(IdeaReplyFormComponent);
     const component = fixture.componentInstance;
     const componentRef = fixture.componentRef;
@@ -74,7 +75,7 @@ describe('IdeaReplyFormComponent', () => {
     component.ideaId.set(inputs.ideaId || 'idea1');
     
     if (inputs.editMode !== undefined) component.editMode.set(inputs.editMode);
-    if (inputs.argument) component.argument.set(inputs.argument);
+    if (inputs.argument) component.argument.set(inputs.argument as IdeaComment);
     
     fixture.detectChanges();
     await fixture.whenStable();

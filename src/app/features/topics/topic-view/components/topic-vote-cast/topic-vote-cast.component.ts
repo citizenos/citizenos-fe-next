@@ -2,7 +2,7 @@ import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit } fro
 import { DatePipe, UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
-import { Topic } from '../../../../../core/interfaces/topic';
+import { Topic, TopicVote } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { VoteDelegationService } from '../../../../../core/services/vote-delegation.service';
@@ -94,7 +94,7 @@ export class TopicVoteCastComponent implements OnInit {
     return this.topicVoteService.hasVoteEndedExpired(this.topic(), this.vote());
   }
 
-  selectOption(option: any) {
+  selectOption(option: { id: string; value: string; selected?: boolean; optionId?: string }) {
     if (!this.canVote()) return;
     const v = this.vote();
     if (option.selected) {
@@ -141,7 +141,7 @@ export class TopicVoteCastComponent implements OnInit {
       });
   }
 
-  private saveVote(voteData?: any) {
+  private saveVote(voteData?: Partial<TopicVote>) {
     const v = Object.assign(voteData || this.vote(), { topicId: this.topic().id });
     this.topicVoteService.update(v).pipe(take(1)).subscribe({
       next: () => this.topicService.reloadTopic()

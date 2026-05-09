@@ -6,6 +6,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { take } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
+import { IdeaComment } from '../../../../../core/interfaces/ideation';
 import { UserStore } from '../../../../../core/state/user.store';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
@@ -372,8 +373,8 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdeaReplyComponent implements OnInit, AfterViewInit {
-  argument = model.required<any>();
-  root = input<any>(null);
+  argument = model.required<IdeaComment>();
+  root = input<IdeaComment | null>(null);
   topicId = model.required<string>();
   ideationId = model.required<string>();
   ideaId = model.required<string>();
@@ -402,16 +403,16 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
     const arg = this.argument();
     if (arg.replies) {
       arg.replies.count = arg.replies.rows?.length || 0;
-      arg.replies.rows?.forEach((reply: any) => {
+      arg.replies.rows?.forEach((reply: IdeaComment) => {
         if (reply.children?.length) {
-          arg.replies.count += reply.children.length;
+          arg.replies!.count += reply.children.length;
         }
       });
     }
 
     this.isReply.set(arg.type === 'reply');
     if (arg.children) {
-      arg.children.sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      arg.children.sort((a: IdeaComment, b: IdeaComment) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
     }
   }
 

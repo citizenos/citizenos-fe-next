@@ -1,7 +1,7 @@
 import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { TopicService } from '../../../core/services/topic.service';
+import { TopicService, TopicAttachment } from '../../../core/services/topic.service';
 import { UploadService } from '../../../core/services/upload.service';
 import { CosDropdownDirective } from '../../directives/cos-dropdown.directive';
 import { Topic } from '../../../core/interfaces/topic';
@@ -27,7 +27,7 @@ export class TopicAttachmentsComponent implements OnInit {
   private notification = inject(NotificationService);
   private translate = inject(TranslateService);
   
-  attachments = signal<any[]>([]);
+  attachments = signal<TopicAttachment[]>([]);
   blockAttachments = signal(false);
 
   ngOnInit() {
@@ -55,9 +55,10 @@ export class TopicAttachmentsComponent implements OnInit {
       const path = `/api/users/self/topics/${topicId}/attachments`;
       
       this.uploadService.upload(path, file, { name: file.name }).subscribe({
-        next: (result: any) => {
-          if (result && result.id) {
-            this.attachments.update(items => [...items, result]);
+        next: (result: unknown) => {
+          const res = result as TopicAttachment;
+          if (res && res.id) {
+            this.attachments.update(items => [...items, res]);
           }
         },
         error: () => {
@@ -67,7 +68,7 @@ export class TopicAttachmentsComponent implements OnInit {
     }
   }
 
-  onUpdate(attachment: any) {
+  onUpdate(attachment: TopicAttachment) {
     const topicId = this.topic().id;
     if (!topicId) return;
 
@@ -78,7 +79,7 @@ export class TopicAttachmentsComponent implements OnInit {
     });
   }
 
-  onDelete(attachment: any) {
+  onDelete(attachment: TopicAttachment) {
     const topicId = this.topic().id;
     if (!topicId) return;
 

@@ -7,6 +7,8 @@ import { GroupInviteUserService } from '../../../core/services/group-invite-user
 import { UserStore } from '../../../core/state/user.store';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { GroupInvite } from '../../../core/services/group-invite-user.service';
+import { User } from '../../../core/interfaces/user';
 
 const mockInvite = {
   id: 'invite-1',
@@ -25,11 +27,11 @@ function buildRoute(params: Record<string, string>, queryParams: Record<string, 
 }
 
 function setup(overrides: {
-  invite?: any;
-  inviteError?: any;
-  dialogResult?: any;
+  invite?: Partial<GroupInvite>;
+  inviteError?: { message?: string; code?: number };
+  dialogResult?: boolean;
   isAuthenticated?: boolean;
-  currentUser?: any;
+  currentUser?: Partial<User> | null;
   queryParams?: Record<string, string>;
 } = {}) {
   const inviteServiceMock = {
@@ -151,9 +153,10 @@ describe('GroupInvitationComponent', () => {
   it('does not navigate anywhere special when dialog is dismissed', () => {
     const { routerMock } = setup({ dialogResult: false });
     const calls = routerMock.navigate.mock.calls;
-    const hasMeaningfulNavigation = calls.some((c: string[][]) =>
-      c[0].includes('/account/login') || c[0].includes('/account/signup') || c[0].includes('/groups')
-    );
+    const hasMeaningfulNavigation = calls.some((c: string[][]) => {
+      const path = c[0] as unknown as string[];
+      return path.includes('/account/login') || path.includes('/account/signup') || path.includes('/groups');
+    });
     expect(hasMeaningfulNavigation).toBe(false);
   });
 

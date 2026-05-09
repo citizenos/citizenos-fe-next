@@ -70,7 +70,7 @@ describe('TopicInfoSidebarComponent', () => {
 
   it('should display creator name', () => {
     const items = fixture.nativeElement.querySelectorAll('.info_item span');
-    const texts = Array.from(items).map((el: any) => el.textContent.trim());
+    const texts = Array.from(items).map((el) => (el as HTMLElement).textContent?.trim());
     expect(texts).toContain('Admin');
   });
 
@@ -86,7 +86,7 @@ describe('TopicInfoSidebarComponent', () => {
 
   it('should show public-topic icon when visibility is public', () => {
     const icons = fixture.nativeElement.querySelectorAll('cos-icon');
-    const names = Array.from(icons).map((el: any) => el.getAttribute('name'));
+    const names = Array.from(icons).map((el) => (el as HTMLElement).getAttribute('name'));
     expect(names).toContain('public-topic');
     expect(names).not.toContain('lock-legacy');
   });
@@ -95,14 +95,14 @@ describe('TopicInfoSidebarComponent', () => {
     component.topic.set({ ...BASE_TOPIC, visibility: 'private' });
     fixture.detectChanges();
     const icons = fixture.nativeElement.querySelectorAll('cos-icon');
-    const names = Array.from(icons).map((el: any) => el.getAttribute('name'));
+    const names = Array.from(icons).map((el) => (el as HTMLElement).getAttribute('name'));
     expect(names).toContain('lock-legacy');
     expect(names).not.toContain('public-topic');
   });
 
   it('should show leave button when user has a permission level and is logged in', () => {
     const buttons = fixture.nativeElement.querySelectorAll('button.option');
-    const labels = Array.from(buttons).map((b: any) => b.textContent);
+    const labels = Array.from(buttons).map((b) => (b as HTMLElement).textContent);
     expect(labels.some((t: string) => t.includes('VIEWS.TOPICS_TOPICID.BTN_LEAVE'))).toBe(true);
   });
 
@@ -110,13 +110,13 @@ describe('TopicInfoSidebarComponent', () => {
     component.topic.set({ ...BASE_TOPIC, permission: { level: 'none' } });
     fixture.detectChanges();
     const buttons = fixture.nativeElement.querySelectorAll('button.option');
-    const labels = Array.from(buttons).map((b: any) => b.textContent);
+    const labels = Array.from(buttons).map((b) => (b as HTMLElement).textContent);
     expect(labels.some((t: string) => t.includes('VIEWS.TOPICS_TOPICID.BTN_LEAVE'))).toBe(false);
   });
 
   it('should show favourite button when logged in', () => {
     const buttons = fixture.nativeElement.querySelectorAll('button.option');
-    const labels = Array.from(buttons).map((b: any) => b.textContent);
+    const labels = Array.from(buttons).map((b) => (b as HTMLElement).textContent);
     expect(labels.some((t: string) => t.includes('VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE'))).toBe(true);
   });
 
@@ -124,14 +124,14 @@ describe('TopicInfoSidebarComponent', () => {
     component.topic.set({ ...BASE_TOPIC, favourite: true });
     fixture.detectChanges();
     const icons = fixture.nativeElement.querySelectorAll('cos-icon');
-    const names = Array.from(icons).map((el: any) => el.getAttribute('name'));
+    const names = Array.from(icons).map((el) => (el as HTMLElement).getAttribute('name'));
     expect(names).toContain('favourite-filled');
     expect(names).not.toContain('favourite');
   });
 
   it('should show invite co-editor button when user canDelete and topic not closed', () => {
     const buttons = fixture.nativeElement.querySelectorAll('button.option');
-    const labels = Array.from(buttons).map((b: any) => b.textContent);
+    const labels = Array.from(buttons).map((b) => (b as HTMLElement).textContent);
     expect(labels.some((t: string) => t.includes('OPTION_INVITE_CO_EDITOR'))).toBe(true);
   });
 
@@ -139,13 +139,13 @@ describe('TopicInfoSidebarComponent', () => {
     component.topic.set({ ...BASE_TOPIC, status: 'closed' });
     fixture.detectChanges();
     const buttons = fixture.nativeElement.querySelectorAll('button.option');
-    const labels = Array.from(buttons).map((b: any) => b.textContent);
+    const labels = Array.from(buttons).map((b) => (b as HTMLElement).textContent);
     expect(labels.some((t: string) => t.includes('OPTION_INVITE_CO_EDITOR'))).toBe(false);
   });
 
   it('should show duplicate topic button when user canDelete', () => {
     const buttons = fixture.nativeElement.querySelectorAll('button.option');
-    const labels = Array.from(buttons).map((b: any) => b.textContent);
+    const labels = Array.from(buttons).map((b) => (b as HTMLElement).textContent);
     expect(labels.some((t: string) => t.includes('OPTION_DUPLICATE_TOPIC'))).toBe(true);
   });
 
@@ -153,7 +153,7 @@ describe('TopicInfoSidebarComponent', () => {
     const spy = vi.fn();
     component.leaveTopic.subscribe(spy);
     const buttons = fixture.nativeElement.querySelectorAll('button.option');
-    const leaveBtn = Array.from(buttons).find((b: any) => b.textContent.includes('BTN_LEAVE')) as HTMLElement;
+    const leaveBtn = Array.from(buttons).find((b) => (b as HTMLElement).textContent?.includes('BTN_LEAVE')) as HTMLElement;
     leaveBtn.click();
     expect(spy).toHaveBeenCalledWith(expect.objectContaining({ id: '123' }));
   });
@@ -162,7 +162,7 @@ describe('TopicInfoSidebarComponent', () => {
     const spy = vi.fn();
     component.toggleFavourite.subscribe(spy);
     const buttons = fixture.nativeElement.querySelectorAll('button.option');
-    const favBtn = Array.from(buttons).find((b: any) => b.textContent.includes('OPTION_FAVOURITE')) as HTMLElement;
+    const favBtn = Array.from(buttons).find((b) => (b as HTMLElement).textContent?.includes('OPTION_FAVOURITE')) as HTMLElement;
     favBtn.click();
     expect(spy).toHaveBeenCalledWith(expect.objectContaining({ id: '123' }));
   });
@@ -171,7 +171,7 @@ describe('TopicInfoSidebarComponent', () => {
     const spy = vi.fn();
     component.duplicateTopic.subscribe(spy);
     const buttons = fixture.nativeElement.querySelectorAll('button.option');
-    const btn = Array.from(buttons).find((b: any) => b.textContent.includes('OPTION_DUPLICATE_TOPIC')) as HTMLElement;
+    const btn = Array.from(buttons).find((b) => (b as HTMLElement).textContent?.includes('OPTION_DUPLICATE_TOPIC')) as HTMLElement;
     btn.click();
     expect(spy).toHaveBeenCalled();
   });
@@ -180,7 +180,7 @@ describe('TopicInfoSidebarComponent', () => {
     const spy = vi.fn();
     component.deleteTopic.subscribe(spy);
     const buttons = fixture.nativeElement.querySelectorAll('button.option');
-    const btn = Array.from(buttons).find((b: any) => b.textContent.includes('OPTION_DELETE_TOPIC')) as HTMLElement;
+    const btn = Array.from(buttons).find((b) => (b as HTMLElement).textContent?.includes('OPTION_DELETE_TOPIC')) as HTMLElement;
     btn.click();
     expect(spy).toHaveBeenCalled();
   });
@@ -188,7 +188,7 @@ describe('TopicInfoSidebarComponent', () => {
   it('should toggle showAttachments when attachments header is clicked', () => {
     expect(component.showAttachments).toBe(false);
     const headers = fixture.nativeElement.querySelectorAll('.info_title');
-    const attachmentHeader = Array.from(headers).find((h: any) => h.textContent.includes('TITLE_ATTACHMENTS')) as HTMLElement;
+    const attachmentHeader = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_ATTACHMENTS')) as HTMLElement;
     attachmentHeader.click();
     expect(component.showAttachments).toBe(true);
   });
@@ -197,7 +197,7 @@ describe('TopicInfoSidebarComponent', () => {
     component.attachments.set([{ id: 'att-1', name: 'doc.pdf' }]);
     fixture.detectChanges();
     const headers = fixture.nativeElement.querySelectorAll('.info_title');
-    const header = Array.from(headers).find((h: any) => h.textContent.includes('TITLE_ATTACHMENTS')) as HTMLElement;
+    const header = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_ATTACHMENTS')) as HTMLElement;
     header.click();
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('doc.pdf');
@@ -205,7 +205,7 @@ describe('TopicInfoSidebarComponent', () => {
 
   it('should show no-attachments message when attachments are empty and section is opened', () => {
     const headers = fixture.nativeElement.querySelectorAll('.info_title');
-    const header = Array.from(headers).find((h: any) => h.textContent.includes('TITLE_ATTACHMENTS')) as HTMLElement;
+    const header = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_ATTACHMENTS')) as HTMLElement;
     header.click();
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('SECTION_INFO_NO_ATTACHMENTS');
@@ -218,7 +218,7 @@ describe('TopicInfoSidebarComponent', () => {
     component.attachments.set([attachment]);
     fixture.detectChanges();
     const headers = fixture.nativeElement.querySelectorAll('.info_title');
-    const header = Array.from(headers).find((h: any) => h.textContent.includes('TITLE_ATTACHMENTS')) as HTMLElement;
+    const header = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_ATTACHMENTS')) as HTMLElement;
     header.click();
     fixture.detectChanges();
     const link = fixture.nativeElement.querySelector('a.info_item') as HTMLElement;
@@ -229,7 +229,7 @@ describe('TopicInfoSidebarComponent', () => {
   it('should toggle showGroups when groups header is clicked', () => {
     expect(component.showGroups).toBe(false);
     const headers = fixture.nativeElement.querySelectorAll('.info_title');
-    const groupsHeader = Array.from(headers).find((h: any) => h.textContent.includes('TITLE_GROUPS')) as HTMLElement;
+    const groupsHeader = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_GROUPS')) as HTMLElement;
     groupsHeader.click();
     expect(component.showGroups).toBe(true);
   });
@@ -238,7 +238,7 @@ describe('TopicInfoSidebarComponent', () => {
     component.groups.set([{ id: 'g1', name: 'Test Group' }]);
     fixture.detectChanges();
     const headers = fixture.nativeElement.querySelectorAll('.info_title');
-    const header = Array.from(headers).find((h: any) => h.textContent.includes('TITLE_GROUPS')) as HTMLElement;
+    const header = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_GROUPS')) as HTMLElement;
     header.click();
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('Test Group');
@@ -246,7 +246,7 @@ describe('TopicInfoSidebarComponent', () => {
 
   it('should show no-groups message when groups are empty and section is opened', () => {
     const headers = fixture.nativeElement.querySelectorAll('.info_title');
-    const header = Array.from(headers).find((h: any) => h.textContent.includes('TITLE_GROUPS')) as HTMLElement;
+    const header = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_GROUPS')) as HTMLElement;
     header.click();
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('SECTION_INFO_NO_GROUPS');

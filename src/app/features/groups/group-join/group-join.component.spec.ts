@@ -7,6 +7,7 @@ import { GroupJoinService } from '../../../core/services/group-join.service';
 import { GroupDetailService } from '../../../core/services/group-detail.service';
 import { UserStore } from '../../../core/state/user.store';
 import { DialogService } from '../../../shared/dialog/dialog.service';
+import { Group } from '../../../core/interfaces/group';
 
 const mockGroup = {
   id: 'group-1',
@@ -26,10 +27,10 @@ function buildRoute(params: Record<string, string>, queryParams: Record<string, 
 }
 
 function setup(overrides: {
-  group?: any;
-  groupError?: any;
-  joinResult?: any;
-  joinError?: any;
+  group?: Partial<Group>;
+  groupError?: { status: { code: number } };
+  joinResult?: { id: string };
+  joinError?: { status: { code: number } };
   dialogResult?: boolean;
   isAuthenticated?: boolean;
   routeParams?: Record<string, string>;

@@ -15,6 +15,7 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { Idea } from '../../../../../core/interfaces/idea';
 import { Attachment } from '../../../../../core/interfaces/attachment';
+import { ApiResponse } from '../../../../../core/interfaces/api-response';
 import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
@@ -83,7 +84,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
   statement = signal('');
   description = signal('');
   images = signal<Attachment[]>([]);
-  newImages = signal<any[]>([]);
+  newImages = signal<{ file: File; link: string | ArrayBuffer | null; name: string }[]>([]);
   errors = signal<Record<string, string>>({});
   isAutosaving = signal(false);
   isPublished = signal(false);
@@ -119,7 +120,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
     if (config && idea.demographics) {
       const vals: Record<string, string> = {};
       Object.keys(config).forEach(key => {
-        const val = (idea.demographics as any)?.[key] || '';
+        const val = (idea.demographics as Record<string, string | null | undefined>)?.[key] || '';
         vals[key] = val;
         if (key === 'residence') {
           const isOther = val.startsWith('other: ');
@@ -140,8 +141,8 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       limit: 100,
       page: 1,
       offset: 0
-    }).pipe(take(1)).subscribe((res: any) => {
-      this.images.set(res.rows ?? []);
+    }).pipe(take(1)).subscribe((res: ApiResponse<{ rows: Attachment[]; countTotal: number }>) => {
+      this.images.set(res.data?.rows ?? []);
     });
   }
 
@@ -397,7 +398,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
     for (const img of this.newImages()) {
       const uploadUrl = `${this.configStore.api.baseUrl()}/api/users/self/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/image/upload`;
       const upload$ = this.uploadService.upload(uploadUrl, img.file, { name: img.name })
-        .pipe(takeWhile((e: any) => !e.link, true));
+        .pipe(takeWhile((e: { link?: string }) => !e.link, true));
       try {
         await lastValueFrom(upload$);
       } catch {
@@ -419,8 +420,8 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       limit: 100,
       page: 1,
       offset: 0
-    }).pipe(take(1)).subscribe((res: any) => {
-      this.images.set(res.rows ?? []);
+    }).pipe(take(1)).subscribe((res: ApiResponse<{ rows: Attachment[]; countTotal: number }>) => {
+      this.images.set(res.data?.rows ?? []);
     });
   }
 }

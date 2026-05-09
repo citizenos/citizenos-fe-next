@@ -17,3 +17,11 @@ export interface UserState {
   isAuthenticated: boolean;
   isLoading: boolean;
 }
+
+export interface SearchResultUser {
+  id?: string;
+  userId?: string;
+  name: string;
+  email?: string;
+  imageUrl?: string;
+}

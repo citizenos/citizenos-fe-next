@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { TopicDiscussionComponent } from './topic-discussion.component';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -6,11 +7,14 @@ import { TopicDiscussionService } from '../../../../../core/services/topic-discu
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { BehaviorSubject, of } from 'rxjs';
+import { Topic } from '../../../../../core/interfaces/topic';
+import { Discussion } from '../../../../../core/interfaces/discussion';
+import { Argument } from '../../../../../core/interfaces/argument';
 
-const mockTopic: any = { id: 'topic-1', discussionId: 'disc-1', status: 'inProgress' };
-const mockDiscussion: any = { id: 'disc-1', question: 'What do you think?', deadline: null };
+const mockTopic: Topic = { id: 'topic-1', discussionId: 'disc-1', status: 'inProgress' } as Topic;
+const mockDiscussion: Discussion = { id: 'disc-1', question: 'What do you think?', deadline: null } as Discussion;
 
-const itemsSubject = new BehaviorSubject<any[]>([]);
+const itemsSubject = new BehaviorSubject<Argument[]>([]);
 const loadingSubject = new BehaviorSubject(false);
 const countSubject = new BehaviorSubject({ total: 0, pro: 0, con: 0, poi: 0, reply: 0 });
 
@@ -52,8 +56,8 @@ describe('TopicDiscussionComponent', () => {
 
     component = TestBed.runInInjectionContext(() => {
       const c = new TopicDiscussionComponent();
-      // Override topic with a plain function before signals are read
-      (c as any).topic = () => mockTopic;
+      // Override topic with a signal
+      (c as unknown as { topic: unknown }).topic = signal(mockTopic);
       return c;
     });
   });

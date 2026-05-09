@@ -7,8 +7,10 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import { signal } from '@angular/core';
+import { Argument } from '../../../../../core/interfaces/discussion';
 
-const mockArgument = {
+const mockArgument: Argument = {
   id: 'arg-1',
   type: 'pro',
   subject: 'This is good',
@@ -16,7 +18,7 @@ const mockArgument = {
   creator: { id: 'u1', name: 'Alice' },
   votes: { up: { count: 2, selected: false }, down: { count: 0, selected: false } },
   replies: { rows: [], count: 0 },
-  edits: [{}],
+  edits: [{ subject: 'This is good', text: '<p>Body text</p>', createdAt: '2024-01-01', type: 'pro' }],
   createdAt: '2024-01-01',
   deletedAt: null,
 };
@@ -48,10 +50,10 @@ describe('ArgumentComponent', () => {
     });
 
     component = TestBed.runInInjectionContext(() => new ArgumentComponent());
-    (component as any).argument = vi.fn().mockReturnValue({ ...mockArgument });
-    (component as any).topicId = vi.fn().mockReturnValue('topic-1');
-    (component as any).discussionId = vi.fn().mockReturnValue('disc-1');
-    (component as any).root = vi.fn().mockReturnValue(null);
+    (component as unknown as { argument: unknown }).argument = signal({ ...mockArgument });
+    (component as unknown as { topicId: unknown }).topicId = signal('topic-1');
+    (component as unknown as { discussionId: unknown }).discussionId = signal('disc-1');
+    (component as unknown as { root: unknown }).root = signal(null);
     component.ngOnInit();
   });
 

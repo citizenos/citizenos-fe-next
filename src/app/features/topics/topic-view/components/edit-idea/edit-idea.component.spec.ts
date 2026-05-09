@@ -12,9 +12,14 @@ import { UploadService } from '../../../../../core/services/upload.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { ConfigStore } from '../../../../../core/state/config.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
+import { Topic } from '../../../../../core/interfaces/topic';
+import { Ideation } from '../../../../../core/interfaces/ideation';
+import { Idea } from '../../../../../core/interfaces/idea';
+import { IdeaAttachment } from '../../../../../core/services/idea-attachment.service';
+import { signal } from '@angular/core';
 
-const mockTopic = { id: 't1', country: null } as any;
-const mockIdeation = { id: 'i1', allowAnonymous: false, demographicsConfig: null, template: '' } as any;
+const mockTopic = { id: 't1', country: null } as unknown as Topic;
+const mockIdeation = { id: 'i1', allowAnonymous: false, demographicsConfig: null, template: '' } as unknown as Ideation;
 const mockIdea = {
   id: 'idea1',
   statement: 'Old statement',
@@ -22,7 +27,7 @@ const mockIdea = {
   status: IdeaStatus.draft,
   ideationId: 'i1',
   demographics: null,
-} as any;
+} as unknown as Idea;
 
 const mockIdeationService = {
   updateIdea: vi.fn().mockReturnValue(of({ ...mockIdea, statement: 'New statement' })),
@@ -61,9 +66,9 @@ describe('EditIdeaComponent', () => {
   function makeComp(idea = mockIdea, ideation = mockIdeation) {
     return runInInjectionContext(injector, () => {
       const comp = new EditIdeaComponent();
-      (comp as any).topic = vi.fn().mockReturnValue(mockTopic);
-      (comp as any).ideation = vi.fn().mockReturnValue(ideation);
-      (comp as any).idea = vi.fn().mockReturnValue(idea);
+      (comp as unknown as { topic: unknown }).topic = signal(mockTopic);
+      (comp as unknown as { ideation: unknown }).ideation = signal(ideation);
+      (comp as unknown as { idea: unknown }).idea = signal(idea);
       comp.ngOnInit();
       return comp;
     });
@@ -166,7 +171,7 @@ describe('EditIdeaComponent', () => {
 
   it('removeImage calls attachmentService.delete and removes from list', () => {
     const comp = makeComp();
-    const mockAttachment = { id: 'att1', name: 'img.jpg', link: 'http://x.com/img.jpg' } as any;
+    const mockAttachment = { id: 'att1', name: 'img.jpg', link: 'http://x.com/img.jpg' } as IdeaAttachment;
     comp.images.set([mockAttachment]);
     comp.removeImage(mockAttachment, 0);
     expect(mockAttachmentService.delete).toHaveBeenCalledWith(expect.objectContaining({

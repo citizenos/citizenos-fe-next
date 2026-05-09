@@ -1,16 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { signal } from '@angular/core';
 import { runInInjectionContext, EnvironmentInjector } from '@angular/core';
 import { AddIdeaComponent } from './add-idea.component';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
+import { Topic } from '../../../../../core/interfaces/topic';
+import { Ideation } from '../../../../../core/interfaces/ideation';
+import { Idea } from '../../../../../core/interfaces/idea';
 
-const mockTopic = { id: 't1', status: 'ideation', country: 'EE' } as any;
-const mockIdeation = { id: 'i1', allowAnonymous: false, demographicsConfig: null } as any;
+const mockTopic = { id: 't1', status: 'ideation', country: 'EE' } as Topic;
+const mockIdeation = { id: 'i1', allowAnonymous: false, demographicsConfig: null } as Ideation;
 
-const mockCreatedIdea = { id: 'new-idea', status: 'published' } as any;
+const mockCreatedIdea = { id: 'new-idea', status: 'published' } as Idea;
 const mockIdeationService = {
   createIdea: vi.fn().mockReturnValue(of(mockCreatedIdea)),
   updateIdea: vi.fn().mockReturnValue(of(mockCreatedIdea)),
@@ -35,8 +39,8 @@ describe('AddIdeaComponent', () => {
   function makeComp() {
     return runInInjectionContext(injector, () => {
       const comp = new AddIdeaComponent();
-      (comp as any).topic = vi.fn().mockReturnValue(mockTopic);
-      (comp as any).ideation = vi.fn().mockReturnValue(mockIdeation);
+      (comp as unknown as { topic: unknown }).topic = signal(mockTopic);
+      (comp as unknown as { ideation: unknown }).ideation = signal(mockIdeation);
       return comp;
     });
   }

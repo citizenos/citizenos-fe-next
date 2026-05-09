@@ -4,10 +4,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { of } from 'rxjs';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { vi, describe, it, expect, beforeEach, Mock } from 'vitest';
 import { Component, Input } from '@angular/core';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Idea } from '../../../../../core/interfaces/idea';
+import { IdeationFolder } from '../../../../../core/interfaces/ideation';
 
 @Component({
   selector: 'cos-icon',
@@ -22,9 +24,13 @@ class MockIconComponent {
 describe('AddIdeasToFolderComponent', () => {
   let component: AddIdeasToFolderComponent;
   let fixture: ComponentFixture<AddIdeasToFolderComponent>;
-  let mockIdeationService: any;
-  let mockDialogRef: any;
-  let mockDialogData: any;
+  let mockIdeationService: {
+    getIdeas: Mock;
+    addIdeaToFolder: Mock;
+    removeIdeaFromFolder: Mock;
+  };
+  let mockDialogRef: Partial<DialogRef>;
+  let mockDialogData: { topicId: string; ideationId: string; folder: Partial<IdeationFolder> };
 
   beforeEach(async () => {
     mockIdeationService = {
@@ -85,7 +91,7 @@ describe('AddIdeasToFolderComponent', () => {
   });
 
   it('should add new ideas to folder', () => {
-    component.toggleIdea({ id: 'idea2' } as any);
+    component.toggleIdea({ id: 'idea2' } as Idea);
     component.addIdeas();
     expect(mockIdeationService.addIdeaToFolder).toHaveBeenCalledWith(
       expect.anything(),
@@ -95,7 +101,7 @@ describe('AddIdeasToFolderComponent', () => {
   });
 
   it('should remove ideas from folder', () => {
-    component.toggleIdea({ id: 'idea1' } as any);
+    component.toggleIdea({ id: 'idea1' } as Idea);
     component.addIdeas();
     expect(mockIdeationService.removeIdeaFromFolder).toHaveBeenCalled();
     expect(mockDialogRef.close).toHaveBeenCalledWith(true);

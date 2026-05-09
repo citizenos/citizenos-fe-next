@@ -5,6 +5,8 @@ import { StepTopicsComponent } from './step-topics.component';
 import { SearchService } from '../../../../../core/services/search.service';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
+import { Topic } from '../../../../../core/interfaces/topic';
+import { signal } from '@angular/core';
 
 const mockSearchService = {
   search: vi.fn(),
@@ -33,7 +35,7 @@ describe('StepTopicsComponent', () => {
 
   function makeComp() {
     const comp = runInInjectionContext(injector, () => new StepTopicsComponent());
-    comp['group'] = vi.fn().mockReturnValue(mockGroup) as any;
+    (comp as unknown as { group: unknown }).group = signal(mockGroup);
     return comp;
   }
 
@@ -68,7 +70,7 @@ describe('StepTopicsComponent', () => {
 
   it('addTopic adds to selectedTopics and clears search', () => {
     const comp = makeComp();
-    const topic = { id: 't1', title: 'Topic 1' } as any;
+    const topic = { id: 't1', title: 'Topic 1' } as unknown as Topic;
     comp.searchResults.set([topic]);
     const emitSpy = vi.spyOn(comp.groupUpdate, 'emit');
     comp.addTopic(topic);
@@ -80,7 +82,7 @@ describe('StepTopicsComponent', () => {
 
   it('addTopic does not duplicate', () => {
     const comp = makeComp();
-    const topic = { id: 't1', title: 'Topic 1' } as any;
+    const topic = { id: 't1', title: 'Topic 1' } as unknown as Topic;
     comp.addTopic(topic);
     comp.addTopic(topic);
     expect(comp.selectedTopics().length).toBe(1);
@@ -88,7 +90,7 @@ describe('StepTopicsComponent', () => {
 
   it('removeTopic removes from selectedTopics', () => {
     const comp = makeComp();
-    const topic = { id: 't1', title: 'Topic 1' } as any;
+    const topic = { id: 't1', title: 'Topic 1' } as unknown as Topic;
     comp.addTopic(topic);
     comp.removeTopic(topic);
     expect(comp.selectedTopics()).toEqual([]);
