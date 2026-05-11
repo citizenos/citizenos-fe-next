@@ -53,7 +53,7 @@ export class TopicStateItemsComponent {
     return this.topicService.canUpdate(topic);
   }
 
-  getDaysUntil(dateString: string): number {
+  getDaysUntil(dateString: string | Date): number {
     const end = new Date(dateString);
     end.setHours(23, 59, 59, 999);
     const start = new Date();

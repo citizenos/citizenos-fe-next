@@ -103,7 +103,7 @@ export class IdeationCreateComponent implements OnInit {
       take(1),
       switchMap((savedTopic) => {
         this.topic.set(savedTopic);
-        const ideationData = { ...this.ideation(), topicId: savedTopic.id, question: ' ' };
+        const ideationData = { ...this.ideation(), topicId: savedTopic.id || '', question: ' ' };
         return this.ideationService.save(ideationData);
       })
     ).subscribe({
@@ -180,7 +180,7 @@ export class IdeationCreateComponent implements OnInit {
     this.topicService.patch(t).subscribe({
       next: () => {
         if (this.ideation().id) {
-          this.ideationService.update({ ...this.ideation(), topicId: t.id }).pipe(take(1)).subscribe();
+          this.ideationService.update({ ...this.ideation(), topicId: t.id || '' }).pipe(take(1)).subscribe();
         }
         this.isLoading.set(false);
         this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
@@ -199,7 +199,7 @@ export class IdeationCreateComponent implements OnInit {
     this.isLoading.set(true);
     this.topicService.patch({ ...t, status: 'ideation' }).subscribe({
       next: () => {
-        this.ideationService.update({ ...this.ideation(), topicId: t.id }).pipe(take(1)).subscribe({
+        this.ideationService.update({ ...this.ideation(), topicId: t.id || '' }).pipe(take(1)).subscribe({
           next: () => {
             this.isLoading.set(false);
             this.notification.showRaw('success', 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEventType, HttpEvent } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { HttpClient, HttpRequest, HttpEventType, HttpEvent, HttpResponse } from '@angular/common/http';
+import { filter, map, Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { ApiResponse } from '../interfaces/api-response';
 export class UploadService {
   private http = inject(HttpClient);
 
-  upload(path: string, file: File, data?: Record<string, unknown>): Observable<unknown> {
+  upload<T = unknown>(path: string, file: File, data?: Record<string, unknown>): Observable<T> {
     const formData: FormData = new FormData();
     formData.append('file', file);
     
@@ -25,12 +25,10 @@ export class UploadService {
       responseType: 'json',
     });
 
-    return this.http.request<ApiResponse<unknown>>(req).pipe(
-      map((event: HttpEvent<ApiResponse<unknown>>) => {
-        if (event.type === HttpEventType.Response) {
-          return event.body?.data || event.body;
-        }
-        return event;
+    return this.http.request<ApiResponse<T>>(req).pipe(
+      filter((event): event is HttpResponse<ApiResponse<T>> => event.type === HttpEventType.Response),
+      map((event: HttpResponse<ApiResponse<T>>) => {
+        return (event.body?.data || event.body) as T;
       })
     );
   }

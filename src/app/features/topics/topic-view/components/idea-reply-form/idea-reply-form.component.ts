@@ -69,8 +69,11 @@ export class IdeaReplyFormComponent {
       ideaId: this.ideaId()
     };
 
+    const argument = this.argument();
+    if (!argument) return;
+
     if (this.editMode()) {
-      this.ideationService.updateIdeaComment({ ...data, commentId: this.argument().id }).subscribe({
+      this.ideationService.updateIdeaComment({ ...data, commentId: argument.id }).subscribe({
         next: (comment) => {
           this.notification.success('COMPONENTS.IDEA_REPLY_FORM.MSG_SUCCESS');
           this.showRepliesChange.emit(true);
@@ -87,7 +90,7 @@ export class IdeaReplyFormComponent {
       const saveParams = {
         ...data,
         parentId: this.argument()?.id,
-        parentVersion: (this.argument()?.edits?.length || 1) - 1
+        parentVersion: (Array.isArray(this.argument()?.edits) ? this.argument()?.edits?.length : Object.keys(this.argument()?.edits || {}).length) || 0
       };
       this.ideationService.saveIdeaComment(saveParams).subscribe({
         next: (comment) => {

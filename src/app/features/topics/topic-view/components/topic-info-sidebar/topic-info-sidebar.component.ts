@@ -1,9 +1,9 @@
 import { Component, output, inject, ChangeDetectionStrategy, computed, model } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
-import { TopicService, TopicAttachment, TopicGroup } from '../../../../../core/services/topic.service';
+import { TopicService } from '../../../../../core/services/topic.service';
+import { Topic, TopicAttachment, TopicGroup } from '../../../../../core/interfaces/topic';
 import { UserStore } from '../../../../../core/state/user.store';
-import { Topic } from '../../../../../core/interfaces/topic';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DatePipe } from '@angular/common';

@@ -2,50 +2,50 @@
   <!-- IDEATION STATE -->
   @if (topic().ideationId) {
     <div class="state_item ideation" (click)="navigateTab.emit('ideation')" (keydown.enter)="navigateTab.emit('ideation')" tabindex="0" role="button">
-      @if (ideation()) {
+      @if (ideation(); as i) {
         <div class="item_header">
           <div class="item_title_with_description">
             <span>{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_HEADING' | translate }}</span>
           </div>
           
-          @if (ideation().deadline && !topicIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
-            <div class="item_title">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_IDEAS' | translate:{ count: ideation().ideas?.count || 0 } }}</div>
+          @if (i.deadline && !topicIdeationService.hasIdeationEndedExpired(topic(), i)) {
+            <div class="item_title">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_IDEAS' | translate:{ count: i.ideas?.count || 0 } }}</div>
           }
-          @if (!ideation().deadline && !topicIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
-            <div class="item_title">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_STATUS_ACTIVE' | translate:{ count: ideation().ideas?.count || 0 } }}</div>
+          @if (!i.deadline && !topicIdeationService.hasIdeationEndedExpired(topic(), i)) {
+            <div class="item_title">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_STATUS_ACTIVE' | translate:{ count: i.ideas?.count || 0 } }}</div>
           }
-          @if (topicIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
+          @if (topicIdeationService.hasIdeationEndedExpired(topic(), i)) {
             <div>{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_STATUS_ENDED' | translate }}</div>
           }
         </div>
         
         <div class="item_content">
           <div class="graph_wrap">
-            @if (!ideation().deadline || topicIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
+            @if (!i.deadline || topicIdeationService.hasIdeationEndedExpired(topic(), i)) {
               <div class="legend">
                 <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_IDEAS_COLLECTED' | translate }}</div>
                 <div>
-                  <span class="bold">{{ ideation().ideas?.count || 0 }}</span>
+                  <span class="bold">{{ i.ideas?.count || 0 }}</span>
                 </div>
               </div>
             }
-            @if (ideation().deadline && !topicIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
+            @if (i.deadline && !topicIdeationService.hasIdeationEndedExpired(topic(), i)) {
               <div class="legend wide">
                 <div class="legend_row">
                   <div class="legend_item">
                     <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_IDEATION_DAYS_LEFT' | translate }}</div>
-                    <div>{{ getDaysUntil(ideation().deadline) }}</div>
+                    <div>{{ getDaysUntil(i.deadline) }}</div>
                   </div>
                 </div>
                 <div class="legend_row">
                   <div class="legend_item">
-                    <div class="bold">{{ ideation().deadline | date: 'y-MM-dd' }}</div>
+                    <div class="bold">{{ i.deadline | date: 'y-MM-dd' }}</div>
                   </div>
                 </div>
               </div>
             }
             <div class="graph">
-              <div class="ideation" [style.width.%]="ideationDeadlineBar(ideation())"></div>
+              <div class="ideation" [style.width.%]="ideationDeadlineBar(i)"></div>
             </div>
           </div>
         </div>
@@ -138,18 +138,18 @@
           }
         </div>
       }
-      @if (vote()) {
+      @if (vote(); as v) {
         <div class="item_header">
           <div class="item_title_with_description">
             <span>{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_HEADING' | translate }}</span>
           </div>
-          <div class="item_title">{{ (!topicVoteService.hasVoteEndedExpired(topic(), vote()) ? 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_STATUS_ACTIVE' : 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_STATUS_ENDED') | translate }}</div>
+          <div class="item_title">{{ (!topicVoteService.hasVoteEndedExpired(topic(), v) ? 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_STATUS_ACTIVE' : 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_STATUS_ENDED') | translate }}</div>
         </div>
         <div class="item_content">
           <div class="graph_wrap">
             <div class="legend">
               <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_VOTING_VOTES_COLLECTED' | translate }}</div>
-              <div><span class="bold">{{ vote().votersCount || 0 }}</span></div>
+              <div><span class="bold">{{ v.votersCount || 0 }}</span></div>
             </div>
             <!-- In legacy this was commented out, potentially add a bar here -->
           </div>

@@ -141,8 +141,8 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       limit: 100,
       page: 1,
       offset: 0
-    }).pipe(take(1)).subscribe((res: ApiResponse<{ rows: Attachment[]; countTotal: number }>) => {
-      this.images.set(res.data?.rows ?? []);
+    }).pipe(take(1)).subscribe((res: { rows: Attachment[]; countTotal: number }) => {
+      this.images.set(res.rows ?? []);
     });
   }
 
@@ -380,7 +380,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
           this.doSaveAttachments(idea.id);
         }
       },
-      error: (err) => {
+      error: (err: any) => {
         if (isAutosave) {
           setTimeout(() => this.isAutosaving.set(false), AUTOSAVE_HIDE_DELAY);
         } else {
@@ -397,7 +397,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
 
     for (const img of this.newImages()) {
       const uploadUrl = `${this.configStore.api.baseUrl()}/api/users/self/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/image/upload`;
-      const upload$ = this.uploadService.upload(uploadUrl, img.file, { name: img.name })
+      const upload$ = this.uploadService.upload<{ link?: string }>(uploadUrl, img.file, { name: img.name })
         .pipe(takeWhile((e: { link?: string }) => !e.link, true));
       try {
         await lastValueFrom(upload$);
@@ -420,8 +420,8 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       limit: 100,
       page: 1,
       offset: 0
-    }).pipe(take(1)).subscribe((res: ApiResponse<{ rows: Attachment[]; countTotal: number }>) => {
-      this.images.set(res.data?.rows ?? []);
+    }).pipe(take(1)).subscribe((res: { rows: Attachment[]; countTotal: number }) => {
+      this.images.set(res.rows ?? []);
     });
   }
 }

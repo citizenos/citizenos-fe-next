@@ -10,6 +10,15 @@ export interface GroupInvite {
   inviteMessage?: string;
 }
 
+export interface GroupInvitation {
+  id: string;
+  inviteId?: string;
+  creator: { id: string; name: string; imageUrl?: string };
+  user: { id: string; email: string; isRegistered: boolean };
+  group: { id: string; name: string; description: string; visibility: string; imageUrl?: string };
+  level: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class GroupInviteUserService {
   private http = inject(HttpClient);
@@ -40,8 +49,8 @@ export class GroupInviteUserService {
     );
   }
 
-  get(params: { groupId: string; inviteId: string }): Observable<unknown> {
-    return this.http.get<ApiResponse<unknown>>(
+  get(params: { groupId: string; inviteId: string }): Observable<GroupInvitation> {
+    return this.http.get<ApiResponse<GroupInvitation>>(
       `${this.baseUrl}/api/users/self/groups/${params.groupId}/invites/users/${params.inviteId}`,
       { withCredentials: true }
     ).pipe(map(r => r.data));

@@ -169,7 +169,7 @@ export class SmartIdComponent implements OnDestroy {
   private fb = inject(FormBuilder);
   userStore = inject(UserStore);
 
-  challengeID = signal<number | null>(null);
+  challengeID = signal<string | null | undefined>(null);
   error = signal<string | null>(null);
   private pollSubscription?: Subscription;
 

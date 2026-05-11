@@ -71,7 +71,7 @@ export class IdeaReplyReportModerateComponent {
       ideaId: this.ideaId,
       commentId: this.argument?.id ?? this.commentId,
       reportId: this.reportId,
-      report: this.report.value
+      report: this.report.value as { type: string; text: string }
     }).pipe(take(1)).subscribe({
       next: () => this.dialogRef.close(true),
       error: () => this.dialogRef.close()

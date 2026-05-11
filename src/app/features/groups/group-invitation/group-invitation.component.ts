@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
-import { GroupInviteUserService } from '../../../core/services/group-invite-user.service';
+import { GroupInviteUserService, GroupInvitation } from '../../../core/services/group-invite-user.service';
 import { UserStore } from '../../../core/state/user.store';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 import { InvitationDialogComponent } from '../../../shared/components/invitation-dialog/invitation-dialog.component';
@@ -27,7 +27,7 @@ export class GroupInvitationComponent implements OnInit {
     const inviteId: string = params['inviteId'];
 
     this.inviteService.get({ groupId, inviteId }).pipe(take(1)).subscribe({
-      next: (invite) => {
+      next: (invite: GroupInvitation) => {
         invite.inviteId = inviteId;
         const currentUrl = window.location.href;
         const redirectUrl = queryParams['join'] ? currentUrl : `${currentUrl}?join=true`;
@@ -94,13 +94,13 @@ export class GroupInvitationComponent implements OnInit {
           }
         });
       },
-      error: (err) => {
+      error: (err: { code?: number; status?: { code?: number; message?: string }; message?: string }) => {
         this.router.navigate(['/']);
         setTimeout(() => {
           if (err.code === 41002 || err.status?.code === 41002) {
             this.notification.error('MSG_ERROR_GET_API_USERS_GROUPS_INVITES_USERS_41002');
           } else {
-            this.notification.error(err.message || err.status?.message);
+            this.notification.error(err.message || err.status?.message || 'ERRORS.GENERAL');
           }
         }, 400);
       },

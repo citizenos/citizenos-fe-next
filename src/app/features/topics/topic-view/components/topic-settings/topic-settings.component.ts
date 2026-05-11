@@ -4,7 +4,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { A11yModule } from '@angular/cdk/a11y';
 import { FormsModule } from '@angular/forms';
 import { take } from 'rxjs';
-import { Topic } from '../../../../../core/interfaces/topic';
+import { Topic, TopicGroup } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
@@ -49,7 +49,7 @@ export class TopicSettingsComponent implements OnInit {
   private dialog = inject(DialogService);
 
   topic = signal<Topic>({ ...this.dialogData.topic });
-  groups = signal<Group[]>([]);
+  groups = signal<TopicGroup[]>([]);
   tabSelected = signal('settings');
   errors = signal<Record<string, string>>({});
   
@@ -72,7 +72,7 @@ export class TopicSettingsComponent implements OnInit {
       this.topicVoteService.get({ topicId: t.id, voteId: t.voteId })
         .pipe(take(1))
         .subscribe((vote) => {
-          this.topic.update(current => ({ ...current, vote: vote as Topic['vote'] }));
+          this.topic.update(current => ({ ...current, vote: vote as unknown as Topic['vote'] }));
           if (vote.reminderTime && !vote.reminderSent) {
             this.reminder.set(true);
           }

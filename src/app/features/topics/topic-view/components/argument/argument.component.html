@@ -6,7 +6,7 @@
           <div class="author_wrap">
             <div class="image_wrap">
               @if (argument().creator?.imageUrl) {
-                <img [src]="argument().creator.imageUrl" [alt]="argument().creator.name" class="profile_image">
+                <img [src]="argument().creator?.imageUrl" [alt]="argument().creator?.name" class="profile_image">
               } @else {
                 <div class="profile_image_filler">
                   <cos-initials [name]="argument().creator?.name || ''"></cos-initials>
@@ -80,7 +80,7 @@
           @if (argument().subject) {
             <div class="argument_subject">{{ argument().subject }}</div>
           }
-          <div class="argument_body" #argumentBody [innerHTML]="safe(argument().text)"></div>
+          <div class="argument_body" #argumentBody [innerHTML]="safe(argument().text || '')"></div>
         }
       </div>
 
@@ -119,7 +119,7 @@
         <div class="footer_right">
           @if ((argument().replies?.count || 0) > 0) {
             <button type="button" class="btn_ghost_reply_argument" (click)="showReplies.update(v => !v)">
-              {{ (showReplies() ? 'COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES' : 'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES') | translate:{ count: argument().replies.count } }}
+              {{ (showReplies() ? 'COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES' : 'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES') | translate:{ count: argument().replies?.count || 0 } }}
             </button>
           }
           <button type="button" class="btn_reply_argument" (click)="showReplyForm.update(v => !v)">

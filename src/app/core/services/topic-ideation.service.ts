@@ -22,7 +22,7 @@ export interface TopicIdeationParams extends ListParams {
   favourite?: boolean | string | null;
 }
 
-type ParamValue = string | number | boolean | null | undefined;
+type ParamValue = string | number | boolean | null | undefined | string[] | number[] | Record<string, any>;
 
 @Injectable({
   providedIn: 'root'
@@ -76,10 +76,15 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
       .set('limit', String(params.limit))
       .set('offset', String(params.offset ?? 0));
 
-    Object.keys(params).forEach(key => {
-      const val = (params as unknown as Record<string, ParamValue>)[key];
-      if (key !== 'limit' && key !== 'offset' && key !== 'topicId' && key !== 'ideationId' && val !== null) {
-        httpParams = httpParams.set(key, String(val));
+    Object.entries(params).forEach(([key, val]) => {
+      if (key !== 'limit' && key !== 'offset' && key !== 'topicId' && key !== 'ideationId' && val != null) {
+        if (Array.isArray(val)) {
+          val.forEach(v => {
+            httpParams = httpParams.append(key, String(v));
+          });
+        } else {
+          httpParams = httpParams.set(key, String(val));
+        }
       }
     });
 
@@ -87,12 +92,31 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations${ideationPath}`);
 
     return this.http.get<ApiResponse<{ rows: Ideation[]; count: number } | Ideation[]>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
-      .pipe(map(res => ({ rows: (res.data as { rows: Ideation[]; count: number })?.rows ?? (res.data as Ideation[]) ?? [], countTotal: (res.data as { rows: Ideation[]; count: number })?.count ?? 0 })));
+      .pipe(map(res => {
+        const data = res.data;
+        if (data && 'rows' in data) {
+          return { rows: data.rows, countTotal: data.count };
+        }
+        return { rows: (data as Ideation[]) ?? [], countTotal: (data as Ideation[])?.length ?? 0 };
+      }));
   }
 
   query(params: TopicIdeationParams): Observable<Ideation[]> {
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/ideations`);
-    return this.http.get<ApiResponse<Ideation[]>>(path, { withCredentials: true, params: params as unknown as Record<string, ParamValue>, observe: 'body', responseType: 'json' })
+    let httpParams = new HttpParams();
+    Object.entries(params).forEach(([key, val]) => {
+      if (val != null) {
+        if (Array.isArray(val)) {
+          val.forEach(v => {
+            httpParams = httpParams.append(key, String(v));
+          });
+        } else {
+          httpParams = httpParams.set(key, String(val));
+        }
+      }
+    });
+
+    return this.http.get<ApiResponse<Ideation[]>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 

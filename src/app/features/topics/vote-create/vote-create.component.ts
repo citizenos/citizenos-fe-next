@@ -5,7 +5,7 @@ import { TopicService } from '../../../core/services/topic.service';
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { Topic } from '../../../core/interfaces/topic';
-import { Vote } from '../../../core/interfaces/vote';
+import { Vote, VoteWithOptions } from '../../../core/interfaces/vote';
 import { StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
 import { CreateWizardShellComponent } from '../../../shared/components/create-wizard-shell/create-wizard-shell.component';
 import { StepTopicInfoComponent } from '../topic-create/components/step-topic-info/step-topic-info.component';
@@ -55,7 +55,7 @@ export class VoteCreateComponent implements OnInit {
     status: 'draft'
   });
 
-  vote = signal<Partial<Vote>>({
+  vote = signal<Partial<VoteWithOptions>>({
     question: '',
     type: 'regular',
     authType: 'soft',
@@ -81,7 +81,14 @@ export class VoteCreateComponent implements OnInit {
         this.topic.set(topic);
         if (topic.voteId) {
           this.voteService.get({ topicId: topic.id, voteId: topic.voteId }).subscribe({
-            next: (vote) => this.vote.set({ ...vote, question: vote.description ?? undefined }),
+            next: (vote: any) => {
+              const options = Array.isArray(vote.options) ? vote.options : (vote.options?.rows || []);
+              this.vote.set({
+                ...vote,
+                question: vote.description ?? undefined,
+                options
+              });
+            },
             error: () => { /* intentionally empty */ }
           });
         }
@@ -113,8 +120,13 @@ export class VoteCreateComponent implements OnInit {
         return this.voteService.save(voteData);
       })
     ).subscribe({
-      next: (savedVote) => {
-        this.vote.set({ ...savedVote, question: savedVote.description ?? undefined });
+      next: (savedVote: any) => {
+        const options = Array.isArray(savedVote.options) ? savedVote.options : (savedVote.options?.rows || []);
+        this.vote.set({
+          ...savedVote,
+          question: savedVote.description ?? undefined,
+          options
+        });
         this.isLoading.set(false);
         this.router.navigate([this.topic().id], {
           relativeTo: this.route,
@@ -155,7 +167,7 @@ export class VoteCreateComponent implements OnInit {
     this.topic.update(t => ({ ...t, ...updates }));
   }
 
-  onVoteUpdate(updates: Partial<Vote>) {
+  onVoteUpdate(updates: Partial<VoteWithOptions>) {
     this.vote.update(v => ({ ...v, ...updates }));
   }
 

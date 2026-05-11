@@ -45,17 +45,17 @@
           <div class="row_list">
             <div class="row_cell_dialog image_cell">
               <div class="profile_image_wrap">
-                @if (delegateUser().imageUrl) {
-                  <img class="profile_image" [src]="delegateUser().imageUrl" alt="" />
+                @if (delegateUser()?.imageUrl) {
+                  <img class="profile_image" [src]="delegateUser()?.imageUrl" alt="" />
                 } @else {
                   <div class="profile_image_filler">
-                    @if (delegateUser().name) {
-                      <span class="initials">{{ delegateUser().name.charAt(0) }}</span>
+                    @if (delegateUser()?.name) {
+                      <span class="initials">{{ delegateUser()?.name?.charAt(0) }}</span>
                     }
                   </div>
                 }
               </div>
-              <span>{{ delegateUser().name }}</span>
+              <span>{{ delegateUser()?.name }}</span>
             </div>
             <div class="row_cell_dialog">
               <button type="button" (click)="removeDelegate()" [aria-label]="'CONTROL.DELETE' | translate">

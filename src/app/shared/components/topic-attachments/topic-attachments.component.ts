@@ -1,7 +1,8 @@
 import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { TopicService, TopicAttachment } from '../../../core/services/topic.service';
+import { TopicService } from '../../../core/services/topic.service';
+import { TopicAttachment } from '../../../core/interfaces/topic';
 import { UploadService } from '../../../core/services/upload.service';
 import { CosDropdownDirective } from '../../directives/cos-dropdown.directive';
 import { Topic } from '../../../core/interfaces/topic';

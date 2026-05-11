@@ -39,7 +39,7 @@ export class TopicVoteSignEsteidComponent {
 
   isLoading = signal(false);
   isLoadingIdCard = signal(false);
-  challengeID = signal<number | null>(null);
+  challengeID = signal<string | null>(null);
 
   doSignWithMobile() {
     if (this.mobiilIdForm.invalid) return;
@@ -47,7 +47,7 @@ export class TopicVoteSignEsteidComponent {
     let phone = this.mobiilIdForm.value.phoneNumber || '';
     if (!phone.startsWith('+')) phone = '+' + phone;
     const userVote = {
-      voteId: this.data.topic.voteId,
+      voteId: this.data.topic.voteId || undefined,
       topicId: this.data.topic.id,
       options: this.data.options,
       pid: this.mobiilIdForm.value.pid,
@@ -57,7 +57,7 @@ export class TopicVoteSignEsteidComponent {
     this.topicVoteService.cast(userVote).pipe(take(1), catchError(_err => {
       this.isLoading.set(false);
       return of(null);
-    })).subscribe((result: { challengeID?: number; token?: string } | null) => {
+    })).subscribe((result: { challengeID?: string; token?: string } | null) => {
       this.isLoading.set(false);
       if (!result) return;
       if (result.challengeID && result.token) {
@@ -71,16 +71,16 @@ export class TopicVoteSignEsteidComponent {
     this.isLoadingIdCard.set(true);
     hwcrypto.getCertificate({}).then((certificate: { hex: string }) => {
       const userVote = {
-        voteId: this.data.topic.voteId,
+        voteId: this.data.topic.voteId || undefined,
         topicId: this.data.topic.id,
         options: this.data.options,
         certificate: certificate.hex
       };
-      this.topicVoteService.cast(userVote).pipe(take(1)).subscribe(async (voteResponse: { signedInfoDigest?: string; token?: string; signedInfoHashType?: string } | null) => {
+      this.topicVoteService.cast(userVote).pipe(take(1)).subscribe(async (voteResponse: any) => {
         if (voteResponse?.signedInfoDigest && voteResponse?.token && voteResponse?.signedInfoHashType) {
           const signature = await hwcrypto.sign(certificate, { hex: voteResponse.signedInfoDigest, type: voteResponse.signedInfoHashType }, {});
           this.topicVoteService.sign({
-            id: this.data.topic.voteId,
+            id: this.data.topic.voteId || undefined,
             topicId: this.data.topic.id,
             signatureValue: signature.hex,
             token: voteResponse.token

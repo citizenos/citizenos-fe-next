@@ -6,10 +6,15 @@ import { ApiResponse } from '../interfaces/api-response';
 
 export interface TopicInvite {
   id: string;
-  user: { id: string; name: string; email?: string; imageUrl?: string };
+  inviteId?: string;
+  topicId: string;
+  user: { id: string; name: string; email?: string; imageUrl?: string; isRegistered?: boolean };
+  topic: { id: string; title: string; intro?: string; description?: string; visibility: string; imageUrl?: string };
+  creator: { id: string; name: string; imageUrl?: string };
   email?: string;
   level: string;
   expiresAt?: string;
+  [key: string]: unknown;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -26,7 +31,7 @@ export class TopicInviteUserService {
     ).pipe(map(res => res.data ?? []));
   }
 
-  save(topicId: string, data: Omit<TopicInvite, 'id'>[]): Observable<unknown> {
+  save(topicId: string, data: Partial<TopicInvite>[]): Observable<unknown> {
     return this.http.post<ApiResponse<unknown>>(
       `${this.baseUrl}/api/users/self/topics/${topicId}/invites/users`,
       data, { withCredentials: true }

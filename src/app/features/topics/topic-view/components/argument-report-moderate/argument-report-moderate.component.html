@@ -29,11 +29,13 @@
       <div class="dialog_info_wrap">
         <div class="dialog_info">
           <div class="delete_info_text bold">{{ 'COMPONENTS.ARGUMENT_REPORT_MODERATE.MESSAGE_MAIN' | translate }}</div>
-          @if (argument?.subject) {
-            <div class="delete_info_text italic" [innerHTML]="argument.subject"></div>
-          }
-          @if (argument?.text) {
-            <div class="delete_info_text italic" [innerHTML]="argument.text"></div>
+          @if (argument; as arg) {
+            @if (arg.subject) {
+              <div class="delete_info_text italic" [innerHTML]="arg.subject"></div>
+            }
+            @if (arg.text) {
+              <div class="delete_info_text italic" [innerHTML]="arg.text"></div>
+            }
           }
         </div>
       </div>

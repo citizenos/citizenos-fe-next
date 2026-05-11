@@ -24,8 +24,8 @@ export class TopicMemberGroupService {
     admin: 'admin'
   };
 
-  loadItems(topicId: string): Observable<unknown[]> {
-    return this.http.get<ApiResponse<unknown[]>>(
+  loadItems(topicId: string): Observable<TopicMemberGroup[]> {
+    return this.http.get<ApiResponse<TopicMemberGroup[]>>(
       `${this.baseUrl}/api/users/self/topics/${topicId}/members/groups`,
       { withCredentials: true }
     ).pipe(map(res => res.data ?? []));

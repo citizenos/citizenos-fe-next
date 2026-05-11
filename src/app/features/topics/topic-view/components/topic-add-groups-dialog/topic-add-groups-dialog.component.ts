@@ -68,7 +68,7 @@ export class TopicAddGroupsDialogComponent {
       })
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        map(res => res.results.my.groups.rows),
+        map(res => res?.results?.my?.groups?.rows || []),
         catchError(() => of([]))
       )
       .subscribe(results => this.searchResults.set(results));

@@ -1,4 +1,4 @@
-import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, computed } from '@angular/core';
 import { DatePipe, UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
@@ -34,6 +34,14 @@ export class TopicVoteCastComponent implements OnInit {
   vote = input.required<TopicVote>();
   topic = input.required<Topic>();
 
+  normalizedVote = computed(() => {
+    const v = this.vote();
+    return {
+      ...v,
+      options: Array.isArray(v.options) ? v.options : (v.options?.rows || [])
+    };
+  });
+
   private topicService = inject(TopicService);
   private topicVoteService = inject(TopicVoteService);
   private voteDelegationService = inject(VoteDelegationService);
@@ -55,7 +63,7 @@ export class TopicVoteCastComponent implements OnInit {
 
   private checkUserVotingStatus() {
     const v = this.vote();
-    const hasVoted = !!(v?.options?.rows?.some((o: { selected?: boolean }) => o.selected) || v?.delegation);
+    const hasVoted = !!((Array.isArray(v?.options) ? v.options : v?.options?.rows)?.some((o: any) => o.selected) || v?.delegation);
     this.userHasVoted.set(hasVoted);
     this.editVote.set(false);
   }
@@ -80,10 +88,11 @@ export class TopicVoteCastComponent implements OnInit {
 
   canSubmit() {
     const v = this.vote();
-    if (!v?.options?.rows) return false;
-    const selected = v.options.rows.filter((o: { selected?: boolean; value?: string }) => o.selected);
+    const rows = Array.isArray(v?.options) ? v.options : v?.options?.rows;
+    if (!rows) return false;
+    const selected = rows.filter((o: any) => o.selected);
     if (selected.length === 1 && (selected[0].value === 'Neutral' || selected[0].value === 'Veto')) return true;
-    return selected.length <= (v.maxChoices as number) && selected.length >= (v.minChoices as number);
+    return selected.length <= (v.maxChoices || 0) && selected.length >= (v.minChoices || 0);
   }
 
   canEditDeadline() {
@@ -91,17 +100,18 @@ export class TopicVoteCastComponent implements OnInit {
   }
 
   hasVoteEndedExpired() {
-    return this.topicVoteService.hasVoteEndedExpired(this.topic(), this.vote());
+    return this.topicVoteService.hasVoteEndedExpired(this.topic(), this.vote() as any);
   }
 
-  selectOption(option: { id: string; value: string; selected?: boolean; optionId?: string }) {
+  selectOption(option: any) {
     if (!this.canVote()) return;
     const v = this.vote();
     if (option.selected) {
       delete option.selected;
       return;
     }
-    v.options.rows.forEach((opt: { selected?: boolean; value?: string }) => {
+    const rows = Array.isArray(v?.options) ? v.options : v?.options?.rows;
+    rows?.forEach((opt: any) => {
       if (option.value === 'Neutral' || option.value === 'Veto' || v.maxChoices === 1) {
         opt.selected = false;
       } else if (opt.value === 'Neutral' || opt.value === 'Veto') {
@@ -109,19 +119,20 @@ export class TopicVoteCastComponent implements OnInit {
       }
     });
     option.optionId = option.id;
-    const selected = v.options.rows.filter((o: { selected?: boolean }) => o.selected);
-    const alreadySelected = selected.find((i: { id: string }) => i.id === option.id);
-    if (selected.length >= (v.maxChoices as number) && !alreadySelected) return;
+    const selected = rows?.filter((o: any) => o.selected) || [];
+    const alreadySelected = selected.find((i: any) => i.id === option.id);
+    if (selected.length >= (v.maxChoices || 0) && !alreadySelected) return;
     option.selected = !option.selected;
   }
 
   doVote() {
     const v = this.vote();
-    const options = v.options.rows.filter((o: { id: string; optionId?: string; selected?: boolean }) => {
+    const rows = Array.isArray(v?.options) ? v.options : v?.options?.rows;
+    const options = (rows || []).filter((o: any) => {
       o.optionId = o.id;
       return !!o.selected;
     });
-    if (options.length > v.maxChoices || (options.length < v.minChoices && options[0]?.value !== 'Neutral' && options[0]?.value !== 'Veto')) {
+    if (options.length > (v.maxChoices || 0) || (options.length < (v.minChoices || 0) && options[0]?.value !== 'Neutral' && options[0]?.value !== 'Veto')) {
       this.notification.error('MSG_ERROR_SELECTED_OPTIONS_COUNT_DOES_NOT_MATCH_VOTE_SETTINGS');
       return;
     }
@@ -129,7 +140,7 @@ export class TopicVoteCastComponent implements OnInit {
       this.dialogService.open(TopicVoteSignComponent, { data: { topic: this.topic(), options } });
       return;
     }
-    options.forEach((o: { id: string; optionId: string }) => { o.optionId = o.id; });
+    options.forEach((o: any) => { o.optionId = o.id; });
     this.topicVoteService.cast({ voteId: v.id, topicId: this.topic().id, options })
       .pipe(take(1))
       .subscribe({
@@ -143,7 +154,7 @@ export class TopicVoteCastComponent implements OnInit {
 
   private saveVote(voteData?: Partial<TopicVote>) {
     const v = Object.assign(voteData || this.vote(), { topicId: this.topic().id });
-    this.topicVoteService.update(v).pipe(take(1)).subscribe({
+    this.topicVoteService.update(v as any).pipe(take(1)).subscribe({
       next: () => this.topicService.reloadTopic()
     });
   }
@@ -233,7 +244,7 @@ export class TopicVoteCastComponent implements OnInit {
           t.status = this.topicService.STATUSES.followUp;
           this.topicService.patch(t).pipe(take(1)).subscribe(() => {
             this.topicService.reloadTopic();
-            this.topicVoteService.get({ topicId: t.id, voteId: t.voteId }).pipe(take(1)).subscribe(vote => {
+            this.topicVoteService.get({ topicId: t.id, voteId: t.voteId || undefined }).pipe(take(1)).subscribe(vote => {
               let url = type === 'zip' ? (vote.downloads?.zipFinal || '') : (vote.downloads?.bdocFinal || '');
               if (!url) return;
               if (includeCSV) url += '&include[]=csv';
@@ -244,7 +255,7 @@ export class TopicVoteCastComponent implements OnInit {
       });
   }
 
-  viewIdea(option: { ideaId: string }) {
+  viewIdea(option: any) {
     const t = this.topic();
     if (!t.ideationId || !option.ideaId) return;
     this.dialogService.open(IdeaDialogComponent, {

@@ -8,13 +8,13 @@ export interface TopicMember {
   id: string;
   name: string;
   email?: string;
-  imageUrl?: string;
+  imageUrl?: string | null;
   level?: string;
 }
 
 export interface TopicInvite {
   id: string;
-  user?: { name?: string; email?: string; imageUrl?: string };
+  user?: { name?: string; email?: string; imageUrl?: string | null };
   email?: string;
   level?: string;
 }

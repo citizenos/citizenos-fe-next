@@ -62,7 +62,7 @@ export class ArgumentReportComponent {
     this.isLoading.set(true);
     const reportData = {
       topicId: this.data.topicId,
-      discussionId: this.argument.discussionId,
+      discussionId: this.argument.discussionId || '',
       commentId: this.argument.id,
       type: this.reportForm.value.type!,
       text: this.reportForm.value.text!

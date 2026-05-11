@@ -21,6 +21,7 @@ import { TooltipComponent } from '../../../../shared/components/tooltip/tooltip.
 import { Group } from '../../../../core/interfaces/group';
 import { UserStore } from '../../../../core/state/user.store';
 import { of, switchMap, take } from 'rxjs';
+import { SearchResults } from '../../../../core/interfaces/search';
 
 export interface GroupInviteUser {
   userId: string;
@@ -55,7 +56,7 @@ function isEmail(s: string) { return EMAIL_RE.test(s.trim()); }
   styleUrls: ['./group-invite-dialog.component.scss'],
 })
 export class GroupInviteDialogComponent implements OnInit {
-  private data = inject<{ group: Group }>(DIALOG_DATA);
+  private data = inject<{ group: Group; results?: SearchResults; rows?: SearchResultUser[] }>(DIALOG_DATA);
   private dialogRef = inject(DialogRef);
   private inviteUserService = inject(GroupInviteUserService);
   private groupJoinService = inject(GroupJoinService);

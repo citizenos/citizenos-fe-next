@@ -1,3 +1,5 @@
+import { Idea } from './idea';
+
 export interface IdeationFolder {
   id: string;
   ideationId: string;
@@ -13,6 +15,7 @@ export interface IdeaVoter {
   name: string;
   imageUrl?: string | null;
   value: number;
+  vote?: string;
 }
 
 export interface IdeaComment {
@@ -43,6 +46,8 @@ export interface IdeaReport {
   createdAt: string;
   moderatedReasonType?: string | null;
   moderatedReasonText?: string | null;
+  idea?: Idea;
+  comment?: IdeaComment;
 }
 
 export interface Ideation {

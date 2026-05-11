@@ -18,16 +18,16 @@
           @for (request of requests(); track request.id) {
             <div class="row_list">
               <div class="name">
-                <a class="topic_title" [routerLink]="['/', translate.currentLang, 'topics', request.topic.id]" (click)="close()">
-                  {{ request.topic.title || request.topic.id }}
+                <a class="topic_title" [routerLink]="['/', translate.currentLang, 'topics', request.topic?.id]" (click)="close()">
+                  {{ request.topic?.title || request.topic?.id }}
                 </a>
                 <div class="text">{{ request.text }}</div>
               </div>
               <div class="visibility">
                 <div class="icon">
-                  <cos-icon [name]="request.topic.visibility === 'private' ? 'lock' : 'globe'"></cos-icon>
+                  <cos-icon [name]="request.topic?.visibility === 'private' ? 'lock' : 'globe'"></cos-icon>
                 </div>
-                <span>{{ 'TXT_TOPIC_VISIBILITY_' + request.topic.visibility | uppercase | translate }}</span>
+                <span>{{ 'TXT_TOPIC_VISIBILITY_' + request.topic?.visibility | uppercase | translate }}</span>
               </div>
               <div class="action_buttons_wrap">
                 <button type="button" class="btn_medium_accept" (click)="accept(request)">{{ 'COMPONENTS.TOPIC_REQUESTS.BTN_ACCEPT' | translate }}</button>

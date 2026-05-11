@@ -231,7 +231,7 @@
         <cos-input [placeholder]="'VIEWS.ACCOUNT.SHOW_PER_PAGE' | translate" class="dropdown_input">
           <cos-dropdown>
             <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.ACCOUNT.SHOW_PER_PAGE' | translate">
-              <div class="selected_item">{{(topicNotificationService.params | async)?.limit}}</div>
+              <div class="selected_item">{{notificationParams()?.limit}}</div>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />
               </svg>
@@ -253,8 +253,8 @@
           <div class="row_cell">
             <button type="button" class="btn_link" (click)="topicNotificationService.doOrder('title')">
               <span>{{ 'VIEWS.ACCOUNT.TABLE_HEADER_TOPIC' | translate }}</span>
-              @if ((topicNotificationService.params | async)?.orderBy === 'title') {
-              @if ((topicNotificationService.params | async)?.order === 'ASC') {
+              @if (notificationParams()?.orderBy === 'title') {
+              @if (notificationParams()?.order === 'ASC') {
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="#2C3B47" />
               </svg>

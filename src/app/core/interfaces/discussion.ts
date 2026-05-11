@@ -1,7 +1,7 @@
 export interface Discussion {
   id: string;
   question: string;
-  deadline: string | null;
+  deadline: string | Date | null;
   creatorId: string;
   createdAt: string;
   updatedAt: string;
@@ -11,8 +11,9 @@ export interface Discussion {
 }
 
 export interface DiscussionData {
+  topicId?: string;
   question?: string;
-  deadline?: string | null;
+  deadline?: string | Date | null;
 }
 
 export interface ArgumentCreator {
@@ -36,6 +37,7 @@ export interface ArgumentReport {
   text?: string | null;
   moderatedReasonType?: string | null;
   moderatedReasonText?: string | null;
+  comment?: Argument;
 }
 
 export interface Argument {

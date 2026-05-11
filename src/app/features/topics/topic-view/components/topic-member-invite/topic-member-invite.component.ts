@@ -38,8 +38,8 @@ export class TopicMemberInviteComponent {
     return new Date();
   }
 
-  isExpired(expiresAt: string): boolean {
-    return new Date(expiresAt) < new Date();
+  isExpired(expiresAt: string | undefined): boolean {
+    return !!expiresAt && new Date(expiresAt) < new Date();
   }
 
   doDeleteInviteUser(): void {

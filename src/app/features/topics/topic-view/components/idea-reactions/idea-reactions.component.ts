@@ -42,7 +42,10 @@ export class IdeaReactionsComponent implements OnInit {
       limit: this.itemsPerPage,
       offset: (this.page() - 1) * this.itemsPerPage
     }).subscribe((res) => {
-      this.voteItems.set(res.rows);
+      this.voteItems.set(res.rows.map(row => ({
+        ...row,
+        vote: row.value === 1 ? 'up' : 'down'
+      })));
       this.totalPages.set(Math.ceil(res.countTotal / this.itemsPerPage));
     });
   }

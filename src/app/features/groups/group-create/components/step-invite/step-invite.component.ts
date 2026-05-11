@@ -9,6 +9,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { GroupCreateData } from '../../group-create.interface';
 
 @Component({
   selector: 'cos-step-invite',
@@ -19,8 +20,8 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
   styleUrl: './step-invite.component.scss',
 })
 export class StepInviteComponent implements OnInit {
-  group = input.required<Partial<Group>>();
-  groupUpdate = output<Partial<Group>>();
+  group = input.required<GroupCreateData>();
+  groupUpdate = output<GroupCreateData>();
 
   private searchService = inject(SearchService);
 
@@ -33,7 +34,7 @@ export class StepInviteComponent implements OnInit {
 
   ngOnInit() {
     if (this.group().members?.users) {
-      this.selectedUsers.set(this.group().members!.users);
+      this.selectedUsers.set(this.group().members?.users || []);
     }
   }
 

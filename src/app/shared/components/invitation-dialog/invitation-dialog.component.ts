@@ -20,8 +20,10 @@ export interface InviteDialogData {
     name: string;
   } | null;
   user: {
-    email: string;
-    isRegistered: boolean;
+    email?: string;
+    isRegistered?: boolean;
+    id?: string;
+    name?: string;
   } | null;
   level: string | null;
   visibility: string;

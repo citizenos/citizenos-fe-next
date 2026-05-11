@@ -17,8 +17,8 @@ import { NotificationComponent } from '../../../../../shared/components/notifica
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { take } from 'rxjs';
 import { Topic } from '../../../../../core/interfaces/topic';
-import { Group } from '../../../../../core/interfaces/group';
 import { TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
+import { TopicMemberGroup } from '../../../../../core/services/topic-member-group.service';
 import { TopicInvite } from '../../../../../core/services/topic-invite-user.service';
 
 const PAGE_SIZE = 10;
@@ -55,7 +55,7 @@ export class TopicParticipantsComponent implements OnInit {
   activeTab = signal('participants');
 
   allUsers = signal<TopicMemberUser[]>([]);
-  allGroups = signal<Group[]>([]);
+  allGroups = signal<TopicMemberGroup[]>([]);
   allInvites = signal<TopicInvite[]>([]);
 
   userSearch = signal('');

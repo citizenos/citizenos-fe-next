@@ -50,7 +50,7 @@ export class EditArgumentComponent implements OnInit {
     this.argumentService.update({
       id: arg.id,
       topicId: this.topicId(),
-      discussionId: arg.discussionId,
+      discussionId: arg.discussionId || '',
       subject: this.editSubject(),
       text: this.editText(),
       type: this.editType(),

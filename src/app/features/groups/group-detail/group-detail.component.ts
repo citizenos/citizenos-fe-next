@@ -17,6 +17,7 @@ import {
   EMPTY,
   debounceTime,
   forkJoin,
+  Observable,
 } from 'rxjs';
 
 import { GroupDetailService } from '../../../core/services/group-detail.service';
@@ -392,7 +393,7 @@ export class GroupDetailComponent {
       this.router.navigate(['/', this.userLang, 'account', 'login'], { queryParams: { returnUrl: this.router.url } });
       return;
     }
-    this.groupDetailService.joinPublic(group.id).subscribe(res => {
+    this.groupDetailService.joinPublic(group.id).subscribe((res: any) => {
       this.group.update(g => g ? { ...g, userLevel: res?.level || res?.userLevel || 'read' } : g);
       this.fetchTopics(0);
       this.fetchMembers(0);

@@ -160,7 +160,7 @@ export class TourComponent implements OnDestroy {
   constructor() {
     effect(() => {
       const template = this.templateSignal();
-      if (template) {
+      if (template && template.length > 0) {
         this.setContent(template);
         // Small delay to ensure DOM is updated before positioning
         setTimeout(() => this.setPosition(), 0);

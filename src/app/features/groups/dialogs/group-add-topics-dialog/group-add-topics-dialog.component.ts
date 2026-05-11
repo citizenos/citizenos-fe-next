@@ -10,7 +10,7 @@ import { DropdownComponent } from '../../../../shared/components/dropdown/dropdo
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { Group } from '../../../../core/interfaces/group';
 import { Topic } from '../../../../core/interfaces/topic';
-import { forkJoin, of, switchMap, take } from 'rxjs';
+import { forkJoin, Observable, of, switchMap, take } from 'rxjs';
 
 
 const LEVELS = ['read', 'admin'];

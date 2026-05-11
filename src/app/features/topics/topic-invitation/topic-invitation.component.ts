@@ -30,7 +30,7 @@ export class TopicInvitationComponent implements OnInit {
       const joinUrl = hasDirectJoin ? currentUrl : `${currentUrl}?join=true`;
 
       this.topicInviteUserService.get({ topicId, inviteId }).pipe(take(1)).subscribe({
-        next: (topicInvite) => {
+        next: (topicInvite: TopicInvite) => {
           topicInvite.inviteId = inviteId;
           const isAuthenticated = this.userStore.isAuthenticated();
           const currentUser = this.userStore.user();
@@ -45,7 +45,7 @@ export class TopicInvitationComponent implements OnInit {
             title: topicInvite.topic?.title ?? null,
             intro: topicInvite.topic?.intro ?? null,
             description: topicInvite.topic?.description ?? null,
-            creator: topicInvite.creator ?? null,
+            creator: topicInvite.creator ? { name: topicInvite.creator.name, imageUrl: topicInvite.creator.imageUrl || undefined } : null,
             user: topicInvite.user ?? null,
             level: topicInvite.level ?? null,
             visibility: topicInvite.topic?.visibility ?? 'private',

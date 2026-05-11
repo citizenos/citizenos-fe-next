@@ -3,7 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, exhaustMap, shareReplay, Subject, map, tap } from 'rxjs';
 
 import { Topic } from '../interfaces/topic';
-import { Vote, VoteOption } from '../interfaces/vote';
+import { Vote, VoteOption, VoteWithOptions } from '../interfaces/vote';
 import { TopicService } from './topic.service';
 import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';
@@ -17,12 +17,10 @@ interface VoteCastResponse {
   challengeID?: string;
   sessionCode?: string;
   bdocUri?: string;
+  signedInfoDigest?: string;
+  signedInfoHashType?: string;
+  token?: string;
   [key: string]: unknown;
-}
-
-interface VoteWithOptions extends Omit<Vote, 'options'> {
-  options: { rows: VoteOption[]; count?: number } | VoteOption[];
-  votersCount?: number;
 }
 
 interface VoteParams { topicId: string; voteId?: string; id?: string; [key: string]: string | number | boolean | null | undefined }
@@ -77,13 +75,13 @@ export class TopicVoteService {
       .pipe(map(res => res.data));
   }
 
-  save(data: Partial<Vote> & { topicId: string }): Observable<VoteWithOptions> {
+  save(data: (Partial<Vote> | Partial<VoteWithOptions>) & { topicId: string }): Observable<VoteWithOptions> {
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${data.topicId}/votes`);
     return this.http.post<ApiResponse<VoteWithOptions>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
-  update(data: Partial<Vote> & { topicId: string; voteId?: string; id?: string }): Observable<VoteWithOptions> {
+  update(data: (Partial<Vote> | Partial<VoteWithOptions>) & { topicId: string; voteId?: string; id?: string }): Observable<VoteWithOptions> {
     const voteId = data.voteId || data.id;
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${data.topicId}/votes/${voteId}`);
     return this.http.put<ApiResponse<VoteWithOptions>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })

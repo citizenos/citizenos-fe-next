@@ -439,7 +439,7 @@ export class TopicCardComponent {
   progressWidth = computed(() => {
     const t = this.topic();
     if (t.status === 'voting' && t.vote && t.members?.users?.count) {
-      return Math.floor((t.vote.votersCount / t.members.users.count) * 100);
+      return Math.floor(((t.vote.votersCount || 0) / t.members.users.count) * 100);
     }
     return 100;
   });

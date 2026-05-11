@@ -5,16 +5,10 @@ import { Observable, Subject, map, exhaustMap, shareReplay } from 'rxjs';
 import { ItemsListService, ListParams } from './items-list.service';
 import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';
+import { TopicEvent } from '../interfaces/topic-event';
 
 export interface TopicEventParams extends ListParams {
   topicId?: string | null;
-}
-
-export interface TopicEvent {
-  id: string;
-  topicId: string;
-  type: string;
-  [key: string]: unknown;
 }
 
 export interface TopicEventListResponse {
@@ -64,20 +58,20 @@ export class TopicEventService extends ItemsListService {
       .pipe(map(res => ({ rows: res.data?.rows ?? [], count: res.data?.count ?? 0 })));
   }
 
-  queryPublic(params: Record<string, unknown>): Observable<unknown> {
+  queryPublic(params: Record<string, unknown>): Observable<TopicEventListResponse> {
     const path = this.getAbsoluteUrlApi('/api/topics');
     const queryParams = Object.fromEntries(Object.entries(params).filter((i) => i[1] !== null));
 
-    return this.http.get<ApiResponse<unknown>>(path, { withCredentials: true, params: queryParams as Record<string, string>, observe: 'body', responseType: 'json' })
-      .pipe(map(res => res.data));
+    return this.http.get<ApiResponse<TopicEventListResponse>>(path, { withCredentials: true, params: queryParams as Record<string, string>, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
   }
 
-  query(params: Record<string, unknown>): Observable<unknown> {
+  query(params: Record<string, unknown>): Observable<TopicEventListResponse> {
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params['topicId']}/events`);
     const queryParams = Object.fromEntries(Object.entries(params).filter((i) => i[1] !== null));
     
-    return this.http.get<ApiResponse<unknown>>(path, { withCredentials: true, params: queryParams as Record<string, string>, observe: 'body', responseType: 'json' })
-      .pipe(map(res => res.data));
+    return this.http.get<ApiResponse<TopicEventListResponse>>(path, { withCredentials: true, params: queryParams as Record<string, string>, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
   }
 
   save(data: { topicId: string; [key: string]: unknown }): Observable<TopicEvent> {

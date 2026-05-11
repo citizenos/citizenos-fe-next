@@ -38,11 +38,12 @@ export class GroupInviteUserComponent {
   doUpdateInviteUser(level: string) {
     const user = this.user();
     if (user.invite && user.invite.level !== level) {
-      const oldLevel = user.invite.level;
-      user.invite.level = level;
-      this.inviteUserService.updateInvite(this.group().id, user.invite.id, level)
+      const invite = user.invite;
+      const oldLevel = invite.level;
+      invite.level = level;
+      this.inviteUserService.updateInvite(this.group().id, invite.id, level)
         .pipe(take(1), catchError(() => {
-          user.invite.level = oldLevel;
+          invite.level = oldLevel;
           return of(null);
         }))
         .subscribe();
@@ -61,9 +62,11 @@ export class GroupInviteUserComponent {
     }).afterClosed().subscribe(result => {
       if (result === true) {
         const user = this.user();
-        this.inviteUserService.deleteInvite(this.group().id, user.invite.id)
-          .pipe(take(1))
-          .subscribe(() => this.memberChanged.emit());
+        if (user.invite) {
+          this.inviteUserService.deleteInvite(this.group().id, user.invite.id)
+            .pipe(take(1))
+            .subscribe(() => this.memberChanged.emit());
+        }
       }
     });
   }

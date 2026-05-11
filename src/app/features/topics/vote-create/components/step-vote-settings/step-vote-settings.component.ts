@@ -1,7 +1,7 @@
 import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { Vote } from '../../../../../core/interfaces/vote';
+import { Vote, VoteOption, VoteWithOptions } from '../../../../../core/interfaces/vote';
 import { DeadlinePickerComponent } from '../../../../../shared/components/deadline-picker/deadline-picker.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
@@ -241,14 +241,21 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
   `]
 })
 export class StepVoteSettingsComponent {
-  vote = input.required<Partial<Vote>>();
-  voteUpdate = output<Partial<Vote>>();
+  vote = input.required<Partial<VoteWithOptions>>();
+  voteUpdate = output<Partial<VoteWithOptions>>();
 
   predefined = ['Yes', 'No', 'Neutral', 'Veto'];
 
+  getOptions(): VoteOption[] {
+    const options = this.vote().options;
+    if (Array.isArray(options)) return options;
+    if (options && typeof options === 'object' && 'rows' in options) return options.rows;
+    return [];
+  }
+
   setType(type: 'regular' | 'multiple') {
-    const updates: Partial<Vote> = { type };
-    let options = [...(this.vote().options || [])];
+    const updates: Partial<VoteWithOptions> = { type };
+    let options = [...this.getOptions()];
     if (type === 'regular' && options.length === 0) {
       options = [{ value: 'Yes' }, { value: 'No' }];
     } else if (type === 'multiple') {
@@ -262,11 +269,11 @@ export class StepVoteSettingsComponent {
   }
 
   isPredefinedSelected(val: string): boolean {
-    return (this.vote().options || []).some(o => o.value === val);
+    return this.getOptions().some(o => o.value === val);
   }
 
   togglePredefined(val: string) {
-    const options = [...(this.vote().options || [])];
+    const options = [...this.getOptions()];
     const index = options.findIndex(o => o.value === val);
     if (index > -1) {
       options.splice(index, 1);
@@ -277,24 +284,24 @@ export class StepVoteSettingsComponent {
   }
 
   addOption() {
-    const options = [...(this.vote().options || []), { value: '' }];
+    const options = [...this.getOptions(), { value: '' }];
     this.onUpdate({ options });
   }
 
   updateOption(index: number, value: string) {
-    const options = [...(this.vote().options || [])];
+    const options = [...this.getOptions()];
     options[index] = { ...options[index], value };
     this.onUpdate({ options });
   }
 
   removeOption(index: number) {
-    const options = [...(this.vote().options || [])];
+    const options = [...this.getOptions()];
     options.splice(index, 1);
     this.onUpdate({ options });
   }
 
   getOptionsLimit(): number {
-    return (this.vote().options || []).filter(o => !!o.value).length;
+    return this.getOptions().filter(o => !!o.value).length;
   }
 
   adjustCount(field: 'min' | 'max', delta: number) {
@@ -323,11 +330,11 @@ export class StepVoteSettingsComponent {
     this.onUpdate({ endsAt: date ? date.toISOString() : null });
   }
 
-  onUpdate(updates: Partial<Vote>) {
+  onUpdate(updates: Partial<VoteWithOptions>) {
     this.voteUpdate.emit({ ...this.vote(), ...updates });
   }
 
   isValid(): boolean {
-    return !!this.vote().question && (this.vote().options || []).filter(o => !!o.value).length >= 2;
+    return !!this.vote().question && this.getOptions().filter(o => !!o.value).length >= 2;
   }
 }

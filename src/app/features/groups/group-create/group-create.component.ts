@@ -23,6 +23,7 @@ import { StepInviteComponent } from './components/step-invite/step-invite.compon
 import { GroupCreateHelpComponent } from './components/group-create-help/group-create-help.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { GroupCreateData } from './group-create.interface';
 
 export type GroupCreateStep = 'info' | 'settings' | 'add_topics' | 'invite';
 
@@ -58,7 +59,7 @@ export class GroupCreateComponent {
   }
 
   currentStep = signal<GroupCreateStep>('info');
-  group = signal<Partial<Group>>({
+  group = signal<GroupCreateData>({
     name: '',
     description: '',
     visibility: 'private',
@@ -95,7 +96,7 @@ export class GroupCreateComponent {
     }
   }
 
-  updateGroup(data: Partial<Group>) {
+  updateGroup(data: any) {
     this.group.update(g => ({ ...g, ...data }));
   }
 
@@ -136,14 +137,14 @@ export class GroupCreateComponent {
         );
       }),
       switchMap(created => {
-        const members = groupData.members as unknown as { users: GroupMember[]; topics: { rows: Topic[] } };
+        const members = groupData.members;
         const users = members?.users ?? [];
         const topics = members?.topics?.rows ?? [];
         const obs$: Observable<unknown>[] = [];
 
         if (users.length) {
           obs$.push(this.groupInviteUserService.invite(created.id, users.map(u => ({
-            userId: u.userId ?? u.id,
+            userId: (u.userId ?? u.id) as string,
             level: u.level ?? 'read',
             inviteMessage: groupData.inviteMessage ?? undefined,
           }))));

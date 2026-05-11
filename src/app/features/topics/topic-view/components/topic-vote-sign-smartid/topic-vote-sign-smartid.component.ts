@@ -34,13 +34,13 @@ export class TopicVoteSignSmartidComponent {
   });
 
   isLoading = signal(false);
-  challengeID = signal<number | null>(null);
+  challengeID = signal<string | null | undefined>(null);
 
   doSignWithSmartId() {
     if (this.signForm.invalid) return;
     this.isLoading.set(true);
     const userVote = {
-      voteId: this.data.topic.voteId,
+      voteId: this.data.topic.voteId || undefined,
       topicId: this.data.topic.id,
       options: this.data.options,
       pid: this.signForm.value.pid,
@@ -49,7 +49,7 @@ export class TopicVoteSignSmartidComponent {
     this.topicVoteService.cast(userVote).pipe(take(1), catchError(_err => {
       this.isLoading.set(false);
       return of(null);
-    })).subscribe((result: { challengeID?: number; token?: string } | null) => {
+    })).subscribe((result: { challengeID?: string; token?: string } | null) => {
       if (!result) return;
       this.isLoading.set(false);
       if (result.challengeID && result.token) {

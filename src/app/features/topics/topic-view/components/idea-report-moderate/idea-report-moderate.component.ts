@@ -65,9 +65,9 @@ export class IdeaReportModerateComponent {
       token: this.token,
       topicId: this.topicId,
       ideationId: this.ideationId,
-      ideaId: this.idea?.id || this.ideaId,
-      reportId: this.reportId,
-      report: this.report.value
+      ideaId: (this.idea?.id || this.ideaId) as string,
+      reportId: this.reportId as string,
+      report: this.report.value as { type: string; text: string }
     }).pipe(take(1)).subscribe({
       next: () => this.dialog.closeAll(),
       error: () => this.dialog.closeAll()

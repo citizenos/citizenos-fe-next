@@ -31,7 +31,9 @@ interface InviteMember {
   id: string;
   name: string;
   email?: string;
-  level: string;
+  level?: string;
+  imageUrl?: string;
+  company?: string;
 }
 
 @Component({
@@ -95,10 +97,11 @@ export class TopicInviteDialogComponent implements OnInit {
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           map(res => {
-            if (res.results.public.users.count === 0 && isEmail(str)) {
+            const results = res?.results?.public?.users;
+            if (results?.count === 0 && isEmail(str)) {
               return [{ email: str, name: str, id: str }];
             }
-            return res.results.public.users.rows;
+            return results?.rows || [];
           }),
           catchError(() => of([]))
         )

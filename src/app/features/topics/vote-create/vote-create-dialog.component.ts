@@ -6,7 +6,7 @@ import { DIALOG_DATA } from '../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../shared/dialog/dialog-ref';
 import { DialogCloseDirective } from '../../../shared/dialog';
 import { Topic } from '../../../core/interfaces/topic';
-import { Vote } from '../../../core/interfaces/vote';
+import { Vote, VoteWithOptions } from '../../../core/interfaces/vote';
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { StepVoteSettingsComponent } from './components/step-vote-settings/step-vote-settings.component';
@@ -191,7 +191,7 @@ export class VoteCreateDialogComponent {
 
   currentStep = signal<'intro' | 'settings'>('intro');
 
-  vote = signal<Partial<Vote>>({
+  vote = signal<Partial<VoteWithOptions>>({
     question: '',
     type: 'regular',
     authType: 'soft',
@@ -205,7 +205,7 @@ export class VoteCreateDialogComponent {
     this.currentStep.set(step);
   }
 
-  onVoteUpdate(updates: Partial<Vote>) {
+  onVoteUpdate(updates: Partial<VoteWithOptions>) {
     this.vote.update(v => ({ ...v, ...updates }));
   }
 

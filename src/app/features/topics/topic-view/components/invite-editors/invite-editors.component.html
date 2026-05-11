@@ -89,7 +89,7 @@
         }
         <div class="content_section">
           <div id="topic_members_list_wrap" class="section_content_wrap table_section">
-            @if (members().length === 0) {
+            @if (members()?.length === 0) {
               <svg class="no_results" width="96" height="90" viewBox="0 0 96 90" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M60.4741 78.8165L33.9747 81.5576L34.5735 92.5014L60.4741 92.5014L60.4741 78.8165Z"
@@ -140,7 +140,7 @@
                       <div class="name">
                         <div class="profile_image_wrap">
                           @if (user.imageUrl) {
-                            <img class="profile_image" [src]="user.imageUrl" [alt]="user.name">
+                            <img class="profile_image" [src]="user.imageUrl" [alt]="user.name || ''">
                           }
                           @if (!user.imageUrl) {
                             <div class="profile_image_filler">

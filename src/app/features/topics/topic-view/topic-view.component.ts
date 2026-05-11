@@ -29,8 +29,7 @@ import { TopicDiscussionComponent } from './components/topic-discussion/topic-di
 import { TopicVoteCastComponent } from './components/topic-vote-cast/topic-vote-cast.component';
 import { TopicMilestonesComponent } from './components/topic-milestones/topic-milestones.component';
 
-import { Topic } from '../../../core/interfaces/topic';
-import { TopicAttachment } from '../../../core/services/topic.service';
+import { Topic, TopicAttachment } from '../../../core/interfaces/topic';
 
 @Component({
   selector: 'app-topic-view',
@@ -87,7 +86,16 @@ export class TopicViewComponent implements OnInit {
 
   vote = toSignal(
     toObservable(this.topic).pipe(
-      switchMap(topic => topic?.voteId ? this.topicVoteService.get({ topicId: topic.id, voteId: topic.voteId }).pipe(catchError(() => of(null))) : of(null))
+      switchMap(topic => topic?.voteId ? this.topicVoteService.get({ topicId: topic.id, voteId: topic.voteId }).pipe(
+        map((v: any) => {
+          if (!v) return null;
+          return {
+            ...v,
+            options: Array.isArray(v.options) ? v.options : (v.options?.rows || [])
+          };
+        }),
+        catchError(() => of(null))
+      ) : of(null))
     ), { initialValue: null }
   );
 
@@ -96,7 +104,7 @@ export class TopicViewComponent implements OnInit {
       switchMap(topic => {
         if (topic && (topic.status === this.topicService.STATUSES.followUp || topic.status === this.topicService.STATUSES.closed)) {
           return this.topicEventService.query({ topicId: topic.id }).pipe(
-            map((res: { count?: number; countTotal?: number }) => res.count || res.countTotal || 0),
+            map((res: any) => res.count || res.countTotal || 0),
             catchError(() => of(0))
           );
         }
@@ -136,7 +144,7 @@ export class TopicViewComponent implements OnInit {
 
   wWidth = signal<number>(isPlatformBrowser(this.platformId) ? window.innerWidth : 1280);
 
-  navigation = signal<{ title: string, link: unknown[] }>({
+  navigation = signal<{ title: string, link: string[] }>({
     title: 'DEFAULT.NAV.HEADING_TOPICS',
     link: ['/']
   });
@@ -167,7 +175,7 @@ export class TopicViewComponent implements OnInit {
             tap((topic: Topic) => {
               this.topic.set(topic);
               this.hideTopicContent.set(!!topic.report?.moderatedReasonType);
-              this.seoService.setPageTitle(topic.title);
+              this.seoService.setPageTitle(topic.title || undefined);
               this.loading.set(false);
 
               const fragment = this.route.snapshot.fragment;
@@ -202,7 +210,7 @@ export class TopicViewComponent implements OnInit {
 
   // loadRelatedData has been refactored to declarative signal derivations.
 
-  private updateNavigation(topic: Topic, groups: TopicGroup[]) {
+  private updateNavigation(topic: Topic, groups: any[]) {
     const isPrivate = topic.visibility === this.topicService.VISIBILITY.private;
     if (groups.length > 1) {
       this.navigation.set({

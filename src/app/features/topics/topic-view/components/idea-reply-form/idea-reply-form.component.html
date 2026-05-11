@@ -1,7 +1,7 @@
 <div class="reply_wrap reply">
   @if (userStore.isAuthenticated()) {
     <form [formGroup]="replyForm" (ngSubmit)="save()">
-      <div class="field_wrap" [class.error]="errors()?.text">
+      <div class="field_wrap" [class.error]="errors()?.['text']">
         <label class="hidden" for="replyText">{{ 'COMPONENTS.IDEA_REPLY_FORM.PLACEHOLDER_WRITE_REPLY_HERE' | translate }}</label>
         <textarea
           id="replyText"
@@ -11,10 +11,10 @@
           [maxlength]="COMMENT_TYPES_MAXLENGTH['reply']"
           rows="4"></textarea>
         
-        @if (errors()?.text) {
+        @if (errors()['text']) {
           <div class="error_label">
             <cos-icon name="warning" size="16"></cos-icon>
-            <span>{{ errors().text | translate }}</span>
+            <span>{{ (errors()['text']?.[0] || '') | translate }}</span>
           </div>
         }
       </div>

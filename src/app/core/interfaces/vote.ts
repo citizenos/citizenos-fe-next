@@ -16,13 +16,19 @@ export interface Vote {
   delegationIsAllowed: boolean;
   maxChoices: number;
   minChoices: number;
-  reminderTime?: string | null;
+  reminderTime?: string | Date | null;
+  reminderSent?: string | Date | null;
   autoClose: {
     value: string;
     enabled: boolean;
   }[];
-  endsAt: string | null;
+  endsAt: string | Date | null;
   votersCount?: number;
   createdAt?: string;
   updatedAt?: string;
+  downloads?: { bdocFinal?: string; zipFinal?: string; csvVote?: string; bdocVote?: string; [k: string]: unknown };
+}
+export interface VoteWithOptions extends Omit<Vote, 'options'> {
+  options: { rows: VoteOption[]; count?: number } | VoteOption[];
+  votersCount?: number;
 }

@@ -1,14 +1,15 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';
 import { ItemsListService, ListParams } from './items-list.service';
+import { TopicNotificationSettings } from '../interfaces/topic-notification-settings';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TopicNotificationService extends ItemsListService<ListParams, unknown> {
+export class TopicNotificationService extends ItemsListService<ListParams, TopicNotificationSettings> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
 
@@ -16,23 +17,26 @@ export class TopicNotificationService extends ItemsListService<ListParams, unkno
     return this.configStore.api.baseUrl();
   }
 
-  override getItems(params: ListParams): Observable<{ rows: unknown[]; countTotal: number }> {
+  override getItems(params: ListParams): Observable<{ rows: TopicNotificationSettings[]; countTotal: number }> {
     const path = `${this.apiUrl}/api/users/self/notificationsettings/topics`;
-    const queryParams = Object.fromEntries(
-      Object.entries(params).filter(([_, v]) => v !== null && v !== undefined)
-    );
+    let httpParams = new HttpParams();
+    Object.entries(params).forEach(([key, val]) => {
+      if (val != null) {
+        httpParams = httpParams.set(key, String(val));
+      }
+    });
 
-    return this.http.get<ApiResponse<{ rows: unknown[]; count: number }>>(path, { 
+    return this.http.get<ApiResponse<{ rows: TopicNotificationSettings[]; count: number }>>(path, { 
       withCredentials: true, 
-      params: queryParams as Record<string, string | number | boolean>
+      params: httpParams
     }).pipe(
       map(res => ({ rows: res.data?.rows ?? [], countTotal: res.data?.count ?? 0 }))
     );
   }
 
-  get(topicId: string): Observable<unknown> {
+  get(topicId: string): Observable<TopicNotificationSettings> {
     const path = `${this.apiUrl}/api/users/self/topics/${topicId}/notificationsettings`;
-    return this.http.get<ApiResponse<unknown>>(path, { withCredentials: true }).pipe(
+    return this.http.get<ApiResponse<TopicNotificationSettings>>(path, { withCredentials: true }).pipe(
       map(res => res.data)
     );
   }

@@ -22,11 +22,11 @@
           </div>
           <div class="profile_image_wrap">
             @if (argument.creator?.imageUrl) {
-              <img class="profile_image" [src]="argument.creator.imageUrl" alt="">
+              <img class="profile_image" [src]="argument.creator?.imageUrl" alt="">
             } @else {
               <div class="profile_image_filler">
                 @if (argument.creator?.name) {
-                  <cos-initials [name]="argument.creator.name"></cos-initials>
+                  <cos-initials [name]="argument.creator?.name || ''"></cos-initials>
                 }
               </div>
             }

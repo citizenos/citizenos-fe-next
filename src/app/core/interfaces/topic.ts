@@ -7,7 +7,7 @@ export interface TopicCreator {
 }
 
 export interface TopicVoteCast {
-  options: { id: string; optionId?: string; selected?: boolean }[];
+  options: { id: string; value: string; optionId?: string; selected?: boolean }[];
 }
 
 export interface TopicReport {
@@ -18,6 +18,23 @@ export interface TopicReport {
   moderatedReasonText: string | null;
 }
 
+export interface TopicAttachment {
+  id: string;
+  name?: string;
+  link?: string;
+  type?: string;
+  source?: string;
+  [key: string]: unknown;
+}
+
+export interface TopicGroup {
+  id: string;
+  name?: string;
+  level?: string;
+  visibility?: string;
+  [key: string]: unknown;
+}
+
 export interface TopicVote {
   id: string;
   votersCount?: number;
@@ -25,12 +42,12 @@ export interface TopicVote {
   endsAt?: string | Date | null;
   reminderTime?: string | Date | null;
   reminderSent?: string | Date | null;
-  options?: { rows: { id: string; value: string; voteCount?: number; selected?: boolean; optionId?: string; ideaId?: string; winner?: boolean }[]; count?: number };
-  delegation?: { userId: string; toUserId: string; voteId: string; byProxy?: boolean } | null;
+  options?: { rows: { id?: string; value: string; voteCount?: number; selected?: boolean; optionId?: string; ideaId?: string; winner?: boolean }[]; count?: number } | { id?: string; value: string; voteCount?: number; selected?: boolean; optionId?: string; ideaId?: string; winner?: boolean }[];
+  delegation?: { userId: string; toUserId: string; voteId: string; byProxy?: boolean; name?: string; imageUrl?: string } | null;
   maxChoices?: number;
   minChoices?: number;
   authType?: string;
-  downloads?: { bdocFinal?: string; zipFinal?: string; [k: string]: unknown };
+  downloads?: { bdocFinal?: string; zipFinal?: string; csvVote?: string; bdocVote?: string; [k: string]: unknown };
   description?: string | null;
   question?: string | null;
   delegationIsAllowed?: boolean;

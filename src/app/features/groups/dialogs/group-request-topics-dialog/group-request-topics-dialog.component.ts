@@ -11,7 +11,7 @@ import { TypeaheadComponent } from '../../../../shared/components/typeahead/type
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { Group } from '../../../../core/interfaces/group';
 import { Topic } from '../../../../core/interfaces/topic';
-import { forkJoin, of, switchMap, take } from 'rxjs';
+import { forkJoin, Observable, of, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'cos-group-request-topics-dialog',

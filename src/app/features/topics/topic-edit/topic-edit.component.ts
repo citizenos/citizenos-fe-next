@@ -15,7 +15,7 @@ import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { Topic } from '../../../core/interfaces/topic';
 import { DiscussionData } from '../../../core/interfaces/discussion';
 import { Ideation } from '../../../core/interfaces/ideation';
-import { Vote } from '../../../core/interfaces/vote';
+import { Vote, VoteWithOptions } from '../../../core/interfaces/vote';
 import { StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
 import { IconName } from '../../../shared/components/icon/icon.registry';
 import { CreateWizardShellComponent } from '../../../shared/components/create-wizard-shell/create-wizard-shell.component';
@@ -67,7 +67,7 @@ export class TopicEditComponent implements OnInit {
   topic = signal<Partial<Topic>>({});
   discussion = signal<DiscussionData>({ question: '', deadline: null });
   ideation = signal<Partial<Ideation>>({});
-  vote = signal<Partial<Vote>>({});
+  vote = signal<Partial<VoteWithOptions>>({});
   imageFile = signal<File | null>(null);
   isLoading = signal(false);
   currentStep = signal('info');
@@ -138,7 +138,7 @@ export class TopicEditComponent implements OnInit {
         }
         if (topic.voteId) {
           this.voteService.get({ topicId, voteId: topic.voteId }).subscribe({
-            next: (v) => this.vote.set({ ...v, question: v.description }),
+            next: (v) => this.vote.set({ ...v, question: v.description || '' } as VoteWithOptions),
             error: () => { /* intentionally empty */ }
           });
         }
@@ -344,7 +344,7 @@ export class TopicEditComponent implements OnInit {
       return;
     }
     this.isLoading.set(true);
-    this.ideationService.update({ ...i, topicId: t.id }).pipe(take(1)).subscribe({
+    this.ideationService.update({ ...this.ideation(), topicId: t.id || '' }).pipe(take(1)).subscribe({
       next: () => {
         this.isLoading.set(false);
         this.currentStep.set('preview');
@@ -364,7 +364,7 @@ export class TopicEditComponent implements OnInit {
       return;
     }
     this.isLoading.set(true);
-    const voteData = { ...v, topicId: t.id, description: v.question };
+    const voteData = { ...v, topicId: t.id || '', description: v.question };
     this.voteService.update(voteData).pipe(take(1)).subscribe({
       next: () => {
         this.isLoading.set(false);

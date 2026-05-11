@@ -30,11 +30,13 @@
       <div class="dialog_info_wrap">
         <div class="dialog_info">
           <div class="delete_info_text bold">{{ 'COMPONENTS.IDEA_REPORT_MODERATE.MESSAGE_MAIN' | translate }}</div>
-          @if (idea?.statement) {
-            <div class="delete_info_text italic" [innerHTML]="idea.statement"></div>
-          }
-          @if (idea?.description) {
-            <div class="delete_info_text italic" [innerHTML]="idea.description"></div>
+          @if (idea; as i) {
+            @if (i.statement) {
+              <div class="delete_info_text italic" [innerHTML]="i.statement"></div>
+            }
+            @if (i.description) {
+              <div class="delete_info_text italic" [innerHTML]="i.description"></div>
+            }
           }
         </div>
       </div>

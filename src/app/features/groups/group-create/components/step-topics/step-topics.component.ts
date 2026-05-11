@@ -7,6 +7,7 @@ import { SearchService } from '../../../../../core/services/search.service';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { GroupCreateData } from '../../group-create.interface';
 
 @Component({
   selector: 'cos-step-topics',
@@ -23,8 +24,8 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
   styleUrl: './step-topics.component.scss'
 })
 export class StepTopicsComponent implements OnInit {
-  group = input.required<Partial<Group>>();
-  groupUpdate = output<Partial<Group>>();
+  group = input.required<GroupCreateData>();
+  groupUpdate = output<GroupCreateData>();
 
   searchService = inject(SearchService);
 
@@ -34,7 +35,7 @@ export class StepTopicsComponent implements OnInit {
 
   ngOnInit() {
     if (this.group().members?.topics?.rows) {
-      this.selectedTopics.set(this.group().members!.topics.rows);
+      this.selectedTopics.set(this.group().members?.topics?.rows || []);
     }
   }
 
@@ -44,8 +45,9 @@ export class StepTopicsComponent implements OnInit {
       this.searchService.search(str, {
         include: 'my.topic',
         'my.topic.level': 'admin'
-      }).subscribe(res => {
-        this.searchResults.set(res.results.my.topics.rows);
+      }).subscribe((res: unknown) => {
+        const data = res as { results?: { my?: { topics?: { rows: Topic[] } } } };
+        this.searchResults.set(data.results?.my?.topics?.rows ?? []);
       });
     } else {
       this.searchResults.set([]);

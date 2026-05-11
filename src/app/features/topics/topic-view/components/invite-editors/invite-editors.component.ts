@@ -26,6 +26,7 @@ interface EditorMember {
   name: string;
   email?: string;
   level: string;
+  imageUrl?: string;
 }
 
 @Component({
@@ -72,10 +73,11 @@ export class InviteEditorsComponent {
       this.searchService.searchUsers(str).pipe(
         takeUntilDestroyed(this.destroyRef),
         map(res => {
-          if (res.results.public.users.count === 0 && isEmail(str)) {
+          const results = res?.results?.public?.users;
+          if (results?.count === 0 && isEmail(str)) {
             return [{ email: str, name: str, id: str }];
           }
-          return res.results.public.users.rows;
+          return results?.rows || [];
         }),
         catchError(() => of([]))
       ).subscribe(results => this.searchResults.set(results as EditorMember[]));

@@ -21,7 +21,7 @@ interface ArgumentListResponse {
   countTotal: number;
 }
 
-type ParamValue = string | number | boolean | null | undefined;
+type ParamValue = string | number | boolean | null | undefined | Record<string, any>;
 
 @Injectable({
   providedIn: 'root'
@@ -180,14 +180,14 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
       .pipe(map(res => res.data));
   }
 
-  vote(data: { topicId: string; discussionId: string; commentId?: string; id?: string; value: number }): Observable<unknown> {
+  vote(data: { topicId: string; discussionId: string; commentId?: string; id?: string; value: number }): Observable<Argument['votes']> {
     const commentId = data.commentId || data.id;
     const path = this.getAbsoluteUrlApi(`/api/topics/${data.topicId}/discussions/${data.discussionId}/comments/${commentId}/votes`);
-    return this.http.post<ApiResponse<unknown>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
+    return this.http.post<ApiResponse<Argument['votes']>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
-  votes(data: { topicId: string; discussionId: string; commentId?: string; id?: string; [key: string]: ParamValue }): Observable<{ rows: { id: string; name: string; value: number }[]; count: number }> {
+  votes(data: { topicId: string; discussionId: string; commentId?: string; id?: string; [key: string]: ParamValue }): Observable<{ rows: { id: string; name: string; value: number; imageUrl?: string | null }[]; count: number }> {
     const commentId = data.commentId || data.id;
     let httpParams = new HttpParams();
     Object.keys(data).forEach(key => {
@@ -198,7 +198,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
     });
 
     const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${data.topicId}/discussions/${data.discussionId}/comments/${commentId}/votes`);
-    return this.http.get<ApiResponse<{ rows: { id: string; name: string; value: number }[]; count: number }>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
+    return this.http.get<ApiResponse<{ rows: { id: string; name: string; value: number; imageUrl?: string | null }[]; count: number }>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 

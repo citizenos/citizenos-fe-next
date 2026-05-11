@@ -1,10 +1,10 @@
 import { ElementRef, Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { combineLatest, of, switchMap } from 'rxjs';
+import { combineLatest, Observable, of, switchMap } from 'rxjs';
 
 export interface TourItem {
-  index: number | string;
-  elements: { el: ElementRef; position: string }[];
+  index: number;
+  elements: { el: ElementRef<HTMLElement>; position: string }[];
   position: string;
 }
 
@@ -18,13 +18,13 @@ export class TourService {
   activeItem = signal(0);
 
   private overlay = document.createElement('div');
-  templates = signal<Record<string, { index: number; template: unknown }[]>>({});
+  templates = signal<Record<string, { index: number; template: Node[] }[]>>({});
 
   constructor() {
     this.overlay.classList.add('tour_overlay');
   }
 
-  register(id: string, index: number, element: ElementRef, position: string) {
+  register(id: string, index: number, element: ElementRef<HTMLElement>, position: string) {
     this.items.update(prev => {
       const updated = { ...prev };
       if (!updated[id]) {
@@ -55,7 +55,7 @@ export class TourService {
     });
   }
 
-  addTemplate(id: string, index: number, template: unknown) {
+  addTemplate(id: string, index: number, template: Node[]) {
     this.templates.update(prev => {
       const updated = { ...prev };
       const templateData = Array.isArray(template) ? [...template] : [template];
@@ -75,7 +75,7 @@ export class TourService {
     });
   }
 
-  get activeTemplate$() {
+  get activeTemplate$(): Observable<Node[]> {
     return combineLatest([
       toObservable(this.activeTour),
       toObservable(this.activeItem)
@@ -89,7 +89,7 @@ export class TourService {
             return of(templateItem.template);
           }
         }
-        return of('');
+        return of([] as Node[]);
       })
     );
   }

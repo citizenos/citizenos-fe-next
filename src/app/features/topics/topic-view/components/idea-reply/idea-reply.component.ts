@@ -36,20 +36,22 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
     <div class="argument_content_wrap">
       <div class="argument_header" (click)="toggleReplies()" (keydown.enter)="toggleReplies()" role="button" tabindex="0">
         <div class="header_left">
-          <div class="author_wrap">
-            <div class="image_wrap">
-              @if (argument().creator?.imageUrl) {
-                <img class="profile_image" [src]="argument().creator.imageUrl" [alt]="argument().creator.name" />
-              } @else {
-                <div class="profile_image_filler">
-                  <cos-initials [name]="argument().creator?.name || ''"></cos-initials>
-                </div>
-              }
+          @if (argument().creator; as creator) {
+            <div class="author_wrap">
+              <div class="image_wrap">
+                @if (creator.imageUrl) {
+                  <img class="profile_image" [src]="creator.imageUrl" [alt]="creator.name" />
+                } @else {
+                  <div class="profile_image_filler">
+                    <cos-initials [name]="creator.name || ''"></cos-initials>
+                  </div>
+                }
+              </div>
+              <div class="author_name">
+                {{ creator.name }}
+              </div>
             </div>
-            <div class="author_name">
-              {{ argument().creator?.name }}
-            </div>
-          </div>
+          }
         </div>
 
         <div class="header_right">
@@ -122,19 +124,27 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
           </div>
         </div>
 
-        <div class="footer_right">
-          @if (argument().replies?.count > 0) {
-            <button type="button" class="btn_ghost_reply_argument" (click)="showReplies.set(!showReplies())">
-              {{ (showReplies() ? 'COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES' : 'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES') | translate:{ count: argument().replies.count } }}
-            </button>
-          }
-          
-          @if (userStore.isAuthenticated()) {
+        @if (argument().replies; as replies) {
+          <div class="footer_right">
+            @if (replies.count > 0) {
+              <button type="button" class="btn_ghost_reply_argument" (click)="showReplies.set(!showReplies())">
+                {{ (showReplies() ? 'COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES' : 'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES') | translate:{ count: replies.count } }}
+              </button>
+            }
+            
+            @if (userStore.isAuthenticated()) {
+              <button type="button" class="btn_reply_argument" (click)="showReplyInput.set(!showReplyInput())">
+                {{ 'COMPONENTS.ARGUMENT.BTN_REPLY' | translate }}
+              </button>
+            }
+          </div>
+        } @else if (userStore.isAuthenticated()) {
+          <div class="footer_right">
             <button type="button" class="btn_reply_argument" (click)="showReplyInput.set(!showReplyInput())">
               {{ 'COMPONENTS.ARGUMENT.BTN_REPLY' | translate }}
             </button>
-          }
-        </div>
+          </div>
+        }
       </div>
     </div>
 
@@ -424,7 +434,9 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
   }
 
   isEdited() {
-    return (this.argument().edits?.length || 0) > 1;
+    const edits = this.argument().edits;
+    const length = Array.isArray(edits) ? edits.length : Object.keys(edits || {}).length;
+    return (length || 0) > 1;
   }
 
   canEdit() {
@@ -474,7 +486,9 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
 
   copyArgumentLink(_event: Event) {
     const arg = this.argument();
-    const id = arg.id + '_v' + ((arg.edits?.length || 1) - 1);
+    const edits = arg.edits;
+    const length = Array.isArray(edits) ? edits.length : Object.keys(edits || {}).length;
+    const id = arg.id + '_v' + ((length || 1) - 1);
     const url = `${window.location.origin}${this.router.url.split('?')[0]}?replyId=${id}`;
     
     navigator.clipboard.writeText(url).then(() => {
@@ -502,7 +516,7 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
       ideaId: this.ideaId(),
       commentId: this.argument().id,
       value
-    }).pipe(take(1)).subscribe(votes => {
+    }).pipe(take(1)).subscribe((votes: any) => {
       this.argument().votes = votes;
     });
   }

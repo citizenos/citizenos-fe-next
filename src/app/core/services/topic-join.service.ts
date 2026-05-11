@@ -4,6 +4,11 @@ import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response';
 import { ConfigStore } from '../state/config.store';
 
+export interface TopicJoin {
+  token: string;
+  level: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -36,10 +41,10 @@ export class TopicJoinService {
     );
   }
 
-  save(data: { topicId: string; userId: string; level: string | null }): Observable<unknown> {
+  save(data: { topicId: string; userId: string; level: string | null }): Observable<TopicJoin> {
     const path = `${this.apiUrl}/api/users/self/topics/${data.topicId}/join`;
-    return this.http.put<ApiResponse<unknown>>(path, data, { withCredentials: true }).pipe(
-      map(res => res.data)
+    return this.http.put<ApiResponse<TopicJoin>>(path, data, { withCredentials: true }).pipe(
+      map(res => res.data!)
     );
   }
 

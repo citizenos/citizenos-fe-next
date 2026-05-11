@@ -18,21 +18,23 @@
         <span>{{ member().email }}</span>
       }
     </div>
-    @if (member().groups?.rows?.length && !member().levelUser) {
-      <div class="via">
-        <span>{{ 'COMPONENTS.TOPIC_MEMBER_USER.LBL_VIA' | translate }}</span>
-        @for (group of member().groups.rows; track group.id; let i = $index) {
-          @if (i !== 0) {
-            <span>,</span>
+    @if (member().groups; as groups) {
+      @if (groups.rows?.length && !member().levelUser) {
+        <div class="via">
+          <span>{{ 'COMPONENTS.TOPIC_MEMBER_USER.LBL_VIA' | translate }}</span>
+          @for (group of groups.rows; track group.id; let i = $index) {
+            @if (i !== 0) {
+              <span>,</span>
+            }
+            @if (group.name) {
+              <span class="blue_link" [routerLink]="['/my/groups/', group.id]"> {{ group.name }} </span>
+            }
+            @if (!group.name) {
+              <i class="disabled">{{ 'COMPONENTS.TOPIC_MEMBER_USER.LBL_INACCESSIBLE_GROUP' | translate:{level: ('TXT_TOPIC_LEVELS_' + group.level | uppercase | translate)} }}</i>
+            }
           }
-          @if (group.name) {
-            <span class="blue_link" [routerLink]="['/my/groups/', group.id]"> {{ group.name }} </span>
-          }
-          @if (!group.name) {
-            <i class="disabled">{{ 'COMPONENTS.TOPIC_MEMBER_USER.LBL_INACCESSIBLE_GROUP' | translate:{level: ('TXT_TOPIC_LEVELS_' + group.level | uppercase | translate)} }}</i>
-          }
-        }
-      </div>
+        </div>
+      }
     }
   </div>
 </div>

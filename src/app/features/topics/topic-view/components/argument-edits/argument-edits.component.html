@@ -5,7 +5,7 @@
   </div>
   <div class="edits_content">
     @for (entry of editsEntries(); track entry[0]) {
-      <div [id]="argument().id + '_v' + entry[0]" [class]="'argument_edit is_' + entry[1]['type']">
+      <div [id]="argument().id + '_v' + entry[0]" [class]="'argument_edit is_' + argument().type">
         <div class="argument_header">
           <div class="date_wrap">
             <div>

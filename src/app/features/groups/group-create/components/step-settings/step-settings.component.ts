@@ -4,6 +4,7 @@ import { Group } from '../../../../../core/interfaces/group';
 import { CountryService } from '../../../../../core/services/country.service';
 import { LanguageService } from '../../../../../core/services/language.service';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { GroupCreateData } from '../../group-create.interface';
 
 @Component({
   selector: 'cos-step-settings',
@@ -14,8 +15,8 @@ import { DropdownComponent } from '../../../../../shared/components/dropdown/dro
   styleUrl: './step-settings.component.scss',
 })
 export class StepSettingsComponent {
-  group = input.required<Partial<Group>>();
-  groupUpdate = output<Partial<Group>>();
+  group = input.required<GroupCreateData>();
+  groupUpdate = output<GroupCreateData>();
 
   countryService = inject(CountryService);
   languageService = inject(LanguageService);

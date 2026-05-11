@@ -28,15 +28,15 @@
         <div class="content_section">
           <div class="section_content_wrap">
             <label for="group_name">{{ 'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_NAME_DESC' | translate }}</label>
-            <div class="input_wrap" [class.error]="errors()?.name">
+            <div class="input_wrap" [class.error]="errors()?.['name']">
               <input
                 id="group_name"
                 [placeholder]="'COMPONENTS.GROUP_SETTINGS.INFO_SETTINGS_INPUT_NAME' | translate"
                 [ngModel]="group().name"
                 (ngModelChange)="group.update(g => ({ ...g, name: $event }))"
               />
-              @if (errors()?.name) {
-                <span class="error_label">{{ errors().name | translate }}</span>
+              @if (errors()?.['name']) {
+                <span class="error_label">{{ errors()?.['name']?.[0] | translate }}</span>
               }
             </div>
 

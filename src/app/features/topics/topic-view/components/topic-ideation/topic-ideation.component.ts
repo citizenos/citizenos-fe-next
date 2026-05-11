@@ -100,7 +100,7 @@ export class TopicIdeationComponent {
   ideasCount = computed(() => {
     const res = this.ideasResponse();
     if (!res) return 0;
-    return typeof res.count === 'number' ? res.count : (res.count?.total ?? 0);
+    return res.count;
   });
 
   Math = Math;

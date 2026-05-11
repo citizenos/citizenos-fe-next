@@ -14,7 +14,7 @@ export class TourItemTemplateComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.template) {
-      const templateContent = Array.from(this.template.nativeElement.children);
+      const templateContent = Array.from(this.template.nativeElement.children) as Node[];
       this.tourService.addTemplate(this.data.tourid, this.data.index, templateContent);
     }
   }

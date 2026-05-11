@@ -48,7 +48,7 @@ export interface FilterConfig {
         <div class="extra_area" [@slideInOut]="moreFilters() ? 'open' : 'closed'">
           @for (row of extraRows(); track $index) {
             <div class="options_row">
-              @for (item of row; track (item.key || 'search')) {
+              @for (item of row; track ($any(item).key || 'search')) {
                 @if (item.type === 'search') {
                   <app-search-input
                     class="toolbar-search"
@@ -59,13 +59,13 @@ export interface FilterConfig {
                 } @else {
                   <cos-dropdown
                     class="toolbar-dropdown"
-                    [placeholder]="item.placeholder | translate">
+                    [placeholder]="$any(item).placeholder | translate">
                     <ng-container selection>
-                      <span class="selected-item">{{ getActiveFilterText(item) | translate }}</span>
+                      <span class="selected-item">{{ getActiveFilterText($any(item)) | translate }}</span>
                     </ng-container>
                     <ng-container options>
-                      @for (option of item.items; track option.value) {
-                        <div class="option" (click)="selectFilter(item.key, option.value)" (keydown.enter)="selectFilter(item.key, option.value)" tabindex="0" role="button">
+                      @for (option of ($any(item).items); track option.value) {
+                        <div class="option" (click)="selectFilter($any(item).key, option.value)" (keydown.enter)="selectFilter($any(item).key, option.value)" tabindex="0" role="button">
                           {{ option.title | translate }}
                         </div>
                       }

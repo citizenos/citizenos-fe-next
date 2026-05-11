@@ -13,6 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Group } from '../../../../../core/interfaces/group';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { GroupCreateData } from '../../group-create.interface';
 
 @Component({
   selector: 'cos-step-info',
@@ -23,8 +24,8 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
   styleUrl: './step-info.component.scss',
 })
 export class StepInfoComponent implements OnInit {
-  group = input.required<Partial<Group>>();
-  groupUpdate = output<Partial<Group>>();
+  group = input.required<GroupCreateData>();
+  groupUpdate = output<GroupCreateData>();
   imageFileUpdate = output<File | null>();
 
   @ViewChild('imageUpload') imageUpload?: ElementRef<HTMLInputElement>;

@@ -135,7 +135,7 @@ export class TopicMilestonesComponent implements OnInit {
       }
     });
 
-    deleteDialog.afterClosed().subscribe((result: boolean | undefined) => {
+    deleteDialog.afterClosed().subscribe((result) => {
       if (result === true) {
         this.topicEventService
           .delete({ ...evt, topicId: this.topic().id })

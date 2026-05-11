@@ -18,6 +18,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 import { InitialsComponent } from '../../../shared/components/initials/initials.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { SeoService } from '../../../core/services/seo.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 type ProfileTab = 'profile' | 'notifications';
 
@@ -57,6 +58,7 @@ export class ProfileComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);
   private seoService = inject(SeoService);
   private destroyRef = inject(DestroyRef);
+  notificationParams = toSignal(this.topicNotificationService.params);
 
   activeTab = signal<ProfileTab>('profile');
 

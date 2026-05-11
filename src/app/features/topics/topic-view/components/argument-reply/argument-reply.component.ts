@@ -48,7 +48,7 @@ export class ArgumentReplyComponent {
       parentId: arg.id,
       parentVersion,
       type: 'reply',
-      discussionId: arg.discussionId,
+      discussionId: arg.discussionId || '',
       subject: '',
       text,
       topicId: this.topicId()

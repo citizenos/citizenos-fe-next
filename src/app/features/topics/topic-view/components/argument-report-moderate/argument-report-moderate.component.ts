@@ -65,8 +65,8 @@ export class ArgumentReportModerateComponent {
       topicId: this.topicId,
       discussionId: this.discussionId,
       commentId: this.argument?.id || this.commentId,
-      reportId: this.reportId,
-      report: this.report.value
+      reportId: this.reportId || '',
+      report: this.report.value as { type: string; text: string }
     };
 
     this.argumentService.moderate(data).pipe(take(1)).subscribe({

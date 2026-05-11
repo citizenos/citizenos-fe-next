@@ -103,8 +103,9 @@ export class TopicShareComponent implements OnInit {
             topicId: t.id,
             userId: user.id,
             level: this.join().level
-          }).pipe(take(1)).subscribe(res => {
-            t.join = res;
+          }).pipe(take(1)).subscribe((res: any) => {
+            const t = this.topic();
+            if (t) t.join = res;
             this.join.set({
               token: res.token,
               level: res.level

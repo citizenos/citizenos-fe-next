@@ -1,4 +1,5 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Topic, TopicVote } from '../../../../../core/interfaces/topic';
 import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
@@ -36,7 +37,8 @@ export class TopicVoteDeadlineComponent {
   }
 
   save() {
-    const vote = { ...this.data.vote, topicId: this.data.topic.id };
+    const vote: any = { ...this.data.vote, topicId: this.data.topic.id };
+    if (this.data.vote.question === null) delete vote.question;
     if (this.deadline()) {
       vote.endsAt = this.deadline();
     }

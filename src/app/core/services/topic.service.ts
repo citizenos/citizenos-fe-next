@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, shareReplay, switchMap, map, take, Subject, startWith } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { Topic } from '../interfaces/topic';
+import { Topic, TopicAttachment, TopicGroup } from '../interfaces/topic';
 import { ApiResponse } from '../interfaces/api-response';
 import { ConfigStore } from '../state/config.store';
 import { UserStore } from '../state/user.store';
@@ -22,22 +22,6 @@ interface ConfirmDialogTemplate {
 
 type TopicUpdateFields = Pick<Topic, 'visibility' | 'status' | 'categories' | 'endsAt' | 'hashtag' | 'imageUrl' | 'title' | 'intro' | 'contact' | 'country' | 'language'>;
 type TopicWithId = Partial<TopicUpdateFields> & { id?: string; topicId?: string };
-
-export interface TopicAttachment {
-  id: string;
-  name?: string;
-  link?: string;
-  type?: string;
-  source?: string;
-  [key: string]: unknown;
-}
-
-export interface TopicGroup {
-  id: string;
-  name?: string;
-  level?: string;
-  [key: string]: unknown;
-}
 
 @Injectable({
   providedIn: 'root'

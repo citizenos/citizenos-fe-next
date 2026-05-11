@@ -1,0 +1,2994 @@
+
+> citizenos-fe-next@0.0.0 build
+> ng build
+
+❯ Building...
+✔ Building...
+Application bundle generation failed. [4.039 seconds] - 2026-05-11T06:26:10.067Z
+
+▲ [WARNING] NG8113: IconComponent is not used within the template of AccessibilityMenuComponent [plugin angular-compiler]
+
+    src/app/core/components/shell/accessibility-menu/accessibility-menu.component.ts:9:29:
+      9 │   imports: [TranslateModule, IconComponent],
+        ╵                              ~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: IconComponent is not used within the template of FeedbackComponent [plugin angular-compiler]
+
+    src/app/core/components/shell/feedback/feedback.component.ts:13:42:
+      13 │   imports: [FormsModule, TranslateModule, IconComponent],
+         ╵                                           ~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: IconComponent is not used within the template of HelpComponent [plugin angular-compiler]
+
+    src/app/core/components/shell/help/help.component.ts:17:63:
+      17 │ ...sModule, ReactiveFormsModule, IconComponent, TermsLinksComponent],
+         ╵                                  ~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: IconComponent is not used within the template of LanguageSelectComponent [plugin angular-compiler]
+
+    src/app/core/components/shell/language-select/language-select.component.ts:14:51:
+      14 │   imports: [DialogCloseDirective, TranslateModule, IconComponent],
+         ╵                                                    ~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: IconComponent is not used within the template of GroupCreateComponent [plugin angular-compiler]
+
+    src/app/features/groups/group-create/group-create.component.ts:40:4:
+      40 │     IconComponent,
+         ╵     ~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.html:96:59:
+      96 │ ...v class="info_number">{{ group.members?.users?.count ?? 0 }}</div>
+         ╵                                            ~~~~~
+
+  Warning occurs in the template of component GroupDetailComponent.
+
+    src/app/features/groups/group-detail/group-detail.component.ts:77:15:
+      77 │   templateUrl: './group-detail.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.html:100:59:
+      100 │ ...o_number">{{ group.members?.topics?.count?.inProgress || 0 }}<...
+          ╵                                ~~~~~~
+
+  Warning occurs in the template of component GroupDetailComponent.
+
+    src/app/features/groups/group-detail/group-detail.component.ts:77:15:
+      77 │   templateUrl: './group-detail.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.html:104:59:
+      104 │ ...o_number">{{ group.members?.topics?.count?.ideation || 0 }}</div>
+          ╵                                ~~~~~~
+
+  Warning occurs in the template of component GroupDetailComponent.
+
+    src/app/features/groups/group-detail/group-detail.component.ts:77:15:
+      77 │   templateUrl: './group-detail.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.html:108:59:
+      108 │ ...nfo_number">{{ group.members?.topics?.count?.voting || 0 }}</div>
+          ╵                                  ~~~~~~
+
+  Warning occurs in the template of component GroupDetailComponent.
+
+    src/app/features/groups/group-detail/group-detail.component.ts:77:15:
+      77 │   templateUrl: './group-detail.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.html:112:59:
+      112 │ ...o_number">{{ group.members?.topics?.count?.followUp || 0 }}</div>
+          ╵                                ~~~~~~
+
+  Warning occurs in the template of component GroupDetailComponent.
+
+    src/app/features/groups/group-detail/group-detail.component.ts:77:15:
+      77 │   templateUrl: './group-detail.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.html:165:46:
+      165 │                       <span>{{ group.creator?.name }}</span>
+          ╵                                               ~~~~
+
+  Warning occurs in the template of component GroupDetailComponent.
+
+    src/app/features/groups/group-detail/group-detail.component.ts:77:15:
+      77 │   templateUrl: './group-detail.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: TitleCasePipe is not used within the template of GroupDetailComponent [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.ts:60:4:
+      60 │     TitleCasePipe,
+         ╵     ~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: DropdownComponent is not used within the template of GroupDetailComponent [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.ts:65:4:
+      65 │     DropdownComponent,
+         ╵     ~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: CreateMenuComponent is not used within the template of GroupDetailComponent [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.ts:71:4:
+      71 │     CreateMenuComponent,
+         ╵     ~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: InputComponent is not used within the template of GroupDetailComponent [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.ts:75:4:
+      75 │     InputComponent,
+         ╵     ~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.html:4:55:
+      4 │       <div class="field_wrap" [class.error]="errors()?.text">
+        ╵                                                        ~~~~
+
+  Warning occurs in the template of component IdeaReplyFormComponent.
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.ts:19:15:
+      19 │   templateUrl: './idea-reply-form.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.html:14:23:
+      14 │         @if (errors()?.text) {
+         ╵                        ~~~~
+
+  Warning occurs in the template of component IdeaReplyFormComponent.
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.ts:19:15:
+      19 │   templateUrl: './idea-reply-form.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-report-moderate/idea-reply-report-moderate.component.html:33:25:
+      33 │           @if (argument?.subject) {
+         ╵                          ~~~~~~~
+
+  Warning occurs in the template of component IdeaReplyReportModerateComponent.
+
+    src/app/features/topics/topic-view/components/idea-reply-report-moderate/idea-reply-report-moderate.component.ts:31:15:
+      31 │   templateUrl: './idea-reply-report-moderate.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-report-moderate/idea-reply-report-moderate.component.html:36:25:
+      36 │           @if (argument?.text) {
+         ╵                          ~~~~
+
+  Warning occurs in the template of component IdeaReplyReportModerateComponent.
+
+    src/app/features/topics/topic-view/components/idea-reply-report-moderate/idea-reply-report-moderate.component.ts:31:15:
+      31 │   templateUrl: './idea-reply-report-moderate.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: IconComponent is not used within the template of MissingDiscussionComponent [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/missing-discussion/missing-discussion.component.ts:23:64:
+      23 │ ...e, DialogCloseDirective, IconComponent, InputComponent, Deadlin...
+         ╵                             ~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: ButtonComponent is not used within the template of PostArgumentFormComponent [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.ts:18:58:
+      18 │ ...Module, InputComponent, ButtonComponent, IconComponent, Markdow...
+         ╵                            ~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: NgClass is not used within the template of TopicDiscussionComponent [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.ts:36:4:
+      36 │     NgClass, DatePipe, UpperCasePipe, TranslateModule, AsyncPipe, ...
+         ╵     ~~~~~~~
+
+
+▲ [WARNING] NG8113: AsyncPipe is not used within the template of TopicDiscussionComponent [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.ts:36:55:
+      36 │ ...DatePipe, UpperCasePipe, TranslateModule, AsyncPipe, KeyValuePipe,
+         ╵                                              ~~~~~~~~~
+
+
+▲ [WARNING] NG8113: KeyValuePipe is not used within the template of TopicDiscussionComponent [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.ts:36:66:
+      36 │ ...DatePipe, UpperCasePipe, TranslateModule, AsyncPipe, KeyValuePipe,
+         ╵                                                         ~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: ButtonComponent is not used within the template of TopicDiscussionComponent [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.ts:38:4:
+      38 │     ButtonComponent, IconComponent, PaginationComponent,
+         ╵     ~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: PaginationComponent is not used within the template of TopicDiscussionComponent [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.ts:38:36:
+      38 │     ButtonComponent, IconComponent, PaginationComponent,
+         ╵                                     ~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: InputComponent is not used within the template of TopicDiscussionComponent [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.ts:39:26:
+      39 │     CosDropdownDirective, InputComponent, DropdownComponent,
+         ╵                           ~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: IconComponent is not used within the template of TopicShareComponent [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-share/topic-share.component.ts:24:4:
+      24 │     IconComponent,
+         ╵     ~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/shared/components/group-card/group-card.component.ts:43:65:
+      43 │ ...embers_count_text">{{ group().members?.users?.count || 1 }}</span>
+         ╵                                           ~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/shared/components/group-card/group-card.component.ts:57:51:
+      57 │ ...s="bold">{{ group().members?.topics?.count?.inProgress || 0 }}<...
+         ╵                                 ~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/shared/components/group-card/group-card.component.ts:61:51:
+      61 │ ...s="bold">{{ group().members?.topics?.count?.ideation || 0 }}</s...
+         ╵                                 ~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/shared/components/group-card/group-card.component.ts:65:51:
+      65 │ ...ss="bold">{{ group().members?.topics?.count?.voting || 0 }}</span>
+         ╵                                  ~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    src/app/shared/components/group-card/group-card.component.ts:69:51:
+      69 │ ...s="bold">{{ group().members?.topics?.count?.followUp || 0 }}</s...
+         ╵                                 ~~~~~~
+
+
+✘ [ERROR] TS2769: No overload matches this call.
+  Overload 3 of 15, '(url: string, options?: { headers?: HttpHeaders | Record<string, string | string[]> | undefined; context?: HttpContext | undefined; observe?: "body" | undefined; ... 14 more ...; timeout?: number | undefined; } | undefined): Observable<...>', gave the following error.
+    Type 'Record<string, ParamValue>' is not assignable to type 'HttpParams | Record<string, string | number | boolean | readonly (string | number | boolean)[]> | undefined'.
+      Type 'Record<string, ParamValue>' is missing the following properties from type 'HttpParams': map, encoder, updates, cloneFrom, and 10 more. [plugin angular-compiler]
+
+    src/app/core/services/topic-ideation.service.ts:95:81:
+      95 │ ...th, { withCredentials: true, params: params as unknown as Recor...
+         ╵                                 ~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'data' does not exist on type 'ArrayBuffer'. [plugin angular-compiler]
+
+    src/app/core/services/topic-ideation.service.ts:96:27:
+      96 │       .pipe(map(res => res.data));
+         ╵                            ~~~~
+
+
+✘ [ERROR] TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type. [plugin angular-compiler]
+
+    src/app/core/services/tour.service.ts:135:75:
+      135 │ ...ndexes = tourItems.map(item => item.index).sort((a, b) => a - b);
+          ╵                                                              ^
+
+
+✘ [ERROR] TS2363: The right-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type. [plugin angular-compiler]
+
+    src/app/core/services/tour.service.ts:135:79:
+      135 │ ...ndexes = tourItems.map(item => item.index).sort((a, b) => a - b);
+          ╵                                                                  ^
+
+
+✘ [ERROR] TS2345: Argument of type 'string | number' is not assignable to parameter of type 'number'.
+  Type 'string' is not assignable to type 'number'. [plugin angular-compiler]
+
+    src/app/core/services/tour.service.ts:138:28:
+      138 │         this.activeItem.set(itemIndexes[curIdxInSorted + 1]);
+          ╵                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type. [plugin angular-compiler]
+
+    src/app/core/services/tour.service.ts:151:75:
+      151 │ ...ndexes = tourItems.map(item => item.index).sort((a, b) => a - b);
+          ╵                                                              ^
+
+
+✘ [ERROR] TS2363: The right-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type. [plugin angular-compiler]
+
+    src/app/core/services/tour.service.ts:151:79:
+      151 │ ...ndexes = tourItems.map(item => item.index).sort((a, b) => a - b);
+          ╵                                                                  ^
+
+
+✘ [ERROR] TS2345: Argument of type 'string | number' is not assignable to parameter of type 'number'.
+  Type 'string' is not assignable to type 'number'. [plugin angular-compiler]
+
+    src/app/core/services/tour.service.ts:154:28:
+      154 │         this.activeItem.set(itemIndexes[curIdxInSorted - 1]);
+          ╵                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'string' is not assignable to parameter of type 'number'. [plugin angular-compiler]
+
+    src/app/features/account/login/smart-id/smart-id.component.ts:192:31:
+      192 │           this.challengeID.set(res.challengeID);
+          ╵                                ~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2571: Object is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/account/profile/profile.component.html:273:76:
+      273 │ ...f topicNotificationService.items$ | async; track topic.topicId) {
+          ╵                                                           ~~~~~~~
+
+  Error occurs in the template of component ProfileComponent.
+
+    src/app/features/account/profile/profile.component.ts:43:15:
+      43 │   templateUrl: './profile.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2571: Object is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/account/profile/profile.component.html:276:65:
+      276 │ ...terLink]="['/topics', topic.topicId]" target="_blank">{{topic....
+          ╵                                ~~~~~~~
+
+  Error occurs in the template of component ProfileComponent.
+
+    src/app/features/account/profile/profile.component.ts:43:15:
+      43 │   templateUrl: './profile.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2571: Object is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/account/profile/profile.component.html:276:99:
+      276 │ ...="['/topics', topic.topicId]" target="_blank">{{topic.title}}</a>
+          ╵                                                          ~~~~~
+
+  Error occurs in the template of component ProfileComponent.
+
+    src/app/features/account/profile/profile.component.ts:43:15:
+      43 │   templateUrl: './profile.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2571: Object is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/account/profile/profile.component.html:280:29:
+      280 │ ...       [model]="topic.allowNotifications" (toggleClick)="toggl...
+          ╵                          ~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component ProfileComponent.
+
+    src/app/features/account/profile/profile.component.ts:43:15:
+      43 │   templateUrl: './profile.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'unknown' is not assignable to parameter of type '{ topicId: string; allowNotifications: boolean; }'. [plugin angular-compiler]
+
+    src/app/features/account/profile/profile.component.html:280:89:
+      280 │ ...ns" (toggleClick)="toggleTopicNotifications(topic)"></cos-toggle>
+          ╵                                                ~~~~~
+
+  Error occurs in the template of component ProfileComponent.
+
+    src/app/features/account/profile/profile.component.ts:43:15:
+      43 │   templateUrl: './profile.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2304: Cannot find name 'Observable'. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/group-add-topics-dialog/group-add-topics-dialog.component.ts:69:35:
+      69 │     const requests: Record<string, Observable<unknown>> = {};
+         ╵                                    ~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'results' does not exist on type '{}'. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/group-invite-dialog/group-invite-dialog.component.ts:96:27:
+      96 │         const rows = data?.results?.public?.users?.rows ?? data?.r...
+         ╵                            ~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'rows' does not exist on type '{}'. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/group-invite-dialog/group-invite-dialog.component.ts:96:65:
+      96 │ ...nst rows = data?.results?.public?.users?.rows ?? data?.rows ?? [];
+         ╵                                                           ~~~~
+
+
+✘ [ERROR] TS2304: Cannot find name 'Observable'. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/group-request-topics-dialog/group-request-topics-dialog.component.ts:61:35:
+      61 │     const requests: Record<string, Observable<unknown>> = {};
+         ╵                                    ~~~~~~~~~~
+
+
+✘ [ERROR] TS4111: Property 'name' comes from an index signature, so it must be accessed with ['name']. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.html:31:61:
+      31 │             <div class="input_wrap" [class.error]="errors()?.name">
+         ╵                                                              ~~~~
+
+  Error occurs in the template of component GroupSettingsDialogComponent.
+
+    src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.ts:25:15:
+      25 │   templateUrl: './group-settings-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS4111: Property 'name' comes from an index signature, so it must be accessed with ['name']. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.html:38:29:
+      38 │               @if (errors()?.name) {
+         ╵                              ~~~~
+
+  Error occurs in the template of component GroupSettingsDialogComponent.
+
+    src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.ts:25:15:
+      25 │   templateUrl: './group-settings-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'string[]' is not assignable to parameter of type 'string'. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.html:39:54:
+      39 │ ...  <span class="error_label">{{ errors().name | translate }}</span>
+         ╵                                            ~~~~
+
+  Error occurs in the template of component GroupSettingsDialogComponent.
+
+    src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.ts:25:15:
+      25 │   templateUrl: './group-settings-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.html:39:54:
+      39 │ ...  <span class="error_label">{{ errors().name | translate }}</span>
+         ╵                                            ~~~~
+
+  Error occurs in the template of component GroupSettingsDialogComponent.
+
+    src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.ts:25:15:
+      25 │   templateUrl: './group-settings-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS4111: Property 'name' comes from an index signature, so it must be accessed with ['name']. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.html:39:54:
+      39 │ ...  <span class="error_label">{{ errors().name | translate }}</span>
+         ╵                                            ~~~~
+
+  Error occurs in the template of component GroupSettingsDialogComponent.
+
+    src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.ts:25:15:
+      25 │   templateUrl: './group-settings-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.html:21:106:
+      21 │ ...slate.currentLang, 'topics', request.topic.id]" (click)="close()">
+         ╵                                               ~~
+
+  Error occurs in the template of component TopicRequestsDialogComponent.
+
+    src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.ts:19:15:
+      19 │   templateUrl: './topic-requests-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.html:22:35:
+      22 │                   {{ request.topic.title || request.topic.id }}
+         ╵                                    ~~~~~
+
+  Error occurs in the template of component TopicRequestsDialogComponent.
+
+    src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.ts:19:15:
+      19 │   templateUrl: './topic-requests-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.html:22:58:
+      22 │                   {{ request.topic.title || request.topic.id }}
+         ╵                                                           ~~
+
+  Error occurs in the template of component TopicRequestsDialogComponent.
+
+    src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.ts:19:15:
+      19 │   templateUrl: './topic-requests-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.html:28:50:
+      28 │ ...icon [name]="request.topic.visibility === 'private' ? 'lock' : ...
+         ╵                               ~~~~~~~~~~
+
+  Error occurs in the template of component TopicRequestsDialogComponent.
+
+    src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.ts:19:15:
+      19 │   templateUrl: './topic-requests-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.html:30:65:
+      30 │ ...SIBILITY_' + request.topic.visibility | uppercase | translate }...
+         ╵                               ~~~~~~~~~~
+
+  Error occurs in the template of component TopicRequestsDialogComponent.
+
+    src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.ts:19:15:
+      19 │   templateUrl: './topic-requests-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ count: number; }' is not assignable to parameter of type 'Partial<GroupMember>[]'.
+  Type '{ count: number; }' is missing the following properties from type 'Partial<GroupMember>[]': length, pop, push, concat, and 29 more. [plugin angular-compiler]
+
+    src/app/features/groups/group-create/components/step-invite/step-invite.component.ts:36:29:
+      36 │       this.selectedUsers.set(this.group().members!.users);
+         ╵                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2741: Property 'count' is missing in type 'Partial<GroupMember>[]' but required in type '{ count: number; }'. [plugin angular-compiler]
+
+    src/app/features/groups/group-create/components/step-invite/step-invite.component.ts:80:42:
+      80 │ ...members: { ...this.group().members, users: this.selectedUsers() },
+         ╵                                        ~~~~~
+
+  'count' is declared here.
+
+    src/app/core/interfaces/group.ts:15:22:
+      15 │   members: { users: { count: number }; groups: { count: number }; ...
+         ╵                       ~~~~~
+
+
+✘ [ERROR] TS2339: Property 'rows' does not exist on type '{ count?: { inProgress?: number | undefined; ideation?: number | undefined; voting?: number | undefined; followUp?: number | undefined; } | undefined; latest?: { id: string; title?: string | null | undefined; } | null | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/groups/group-create/components/step-topics/step-topics.component.ts:36:38:
+      36 │     if (this.group().members?.topics?.rows) {
+         ╵                                       ~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/groups/group-create/components/step-topics/step-topics.component.ts:37:30:
+      37 │       this.selectedTopics.set(this.group().members!.topics.rows);
+         ╵                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'rows' does not exist on type '{ count?: { inProgress?: number | undefined; ideation?: number | undefined; voting?: number | undefined; followUp?: number | undefined; } | undefined; latest?: { id: string; title?: string | null | undefined; } | null | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/groups/group-create/components/step-topics/step-topics.component.ts:37:59:
+      37 │       this.selectedTopics.set(this.group().members!.topics.rows);
+         ╵                                                            ~~~~
+
+
+✘ [ERROR] TS18046: 'res' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-create/components/step-topics/step-topics.component.ts:48:31:
+      48 │         this.searchResults.set(res.results.my.topics.rows);
+         ╵                                ~~~
+
+
+✘ [ERROR] TS2353: Object literal may only specify known properties, and 'rows' does not exist in type '{ count?: { inProgress?: number | undefined; ideation?: number | undefined; voting?: number | undefined; followUp?: number | undefined; } | undefined; latest?: { id: string; title?: string | null | undefined; } | null | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/groups/group-create/components/step-topics/step-topics.component.ts:74:10:
+      74 │           rows: this.selectedTopics()
+         ╵           ~~~~
+
+
+✘ [ERROR] TS2741: Property 'count' is missing in type 'never[]' but required in type '{ count: number; }'. [plugin angular-compiler]
+
+    src/app/features/groups/group-create/group-create.component.ts:66:6:
+      66 │       users: [],
+         ╵       ~~~~~
+
+  'count' is declared here.
+
+    src/app/core/interfaces/group.ts:15:22:
+      15 │   members: { users: { count: number }; groups: { count: number }; ...
+         ╵                       ~~~~~
+
+
+✘ [ERROR] TS2559: Type 'number' has no properties in common with type '{ inProgress?: number | undefined; ideation?: number | undefined; voting?: number | undefined; followUp?: number | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/groups/group-create/group-create.component.ts:67:26:
+      67 │       topics: { rows: [], count: 0 },
+         ╵                           ~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/components/group-invite-user/group-invite-user.component.html:16:61:
+      16 │ ...e]="'TXT_GROUP_LEVELS_' + user().invite.level | uppercase"></span>
+         ╵                                            ~~~~~
+
+  Error occurs in the template of component GroupInviteUserComponent.
+
+    src/app/features/groups/group-detail/components/group-invite-user/group-invite-user.component.ts:19:15:
+      19 │   templateUrl: './group-invite-user.component.html'
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS18048: 'user.invite' is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/components/group-invite-user/group-invite-user.component.ts:45:10:
+      45 │           user.invite.level = oldLevel;
+         ╵           ~~~~~~~~~~~
+
+
+✘ [ERROR] TS18048: 'user.invite' is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/components/group-invite-user/group-invite-user.component.ts:64:61:
+      64 │ ...is.inviteUserService.deleteInvite(this.group().id, user.invite.id)
+         ╵                                                       ~~~~~~~~~~~
+
+
+✘ [ERROR] TS18046: 'res' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/components/group-share/group-share.component.ts:75:31:
+      75 │             this.joinToken.set(res.token);
+         ╵                                ~~~
+
+
+✘ [ERROR] TS18046: 'res' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/components/group-share/group-share.component.ts:76:31:
+      76 │             this.joinLevel.set(res.level);
+         ╵                                ~~~
+
+
+✘ [ERROR] TS2339: Property 'level' does not exist on type '{}'. [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.ts:396:57:
+      396 │ ... g ? { ...g, userLevel: res?.level || res?.userLevel || 'read'...
+          ╵                                 ~~~~~
+
+
+✘ [ERROR] TS2339: Property 'userLevel' does not exist on type '{}'. [plugin angular-compiler]
+
+    src/app/features/groups/group-detail/group-detail.component.ts:396:71:
+      396 │ ...{ ...g, userLevel: res?.level || res?.userLevel || 'read' } : g);
+          ╵                                          ~~~~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:31:8:
+      31 │         invite.inviteId = inviteId;
+         ╵         ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:39:12:
+      39 │         if (invite.user.id === currentUser?.id && hasDirectJoin) {
+         ╵             ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:44:66:
+      44 │ ...arams: { redirectSuccess: redirectUrl, email: invite.user.email },
+         ╵                                                  ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:53:20:
+      53 │           imageUrl: invite.group.imageUrl,
+         ╵                     ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:54:17:
+      54 │           title: invite.group.name,
+         ╵                  ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:56:23:
+      56 │           description: invite.group.description,
+         ╵                        ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:57:19:
+      57 │           creator: invite.creator,
+         ╵                    ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:58:16:
+      58 │           user: invite.user,
+         ╵                 ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:59:17:
+      59 │           level: invite.level,
+         ╵                  ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:60:22:
+      60 │           visibility: invite.group.visibility,
+         ╵                       ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:61:24:
+      61 │           publicAccess: invite.group.visibility === 'public'
+         ╵                         ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:62:83:
+      62 │ ...GROUP_JOIN.BTN_GO_TO_GROUP', link: ['/groups/', invite.group.id] }
+         ╵                                                    ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:70:17:
+      70 │           email: invite.user.email,
+         ╵                  ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:77:36:
+      77 │             if (currentUser?.id !== invite.user.id) {
+         ╵                                     ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:80:68:
+      80 │ ...ueryParams: { ...queryParamsForRedirect, userId: invite.user.id },
+         ╵                                                     ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:86:21:
+      86 │           } else if (invite.user.isRegistered) {
+         ╵                      ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:88:64:
+      88 │ ...ueryParams: { ...queryParamsForRedirect, userId: invite.user.id },
+         ╵                                                     ~~~~~~
+
+
+✘ [ERROR] TS18046: 'invite' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/groups/group-invitation/group-invitation.component.ts:92:66:
+      92 │ ...  queryParams: { ...queryParamsForRedirect, inviteId: invite.id },
+         ╵                                                          ~~~~~~
+
+
+✘ [ERROR] TS2769: No overload matches this call.
+  Overload 1 of 2, '(observerOrNext?: Partial<Observer<unknown>> | ((value: unknown) => void) | undefined): Subscription', gave the following error.
+    Type '(group: Group) => void' is not assignable to type '(value: unknown) => void'.
+      Types of parameters 'group' and 'value' are incompatible.
+        Type 'unknown' is not assignable to type 'Group'.
+  Overload 2 of 2, '(next?: ((value: unknown) => void) | null | undefined, error?: ((error: any) => void) | null | undefined, complete?: (() => void) | null | undefined): Subscription', gave the following error.
+    Object literal may only specify known properties, and 'next' does not exist in type '(value: unknown) => void'. [plugin angular-compiler]
+
+    src/app/features/groups/group-join/group-join.component.ts:35:6:
+      35 │       next: (group: Group) => {
+         ╵       ~~~~
+
+
+✘ [ERROR] TS2769: No overload matches this call.
+  Overload 1 of 2, '(observerOrNext?: Partial<Observer<unknown>> | ((value: unknown) => void) | undefined): Subscription', gave the following error.
+    Type '(joined: Group) => Promise<boolean>' is not assignable to type '(value: unknown) => void'.
+      Types of parameters 'joined' and 'value' are incompatible.
+        Type 'unknown' is not assignable to type 'Group'.
+  Overload 2 of 2, '(next?: ((value: unknown) => void) | null | undefined, error?: ((error: any) => void) | null | undefined, complete?: (() => void) | null | undefined): Subscription', gave the following error.
+    Object literal may only specify known properties, and 'next' does not exist in type '(value: unknown) => void'. [plugin angular-compiler]
+
+    src/app/features/groups/group-join/group-join.component.ts:93:8:
+      93 │         next: (joined: Group) => this.router.navigate(['/groups', ...
+         ╵         ~~~~
+
+
+✘ [ERROR] TS2769: No overload matches this call.
+  Overload 1 of 2, '(observerOrNext?: Partial<Observer<unknown>> | ((value: unknown) => void) | undefined): Subscription', gave the following error.
+    Type '(joined: Group) => Promise<boolean>' is not assignable to type '(value: unknown) => void'.
+      Types of parameters 'joined' and 'value' are incompatible.
+        Type 'unknown' is not assignable to type 'Group'.
+  Overload 2 of 2, '(next?: ((value: unknown) => void) | null | undefined, error?: ((error: any) => void) | null | undefined, complete?: (() => void) | null | undefined): Subscription', gave the following error.
+    Object literal may only specify known properties, and 'next' does not exist in type '(value: unknown) => void'. [plugin angular-compiler]
+
+    src/app/features/groups/group-join/group-join.component.ts:107:8:
+      107 │         next: (joined: Group) => this.router.navigate(['/groups',...
+          ╵         ~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ topicId: string; question: string; id?: string | undefined; creatorId?: string | undefined; creator?: { id: string; name: string; imageUrl: string; email: string; } | undefined; ... 8 more ...; demographicsConfig?: Record<...> | ... 1 more ... | undefined; }' is not assignable to parameter of type '{ [key: string]: ParamValue; topicId: string; }'.
+  Property 'creator' is incompatible with index signature.
+    Type '{ id: string; name: string; imageUrl: string; email: string; }' is not assignable to type 'ParamValue'. [plugin angular-compiler]
+
+    src/app/features/topics/ideation-create/ideation-create.component.ts:107:41:
+      107 │         return this.ideationService.save(ideationData);
+          ╵                                          ~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/ideation-create/ideation-create.component.ts:183:60:
+      183 │ ...pdate({ ...this.ideation(), topicId: t.id }).pipe(take(1)).sub...
+          ╵                                ~~~~~~~
+
+  The expected type comes from property 'topicId' which is declared here on type '{ [key: string]: ParamValue; topicId: string; ideationId?: string | undefined; id?: string | undefined; }'
+
+    src/app/core/services/topic-ideation.service.ts:119:17:
+      119 │   update(data: { topicId: string; ideationId?: string; id?: strin...
+          ╵                  ~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/ideation-create/ideation-create.component.ts:202:58:
+      202 │ ...pdate({ ...this.ideation(), topicId: t.id }).pipe(take(1)).sub...
+          ╵                                ~~~~~~~
+
+  The expected type comes from property 'topicId' which is declared here on type '{ [key: string]: ParamValue; topicId: string; ideationId?: string | undefined; id?: string | undefined; }'
+
+    src/app/core/services/topic-ideation.service.ts:119:17:
+      119 │   update(data: { topicId: string; ideationId?: string; id?: strin...
+          ╵                  ~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'TopicMemberUser[]' is not assignable to type 'TopicMember[]'.
+  Type 'TopicMemberUser' is not assignable to type 'TopicMember'.
+    Types of property 'imageUrl' are incompatible.
+      Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+        Type 'null' is not assignable to type 'string | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-create/topic-create.component.html:49:7:
+      49 │       [members]="members()"
+         ╵        ~~~~~~~
+
+  Error occurs in the template of component TopicCreateComponent.
+
+    src/app/features/topics/topic-create/topic-create.component.ts:37:15:
+      37 │   templateUrl: './topic-create.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'TopicMemberUser[]' is not assignable to type 'TopicMember[]'.
+  Type 'TopicMemberUser' is not assignable to type 'TopicMember'.
+    Types of property 'imageUrl' are incompatible.
+      Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+        Type 'null' is not assignable to type 'string | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-edit/topic-edit.component.html:61:7:
+      61 │       [members]="members()"
+         ╵        ~~~~~~~
+
+  Error occurs in the template of component TopicEditComponent.
+
+    src/app/features/topics/topic-edit/topic-edit.component.ts:51:15:
+      51 │   templateUrl: './topic-edit.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-edit/topic-edit.component.ts:141:47:
+      141 │ ...   next: (v) => this.vote.set({ ...v, question: v.description }),
+          ╵                                          ~~~~~~~~
+
+  The expected type comes from property 'question' which is declared here on type 'Partial<Vote>'
+
+    src/app/core/interfaces/vote.ts:11:2:
+      11 │   question: string; // Map to "description" in API
+         ╵   ~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ topicId: string; id?: string | undefined; question?: string | undefined; creatorId?: string | undefined; creator?: { id: string; name: string; imageUrl: string; email: string; } | undefined; ... 8 more ...; demographicsConfig?: Record<...> | ... 1 more ... | undefined; }' is not assignable to parameter of type '{ [key: string]: ParamValue; topicId: string; ideationId?: string | undefined; id?: string | undefined; }'.
+  Property 'creator' is incompatible with index signature.
+    Type '{ id: string; name: string; imageUrl: string; email: string; }' is not assignable to type 'ParamValue'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-edit/topic-edit.component.ts:347:32:
+      347 │ ...ationService.update({ ...i, topicId: t.id }).pipe(take(1)).sub...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'inviteId' does not exist on type 'TopicInvite'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:34:22:
+      34 │           topicInvite.inviteId = inviteId;
+         ╵                       ~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'topic' does not exist on type 'TopicInvite'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:44:34:
+      44 │             imageUrl: topicInvite.topic?.imageUrl ?? null,
+         ╵                                   ~~~~~
+
+
+✘ [ERROR] TS2339: Property 'topic' does not exist on type 'TopicInvite'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:45:31:
+      45 │             title: topicInvite.topic?.title ?? null,
+         ╵                                ~~~~~
+
+
+✘ [ERROR] TS2339: Property 'topic' does not exist on type 'TopicInvite'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:46:31:
+      46 │             intro: topicInvite.topic?.intro ?? null,
+         ╵                                ~~~~~
+
+
+✘ [ERROR] TS2339: Property 'topic' does not exist on type 'TopicInvite'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:47:37:
+      47 │             description: topicInvite.topic?.description ?? null,
+         ╵                                      ~~~~~
+
+
+✘ [ERROR] TS2339: Property 'creator' does not exist on type 'TopicInvite'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:48:33:
+      48 │             creator: topicInvite.creator ?? null,
+         ╵                                  ~~~~~~~
+
+
+✘ [ERROR] TS2741: Property 'isRegistered' is missing in type '{ id: string; name: string; email?: string | undefined; imageUrl?: string | undefined; }' but required in type '{ email: string; isRegistered: boolean; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:49:12:
+      49 │             user: topicInvite.user ?? null,
+         ╵             ~~~~
+
+  'isRegistered' is declared here.
+
+    src/app/shared/components/invitation-dialog/invitation-dialog.component.ts:24:4:
+      24 │     isRegistered: boolean;
+         ╵     ~~~~~~~~~~~~
+
+  The expected type comes from property 'user' which is declared here on type 'InviteDialogData'
+
+    src/app/shared/components/invitation-dialog/invitation-dialog.component.ts:22:2:
+      22 │   user: {
+         ╵   ~~~~
+
+
+✘ [ERROR] TS2339: Property 'topic' does not exist on type 'TopicInvite'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:51:36:
+      51 │             visibility: topicInvite.topic?.visibility ?? 'private',
+         ╵                                     ~~~~~
+
+
+✘ [ERROR] TS2339: Property 'topic' does not exist on type 'TopicInvite'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:52:38:
+      52 │             publicAccess: topicInvite.topic?.visibility === 'public'
+         ╵                                       ~~~~~
+
+
+✘ [ERROR] TS2339: Property 'topic' does not exist on type 'TopicInvite'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:53:96:
+      53 │ ...C_JOIN.BTN_GO_TO_TOPIC', link: ['/topics', topicInvite.topic.id] }
+         ╵                                                           ~~~~~
+
+
+✘ [ERROR] TS2339: Property 'isRegistered' does not exist on type '{ id: string; name: string; email?: string | undefined; imageUrl?: string | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:76:36:
+      76 │               if (topicInvite.user?.isRegistered) {
+         ╵                                     ~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'topicId' does not exist on type 'TopicInvite'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:107:27:
+      107 │       topicId: topicInvite.topicId,
+          ╵                            ~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'topicId' does not exist on type 'TopicInvite'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-invitation/topic-invitation.component.ts:110:63:
+      110 │ ...xt: () => this.router.navigate(['/topics', topicInvite.topicId]),
+          ╵                                                           ~~~~~~~
+
+
+✘ [ERROR] TS7053: Element implicitly has an 'any' type because expression of type '"type"' can't be used to index type '{ subject?: string | null | undefined; text?: string | null | undefined; createdAt?: string | undefined; }'.
+  Property 'type' does not exist on type '{ subject?: string | null | undefined; text?: string | null | undefined; createdAt?: string | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-edits/argument-edits.component.html:8:81:
+      8 │ ... '_v' + entry[0]" [class]="'argument_edit is_' + entry[1]['type']">
+        ╵                                                     ~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component ArgumentEditsComponent.
+
+    src/app/features/topics/topic-view/components/argument-edits/argument-edits.component.ts:11:15:
+      11 │   templateUrl: './argument-edits.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'imageUrl' does not exist on type '{ id: string; name: string; value: number; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.html:28:32:
+      28 │                     @if (member.imageUrl) {
+         ╵                                 ~~~~~~~~
+
+  Error occurs in the template of component ArgumentReactionsComponent.
+
+    src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.ts:20:15:
+      20 │   templateUrl: './argument-reactions.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'imageUrl' does not exist on type '{ id: string; name: string; value: number; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.html:29:63:
+      29 │ ...        <img class="profile_image" [src]="member.imageUrl" alt="">
+         ╵                                                     ~~~~~~~~
+
+  Error occurs in the template of component ArgumentReactionsComponent.
+
+    src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.ts:20:15:
+      20 │   templateUrl: './argument-reactions.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'vote' does not exist on type '{ id: string; name: string; value: number; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.html:41:30:
+      41 │                   @if (member.vote === 'down') {
+         ╵                               ~~~~
+
+  Error occurs in the template of component ArgumentReactionsComponent.
+
+    src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.ts:20:15:
+      20 │   templateUrl: './argument-reactions.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'vote' does not exist on type '{ id: string; name: string; value: number; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.html:48:30:
+      48 │                   @if (member.vote === 'up') {
+         ╵                               ~~~~
+
+  Error occurs in the template of component ArgumentReactionsComponent.
+
+    src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.ts:20:15:
+      20 │   templateUrl: './argument-reactions.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'string[] | undefined' is not assignable to parameter of type 'string | null | undefined'.
+  Type 'string[]' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-reply/argument-reply.component.html:19:19:
+      19 │           <span>{{ errors()?.text | translate }}</span>
+         ╵                    ~~~~~~~~~~~~~~
+
+  Error occurs in the template of component ArgumentReplyComponent.
+
+    src/app/features/topics/topic-view/components/argument-reply/argument-reply.component.ts:16:15:
+      16 │   templateUrl: './argument-reply.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-reply/argument-reply.component.ts:51:6:
+      51 │       discussionId: arg.discussionId,
+         ╵       ~~~~~~~~~~~~
+
+  The expected type comes from property 'discussionId' which is declared here on type '{ [key: string]: ParamValue; topicId: string; discussionId: string; }'
+
+    src/app/core/services/topic-argument.service.ts:163:32:
+      163 │ ...data: { topicId: string; discussionId: string; [key: string]: ...
+          ╵                             ~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'comment' does not exist on type 'ArgumentReport'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-report-moderate/argument-report-moderate.component.ts:36:53:
+      36 │   argument = this.data.argument || this.data.report?.comment;
+         ╵                                                      ~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ token: string; topicId: string; discussionId: string; commentId: any; reportId: string | null; report: Partial<{ type: string | null; text: string | null; }>; }' is not assignable to parameter of type '{ token: string; topicId: string; discussionId: string; commentId: string; reportId: string; report: { type: string; text: string; }; }'.
+  Types of property 'reportId' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-report-moderate/argument-report-moderate.component.ts:72:34:
+      72 │     this.argumentService.moderate(data).pipe(take(1)).subscribe({
+         ╵                                   ~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-report/argument-report.component.html:25:65:
+      25 │ ...mg class="profile_image" [src]="argument.creator.imageUrl" alt="">
+         ╵                                                     ~~~~~~~~
+
+  Error occurs in the template of component ArgumentReportComponent.
+
+    src/app/features/topics/topic-view/components/argument-report/argument-report.component.ts:34:15:
+      34 │   templateUrl: './argument-report.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-report/argument-report.component.html:29:57:
+      29 │ ...      <cos-initials [name]="argument.creator.name"></cos-initials>
+         ╵                                                 ~~~~
+
+  Error occurs in the template of component ArgumentReportComponent.
+
+    src/app/features/topics/topic-view/components/argument-report/argument-report.component.ts:34:15:
+      34 │   templateUrl: './argument-report.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ topicId: string; discussionId: string | undefined; commentId: string; type: string; text: string; }' is not assignable to parameter of type '{ topicId: string; discussionId: string; commentId?: string | undefined; id?: string | undefined; type: string; text?: string | undefined; }'.
+  Types of property 'discussionId' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument-report/argument-report.component.ts:71:32:
+      71 │     this.argumentService.report(reportData)
+         ╵                                 ~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument/argument.component.html:9:47:
+      9 │ ...g [src]="argument().creator.imageUrl" [alt]="argument().creator....
+        ╵                                ~~~~~~~~
+
+  Error occurs in the template of component ArgumentComponent.
+
+    src/app/features/topics/topic-view/components/argument/argument.component.ts:33:15:
+      33 │   templateUrl: './argument.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument/argument.component.html:9:83:
+      9 │ ...or.imageUrl" [alt]="argument().creator.name" class="profile_image">
+        ╵                                           ~~~~
+
+  Error occurs in the template of component ArgumentComponent.
+
+    src/app/features/topics/topic-view/components/argument/argument.component.ts:33:15:
+      33 │   templateUrl: './argument.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'string | null | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument/argument.component.html:83:80:
+      83 │ ...ent_body" #argumentBody [innerHTML]="safe(argument().text)"></div>
+         ╵                                                         ~~~~
+
+  Error occurs in the template of component ArgumentComponent.
+
+    src/app/features/topics/topic-view/components/argument/argument.component.ts:33:15:
+      33 │   templateUrl: './argument.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument/argument.component.html:122:155:
+      122 │ ...SHOW_REPLIES') | translate:{ count: argument().replies.count } }}
+          ╵                                                           ~~~~~
+
+  Error occurs in the template of component ArgumentComponent.
+
+    src/app/features/topics/topic-view/components/argument/argument.component.ts:33:15:
+      33 │   templateUrl: './argument.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'unknown' is not assignable to type '{ up: { count: number; selected: boolean; }; down: { count: number; selected: boolean; }; count: number; } | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument/argument.component.ts:94:6:
+      94 │       this.argument().votes = votes;
+         ╵       ~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type '{ id: string; }' is not assignable to type 'ParamValue'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/argument/argument.component.ts:108:6:
+      108 │       parent: { id: this.argument().id },
+          ╵       ~~~~~~
+
+  The expected type comes from this index signature.
+
+    src/app/core/services/topic-argument.service.ts:163:54:
+      163 │ ...cussionId: string; [key: string]: ParamValue }): Observable<Ar...
+          ╵                       ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.ts:53:6:
+      53 │       discussionId: arg.discussionId,
+         ╵       ~~~~~~~~~~~~
+
+  The expected type comes from property 'discussionId' which is declared here on type '{ [key: string]: ParamValue; topicId: string; discussionId: string; commentId?: string | undefined; id?: string | undefined; }'
+
+    src/app/core/services/topic-argument.service.ts:169:34:
+      169 │ ...data: { topicId: string; discussionId: string; commentId?: str...
+          ╵                             ~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2769: No overload matches this call.
+  Overload 1 of 2, '(observerOrNext?: Partial<Observer<{ rows: Attachment[]; countTotal: number; }>> | ((value: { rows: Attachment[]; countTotal: number; }) => void) | undefined): Subscription', gave the following error.
+    Argument of type '(res: ApiResponse<{ rows: Attachment[]; countTotal: number; }>) => void' is not assignable to parameter of type 'Partial<Observer<{ rows: Attachment[]; countTotal: number; }>> | ((value: { rows: Attachment[]; countTotal: number; }) => void) | undefined'.
+      Type '(res: ApiResponse<{ rows: Attachment[]; countTotal: number; }>) => void' is not assignable to type '(value: { rows: Attachment[]; countTotal: number; }) => void'.
+        Types of parameters 'res' and 'value' are incompatible.
+          Type '{ rows: Attachment[]; countTotal: number; }' is missing the following properties from type 'ApiResponse<{ rows: Attachment[]; countTotal: number; }>': status, data
+  Overload 2 of 2, '(next?: ((value: { rows: Attachment[]; countTotal: number; }) => void) | null | undefined, error?: ((error: any) => void) | null | undefined, complete?: (() => void) | null | undefined): Subscription', gave the following error.
+    Argument of type '(res: ApiResponse<{ rows: Attachment[]; countTotal: number; }>) => void' is not assignable to parameter of type '(value: { rows: Attachment[]; countTotal: number; }) => void'.
+      Types of parameters 'res' and 'value' are incompatible.
+        Type '{ rows: Attachment[]; countTotal: number; }' is missing the following properties from type 'ApiResponse<{ rows: Attachment[]; countTotal: number; }>': status, data [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/edit-idea/edit-idea.component.ts:144:31:
+      144 │ ...subscribe((res: ApiResponse<{ rows: Attachment[]; countTotal: ...
+          ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'Record<string, string> | null' is not assignable to type 'ParamValue'.
+  Type 'Record<string, string>' is not assignable to type 'ParamValue'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/edit-idea/edit-idea.component.ts:372:6:
+      372 │       demographics: this.buildDemographics(),
+          ╵       ~~~~~~~~~~~~
+
+  The expected type comes from this index signature.
+
+    src/app/core/services/topic-ideation.service.ts:163:74:
+      163 │ ...g; ideaId: string; [key: string]: ParamValue }): Observable<Id...
+          ╵                       ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'MonoTypeOperatorFunction<{ link?: string | undefined; }>' is not assignable to parameter of type 'OperatorFunction<unknown, { link?: string | undefined; }>'.
+  Types of parameters 'source' and 'source' are incompatible.
+    Type 'Observable<unknown>' is not assignable to type 'Observable<{ link?: string | undefined; }>'.
+      Type 'unknown' is not assignable to type '{ link?: string | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/edit-idea/edit-idea.component.ts:401:14:
+      401 │         .pipe(takeWhile((e: { link?: string }) => !e.link, true));
+          ╵               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2769: No overload matches this call.
+  Overload 1 of 2, '(observerOrNext?: Partial<Observer<{ rows: Attachment[]; countTotal: number; }>> | ((value: { rows: Attachment[]; countTotal: number; }) => void) | undefined): Subscription', gave the following error.
+    Argument of type '(res: ApiResponse<{ rows: Attachment[]; countTotal: number; }>) => void' is not assignable to parameter of type 'Partial<Observer<{ rows: Attachment[]; countTotal: number; }>> | ((value: { rows: Attachment[]; countTotal: number; }) => void) | undefined'.
+      Type '(res: ApiResponse<{ rows: Attachment[]; countTotal: number; }>) => void' is not assignable to type '(value: { rows: Attachment[]; countTotal: number; }) => void'.
+        Types of parameters 'res' and 'value' are incompatible.
+          Type '{ rows: Attachment[]; countTotal: number; }' is missing the following properties from type 'ApiResponse<{ rows: Attachment[]; countTotal: number; }>': status, data
+  Overload 2 of 2, '(next?: ((value: { rows: Attachment[]; countTotal: number; }) => void) | null | undefined, error?: ((error: any) => void) | null | undefined, complete?: (() => void) | null | undefined): Subscription', gave the following error.
+    Argument of type '(res: ApiResponse<{ rows: Attachment[]; countTotal: number; }>) => void' is not assignable to parameter of type '(value: { rows: Attachment[]; countTotal: number; }) => void'.
+      Types of parameters 'res' and 'value' are incompatible.
+        Type '{ rows: Attachment[]; countTotal: number; }' is missing the following properties from type 'ApiResponse<{ rows: Attachment[]; countTotal: number; }>': status, data [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/edit-idea/edit-idea.component.ts:423:31:
+      423 │ ...subscribe((res: ApiResponse<{ rows: Attachment[]; countTotal: ...
+          ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'vote' does not exist on type 'IdeaVoter'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.html:30:24:
+      30 │             @if (member.vote === 'down') {
+         ╵                         ~~~~
+
+  Error occurs in the template of component IdeaReactionsComponent.
+
+    src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.ts:20:15:
+      20 │   templateUrl: './idea-reactions.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'vote' does not exist on type 'IdeaVoter'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.html:32:31:
+      32 │             } @else if (member.vote === 'up') {
+         ╵                                ~~~~
+
+  Error occurs in the template of component IdeaReactionsComponent.
+
+    src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.ts:20:15:
+      20 │   templateUrl: './idea-reactions.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS4111: Property 'text' comes from an index signature, so it must be accessed with ['text']. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.html:4:55:
+      4 │       <div class="field_wrap" [class.error]="errors()?.text">
+        ╵                                                        ~~~~
+
+  Error occurs in the template of component IdeaReplyFormComponent.
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.ts:19:15:
+      19 │   templateUrl: './idea-reply-form.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS4111: Property 'text' comes from an index signature, so it must be accessed with ['text']. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.html:14:23:
+      14 │         @if (errors()?.text) {
+         ╵                        ~~~~
+
+  Error occurs in the template of component IdeaReplyFormComponent.
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.ts:19:15:
+      19 │   templateUrl: './idea-reply-form.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'string[]' is not assignable to parameter of type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.html:17:30:
+      17 │             <span>{{ errors().text | translate }}</span>
+         ╵                               ~~~~
+
+  Error occurs in the template of component IdeaReplyFormComponent.
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.ts:19:15:
+      19 │   templateUrl: './idea-reply-form.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS4111: Property 'text' comes from an index signature, so it must be accessed with ['text']. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.html:17:30:
+      17 │             <span>{{ errors().text | translate }}</span>
+         ╵                               ~~~~
+
+  Error occurs in the template of component IdeaReplyFormComponent.
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.ts:19:15:
+      19 │   templateUrl: './idea-reply-form.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.ts:73:67:
+      73 │ ...deaComment({ ...data, commentId: this.argument().id }).subscribe({
+         ╵                                     ~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.ts:90:23:
+      90 │         parentVersion: (this.argument()?.edits?.length || 1) - 1
+         ╵                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'comment' does not exist on type 'IdeaReport'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-report-moderate/idea-reply-report-moderate.component.ts:39:53:
+      39 │   argument = this.data.argument || this.data.report?.comment;
+         ╵                                                      ~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'Partial<{ type: string | null; text: string | null; }>' is not assignable to type '{ type: string; text: string; }'.
+  Types of property 'type' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-report-moderate/idea-reply-report-moderate.component.ts:74:6:
+      74 │       report: this.report.value
+         ╵       ~~~~~~
+
+  The expected type comes from property 'report' which is declared here on type '{ topicId: string; ideationId: string; ideaId: string; commentId: string; reportId: string; token: string; report: { type: string; text: string; }; }'
+
+    src/app/core/services/topic-ideation.service.ts:353:135:
+      353 │ ...tId: string; token: string; report: { type: string; text: stri...
+          ╵                                ~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-report/idea-reply-report.component.html:14:23:
+      14 │         <cos-initials [name]="data.argument.creator?.name || data....
+         ╵                        ~~~~
+
+  Error occurs in the template of component IdeaReplyReportComponent.
+
+    src/app/features/topics/topic-view/components/idea-reply-report/idea-reply-report.component.ts:31:15:
+      31 │   templateUrl: './idea-reply-report.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply-report/idea-reply-report.component.html:49:41:
+      49 │           <div class="error">{{ errors().text | translate }}</div>
+         ╵                                          ~~~~
+
+  Error occurs in the template of component IdeaReplyReportComponent.
+
+    src/app/features/topics/topic-view/components/idea-reply-report/idea-reply-report.component.ts:31:15:
+      31 │   templateUrl: './idea-reply-report.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply/idea-reply.component.ts:42:69:
+      42 │ ..." [src]="argument().creator.imageUrl" [alt]="argument().creator...
+         ╵                                ~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply/idea-reply.component.ts:42:105:
+      42 │ ...]="argument().creator.imageUrl" [alt]="argument().creator.name" />
+         ╵                                                              ~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply/idea-reply.component.ts:126:15:
+      126 │           @if (argument().replies?.count > 0) {
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply/idea-reply.component.ts:128:155:
+      128 │ ...SHOW_REPLIES') | translate:{ count: argument().replies.count } }}
+          ╵                                                           ~~~~~
+
+
+✘ [ERROR] TS2365: Operator '>' cannot be applied to types 'number | { subject?: string | null | undefined; text?: string | null | undefined; createdAt?: string | undefined; }' and 'number'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply/idea-reply.component.ts:427:11:
+      427 │     return (this.argument().edits?.length || 0) > 1;
+          ╵            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply/idea-reply.component.ts:477:32:
+      477 │     const id = arg.id + '_v' + ((arg.edits?.length || 1) - 1);
+          ╵                                 ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'unknown' is not assignable to type '{ up: { count: number; selected: boolean; }; down: { count: number; selected: boolean; }; count: number; } | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-reply/idea-reply.component.ts:506:6:
+      506 │       this.argument().votes = votes;
+          ╵       ~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'idea' does not exist on type 'IdeaReport'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-report-moderate/idea-report-moderate.component.ts:37:45:
+      37 │   idea = this.data.idea || this.data.report?.idea;
+         ╵                                              ~~~~
+
+
+✘ [ERROR] TS2322: Type 'Partial<{ type: string | null; text: string | null; }>' is not assignable to type '{ type: string; text: string; }'.
+  Types of property 'type' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/idea-report-moderate/idea-report-moderate.component.ts:70:6:
+      70 │       report: this.report.value
+         ╵       ~~~~~~
+
+  The expected type comes from property 'report' which is declared here on type '{ topicId: string; ideationId: string; ideaId: string; reportId: string; token: string; report: { type: string; text: string; }; }'
+
+    src/app/core/services/topic-ideation.service.ts:337:109:
+      337 │ ...tId: string; token: string; report: { type: string; text: stri...
+          ╵                                ~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'unknown' is not assignable to type '{ up: { count: number; selected: boolean; }; down: { count: number; selected: boolean; }; count: number; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/ideabox/ideabox.component.ts:79:46:
+      79 │       this.ideaUpdated.emit({ ...this.idea(), votes });
+         ╵                                               ~~~~~
+
+  The expected type comes from property 'votes' which is declared here on type 'Idea'
+
+    src/app/core/interfaces/idea.ts:31:2:
+      31 │   votes: {
+         ╵   ~~~~~
+
+
+✘ [ERROR] TS2339: Property 'imageUrl' does not exist on type 'EditorMember'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.html:142:36:
+      142 │                           @if (user.imageUrl) {
+          ╵                                     ~~~~~~~~
+
+  Error occurs in the template of component InviteEditorsComponent.
+
+    src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.ts:38:15:
+      38 │   templateUrl: './invite-editors.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'imageUrl' does not exist on type 'EditorMember'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.html:143:67:
+      143 │ ...mg class="profile_image" [src]="user.imageUrl" [alt]="user.name">
+          ╵                                         ~~~~~~~~
+
+  Error occurs in the template of component InviteEditorsComponent.
+
+    src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.ts:38:15:
+      38 │   templateUrl: './invite-editors.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'imageUrl' does not exist on type 'EditorMember'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.html:145:37:
+      145 │                           @if (!user.imageUrl) {
+          ╵                                      ~~~~~~~~
+
+  Error occurs in the template of component InviteEditorsComponent.
+
+    src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.ts:38:15:
+      38 │   templateUrl: './invite-editors.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS18046: 'res' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.ts:75:14:
+      75 │           if (res.results.public.users.count === 0 && isEmail(str)) {
+         ╵               ~~~
+
+
+✘ [ERROR] TS18046: 'res' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.ts:78:17:
+      78 │           return res.results.public.users.rows;
+         ╵                  ~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ userId: string; inviteMessage: string | null; level: string; }[]' is not assignable to parameter of type 'Omit<TopicInvite, "id">[]'.
+  Property 'user' is missing in type '{ userId: string; inviteMessage: string | null; level: string; }' but required in type 'Omit<TopicInvite, "id">'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.ts:190:52:
+      190 │ ...serService.save(this.topic.id, invites).pipe(take(1)).subscribe({
+          ╵                                   ~~~~~~~
+
+  'user' is declared here.
+
+    src/app/core/services/topic-invite-user.service.ts:9:2:
+      9 │   user: { id: string; name: string; email?: string; imageUrl?: stri...
+        ╵   ~~~~
+
+
+✘ [ERROR] TS2322: Type 'Date | null' is not assignable to type 'string | null | undefined'.
+  Type 'Date' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/missing-discussion/missing-discussion.component.ts:50:6:
+      50 │       deadline: this.deadline()
+         ╵       ~~~~~~~~
+
+  The expected type comes from property 'deadline' which is declared here on type 'DiscussionData'
+
+    src/app/core/interfaces/discussion.ts:15:2:
+      15 │   deadline?: string | null;
+         ╵   ~~~~~~~~
+
+
+✘ [ERROR] TS18046: 'res' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-add-groups-dialog/topic-add-groups-dialog.component.ts:71:19:
+      71 │         map(res => res.results.my.groups.rows),
+         ╵                    ~~~
+
+
+✘ [ERROR] TS2322: Type 'Date | null' is not assignable to type 'string | null | undefined'.
+  Type 'Date' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-discussion-create-dialog/topic-discussion-create-dialog.component.ts:52:6:
+      52 │       deadline: this.deadline()
+         ╵       ~~~~~~~~
+
+  The expected type comes from property 'deadline' which is declared here on type 'DiscussionData'
+
+    src/app/core/interfaces/discussion.ts:15:2:
+      15 │   deadline?: string | null;
+         ╵   ~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'total' does not exist on type 'never'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-ideation/topic-ideation.component.ts:103:67:
+      103 │ ...eof res.count === 'number' ? res.count : (res.count?.total ?? 0);
+          ╵                                                         ~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ topicId: string; ideationId: string; deadline: Date; }' is not assignable to parameter of type '{ [key: string]: ParamValue; topicId: string; ideationId?: string | undefined; id?: string | undefined; }'.
+  Property 'deadline' is incompatible with index signature.
+    Type 'Date' is not assignable to type 'ParamValue'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-ideation/topic-ideation.component.ts:219:36:
+      219 │ ...his.ideationService.update(saveData).pipe(take(1)).subscribe((...
+          ╵                               ~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'imageUrl' does not exist on type 'InviteMember'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.html:45:36:
+      45 │                         @if (result.imageUrl) {
+         ╵                                     ~~~~~~~~
+
+  Error occurs in the template of component TopicInviteDialogComponent.
+
+    src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.ts:52:15:
+      52 │   templateUrl: './topic-invite-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'imageUrl' does not exist on type 'InviteMember'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.html:46:45:
+      46 │ ...                 <img [src]="result.imageUrl" [alt]="result.name">
+         ╵                                        ~~~~~~~~
+
+  Error occurs in the template of component TopicInviteDialogComponent.
+
+    src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.ts:52:15:
+      52 │   templateUrl: './topic-invite-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'company' does not exist on type 'InviteMember'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.html:53:36:
+      53 │                         @if (result.company) {
+         ╵                                     ~~~~~~~
+
+  Error occurs in the template of component TopicInviteDialogComponent.
+
+    src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.ts:52:15:
+      52 │   templateUrl: './topic-invite-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'company' does not exist on type 'InviteMember'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.html:54:57:
+      54 │ ...                   <div class="company">{{ result.company }}</div>
+         ╵                                                      ~~~~~~~
+
+  Error occurs in the template of component TopicInviteDialogComponent.
+
+    src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.ts:52:15:
+      52 │   templateUrl: './topic-invite-dialog.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS18046: 'res' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.ts:98:16:
+      98 │             if (res.results.public.users.count === 0 && isEmail(st...
+         ╵                 ~~~
+
+
+✘ [ERROR] TS18046: 'res' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.ts:101:19:
+      101 │             return res.results.public.users.rows;
+          ╵                    ~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ userId: string; email: string | undefined; level: string; inviteMessage: string; }[]' is not assignable to parameter of type 'Omit<TopicInvite, "id">[]'.
+  Property 'user' is missing in type '{ userId: string; email: string | undefined; level: string; inviteMessage: string; }' but required in type 'Omit<TopicInvite, "id">'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.ts:185:54:
+      185 │     this.topicInviteUserService.save(this.topic().id, invites)
+          ╵                                                       ~~~~~~~
+
+  'user' is declared here.
+
+    src/app/core/services/topic-invite-user.service.ts:9:2:
+      9 │   user: { id: string; name: string; email?: string; imageUrl?: stri...
+        ╵   ~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-member-invite/topic-member-invite.component.html:31:52:
+      31 │       @if (invite().expiresAt && isExpired(invite().expiresAt)) {
+         ╵                                                     ~~~~~~~~~
+
+  Error occurs in the template of component TopicMemberInviteComponent.
+
+    src/app/features/topics/topic-view/components/topic-member-invite/topic-member-invite.component.ts:23:15:
+      23 │   templateUrl: './topic-member-invite.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'levelUser' does not exist on type 'TopicMemberUser'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-member-user/topic-member-user.component.html:21:52:
+      21 │     @if (member().groups?.rows?.length && !member().levelUser) {
+         ╵                                                     ~~~~~~~~~
+
+  Error occurs in the template of component TopicMemberUserComponent.
+
+    src/app/features/topics/topic-view/components/topic-member-user/topic-member-user.component.ts:26:15:
+      26 │   templateUrl: './topic-member-user.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-member-user/topic-member-user.component.html:24:39:
+      24 │ ...for (group of member().groups.rows; track group.id; let i = $in...
+         ╵                                  ~~~~
+
+  Error occurs in the template of component TopicMemberUserComponent.
+
+    src/app/features/topics/topic-view/components/topic-member-user/topic-member-user.component.ts:26:15:
+      26 │   templateUrl: './topic-member-user.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'level' does not exist on type '{ id: string; name: string; imageUrl?: string | null | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-member-user/topic-member-user.component.html:32:138:
+      32 │ ...('TXT_TOPIC_LEVELS_' + group.level | uppercase | translate)} }}...
+         ╵                                 ~~~~~
+
+  Error occurs in the template of component TopicMemberUserComponent.
+
+    src/app/features/topics/topic-view/components/topic-member-user/topic-member-user.component.ts:26:15:
+      26 │   templateUrl: './topic-member-user.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS18046: 'res' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-milestones/topic-milestones.component.ts:61:17:
+      61 │       map(res => res.rows || [])
+         ╵                  ~~~
+
+
+✘ [ERROR] TS2769: No overload matches this call.
+  Overload 1 of 2, '(observerOrNext?: Partial<Observer<unknown>> | ((value: unknown) => void) | undefined): Subscription', gave the following error.
+    Argument of type '(result: boolean | undefined) => void' is not assignable to parameter of type 'Partial<Observer<unknown>> | ((value: unknown) => void) | undefined'.
+      Type '(result: boolean | undefined) => void' is not assignable to type '(value: unknown) => void'.
+        Types of parameters 'result' and 'value' are incompatible.
+          Type 'unknown' is not assignable to type 'boolean | undefined'.
+  Overload 2 of 2, '(next?: ((value: unknown) => void) | null | undefined, error?: ((error: any) => void) | null | undefined, complete?: (() => void) | null | undefined): Subscription', gave the following error.
+    Argument of type '(result: boolean | undefined) => void' is not assignable to parameter of type '(value: unknown) => void'.
+      Types of parameters 'result' and 'value' are incompatible.
+        Type 'unknown' is not assignable to type 'boolean | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-milestones/topic-milestones.component.ts:138:41:
+      138 │ ...Dialog.afterClosed().subscribe((result: boolean | undefined) => {
+          ╵                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2741: Property 'level' is missing in type 'Group' but required in type 'TopicMemberGroup'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-participants/topic-participants.component.html:187:59:
+      187 │ ...ember-group [topic]="topic" [group]="group"></app-topic-member...
+          ╵                                 ~~~~~
+
+  Error occurs in the template of component TopicParticipantsComponent.
+
+    src/app/features/topics/topic-view/components/topic-participants/topic-participants.component.ts:44:15:
+      44 │   templateUrl: './topic-participants.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'unknown[]' is not assignable to parameter of type 'Group[]'.
+  Type 'unknown' is not assignable to type 'Group'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-participants/topic-participants.component.ts:135:106:
+      135 │ ...d).pipe(take(1)).subscribe(groups => this.allGroups.set(groups));
+          ╵                                                            ~~~~~~
+
+
+✘ [ERROR] TS2304: Cannot find name 'Group'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.ts:52:18:
+      52 │   groups = signal<Group[]>([]);
+         ╵                   ~~~~~
+
+
+✘ [ERROR] TS2352: Conversion of type 'VoteWithOptions' to type 'TopicVote' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'VoteWithOptions'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.ts:75:60:
+      75 │ ....update(current => ({ ...current, vote: vote as Topic['vote'] }));
+         ╵                                            ~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'reminderSent' does not exist on type 'VoteWithOptions'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.ts:76:41:
+      76 │           if (vote.reminderTime && !vote.reminderSent) {
+         ╵                                          ~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ topicId: string; voteId: string; reminderTime: Date; }' is not assignable to parameter of type 'Partial<Vote> & { topicId: string; voteId?: string | undefined; id?: string | undefined; }'.
+  Type '{ topicId: string; voteId: string; reminderTime: Date; }' is not assignable to type 'Partial<Vote>'.
+    Types of property 'reminderTime' are incompatible.
+      Type 'Date' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.ts:182:35:
+      182 │ ...s.topicVoteService.update(voteUpdate).pipe(take(1)).subscribe(...
+          ╵                              ~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'unknown' is not assignable to type '{ token: string; level: string; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-share/topic-share.component.ts:107:12:
+      107 │             t.join = res;
+          ╵             ~~~~~~
+
+
+✘ [ERROR] TS18046: 'res' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-share/topic-share.component.ts:109:21:
+      109 │               token: res.token,
+          ╵                      ~~~
+
+
+✘ [ERROR] TS18046: 'res' is of type 'unknown'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-share/topic-share.component.ts:110:21:
+      110 │               level: res.level
+          ╵                      ~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:11:26:
+      11 │           @if (ideation().deadline && !topicIdeationService.hasIde...
+         ╵                           ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'Ideation | null' is not assignable to parameter of type 'Ideation'.
+  Type 'null' is not assignable to type 'Ideation'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:11:93:
+      11 │ ...picIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
+         ╵                                                        ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:12:120:
+      12 │ ...DEAS' | translate:{ count: ideation().ideas?.count || 0 } }}</div>
+         ╵                                          ~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:14:27:
+      14 │           @if (!ideation().deadline && !topicIdeationService.hasId...
+         ╵                            ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'Ideation | null' is not assignable to parameter of type 'Ideation'.
+  Type 'null' is not assignable to type 'Ideation'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:14:94:
+      14 │ ...picIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
+         ╵                                                        ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:15:128:
+      15 │ ...TIVE' | translate:{ count: ideation().ideas?.count || 0 } }}</div>
+         ╵                                          ~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'Ideation | null' is not assignable to parameter of type 'Ideation'.
+  Type 'null' is not assignable to type 'Ideation'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:17:69:
+      17 │ ...picIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
+         ╵                                                        ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:24:29:
+      24 │             @if (!ideation().deadline || topicIdeationService.hasI...
+         ╵                              ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'Ideation | null' is not assignable to parameter of type 'Ideation'.
+  Type 'null' is not assignable to type 'Ideation'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:24:95:
+      24 │ ...picIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
+         ╵                                                        ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:28:51:
+      28 │ ...      <span class="bold">{{ ideation().ideas?.count || 0 }}</span>
+         ╵                                           ~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:32:28:
+      32 │             @if (ideation().deadline && !topicIdeationService.hasI...
+         ╵                             ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'Ideation | null' is not assignable to parameter of type 'Ideation'.
+  Type 'null' is not assignable to type 'Ideation'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:32:95:
+      32 │ ...picIdeationService.hasIdeationEndedExpired(topic(), ideation())) {
+         ╵                                                        ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'string | Date | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:37:52:
+      37 │ ...                <div>{{ getDaysUntil(ideation().deadline) }}</div>
+         ╵                                                    ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:37:52:
+      37 │ ...                <div>{{ getDaysUntil(ideation().deadline) }}</div>
+         ╵                                                    ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:42:52:
+      42 │ ...div class="bold">{{ ideation().deadline | date: 'y-MM-dd' }}</div>
+         ╵                                   ~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'Vote | null' is not assignable to parameter of type 'Pick<Vote, "endsAt">'.
+  Type 'null' is not assignable to type 'Pick<Vote, "endsAt">'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:146:85:
+      146 │ ...hasVoteEndedExpired(topic(), vote()) ? 'VIEWS.TOPICS_TOPICID.S...
+          ╵                                 ~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.html:152:48:
+      152 │ ...div><span class="bold">{{ vote().votersCount || 0 }}</span></div>
+          ╵                                     ~~~~~~~~~~~
+
+  Error occurs in the template of component TopicStateItemsComponent.
+
+    src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.ts:20:15:
+      20 │   templateUrl: './topic-state-items.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:81:49:
+      81 │ ...       @if (vote().type === 'multiple' && vote().maxChoices > 1) {
+         ╵                                              ~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS4111: Property 'bdocVote' comes from an index signature, so it must be accessed with ['bdocVote']. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:97:83:
+      97 │ ...authType === VOTE_AUTH_TYPES.hard && vote().downloads?.bdocVote) {
+         ╵                                                           ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:98:46:
+      98 │ ...<a [href]="vote().downloads.bdocVote" download [aria-label]="'C...
+         ╵                                ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS4111: Property 'bdocVote' comes from an index signature, so it must be accessed with ['bdocVote']. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:98:46:
+      98 │ ...<a [href]="vote().downloads.bdocVote" download [aria-label]="'C...
+         ╵                                ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS4111: Property 'bdocVote' comes from an index signature, so it must be accessed with ['bdocVote']. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:122:85:
+      122 │ ...uthType === VOTE_AUTH_TYPES.hard && vote().downloads?.bdocVote) {
+          ╵                                                          ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:123:48:
+      123 │ ...a [href]="vote().downloads.bdocVote" download [aria-label]="'C...
+          ╵                               ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS4111: Property 'bdocVote' comes from an index signature, so it must be accessed with ['bdocVote']. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:123:48:
+      123 │ ...a [href]="vote().downloads.bdocVote" download [aria-label]="'C...
+          ╵                               ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2532: Object is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:167:47:
+      167 │ ...      @if (vote().type === 'multiple' && vote().maxChoices > 1) {
+          ╵                                             ~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ id: string; value: string; voteCount?: number | undefined; selected?: boolean | undefined; optionId?: string | undefined; ideaId?: string | undefined; winner?: boolean | undefined; }' is not assignable to parameter of type '{ ideaId: string; }'.
+  Types of property 'ideaId' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:221:101:
+      221 │ ...stopPropagation(); viewIdea(option)" (keydown.enter)="$event.s...
+          ╵                                ~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ id: string; value: string; voteCount?: number | undefined; selected?: boolean | undefined; optionId?: string | undefined; ideaId?: string | undefined; winner?: boolean | undefined; }' is not assignable to parameter of type '{ ideaId: string; }'.
+  Types of property 'ideaId' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:221:162:
+      221 │ ...stopPropagation(); viewIdea(option)">{{ 'COMPONENTS.TOPIC_VOTE...
+          ╵                                ~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'imageUrl' does not exist on type '{ userId: string; toUserId: string; voteId: string; byProxy?: boolean | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:259:45:
+      259 │                       @if (vote().delegation.imageUrl) {
+          ╵                                              ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2533: Object is possibly 'null' or 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:259:45:
+      259 │                       @if (vote().delegation.imageUrl) {
+          ╵                                              ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'imageUrl' does not exist on type '{ userId: string; toUserId: string; voteId: string; byProxy?: boolean | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:260:76:
+      260 │ ..." [src]="vote().delegation.imageUrl" [alt]="vote().delegation....
+          ╵                               ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2533: Object is possibly 'null' or 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:260:76:
+      260 │ ..." [src]="vote().delegation.imageUrl" [alt]="vote().delegation....
+          ╵                               ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'name' does not exist on type '{ userId: string; toUserId: string; voteId: string; byProxy?: boolean | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:260:111:
+      260 │ ...src]="vote().delegation.imageUrl" [alt]="vote().delegation.name">
+          ╵                                                               ~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2533: Object is possibly 'null' or 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:260:111:
+      260 │ ...src]="vote().delegation.imageUrl" [alt]="vote().delegation.name">
+          ╵                                                               ~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'name' does not exist on type '{ userId: string; toUserId: string; voteId: string; byProxy?: boolean | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:263:49:
+      263 │                           @if (vote().delegation.name) {
+          ╵                                                  ~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2533: Object is possibly 'null' or 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:263:49:
+      263 │                           @if (vote().delegation.name) {
+          ╵                                                  ~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'name' does not exist on type '{ userId: string; toUserId: string; voteId: string; byProxy?: boolean | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:264:87:
+      264 │ ...lass="table_cell" [name]="vote().delegation.name"></cos-initials>
+          ╵                                                ~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2533: Object is possibly 'null' or 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:264:87:
+      264 │ ...lass="table_cell" [name]="vote().delegation.name"></cos-initials>
+          ╵                                                ~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'name' does not exist on type '{ userId: string; toUserId: string; voteId: string; byProxy?: boolean | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:268:60:
+      268 │ ...               <div class="bold">{{vote().delegation.name}}</div>
+          ╵                                                         ~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2533: Object is possibly 'null' or 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:268:60:
+      268 │ ...               <div class="bold">{{vote().delegation.name}}</div>
+          ╵                                                         ~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type '{ rows: { id: string; value: string; voteCount?: number | undefined; selected?: boolean | undefined; optionId?: string | undefined; ideaId?: string | undefined; winner?: boolean | undefined; }[]; count?: number | undefined; } | undefined' is not assignable to type '{ rows: { [key: string]: unknown; id?: string | undefined; value?: string | undefined; voteCount?: number | undefined; winner?: boolean | undefined; selected?: boolean | undefined; }[]; }'.
+  Type 'undefined' is not assignable to type '{ rows: { [key: string]: unknown; id?: string | undefined; value?: string | undefined; voteCount?: number | undefined; winner?: boolean | undefined; selected?: boolean | undefined; }[]; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.html:339:24:
+      339 │         <app-big-graph [options]="vote().options"></app-big-graph>
+          ╵                         ~~~~~~~
+
+  Error occurs in the template of component TopicVoteCastComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:30:15:
+      30 │   templateUrl: './topic-vote-cast.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'TopicVote' is not assignable to parameter of type 'Pick<Vote, "endsAt">'.
+  Types of property 'endsAt' are incompatible.
+    Type 'string | Date | null | undefined' is not assignable to type 'string | null'.
+      Type 'undefined' is not assignable to type 'string | null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:94:67:
+      94 │ ...s.topicVoteService.hasVoteEndedExpired(this.topic(), this.vote());
+         ╵                                                         ~~~~~~~~~~~
+
+
+✘ [ERROR] TS18048: 'v.options' is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:104:4:
+      104 │     v.options.rows.forEach((opt: { selected?: boolean; value?: st...
+          ╵     ~~~~~~~~~
+
+
+✘ [ERROR] TS18048: 'v.options' is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:112:21:
+      112 │     const selected = v.options.rows.filter((o: { selected?: boole...
+          ╵                      ~~~~~~~~~
+
+
+✘ [ERROR] TS18048: 'v.options' is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:120:20:
+      120 │     const options = v.options.rows.filter((o: { id: string; optio...
+          ╵                     ~~~~~~~~~
+
+
+✘ [ERROR] TS18048: 'v.maxChoices' is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:124:25:
+      124 │     if (options.length > v.maxChoices || (options.length < v.minC...
+          ╵                          ~~~~~~~~~~~~
+
+
+✘ [ERROR] TS18048: 'v.minChoices' is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:124:59:
+      124 │ ...ces || (options.length < v.minChoices && options[0]?.value !==...
+          ╵                             ~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '(o: { id: string; optionId: string; }) => void' is not assignable to parameter of type '(value: { id: string; value: string; voteCount?: number | undefined; selected?: boolean | undefined; optionId?: string | undefined; ideaId?: string | undefined; winner?: boolean | undefined; }, index: number, array: { ...; }[]) => void'.
+  Types of parameters 'o' and 'value' are incompatible.
+    Type '{ id: string; value: string; voteCount?: number | undefined; selected?: boolean | undefined; optionId?: string | undefined; ideaId?: string | undefined; winner?: boolean | undefined; }' is not assignable to type '{ id: string; optionId: string; }'.
+      Types of property 'optionId' are incompatible.
+        Type 'string | undefined' is not assignable to type 'string'.
+          Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:132:20:
+      132 │ ...s.forEach((o: { id: string; optionId: string }) => { o.optionI...
+          ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'Partial<TopicVote> & { topicId: string; }' is not assignable to parameter of type 'Partial<Vote> & { topicId: string; voteId?: string | undefined; id?: string | undefined; }'.
+  Type 'Partial<TopicVote> & { topicId: string; }' is not assignable to type 'Partial<Vote>'.
+    Types of property 'question' are incompatible.
+      Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+        Type 'null' is not assignable to type 'string | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:146:33:
+      146 │     this.topicVoteService.update(v).pipe(take(1)).subscribe({
+          ╵                                  ^
+
+
+✘ [ERROR] TS2322: Type 'string | null' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:236:55:
+      236 │ ...ervice.get({ topicId: t.id, voteId: t.voteId }).pipe(take(1))....
+          ╵                                ~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'downloads' does not exist on type 'VoteWithOptions'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:237:47:
+      237 │ ...l = type === 'zip' ? (vote.downloads?.zipFinal || '') : (vote....
+          ╵                               ~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'downloads' does not exist on type 'VoteWithOptions'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.ts:237:82:
+      237 │ ...e.downloads?.zipFinal || '') : (vote.downloads?.bdocFinal || '');
+          ╵                                         ~~~~~~~~~
+
+
+✘ [ERROR] TS2304: Cannot find name 'TopicVote'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-deadline/topic-vote-deadline.component.ts:20:24:
+      20 │   data = inject<{ vote: TopicVote; topic: Topic }>(DIALOG_DATA);
+         ╵                         ~~~~~~~~~
+
+
+✘ [ERROR] TS2304: Cannot find name 'Topic'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-deadline/topic-vote-deadline.component.ts:20:42:
+      20 │   data = inject<{ vote: TopicVote; topic: Topic }>(DIALOG_DATA);
+         ╵                                           ~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.html:48:36:
+      48 │                 @if (delegateUser().imageUrl) {
+         ╵                                     ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteDelegateComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.ts:21:15:
+      21 │   templateUrl: './topic-vote-delegate.component.html'
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.html:49:67:
+      49 │ ...mg class="profile_image" [src]="delegateUser().imageUrl" alt="" />
+         ╵                                                   ~~~~~~~~
+
+  Error occurs in the template of component TopicVoteDelegateComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.ts:21:15:
+      21 │   templateUrl: './topic-vote-delegate.component.html'
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.html:52:40:
+      52 │                     @if (delegateUser().name) {
+         ╵                                         ~~~~
+
+  Error occurs in the template of component TopicVoteDelegateComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.ts:21:15:
+      21 │   templateUrl: './topic-vote-delegate.component.html'
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.html:53:63:
+      53 │ ... <span class="initials">{{ delegateUser().name.charAt(0) }}</span>
+         ╵                                              ~~~~
+
+  Error occurs in the template of component TopicVoteDelegateComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.ts:21:15:
+      21 │   templateUrl: './topic-vote-delegate.component.html'
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2531: Object is possibly 'null'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.html:58:38:
+      58 │               <span>{{ delegateUser().name }}</span>
+         ╵                                       ~~~~
+
+  Error occurs in the template of component TopicVoteDelegateComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.ts:21:15:
+      21 │   templateUrl: './topic-vote-delegate.component.html'
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.ts:76:6:
+      76 │       voteId: this.data.topic.voteId || this.data.topic.vote?.id,
+         ╵       ~~~~~~
+
+  The expected type comes from property 'voteId' which is declared here on type '{ topicId: string; voteId: string; userId: string; }'
+
+    src/app/core/services/vote-delegation.service.ts:14:32:
+      14 │   save(data: { topicId: string; voteId: string; userId: string }):...
+         ╵                                 ~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'value' does not exist on type '{ id: string; optionId?: string | undefined; selected?: boolean | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.html:25:81:
+      25 │ ...CREATE.LBL_OPTION_' + option.value | uppercase | translate:{ de...
+         ╵                                 ~~~~~
+
+  Error occurs in the template of component TopicVoteSignEsteidComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.ts:25:15:
+      25 │   templateUrl: './topic-vote-sign-esteid.component.html'
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'value' does not exist on type '{ id: string; optionId?: string | undefined; selected?: boolean | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.html:25:129:
+      25 │ ....value | uppercase | translate:{ default: option.value } }}</span>
+         ╵                                                     ~~~~~
+
+  Error occurs in the template of component TopicVoteSignEsteidComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.ts:25:15:
+      25 │   templateUrl: './topic-vote-sign-esteid.component.html'
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ voteId: string | null; topicId: string; options: { id: string; optionId?: string; selected?: boolean; }[]; pid: string | null | undefined; phoneNumber: string; certificate: null; }' is not assignable to parameter of type '{ [key: string]: unknown; topicId: string; voteId?: string | undefined; id?: string | undefined; options?: VoteOption[] | undefined; }'.
+  Types of property 'voteId' are incompatible.
+    Type 'string | null' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.ts:57:31:
+      57 │     this.topicVoteService.cast(userVote).pipe(take(1), catchError(...
+         ╵                                ~~~~~~~~
+
+
+✘ [ERROR] TS2769: No overload matches this call.
+  Overload 1 of 2, '(observerOrNext?: Partial<Observer<VoteCastResponse | null>> | ((value: VoteCastResponse | null) => void) | undefined): Subscription', gave the following error.
+    Argument of type '(result: { challengeID?: number; token?: string; } | null) => void' is not assignable to parameter of type 'Partial<Observer<VoteCastResponse | null>> | ((value: VoteCastResponse | null) => void) | undefined'.
+      Type '(result: { challengeID?: number; token?: string; } | null) => void' is not assignable to type '(value: VoteCastResponse | null) => void'.
+        Types of parameters 'result' and 'value' are incompatible.
+          Type 'VoteCastResponse | null' is not assignable to type '{ challengeID?: number | undefined; token?: string | undefined; } | null'.
+            Type 'VoteCastResponse' is not assignable to type '{ challengeID?: number | undefined; token?: string | undefined; }'.
+              Types of property 'challengeID' are incompatible.
+                Type 'string | undefined' is not assignable to type 'number | undefined'.
+                  Type 'string' is not assignable to type 'number'.
+  Overload 2 of 2, '(next?: ((value: VoteCastResponse | null) => void) | null | undefined, error?: ((error: any) => void) | null | undefined, complete?: (() => void) | null | undefined): Subscription', gave the following error.
+    Argument of type '(result: { challengeID?: number; token?: string; } | null) => void' is not assignable to parameter of type '(value: VoteCastResponse | null) => void'.
+      Types of parameters 'result' and 'value' are incompatible.
+        Type 'VoteCastResponse | null' is not assignable to type '{ challengeID?: number | undefined; token?: string | undefined; } | null'.
+          Type 'VoteCastResponse' is not assignable to type '{ challengeID?: number | undefined; token?: string | undefined; }'.
+            Types of property 'challengeID' are incompatible.
+              Type 'string | undefined' is not assignable to type 'number | undefined'.
+                Type 'string' is not assignable to type 'number'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.ts:60:18:
+      60 │ ...subscribe((result: { challengeID?: number; token?: string } | n...
+         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ voteId: string | null; topicId: string; options: { id: string; optionId?: string; selected?: boolean; }[]; certificate: string; }' is not assignable to parameter of type '{ [key: string]: unknown; topicId: string; voteId?: string | undefined; id?: string | undefined; options?: VoteOption[] | undefined; }'.
+  Types of property 'voteId' are incompatible.
+    Type 'string | null' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.ts:79:33:
+      79 │ ... this.topicVoteService.cast(userVote).pipe(take(1)).subscribe(a...
+         ╵                                ~~~~~~~~
+
+
+✘ [ERROR] TS2769: No overload matches this call.
+  Overload 1 of 2, '(observerOrNext?: Partial<Observer<VoteCastResponse>> | ((value: VoteCastResponse) => void) | undefined): Subscription', gave the following error.
+    Argument of type '(voteResponse: { signedInfoDigest?: string; token?: string; signedInfoHashType?: string; } | null) => Promise<void>' is not assignable to parameter of type 'Partial<Observer<VoteCastResponse>> | ((value: VoteCastResponse) => void) | undefined'.
+      Type '(voteResponse: { signedInfoDigest?: string; token?: string; signedInfoHashType?: string; } | null) => Promise<void>' is not assignable to type '(value: VoteCastResponse) => void'.
+        Types of parameters 'voteResponse' and 'value' are incompatible.
+          Type 'VoteCastResponse' has no properties in common with type '{ signedInfoDigest?: string | undefined; token?: string | undefined; signedInfoHashType?: string | undefined; }'.
+  Overload 2 of 2, '(next?: ((value: VoteCastResponse) => void) | null | undefined, error?: ((error: any) => void) | null | undefined, complete?: (() => void) | null | undefined): Subscription', gave the following error.
+    Argument of type '(voteResponse: { signedInfoDigest?: string; token?: string; signedInfoHashType?: string; } | null) => Promise<void>' is not assignable to parameter of type '(value: VoteCastResponse) => void'.
+      Types of parameters 'voteResponse' and 'value' are incompatible.
+        Type 'VoteCastResponse' has no properties in common with type '{ signedInfoDigest?: string | undefined; token?: string | undefined; signedInfoHashType?: string | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.ts:79:67:
+      79 │ ...subscribe(async (voteResponse: { signedInfoDigest?: string; tok...
+         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'string | null' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.ts:83:12:
+      83 │             id: this.data.topic.voteId,
+         ╵             ~~
+
+  The expected type comes from property 'id' which is declared here on type '{ [key: string]: unknown; topicId: string; voteId?: string | undefined; id?: string | undefined; }'
+
+    src/app/core/services/topic-vote.service.ts:121:49:
+      121 │ ...cId: string; voteId?: string; id?: string; [key: string]: unkn...
+          ╵                                  ~~
+
+
+✘ [ERROR] TS2339: Property 'value' does not exist on type '{ id: string; optionId?: string | undefined; selected?: boolean | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-smartid/topic-vote-sign-smartid.component.html:25:81:
+      25 │ ...CREATE.LBL_OPTION_' + option.value | uppercase | translate:{ de...
+         ╵                                 ~~~~~
+
+  Error occurs in the template of component TopicVoteSignSmartidComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-smartid/topic-vote-sign-smartid.component.ts:21:15:
+      21 │   templateUrl: './topic-vote-sign-smartid.component.html'
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'value' does not exist on type '{ id: string; optionId?: string | undefined; selected?: boolean | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-smartid/topic-vote-sign-smartid.component.html:25:129:
+      25 │ ....value | uppercase | translate:{ default: option.value } }}</span>
+         ╵                                                     ~~~~~
+
+  Error occurs in the template of component TopicVoteSignSmartidComponent.
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-smartid/topic-vote-sign-smartid.component.ts:21:15:
+      21 │   templateUrl: './topic-vote-sign-smartid.component.html'
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ voteId: string | null; topicId: string; options: { id: string; optionId?: string; selected?: boolean; }[]; pid: string | null | undefined; countryCode: string | null | undefined; }' is not assignable to parameter of type '{ [key: string]: unknown; topicId: string; voteId?: string | undefined; id?: string | undefined; options?: VoteOption[] | undefined; }'.
+  Types of property 'voteId' are incompatible.
+    Type 'string | null' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-smartid/topic-vote-sign-smartid.component.ts:49:31:
+      49 │     this.topicVoteService.cast(userVote).pipe(take(1), catchError(...
+         ╵                                ~~~~~~~~
+
+
+✘ [ERROR] TS2769: No overload matches this call.
+  Overload 1 of 2, '(observerOrNext?: Partial<Observer<VoteCastResponse | null>> | ((value: VoteCastResponse | null) => void) | undefined): Subscription', gave the following error.
+    Argument of type '(result: { challengeID?: number; token?: string; } | null) => void' is not assignable to parameter of type 'Partial<Observer<VoteCastResponse | null>> | ((value: VoteCastResponse | null) => void) | undefined'.
+      Type '(result: { challengeID?: number; token?: string; } | null) => void' is not assignable to type '(value: VoteCastResponse | null) => void'.
+        Types of parameters 'result' and 'value' are incompatible.
+          Type 'VoteCastResponse | null' is not assignable to type '{ challengeID?: number | undefined; token?: string | undefined; } | null'.
+            Type 'VoteCastResponse' is not assignable to type '{ challengeID?: number | undefined; token?: string | undefined; }'.
+              Types of property 'challengeID' are incompatible.
+                Type 'string | undefined' is not assignable to type 'number | undefined'.
+                  Type 'string' is not assignable to type 'number'.
+  Overload 2 of 2, '(next?: ((value: VoteCastResponse | null) => void) | null | undefined, error?: ((error: any) => void) | null | undefined, complete?: (() => void) | null | undefined): Subscription', gave the following error.
+    Argument of type '(result: { challengeID?: number; token?: string; } | null) => void' is not assignable to parameter of type '(value: VoteCastResponse | null) => void'.
+      Types of parameters 'result' and 'value' are incompatible.
+        Type 'VoteCastResponse | null' is not assignable to type '{ challengeID?: number | undefined; token?: string | undefined; } | null'.
+          Type 'VoteCastResponse' is not assignable to type '{ challengeID?: number | undefined; token?: string | undefined; }'.
+            Types of property 'challengeID' are incompatible.
+              Type 'string | undefined' is not assignable to type 'number | undefined'.
+                Type 'string' is not assignable to type 'number'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/components/topic-vote-sign-smartid/topic-vote-sign-smartid.component.ts:52:18:
+      52 │ ...subscribe((result: { challengeID?: number; token?: string } | n...
+         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type '{ title: string; link: unknown[]; }' is not assignable to type '{ title: string; link: string[]; }'.
+  Types of property 'link' are incompatible.
+    Type 'unknown[]' is not assignable to type 'string[]'.
+      Type 'unknown' is not assignable to type 'string'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/topic-view.component.html:9:42:
+      9 │ ...header [topic]="topic()!" [navigation]="navigation()" [wWidth]="...
+        ╵                               ~~~~~~~~~~
+
+  Error occurs in the template of component TopicViewComponent.
+
+    src/app/features/topics/topic-view/topic-view.component.ts:57:15:
+      57 │   templateUrl: './topic-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'VoteWithOptions' is not assignable to type 'TopicVote'.
+  Types of property 'options' are incompatible.
+    Type 'VoteOption[] | { rows: VoteOption[]; count?: number | undefined; }' is not assignable to type '{ rows: { id: string; value: string; voteCount?: number | undefined; selected?: boolean | undefined; optionId?: string | undefined; ideaId?: string | undefined; winner?: boolean | undefined; }[]; count?: number | undefined; } | undefined'.
+      Property 'rows' is missing in type 'VoteOption[]' but required in type '{ rows: { id: string; value: string; voteCount?: number | undefined; selected?: boolean | undefined; optionId?: string | undefined; ideaId?: string | undefined; winner?: boolean | undefined; }[]; count?: number | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/topic-view.component.html:207:49:
+      207 │         <app-topic-vote-cast [topic]="topic()!" [vote]="vote()!"
+          ╵                                                  ~~~~
+
+  Error occurs in the template of component TopicViewComponent.
+
+    src/app/features/topics/topic-view/topic-view.component.ts:57:15:
+      57 │   templateUrl: './topic-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2322: Type 'VoteWithOptions | null' is not assignable to type 'Vote | null'.
+  Type 'VoteWithOptions' is not assignable to type 'Vote'.
+    Types of property 'options' are incompatible.
+      Type 'VoteOption[] | { rows: VoteOption[]; count?: number | undefined; }' is not assignable to type 'VoteOption[]'.
+        Type '{ rows: VoteOption[]; count?: number | undefined; }' is missing the following properties from type 'VoteOption[]': length, pop, push, concat, and 29 more. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/topic-view.component.html:291:33:
+      291 │ ...    [ideation]="ideation()" [vote]="vote()" [eventCount]="even...
+          ╵                                 ~~~~
+
+  Error occurs in the template of component TopicViewComponent.
+
+    src/app/features/topics/topic-view/topic-view.component.ts:57:15:
+      57 │   templateUrl: './topic-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'OperatorFunction<{ count?: number | undefined; countTotal?: number | undefined; }, number>' is not assignable to parameter of type 'OperatorFunction<unknown, number>'.
+  Type 'unknown' is not assignable to type '{ count?: number | undefined; countTotal?: number | undefined; }'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/topic-view.component.ts:99:12:
+      99 │             map((res: { count?: number; countTotal?: number }) => ...
+         ╵             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/topic-view.component.ts:170:43:
+      170 │               this.seoService.setPageTitle(topic.title);
+          ╵                                            ~~~~~~~~~~~
+
+
+✘ [ERROR] TS2304: Cannot find name 'TopicGroup'. [plugin angular-compiler]
+
+    src/app/features/topics/topic-view/topic-view.component.ts:205:49:
+      205 │   private updateNavigation(topic: Topic, groups: TopicGroup[]) {
+          ╵                                                  ~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ question: string | undefined; options: { rows: VoteOption[]; count?: number; } | VoteOption[]; votersCount?: number; id: string; ... 11 more ...; autoClose: { value: string; enabled: boolean; }[]; }' is not assignable to parameter of type 'Partial<Vote>'.
+  Types of property 'options' are incompatible.
+    Type 'VoteOption[] | { rows: VoteOption[]; count?: number | undefined; }' is not assignable to type 'VoteOption[] | undefined'.
+      Type '{ rows: VoteOption[]; count?: number | undefined; }' is missing the following properties from type 'VoteOption[]': length, pop, push, concat, and 29 more. [plugin angular-compiler]
+
+    src/app/features/topics/vote-create/vote-create.component.ts:84:42:
+      84 │ ...is.vote.set({ ...vote, question: vote.description ?? undefined }),
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '{ question: string | undefined; options: { rows: VoteOption[]; count?: number; } | VoteOption[]; votersCount?: number; id: string; ... 11 more ...; autoClose: { value: string; enabled: boolean; }[]; }' is not assignable to parameter of type 'Partial<Vote>'.
+  Types of property 'options' are incompatible.
+    Type 'VoteOption[] | { rows: VoteOption[]; count?: number | undefined; }' is not assignable to type 'VoteOption[] | undefined'.
+      Type '{ rows: VoteOption[]; count?: number | undefined; }' is missing the following properties from type 'VoteOption[]': length, pop, push, concat, and 29 more. [plugin angular-compiler]
+
+    src/app/features/topics/vote-create/vote-create.component.ts:117:22:
+      117 │ ....vote.set({ ...savedVote, question: savedVote.description ?? u...
+          ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'key' does not exist on type '(FilterConfig & { type: string; }) | { type: string; }'.
+  Property 'key' does not exist on type '{ type: string; }'. [plugin angular-compiler]
+
+    src/app/shared/components/list-filter-toolbar/list-filter-toolbar.component.ts:51:45:
+      51 │               @for (item of row; track (item.key || 'search')) {
+         ╵                                              ~~~
+
+
+✘ [ERROR] TS2339: Property 'placeholder' does not exist on type '(FilterConfig & { type: string; }) | { type: string; }'.
+  Property 'placeholder' does not exist on type '{ type: string; }'. [plugin angular-compiler]
+
+    src/app/shared/components/list-filter-toolbar/list-filter-toolbar.component.ts:62:40:
+      62 │                     [placeholder]="item.placeholder | translate">
+         ╵                                         ~~~~~~~~~~~
+
+
+✘ [ERROR] TS2345: Argument of type '(FilterConfig & { type: string; }) | { type: string; }' is not assignable to parameter of type 'FilterConfig'.
+  Type '{ type: string; }' is missing the following properties from type 'FilterConfig': key, placeholder, selectedValue, items [plugin angular-compiler]
+
+    src/app/shared/components/list-filter-toolbar/list-filter-toolbar.component.ts:64:73:
+      64 │ ..."selected-item">{{ getActiveFilterText(item) | translate }}</span>
+         ╵                                           ~~~~
+
+
+✘ [ERROR] TS2339: Property 'items' does not exist on type '(FilterConfig & { type: string; }) | { type: string; }'.
+  Property 'items' does not exist on type '{ type: string; }'. [plugin angular-compiler]
+
+    src/app/shared/components/list-filter-toolbar/list-filter-toolbar.component.ts:67:43:
+      67 │ ...                 @for (option of item.items; track option.value) {
+         ╵                                          ~~~~~
+
+
+✘ [ERROR] TS2339: Property 'key' does not exist on type '(FilterConfig & { type: string; }) | { type: string; }'.
+  Property 'key' does not exist on type '{ type: string; }'. [plugin angular-compiler]
+
+    src/app/shared/components/list-filter-toolbar/list-filter-toolbar.component.ts:68:71:
+      68 │ ...n" (click)="selectFilter(item.key, option.value)" (keydown.ente...
+         ╵                                  ~~~
+
+
+✘ [ERROR] TS2339: Property 'key' does not exist on type '(FilterConfig & { type: string; }) | { type: string; }'.
+  Property 'key' does not exist on type '{ type: string; }'. [plugin angular-compiler]
+
+    src/app/shared/components/list-filter-toolbar/list-filter-toolbar.component.ts:68:126:
+      68 │ ...own.enter)="selectFilter(item.key, option.value)" tabindex="0" ...
+         ╵                                  ~~~
+
+
+✘ [ERROR] TS18048: 't.vote.votersCount' is possibly 'undefined'. [plugin angular-compiler]
+
+    src/app/shared/components/topic-card/topic-card.component.ts:442:25:
+      442 │       return Math.floor((t.vote.votersCount / t.members.users.cou...
+          ╵                          ~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type. [plugin angular-compiler]
+
+    src/app/shared/components/tour/tour.component.ts:155:64:
+      155 │ ...items ? items.map(item => item.index).sort((a, b) => a - b) : [];
+          ╵                                                         ^
+
+
+✘ [ERROR] TS2363: The right-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type. [plugin angular-compiler]
+
+    src/app/shared/components/tour/tour.component.ts:155:68:
+      155 │ ...items ? items.map(item => item.index).sort((a, b) => a - b) : [];
+          ╵                                                             ^
+
+
+✘ [ERROR] TS2345: Argument of type '{}' is not assignable to parameter of type 'Node[]'.
+  Type '{}' is missing the following properties from type 'Node[]': length, pop, push, concat, and 29 more. [plugin angular-compiler]
+
+    src/app/shared/components/tour/tour.component.ts:164:24:
+      164 │         this.setContent(template);
+          ╵                         ~~~~~~~~
+
+

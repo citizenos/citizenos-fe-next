@@ -16,7 +16,8 @@ export interface TopicMemberUser {
   email?: string;
   imageUrl?: string | null;
   level: string;
-  groups?: { rows: { id: string; name: string; imageUrl?: string | null }[] };
+  levelUser?: string;
+  groups?: { rows: { id: string; name: string; imageUrl?: string | null; level?: string }[] };
 }
 
 @Injectable({ providedIn: 'root' })

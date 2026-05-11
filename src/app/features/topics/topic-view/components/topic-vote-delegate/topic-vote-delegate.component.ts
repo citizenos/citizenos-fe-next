@@ -73,7 +73,7 @@ export class TopicVoteDelegateComponent {
     if (!user?.id) return;
     this.voteDelegationService.save({
       topicId: this.data.topic.id,
-      voteId: this.data.topic.voteId || this.data.topic.vote?.id,
+      voteId: (this.data.topic.voteId || this.data.topic.vote?.id) as string,
       userId: user.id
     }).pipe(take(1)).subscribe({
       next: () => {
