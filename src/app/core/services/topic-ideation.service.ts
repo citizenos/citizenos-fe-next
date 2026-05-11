@@ -22,7 +22,7 @@ export interface TopicIdeationParams extends ListParams {
   favourite?: boolean | string | null;
 }
 
-type ParamValue = string | number | boolean | null | undefined | string[] | number[] | Record<string, any>;
+type ParamValue = string | number | boolean | null | undefined | string[] | number[] | Record<string, unknown> | Date;
 
 @Injectable({
   providedIn: 'root'
@@ -336,10 +336,10 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
       .pipe(map(res => res.data));
   }
 
-  voteIdeaComment(params: { topicId: string; ideationId: string; ideaId: string; commentId: string; value: number }): Observable<unknown> {
+  voteIdeaComment(params: { topicId: string; ideationId: string; ideaId: string; commentId: string; value: number }): Observable<IdeaComment['votes']> {
     const { topicId, ideationId, ideaId, commentId, value } = params;
     const path = this.getAbsoluteUrlApi(`/api/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/comments/${commentId}/votes`);
-    return this.http.post<ApiResponse<unknown>>(path, { value }, { withCredentials: true, observe: 'body', responseType: 'json' })
+    return this.http.post<ApiResponse<IdeaComment['votes']>>(path, { value }, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 

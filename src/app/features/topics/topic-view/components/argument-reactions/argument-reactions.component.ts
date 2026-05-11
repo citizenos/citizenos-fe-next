@@ -36,7 +36,7 @@ export class ArgumentReactionsComponent implements OnInit {
       commentId: this.data.commentId,
       topicId: this.data.topicId
     }).pipe(take(1)).subscribe(res => {
-      const rows = (res.rows || res || []).map((row: any) => ({
+      const rows = (res.rows || res || []).map((row: { id: string; name: string; value: number; imageUrl?: string | null }) => ({
         ...row,
         vote: row.value === 1 ? 'up' : (row.value === -1 ? 'down' : '')
       }));

@@ -4,7 +4,7 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicPreviewComponent } from '../../../../../shared/components/topic-preview/topic-preview.component';
 import { AnyPipe } from '../../../../../shared/pipes/any.pipe';
 import { Ideation } from '../../../../../core/interfaces/ideation';
-import { Vote, VoteWithOptions } from '../../../../../core/interfaces/vote';
+import { VoteWithOptions } from '../../../../../core/interfaces/vote';
 
 @Component({
   selector: 'cos-step-topic-preview',

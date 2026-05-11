@@ -9,7 +9,7 @@ import {
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { DatePipe, TitleCasePipe, UpperCasePipe, NgTemplateOutlet } from '@angular/common';
+import { DatePipe, UpperCasePipe, NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   switchMap,
@@ -17,7 +17,6 @@ import {
   EMPTY,
   debounceTime,
   forkJoin,
-  Observable,
 } from 'rxjs';
 
 import { GroupDetailService } from '../../../core/services/group-detail.service';
@@ -36,17 +35,13 @@ import { TopicRequestsDialogComponent } from '../dialogs/topic-requests-dialog/t
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { countries } from '../../../core/constants/countries';
 import { languages } from '../../../core/constants/all-languages';
-
 import { InitialsComponent } from '../../../shared/components/initials/initials.component';
-import { InputComponent } from '../../../shared/components/input/input.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { TopicCardComponent } from '../../../shared/components/topic-card/topic-card.component';
-import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { CosTabsComponent, TabItem } from '../../../shared/components/tabs/tabs.component';
-import { CreateMenuComponent } from '../../../shared/components/create-menu/create-menu.component';
 import { IllustrationComponent } from '../../../shared/components/illustration/illustration.component';
 import { SeoService } from '../../../core/services/seo.service';
 
@@ -58,22 +53,18 @@ import { SeoService } from '../../../core/services/seo.service';
     RouterLink,
     TranslateModule,
     DatePipe,
-    TitleCasePipe,
     UpperCasePipe,
     InitialsComponent,
     IconComponent,
     TopicCardComponent,
-    DropdownComponent,
     SearchInputComponent,
     ActivitiesButtonComponent,
     PaginationComponent,
     ListFilterToolbarComponent,
     CosTabsComponent,
-    CreateMenuComponent,
     IllustrationComponent,
     NgTemplateOutlet,
     FormsModule,
-    InputComponent,
   ],
   templateUrl: './group-detail.component.html',
   styleUrls: ['./group-detail.component.scss'],
@@ -393,7 +384,7 @@ export class GroupDetailComponent {
       this.router.navigate(['/', this.userLang, 'account', 'login'], { queryParams: { returnUrl: this.router.url } });
       return;
     }
-    this.groupDetailService.joinPublic(group.id).subscribe((res: any) => {
+    this.groupDetailService.joinPublic(group.id).subscribe((res: { level?: string; userLevel?: string }) => {
       this.group.update(g => g ? { ...g, userLevel: res?.level || res?.userLevel || 'read' } : g);
       this.fetchTopics(0);
       this.fetchMembers(0);

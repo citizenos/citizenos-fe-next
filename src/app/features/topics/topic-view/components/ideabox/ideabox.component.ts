@@ -76,7 +76,7 @@ export class IdeaboxComponent {
       ideaId: this.idea().id,
       value,
     }).pipe(take(1)).subscribe(votes => {
-      this.ideaUpdated.emit({ ...this.idea(), votes: votes as any });
+      this.ideaUpdated.emit({ ...this.idea(), votes: votes as Idea['votes'] });
     });
   }
 

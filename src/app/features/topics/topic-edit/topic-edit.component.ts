@@ -15,7 +15,7 @@ import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { Topic } from '../../../core/interfaces/topic';
 import { DiscussionData } from '../../../core/interfaces/discussion';
 import { Ideation } from '../../../core/interfaces/ideation';
-import { Vote, VoteWithOptions } from '../../../core/interfaces/vote';
+import { VoteWithOptions } from '../../../core/interfaces/vote';
 import { StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
 import { IconName } from '../../../shared/components/icon/icon.registry';
 import { CreateWizardShellComponent } from '../../../shared/components/create-wizard-shell/create-wizard-shell.component';
@@ -338,7 +338,7 @@ export class TopicEditComponent implements OnInit {
 
   saveIdeation() {
     const t = this.topic();
-    const i = this.ideation();
+    const _i = this.ideation();
     if (!t.id || !t.ideationId) {
       this.currentStep.set('preview');
       return;

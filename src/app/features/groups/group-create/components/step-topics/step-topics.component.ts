@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, input, output, inject, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { Group } from '../../../../../core/interfaces/group';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { SearchService } from '../../../../../core/services/search.service';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';

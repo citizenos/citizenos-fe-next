@@ -4,7 +4,7 @@ import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';
 
-import { SearchResults, SearchResultUser } from '../interfaces/search';
+import { SearchResults } from '../interfaces/search';
 
 @Injectable({
   providedIn: 'root'

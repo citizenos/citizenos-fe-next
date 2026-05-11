@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, input, output, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { Group } from '../../../../../core/interfaces/group';
 import { CountryService } from '../../../../../core/services/country.service';
 import { LanguageService } from '../../../../../core/services/language.service';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';

@@ -5,7 +5,7 @@ import { TopicService } from '../../../core/services/topic.service';
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { Topic } from '../../../core/interfaces/topic';
-import { Vote, VoteWithOptions } from '../../../core/interfaces/vote';
+import { VoteWithOptions } from '../../../core/interfaces/vote';
 import { StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
 import { CreateWizardShellComponent } from '../../../shared/components/create-wizard-shell/create-wizard-shell.component';
 import { StepTopicInfoComponent } from '../topic-create/components/step-topic-info/step-topic-info.component';
@@ -81,7 +81,7 @@ export class VoteCreateComponent implements OnInit {
         this.topic.set(topic);
         if (topic.voteId) {
           this.voteService.get({ topicId: topic.id, voteId: topic.voteId }).subscribe({
-            next: (vote: any) => {
+            next: (vote: VoteWithOptions) => {
               const options = Array.isArray(vote.options) ? vote.options : (vote.options?.rows || []);
               this.vote.set({
                 ...vote,
@@ -120,7 +120,7 @@ export class VoteCreateComponent implements OnInit {
         return this.voteService.save(voteData);
       })
     ).subscribe({
-      next: (savedVote: any) => {
+      next: (savedVote: VoteWithOptions) => {
         const options = Array.isArray(savedVote.options) ? savedVote.options : (savedVote.options?.rows || []);
         this.vote.set({
           ...savedVote,

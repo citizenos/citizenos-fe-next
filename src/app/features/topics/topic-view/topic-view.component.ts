@@ -30,6 +30,7 @@ import { TopicVoteCastComponent } from './components/topic-vote-cast/topic-vote-
 import { TopicMilestonesComponent } from './components/topic-milestones/topic-milestones.component';
 
 import { Topic, TopicAttachment } from '../../../core/interfaces/topic';
+import { VoteWithOptions } from '../../../core/interfaces/vote';
 
 @Component({
   selector: 'app-topic-view',
@@ -87,7 +88,7 @@ export class TopicViewComponent implements OnInit {
   vote = toSignal(
     toObservable(this.topic).pipe(
       switchMap(topic => topic?.voteId ? this.topicVoteService.get({ topicId: topic.id, voteId: topic.voteId }).pipe(
-        map((v: any) => {
+        map((v: VoteWithOptions) => {
           if (!v) return null;
           return {
             ...v,
@@ -104,7 +105,7 @@ export class TopicViewComponent implements OnInit {
       switchMap(topic => {
         if (topic && (topic.status === this.topicService.STATUSES.followUp || topic.status === this.topicService.STATUSES.closed)) {
           return this.topicEventService.query({ topicId: topic.id }).pipe(
-            map((res: any) => res.count || res.countTotal || 0),
+            map((res: { count?: number; countTotal?: number }) => res.count || res.countTotal || 0),
             catchError(() => of(0))
           );
         }
@@ -210,7 +211,7 @@ export class TopicViewComponent implements OnInit {
 
   // loadRelatedData has been refactored to declarative signal derivations.
 
-  private updateNavigation(topic: Topic, groups: any[]) {
+  private updateNavigation(topic: Topic, groups: { id: string; name?: string }[]) {
     const isPrivate = topic.visibility === this.topicService.VISIBILITY.private;
     if (groups.length > 1) {
       this.navigation.set({

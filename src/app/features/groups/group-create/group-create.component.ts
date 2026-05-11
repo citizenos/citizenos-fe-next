@@ -13,8 +13,6 @@ import { Group } from '../../../core/interfaces/group';
 import { UserGroupService } from '../../../core/services/user-group.service';
 import { GroupInviteUserService } from '../../../core/services/group-invite-user.service';
 import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
-import { GroupMember } from '../../../core/services/group-member-user.service';
-import { Topic } from '../../../core/interfaces/topic';
 import { NotificationService } from '../../../core/services/notification.service';
 import { StepInfoComponent } from './components/step-info/step-info.component';
 import { StepSettingsComponent } from './components/step-settings/step-settings.component';
@@ -96,7 +94,7 @@ export class GroupCreateComponent {
     }
   }
 
-  updateGroup(data: any) {
+  updateGroup(data: Partial<GroupCreateData>) {
     this.group.update(g => ({ ...g, ...data }));
   }
 

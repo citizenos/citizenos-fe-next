@@ -15,7 +15,6 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { Idea } from '../../../../../core/interfaces/idea';
 import { Attachment } from '../../../../../core/interfaces/attachment';
-import { ApiResponse } from '../../../../../core/interfaces/api-response';
 import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
@@ -380,7 +379,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
           this.doSaveAttachments(idea.id);
         }
       },
-      error: (err: any) => {
+      error: (err: { errors?: Record<string, string> }) => {
         if (isAutosave) {
           setTimeout(() => this.isAutosaving.set(false), AUTOSAVE_HIDE_DELAY);
         } else {

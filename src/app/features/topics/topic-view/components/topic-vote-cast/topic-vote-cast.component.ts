@@ -3,6 +3,7 @@ import { DatePipe, UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { Topic, TopicVote } from '../../../../../core/interfaces/topic';
+import { VoteWithOptions } from '../../../../../core/interfaces/vote';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { VoteDelegationService } from '../../../../../core/services/vote-delegation.service';
@@ -63,7 +64,8 @@ export class TopicVoteCastComponent implements OnInit {
 
   private checkUserVotingStatus() {
     const v = this.vote();
-    const hasVoted = !!((Array.isArray(v?.options) ? v.options : v?.options?.rows)?.some((o: any) => o.selected) || v?.delegation);
+    const options = Array.isArray(v?.options) ? v.options : v?.options?.rows;
+    const hasVoted = !!(options?.some((o: { selected?: boolean }) => o.selected) || v?.delegation);
     this.userHasVoted.set(hasVoted);
     this.editVote.set(false);
   }
@@ -90,8 +92,8 @@ export class TopicVoteCastComponent implements OnInit {
     const v = this.vote();
     const rows = Array.isArray(v?.options) ? v.options : v?.options?.rows;
     if (!rows) return false;
-    const selected = rows.filter((o: any) => o.selected);
-    if (selected.length === 1 && (selected[0].value === 'Neutral' || selected[0].value === 'Veto')) return true;
+    const selected = rows.filter((o: { selected?: boolean }) => o.selected);
+    if (selected.length === 1 && (selected[0] as { value?: string }).value === 'Neutral' || (selected[0] as { value?: string }).value === 'Veto') return true;
     return selected.length <= (v.maxChoices || 0) && selected.length >= (v.minChoices || 0);
   }
 
@@ -103,7 +105,7 @@ export class TopicVoteCastComponent implements OnInit {
     return this.topicVoteService.hasVoteEndedExpired(this.topic(), this.vote() as any);
   }
 
-  selectOption(option: any) {
+  selectOption(option: { id?: string; value?: string; selected?: boolean; optionId?: string }) {
     if (!this.canVote()) return;
     const v = this.vote();
     if (option.selected) {
@@ -111,7 +113,7 @@ export class TopicVoteCastComponent implements OnInit {
       return;
     }
     const rows = Array.isArray(v?.options) ? v.options : v?.options?.rows;
-    rows?.forEach((opt: any) => {
+    rows?.forEach((opt: { value?: string; selected?: boolean }) => {
       if (option.value === 'Neutral' || option.value === 'Veto' || v.maxChoices === 1) {
         opt.selected = false;
       } else if (opt.value === 'Neutral' || opt.value === 'Veto') {
@@ -119,8 +121,8 @@ export class TopicVoteCastComponent implements OnInit {
       }
     });
     option.optionId = option.id;
-    const selected = rows?.filter((o: any) => o.selected) || [];
-    const alreadySelected = selected.find((i: any) => i.id === option.id);
+    const selected = rows?.filter((o: { selected?: boolean }) => o.selected) || [];
+    const alreadySelected = selected.find((i: { id?: string }) => i.id === option.id);
     if (selected.length >= (v.maxChoices || 0) && !alreadySelected) return;
     option.selected = !option.selected;
   }
@@ -128,7 +130,7 @@ export class TopicVoteCastComponent implements OnInit {
   doVote() {
     const v = this.vote();
     const rows = Array.isArray(v?.options) ? v.options : v?.options?.rows;
-    const options = (rows || []).filter((o: any) => {
+    const options = (rows || []).filter((o: { id?: string; selected?: boolean; optionId?: string; value?: string }) => {
       o.optionId = o.id;
       return !!o.selected;
     });
@@ -140,7 +142,7 @@ export class TopicVoteCastComponent implements OnInit {
       this.dialogService.open(TopicVoteSignComponent, { data: { topic: this.topic(), options } });
       return;
     }
-    options.forEach((o: any) => { o.optionId = o.id; });
+    options.forEach((o: { id?: string; optionId?: string }) => { o.optionId = o.id; });
     this.topicVoteService.cast({ voteId: v.id, topicId: this.topic().id, options })
       .pipe(take(1))
       .subscribe({
@@ -154,7 +156,7 @@ export class TopicVoteCastComponent implements OnInit {
 
   private saveVote(voteData?: Partial<TopicVote>) {
     const v = Object.assign(voteData || this.vote(), { topicId: this.topic().id });
-    this.topicVoteService.update(v as any).pipe(take(1)).subscribe({
+    this.topicVoteService.update(v as Partial<VoteWithOptions> & { topicId: string }).pipe(take(1)).subscribe({
       next: () => this.topicService.reloadTopic()
     });
   }
@@ -255,7 +257,7 @@ export class TopicVoteCastComponent implements OnInit {
       });
   }
 
-  viewIdea(option: any) {
+  viewIdea(option: { ideaId?: string }) {
     const t = this.topic();
     if (!t.ideationId || !option.ideaId) return;
     this.dialogService.open(IdeaDialogComponent, {

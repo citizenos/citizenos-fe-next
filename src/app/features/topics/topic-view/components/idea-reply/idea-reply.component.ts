@@ -516,7 +516,7 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
       ideaId: this.ideaId(),
       commentId: this.argument().id,
       value
-    }).pipe(take(1)).subscribe((votes: any) => {
+    }).pipe(take(1)).subscribe((votes: IdeaComment['votes']) => {
       this.argument().votes = votes;
     });
   }

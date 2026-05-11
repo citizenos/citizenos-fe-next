@@ -76,7 +76,7 @@ export class TopicVoteSignEsteidComponent {
         options: this.data.options,
         certificate: certificate.hex
       };
-      this.topicVoteService.cast(userVote).pipe(take(1)).subscribe(async (voteResponse: any) => {
+      this.topicVoteService.cast(userVote).pipe(take(1)).subscribe(async (voteResponse: { signedInfoDigest?: string; token?: string; signedInfoHashType?: string }) => {
         if (voteResponse?.signedInfoDigest && voteResponse?.token && voteResponse?.signedInfoHashType) {
           const signature = await hwcrypto.sign(certificate, { hex: voteResponse.signedInfoDigest, type: voteResponse.signedInfoHashType }, {});
           this.topicVoteService.sign({

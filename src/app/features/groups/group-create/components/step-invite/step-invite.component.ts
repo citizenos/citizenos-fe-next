@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, input, output, inject, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { Group } from '../../../../../core/interfaces/group';
 import { SearchService } from '../../../../../core/services/search.service';
 import { SearchResultUser } from '../../../../../core/interfaces/user';
 import { GroupMember } from '../../../../../core/services/group-member-user.service';

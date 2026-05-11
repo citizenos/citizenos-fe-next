@@ -21,7 +21,7 @@ interface ArgumentListResponse {
   countTotal: number;
 }
 
-type ParamValue = string | number | boolean | null | undefined | Record<string, any>;
+type ParamValue = string | number | boolean | null | undefined | Record<string, unknown> | Date;
 
 @Injectable({
   providedIn: 'root'

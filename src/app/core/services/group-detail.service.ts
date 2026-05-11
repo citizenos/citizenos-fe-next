@@ -35,12 +35,12 @@ export class GroupDetailService {
     return this.http.delete<ApiResponse<unknown>>(`${this.baseUrl}/api/users/self/groups/${groupId}/favourite`, { withCredentials: true }).pipe(map(res => res.data));
   }
 
-  joinPublic(groupId: string): Observable<unknown> {
-    return this.http.post<ApiResponse<unknown>>(
+  joinPublic(groupId: string): Observable<{ level?: string; userLevel?: string }> {
+    return this.http.post<ApiResponse<{ level?: string; userLevel?: string }>>(
       `${this.baseUrl}/api/groups/${groupId}/join`,
       {},
       { withCredentials: true }
-    ).pipe(map(res => res.data));
+    ).pipe(map(res => res.data!));
   }
 
   leaveGroup(groupId: string, userId: string): Observable<unknown> {

@@ -9,6 +9,7 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
+import { VoteWithOptions } from '../../../../../core/interfaces/vote';
 
 @Component({
   selector: 'app-topic-vote-deadline',
@@ -37,13 +38,14 @@ export class TopicVoteDeadlineComponent {
   }
 
   save() {
-    const vote: any = { ...this.data.vote, topicId: this.data.topic.id };
+    const vote: TopicVote & { topicId: string } = { ...this.data.vote, topicId: this.data.topic.id };
     if (this.data.vote.question === null) delete vote.question;
-    if (this.deadline()) {
-      vote.endsAt = this.deadline();
+    const deadline = this.deadline();
+    if (deadline) {
+      vote.endsAt = deadline;
     }
     vote.reminderTime = this.reminderTime();
-    this.topicVoteService.update(vote)
+    this.topicVoteService.update(vote as Partial<VoteWithOptions> & { topicId: string })
       .pipe(take(1))
       .subscribe({
         next: () => {
