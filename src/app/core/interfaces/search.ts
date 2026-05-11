@@ -1,3 +1,6 @@
+import { Topic } from './topic';
+import { Group } from './group';
+
 export interface SearchResultUser {
   id?: string;
   userId?: string;
@@ -14,21 +17,21 @@ export interface SearchResults {
         count: number;
       };
       topics?: {
-        rows: any[];
+        rows: Topic[];
         count: number;
       };
       groups?: {
-        rows: any[];
+        rows: Group[];
         count: number;
       };
     };
     my?: {
       groups?: {
-        rows: any[];
+        rows: Group[];
         count: number;
       };
       topics?: {
-        rows: any[];
+        rows: Topic[];
         count: number;
       };
     };

@@ -135,14 +135,14 @@ export class TopicVoteService {
     return voteCountTotal;
   }
 
-  hasVoteEnded(topic: Topic, vote: Pick<Vote, 'endsAt'>): boolean {
+  hasVoteEnded(topic: Topic, vote: { endsAt?: string | Date | null } | null | undefined): boolean {
     if ([this.STATUSES.followUp, this.STATUSES.closed].indexOf(topic.status) > -1) {
       return true;
     }
     return !!(vote && vote.endsAt && new Date() > new Date(vote.endsAt));
   }
 
-  hasVoteEndedExpired(topic: Topic, vote: Pick<Vote, 'endsAt'>): boolean {
+  hasVoteEndedExpired(topic: Topic, vote: { endsAt?: string | Date | null } | null | undefined): boolean {
     return [this.STATUSES.followUp, this.STATUSES.closed].indexOf(topic.status) > -1 || !!(vote?.endsAt && new Date() > new Date(vote.endsAt));
   }
 

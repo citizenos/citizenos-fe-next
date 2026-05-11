@@ -102,7 +102,7 @@ export class TopicVoteCastComponent implements OnInit {
   }
 
   hasVoteEndedExpired() {
-    return this.topicVoteService.hasVoteEndedExpired(this.topic(), this.vote() as any);
+    return this.topicVoteService.hasVoteEndedExpired(this.topic(), this.vote());
   }
 
   selectOption(option: { id?: string; value?: string; selected?: boolean; optionId?: string }) {

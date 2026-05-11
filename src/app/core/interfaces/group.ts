@@ -1,3 +1,17 @@
+export interface GroupMembers {
+  users: { count: number };
+  groups: { count: number };
+  topics?: {
+    count?: {
+      inProgress?: number;
+      ideation?: number;
+      voting?: number;
+      followUp?: number;
+    };
+    latest?: { id: string; title?: string | null } | null;
+  };
+}
+
 export interface Group {
   id: string;
   name: string;
@@ -12,7 +26,7 @@ export interface Group {
   permission: { level: string };
   creator: { id: string; name: string; imageUrl?: string | null };
   lastActivity: string | null;
-  members: { users: { count: number }; groups: { count: number }; topics?: { count?: { inProgress?: number; ideation?: number; voting?: number; followUp?: number }; latest?: { id: string; title?: string | null } | null } };
+  members: GroupMembers;
   userLevel: string | null;
   imageUrl: string | null;
   language: string | null;
