@@ -1,6 +1,6 @@
-import { Component, input, OnInit, inject, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, input, OnInit, inject, ChangeDetectionStrategy, signal, computed } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { UpperCasePipe } from '@angular/common';
+import { KeyValuePipe, UpperCasePipe } from '@angular/common';
 import { take } from 'rxjs/operators';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { Group } from '../../../../../core/interfaces/group';
@@ -13,13 +13,12 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
-import { computed } from '@angular/core';
 
 @Component({
   selector: 'app-group-share',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, UpperCasePipe, QRCodeComponent, ButtonComponent, DropdownComponent, TooltipComponent, IconComponent],
+  imports: [TranslateModule, UpperCasePipe, KeyValuePipe, QRCodeComponent, ButtonComponent, DropdownComponent, TooltipComponent, IconComponent],
   templateUrl: './group-share.component.html',
   styleUrls: ['./group-share.component.scss']
 })
@@ -34,7 +33,7 @@ export class GroupShareComponent implements OnInit {
 
   LEVELS = this.memberUserService.LEVELS;
 
-  joinLevel = signal<string>(this.memberUserService.LEVELS[0]);
+  joinLevel = signal<string>(this.memberUserService.LEVELS.read);
   joinToken = signal<string | null>(null);
   joinUrl = computed(() => {
     const base = window.location.origin;
@@ -51,7 +50,7 @@ export class GroupShareComponent implements OnInit {
   ngOnInit() {
     const group = this.group();
     this.joinToken.set(group.join?.token ?? null);
-    this.joinLevel.set(group.join?.level ?? this.memberUserService.LEVELS[0]);
+    this.joinLevel.set(group.join?.level ?? this.memberUserService.LEVELS.read);
   }
 
   canUpdate() {
@@ -71,9 +70,9 @@ export class GroupShareComponent implements OnInit {
     }).afterClosed().pipe(take(1)).subscribe(result => {
       if (result === true) {
         this.groupJoinService.generateToken(this.group().id, this.joinLevel())
-          .pipe(take(1)).subscribe(res => {
+          .pipe(take(1)).subscribe((res: any) => {
             this.joinToken.set(res.token);
-            this.joinLevel.set(res.level);
+            if (res.level) this.joinLevel.set(res.level);
           });
       }
     });

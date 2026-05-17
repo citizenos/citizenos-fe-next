@@ -1,10 +1,11 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, BehaviorSubject, exhaustMap, shareReplay } from 'rxjs';
+import { map, Observable, BehaviorSubject, exhaustMap, shareReplay, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import * as jsonpatch from 'fast-json-patch';
 import { ConfigStore } from '../state/config.store';
+import { UserStore } from '../state/user.store';
 import { ApiResponse } from '../interfaces/api-response';
 
 interface ActivityObject extends Record<string, unknown> {
@@ -59,6 +60,7 @@ export interface ActivityContext {
 export class ActivityService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
+  private userStore = inject(UserStore);
   private translate = inject(TranslateService);
   private router = inject(Router);
 
@@ -114,14 +116,32 @@ export class ActivityService {
     );
   }
 
+  private getAbsoluteUrlApi(path: string): string {
+    if (path.startsWith('/api/users/self')) {
+      if (!this.userStore.isAuthenticated()) {
+        path = path.replace('/api/users/self', '/api');
+      }
+    } else if (path.startsWith('/api/topics')) {
+      if (this.userStore.isAuthenticated()) {
+        path = path.replace('/api/topics', '/api/users/self/topics');
+      }
+    } else if (path.startsWith('/api/groups')) {
+       if (this.userStore.isAuthenticated()) {
+        path = path.replace('/api/groups', '/api/users/self/groups');
+      }
+    }
+    return `${this.apiUrl}${path}`;
+  }
+
   getUnreadCount(params?: { groupId?: string; topicId?: string }): Observable<number> {
     let url: string;
     if (params?.groupId) {
-      url = `${this.apiUrl}/api/groups/${params.groupId}/activities/unread`;
+      url = this.getAbsoluteUrlApi(`/api/groups/${params.groupId}/activities/unread`);
     } else if (params?.topicId) {
-      url = `${this.apiUrl}/api/topics/${params.topicId}/activities/unread`;
+      url = this.getAbsoluteUrlApi(`/api/topics/${params.topicId}/activities/unread`);
     } else {
-      url = `${this.apiUrl}/api/users/self/activities/unread`;
+      if (!this.userStore.isAuthenticated()) return of(0);
+      url = this.getAbsoluteUrlApi(`/api/users/self/activities/unread`);
     }
     return this.http.get<ApiResponse<{ count: number }>>(url, { withCredentials: true })
       .pipe(map(res => res.data?.count ?? 0));
@@ -130,11 +150,12 @@ export class ActivityService {
   private fetchPage(params: ActivityContext & { offset: number }): Observable<ActivityGroup[]> {
     let url: string;
     if (params.groupId) {
-      url = `${this.apiUrl}/api/groups/${params.groupId}/activities`;
+      url = this.getAbsoluteUrlApi(`/api/groups/${params.groupId}/activities`);
     } else if (params.topicId) {
-      url = `${this.apiUrl}/api/topics/${params.topicId}/activities`;
+      url = this.getAbsoluteUrlApi(`/api/topics/${params.topicId}/activities`);
     } else {
-      url = `${this.apiUrl}/api/users/self/activities`;
+      if (!this.userStore.isAuthenticated()) return of([]);
+      url = this.getAbsoluteUrlApi(`/api/users/self/activities`);
     }
     const httpParams: { offset: number; limit: number; include?: string } = { offset: params.offset, limit: this.limit };
     if (params.include) httpParams.include = params.include;

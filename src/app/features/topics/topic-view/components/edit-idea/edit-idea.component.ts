@@ -4,7 +4,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription, interval, take, lastValueFrom, takeWhile } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
-import { TopicIdeationService, IdeaStatus } from '../../../../../core/services/topic-ideation.service';
+import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
+import { IdeaStatus } from '../../../../../core/interfaces/idea';
 import { IdeaAttachmentService } from '../../../../../core/services/idea-attachment.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { UploadService } from '../../../../../core/services/upload.service';

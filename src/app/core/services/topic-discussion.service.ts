@@ -5,14 +5,17 @@ import { ApiResponse } from '../interfaces/api-response';
 import { Discussion, DiscussionData } from '../interfaces/discussion';
 import { Topic } from '../interfaces/topic';
 import { ConfigStore } from '../state/config.store';
+import { UserStore } from '../state/user.store';
 
 @Injectable({ providedIn: 'root' })
 export class TopicDiscussionService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
+  private userStore = inject(UserStore);
 
   private base(topicId: string): string {
-    return `${this.configStore.api.baseUrl()}/api/users/self/topics/${topicId}/discussions`;
+    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+    return `${this.configStore.api.baseUrl()}${prefix}/topics/${topicId}/discussions`;
   }
 
   get(topicId: string, discussionId: string): Observable<Discussion> {

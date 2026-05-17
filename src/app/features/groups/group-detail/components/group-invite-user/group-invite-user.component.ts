@@ -1,6 +1,6 @@
 import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { UpperCasePipe } from '@angular/common';
+import { KeyValuePipe, UpperCasePipe } from '@angular/common';
 import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Group } from '../../../../../core/interfaces/group';
@@ -9,13 +9,14 @@ import { GroupMember } from '../../../../../core/services/group-member-user.serv
 import { GroupDetailService } from '../../../../../core/services/group-detail.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-group-invite-user',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, UpperCasePipe, IconComponent],
+  imports: [TranslateModule, InitialsComponent, UpperCasePipe, KeyValuePipe, IconComponent],
   templateUrl: './group-invite-user.component.html'
 })
 export class GroupInviteUserComponent {

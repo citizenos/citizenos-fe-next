@@ -1,8 +1,8 @@
 import {
-  Component, input, signal, inject, ChangeDetectionStrategy, computed
+  Component, input, signal, inject, ChangeDetectionStrategy, computed, HostListener, PLATFORM_ID
 } from '@angular/core';
-import { NgClass, DatePipe, UpperCasePipe, AsyncPipe, KeyValuePipe } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgClass, DatePipe, UpperCasePipe, AsyncPipe, KeyValuePipe, isPlatformBrowser, TitleCasePipe } from '@angular/common';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { switchMap, of, take, tap } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
@@ -11,7 +11,7 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicDiscussionService } from '../../../../../core/services/topic-discussion.service';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
-import { Argument } from '../../../../../core/interfaces/discussion';
+import { Argument, ArgumentCount } from '../../../../../core/interfaces/discussion';
 import { Discussion } from '../../../../../core/interfaces/discussion';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { UserStore } from '../../../../../core/state/user.store';
@@ -33,7 +33,7 @@ import { InputComponent } from '../../../../../shared/components/input/input.com
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass, DatePipe, UpperCasePipe, TranslateModule, AsyncPipe, KeyValuePipe,
+    NgClass, DatePipe, UpperCasePipe, TranslateModule, AsyncPipe, KeyValuePipe, TitleCasePipe,
     ArgumentComponent, PostArgumentFormComponent,
     ButtonComponent, IconComponent, PaginationComponent,
     CosDropdownDirective, InputComponent, DropdownComponent,
@@ -51,8 +51,21 @@ export class TopicDiscussionComponent {
   private userStore = inject(UserStore);
   private dialog = inject(DialogService);
   private notification = inject(NotificationService);
+  private platformId = inject(PLATFORM_ID);
+  translate = inject(TranslateService);
+
+  wWidth = signal<number>(isPlatformBrowser(this.platformId) ? window.innerWidth : 1280);
+
+  @HostListener('window:resize')
+  onResize() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.wWidth.set(window.innerWidth);
+    }
+  }
 
   showPostForm = signal(false);
+  mobileFiltersList = signal(false);
+  mobileFilterOpen = signal<string | null>(null);
 
   argumentTypes = [
     { value: 'pro', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_PRO' },
@@ -94,11 +107,13 @@ export class TopicDiscussionComponent {
 
   arguments = toSignal(this.argumentService.items$, { initialValue: [] as Argument[] });
   loading = toSignal(this.argumentService.isLoading$, { initialValue: false });
+  page = toSignal(this.argumentService.page, { initialValue: 1 });
+  totalPages = toSignal(this.argumentService.totalPages, { initialValue: 1 });
 
-  private argumentCount = toSignal(this.argumentService.count, { initialValue: { total: 0, pro: 0, con: 0, poi: 0, reply: 0 } });
+  private argumentCount = toSignal(this.argumentService.count, { initialValue: { total: 0, pro: 0, con: 0, poi: 0, reply: 0 } as ArgumentCount });
 
   counts = computed(() => {
-    return this.argumentCount();
+    return this.argumentCount() as ArgumentCount;
   });
 
   flattenedArguments = computed(() => {
@@ -131,6 +146,15 @@ export class TopicDiscussionComponent {
     return (count / total) * 100;
   }
 
+  getActiveTypeFilterText() {
+    if (this.selectedTypes().length === 3 || this.selectedTypes().length === 0) return 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ALL';
+    return this.selectedTypes().map(t => this.argumentTypes.find(at => at.value === t)?.title).join(', ');
+  }
+
+  getActiveOrderFilterText() {
+    return this.orderByOptions.find(o => o.value === this.selectedOrder())?.title || '';
+  }
+
   toggleTypeFilter(type: string) {
     const current = this.selectedTypes();
     if (current.includes(type)) {
@@ -152,6 +176,10 @@ export class TopicDiscussionComponent {
   onArgumentPosted() {
     this.showPostForm.set(false);
     this.reload();
+  }
+
+  loadPage(page: number) {
+    this.argumentService.loadPage(page);
   }
 
   reload() {

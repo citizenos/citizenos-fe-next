@@ -23,9 +23,9 @@
           {{'TXT_GROUP_LEVELS_' + joinLevel() | uppercase | translate}}
         </div>
         <div options>
-          @for (level of LEVELS; track level) {
-            <div class="option" (click)="doUpdateJoinToken(level)" (keydown.enter)="doUpdateJoinToken(level)" role="button" tabindex="0">
-              {{'TXT_GROUP_LEVELS_' + level | uppercase | translate}}
+          @for (level of LEVELS | keyvalue; track level.key) {
+            <div class="option" (click)="doUpdateJoinToken(level.value)" (keydown.enter)="doUpdateJoinToken(level.value)" role="button" tabindex="0">
+              {{'TXT_GROUP_LEVELS_' + level.value.toUpperCase() | translate}}
             </div>
           }
         </div>

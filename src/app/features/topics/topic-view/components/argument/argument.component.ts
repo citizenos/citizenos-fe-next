@@ -1,6 +1,6 @@
 import {
   Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit,
-  ViewChild, ElementRef, forwardRef, AfterViewInit
+  ViewChild, ElementRef, forwardRef, computed
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -41,7 +41,7 @@ import { MarkdownPipe } from '../../../../../shared/pipes/markdown.pipe';
   templateUrl: './argument.component.html',
   styleUrls: ['./argument.component.scss']
 })
-export class ArgumentComponent implements OnInit, AfterViewInit {
+export class ArgumentComponent {
   argument = input.required<Argument>();
   topicId = input.required<string>();
   discussionId = input.required<string>();
@@ -63,19 +63,11 @@ export class ArgumentComponent implements OnInit, AfterViewInit {
   showEdits = signal(false);
   mobileActions = signal(false);
 
-  ngOnInit() {
-  }
+  localVotes = signal<Argument['votes'] | undefined>(undefined);
 
-  ngAfterViewInit() {
-    if (this.argument().type === 'reply' && this.argumentBody) {
-      const argBody = this.argumentBody.nativeElement;
-      const authorName = document.createElement('b');
-      authorName.innerText = (this.argument().parent?.id ? this.getParentAuthor() : '') + ' ';
-      if (argBody.firstChild) {
-        argBody.firstChild.prepend(authorName);
-      }
-    }
-  }
+  votes = computed(() => {
+    return this.localVotes() || this.argument().votes;
+  });
 
   argumentId() {
     const arg = this.argument();
@@ -103,26 +95,20 @@ export class ArgumentComponent implements OnInit, AfterViewInit {
       discussionId: this.discussionId(),
       value,
     }).pipe(take(1)).subscribe(votes => {
-      this.argument().votes = votes;
+      this.localVotes.set(votes);
     });
   }
 
-  copyLink(_event: MouseEvent) {
+  async copyLink(_event: MouseEvent) {
     const id = this.argumentId();
     const url = `${window.location.origin}${window.location.pathname}?argumentId=${id}`;
-    const selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = url;
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
-
-    this.notification.success('VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_COPIED');
+    
+    try {
+      await navigator.clipboard.writeText(url);
+      this.notification.success('VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_COPIED');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
   }
 
   showVoters() {
@@ -166,7 +152,7 @@ export class ArgumentComponent implements OnInit, AfterViewInit {
       return this.root()?.creator?.name || '';
     }
 
-    const parentReply = this.root()?.replies?.rows.find((a: any) => a.id === arg.parent?.id);
+    const parentReply = this.root()?.replies?.rows.find((a: Argument) => a.id === arg.parent?.id);
     if (parentReply) {
       return parentReply.creator?.name || '';
     }

@@ -30,30 +30,35 @@ export class TopicMemberUserService {
 
   private get baseUrl() { return this.configStore.api.baseUrl(); }
 
+  private getAbsoluteUrlApi(path: string): string {
+    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+    return `${this.baseUrl}${prefix}${path}`;
+  }
+
   loadItems(topicId: string): Observable<TopicMemberUser[]> {
     return this.http.get<ApiResponse<{ rows: TopicMemberUser[] }>>(
-      `${this.baseUrl}/api/users/self/topics/${topicId}/members/users`,
+      this.getAbsoluteUrlApi(`/topics/${topicId}/members/users`),
       { withCredentials: true }
     ).pipe(map(res => res.data?.rows ?? []));
   }
 
   query(params: { topicId: string; search?: string }): Observable<{ rows: TopicMemberUser[] }> {
     return this.http.get<ApiResponse<{ rows: TopicMemberUser[] }>>(
-      `${this.baseUrl}/api/users/self/topics/${params.topicId}/members/users`,
+      this.getAbsoluteUrlApi(`/topics/${params.topicId}/members/users`),
       { withCredentials: true, params: params.search ? { search: params.search } : {} }
     ).pipe(map(res => res.data ?? { rows: [] }));
   }
 
   update(topicId: string, userId: string, level: string): Observable<unknown> {
     return this.http.put<ApiResponse<unknown>>(
-      `${this.baseUrl}/api/users/self/topics/${topicId}/members/users/${userId}`,
+      this.getAbsoluteUrlApi(`/topics/${topicId}/members/users/${userId}`),
       { level }, { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
   delete(topicId: string, userId: string): Observable<unknown> {
     return this.http.delete<ApiResponse<unknown>>(
-      `${this.baseUrl}/api/users/self/topics/${topicId}/members/users/${userId}`,
+      this.getAbsoluteUrlApi(`/topics/${topicId}/members/users/${userId}`),
       { withCredentials: true }
     ).pipe(map(res => res.data));
   }

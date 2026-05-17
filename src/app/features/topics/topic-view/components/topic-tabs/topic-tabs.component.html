@@ -5,7 +5,7 @@
     @if (topic().ideationId || topic().status === STATUSES.ideation) {
     <a class="topic_tab ideation" [routerLink]="['./']" fragment="ideation"
       [class.active]="tabSelected() === 'ideation'" (click)="selectTab('ideation')">
-      <cos-domain-icon type="ideation" [size]="32" />
+      <cos-domain-icon type="ideation" [size]="32" [active]="tabSelected() === 'ideation'" />
       <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_IDEATION' | translate }}</span>
     </a>
     }
@@ -13,7 +13,7 @@
     @if (topic().discussionId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress].includes(topic().status)) {
     <a class="topic_tab discussion" [routerLink]="['./']" fragment="discussion"
       [class.active]="tabSelected() === 'discussion' || !tabSelected()" (click)="selectTab('discussion')">
-      <cos-domain-icon type="topic" [size]="32" />
+      <cos-domain-icon type="topic" [size]="32" [active]="tabSelected() === 'discussion' || !tabSelected()" />
       <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_DISCUSSION' | translate }}</span>
     </a>
     }
@@ -21,14 +21,14 @@
     @if (topic().voteId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress, STATUSES.voting].includes(topic().status)) {
     <a class="topic_tab voting" [routerLink]="['./']" fragment="voting" [class.active]="tabSelected() === 'voting'"
       (click)="selectTab('voting')">
-      <cos-domain-icon type="vote" [size]="32" />
+      <cos-domain-icon type="vote" [size]="32" [active]="tabSelected() === 'voting'" />
       <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_VOTING' | translate }}</span>
     </a>
     }
 
     <a class="topic_tab follow_up" [routerLink]="['./']" fragment="followUp"
       [class.active]="tabSelected() === 'followUp'" (click)="selectTab('followUp')">
-      <cos-domain-icon type="follow-up" [size]="32" />
+      <cos-domain-icon type="follow-up" [size]="32" [active]="tabSelected() === 'followUp'" />
       <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_FOLLOW_UP' | translate }}</span>
     </a>
   </div>

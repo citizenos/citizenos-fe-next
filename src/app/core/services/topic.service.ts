@@ -37,7 +37,7 @@ export class TopicService {
     agriculture: "agriculture", animal_protection: "animal_protection",
     arts: "arts", business: "business", civil_society: "civil_society",
     communities: "communities", culture: "culture", defence: "defence",
-    democracy: "democracy", diversity: "diversity", education: "education",
+    democracy: "democracy", diversity: "democracy", education: "education",
     entertainment: "entertainment", environment: "environment", equality: "equality",
     health: "health", human_rights: "human_rights", legal: "legal", media: "media",
     migration: "migration", politics: "politics", public_transportation: "public_transportation",
@@ -87,27 +87,25 @@ export class TopicService {
   }
 
   get(id: string, params?: Record<string, string | boolean>): Observable<Topic> {
-    const path = this.userStore.isAuthenticated()
-      ? this.getAbsoluteUrlApi(`/api/users/self/topics/${id}`)
-      : this.getAbsoluteUrlApi(`/api/topics/${id}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${id}`);
     return this.http.get<ApiResponse<Topic>>(path, { withCredentials: true, params, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
 
   count(): Observable<number> {
-    const path = this.getAbsoluteUrlApi('/api/users/self/topics/count');
+    const path = this.getAbsoluteUrlApi('/topics/count');
     return this.http.get<ApiResponse<number>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
 
   save(data: Partial<Topic>): Observable<Topic> {
-    const path = this.getAbsoluteUrlApi('/api/users/self/topics');
+    const path = this.getAbsoluteUrlApi('/topics');
     return this.http.post<ApiResponse<Topic>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
 
   readDescription(id: string, rev?: string): Observable<Topic> {
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${id}/description`);
+    const path = this.getAbsoluteUrlApi(`/topics/${id}/description`);
     const params: Record<string, string> = rev ? { rev } : {};
     return this.http.get<ApiResponse<Topic>>(path, { withCredentials: true, params, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
@@ -124,14 +122,14 @@ export class TopicService {
     });
 
     const topicId = data.id || data.topicId;
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${topicId}`);
 
     return this.http.put<ApiResponse<Topic>>(path, sendData, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
 
   revert(topicId: string, rev: number): Observable<Topic> {
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/revert`);
+    const path = this.getAbsoluteUrlApi(`/topics/${topicId}/revert`);
     return this.http.post<ApiResponse<Topic>>(path, { rev }, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
@@ -147,7 +145,7 @@ export class TopicService {
     });
 
     const topicId = data.id || data.topicId;
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${topicId}`);
 
     return this.http.patch<ApiResponse<Topic>>(path, sendData, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
@@ -155,7 +153,7 @@ export class TopicService {
 
   delete(data: TopicWithId): Observable<unknown> {
     const topicId = data.id || data.topicId;
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${topicId}`);
     return this.http.delete<ApiResponse<unknown>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
@@ -163,26 +161,27 @@ export class TopicService {
   duplicate(data: TopicWithId): Observable<Topic> {
     const topicId = data.topicId || data.id;
     const payload = { ...data, topicId };
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/duplicate`);
+    const path = this.getAbsoluteUrlApi(`/topics/${topicId}/duplicate`);
     
     return this.http.post<ApiResponse<Topic>>(path, payload, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
 
   addToFavourites(topicId: string): Observable<unknown> {
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/favourite`);
+    const path = this.getAbsoluteUrlApi(`/topics/${topicId}/favourite`);
     return this.http.post<ApiResponse<unknown>>(path, {}, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   removeFromFavourites(topicId: string): Observable<unknown> {
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/favourite`);
+    const path = this.getAbsoluteUrlApi(`/topics/${topicId}/favourite`);
     return this.http.delete<ApiResponse<unknown>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   getDownloadUrl(topicId: string): string {
-    return this.getAbsoluteUrlApi(`/api/topics/${topicId}/download`);
+    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+    return `${this.apiUrl}${prefix}/topics/${topicId}/download`;
   }
 
   toggleFavourite(topic: Topic) {
@@ -324,28 +323,28 @@ export class TopicService {
 
   joinPublic(topicId: string): Observable<{ userLevel: string }> {
     return this.http.post<ApiResponse<{ userLevel: string }>>(
-      this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/join`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/join`),
       {}, { withCredentials: true }
     ).pipe(map(res => res.data!));
   }
 
   loadGroups(topicId: string): Observable<TopicGroup[]> {
     return this.http.get<ApiResponse<{ rows: TopicGroup[] }>>(
-      this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/members/groups`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/members/groups`),
       { withCredentials: true }
     ).pipe(map(res => res.data?.rows ?? []));
   }
 
   loadAttachments(topicId: string): Observable<TopicAttachment[]> {
     return this.http.get<ApiResponse<{ rows: TopicAttachment[] }>>(
-      this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/attachments`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/attachments`),
       { withCredentials: true }
     ).pipe(map(res => res.data?.rows ?? []));
   }
 
   updateAttachment(topicId: string, attachment: TopicAttachment): Observable<TopicAttachment> {
     return this.http.put<ApiResponse<TopicAttachment>>(
-      this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/attachments/${attachment.id}`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/attachments/${attachment.id}`),
       attachment,
       { withCredentials: true }
     ).pipe(map(res => res.data));
@@ -353,12 +352,13 @@ export class TopicService {
 
   deleteAttachment(topicId: string, attachmentId: string): Observable<unknown> {
     return this.http.delete<ApiResponse<unknown>>(
-      this.getAbsoluteUrlApi(`/api/users/self/topics/${topicId}/attachments/${attachmentId}`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/attachments/${attachmentId}`),
       { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
   private getAbsoluteUrlApi(path: string): string {
-    return `${this.apiUrl}${path}`;
+    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+    return `${this.apiUrl}${prefix}${path}`;
   }
 }

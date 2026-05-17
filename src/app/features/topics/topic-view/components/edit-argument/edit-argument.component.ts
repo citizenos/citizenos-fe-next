@@ -1,6 +1,6 @@
 import { Component, input, output, signal, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { UpperCasePipe } from '@angular/common';
+import { UpperCasePipe, KeyValuePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { MarkdownDirective } from '../../../../../shared/directives/markdown.dir
 @Component({
   selector: 'app-edit-argument',
   standalone: true,
-  imports: [FormsModule, UpperCasePipe, TranslateModule, InputComponent, MarkdownDirective],
+  imports: [FormsModule, UpperCasePipe, KeyValuePipe, TranslateModule, InputComponent, MarkdownDirective],
   templateUrl: './edit-argument.component.html',
   styleUrls: ['./edit-argument.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -30,7 +30,7 @@ export class EditArgumentComponent implements OnInit {
   editSubject = signal('');
   editText = signal('');
   editType = signal('');
-  errors: Record<string, string[]> | null = null;
+  errors = signal<Record<string, string[]> | null>(null);
 
   ngOnInit() {
     const arg = this.argument();
@@ -40,7 +40,7 @@ export class EditArgumentComponent implements OnInit {
   }
 
   argumentMaxLength(): number {
-    return this.argumentService.ARGUMENT_TYPES_MAXLENGTH[this.editType()] || this.argumentService.ARGUMENT_TYPES_MAXLENGTH['pro'];
+    return (this.argumentService.ARGUMENT_TYPES_MAXLENGTH as any)[this.editType()] || this.argumentService.ARGUMENT_TYPES_MAXLENGTH['pro'];
   }
 
   updateArgument() {
@@ -60,7 +60,7 @@ export class EditArgumentComponent implements OnInit {
         this.argumentService.reload();
         this.showEdit.emit(false);
       },
-      error: (res) => { this.errors = res.errors; }
+      error: (res) => { this.errors.set(res.errors); }
     });
   }
 
@@ -69,7 +69,7 @@ export class EditArgumentComponent implements OnInit {
     this.editSubject.set(arg.subject || '');
     this.editText.set(arg.text || '');
     this.editType.set(arg.type || '');
-    this.errors = null;
+    this.errors.set(null);
     this.showEdit.emit(false);
   }
 }

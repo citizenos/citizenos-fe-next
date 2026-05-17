@@ -1,54 +1,30 @@
-@if (user()) {
-  <div class="row">
-    <div class="name">
-      <div class="profile_image_wrap">
-        <cos-icon name="user" [size]="40" color="#4D5C6A"></cos-icon>
-      </div>
-      <div class="member_name_wrap">
-        <div class="bold" [innerHtml]="user().name"></div>
-        @if (canUpdate() && user().email) {
-          <div class="member_info" translate="COMPONENTS.GROUP_INVITE_USER.INVITE_SENT_TO" [translateParams]="{email: user().email}"></div>
-        }
-      </div>
-    </div>
-    <div class="line_separator mobile_show"></div>
-    <div class="level">
-      <span [translate]="'TXT_GROUP_LEVELS_' + (user().invite?.level || '') | uppercase"></span>
-      @if (canUpdate()) {
-        <div class="button_wrap">
-          <div class="dropdown button_dropdown">
-            <button class="btn_medium_plain icon">
-              <cos-icon name="more-vertical" [size]="32"></cos-icon>
-            </button>
-            <div class="mobile_overlay"></div>
-            <div class="options button_options">
-              <div class="mobile_header">
-                <div class="small_heading" translate="COMPONENTS.GROUP_INVITE_USER.EDIT_MEMBER"></div>
-                <button>
-                  <cos-icon name="close" [size]="24"></cos-icon>
-                </button>
-              </div>
-              @for (level of LEVELS; track level) {
-                <button class="option" (click)="doUpdateInviteUser(level)">
-                  <div class="icon_wrap">
-                    <cos-icon name="settings" [size]="16"></cos-icon>
-                  </div>
-                  <span [innerHTML]="'COMPONENTS.GROUP_INVITE_USER.SET_MEMBER_PERMISSIONS' | translate:{level: ('TXT_GROUP_LEVELS_' + level) | uppercase | translate}"></span>
-                </button>
-                <div class="line_separator"></div>
-              }
-              @if (group() && canUpdate()) {
-                <button class="option" (click)="doDeleteInviteUser()">
-                  <div class="icon_wrap">
-                    <cos-icon name="trash" [size]="16" color="#EF4025"></cos-icon>
-                  </div>
-                  <span class="error_text" translate="COMPONENTS.GROUP_INVITE_USER.BTN_REMOVE"></span>
-                </button>
-              }
-            </div>
-          </div>
-        </div>
+<div class="table_row">
+  <div class="table_cell name">
+    <cos-initials [name]="user().name" class="profile_image"></cos-initials>
+    <div class="user_info">
+      <div class="user_name">{{ user().name }}</div>
+      @if (user().email) {
+        <div class="user_email">{{ user().email }}</div>
       }
     </div>
   </div>
-}
+  <div class="table_cell level">
+    <div class="dropdown" cosDropdown>
+      <div class="selection" selection role="combobox" tabindex="0">
+        {{ 'TXT_GROUP_LEVELS_' + (user().invite?.level || '') | uppercase | translate }}
+      </div>
+      <div class="options" options role="listbox">
+        @for (level of LEVELS | keyvalue; track level.key) {
+          <div class="option" (click)="doUpdateInviteUser(level.value)" (keydown.enter)="doUpdateInviteUser(level.value)" role="option" tabindex="0">
+            {{ 'TXT_GROUP_LEVELS_' + level.value.toUpperCase() | translate }}
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="table_cell actions">
+    <button type="button" class="btn_icon" (click)="doDeleteInviteUser()">
+      <cos-icon name="trash" [size]="20"></cos-icon>
+    </button>
+  </div>
+</div>

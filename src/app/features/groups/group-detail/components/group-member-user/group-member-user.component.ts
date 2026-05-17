@@ -1,6 +1,6 @@
 import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { UpperCasePipe } from '@angular/common';
+import { KeyValuePipe, UpperCasePipe } from '@angular/common';
 import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Group } from '../../../../../core/interfaces/group';
@@ -15,7 +15,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
   selector: 'app-group-member-user',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, InitialsComponent, UpperCasePipe, IconComponent],
+  imports: [TranslateModule, InitialsComponent, UpperCasePipe, KeyValuePipe, IconComponent],
   templateUrl: './group-member-user.component.html'
 })
 export class GroupMemberUserComponent {

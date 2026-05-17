@@ -33,6 +33,15 @@
         [placeholder]="'COMPONENTS.EDIT_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT'"
         [limit]="argumentMaxLength()"
         [cosMarkdownTranslateCharacterStatusKey]="'COMPONENTS.EDIT_ARGUMENT.ARGUMENT_TYPE_CHARACTER_LIMIT'" required></textarea>
+      @if (errors()) {
+        <div class="error_label">
+          @for (error of errors() | keyvalue; track error.key) {
+            @for (msg of error.value; track msg) {
+              <div>{{ msg | translate }}</div>
+            }
+          }
+        </div>
+      }
     </form>
   </div>
   <div id="buttons_row">

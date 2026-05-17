@@ -22,6 +22,7 @@ import { Group } from '../../../../core/interfaces/group';
 import { UserStore } from '../../../../core/state/user.store';
 import { of, switchMap, take } from 'rxjs';
 import { SearchResults } from '../../../../core/interfaces/search';
+import { KeyValuePipe, UpperCasePipe } from '@angular/common';
 
 export interface GroupInviteUser {
   userId: string;
@@ -50,7 +51,7 @@ function isEmail(s: string) { return EMAIL_RE.test(s.trim()); }
   imports: [
     TranslateModule, FormsModule, IconComponent, DropdownComponent,
     TypeaheadComponent, TypeaheadItemDirective, TypeaheadSelectDirective, DialogCloseDirective, GroupShareComponent, ButtonComponent,
-    TooltipComponent
+    TooltipComponent, KeyValuePipe, UpperCasePipe
   ],
   templateUrl: './group-invite-dialog.component.html',
   styleUrls: ['./group-invite-dialog.component.scss'],
@@ -71,7 +72,7 @@ export class GroupInviteDialogComponent implements OnInit {
   activeTab = signal<'invite' | 'share'>('invite');
 
   LEVELS = this.memberUserService.LEVELS;
-  selectedLevel = signal(this.LEVELS[0]);
+  selectedLevel = signal(this.LEVELS.read);
 
   inviteMessage = signal('');
   inviteMessageMaxLength = 250;
@@ -81,7 +82,7 @@ export class GroupInviteDialogComponent implements OnInit {
   searchResults = signal<SearchResultUser[]>([]);
   noUsersSelected = signal(false);
 
-  join = signal({ token: this.data.group.join?.token ?? null, level: this.data.group.join?.level ?? this.LEVELS[0] });
+  join = signal({ token: this.data.group.join?.token ?? null, level: this.data.group.join?.level ?? this.LEVELS.read });
   joinUrl = signal('');
   copySuccess = signal(false);
   canShare = computed(() => this.data.group.visibility === 'public' || true);
@@ -94,17 +95,19 @@ export class GroupInviteDialogComponent implements OnInit {
     if (str.length < 2) { this.searchResults.set([]); return; }
     this.searchService.searchUsers(str).pipe(
       switchMap(data => {
-        const rows = data?.results?.public?.users?.rows ?? data?.rows ?? [];
-        if (!rows.length && isEmail(str)) return of([{ name: str, userId: str, email: str }]);
-        return of(rows);
+        const rows = (data as any)?.results?.public?.users?.rows ?? (data as any)?.rows ?? [];
+        const processedRows = rows.map((r: any) => ({ ...r, id: r.id ?? r.userId }));
+        if (!processedRows.length && isEmail(str)) return of([{ name: str, userId: str, email: str, id: str }]);
+        return of(processedRows);
       })
     ).subscribe((rows: SearchResultUser[]) => this.searchResults.set(rows));
   }
 
-  addMember(user?: SearchResultUser) {
+  addMember(user?: any) {
     this.searchResults.set([]);
     if (!user) return;
     const id = user.userId ?? user.id;
+    if (!id) return;
     if (!this.pendingUsers().find(u => (u.userId ?? u.id) === id)) {
       this.pendingUsers.update(u => [...u, { ...user, userId: id, level: this.selectedLevel() } as GroupInviteUser]);
     }
@@ -149,7 +152,7 @@ export class GroupInviteDialogComponent implements OnInit {
     if (!users.length) { this.noUsersSelected.set(true); setTimeout(() => this.noUsersSelected.set(false), 5000); return; }
 
     const invites = users.map(u => ({ userId: u.userId ?? u.id, level: u.level, inviteMessage: this.inviteMessage() }));
-    this.inviteUserService.invite(this.group().id, invites).pipe(take(1)).subscribe(() => this.dialogRef.close(true));
+    this.inviteUserService.invite(this.group().id, invites as any).pipe(take(1)).subscribe(() => this.dialogRef.close(true));
   }
 
   private generateJoinUrl() {

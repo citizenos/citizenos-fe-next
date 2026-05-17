@@ -9,6 +9,7 @@ export interface ListParams {
   orderBy?: string | null;
   sourcePartnerId?: string | null;
   search?: string | null;
+  [key: string]: any;
 }
 
 @Injectable({
@@ -39,13 +40,18 @@ export abstract class ItemsListService<T extends ListParams = ListParams, U = un
     this.items$ = this.loadItems();
   }
 
+  protected setDefaults(defaults: Partial<T>) {
+    this.defaultParams = { ...this.defaultParams, ...defaults };
+    this.params.next({ ...this.defaultParams });
+  }
+
   public loadItems(): Observable<U[]> {
     return combineLatest([this.page, this.params]).pipe(
       debounceTime(0),
       switchMap(([page, paramsValue]) => {
         this.isLoading$.next(true);
         const offset = (page - 1) * paramsValue.limit;
-        return this.getItems({ ...paramsValue, offset, page }).pipe(
+        return this.getItems({ ...paramsValue, offset, page } as T).pipe(
           tap(() => this.isLoading$.next(false)),
           catchError((err) => {
             this.isLoading$.next(false);
@@ -90,5 +96,9 @@ export abstract class ItemsListService<T extends ListParams = ListParams, U = un
   reset() {
     this.params.next({ ...this.defaultParams });
     this.page.next(1);
+  }
+
+  reload() {
+    this.page.next(this.page.value);
   }
 }

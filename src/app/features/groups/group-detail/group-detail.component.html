@@ -296,7 +296,7 @@
                   </button>
                   @if (activeMemberMenuId() === member.id) {
                     <div class="options">
-                      @for (level of MEMBER_LEVELS; track level) {
+                      @for (level of MEMBER_LEVELS(); track level) {
                         <button type="button" class="option" (click)="updateMemberLevel(member, level); activeMemberMenuId.set(null)">
                           <div class="icon_wrap">
                             <cos-icon name="settings" [size]="16"></cos-icon>

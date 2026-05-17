@@ -15,6 +15,7 @@ export const UserStore = signalStore(
   withState(initialState),
   withComputed((store) => ({
     displayName: computed(() => store.user()?.name ?? 'Guest'),
+    authPrefix: computed(() => store.isAuthenticated() ? '/api/users/self' : '/api'),
   })),
   withMethods((store) => {
     const userService = inject(UserService);

@@ -17,6 +17,7 @@ import {
   EMPTY,
   debounceTime,
   forkJoin,
+  take
 } from 'rxjs';
 
 import { GroupDetailService } from '../../../core/services/group-detail.service';
@@ -81,7 +82,7 @@ export class GroupDetailComponent {
   private seoService = inject(SeoService);
 
   TOPIC_STATUSES = ['draft', 'ideation', 'inProgress', 'voting', 'followUp', 'closed'];
-  MEMBER_LEVELS = this.groupMemberUserService.LEVELS;
+  MEMBER_LEVELS = computed(() => Object.values(this.groupMemberUserService.LEVELS));
   TOPIC_LIMIT = 12;
   MEMBER_LIMIT = 20;
 
@@ -298,11 +299,11 @@ export class GroupDetailComponent {
     this.groupMemberUserService.loadMembers(this.groupId(), {
       limit: this.MEMBER_LIMIT,
       offset,
-      search: this.memberSearch() || undefined,
-      include: this.isAdmin() ? 'invite' : undefined,
-    }).subscribe(result => {
-      this.members.set(result.rows);
-      this.membersCount.set(result.count);
+      search: this.memberSearch() || '',
+      include: this.isAdmin() ? 'invite' : ''
+    }).pipe(take(1)).subscribe((res) => {
+      this.members.set(res.rows);
+      this.membersCount.set(res.count);
     });
   }
 

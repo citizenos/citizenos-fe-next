@@ -35,18 +35,18 @@ export class IdeaReactionsComponent implements OnInit {
   }
 
   loadReactions() {
-    this.ideationService.getIdeaVotes({
+    this.ideationService.getIdeaVoters({
       topicId: this.data.topicId,
       ideationId: this.data.ideationId,
       ideaId: this.data.ideaId,
       limit: this.itemsPerPage,
       offset: (this.page() - 1) * this.itemsPerPage
-    }).subscribe((res) => {
-      this.voteItems.set(res.rows.map(row => ({
+    }).subscribe((res: any) => {
+      this.voteItems.set(res.rows.map((row: any) => ({
         ...row,
         vote: row.value === 1 ? 'up' : 'down'
       })));
-      this.totalPages.set(Math.ceil(res.countTotal / this.itemsPerPage));
+      this.totalPages.set(Math.ceil(res.count / this.itemsPerPage));
     });
   }
 

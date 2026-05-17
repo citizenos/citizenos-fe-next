@@ -6,6 +6,7 @@ import { Topic } from '../interfaces/topic';
 import { Vote, VoteOption, VoteWithOptions } from '../interfaces/vote';
 import { TopicService } from './topic.service';
 import { ConfigStore } from '../state/config.store';
+import { UserStore } from '../state/user.store';
 import { ApiResponse } from '../interfaces/api-response';
 
 interface VoteStatusData {
@@ -32,6 +33,7 @@ export class TopicVoteService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
   private topicService = inject(TopicService);
+  private userStore = inject(UserStore);
 
   readonly VOTE_TYPES = {
     regular: 'regular',
@@ -63,41 +65,41 @@ export class TopicVoteService {
   }
 
   query(params: VoteParams): Observable<VoteWithOptions[]> {
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/votes`);
+    const path = this.getAbsoluteUrlApi(`/topics/${params.topicId}/votes`);
     return this.http.get<ApiResponse<VoteWithOptions[]>>(path, { withCredentials: true, params: params as Record<string, string | number>, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   get(params?: VoteParams): Observable<VoteWithOptions> {
     const voteId = params?.voteId || params?.id;
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params?.topicId}/votes/${voteId}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${params?.topicId}/votes/${voteId}`);
     return this.http.get<ApiResponse<VoteWithOptions>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   save(data: (Partial<Vote> | Partial<VoteWithOptions>) & { topicId: string }): Observable<VoteWithOptions> {
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${data.topicId}/votes`);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/votes`);
     return this.http.post<ApiResponse<VoteWithOptions>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   update(data: (Partial<Vote> | Partial<VoteWithOptions>) & { topicId: string; voteId?: string; id?: string }): Observable<VoteWithOptions> {
     const voteId = data.voteId || data.id;
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${data.topicId}/votes/${voteId}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/votes/${voteId}`);
     return this.http.put<ApiResponse<VoteWithOptions>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   delete(data: { topicId: string; voteId?: string; id?: string }): Observable<unknown> {
     const voteId = data.voteId || data.id;
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${data.topicId}/votes/${voteId}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/votes/${voteId}`);
     return this.http.delete<ApiResponse<unknown>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   cast(data: { topicId: string; voteId?: string; id?: string; options?: VoteOption[]; [key: string]: unknown }): Observable<VoteCastResponse> {
     const voteId = data.voteId || data.id;
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${data.topicId}/votes/${voteId}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/votes/${voteId}`);
 
     return this.http.post<ApiResponse<VoteCastResponse>>(path, data, { withCredentials: true, observe: 'response', responseType: 'json' })
       .pipe(
@@ -112,13 +114,13 @@ export class TopicVoteService {
 
   status(params: { topicId: string; voteId?: string; id?: string; token: string }): Observable<ApiResponse<VoteStatusData>> {
     const voteId = params.voteId || params.id;
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${params.topicId}/votes/${voteId}/status`);
+    const path = this.getAbsoluteUrlApi(`/topics/${params.topicId}/votes/${voteId}/status`);
     return this.http.get<ApiResponse<VoteStatusData>>(path, { params: { token: params.token }, withCredentials: true, observe: 'body', responseType: 'json' });
   }
 
   sign(data: { topicId: string; voteId?: string; id?: string; [key: string]: unknown }): Observable<VoteCastResponse> {
     const voteId = data.voteId || data.id;
-    const path = this.getAbsoluteUrlApi(`/api/users/self/topics/${data.topicId}/votes/${voteId}/sign`);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/votes/${voteId}/sign`);
     return this.http.post<ApiResponse<VoteCastResponse>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
@@ -155,6 +157,7 @@ export class TopicVoteService {
   }
 
   private getAbsoluteUrlApi(path: string): string {
-    return `${this.apiUrl}${path}`;
+    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+    return `${this.apiUrl}${prefix}${path}`;
   }
 }

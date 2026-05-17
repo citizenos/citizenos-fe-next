@@ -1,71 +1,62 @@
-<div class="overlay" dialogClose></div>
-<div class="dialog_wrap">
-  <div class="dialog">
-    <div class="dialog_header">
-      <div class="header_text">
-        <h4 class="title">{{ 'COMPONENTS.GROUP_INVITE_DIALOG.HEADING' | translate }}</h4>
-        <div class="dialog_close">
-          <button type="button" class="btn_dialog_close icon" dialogClose [attr.aria-label]="'CONTROL.CLOSE' | translate">
-            <cos-icon name="nav-close"></cos-icon>
-          </button>
-        </div>
-      </div>
+<div id="modal_group_invite" class="modal_group_invite">
+  <div class="modal_header">
+    <div class="header_text">
+      {{ 'VIEWS.GROUP.HEADING_INVITE_MEMBERS' | translate }}
     </div>
+    <div class="close_icon" dialogClose>
+      <cos-icon name="close" [size]="24"></cos-icon>
+    </div>
+  </div>
 
-    <div class="dialog_tabs_wrap" role="tablist">
-      <button type="button" class="dialog_tab" role="tab" [attr.aria-selected]="activeTab() === 'invite'" [class.active]="activeTab() === 'invite'" (click)="activeTab.set('invite')">
-        {{ 'COMPONENTS.GROUP_INVITE_DIALOG.TAB_INVITE' | translate }}
+  <div class="modal_content">
+    <div class="tabs_nav">
+      <button type="button" class="tab_button" [class.active]="activeTab() === 'invite'" (click)="activeTab.set('invite')">
+        {{ 'VIEWS.GROUP.TAB_INVITE' | translate }}
       </button>
-      <button type="button" class="dialog_tab" role="tab" [attr.aria-selected]="activeTab() === 'share'" [class.active]="activeTab() === 'share'" (click)="activeTab.set('share')">
-        {{ 'COMPONENTS.GROUP_INVITE_DIALOG.TAB_SHARE' | translate }}
+      <button type="button" class="tab_button" [class.active]="activeTab() === 'share'" (click)="activeTab.set('share')">
+        {{ 'VIEWS.GROUP.TAB_SHARE' | translate }}
       </button>
     </div>
 
-    <div class="dialog_content">
-
-      <!-- INVITE TAB -->
+    <div class="tab_content">
       @if (activeTab() === 'invite') {
-        <div class="content_section">
-          <div class="section_content_wrap">
-            <label class="bold" for="invite_message">{{ 'COMPONENTS.GROUP_INVITE.MESSAGE_DESC' | translate }}</label>
-            <textarea
-              id="invite_message"
-              class="invite_textarea"
-              rows="3"
-              [placeholder]="'COMPONENTS.GROUP_INVITE.MESSAGE_PLACEHOLDER' | translate"
-              [maxlength]="inviteMessageMaxLength"
-              [ngModel]="inviteMessage()"
-              (ngModelChange)="inviteMessage.set($event)"
-            ></textarea>
-            <div class="char_limit">{{ inviteMessage().length }}/{{ inviteMessageMaxLength }}</div>
-
-            <div class="bold">{{ 'COMPONENTS.GROUP_INVITE.EMAIL_DESC' | translate }}</div>
-
+        <div class="invite_tab">
+          <div class="search_section">
             <cos-typeahead
-              [placeholder]="'COMPONENTS.GROUP_INVITE.PLACEHOLDER_SEARCH' | translate"
+              [placeholder]="'VIEWS.GROUP.PLACEHOLDER_SEARCH_USERS' | translate"
               (search)="onSearch($event)"
-              (enterAction)="addEmail($event.text)"
             >
-              @for (user of searchResults(); track (user.userId || user.id)) {
-                <div [typeaheadItem]="{ id: user.userId || user.id || '', user }" [typeaheadSelect]="{ id: user.userId || user.id || '', user }" (select)="addMember(user)" class="typeahead-item" role="option" tabindex="0" aria-selected="false">{{ user.name }}</div>
+              @for (user of searchResults(); track user.id) {
+                <div [typeaheadItem]="{ id: user.id || '', user }" [typeaheadSelect]="{ id: user.id || '', user }" (select)="addMember(user)" class="user_search_item" role="button" tabindex="0">
+                  <div class="user_info">
+                    <div class="user_name">{{ user.name }}</div>
+                    @if (user.email) {
+                      <div class="user_email">{{ user.email }}</div>
+                    }
+                  </div>
+                </div>
               }
             </cos-typeahead>
+          </div>
 
-            @if (invalidEmails().length) {
-              <div class="invalid_section">
-                <div class="bold error_text">{{ 'COMPONENTS.GROUP_INVITE.INVALID_EMAILS_HEADER' | translate }}</div>
-                @for (email of invalidEmails(); track $index) {
-                  <div class="invalid_row">
-                    <span>{{ email }}</span>
-                    <button type="button" (click)="removeInvalid($index)" [attr.aria-label]="'CONTROL.DELETE' | translate"><cos-icon name="close" [size]="16"></cos-icon></button>
-                  </div>
-                }
+          <div class="invite_options">
+            <div class="option_item">
+              <label class="label">{{ 'VIEWS.GROUP.LBL_INVITE_MESSAGE' | translate }}</label>
+              <textarea
+                class="message_area"
+                [ngModel]="inviteMessage()"
+                (ngModelChange)="inviteMessage.set($event)"
+                [placeholder]="'VIEWS.GROUP.PLACEHOLDER_INVITE_MESSAGE' | translate"
+                [attr.maxlength]="inviteMessageMaxLength">
+              </textarea>
+              <div class="char_count">
+                {{ inviteMessage().length }}/{{ inviteMessageMaxLength }}
               </div>
-            }
+            </div>
 
-            @if (pendingUsers().length) {
-              <div class="level_row">
-                <p id="all_levels_label" class="level_row_label">{{ 'COMPONENTS.GROUP_INVITE.LBL_ALL_LEVEL' | translate }}</p>
+            <div class="option_item">
+              <div class="level_select_header">
+                <label id="all_levels_label" class="label">{{ 'VIEWS.GROUP.LBL_MEMBER_LEVEL' | translate }}</label>
                 <cos-tooltip
                   [title]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_HEADING' | translate"
                   [description]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate">
@@ -75,9 +66,9 @@
                     {{ 'TXT_GROUP_LEVELS_' + selectedLevel().toUpperCase() | translate }}
                   </div>
                   <div id="all_levels_options" options role="listbox">
-                    @for (level of LEVELS; track level) {
-                      <div class="option" (click)="updateAllLevels(level)" (keydown.enter)="updateAllLevels(level)" role="option" tabindex="0" [attr.aria-selected]="selectedLevel() === level">
-                        {{ 'TXT_GROUP_LEVELS_' + level.toUpperCase() | translate }}
+                    @for (level of LEVELS | keyvalue; track level.key) {
+                      <div class="option" (click)="updateAllLevels(level.value)" (keydown.enter)="updateAllLevels(level.value)" role="option" tabindex="0" [attr.aria-selected]="selectedLevel() === level.value">
+                        {{ 'TXT_GROUP_LEVELS_' + level.value.toUpperCase() | translate }}
                       </div>
                     }
                   </div>
@@ -93,44 +84,35 @@
                         {{ 'TXT_GROUP_LEVELS_' + user.level.toUpperCase() | translate }}
                       </div>
                       <div [id]="'member_levels_' + user.userId" options role="listbox">
-                        @for (level of LEVELS; track level) {
-                          <div class="option" (click)="updateLevel(user, level)" (keydown.enter)="updateLevel(user, level)" role="option" tabindex="0" [attr.aria-selected]="user.level === level">
-                            {{ 'TXT_GROUP_LEVELS_' + level.toUpperCase() | translate }}
+                        @for (level of LEVELS | keyvalue; track level.key) {
+                          <div class="option" (click)="updateLevel(user, level.value)" (keydown.enter)="updateLevel(user, level.value)" role="option" tabindex="0" [attr.aria-selected]="user.level === level.value">
+                            {{ 'TXT_GROUP_LEVELS_' + level.value.toUpperCase() | translate }}
                           </div>
                         }
                       </div>
                     </cos-dropdown>
-                    <button type="button" class="remove_btn" (click)="removeMember(user)" [attr.aria-label]="'CONTROL.DELETE' | translate"><cos-icon name="close" [size]="16"></cos-icon></button>
+                    <button type="button" class="btn_icon_close" (click)="removeMember(user)">
+                      <cos-icon name="close" [size]="16"></cos-icon>
+                    </button>
                   </div>
                 }
               </div>
-            }
+            </div>
+          </div>
+          
+          @if (noUsersSelected()) {
+            <div class="error_msg">{{ 'VIEWS.GROUP.ERROR_NO_USERS_SELECTED' | translate }}</div>
+          }
 
-            @if (noUsersSelected()) {
-              <div class="inline_error">{{ 'COMPONENTS.GROUP_INVITE_DIALOG.NO_USERS_SELECTED' | translate }}</div>
-            }
+          <div class="footer_actions">
+            <cos-button (click)="invite()" [isDisabled]="!pendingUsers().length">
+              {{ 'VIEWS.GROUP.BTN_SEND_INVITES' | translate }}
+            </cos-button>
           </div>
         </div>
-      }
-
-      <!-- SHARE TAB -->
-      @if (activeTab() === 'share') {
+      } @else if (activeTab() === 'share') {
         <app-group-share [group]="group()"></app-group-share>
       }
-    </div>
-
-    <div class="dialog_footer with_buttons">
-      <div></div>
-      <div class="button_row">
-        <cos-button variant="secondary" dialogClose>
-          {{ 'COMPONENTS.GROUP_INVITE_DIALOG.LNK_CANCEL' | translate }}
-        </cos-button>
-        @if (activeTab() === 'invite') {
-          <cos-button (clicked)="invite()">
-            {{ 'COMPONENTS.GROUP_INVITE_DIALOG.BTN_SAVE' | translate }}
-          </cos-button>
-        }
-      </div>
     </div>
   </div>
 </div>

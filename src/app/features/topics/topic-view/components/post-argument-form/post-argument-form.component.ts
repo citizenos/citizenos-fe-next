@@ -43,7 +43,7 @@ export class PostArgumentFormComponent implements OnInit {
   }
 
   argumentMaxLength() {
-    return this.argumentService.ARGUMENT_TYPES_MAXLENGTH[this.argumentType() as string] || this.argumentService.ARGUMENT_TYPES_MAXLENGTH.pro;
+    return (this.argumentService.ARGUMENT_TYPES_MAXLENGTH as any)[this.argumentType()] || this.argumentService.ARGUMENT_TYPES_MAXLENGTH.pro;
   }
 
   close() {

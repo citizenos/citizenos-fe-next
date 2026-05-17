@@ -77,15 +77,16 @@ export class GroupSettingsDialogComponent {
   }
 
   save() {
-    const saveGroup: Partial<Group> = {
+    const saveGroup: Partial<Group> & { id: string } = {
       ...this.group(),
+      id: this.group().id!,
       rules: this.rules().map(r => r.rule).filter(r => r.trim()),
     };
 
     this.groupDetailService.update(saveGroup).pipe(take(1)).subscribe({
       next: (updated) => {
         if (this.imageFile()) {
-          this.groupDetailService.uploadGroupImage(this.imageFile()!, updated.id).pipe(
+          this.groupDetailService.uploadGroupImage(updated.id, this.imageFile()!).pipe(
             take(1)
           ).subscribe(() => this.dialogRef.close(updated));
         } else {

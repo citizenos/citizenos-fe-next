@@ -105,7 +105,7 @@
           (showDeletedArgument)="showDeletedArgument.set($event)"></app-argument-deleted>
         } @else {
         @if (argument().parent?.id) {
-          <a class="parent_author" (click)="goToParentArgument()">
+          <a class="parent_author" (click)="goToParentArgument()" (keydown.enter)="goToParentArgument()" tabindex="0" role="button">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M11 11L8 8L11 5" stroke="#2C3B47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M5 11L2 8L5 5" stroke="#2C3B47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -131,7 +131,7 @@
           <div class="button_group">
             <button type="button" class="btn_vote_argument" (click)="vote(1)"
               [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_UP' | translate">
-              @if (argument().votes?.up?.selected) {
+              @if (votes()?.up?.selected) {
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M7.57088 1.46709C8.33725 0.61557 9.75 1.15769 9.75 2.30329V5.25032H13.5C14.4665 5.25032 15.25 6.03382 15.25 7.00032V7.78371C15.25 8.03352 15.1965 8.28044 15.0931 8.50787L12.9492 13.2245C12.6653 13.8492 12.0423 14.2503 11.3561 14.2503L4.25 14.2501V5.15696L7.57088 1.46709ZM2.75 5.25H2C1.0335 5.25 0.25 6.0335 0.25 7V12.5C0.25 13.4665 1.0335 14.25 2 14.25L2.75 14.25V5.25Z"
@@ -147,14 +147,14 @@
                 </svg>
               }
             </button>
-            <button type="button" class="btn_small_plain count_pro" [class.bold]="argument().votes?.up?.selected" (click)="showVoters()">
-              {{ argument().votes?.up?.count || 0 }}
+            <button type="button" class="btn_small_plain count_pro" [class.bold]="votes()?.up?.selected" (click)="showVoters()">
+              {{ votes()?.up?.count || 0 }}
             </button>
           </div>
           <div class="button_group">
             <button type="button" class="btn_vote_argument" (click)="vote(-1)"
               [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_DOWN' | translate">
-              @if (argument().votes?.down?.selected) {
+              @if (votes()?.down?.selected) {
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M7.92912 13.8337C7.16275 14.6852 5.75 14.1431 5.75 12.9975L5.75 10.0505L2 10.0505C1.0335 10.0505 0.25 9.26697 0.249999 8.30047L0.249999 7.51708C0.249999 7.26726 0.303483 7.02034 0.406861 6.79292L2.55077 2.07631C2.83474 1.45157 3.45766 1.05047 4.14391 1.05047L11.25 1.05071L11.25 10.1438L7.92912 13.8337ZM12.75 10.0508L13.5 10.0508C14.4665 10.0508 15.25 9.26728 15.25 8.30078L15.25 2.80078C15.25 1.83428 14.4665 1.05078 13.5 1.05078L12.75 1.05076L12.75 10.0508Z"
@@ -170,8 +170,8 @@
                 </svg>
               }
             </button>
-            <button type="button" class="btn_small_plain count_con" [class.bold]="argument().votes?.down?.selected" (click)="showVoters()">
-              {{ argument().votes?.down?.count || 0 }}
+            <button type="button" class="btn_small_plain count_con" [class.bold]="votes()?.down?.selected" (click)="showVoters()">
+              {{ votes()?.down?.count || 0 }}
             </button>
           </div>
         </div>
@@ -208,7 +208,7 @@
 </div>
 
 @if (mobileActions()) {
-  <div class="overlay" (click)="mobileActions.set(false)"></div>
+  <div class="overlay" (click)="mobileActions.set(false)" (keydown.escape)="mobileActions.set(false)" tabindex="-1"></div>
   <div class="mobile_actions_wrap mobile_show" [class.show]="mobileActions()">
     <div class="heading_wrap">
       <span>{{ 'COMPONENTS.ARGUMENT.LBL_ARGUMENT_ACTIONS' | translate }}</span>

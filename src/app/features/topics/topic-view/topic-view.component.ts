@@ -163,9 +163,10 @@ export class TopicViewComponent implements OnInit {
     combineLatest([
       this.route.params,
       this.route.queryParams,
-      this.translate.onLangChange.pipe(startWith(null))
+      this.translate.onLangChange.pipe(startWith(null)),
+      toObservable(this.userStore.isAuthenticated)
     ]).pipe(
-      switchMap(([params, _queryParams]) => {
+      switchMap(([params, _queryParams, _langChange, _isAuthenticated]) => {
         const topicId = params['topicId'];
         if (topicId) {
           this.topicId = topicId;
@@ -430,7 +431,8 @@ export class TopicViewComponent implements OnInit {
 
   downloadAttachment(attachment: TopicAttachment) {
     if (attachment.source === 'upload') {
-      const url = `${this.topicService['apiUrl']}/api/users/self/topics/${this.topicId}/attachments/${attachment.id}/download`;
+      const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+      const url = `${this.topicService['apiUrl']}${prefix}/topics/${this.topicId}/attachments/${attachment.id}/download`;
       window.open(url, '_blank');
     } else {
       window.open(attachment.link, '_blank');
