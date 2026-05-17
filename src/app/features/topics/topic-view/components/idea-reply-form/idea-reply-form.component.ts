@@ -89,6 +89,7 @@ export class IdeaReplyFormComponent {
     } else {
       const saveParams = {
         ...data,
+        type: 'reply',
         parentId: this.argument()?.id,
         parentVersion: (Array.isArray(this.argument()?.edits) ? this.argument()?.edits?.length : Object.keys(this.argument()?.edits || {}).length) || 0
       };

@@ -325,6 +325,21 @@ export class IdeaDialogComponent implements OnInit {
   }
 
   onReplyAdded() {
-    this.loadIdeaData(this.idea());
+    this.reloadReplies();
+    this.showReplies.set(true);
+  }
+
+  private reloadReplies() {
+    const idea = this.idea();
+    this.replies$ = this.ideationService.getIdeaComments({
+      topicId: this.topic().id,
+      ideationId: this.ideation().id,
+      ideaId: idea.id
+    }).pipe(
+      map(res => {
+        this.replyCount.set(res.count);
+        return this.buildReplyTree(res.rows);
+      })
+    );
   }
 }
