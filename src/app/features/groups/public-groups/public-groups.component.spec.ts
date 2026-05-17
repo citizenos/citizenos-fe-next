@@ -16,7 +16,7 @@ const mockGroupService: Partial<PublicGroupService> = {
   loadPage: vi.fn(),
 };
 
-const mockUserStore: Partial<UserStore> = {
+const mockUserStore: { isAuthenticated: any; user: any } = {
   isAuthenticated: vi.fn().mockReturnValue(false) as unknown as () => boolean,
   user: vi.fn().mockReturnValue(null) as unknown as () => null,
 };

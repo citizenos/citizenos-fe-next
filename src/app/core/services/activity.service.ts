@@ -68,6 +68,7 @@ export class ActivityService {
 
   private limit = 10;
   private offset = 0;
+  readonly filter = signal<string>('all');
   private ctx: ActivityContext = {};
   private lastViewTime: string | null = null;
 
@@ -78,6 +79,11 @@ export class ActivityService {
 
   loadItems(ctx?: ActivityContext): Observable<ActivityGroup[]> {
     this.ctx = ctx ?? {};
+    if (this.ctx.include) {
+      this.filter.set(this.ctx.include);
+    } else {
+      this.filter.set('all');
+    }
     this.offset = 0;
     this.loadTrigger$.next({ offset: 0, ctx: this.ctx });
     return this.loadTrigger$.pipe(

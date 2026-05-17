@@ -43,11 +43,11 @@
 
             <cos-typeahead
               [placeholder]="'COMPONENTS.GROUP_INVITE.PLACEHOLDER_SEARCH' | translate"
-              (searchQuery)="onSearch($event)"
+              (search)="onSearch($event)"
               (enterAction)="addEmail($event.text)"
             >
-              @for (user of searchResults(); track user.userId) {
-                <div class="typeahead-item" (mousedown)="addMember(user)" role="option" tabindex="0" (keydown.enter)="addMember(user)" aria-selected="false">{{ user.name }}</div>
+              @for (user of searchResults(); track (user.userId || user.id)) {
+                <div [typeaheadItem]="{ id: user.userId || user.id || '', user }" [typeaheadSelect]="{ id: user.userId || user.id || '', user }" (select)="addMember(user)" class="typeahead-item" role="option" tabindex="0" aria-selected="false">{{ user.name }}</div>
               }
             </cos-typeahead>
 

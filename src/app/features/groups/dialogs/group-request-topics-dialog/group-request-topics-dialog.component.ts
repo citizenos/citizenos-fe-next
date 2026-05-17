@@ -7,7 +7,7 @@ import { DialogCloseDirective } from '../../../../shared/dialog';
 import { GroupRequestTopicService } from '../../../../core/services/group-request-topic.service';
 import { SearchService } from '../../../../core/services/search.service';
 import { NotificationService } from '../../../../core/services/notification.service';
-import { TypeaheadComponent } from '../../../../shared/components/typeahead/typeahead.component';
+import { TypeaheadComponent, TypeaheadItemDirective, TypeaheadSelectDirective } from '../../../../shared/components/typeahead/typeahead.component';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { Group } from '../../../../core/interfaces/group';
 import { Topic } from '../../../../core/interfaces/topic';
@@ -17,7 +17,7 @@ import { forkJoin, Observable, of, switchMap, take } from 'rxjs';
   selector: 'cos-group-request-topics-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, FormsModule, TypeaheadComponent, IconComponent, DialogCloseDirective],
+  imports: [TranslateModule, FormsModule, TypeaheadComponent, TypeaheadItemDirective, TypeaheadSelectDirective, IconComponent, DialogCloseDirective],
   templateUrl: './group-request-topics-dialog.component.html',
   styleUrls: ['./group-request-topics-dialog.component.scss'],
 })

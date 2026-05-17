@@ -16,9 +16,9 @@ const mockArgument: Argument = {
   subject: 'This is good',
   text: '<p>Body text</p>',
   creator: { id: 'u1', name: 'Alice' },
-  votes: { up: { count: 2, selected: false }, down: { count: 0, selected: false } },
+  votes: { up: { count: 2, selected: false }, down: { count: 0, selected: false }, count: 2 },
   replies: { rows: [], count: 0 },
-  edits: [{ subject: 'This is good', text: '<p>Body text</p>', createdAt: '2024-01-01', type: 'pro' }],
+  edits: { '0': { subject: 'This is good', text: '<p>Body text</p>', createdAt: '2024-01-01' } },
   createdAt: '2024-01-01',
   deletedAt: null,
 };
@@ -57,11 +57,6 @@ describe('ArgumentComponent', () => {
     component.ngOnInit();
   });
 
-  it('should initialise edit signals from argument', () => {
-    expect(component.editSubject()).toBe('This is good');
-    expect(component.editText()).toBe('<p>Body text</p>');
-  });
-
   it('argumentId should combine id and version', () => {
     expect(component.argumentId()).toBe('arg-1_v0');
   });
@@ -96,19 +91,5 @@ describe('ArgumentComponent', () => {
     expect(mockDialog.open).toHaveBeenCalled();
     expect(mockArgumentService.delete).toHaveBeenCalled();
     expect(deletedEmit).toHaveBeenCalled();
-  });
-
-  it('postReply should call save and emit deleted for parent reload', () => {
-    const deletedEmit = vi.spyOn(component.deleted, 'emit');
-    component.replyText.set('My reply');
-    component.postReply();
-    expect(mockArgumentService.save).toHaveBeenCalledWith(expect.objectContaining({ type: 'reply' }));
-    expect(deletedEmit).toHaveBeenCalled();
-  });
-
-  it('postReply should do nothing when text is empty', () => {
-    component.replyText.set('  ');
-    component.postReply();
-    expect(mockArgumentService.save).not.toHaveBeenCalled();
   });
 });

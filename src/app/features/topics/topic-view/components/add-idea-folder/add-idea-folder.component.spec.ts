@@ -9,6 +9,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { Component, Input } from '@angular/core';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { IdeationFolder } from '../../../../../core/interfaces/ideation';
 
 @Component({
   selector: 'cos-icon',
@@ -93,8 +94,8 @@ describe('AddIdeaFolderComponent', () => {
   });
 
   it('should sync changes to existing folder assignments', () => {
-    component.toggleFolder({ id: 'folder2' }); // Add folder2
-    component.toggleFolder({ id: 'folder1' }); // Remove folder1
+    component.toggleFolder({ id: 'folder2' } as IdeationFolder); // Add folder2
+    component.toggleFolder({ id: 'folder1' } as IdeationFolder); // Remove folder1
     component.save();
 
     expect(mockIdeationService.addFoldersToIdea).toHaveBeenCalledWith(

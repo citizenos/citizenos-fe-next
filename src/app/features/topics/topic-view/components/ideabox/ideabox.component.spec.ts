@@ -59,9 +59,9 @@ describe('IdeaboxComponent', () => {
     return runInInjectionContext(injector, () => {
       const comp = new IdeaboxComponent();
       TestBed.runInInjectionContext(() => {
-        (comp as unknown as { idea: vi.Mock }).idea = vi.fn().mockReturnValue(mockIdea);
-        (comp as unknown as { topic: vi.Mock }).topic = vi.fn().mockReturnValue(mockTopic);
-        (comp as unknown as { ideation: vi.Mock }).ideation = vi.fn().mockReturnValue(mockIdeation);
+        (comp as unknown as { idea: unknown }).idea = vi.fn().mockReturnValue(mockIdea);
+        (comp as unknown as { topic: unknown }).topic = vi.fn().mockReturnValue(mockTopic);
+        (comp as unknown as { ideation: unknown }).ideation = vi.fn().mockReturnValue(mockIdeation);
       });
       return comp;
     });

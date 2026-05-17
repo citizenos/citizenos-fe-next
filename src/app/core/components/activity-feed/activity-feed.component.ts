@@ -1,22 +1,26 @@
-import { Component, ChangeDetectionStrategy, inject, signal, effect } from '@angular/core';
-import { tap } from 'rxjs';
+import { Component, ChangeDetectionStrategy, inject, signal, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { switchMap, tap, combineLatest, map, of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivityService, ActivityGroup } from '../../services/activity.service';
 import { ActivityFeedState } from '../../state/activity-feed.state';
 import { ActivityItemComponent } from '../../../shared/components/activity-item/activity-item.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { CosDropdownDirective } from '../../../shared/directives/cos-dropdown.directive';
+import { TourItemDirective } from '../../../shared/directives/tour-item.directive';
 
 @Component({
   selector: 'cos-activity-feed',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, ActivityItemComponent, IconComponent],
+  imports: [TranslateModule, ActivityItemComponent, IconComponent, CosDropdownDirective, TourItemDirective],
   templateUrl: './activity-feed.component.html',
   styleUrls: ['./activity-feed.component.scss']
 })
 export class ActivityFeedComponent {
   readonly feedState = inject(ActivityFeedState);
-  private activityService = inject(ActivityService);
+  readonly activityService = inject(ActivityService);
+  private destroyRef = inject(DestroyRef);
 
   readonly activities = signal<ActivityGroup[]>([]);
   readonly hasMore = this.activityService.hasMore;
@@ -28,19 +32,38 @@ export class ActivityFeedComponent {
   }
 
   constructor() {
-    effect(() => {
-      if (!this.feedState.isOpen()) return;
-      this.activities.set([]);
-      this.activityService.reset();
-      this.activityService
-        .loadItems({ groupId: this.feedState.groupId(), topicId: this.feedState.topicId() })
-        .pipe(
-          tap(page => {
-            this.activities.update(prev => [...prev, ...page]);
-          })
-        )
-        .subscribe();
-    });
+    // Single reactive pipeline to handle feed opening, context changes, and filtering
+    combineLatest([
+      toObservable(this.feedState.isOpen),
+      toObservable(this.feedState.groupId),
+      toObservable(this.feedState.topicId),
+      toObservable(this.activityService.filter)
+    ]).pipe(
+      map(([isOpen, groupId, topicId, filterVal]) => ({ isOpen, groupId, topicId, filterVal })),
+      switchMap(({ isOpen, groupId, topicId, filterVal }) => {
+        if (!isOpen) {
+          this.activities.set([]);
+          return of([]);
+        }
+        this.activities.set([]);
+        this.activityService.reset();
+        return this.activityService.loadItems({ 
+          groupId, 
+          topicId, 
+          include: filterVal === 'all' ? null : filterVal 
+        });
+      }),
+      tap(page => {
+        if (this.feedState.isOpen()) {
+          this.activities.update(prev => [...prev, ...page]);
+        }
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
+  }
+
+  filterActivities(filter: string) {
+    this.activityService.filter.set(filter);
   }
 
   onScroll(event: Event): void {

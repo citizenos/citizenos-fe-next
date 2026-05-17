@@ -4,11 +4,12 @@
       <div class="heading">{{ 'COMPONENTS.ARGUMENT_REPLY.HEADING' | translate }}</div>
     </div>
     <form name="argumentReply">
-      <textarea id="argument_reply_text" name="text"
-        [ngModel]="replyText()" (ngModelChange)="replyText.set($event)"
+      <textarea cosMarkdown id="argument_reply_text" name="text"
+        [item]="replyText()" (itemChange)="replyText.set($event)"
         class="gray_borders" [class.error_input]="errors()?.text"
-        [placeholder]="'COMPONENTS.ARGUMENT_REPLY.PLACEHOLDER_WRITE_REPLY_HERE' | translate"
-        [attr.maxlength]="ARGUMENT_TYPES_MAXLENGTH['reply']"></textarea>
+        [placeholder]="'COMPONENTS.ARGUMENT_REPLY.PLACEHOLDER_WRITE_REPLY_HERE'"
+        [limit]="ARGUMENT_TYPES_MAXLENGTH['reply']"
+        [cosMarkdownTranslateCharacterStatusKey]="'COMPONENTS.ARGUMENT_REPLY.CHARACTER_LIMIT'"></textarea>
       @if (errors()?.text) {
         <label for="argument_reply_text" class="error_label">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

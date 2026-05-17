@@ -5,7 +5,7 @@ import { DialogRef } from '../../../../shared/dialog/dialog-ref';
 import { DialogCloseDirective } from '../../../../shared/dialog';
 import { GroupMemberTopicService } from '../../../../core/services/group-member-topic.service';
 import { SearchService } from '../../../../core/services/search.service';
-import { TypeaheadComponent } from '../../../../shared/components/typeahead/typeahead.component';
+import { TypeaheadComponent, TypeaheadItemDirective, TypeaheadSelectDirective } from '../../../../shared/components/typeahead/typeahead.component';
 import { DropdownComponent } from '../../../../shared/components/dropdown/dropdown.component';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { Group } from '../../../../core/interfaces/group';
@@ -19,7 +19,7 @@ const LEVELS = ['read', 'admin'];
   selector: 'cos-group-add-topics-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, TypeaheadComponent, DropdownComponent, IconComponent, DialogCloseDirective],
+  imports: [TranslateModule, TypeaheadComponent, TypeaheadItemDirective, TypeaheadSelectDirective, DropdownComponent, IconComponent, DialogCloseDirective],
   templateUrl: './group-add-topics-dialog.component.html',
   styleUrls: ['./group-add-topics-dialog.component.scss'],
 })

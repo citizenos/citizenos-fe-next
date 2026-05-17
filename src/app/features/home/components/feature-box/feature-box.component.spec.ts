@@ -11,7 +11,7 @@ describe('FeatureBoxComponent', () => {
   let component: FeatureBoxComponent;
   let fixture: ComponentFixture<FeatureBoxComponent>;
   let componentRef: ComponentRef<FeatureBoxComponent>;
-  let mockUserStore: unknown;
+  let mockUserStore: { isAuthenticated: ReturnType<typeof signal<boolean>> };
 
   beforeEach(async () => {
     mockUserStore = {

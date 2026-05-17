@@ -10,10 +10,11 @@ import { VoteDelegationService } from '../../../../../core/services/vote-delegat
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { NotificationService } from '../../../../../core/services/notification.service';
+import { TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
 
 const mockTopic = { id: 't1', voteId: 'v1' };
 const mockUser = { id: 'me', name: 'Me' };
-const mockDelegate = { id: 'u2', name: 'Bob' };
+const mockDelegate = { id: 'user2', name: 'Bob', level: 'read' } as unknown as TopicMemberUser;
 const mockDialogRef = { close: vi.fn() };
 const mockMemberUserService = { query: vi.fn(() => of({ rows: [mockDelegate] })) };
 const mockVoteDelegationService = { save: vi.fn(() => of({})) };

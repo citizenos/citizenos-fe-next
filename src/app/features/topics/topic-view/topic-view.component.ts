@@ -28,6 +28,7 @@ import { TopicIdeationComponent } from './components/topic-ideation/topic-ideati
 import { TopicDiscussionComponent } from './components/topic-discussion/topic-discussion.component';
 import { TopicVoteCastComponent } from './components/topic-vote-cast/topic-vote-cast.component';
 import { TopicMilestonesComponent } from './components/topic-milestones/topic-milestones.component';
+import { TopicTabsComponent } from './components/topic-tabs/topic-tabs.component';
 
 import { Topic, TopicAttachment } from '../../../core/interfaces/topic';
 import { VoteWithOptions } from '../../../core/interfaces/vote';
@@ -52,7 +53,8 @@ import { VoteWithOptions } from '../../../core/interfaces/vote';
     IconComponent,
     DomainIconComponent,
     TourItemDirective,
-    ActivitiesButtonComponent
+    ActivitiesButtonComponent,
+    TopicTabsComponent
   ],
   templateUrl: './topic-view.component.html',
   styleUrls: ['./topic-view.component.scss']

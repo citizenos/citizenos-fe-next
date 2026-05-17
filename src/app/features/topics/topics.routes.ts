@@ -50,6 +50,10 @@ export const TOPICS_ROUTES: Routes = [
     ]
   },
   {
+    path: 'join/:token',
+    loadComponent: () => import('./topic-token-join/topic-token-join.component').then(m => m.TopicTokenJoinComponent)
+  },
+  {
     path: ':topicId',
     children: [
       { path: '', loadComponent: () => import('./topic-view/topic-view.component').then(m => m.TopicViewComponent) },

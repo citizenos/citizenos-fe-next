@@ -24,7 +24,11 @@ class MockIconComponent {
 describe('CreateIdeaFolderComponent', () => {
   let component: CreateIdeaFolderComponent;
   let fixture: ComponentFixture<CreateIdeaFolderComponent>;
-  let mockIdeationService: Partial<TopicIdeationService>;
+  let mockIdeationService: {
+    getIdeas: ReturnType<typeof vi.fn>;
+    createFolder: ReturnType<typeof vi.fn>;
+    addIdeaToFolder: ReturnType<typeof vi.fn>;
+  };
   let mockDialogRef: Partial<DialogRef<unknown>>;
   let mockDialogData: { topicId: string; ideationId: string };
 

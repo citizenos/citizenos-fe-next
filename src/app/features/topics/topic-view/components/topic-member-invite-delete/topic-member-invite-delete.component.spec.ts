@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { TopicMemberInviteDeleteComponent } from './topic-member-invite-delete.component';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
+import { TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
 
 @Component({ selector: 'cos-initials', standalone: true, template: '{{ name }}' })
 class MockInitialsComponent {
@@ -18,6 +19,7 @@ const MOCK_USER = {
   name: 'Test User',
   email: 'test@example.com',
   imageUrl: null,
+  creator: { id: '', name: '' },
 };
 
 describe('TopicMemberInviteDeleteComponent', () => {
@@ -68,7 +70,7 @@ describe('TopicMemberInviteDeleteComponent', () => {
     const fixtureWithImage = TestBed.createComponent(TopicMemberInviteDeleteComponent);
     // Recreate with a new DIALOG_DATA that has imageUrl
     // We override the user property directly and force re-render
-    fixtureWithImage.componentInstance.user = { ...MOCK_USER, imageUrl: 'http://example.com/img.png' };
+    fixtureWithImage.componentInstance.user = { ...MOCK_USER, imageUrl: 'http://example.com/img.jpg' } as unknown as TopicMemberUser;
     fixtureWithImage.changeDetectorRef.markForCheck();
     fixtureWithImage.detectChanges();
     const img = fixtureWithImage.nativeElement.querySelector('img.profile_image');

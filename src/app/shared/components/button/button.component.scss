@@ -1,5 +1,5 @@
 :host {
-  display: inline-block;
+  display: flex;
 }
 
 button {
@@ -15,7 +15,7 @@ button {
   position: relative;
   width: 100%;
   gap: 8px;
-  
+
   .btn-content {
     display: inline-flex;
     align-items: center;
@@ -23,7 +23,7 @@ button {
     gap: 8px;
     height: 100%;
   }
-  
+
   &:disabled {
     cursor: not-allowed;
     opacity: 0.6;

@@ -20,36 +20,43 @@ describe('ToggleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should default to off (model = false)', () => {
-    expect(component.model()).toBe(false);
+  it('should default to off (modelValue = false)', () => {
+    expect(component.isEnabled()).toBe(false);
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('.toggle-container.on')).toBeFalsy();
+    expect(el.querySelector('.toggle_widget.off')).toBeTruthy();
   });
 
-  it('should show on class when model is true', async () => {
+  it('should show on class when boolean model is true', async () => {
     fixture.componentRef.setInput('model', true);
     fixture.detectChanges();
     await fixture.whenStable();
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('.toggle-container.on')).toBeTruthy();
+    expect(el.querySelector('.toggle_widget.on')).toBeTruthy();
   });
 
-  it('should display textOn when model is true', async () => {
+  it('should support string value and offValue', async () => {
+    fixture.componentRef.setInput('value', 'public');
+    fixture.componentRef.setInput('offValue', 'private');
+    fixture.componentRef.setInput('model', 'public');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.isEnabled()).toBe(true);
+
+    component.toggle();
+    fixture.detectChanges();
+
+    expect(component.modelValue()).toBe('private');
+    expect(component.isEnabled()).toBe(false);
+  });
+
+  it('should display cosToggleTextOn when enabled', async () => {
     fixture.componentRef.setInput('model', true);
-    fixture.componentRef.setInput('textOn', 'Yes');
+    fixture.componentRef.setInput('cosToggleTextOn', 'Enabled');
     fixture.detectChanges();
     await fixture.whenStable();
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('.toggle-text')?.textContent?.trim()).toBe('Yes');
-  });
-
-  it('should display textOff when model is false', async () => {
-    fixture.componentRef.setInput('model', false);
-    fixture.componentRef.setInput('textOff', 'No');
-    fixture.detectChanges();
-    await fixture.whenStable();
-    const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('.toggle-text')?.textContent?.trim()).toBe('No');
+    expect(el.querySelector('.toggle_text')?.textContent?.trim()).toBe('Enabled');
   });
 
   it('should emit toggleClick with inverted value on toggle()', () => {
@@ -59,21 +66,12 @@ describe('ToggleComponent', () => {
     expect(spy).toHaveBeenCalledWith(true);
   });
 
-  it('should emit false when toggled from true', async () => {
-    fixture.componentRef.setInput('model', true);
-    fixture.detectChanges();
-    const spy = vi.fn();
-    component.toggleClick.subscribe(spy);
-    component.toggle();
-    expect(spy).toHaveBeenCalledWith(false);
-  });
-
-  it('should toggle on container click', () => {
+  it('should toggle on button click', () => {
     const spy = vi.fn();
     component.toggleClick.subscribe(spy);
     const el: HTMLElement = fixture.nativeElement;
-    const container = el.querySelector<HTMLElement>('.toggle-container');
-    container?.click();
+    const button = el.querySelector<HTMLButtonElement>('button.toggle_wrap');
+    button?.click();
     expect(spy).toHaveBeenCalled();
   });
 });

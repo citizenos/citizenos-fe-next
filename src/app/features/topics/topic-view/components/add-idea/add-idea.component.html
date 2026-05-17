@@ -1,53 +1,208 @@
-<div class="add_idea_wrap">
-  <div class="add_idea_header">
-    <h3>{{ 'COMPONENTS.ADD_IDEA.HEADING' | translate }}</h3>
-    <button type="button" class="btn_close" (click)="close()" [aria-label]="'CONTROL.CLOSE' | translate">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M18 6L6 18M6 6L18 18" stroke="#2C3B47" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </button>
+<div id="create_idea_tablet_btn" [class.open]="!isOpen()">
+  <button type="button" class="btn_big_submit" (click)="isOpen.set(true)" [aria-label]="'COMPONENTS.ADD_IDEA.BTN_ADD_YOUR_IDEA' | translate">
+    <cos-icon name="plus" [size]="24"></cos-icon>
+  </button>
+</div>
+
+<div id="create_idea_footer_menu" [class.open]="!isOpen()" [class.closed]="isOpen()">
+  <h2 class="footer_title">{{ 'COMPONENTS.ADD_IDEA.FOOTER_MENU_TITLE' | translate }}</h2>
+  <button type="button" class="btn_medium_submit" (click)="isOpen.set(true)">
+    <span class="btn_text">{{ 'COMPONENTS.ADD_IDEA.BTN_ADD_YOUR_IDEA' | translate }}</span>
+  </button>
+</div>
+
+<div id="create_idea_footer" [class.open]="isOpen()" [class.closed]="!isOpen()">
+  <div id="post_idea_form_wrap" [class.expanded]="toggleExpand()">
+    <div class="form_header">
+      <div class="form_header_title">
+        <span translate="COMPONENTS.ADD_IDEA.FOOTER_FORM_TITLE"></span>
+        @if (isAutosaving()) {
+          <div class="dialog_info_wrap">
+            <div class="dialog_info discussion">
+              <div class="row">
+                <div class="loader_wrapper">
+                  <div class="loader"></div>
+                </div>
+                <span class="bold loader_text">{{ "COMPONENTS.IDEA_DIALOG.AUTOSAVING" | translate }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="form_header_actions">
+        @if (ideation().allowAnonymous) {
+          <div id="anonymous_info_wrap" translate="COMPONENTS.ADD_IDEA.FOOTER_FORM_ANONYMOUS_INFO">
+            <cos-tooltip [title]="'COMPONENTS.ADD_IDEA.TOOLTIP_ANONYMOUS_TITLE' | translate" [description]="'COMPONENTS.ADD_IDEA.TOOLTIP_ANONYMOUS_DESCRIPTION' | translate"></cos-tooltip>
+          </div>
+        }
+        <button type="button" class="form_header_expand_button mobile_hidden" (click)="toggleExpand.set(!toggleExpand())"
+          [attr.aria-expanded]="toggleExpand()">
+          <svg class="form_header_expand_icon" [class.rotated]="toggleExpand()" width="24" height="24"
+            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 15L12 10L7 15" stroke="#2C3B47" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+          <span class="form_header_expand_text">{{ (toggleExpand() ? 'COMPONENTS.ADD_IDEA.BTN_COLLAPSE' : 'COMPONENTS.ADD_IDEA.BTN_EXPAND') | translate }}</span>
+        </button>
+      </div>
+
+      <div id="close_mobile" class="mobile_show">
+        <button type="button" class="btn_small_close icon close_button mobile_show" (click)="close()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.29311 17.2929C4.90258 17.6834 4.90258 18.3166 5.29311 18.7071C5.68363 19.0976 6.3168 19.0976 6.70732 18.7071L12.0002 13.4142L17.2931 18.7071C17.6836 19.0976 18.3168 19.0976 18.7073 18.7071C19.0978 18.3166 19.0978 17.6834 18.7073 17.2929L13.4144 12L18.7073 6.70711C19.0978 6.31658 19.0978 5.68342 18.7073 5.29289C18.3168 4.90237 17.6836 4.90237 17.2931 5.29289L12.0002 10.5858L6.70732 5.29289C6.3168 4.90237 5.68363 4.90237 5.29311 5.29289C4.90258 5.68342 4.90258 6.31658 5.29311 6.70711L10.586 12L5.29311 17.2929Z" fill="#2C3B47" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <form id="idea_form" [formGroup]="ideaForm" (ngSubmit)="publishIdea()">
+      <cos-input placeholder="{{ 'COMPONENTS.ADD_IDEA.PLACEHOLDER_ADD_STATEMENT_TO_IDEA' | translate }}" 
+                 [limit]="(ideaForm.get('statement')?.value?.length || 0) + '/' + IDEA_STATEMENT_MAXLENGTH">
+        <input id="idea_statement" name="statement" formControlName="statement" autocomplete="off" 
+               [placeholder]="'COMPONENTS.ADD_IDEA.PLACEHOLDER_ADD_STATEMENT_TO_IDEA' | translate" 
+               class="gray_borders" [class.error_input]="ideaForm.get('statement')?.invalid && ideaForm.get('statement')?.touched" required />
+        @if (ideaForm.get('statement')?.errors?.['required'] && ideaForm.get('statement')?.touched) {
+          <label for="idea_statement" class="error_label">
+            <span class="error_text" translate="COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY"></span>
+          </label>
+        }
+      </cos-input>
+
+      @if (ideation().allowAnonymous && getDemographicKeys().length > 0) {
+        <div class="anonymous_info">
+          @for (key of getDemographicKeys(); track key) {
+            @switch (key) {
+              @case ('residence') {
+                @if (isCountryEstonia()) {
+                    <div class="gender_wrapper">
+                      <div class="dropdown" cosDropdown>
+                        <div class="selection" [class.error_input]="filtersData().residence.error" trigger>
+                          <div class="selected_item">
+                            @if (!filtersData().residence.selectedValue) {
+                              <span class="selected_item_placeholder">{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_" + key | uppercase | translate }}</span>
+                            } @else if (filtersData().residence.selectedValue !== 'other') {
+                              <span>{{ filtersData().residence.selectedValue }}</span>
+                            } @else {
+                              <span>{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_OTHER" | translate }}</span>
+                            }
+                          </div>
+                          <cos-icon name="chevron-down" />
+                        </div>
+                        <div class="options">
+                          @for (option of filtersData().residence.items; track option.value) {
+                            <div class="option" (click)="setFilterValue('residence', option.value)">
+                              <span>{{ option.title }}</span>
+                            </div>
+                          }
+                          <hr class="options_line" />
+                          <div class="option" (click)="setFilterValue('residence', 'other')">
+                            <span>{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_OTHER" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                } @else {
+                    <cos-input placeholder="{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_' + key | uppercase | translate }}">
+                        <input [id]="'demographics_' + key" [formControlName]="'demographics_' + key" class="gray_borders" required />
+                    </cos-input>
+                }
+              }
+              @case ('gender') {
+                <div class="gender_wrapper">
+                  <div class="dropdown" cosDropdown>
+                    <div class="selection" [class.error_input]="filtersData().gender.error" trigger>
+                      <div class="selected_item">
+                        @if (!filtersData().gender.selectedValue) {
+                          <span class="selected_item_placeholder">{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_" + key | uppercase | translate }}</span>
+                        } @else {
+                          <span>{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_" + filtersData().gender.selectedValue | uppercase | translate }}</span>
+                        }
+                      </div>
+                      <cos-icon name="chevron-down" />
+                    </div>
+                    <div class="options">
+                      @for (option of filtersData().gender.items; track option.value) {
+                        <div class="option" (click)="setFilterValue('gender', option.value)">
+                          <span>{{ option.title | translate }}</span>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+              @case ('age') {
+                <cos-input placeholder="{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_' + key | uppercase | translate }}">
+                  <input type="number" [id]="'demographics_' + key" [formControlName]="'demographics_' + key" class="gray_borders" required (keypress)="numberOnly($event)" />
+                </cos-input>
+              }
+            }
+          }
+        </div>
+      }
+
+      <div id="idea_description_wrap">
+        <textarea cosMarkdown name="description" formControlName="description"
+          [cosMarkdownTranslateCharacterStatusKey]="'COMPONENTS.ADD_IDEA.IDEA_TYPE_CHARACTER_LIMIT'" id="idea_description"
+          [item]="ideaForm.get('description')?.value || ''" class="gray_borders" (itemChange)="updateText($event)"
+          [initialValue]="ideation().template || ''" [placeholder]="'COMPONENTS.ADD_IDEA.PLACEHOLDER_EXPLAIN_YOUR_IDEA' | translate" 
+          [class.error_input]="ideaForm.get('description')?.invalid && ideaForm.get('description')?.touched" 
+          [limit]="ideaMaxLength()" [class.expanded]="toggleExpand()" required></textarea>
+
+        @if (ideaForm.get('description')?.invalid && ideaForm.get('description')?.touched) {
+          <label for="description" class="error_label">
+            <span class="error_text" translate="COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY"></span>
+          </label>
+        }
+      </div>
+
+      @if (newImages().length) {
+        <div class="idea_images_wrap">
+          @for (image of newImages(); track $index) {
+            <div class="image">
+              <div class="image_data">
+                <img [src]="image.link" />
+                <a class="name">{{ image.name }}</a>
+              </div>
+              <button type="button" class="btn_small_plain icon" (click)="removeNewImage($index)">
+                <cos-icon name="trash" [size]="32" />
+              </button>
+            </div>
+          }
+        </div>
+      }
+      <input id="image_upload_input" multiple type="file" #imageUpload hidden (change)="fileUpload()" />
+    </form>
   </div>
 
-  <div class="add_idea_form">
-    <div class="field_wrap" [class.error]="errors()['statement']">
-      <label for="idea_statement">{{ 'COMPONENTS.ADD_IDEA.LBL_STATEMENT' | translate }}</label>
-      <input
-        id="idea_statement"
-        type="text"
-        class="field"
-        [maxlength]="STATEMENT_MAXLENGTH"
-        [ngModel]="statement()"
-        (ngModelChange)="onStatementChange($event)"
-        placeholder="{{ 'COMPONENTS.ADD_IDEA.PLACEHOLDER_STATEMENT' | translate }}" />
-      @if (errors()['statement']) {
-        <div class="error_message">{{ 'COMPONENTS.ADD_IDEA.ERROR_STATEMENT_REQUIRED' | translate }}</div>
-      }
-      <div class="char_count">{{ statement().length }}/{{ STATEMENT_MAXLENGTH }}</div>
-    </div>
-
-    <div class="field_wrap" [class.error]="errors()['description']">
-      <label for="idea_description">{{ 'COMPONENTS.ADD_IDEA.LBL_DESCRIPTION' | translate }}</label>
-      <textarea
-        id="idea_description"
-        class="field"
-        rows="6"
-        [ngModel]="description()"
-        (ngModelChange)="onDescriptionChange($event)"
-        placeholder="{{ 'COMPONENTS.ADD_IDEA.PLACEHOLDER_DESCRIPTION' | translate }}"></textarea>
-      @if (errors()['description']) {
-        <div class="error_message">{{ 'COMPONENTS.ADD_IDEA.ERROR_DESCRIPTION_REQUIRED' | translate }}</div>
+  <div id="buttons_row">
+    <div class="buttons_left_group">
+      <button type="button" class="btn_medium_submit_ghost icon close_button" (click)="close()">
+        <cos-icon name="close" [size]="24" />
+      </button>
+      @if (autosavedIdea()) {
+        <div class="btn_medium_wrapper">
+          <button type="button" class="option error_text btn_medium_error" (click)="deleteDraftIdea(autosavedIdea()!)">
+            <cos-icon name="trash" [size]="24" />
+            <span class="btn_text" translate="COMPONENTS.ADD_IDEA.BTN_DELETE_DRAFT"></span>
+          </button>
+        </div>
       }
     </div>
-
-    @if (isAutosaving()) {
-      <div class="autosave_indicator">{{ 'COMPONENTS.ADD_IDEA.LBL_AUTOSAVING' | translate }}</div>
-    }
-
-    <div class="form_actions">
-      <button type="button" class="btn_medium_plain" (click)="saveDraft()">{{ 'COMPONENTS.ADD_IDEA.BTN_SAVE_DRAFT' | translate }}</button>
-      <div class="spacer"></div>
-      <button type="button" class="btn_medium_plain" (click)="close()">{{ 'COMPONENTS.ADD_IDEA.BTN_CANCEL' | translate }}</button>
-      <button type="button" class="btn_medium" (click)="publish()">{{ 'COMPONENTS.ADD_IDEA.BTN_PUBLISH' | translate }}</button>
+    <div class="buttons_right_group">
+      <button type="button" class="btn_medium_submit_ghost" (click)="uploadImage()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.42058 17.0297H16.6588C16.8706 17.0297 17.0206 16.9414 17.1088 16.7649C17.1971 16.5885 17.1794 16.412 17.0559 16.2355L14.5412 12.9002C14.4353 12.7591 14.3029 12.6885 14.1441 12.6885C13.9853 12.6885 13.8618 12.7591 13.7735 12.9002L11.1794 16.262L9.45882 14.0385C9.35293 13.9149 9.22058 13.8532 9.06176 13.8532C8.90293 13.8532 8.7794 13.9238 8.69117 14.0649L7.02352 16.2355C6.89999 16.412 6.88693 16.5885 6.98434 16.7649C7.08105 16.9414 7.22646 17.0297 7.42058 17.0297Z" fill="#2C3B47" />
+          <rect x="4" y="4" width="16" height="16" rx="1" stroke="#2C3B47" stroke-width="2" />
+        </svg>
+        <span translate="COMPONENTS.POST_ARGUMENT.BTN_ADD_IMAGE"></span>
+      </button>
+      <button type="button" class="btn_medium_submit" (click)="publishIdea()">
+        <span class="btn_text" translate="COMPONENTS.ADD_IDEA.BTN_IDEA_POST"></span>
+      </button>
     </div>
   </div>
 </div>
+
+@if (isOpen()) {
+  <div class="overlay" (click)="close()" (keydown.enter)="close()" role="button" tabindex="0" [aria-label]="'CONTROL.CLOSE' | translate"></div>
+}

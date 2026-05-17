@@ -157,6 +157,25 @@ export class TopicSettingsComponent implements OnInit {
     return false;
   }
 
+  onReminderToggle(enabled: boolean) {
+    this.reminder.set(enabled);
+    const t = this.topic();
+    if (t.vote && !enabled && t.vote.reminderTime && !t.vote.reminderSent) {
+      const voteUpdate = {
+        topicId: t.id,
+        voteId: t.voteId!,
+        reminderTime: null
+      };
+
+      this.topicVoteService.update(voteUpdate).pipe(take(1)).subscribe((res) => {
+        this.topic.update(current => ({
+          ...current,
+          vote: { ...current.vote!, reminderTime: res.reminderTime }
+        }));
+      });
+    }
+  }
+
   setVoteReminder(time: { value: number; unit: string }) {
     const t = this.topic();
     if (t.vote) {

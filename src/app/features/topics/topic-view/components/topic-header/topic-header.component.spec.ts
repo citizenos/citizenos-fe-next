@@ -46,7 +46,7 @@ const BASE_TOPIC: Topic = {
   id: '123', title: 'Test Topic', intro: null, description: '', status: 'inProgress',
   visibility: 'public', hashtag: null, join: { token: '', level: '' }, categories: [],
   endsAt: null, createdAt: '', updatedAt: '', sourcePartnerId: null, sourcePartnerObjectId: null,
-  permission: { level: 'admin' }, creator: { name: 'Test User' }, lastActivity: null,
+  permission: { level: 'admin' }, creator: { id: 'c1', name: 'Test User' }, lastActivity: null,
   country: null, language: null, members: { users: { count: 1 }, groups: { count: 0 } },
   voteId: null, discussionId: null, comments: null, padUrl: '', imageUrl: null, authors: [],
   favourite: false

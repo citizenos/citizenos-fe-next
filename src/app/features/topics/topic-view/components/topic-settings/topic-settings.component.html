@@ -51,8 +51,9 @@
                 <cos-toggle
                   [textOn]="('TOGGLE_ON' | translate)"
                   [textOff]="('TOGGLE_OFF' | translate)"
-                  [model]="topic().visibility === VISIBILITY.private"
-                  (toggleClick)="$event ? topic.update(t => ({ ...t, visibility: VISIBILITY.private })) : topic.update(t => ({ ...t, visibility: VISIBILITY.public }))"
+                  [(model)]="topic().visibility"
+                  [value]="VISIBILITY.private"
+                  [offValue]="VISIBILITY.public"
                 ></cos-toggle>
               </div>
             </div>

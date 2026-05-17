@@ -87,7 +87,7 @@ export class TopicInviteDialogComponent implements OnInit {
   }
 
   canInvite() {
-    return this.topicService.canUpdate(this.topic());
+    return this.topicService.canDelete(this.topic());
   }
 
   onSearchChange(str: string) {

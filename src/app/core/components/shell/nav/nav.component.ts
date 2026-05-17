@@ -1,5 +1,5 @@
 import {
-  Component, signal, computed, inject, ChangeDetectionStrategy, ViewEncapsulation, HostListener, OnInit
+  Component, signal, computed, inject, ChangeDetectionStrategy, ViewEncapsulation, HostListener, OnInit, DestroyRef
 } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -31,6 +31,14 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
         </a>
       </div>
       <div class="nav_mobile_actions">
+        <button class="nav_icon_btn" (click)="uiState.showHelp.update(v => !v)" [attr.aria-label]="'DEFAULT.NAV.LNK_HELP' | translate">
+          <div class="icon_wrap">
+            <cos-icon name="help" [size]="24"></cos-icon>
+            @if (helpExtraInfo()) {
+              <div class="orange_dot"></div>
+            }
+          </div>
+        </button>
         <button class="nav_icon_btn" (click)="toggleNav()" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.NAV_TOGGLE' | translate" [attr.aria-expanded]="showNav()"
           [cosTourItem]="{tourid: ['dashboard_mobile', 'dashboard_tablet'], index: 3, position: 'bottom'}">
           @if (!showNav()) {
@@ -103,6 +111,11 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
             <cos-icon name="groups"></cos-icon>
           </a>
         </div>
+        @if (showCreateMenu()) {
+          <div class="mobile_create_menu">
+            <cos-create-menu (closeMenu)="closeCreateMenu()" />
+          </div>
+        }
       </div>
     } @else {
       <div id="mobile_login">
@@ -245,7 +258,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
               </div>
               <span>{{ currentLanguageLabel }}</span>
             </button>
-            <button type="button" class="nav_item" (click)="uiState.showHelp.set(true); closeNav()">
+            <button type="button" class="nav_item" (click)="uiState.showHelp.update(v => !v); closeNav()">
               <div class="icon_wrap">
                 <cos-icon name="help" [size]="16"></cos-icon>
                 @if (helpExtraInfo()) {
@@ -254,30 +267,30 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
               </div>
               <span>{{ 'DEFAULT.NAV.LNK_HELP' | translate }}</span>
             </button>
-            <a class="nav_item" [href]="lnkDonate()" target="_blank">
+            <a class="nav_item" [href]="lnkAbout()" target="_blank">
                <div class="icon_wrap">
                 <cos-icon name="about" [size]="16"></cos-icon>
               </div>
               <span>{{ 'DEFAULT.NAV.LNK_ABOUT' | translate }}</span>
             </a>
-            <a class="nav_item" [href]="lnkFaq()" target="_blank">
+            <!--a class="nav_item" [href]="lnkFaq()" target="_blank">
               <div class="icon_wrap">
                 <cos-icon name="faq" [size]="16"></cos-icon>
               </div>
               <span>{{ 'DEFAULT.NAV.LNK_FAQ' | translate }}</span>
-            </a>
-            <button type="button" class="nav_item" (click)="uiState.showFeedback.set(true); closeNav()">
+            </a-->
+            <!--button type="button" class="nav_item" (click)="uiState.showFeedback.set(true); closeNav()">
               <div class="icon_wrap">
                 <cos-icon name="nav-feedback" [size]="16"></cos-icon>
               </div>
               <span>{{ 'DEFAULT.NAV.LNK_FEEDBACK' | translate }}</span>
-            </button>
-            <button type="button" class="nav_item" (click)="uiState.showAccessibility.set(true); closeNav()">
+            </button-->
+            <!--button type="button" class="nav_item" (click)="uiState.showAccessibility.set(true); closeNav()">
               <div class="icon_wrap">
                 <cos-icon name="accessibility" [size]="16"></cos-icon>
               </div>
               <span>{{ 'DEFAULT.NAV.LNK_ACCESSIBILITY' | translate }}</span>
-            </button>
+            </button-->
           </div>
         </div>
 
@@ -314,10 +327,15 @@ export class NavComponent implements OnInit {
   private readonly configStore = inject(ConfigStore);
   private readonly dialog = inject(DialogService);
   private readonly router = inject(Router);
- 
+  private readonly destroyRef = inject(DestroyRef);
+
   lnkDonate = computed(() => {
     const links = this.configStore.links.donate();
     return links[this.translate.currentLang] || links['en'];
+  });
+
+  lnkAbout = computed(() => {
+    return this.configStore.links.about();
   });
 
   lnkFaq = computed(() => {
@@ -331,7 +349,7 @@ export class NavComponent implements OnInit {
   helpExtraInfo = signal(false);
 
   ngOnInit() {
-    this.router.events.subscribe(() => {
+    const routerSub = this.router.events.subscribe(() => {
       const url = this.router.url;
       if (url.includes('/topics/') && !url.includes('/create/') && !url.includes('/edit/')) {
         this.helpExtraInfo.set(true);
@@ -339,6 +357,8 @@ export class NavComponent implements OnInit {
         this.helpExtraInfo.set(false);
       }
     });
+
+    this.destroyRef.onDestroy(() => routerSub.unsubscribe());
   }
 
   get currentLanguageLabel(): string {

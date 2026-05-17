@@ -7,14 +7,14 @@ import { GroupInviteUserService } from '../../../core/services/group-invite-user
 import { UserStore } from '../../../core/state/user.store';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { GroupInvite } from '../../../core/services/group-invite-user.service';
+import { GroupInvite, GroupInvitation } from '../../../core/services/group-invite-user.service';
 import { User } from '../../../core/interfaces/user';
 
 const mockInvite = {
   id: 'invite-1',
   inviteId: 'invite-1',
   level: 'read',
-  group: { id: 'group-1', name: 'Test Group', imageUrl: null, description: 'desc', visibility: 'private' },
+  group: { id: 'group-1', name: 'Test Group', description: 'desc', visibility: 'private' },
   creator: { id: 'creator-1', name: 'Creator' },
   user: { id: 'user-2', email: 'user@example.com', isRegistered: true },
 };
@@ -27,7 +27,7 @@ function buildRoute(params: Record<string, string>, queryParams: Record<string, 
 }
 
 function setup(overrides: {
-  invite?: Partial<GroupInvite>;
+  invite?: Partial<GroupInvitation>;
   inviteError?: { message?: string; code?: number };
   dialogResult?: boolean;
   isAuthenticated?: boolean;

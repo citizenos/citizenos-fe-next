@@ -1,5 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-// @ts-expect-error - ResizeObserver is not defined in all environments
+
 globalThis.ResizeObserver = class {
   observe() { return; }
   unobserve() { return; }

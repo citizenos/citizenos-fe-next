@@ -29,7 +29,7 @@ const BASE_GROUP: Group = {
   sourcePartnerId: null,
   sourcePartnerObjectId: null,
   permission: { level: 'read' },
-  creator: { name: 'Admin' },
+  creator: { id: 'c1', name: 'Admin' },
   lastActivity: null,
   members: { users: { count: 3 }, groups: { count: 0 }, topics: { count: { inProgress: 2, ideation: 1, voting: 0, followUp: 0 }, latest: null } },
   userLevel: null,

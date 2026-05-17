@@ -36,7 +36,7 @@ describe('TopicReportModerateComponent', () => {
   const mockDialogRef = { close: vi.fn() };
   const mockTopicReportService: Partial<TopicReportService> = {
     moderate: vi.fn().mockReturnValue(of({})),
-    TYPES: { spam: 'SPAM', inappropriate: 'INAPPROPRIATE' } as unknown as Record<string, string>,
+    TYPES: { spam: 'SPAM', duplicate: 'DUPLICATE', abuse: 'ABUSE', hate: 'HATE', other: 'OTHER', obscene: 'OBSCENE' },
   };
   const mockNotificationService: Partial<NotificationService> = { success: vi.fn(), error: vi.fn() };
 
@@ -91,7 +91,7 @@ describe('TopicReportModerateComponent', () => {
 
   it('doModerate() should show error when service fails', () => {
     component.moderateForm.patchValue({ type: 'spam', text: 'reason' });
-    mockTopicReportService.moderate.mockReturnValue(throwError(() => new Error('fail')));
+    (mockTopicReportService.moderate as ReturnType<typeof vi.fn>).mockReturnValue(throwError(() => new Error('error')));
     component.doModerate();
     expect(mockNotificationService.error).toHaveBeenCalled();
     expect(mockDialogRef.close).not.toHaveBeenCalled();

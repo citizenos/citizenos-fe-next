@@ -45,10 +45,11 @@ export interface Argument {
   topicId?: string;
   discussionId?: string;
   parentId?: string | null;
+  parent?: { id: string; version: number };
   type: string;
   subject?: string | null;
   text?: string | null;
-  edits?: Record<string, { subject?: string | null; text?: string | null; createdAt?: string }>;
+  edits?: Record<string, { subject?: string | null; text?: string | null; createdAt?: string; type?: string | null }>;
   creator?: ArgumentCreator;
   deletedAt?: string | null;
   deletedBy?: { id: string | null; name: string | null };

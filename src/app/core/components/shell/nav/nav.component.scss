@@ -319,6 +319,33 @@ $mobile-breakpoint: 560px;
   padding: 4px 12px;
 }
 
+.icon_wrap {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+
+  cos-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .orange_dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    background: var(--color-warning);
+    border-radius: 50%;
+    border: 2px solid var(--color-surfaces);
+  }
+}
+
 .nav_item {
   display: flex;
   align-items: center;
@@ -336,33 +363,6 @@ $mobile-breakpoint: 560px;
   cursor: pointer;
   transition: all var(--transition-fast);
   text-align: left;
-
-  .icon_wrap {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    flex-shrink: 0;
-
-    cos-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .orange_dot {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      width: 8px;
-      height: 8px;
-      background: var(--color-warning);
-      border-radius: 50%;
-      border: 2px solid var(--color-surfaces);
-    }
-  }
 
   &:hover {
     background: var(--color-surface-hover);
@@ -491,6 +491,45 @@ $mobile-breakpoint: 560px;
   display: none;
   @media (max-width: $tablet-breakpoint) {
     display: block;
+  }
+}
+
+.mobile_create_menu {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  right: 16px;
+  z-index: 10000;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.btn_medium_nav {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-text-muted);
+
+  &:hover {
+    background-color: var(--color-surface-hover);
+    color: var(--color-primary);
+  }
+
+  &.active {
+    color: var(--color-primary);
+  }
+
+  cos-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

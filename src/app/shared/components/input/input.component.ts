@@ -18,6 +18,9 @@ import { TranslateModule } from '@ngx-translate/core';
         }
         <ng-content></ng-content>
       </div>
+      @if (limit()) {
+        <div class="limit">{{ limit() }}</div>
+      }
       @if (hasError() && errorMessage()) {
         <span [id]="errorId" class="error-message" role="alert">
           <cos-icon name="warning" [size]="14" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.WARNING' | translate"></cos-icon>
@@ -120,6 +123,14 @@ import { TranslateModule } from '@ngx-translate/core';
 
       cos-icon { flex-shrink: 0; }
     }
+    
+    .limit {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 12px;
+        color: var(--color-text-muted);
+    }
   `],
   encapsulation: ViewEncapsulation.None
 })
@@ -130,6 +141,7 @@ export class InputComponent implements AfterContentChecked {
   placeholder = model<string>('');
   hasError = model<boolean>(false);
   errorMessage = model<string>('');
+  limit = model<string>('');
 
   inputId = `cos-input-${InputComponent.idCounter++}`;
   errorId = `${this.inputId}-error`;

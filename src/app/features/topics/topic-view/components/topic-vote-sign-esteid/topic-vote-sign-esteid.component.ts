@@ -1,4 +1,4 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy, HostListener } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { interval, switchMap, takeWhile, take, map, catchError, of } from 'rxjs';
@@ -11,17 +11,24 @@ import { TopicVoteService } from '../../../../../core/services/topic-vote.servic
 import { TopicService } from '../../../../../core/services/topic.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { Topic, TopicVoteCast } from '../../../../../core/interfaces/topic';
+import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
 
 declare let hwcrypto: {
   getCertificate: (options: Record<string, unknown>) => Promise<{ hex: string }>;
   sign: (certificate: { hex: string }, data: { hex: string; type: string }, options: Record<string, unknown>) => Promise<{ hex: string }>;
+  NO_CERTIFICATES: string;
+  USER_CANCEL: string;
+  NO_IMPLEMENTATION: string;
+  INVALID_ARGUMENT: string;
+  NOT_ALLOWED: string;
+  TECHNICAL_ERROR: string;
 };
 
 @Component({
   selector: 'app-topic-vote-sign-esteid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, IconComponent],
+  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, IconComponent, NotificationComponent],
   templateUrl: './topic-vote-sign-esteid.component.html'
 })
 export class TopicVoteSignEsteidComponent {
@@ -40,6 +47,12 @@ export class TopicVoteSignEsteidComponent {
   isLoading = signal(false);
   isLoadingIdCard = signal(false);
   challengeID = signal<string | null>(null);
+  wWidth = signal(window.innerWidth);
+
+  @HostListener('window:resize')
+  onResize() {
+    this.wWidth.set(window.innerWidth);
+  }
 
   doSignWithMobile() {
     if (this.mobiilIdForm.invalid) return;
@@ -78,27 +91,37 @@ export class TopicVoteSignEsteidComponent {
       };
       this.topicVoteService.cast(userVote).pipe(take(1)).subscribe(async (voteResponse: { signedInfoDigest?: string; token?: string; signedInfoHashType?: string }) => {
         if (voteResponse?.signedInfoDigest && voteResponse?.token && voteResponse?.signedInfoHashType) {
-          const signature = await hwcrypto.sign(certificate, { hex: voteResponse.signedInfoDigest, type: voteResponse.signedInfoHashType }, {});
-          this.topicVoteService.sign({
-            id: this.data.topic.voteId || undefined,
-            topicId: this.data.topic.id,
-            signatureValue: signature.hex,
-            token: voteResponse.token
-          }).pipe(take(1)).subscribe({
-            next: () => {
-              this.isLoadingIdCard.set(false);
-              this.notification.success('VIEWS.TOPICS_TOPICID.MSG_VOTE_REGISTERED');
-              this.dialogRef.close(true);
-            },
-            error: () => this.isLoadingIdCard.set(false)
-          });
+          try {
+            const signature = await hwcrypto.sign(certificate, { hex: voteResponse.signedInfoDigest, type: voteResponse.signedInfoHashType }, {});
+            this.topicVoteService.sign({
+              id: this.data.topic.voteId || undefined,
+              topicId: this.data.topic.id,
+              signatureValue: signature.hex,
+              token: voteResponse.token
+            }).pipe(take(1)).subscribe({
+              next: () => {
+                this.isLoadingIdCard.set(false);
+                this.notification.success('VIEWS.TOPICS_TOPICID.MSG_VOTE_REGISTERED');
+                this.dialogRef.close(true);
+              },
+              error: () => this.isLoadingIdCard.set(false)
+            });
+          } catch (err: any) {
+            this.isLoadingIdCard.set(false);
+            this.notification.error(this.hwCryptoErrorToTranslationKey(err));
+          }
         }
       });
     }, (err: Error | { status?: { message?: string } }) => {
       this.isLoading.set(false);
       this.isLoadingIdCard.set(false);
       this.challengeID.set(null);
-      const msg = err instanceof Error ? err.message : (err?.status?.message || 'MSG_ERROR_DEFAULT');
+      let msg = 'MSG_ERROR_DEFAULT';
+      if (err instanceof Error) {
+        msg = this.hwCryptoErrorToTranslationKey(err);
+      } else if (err?.status?.message) {
+        msg = err.status.message;
+      }
       this.notification.error(msg);
     });
   }
@@ -121,6 +144,24 @@ export class TopicVoteSignEsteidComponent {
         this.challengeID.set(null);
       }
     });
+  }
+
+  private hwCryptoErrorToTranslationKey(err: any) {
+    const errorKeyPrefix = 'MSG_ERROR_HWCRYPTO_';
+    switch (err.message) {
+      case hwcrypto.NO_CERTIFICATES:
+      case hwcrypto.USER_CANCEL:
+      case hwcrypto.NO_IMPLEMENTATION:
+        return errorKeyPrefix + err.message.toUpperCase();
+      case hwcrypto.INVALID_ARGUMENT:
+      case hwcrypto.NOT_ALLOWED:
+      case hwcrypto.TECHNICAL_ERROR:
+        console.error(err.message, 'Technical error from HWCrypto library', err);
+        return errorKeyPrefix + 'TECHNICAL_ERROR';
+      default:
+        console.error(err.message, 'Unknown error from HWCrypto library', err);
+        return errorKeyPrefix + 'TECHNICAL_ERROR';
+    }
   }
 
   getOptionValueText(option: string): string {

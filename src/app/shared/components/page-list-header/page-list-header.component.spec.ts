@@ -58,7 +58,7 @@ describe('PageListHeaderComponent', () => {
     const searchBtn = fixture.debugElement.query(By.css('#show_search'));
     searchBtn.triggerEventHandler('click', null);
 
-    expect(globalSearch.showSearch()).toBe(true);
+    expect((globalSearch as unknown as { showSearch: () => boolean }).showSearch()).toBe(true);
     expect(spy).toHaveBeenCalled();
   });
 
@@ -66,7 +66,7 @@ describe('PageListHeaderComponent', () => {
     const searchBtn = fixture.debugElement.query(By.css('#show_search'));
     searchBtn.triggerEventHandler('click', null);
     searchBtn.triggerEventHandler('click', null);
-    expect(globalSearch.showSearch()).toBe(false);
+    expect((globalSearch as unknown as { showSearch: () => boolean }).showSearch()).toBe(false);
   });
 
   it('should have a slot for title content projection', () => {

@@ -7,7 +7,7 @@ import { UserStore } from '../../../core/state/user.store';
 import { UserService } from '../../../core/services/user.service';
 
 import { signal, NO_ERRORS_SCHEMA } from '@angular/core';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi, Mock } from 'vitest';
 import { provideRouter } from '@angular/router';
 
 describe('LoginComponent', () => {
@@ -70,11 +70,11 @@ describe('LoginComponent', () => {
       password: 'password123'
     });
 
-    (mockUserStore as { login: vi.Mock }).login.mockResolvedValue({});
+    (mockUserStore as { login: Mock }).login.mockResolvedValue({});
 
     await component.onSubmit();
 
-    expect(mockUserStore.login).toHaveBeenCalledWith('test@example.com', 'password123');
+    expect((mockUserStore as { login: Mock }).login).toHaveBeenCalledWith('test@example.com', 'password123');
     expect(navigateSpy).toHaveBeenCalledWith(['/']);
   });
 
@@ -84,7 +84,7 @@ describe('LoginComponent', () => {
       password: 'wrong-password'
     });
 
-    (mockUserStore as { login: vi.Mock }).login.mockRejectedValue(new Error('Login failed'));
+    (mockUserStore as { login: Mock }).login.mockRejectedValue(new Error('Login failed'));
 
     await component.onSubmit();
 
@@ -95,15 +95,13 @@ describe('LoginComponent', () => {
     // We can't easily test window.location.href changes in unit tests
     // but we can test that the service is called.
     const originalLocation = window.location;
-    // @ts-expect-error - test override
-    delete (window as { location?: Location }).location;
-    window.location = { ...originalLocation, href: '' } as unknown as Location;
+    vi.stubGlobal('location', { ...originalLocation, href: '' });
 
     component.doLoginPartner('google');
 
-    expect(mockUserService.getPartnerLoginUrl).toHaveBeenCalledWith('google');
+    expect((mockUserService as any).getPartnerLoginUrl).toHaveBeenCalledWith('google');
     expect(window.location.href).toBe('http://partner-login.url');
 
-    window.location.href = originalLocation.href;
+    vi.unstubAllGlobals();
   });
 });

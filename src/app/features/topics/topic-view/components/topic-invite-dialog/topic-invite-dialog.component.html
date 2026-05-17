@@ -2,24 +2,24 @@
   <div class="dialog">
     <div class="dialog_header">
       <div class="header_text">
-        <h1 class="title">{{ 'MODALS.TOPIC_INVITE_HEADING' | translate }}</h1>
-      </div>
-      <div class="dialog_close">
-        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
-          <cos-icon name="nav-close"></cos-icon>
-        </button>
+        <h4 class="title">{{ 'COMPONENTS.TOPIC_INVITE_DIALOG.HEADING' | translate }}</h4>
+        <div class="dialog_close">
+          <button type="button" class="btn_dialog_close icon" dialogClose>
+            <cos-icon name="nav-close"></cos-icon>
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="dialog_tabs_wrap">
+    <div class="dialog_tabs_wrap" role="tablist">
       @if (canInvite()) {
-        <div class="dialog_tab" [class.active]="activeTab() === 'invite'" (click)="activeTab.set('invite')" (keydown.enter)="activeTab.set('invite')" tabindex="0" role="tab" [aria-selected]="activeTab() === 'invite'">
-          <span>{{ 'COMPONENTS.TOPIC_INVITE.TAB_INVITE' | translate }}</span>
-        </div>
+        <button type="button" class="dialog_tab" role="tab" [class.active]="activeTab() === 'invite'" [attr.aria-selected]="activeTab() === 'invite'" (click)="activeTab.set('invite')">
+          {{ 'COMPONENTS.TOPIC_INVITE_DIALOG.TAB_INVITE' | translate }}
+        </button>
       }
-      <div class="dialog_tab" [class.active]="activeTab() === 'share'" (click)="activeTab.set('share')" (keydown.enter)="activeTab.set('share')" tabindex="0" role="tab" [aria-selected]="activeTab() === 'share'">
-        <span>{{ 'COMPONENTS.TOPIC_INVITE.TAB_SHARE' | translate }}</span>
-      </div>
+      <button type="button" class="dialog_tab" role="tab" [class.active]="activeTab() === 'share'" [attr.aria-selected]="activeTab() === 'share'" (click)="activeTab.set('share')">
+        {{ 'COMPONENTS.TOPIC_INVITE_DIALOG.TAB_SHARE' | translate }}
+      </button>
     </div>
 
     <div class="dialog_content">
@@ -28,12 +28,12 @@
           <div class="section_content_wrap">
             <div class="search_wrap">
               <div class="input_area">
-                <label class="hidden" for="user_search">{{ 'COMPONENTS.TOPIC_INVITE.PLACEHOLDER_SEARCH_USERS' | translate }}</label>
+                <label class="hidden" for="user_search">{{ 'COMPONENTS.TOPIC_INVITE.PLACEHOLDER_SEARCH' | translate }}</label>
                 <input id="user_search" type="text"
                        [ngModel]="searchString()"
                        (ngModelChange)="onSearchChange($event)"
                        (keydown.enter)="addMembersFromInput()"
-                       [placeholder]="'COMPONENTS.TOPIC_INVITE.PLACEHOLDER_SEARCH_USERS' | translate">
+                       [placeholder]="'COMPONENTS.TOPIC_INVITE.PLACEHOLDER_SEARCH' | translate">
                 <cos-icon name="search" size="20" class="search_icon"></cos-icon>
               </div>
 
@@ -63,13 +63,13 @@
             @if (selectedMembers().length > 0) {
               <div class="selected_members_wrap">
                 <div class="global_level_select">
-                  <span>{{ 'COMPONENTS.TOPIC_INVITE.LBL_ALL_INVITEES_LEVEL' | translate }}</span>
+                  <span>{{ 'COMPONENTS.TOPIC_INVITE.ROLE' | translate }}</span>
                   <cos-tooltip
-                    [title]="'VIEWS.TOPIC_INVITE.TOOLTIP_MEMBERS_PERMISSIONS_HEADING' | translate"
-                    [description]="'VIEWS.TOPIC_INVITE.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate">
+                    [title]="'COMPONENTS.TOPIC_INVITE_EDITORS.TOOLTIP_TOPIC_ROLES_HEADING' | translate"
+                    [description]="'COMPONENTS.TOPIC_INVITE_EDITORS.TOOLTIP_TOPIC_ROLES_DESCRIPTION' | translate">
                   </cos-tooltip>
                   <cos-dropdown>
-                    <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.TOPIC_INVITE.LBL_ALL_INVITEES_LEVEL' | translate">
+                    <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.TOPIC_INVITE.ROLE' | translate">
                       {{ 'TXT_TOPIC_LEVELS_' + (globalLevel() | uppercase) | translate }}
                     </div>
                     <div options>
@@ -102,7 +102,7 @@
                           </cos-dropdown>
                         </div>
                       </div>
-                      <button type="button" class="remove_btn" (click)="removeMember(member)" [aria-label]="'CONTROL.REMOVE' | translate">
+                      <button type="button" class="remove_btn" (click)="removeMember(member)">
                         <cos-icon name="nav-close" size="16"></cos-icon>
                       </button>
                     </div>
@@ -110,9 +110,11 @@
                 </div>
 
                 <div class="invite_message_wrap">
-                  <label class="hidden" for="inviteMessage">{{ 'COMPONENTS.TOPIC_INVITE.PLACEHOLDER_INVITE_MESSAGE' | translate }}</label>
-                  <textarea id="inviteMessage" [(ngModel)]="inviteMessage"
-                            [placeholder]="'COMPONENTS.TOPIC_INVITE.PLACEHOLDER_INVITE_MESSAGE' | translate"
+                  <label class="hidden" for="inviteMessage">{{ 'COMPONENTS.TOPIC_INVITE.MESSAGE_PLACEHOLDER' | translate }}</label>
+                  <textarea id="inviteMessage"
+                            [ngModel]="inviteMessage()"
+                            (ngModelChange)="inviteMessage.set($event)"
+                            [placeholder]="'COMPONENTS.TOPIC_INVITE.MESSAGE_PLACEHOLDER' | translate"
                             maxlength="1000"></textarea>
                   <div class="char_count">{{ inviteMessage().length }}/1000</div>
                 </div>
@@ -129,15 +131,12 @@
       }
     </div>
 
-    @if (activeTab() === 'invite' && selectedMembers().length > 0) {
+    @if (activeTab() === 'invite') {
       <div class="dialog_footer with_buttons">
-        <div class="info_row tablet_hidden">
-          <cos-icon name="info" size="16"></cos-icon>
-          <span>{{ 'COMPONENTS.TOPIC_INVITE.TXT_INVITE_INFO' | translate }}</span>
-        </div>
+        <div></div>
         <div class="button_row">
-          <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_INVITE.BTN_CANCEL"></cos-button>
-          <cos-button variant="primary" (clicked)="doInvite()" translate="COMPONENTS.TOPIC_INVITE.BTN_INVITE"></cos-button>
+          <cos-button variant="secondary" (clicked)="close()">{{ 'COMPONENTS.TOPIC_INVITE_DIALOG.LNK_CANCEL' | translate }}</cos-button>
+          <cos-button variant="primary" (clicked)="doInvite()">{{ 'COMPONENTS.TOPIC_INVITE_DIALOG.BTN_SAVE' | translate }}</cos-button>
         </div>
       </div>
     }

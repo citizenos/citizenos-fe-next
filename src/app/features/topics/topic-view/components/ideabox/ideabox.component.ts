@@ -1,7 +1,7 @@
-import { Component, input, output, inject, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { Component, input, output, inject, signal, computed } from '@angular/core';
+import { DatePipe, UpperCasePipe } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -19,11 +19,15 @@ import { IdeaReplyComponent } from '../idea-reply/idea-reply.component';
 import { IdeaReplyFormComponent } from '../idea-reply-form/idea-reply-form.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
+import { IdeaReportComponent } from '../idea-report/idea-report.component';
+import { AddIdeaFolderComponent } from '../add-idea-folder/add-idea-folder.component';
+import { EditIdeaComponent } from '../edit-idea/edit-idea.component';
+import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
 
 @Component({
   selector: 'app-ideabox',
   standalone: true,
-  imports: [DatePipe, TranslateModule, RouterModule, InitialsComponent, IconComponent, IdeaReplyComponent, IdeaReplyFormComponent, CosDropdownDirective, TooltipComponent],
+  imports: [DatePipe, TranslateModule, RouterModule, InitialsComponent, IconComponent, IdeaReplyComponent, IdeaReplyFormComponent, CosDropdownDirective, TooltipComponent, UpperCasePipe, AddIdeaFolderComponent],
   templateUrl: './ideabox.component.html',
   styleUrls: ['./ideabox.component.scss'],
 })
@@ -38,6 +42,8 @@ export class IdeaboxComponent {
   private ideationService = inject(TopicIdeationService);
   private topicService = inject(TopicService);
   private dialogService = inject(DialogService);
+  private router = inject(Router);
+  private translate = inject(TranslateService);
   userStore = inject(UserStore);
 
   IdeaStatus = IdeaStatus;
@@ -47,6 +53,17 @@ export class IdeaboxComponent {
 
   isDraft() {
     return this.idea().status === IdeaStatus.draft;
+  }
+
+  isNew = computed(() => {
+    const createdAt = new Date(this.idea().createdAt);
+    const now = new Date();
+    return (now.getTime() - createdAt.getTime()) < 24 * 60 * 60 * 1000;
+  });
+
+  isEdited() {
+    const edits = this.idea().edits;
+    return Array.isArray(edits) && edits.length > 1;
   }
 
   canEditTopic() {
@@ -67,7 +84,10 @@ export class IdeaboxComponent {
   }
 
   vote(value: number) {
-    if (!this.userStore.user()) return;
+    if (!this.userStore.isAuthenticated()) {
+        // Show login logic? Or just return?
+        return;
+    }
     if (!this.canVote()) return;
 
     this.ideationService.voteIdea({
@@ -124,6 +144,48 @@ export class IdeaboxComponent {
           this.ideaDeleted.emit(this.idea());
         });
       }
+    });
+  }
+
+  doIdeaReport() {
+    this.dialogService.open(IdeaReportComponent, {
+      data: {
+        ideaId: this.idea().id,
+        topicId: this.topic().id,
+        ideationId: this.ideation().id
+      }
+    });
+  }
+
+  addToFolder() {
+    this.dialogService.open(AddIdeaFolderComponent, {
+      data: {
+        topicId: this.topic().id,
+        ideationId: this.ideation().id,
+        idea: this.idea()
+      }
+    });
+  }
+
+  editIdea() {
+    this.dialogService.open(EditIdeaComponent, {
+      data: {
+        idea: this.idea(),
+        topicId: this.topic().id,
+        ideation: this.ideation(),
+        topicCountry: this.topic().country
+      }
+    });
+  }
+
+  goToView(showReplies = false) {
+    this.dialogService.open(IdeaDialogComponent, {
+        data: {
+            idea: this.idea(),
+            topic: this.topic(),
+            ideation: this.ideation(),
+            showReplies: showReplies
+        }
     });
   }
 

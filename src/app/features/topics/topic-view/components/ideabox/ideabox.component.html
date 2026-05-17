@@ -1,9 +1,8 @@
-<div class="idea" [class.draft]="isDraft()" [class.moderated]="idea().report?.id">
+<div class="idea" [class.moderated]="idea().report?.id" [class.new]="isNew()" [class.draft]="isDraft()" (click)="(!idea().report?.id) ? goToView() : null">
   @if (idea().report?.id || idea().deletedAt) {
     <div class="deleted_idea_wrap">
       <div class="deleted_idea_content_wrap">
-        <cos-icon name="warning" size="40" />
-
+        <cos-icon name="warning" [size]="40" />
         @if (idea().deletedReasonType && idea().deletedReasonText) {
           <div class="bold" [innerHTML]="'COMPONENTS.IDEABOX.IDEA_FOUND_INAPPRIOPRIATE_BY' | translate:{usersFullName: idea().deletedBy?.name}"></div>
         } @else if (idea().deletedBy?.id === idea().author?.id) {
@@ -17,71 +16,132 @@
     <div class="idea_header_left">
       @if (!isDraft()) {
         @if (idea().author) {
-          <cos-tooltip [noIcon]="true" [title]="idea().author?.name || ''">
-            <div trigger class="avatar">
-              @if (idea().author?.imageUrl) {
-                <img [src]="idea().author!.imageUrl" [alt]="idea().author!.name" />
-              } @else {
-                <div class="profile_image_filler">
-                  <cos-initials [name]="idea().author!.name || ''" />
-                </div>
-              }
-            </div>
-          </cos-tooltip>
+          <div class="avatar">
+            <cos-tooltip [noIcon]="true" [title]="idea().author?.name || ''">
+              <div trigger class="avatar_inner">
+                @if (idea().author?.imageUrl) {
+                  <img [src]="idea().author!.imageUrl" [alt]="idea().author!.name" />
+                } @else {
+                  <div class="profile_image_filler">
+                    <cos-initials [name]="idea().author!.name || ''" />
+                  </div>
+                }
+              </div>
+            </cos-tooltip>
+          </div>
           <div class="vertical_line_separator"></div>
         }
 
         <div class="like_wrap" [class.selected]="idea().votes.up.selected">
-          <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate" pos="top">
-            <button type="button" trigger class="btn_idea_like" [class.disabled]="!canVote()" (click)="vote(1)" [aria-label]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate">
-              <cos-icon name="thumbs-up" />
+            <button type="button" class="btn_idea_like" [disabled]="!canVote()" (click)="$event.stopPropagation(); vote(1)" [aria-label]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate">
+              @if (!idea().votes.up.selected) {
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <mask id="path-1-inside-1_12557_36360_header" fill="white">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M4.5 8.23052C4.5 5.75213 6.4675 4 8.50006 4C10.5327 4 12.5 5.7523 12.5 8.23052C12.5 9.98094 11.8561 10.9778 11.2695 11.886C10.8399 12.5512 10.441 13.1688 10.3483 14L6.65595 14C6.56314 13.1686 6.16341 12.551 5.73288 11.8858C5.14514 10.9776 4.5 9.9808 4.5 8.23052ZM8.5 17C9.60457 17 10.5 16.1046 10.5 15L6.5 15C6.5 16.1046 7.39543 17 8.5 17Z" />
+                    </mask>
+                    <path d="M11.3421 14.1109C11.4051 13.5465 11.6655 13.116 12.1095 12.4286L10.4295 11.3435C10.0143 11.9863 9.47694 12.7911 9.35442 13.8891L11.3421 14.1109Z" fill="#2C3B47" />
+                    <rect x="9" y="0.5" width="2" height="1" rx="0.5" transform="rotate(90 9 0.5)" fill="#2C3B47" />
+                    <path d="M8.5 5C9.97794 5 11.5 6.30212 11.5 8.23052L13.5 8.23052C13.5 5.20247 11.0874 3 8.50006 3V5Z" fill="#2C3B47" />
+                    <path d="M5.5 8.23052C5.5 6.30203 7.02216 5 8.50006 5V3C5.91284 3 3.5 5.20223 3.5 8.23052H5.5Z" fill="#2C3B47" />
+                </svg>
+              } @else {
+                <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0.5C8.27614 0.5 8.5 0.723858 8.5 1V2C8.5 2.27614 8.27614 2.5 8 2.5C7.72386 2.5 7.5 2.27614 7.5 2V1C7.5 0.723858 7.72386 0.5 8 0.5ZM13.6567 3.54984C13.852 3.35458 13.852 3.038 13.6567 2.84274C13.4614 2.64747 13.1449 2.64747 12.9496 2.84274L12.2425 3.54984C12.0472 3.7451 12.0472 4.06169 12.2425 4.25695C12.4377 4.45221 12.7543 4.45221 12.9496 4.25695L13.6567 3.54984ZM8.00006 4C5.9675 4 4 5.75213 4 8.23052C4 9.9808 4.64514 10.9776 5.23288 11.8858C5.66341 12.551 6.06314 13.1686 6.15595 14H9.84826C9.941 13.1688 10.3399 12.5512 10.7695 11.886C11.3561 10.9778 12 9.98094 12 8.23052C12 5.7523 10.0327 4 8.00006 4ZM10 15C10 16.1046 9.10457 17 8 17C6.89543 17 6 16.1046 6 15H10ZM3.05033 2.84281C2.85507 2.64755 2.53849 2.64755 2.34322 2.84281C2.14796 3.03807 2.14796 3.35466 2.34322 3.54992L3.05033 4.25702C3.24559 4.45229 3.56218 4.45229 3.75744 4.25702C3.9527 4.06176 3.9527 3.74518 3.75744 3.54992L3.05033 2.84281ZM0 8.5C0 8.22386 0.223858 8 0.5 8H1.5C1.77614 8 2 8.22386 2 8.5C2 8.77614 1.77614 9 1.5 9H0.5C0.223858 9 0 8.77614 0 8.5ZM14.5 8C14.2239 8 14 8.22386 14 8.5C14 8.77614 14.2239 9 14.5 9H15.5C15.7761 9 16 8.77614 16 8.5C16 8.22386 15.7761 8 15.5 8H14.5Z" fill="#E4B722" />
+                </svg>
+              }
             </button>
-          </cos-tooltip>
-          <cos-tooltip [noIcon]="true" [title]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE_COUNT' | translate" pos="top">
-            <button type="button" trigger class="like_counter_wrap btn_link" (click)="showReactions()" [aria-label]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE_COUNT' | translate">
-              {{ idea().votes.up.count }}
-            </button>
-          </cos-tooltip>
+            <a class="like_counter_wrap" (click)="$event.stopPropagation(); showReactions()">
+                <span>{{ idea().votes.up.count }}</span>
+            </a>
         </div>
 
-        @if (userStore.user()) {
-          <div class="vertical_line_separator"></div>
-          <cos-tooltip [noIcon]="true"
-            [title]="(idea().favourite ? 'COMPONENTS.IDEABOX.TOOLTIP_SAVED_TO_FAVOURITE' : 'COMPONENTS.IDEABOX.TOOLTIP_FAVOURITE') | translate"
-            pos="top">
-            <button type="button" trigger class="btn_small_plain" (click)="$event.preventDefault(); $event.stopPropagation(); toggleFavourite()" [aria-label]="(idea().favourite ? 'COMPONENTS.IDEABOX.TOOLTIP_SAVED_TO_FAVOURITE' : 'COMPONENTS.IDEABOX.TOOLTIP_FAVOURITE') | translate">
-              <cos-icon name="heart" />
-            </button>
-          </cos-tooltip>
-        }
+        <div class="vertical_line_separator"></div>
+
+        <button type="button" class="btn_small_plain bookmark" (click)="$event.stopPropagation(); toggleFavourite()">
+            @if (!idea().favourite) {
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.33541 12.3292L8 12.1615L7.66459 12.3292L3.1118 14.6056C2.94558 14.6887 2.75 14.5678 2.75 14.382V2C2.75 1.86193 2.86193 1.75 3 1.75H13C13.1381 1.75 13.25 1.86193 13.25 2V14.382C13.25 14.5678 13.0544 14.6887 12.8882 14.6056L8.33541 12.3292Z" stroke="#2C3B47" stroke-width="1.5" />
+                </svg>
+            } @else {
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.33541 12.3292L8 12.1615L7.66459 12.3292L3.1118 14.6056C2.94558 14.6887 2.75 14.5678 2.75 14.382V2C2.75 1.86193 2.86193 1.75 3 1.75H13C13.1381 1.75 13.25 1.86193 13.25 2V14.382C13.25 14.5678 13.0544 14.6887 12.8882 14.6056L8.33541 12.3292Z" fill="#2C3B47" stroke="#2C3B47" stroke-width="1.5" />
+                </svg>
+            }
+        </button>
       } @else {
         <div class="draft_label">
-            <cos-icon name="edit" />
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.8143 4.18517L11.8147 7.18569L5.29947 13.7012L2.62438 13.9965C2.26626 14.0361 1.96369 13.7333 2.00354 13.3752L2.30118 10.6981L8.8143 4.18517ZM13.6704 3.73845L12.2616 2.3296C11.8222 1.89013 11.1095 1.89013 10.67 2.3296L9.34467 3.65501L12.3451 6.65553L13.6704 5.33011C14.1099 4.89042 14.1099 4.17791 13.6704 3.73845Z" fill="#727C84" />
+          </svg>
           <span>{{ 'COMPONENTS.IDEABOX.IDEA_DRAFT' | translate }}</span>
         </div>
       }
     </div>
 
-    @if (userStore.user()) {
+    @if (userStore.isAuthenticated() || isEdited()) {
       <div class="idea_header_right">
-        <div class="dropdown button_dropdown" cosDropdown>
-           <button type="button" class="btn_small_plain icon" [aria-label]="'COMPONENTS.IDEABOX.IDEA_ACTIONS' | translate">
-               <cos-icon name="more-vertical" />
+        <div class="dropdown button_dropdown" cosDropdown (click)="$event.stopPropagation()">
+           <button type="button" class="btn_small_plain icon" trigger aria-label="Idea actions">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                 <path fill-rule="evenodd" clip-rule="evenodd" d="M9.33301 4.0013C9.33301 3.26797 8.73301 2.66797 7.99967 2.66797C7.26634 2.66797 6.66634 3.26797 6.66634 4.0013C6.66634 4.73464 7.26634 5.33464 7.99967 5.33464C8.73301 5.33464 9.33301 4.73464 9.33301 4.0013ZM9.33301 12.0013C9.33301 11.268 8.73301 10.668 7.99967 10.668C7.26634 10.668 6.66634 11.268 6.66634 12.0013C6.66634 12.7346 7.26634 13.3346 7.99967 13.3346C8.73301 13.3346 9.33301 12.7346 9.33301 12.0013ZM7.99967 6.66797C8.73301 6.66797 9.33301 7.26797 9.33301 8.0013C9.33301 8.73464 8.73301 9.33463 7.99967 9.33463C7.26634 9.33463 6.66634 8.73464 6.66634 8.0013C6.66634 7.26797 7.26634 6.66797 7.99967 6.66797Z" fill="#2C3B47" />
+               </svg>
            </button>
            <div class="options">
-            @if (!isDraft()) {
+            @if (userStore.isAuthenticated() && !isDraft()) {
               <button type="button" class="option" (click)="toggleFavourite()">
-                <cos-icon name="heart" size="16"/>
+                <div class="icon_wrap">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8.33541 12.3292L8 12.1615L7.66459 12.3292L3.1118 14.6056C2.94558 14.6887 2.75 14.5678 2.75 14.382V2C2.75 1.86193 2.86193 1.75 3 1.75H13C13.1381 1.75 13.25 1.86193 13.25 2V14.382C13.25 14.5678 13.0544 14.6887 12.8882 14.6056L8.33541 12.3292Z" fill="#2C3B47" stroke="#2C3B47" stroke-width="1.5" />
+                  </svg>
+                </div>
                 <span>{{ (idea().favourite ? 'COMPONENTS.IDEABOX.OPTION_UNFAVOURITE' : 'COMPONENTS.IDEABOX.OPTION_FAVOURITE') | translate }}</span>
               </button>
+              @if (canEditTopic()) {
+                <div class="line_separator"></div>
+                <button type="button" class="option" (click)="addToFolder()">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.05 13C1.77 13 1.525 12.894 1.315 12.682C1.105 12.4701 1 12.2323 1 11.9688V3.03125C1 2.76771 1.105 2.52995 1.315 2.31797C1.525 2.10599 1.77 2 2.05 2H6.5125C6.6525 2 6.78958 2.02865 6.92375 2.08594C7.05792 2.14323 7.17167 2.21771 7.265 2.30937L8 4H13.95C14.2183 4 14.4604 4.10599 14.6763 4.31797C14.8921 4.52995 15 4.76771 15 5.03125V11.9688C15 12.2323 14.8921 12.4701 14.6763 12.682C14.4604 12.894 14.2183 13 13.95 13H2.05Z" fill="#2C3B47" />
+                  </svg>
+                  <span>{{ 'COMPONENTS.IDEABOX.OPTION_ADD_TO_FOLDER' | translate }}</span>
+                </button>
+              }
             }
 
             @if (canEditIdea()) {
-              @if (!isDraft()) {
-                <div class="line_separator"></div>
-              }
+              <div class="line_separator" [style.display]="!isDraft() ? 'block' : 'none'"></div>
+              <button type="button" class="option" (click)="editIdea()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8.8143 4.18517L11.8147 7.18569L5.29947 13.7012L2.62438 13.9965C2.26626 14.0361 1.96369 13.7333 2.00354 13.3752L2.30118 10.6981L8.8143 4.18517ZM13.6704 3.73845L12.2616 2.3296C11.8222 1.89013 11.1095 1.89013 10.67 2.3296L9.34467 3.65501L12.3451 6.65553L13.6704 5.33011C14.1099 4.89042 14.1099 4.17791 13.6704 3.73845Z" fill="#2C3B47" />
+                </svg>
+                <span>{{ 'COMPONENTS.IDEABOX.OPTION_EDIT' | translate }}</span>
+              </button>
+            }
+
+            @if (userStore.isAuthenticated() && !isDraft()) {
+               <div class="line_separator"></div>
+               <button type="button" class="option" (click)="doIdeaReport()">
+                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                   <circle cx="8" cy="8" r="5.5" fill="#2C3B47" stroke="#2C3B47" />
+                   <path fill-rule="evenodd" clip-rule="evenodd" d="M4.83552 4.12842L11.8714 11.1643C11.6598 11.4228 11.4228 11.6598 11.1643 11.8714L4.12842 4.83552C4.34 4.57697 4.57697 4.34 4.83552 4.12842Z" fill="white" />
+                 </svg>
+                 <span>{{ 'COMPONENTS.IDEABOX.OPTION_REPORT' | translate }}</span>
+               </button>
+            }
+
+            @if (isEdited() && !isDraft()) {
+               <div class="line_separator"></div>
+               <button type="button" class="option" (click)="goToView()">
+                  <cos-icon name="history-legacy" [size]="16" />
+                  <span>{{ 'COMPONENTS.IDEABOX.OPTION_VIEW_PREVIOUS_VERSIONS' | translate }}</span>
+               </button>
+            }
+
+            @if (canEditIdea()) {
+              <div class="line_separator"></div>
               <button type="button" class="option error_text" (click)="confirmDelete()">
-                <cos-icon name="trash" size="16"/>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M10 3H6V4H10V3ZM11 4V3C11 2.44772 10.5523 2 10 2H6C5.44772 2 5 2.44772 5 3V4H4H2.5C2.22386 4 2 4.22386 2 4.5C2 4.77614 2.22386 5 2.5 5H4V13C4 13.5523 4.44772 14 5 14H11C11.5523 14 12 13.5523 12 13V5H13.5C13.7761 5 14 4.77614 14 4.5C14 4.22386 13.7761 4 13.5 4H12H11ZM7 7H6V11H7V7ZM10 7H9V11H10V7Z" fill="#2C3B47" />
+                </svg>
                 <span>{{ 'COMPONENTS.IDEABOX.OPTION_REMOVE' | translate }}</span>
               </button>
             }
@@ -98,44 +158,11 @@
   <div class="idea_footer">
     @if (!isDraft()) {
       <div class="date">{{ idea().createdAt | date:'y-MM-dd HH:mm' }}</div>
-      <button type="button" class="replies_count btn_link" (click)="toggleReplies()">
-        {{ 'COMPONENTS.IDEABOX.REPLIES' | translate:{ count: idea().replies?.count ?? 0 } }}
-      </button>
+      <div class="replies_count">
+          <a (click)="$event.stopPropagation(); (!idea().report?.id) ? goToView(true) : null">{{ 'COMPONENTS.IDEABOX.REPLIES' | translate:{ count: idea().replies?.count ?? 0 } }}</a>
+      </div>
     } @else {
       <div class="date">{{ 'COMPONENTS.IDEABOX.DRAFT_UPDATED_AT' | translate:{ date: (idea().updatedAt | date:'y-MM-dd HH:mm') } }}</div>
     }
   </div>
-
-  @if (showReplies()) {
-    <div class="replies_section">
-        @if (userStore.isAuthenticated()) {
-            <button type="button" class="reply_form_toggle btn_link" (click)="showReplyInput.set(!showReplyInput())">
-                <cos-icon name="edit" size="16"></cos-icon>
-                <span>{{ 'COMPONENTS.IDEA_REPLY.BTN_REPLY' | translate }}</span>
-            </button>
-            @if (showReplyInput()) {
-                <app-idea-reply-form
-                    [topicId]="topic().id"
-                    [ideationId]="ideation().id"
-                    [ideaId]="idea().id"
-                    (showReplyChange)="showReplyInput.set($event)"
-                    (showRepliesChange)="loadReplies()">
-                </app-idea-reply-form>
-            }
-        }
-
-        <div class="replies_list">
-            @for (reply of replies(); track reply.id) {
-                <app-idea-reply
-                    [argument]="reply"
-                    [topicId]="topic().id"
-                    [ideationId]="ideation().id"
-                    [ideaId]="idea().id">
-                </app-idea-reply>
-            } @empty {
-                <div class="no_replies">{{ 'COMPONENTS.IDEABOX.NO_REPLIES' | translate }}</div>
-            }
-        </div>
-    </div>
-  }
 </div>

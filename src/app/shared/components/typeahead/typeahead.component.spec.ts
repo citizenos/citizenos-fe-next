@@ -1,13 +1,35 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TypeaheadComponent, TypeaheadItem } from './typeahead.component';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TypeaheadComponent, TypeaheadItemData, TypeaheadItemDirective, TypeaheadSelectDirective } from './typeahead.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { Component } from '@angular/core';
+
+@Component({
+  standalone: true,
+  imports: [TypeaheadComponent, TypeaheadItemDirective, TypeaheadSelectDirective],
+  template: `
+    <cos-typeahead [label]="'Search'" (search)="onSearch($event)" (select)="onSelect($event)">
+      @for (item of items; track item.id) {
+        <div [typeaheadItem]="item" [typeaheadSelect]="item" class="test-item">{{ item['name'] }}</div>
+      }
+    </cos-typeahead>
+  `
+})
+class TestHostComponent {
+  items: TypeaheadItemData[] = [
+    { id: 1, name: 'Item 1' },
+    { id: 2, name: 'Item 2' }
+  ];
+  onSearch = vi.fn();
+  onSelect = vi.fn();
+}
 
 describe('TypeaheadComponent', () => {
   let component: TypeaheadComponent;
   let fixture: ComponentFixture<TypeaheadComponent>;
 
   beforeEach(async () => {
+    TestBed.resetTestingModule();
     await TestBed.configureTestingModule({
       imports: [TypeaheadComponent, TranslateModule.forRoot()]
     }).compileComponents();
@@ -27,7 +49,7 @@ describe('TypeaheadComponent', () => {
 
   it('should emit search on onQuery()', () => {
     const spy = vi.fn();
-    component.searchQuery.subscribe(spy);
+    component.search.subscribe(spy);
     component.term.set('alice');
     component.onQuery();
     expect(spy).toHaveBeenCalledWith('alice');
@@ -40,9 +62,9 @@ describe('TypeaheadComponent', () => {
 
   it('should clear term and emit select on doSelect()', () => {
     const spy = vi.fn();
-    component.selectItem.subscribe(spy);
+    component.select.subscribe(spy);
     component.term.set('test');
-    const item: TypeaheadItem = { id: '1', name: 'Alice' };
+    const item: TypeaheadItemData = { id: '1', name: 'Alice' };
     component.doSelect(item);
     expect(spy).toHaveBeenCalledWith(item);
     expect(component.term()).toBe('');
@@ -57,7 +79,7 @@ describe('TypeaheadComponent', () => {
   });
 
   it('should register items via registerItem()', () => {
-    const item: TypeaheadItem = { id: 'a', name: 'Alice' };
+    const item: TypeaheadItemData = { id: 'a', name: 'Alice' };
     component.registerItem(item);
     expect(component.items()).toHaveLength(1);
   });
@@ -79,11 +101,98 @@ describe('TypeaheadComponent', () => {
     expect(el.querySelector('input')).toBeTruthy();
   });
 
-  it('should render label when provided', async () => {
-    fixture.componentRef.setInput('label', 'Search users');
-    fixture.detectChanges();
-    await fixture.whenStable();
-    const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('.typeahead-label')?.textContent?.trim()).toBe('Search users');
+  it('should handle keyboard navigation (ArrowDown)', () => {
+    const item1: TypeaheadItemData = { id: 1, name: 'Item 1' };
+    const item2: TypeaheadItemData = { id: 2, name: 'Item 2' };
+    component.registerItem(item1);
+    component.registerItem(item2);
+
+    component.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    expect(component.active()).toEqual(item1);
+
+    component.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    expect(component.active()).toEqual(item2);
+
+    component.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    expect(component.active()).toEqual(item1); // Wrap around
+  });
+
+  it('should handle keyboard navigation (ArrowUp)', () => {
+    const item1: TypeaheadItemData = { id: 1, name: 'Item 1' };
+    const item2: TypeaheadItemData = { id: 2, name: 'Item 2' };
+    component.registerItem(item1);
+    component.registerItem(item2);
+
+    component.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
+    expect(component.active()).toEqual(item2); // Wrap around to last
+
+    component.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
+    expect(component.active()).toEqual(item1);
+  });
+
+  it('should select active item on Enter key', () => {
+    const item: TypeaheadItemData = { id: 1, name: 'Item 1' };
+    component.registerItem(item);
+    component.activate(item);
+    const spy = vi.fn();
+    component.select.subscribe(spy);
+
+    component.onKeyup(new KeyboardEvent('keyup', { key: 'Enter' }));
+    expect(spy).toHaveBeenCalledWith(item);
+  });
+
+  it('should reset on Escape key', () => {
+    component.term.set('searching...');
+    component.registerItem({ id: 1, name: 'Item 1' });
+
+    component.onKeyup(new KeyboardEvent('keyup', { key: 'Escape' }));
+    expect(component.term()).toBe('');
+    expect(component.items()).toHaveLength(0);
+  });
+
+  it('should handle blur with delay', async () => {
+    component.onFocus();
+    expect(component.focused()).toBe(true);
+    component.onBlur();
+    expect(component.focused()).toBe(true); // Still true before timeout
+    await new Promise(resolve => setTimeout(resolve, 200));
+    expect(component.focused()).toBe(false);
+  });
+
+  describe('Integration with directives', () => {
+    let hostComponent: TestHostComponent;
+    let hostFixture: ComponentFixture<TestHostComponent>;
+
+    beforeEach(async () => {
+      TestBed.resetTestingModule();
+      await TestBed.configureTestingModule({
+        imports: [TestHostComponent, TranslateModule.forRoot()]
+      }).compileComponents();
+
+      hostFixture = TestBed.createComponent(TestHostComponent);
+      hostComponent = hostFixture.componentInstance;
+      hostFixture.detectChanges();
+    });
+
+    it('should register items through TypeaheadItemDirective', () => {
+      const typeahead = hostFixture.debugElement.query(p => p.componentInstance instanceof TypeaheadComponent).componentInstance as TypeaheadComponent;
+      expect(typeahead.items()).toHaveLength(2);
+    });
+
+    it('should activate item on mouseover', () => {
+      const typeahead = hostFixture.debugElement.query(p => p.componentInstance instanceof TypeaheadComponent).componentInstance as TypeaheadComponent;
+      const itemEl = hostFixture.nativeElement.querySelector('.test-item');
+      itemEl.dispatchEvent(new MouseEvent('mouseover'));
+      expect(typeahead.active()).toEqual(hostComponent.items[0]);
+    });
+
+    it('should select item on click', () => {
+      const typeahead = hostFixture.debugElement.query(p => p.componentInstance instanceof TypeaheadComponent).componentInstance as TypeaheadComponent;
+      const spy = vi.fn();
+      typeahead.select.subscribe(spy);
+      const itemEl = hostFixture.nativeElement.querySelector('.test-item');
+      itemEl.click();
+      expect(spy).toHaveBeenCalledWith(hostComponent.items[0]);
+    });
   });
 });

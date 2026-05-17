@@ -1,12 +1,22 @@
-<div class="overlay" dialogClose (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
+<div class="overlay" dialogClose></div>
 <div class="dialog_wrap">
+  <div id="notification_wrap_dialog" class="mobile_hidden">
+    <cos-notifications></cos-notifications>
+  </div>
   <div class="dialog">
+    <div id="notification_wrap_dialog" class="mobile_show">
+      <cos-notifications></cos-notifications>
+    </div>
     <div class="dialog_header voting">
       <div class="header_text">
         <h4 class="title">{{ 'MODALS.TOPIC_VOTE_SIGN_ESTEID_HEADING' | translate }}</h4>
         <div class="dialog_close">
-          <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
-            <cos-icon name="close" [size]="24"></cos-icon>
+          <button type="button" class="btn_dialog_close icon" dialogClose>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
+                fill="#2C3B47" />
+            </svg>
           </button>
         </div>
       </div>
@@ -14,7 +24,7 @@
     <div class="dialog_content no_footer">
       <div class="vote_options">
         @if (data.options.length === 1) {
-          <span>{{ 'MODALS.TOPIC_VOTE_SIGN_TXT_VOTING_FOR' | translate:{ optionSelected: data.options[0] } }}</span>
+          <span>{{ 'MODALS.TOPIC_VOTE_SIGN_TXT_VOTING_FOR' | translate:{ optionSelected: data.options[0].value } }}</span>
         }
         @for (option of data.options; track option.id) {
           @if (option.selected) {
@@ -22,8 +32,9 @@
               <div class="radio_text_wrap">
                 <div class="radio_lable_wrap">
                   <label class="checkbox">
-                    <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_' + option.value | uppercase | translate:{ default: option.value } }}</span>
-                    <input type="checkbox" [checked]="true" />
+                    <span [translate]="'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_' + option.value | uppercase"
+                      [translateParams]="{default: option.value}"></span>
+                    <input type="checkbox" [checked]="option.selected" disabled />
                     <span class="checkmark"></span>
                   </label>
                 </div>
@@ -33,47 +44,103 @@
         }
       </div>
       <div class="form_wrap">
-        <form [formGroup]="mobiilIdForm" novalidate>
-          <!-- Mobile-ID section -->
+        <form name="formMobileSign" [formGroup]="mobiilIdForm" novalidate>
           <div class="sign_in_section">
+            <svg width="76" height="22" viewBox="0 0 76 22" fill="none" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink">
+              <g style="mix-blend-mode:multiply">
+                <rect width="76" height="22" fill="url(#pattern0_esteid)" />
+              </g>
+              <defs>
+                <pattern id="pattern0_esteid" patternContentUnits="objectBoundingBox" width="1" height="1">
+                  <use xlink:href="#image0_esteid" transform="scale(0.00909091 0.03125)" />
+                </pattern>
+                <image id="image0_esteid" width="110" height="32"
+                  xlink:href="data:image/png;base64,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" />
+              </defs>
+            </svg>
             @if (isLoading() && !challengeID()) {
-              <div class="loader_wrap"><div class="loader"></div></div>
+              <div class="loader_wrap">
+                <div class="loader"></div>
+              </div>
             }
             @if (!challengeID() && !isLoading()) {
               <cos-input [placeholder]="'MODALS.TOPIC_VOTE_SIGN_ESTEID_PLACEHOLDER_PHONE' | translate">
-                <input formControlName="phoneNumber" type="tel"
-                  [placeholder]="'MODALS.TOPIC_VOTE_SIGN_ESTEID_PLACEHOLDER_PHONE' | translate" />
+                <input id="phone" formControlName="phoneNumber" type="tel"
+                  [placeholder]="'MODALS.TOPIC_VOTE_SIGN_ESTEID_PLACEHOLDER_PHONE' | translate"
+                  [class.error_input]="mobiilIdForm.controls['phoneNumber'].errors && mobiilIdForm.controls['phoneNumber'].touched">
+                @if (mobiilIdForm.controls['phoneNumber'].errors && mobiilIdForm.controls['phoneNumber'].touched) {
+                  <label for="phone" class="error_label">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8.89438 1.78863C8.52586 1.05158 7.47405 1.05158 7.10553 1.78863L0.723562 14.5526C0.391112 15.2175 0.874608 15.9998 1.61799 15.9998H14.3819C15.1253 15.9998 15.6088 15.2175 15.2763 14.5526L8.89438 1.78863ZM6.99996 6.99977C6.99996 6.44749 7.44767 5.99977 7.99996 5.99977C8.55224 5.99977 8.99996 6.44749 8.99996 6.99977V9.99977C8.99996 10.5521 8.55224 10.9998 7.99996 10.9998C7.44767 10.9998 6.99996 10.5521 6.99996 9.99977V6.99977ZM6.99996 12.9998C6.99996 12.4475 7.44767 11.9998 7.99996 11.9998C8.55224 11.9998 8.99996 12.4475 8.99996 12.9998C8.99996 13.5521 8.55224 13.9998 7.99996 13.9998C7.44767 13.9998 6.99996 13.5521 6.99996 12.9998Z"
+                        fill="#EF4025" />
+                    </svg>
+                    <span>{{ 'MODALS.TOPIC_VOTE_SIGN_ESTEID_ERROR_PHONE' | translate }}</span>
+                  </label>
+                }
               </cos-input>
               <cos-input [placeholder]="'MODALS.TOPIC_VOTE_SIGN_ESTEID_PLACEHOLDER_PID' | translate">
-                <input formControlName="pid" type="text" inputmode="numeric"
-                  [placeholder]="'MODALS.TOPIC_VOTE_SIGN_ESTEID_PLACEHOLDER_PID' | translate" />
+                <input id="pid" formControlName="pid" type="text" inputmode="numeric"
+                  [placeholder]="'MODALS.TOPIC_VOTE_SIGN_ESTEID_PLACEHOLDER_PID' | translate"
+                  [class.error_input]="mobiilIdForm.controls['pid'].errors && mobiilIdForm.controls['pid'].touched">
+                @if (mobiilIdForm.controls['pid'].errors && mobiilIdForm.controls['pid'].touched) {
+                  <label for="pid" class="error_label">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M8.89438 1.78863C8.52586 1.05158 7.47405 1.05158 7.10553 1.78863L0.723562 14.5526C0.391112 15.2175 0.874608 15.9998 1.61799 15.9998H14.3819C15.1253 15.9998 15.6088 15.2175 15.2763 14.5526L8.89438 1.78863ZM6.99996 6.99977C6.99996 6.44749 7.44767 5.99977 7.99996 5.99977C8.55224 5.99977 8.99996 6.44749 8.99996 6.99977V9.99977C8.99996 10.5521 8.55224 10.9998 7.99996 10.9998C7.44767 10.9998 6.99996 10.5521 6.99996 9.99977V6.99977ZM6.99996 12.9998C6.99996 12.4475 7.44767 11.9998 7.99996 11.9998C8.55224 11.9998 8.99996 12.4475 8.99996 12.9998C8.99996 13.5521 8.55224 13.9998 7.99996 13.9998C7.44767 13.9998 6.99996 13.5521 6.99996 12.9998Z"
+                        fill="#EF4025" />
+                    </svg>
+                    <span>{{ 'MODALS.TOPIC_VOTE_SIGN_ESTEID_ERROR_PID' | translate }}</span>
+                  </label>
+                }
               </cos-input>
             }
             @if (challengeID()) {
               <div class="control_code_wrap">
-                <div class="code">{{ 'MODALS.TOPIC_VOTE_SIGN_ESTEID_TXT_CONTROL_CODE' | translate:{ code: challengeID() } }}</div>
+                <div class="code">{{ 'MODALS.TOPIC_VOTE_SIGN_ESTEID_TXT_CONTROL_CODE' | translate:{code: challengeID()} }}</div>
                 <div class="code_text">{{ 'MODALS.TOPIC_VOTE_SIGN_ESTEID_TXT_CHECK_CONTROL_CODE' | translate }}</div>
-                <div class="loader_wrap"><div class="loader"></div></div>
+                <div class="loader_wrap">
+                  <div class="loader"></div>
+                </div>
               </div>
             }
-            <button type="button" (click)="doSignWithMobile()"
+            <button type="submit" (click)="doSignWithMobile()"
               [disabled]="isLoading() || isLoadingIdCard() || mobiilIdForm.invalid" class="btn_big_submit">
               <span>{{ 'MODALS.TOPIC_VOTE_SIGN_ESTEID_BTN_SIGN_MID' | translate }}</span>
             </button>
           </div>
 
-          <!-- ID card section -->
           <div class="sign_in_section">
+            <svg width="71" height="22" viewBox="0 0 71 22" fill="none" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink">
+              <g style="mix-blend-mode:multiply">
+                <rect width="71" height="22" fill="url(#pattern1_esteid)" />
+              </g>
+              <defs>
+                <pattern id="pattern1_esteid" patternContentUnits="objectBoundingBox" width="1" height="1">
+                  <use xlink:href="#image0_esteid_card" transform="scale(0.00961538 0.03125)" />
+                </pattern>
+                <image id="image0_esteid_card" width="104" height="32"
+                  xlink:href="data:image/png;base64,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" />
+              </defs>
+            </svg>
+
             @if (isLoadingIdCard()) {
-              <div class="loader_wrap id_card_loader"><div class="loader"></div></div>
-            } @else {
-              <button type="button" (click)="doSignWithCard()" [disabled]="isLoading() || isLoadingIdCard()" class="btn_big_submit">
+              <div class="loader_wrap id_card_loader">
+                <div class="loader"></div>
+              </div>
+            }
+            @if (!isLoadingIdCard()) {
+              <button type="button" (click)="doSignWithCard()" [disabled]="isLoading() || isLoadingIdCard()"
+                class="btn_big_submit">
                 <span>{{ 'MODALS.TOPIC_VOTE_SIGN_ESTEID_BTN_SIGN_CARD' | translate }}</span>
               </button>
             }
           </div>
         </form>
       </div>
+
     </div>
     <div class="dialog_footer"></div>
   </div>

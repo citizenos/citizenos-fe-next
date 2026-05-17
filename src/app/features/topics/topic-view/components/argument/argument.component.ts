@@ -1,6 +1,6 @@
 import {
   Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit,
-  ViewChild, ElementRef, forwardRef
+  ViewChild, ElementRef, forwardRef, AfterViewInit
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +19,12 @@ import { InitialsComponent } from '../../../../../shared/components/initials/ini
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { ArgumentReportComponent } from '../argument-report/argument-report.component';
+import { ArgumentDeletedComponent } from '../argument-deleted/argument-deleted.component';
+import { ArgumentReplyComponent } from '../argument-reply/argument-reply.component';
+import { ArgumentEditsComponent } from '../argument-edits/argument-edits.component';
+import { EditArgumentComponent } from '../edit-argument/edit-argument.component';
+import { ArgumentReactionsComponent } from '../argument-reactions/argument-reactions.component';
+import { MarkdownPipe } from '../../../../../shared/pipes/markdown.pipe';
 
 @Component({
   selector: 'cos-argument',
@@ -27,13 +33,15 @@ import { ArgumentReportComponent } from '../argument-report/argument-report.comp
   imports: [
     DatePipe, FormsModule, TranslateModule,
     IconComponent, InitialsComponent, CosDropdownDirective,
-    TooltipComponent,
+    TooltipComponent, ArgumentDeletedComponent,
+    ArgumentReplyComponent, ArgumentEditsComponent, EditArgumentComponent,
+    MarkdownPipe,
     forwardRef(() => ArgumentComponent),
   ],
   templateUrl: './argument.component.html',
   styleUrls: ['./argument.component.scss']
 })
-export class ArgumentComponent implements OnInit {
+export class ArgumentComponent implements OnInit, AfterViewInit {
   argument = input.required<Argument>();
   topicId = input.required<string>();
   discussionId = input.required<string>();
@@ -53,21 +61,25 @@ export class ArgumentComponent implements OnInit {
   showReplyForm = signal(false);
   showDeletedArgument = signal(false);
   showEdits = signal(false);
-
-  editSubject = signal('');
-  editText = signal('');
-  replyText = signal('');
+  mobileActions = signal(false);
 
   ngOnInit() {
-    this.editSubject.set(this.argument().subject || '');
-    this.editText.set(this.argument().text || '');
   }
 
-
+  ngAfterViewInit() {
+    if (this.argument().type === 'reply' && this.argumentBody) {
+      const argBody = this.argumentBody.nativeElement;
+      const authorName = document.createElement('b');
+      authorName.innerText = (this.argument().parent?.id ? this.getParentAuthor() : '') + ' ';
+      if (argBody.firstChild) {
+        argBody.firstChild.prepend(authorName);
+      }
+    }
+  }
 
   argumentId() {
     const arg = this.argument();
-    const version = (Object.keys(arg.edits || {}).length || 1) - 1;
+    const version = Math.max(0, (Object.keys(arg.edits || {}).length || 1) - 1);
     return arg.id + '_v' + version;
   }
 
@@ -95,48 +107,32 @@ export class ArgumentComponent implements OnInit {
     });
   }
 
-  postReply() {
-    const text = this.replyText().trim();
-    if (!text) return;
-    this.argumentService.save({
-      type: 'reply',
-      text,
-      subject: '',
-      parentVersion: 0,
-      topicId: this.topicId(),
-      discussionId: this.discussionId(),
-      parent: { id: this.argument().id },
-    }).pipe(take(1)).subscribe({
-      next: () => {
-        this.replyText.set('');
-        this.showReplyForm.set(false);
-        this.showReplies.set(true);
-        this.deleted.emit(); // reuse event to trigger parent reload
-      }
-    });
-  }
-
-  saveEdit() {
-    this.argumentService.update({
-      commentId: this.argument().id,
-      topicId: this.topicId(),
-      discussionId: this.discussionId(),
-      subject: this.editSubject().trim(),
-      text: this.editText().trim(),
-    }).pipe(take(1)).subscribe({
-      next: (updated) => {
-        Object.assign(this.argument(), updated);
-        this.showEdit.set(false);
-      }
-    });
-  }
-
   copyLink(_event: MouseEvent) {
     const id = this.argumentId();
     const url = `${window.location.origin}${window.location.pathname}?argumentId=${id}`;
-    navigator.clipboard.writeText(url).then(() =>
-      this.notification.success('VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_COPIED')
-    );
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = url;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+
+    this.notification.success('VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_COPIED');
+  }
+
+  showVoters() {
+    this.dialog.open(ArgumentReactionsComponent, {
+      data: {
+        commentId: this.argument().id,
+        topicId: this.topicId(),
+        discussionId: this.discussionId(),
+      }
+    });
   }
 
   doReport() {
@@ -162,5 +158,40 @@ export class ArgumentComponent implements OnInit {
         commentId: this.argument().id,
       }).pipe(take(1)).subscribe(() => this.deleted.emit());
     });
+  }
+
+  getParentAuthor() {
+    const arg = this.argument();
+    if (arg.parent?.id === this.root()?.id) {
+      return this.root()?.creator?.name || '';
+    }
+
+    const parentReply = this.root()?.replies?.rows.find((a: any) => a.id === arg.parent?.id);
+    if (parentReply) {
+      return parentReply.creator?.name || '';
+    }
+    return '';
+  }
+
+  goToParentArgument() {
+    const arg = this.argument();
+    if (!arg.parent?.id) return;
+
+    const argumentIdWithVersion = arg.parent.id + '_v' + arg.parent.version;
+    const commentElement = document.getElementById(argumentIdWithVersion);
+    if (commentElement) {
+      this.scrollTo(commentElement as HTMLElement);
+    }
+  }
+
+  private scrollTo(argumentEl: HTMLElement) {
+    const bodyEl = argumentEl.querySelector('.argument_body');
+    if (bodyEl) {
+      bodyEl.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    }
+    argumentEl.classList.add('highlight');
+    setTimeout(() => {
+      argumentEl.classList.remove('highlight');
+    }, 2000);
   }
 }

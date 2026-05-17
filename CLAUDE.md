@@ -38,6 +38,13 @@ Every new or migrated component must satisfy:
 
 Despite what the parent CLAUDE.md says, `ItemsListService` **does** have a `reset()` method (line 90 of `core/services/items-list.service.ts`). Call `service.reset()` to restore default params and page 1.
 
+## TypeScript Strictness & Linting
+
+- **Do NOT use the `any` type** when resolving TypeScript errors, migrating components, or writing tests.
+- Avoid introducing new lint warnings (especially `@typescript-eslint/no-explicit-any`).
+- Use proper domain interfaces, `Partial<T>`, or explicitly define proper object shapes. If absolutely necessary, cast through `unknown` to a more specific type.
+- When writing tests, supply proper mock objects adhering to strict interface definitions rather than casting partial mock data as `any`.
+
 ## Tracking Files
 
 - **`MIGRATION-AGENT-CHECKLIST.md`** — per-component migration status (Account, Groups, Topics). Check before starting any migration work.

@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
 import { ActivatedRoute } from '@angular/router';
 import { signal, NO_ERRORS_SCHEMA } from '@angular/core';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi, Mock } from 'vitest';
 import { provideRouter } from '@angular/router';
 
 describe('PasswordResetComponent', () => {
@@ -76,11 +76,11 @@ describe('PasswordResetComponent', () => {
       password: 'newpassword123',
       passwordConfirm: 'newpassword123'
     });
-    (mockUserStore as { resetPassword: vi.Mock }).resetPassword.mockResolvedValue({});
+    (mockUserStore as { resetPassword: Mock }).resetPassword.mockResolvedValue({});
     
     await component.onSubmit();
     
-    expect((mockUserStore as { resetPassword: vi.Mock }).resetPassword).toHaveBeenCalledWith('newpassword123', 'test-code');
+    expect((mockUserStore as { resetPassword: Mock }).resetPassword).toHaveBeenCalledWith('newpassword123', 'test-code');
     expect(component.success()).toBeTruthy();
   });
 
@@ -89,7 +89,7 @@ describe('PasswordResetComponent', () => {
       password: 'newpassword123',
       passwordConfirm: 'newpassword123'
     });
-    (mockUserStore as { resetPassword: vi.Mock }).resetPassword.mockRejectedValue(new Error('Reset failed'));
+    (mockUserStore as { resetPassword: Mock }).resetPassword.mockRejectedValue(new Error('Reset failed'));
     
     await component.onSubmit();
     

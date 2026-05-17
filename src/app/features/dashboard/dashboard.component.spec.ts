@@ -8,7 +8,7 @@ const makeTopic = (id: string): Topic => ({
   id, title: `Topic ${id}`, intro: null, description: '', status: 'inProgress',
   visibility: 'public', hashtag: null, join: { token: '', level: 'read' },
   categories: [], endsAt: null, createdAt: '', updatedAt: '', sourcePartnerId: null,
-  sourcePartnerObjectId: null, permission: { level: 'read' }, creator: null,
+  sourcePartnerObjectId: null, permission: { level: 'read' }, creator: { id: 'u1', name: 'User' },
   lastActivity: null, country: null, language: null, members: { users: { count: 0 }, groups: { count: 0 } }, voteId: null,
   ideationId: null, discussionId: null, comments: null, padUrl: null,
   favourite: null, imageUrl: null, authors: []
@@ -18,7 +18,7 @@ const makeGroup = (id: string): Group => ({
   id, name: `Group ${id}`, description: '', visibility: 'public',
   join: { token: '', level: 'read' }, createdAt: '', updatedAt: '',
   sourcePartnerId: null, sourcePartnerObjectId: null, permission: { level: 'read' },
-  creator: null, lastActivity: null, members: { users: { count: 0 }, groups: { count: 0 } }, userLevel: null, imageUrl: null,
+  creator: { id: 'u1', name: 'User' }, lastActivity: null, members: { users: { count: 0 }, groups: { count: 0 } }, userLevel: null, imageUrl: null,
   language: null, country: null, categories: null, rules: [], contact: null,
   favourite: null, inviteMessage: null
 });

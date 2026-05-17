@@ -1,24 +1,51 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { TestBed } from '@angular/core/testing';
-import { signal } from '@angular/core';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { signal, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { of } from 'rxjs';
 import { UiStateService } from '../../../services/ui-state.service';
 import { ConfigStore } from '../../../state/config.store';
 import { NotificationService } from '../../../services/notification.service';
 import { FeedbackComponent } from './feedback.component';
 
-const mockUiState = { showFeedback: signal(false) };
-const mockConfigStore = { api: { baseUrl: signal('http://test') } };
-const mockNotification = { showRaw: vi.fn() };
-const mockHttp = { post: vi.fn().mockReturnValue({ subscribe: vi.fn(({ next }) => next && next()) }) };
-const mockTranslate = { instant: vi.fn((k: string) => k), currentLang: 'en', onLangChange: { subscribe: vi.fn() } };
-
 describe('FeedbackComponent', () => {
-  beforeEach(() => {
+  let component: FeedbackComponent;
+  let fixture: ComponentFixture<FeedbackComponent>;
+  
+  const mockUiState = {
+    showFeedback: signal(true)
+  };
+
+  const mockConfigStore = {
+    api: {
+      baseUrl: signal('http://test')
+    }
+  };
+
+  const mockNotification = {
+    error: vi.fn(),
+    showRaw: vi.fn()
+  };
+
+  const mockHttp = {
+    post: vi.fn().mockReturnValue(of({}))
+  };
+
+  const mockTranslate = {
+    instant: vi.fn((k: string) => k),
+    get: vi.fn((k: string) => of(k)),
+    currentLang: 'en',
+    onLangChange: new EventEmitter<LangChangeEvent>(),
+    use: vi.fn().mockReturnValue(of({}))
+  };
+
+  beforeEach(async () => {
     vi.clearAllMocks();
-    TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+    mockUiState.showFeedback.set(true);
+
+    await TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), FeedbackComponent],
       providers: [
         { provide: UiStateService, useValue: mockUiState },
         { provide: ConfigStore, useValue: mockConfigStore },
@@ -26,42 +53,65 @@ describe('FeedbackComponent', () => {
         { provide: HttpClient, useValue: mockHttp },
         { provide: TranslateService, useValue: mockTranslate }
       ]
-    });
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(FeedbackComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
-    const component = TestBed.runInInjectionContext(() => new FeedbackComponent());
     expect(component).toBeTruthy();
   });
 
-  it('should expose uiState', () => {
-    const component = TestBed.runInInjectionContext(() => new FeedbackComponent());
-    expect(component.uiState).toBe(mockUiState);
+  it('should render the feedback form when showFeedback is true', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('.feedback_overlay_root')).toBeTruthy();
+    expect(compiled.querySelector('#feedback_message')).toBeTruthy();
   });
 
-  it('submitFeedback() should set error when message is empty', () => {
-    const component = TestBed.runInInjectionContext(() => new FeedbackComponent());
+  it('should close the feedback form when clicking cancel', () => {
+    const cancelBtn = fixture.nativeElement.querySelector('.btn_link') as HTMLButtonElement;
+    cancelBtn.click();
+    expect(mockUiState.showFeedback()).toBe(false);
+  });
+
+  it('should set error when submitting without message', () => {
     component.message = '';
-    component.submitFeedback();
+    const submitBtn = fixture.nativeElement.querySelector('.btn_medium_submit') as HTMLButtonElement;
+    submitBtn.click();
+    fixture.detectChanges();
+
     expect(component.error()).toBe(true);
-    expect(mockHttp.post).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('.error_input')).toBeTruthy();
   });
 
-  it('submitFeedback() should call http.post with message when message is set', () => {
-    const component = TestBed.runInInjectionContext(() => new FeedbackComponent());
-    component.message = 'Great app!';
-    component.submitFeedback();
-    expect(mockHttp.post).toHaveBeenCalledWith(
-      expect.stringContaining('/api/internal/feedback'),
-      expect.objectContaining({ message: expect.stringContaining('Great app!') }),
-      expect.any(Object)
-    );
-  });
-
-  it('submitFeedback() should set isSubmitted to true on success', () => {
-    const component = TestBed.runInInjectionContext(() => new FeedbackComponent());
+  it('should call API and show success message on submit', () => {
     component.message = 'Test feedback';
-    component.submitFeedback();
+    const submitBtn = fixture.nativeElement.querySelector('.btn_medium_submit') as HTMLButtonElement;
+    submitBtn.click();
+    fixture.detectChanges();
+
+    expect(mockHttp.post).toHaveBeenCalled();
     expect(component.isSubmitted()).toBe(true);
+    
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.feedback_submitted_title')).toBeTruthy();
+  });
+
+  it('should close the feedback form when clicking close button after submission', () => {
+    component.isSubmitted.set(true);
+    fixture.detectChanges();
+
+    const closeBtn = fixture.nativeElement.querySelector('.btn_medium_submit') as HTMLButtonElement;
+    closeBtn.click();
+    expect(mockUiState.showFeedback()).toBe(false);
+  });
+
+  it('should hide the form when showFeedback signal is false', () => {
+    mockUiState.showFeedback.set(false);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('.feedback_overlay_root')).toBeNull();
   });
 });

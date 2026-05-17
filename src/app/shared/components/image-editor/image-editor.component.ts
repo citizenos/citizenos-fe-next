@@ -1,7 +1,10 @@
-import { ChangeDetectionStrategy, Component, ViewChild, ElementRef, AfterViewInit, OnChanges, SimpleChanges, HostListener, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, ViewChild, ElementRef, AfterViewInit,
+  OnChanges, SimpleChanges, HostListener, input, output
+} from '@angular/core';
 
 @Component({
-  selector: 'app-image-editor',
+  selector: 'cos-image-editor',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './image-editor.component.html',
@@ -11,8 +14,8 @@ export class ImageEditorComponent implements AfterViewInit, OnChanges {
   @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
 
   file = input<File>();
-  canvasWidth = input<number>(320);
-  canvasHeight = input<number>(320);
+  canvasWidth = input<number>(320, { alias: 'width' });
+  canvasHeight = input<number>(320, { alias: 'heigth' });
   item = output<File>();
 
   private canvas: HTMLCanvasElement | null = null;

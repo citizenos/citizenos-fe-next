@@ -17,54 +17,10 @@
       [appTopicNotificationSettings]="appTopicNotificationSettings">
     </app-topic-header>
 
-    <!-- Mobile/Tablet Tabs -->
-    @if (wWidth() <= 1024) { <div id="tabs_tablet" class="topic_tabs tablet tabs_wrap tablet_show">
-      <button type="button" class="topic_tab" (click)="tabTablet.set('')" (keydown.enter)="tabTablet.set('')"
-        [class.active]="!tabTablet()" [aria-label]="'VIEWS.TOPICS_TOPICID.TAB_INFO' | translate">
-        <cos-domain-icon type="topic" [size]="32" />
-      </button>
-      <button type="button" class="topic_tab discussion" (click)="tabTablet.set('discussion')"
-        (keydown.enter)="tabTablet.set('discussion')" [class.active]="tabTablet() === 'discussion'"
-        [class.disabled]="topic()?.status === 'draft' || topic()?.status === 'inProgress'"
-        [aria-label]="'VIEWS.TOPICS_TOPICID.TAB_DISCUSSION' | translate">
-        <cos-domain-icon type="topic" [size]="32" />
-      </button>
-  </div>
-  }
+    <app-topic-tabs [topic]="topic()!" [tabSelected]="tabSelected()" [wWidth]="wWidth()"
+      (tabNavigate)="selectTab($event)" />
 
-  <!-- Desktop Tabs -->
-  <div class="topic_tabs mobile_hidden">
-    @if (topic()?.ideationId || topic()?.status === STATUSES.ideation) {
-    <button type="button" class="topic_tab ideation" (click)="selectTab('ideation')"
-      (keydown.enter)="selectTab('ideation')" [class.active]="tabSelected() === 'ideation'">
-      <cos-domain-icon type="ideation" [size]="32" />
-      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_IDEATION' | translate }}</span>
-    </button>
-    }
-    <button type="button" class="topic_tab discussion" (click)="selectTab('discussion')"
-      (keydown.enter)="selectTab('discussion')" [class.active]="tabSelected() === 'discussion' || !tabSelected()">
-      <cos-domain-icon type="topic" [size]="32" />
-      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_DISCUSSION' | translate }}</span>
-    </button>
-    @if (topic()?.voteId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress,
-    STATUSES.voting].includes(topic()?.status || '')) {
-    <button type="button" class="topic_tab voting" (click)="selectTab('voting')" (keydown.enter)="selectTab('voting')"
-      [class.active]="tabSelected() === 'voting'">
-      <cos-domain-icon type="vote" [size]="32" />
-      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_VOTING' | translate }}</span>
-    </button>
-    }
-    <button type="button" class="topic_tab follow_up" (click)="selectTab('followUp')"
-      (keydown.enter)="selectTab('followUp')" [class.active]="tabSelected() === 'followUp'">
-      <cos-domain-icon type="follow-up" [size]="32" />
-      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_FOLLOW_UP' | translate }}</span>
-    </button>
-    <div id="activities_button_wrap">
-      <cos-activities-button [topicId]="topic()!.id"></cos-activities-button>
-    </div>
-  </div>
-
-  <div class="content_area_wrap">
+    <div class="content_area_wrap">
 
     <div class="content_area_left">
       @if (topic()?.report && ((topic()?.report?.type && !topic()?.report?.moderatedReasonType) || topic()?.report?.type
@@ -154,10 +110,11 @@
 
       <!-- Ideation tab -->
       @if (tabSelected() === 'ideation' && ideation()) {
-      <div [ngClass]="{ hidden: wWidth() <= 1024 && tabTablet() !== 'ideation' }"
-        [cosTourItem]="{ tourid: 'topic', index: 7, position: 'top' }">
-        <app-topic-ideation [topic]="topic()!" [ideation]="ideation()!" />
-      </div>
+        <app-topic-ideation 
+            [topic]="topic()!" 
+            [ideation]="ideation()!"
+            [class.hidden]="wWidth() <= 1024 && tabTablet() !== 'ideation'"
+            [cosTourItem]="{ tourid: 'topic', index: 7, position: 'top' }" />
       }
 
       <!-- Voting tab -->

@@ -12,6 +12,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { IdeaComment } from '../../../../../core/interfaces/ideation';
 
 @Component({
   selector: 'cos-initials',
@@ -52,11 +53,14 @@ class MockDropdownComponent {}
 describe('IdeaReplyReportComponent', () => {
   let component: IdeaReplyReportComponent;
   let fixture: ComponentFixture<IdeaReplyReportComponent>;
-  let mockIdeaService: { reportIdeaComment: ReturnType<typeof vi.fn> };
+  let mockIdeaService: { 
+    COMMENT_REPORT_TYPES: Record<string, string>;
+    reportIdeaComment: ReturnType<typeof vi.fn>;
+  };
   let mockDialogRef: { close: ReturnType<typeof vi.fn> };
 
   const mockData: IdeaReplyReportData = {
-    argument: { id: 'arg1', creator: { name: 'Test Author' }, text: 'Test text' },
+    argument: { id: 'arg1', creator: { id: 'c1', name: 'Test Author' }, text: 'Test text' } as unknown as IdeaComment,
     ideaId: 'idea1',
     ideationId: 'ideation1',
     topicId: 'topic1'
@@ -64,7 +68,7 @@ describe('IdeaReplyReportComponent', () => {
 
   beforeEach(async () => {
     mockIdeaService = {
-      COMMENT_REPORT_TYPES: { obscene: 'obscene', spam: 'spam' },
+      COMMENT_REPORT_TYPES: { obscene: 'obscene', spam: 'spam', abuse: 'abuse', duplicate: 'duplicate', hate: 'hate', other: 'other' },
       reportIdeaComment: vi.fn().mockReturnValue(of({}))
     };
     mockDialogRef = { close: vi.fn() };
@@ -120,7 +124,7 @@ describe('IdeaReplyReportComponent', () => {
   });
 
   it('should handle error on doReport', () => {
-    mockIdeaService.reportIdeaComment.mockReturnValue(throwError(() => ({ errors: { text: 'error' } })));
+    (mockIdeaService.reportIdeaComment as ReturnType<typeof vi.fn>).mockReturnValue(throwError(() => ({ errors: { text: 'error' } })));
     component.report.get('text')?.setValue('Some text');
     component.doReport();
     expect(component.errors()).toEqual({ text: 'error' });

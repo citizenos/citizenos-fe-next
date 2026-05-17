@@ -1,129 +1,172 @@
-import { Component, input, output, inject, signal, OnDestroy } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { Subscription, interval, take } from 'rxjs';
+import { Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild, computed, model } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { take } from 'rxjs';
 
-import { TopicIdeationService, IdeaStatus } from '../../../../../core/services/topic-ideation.service';
+import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation } from '../../../../../core/interfaces/ideation';
-import { Idea } from '../../../../../core/interfaces/idea';
-
-const AUTOSAVE_INTERVAL = 15000;
-const AUTOSAVE_HIDE_DELAY = 2000;
-const STATEMENT_MAXLENGTH = 1024;
+import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
+import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
+import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
+import { municipalities } from '../../../../../core/services/municipality.service';
+import { CommonModule, UpperCasePipe } from '@angular/common';
+import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-add-idea',
   standalone: true,
-  imports: [FormsModule, TranslateModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    MarkdownDirective,
+    CosDropdownDirective,
+    TooltipComponent,
+    CommonModule,
+    UpperCasePipe,
+    InputComponent,
+    IconComponent
+  ],
   templateUrl: './add-idea.component.html',
   styleUrls: ['./add-idea.component.scss'],
 })
-export class AddIdeaComponent implements OnDestroy {
+export class AddIdeaComponent implements OnInit {
   topic = input.required<Topic>();
   ideation = input.required<Ideation>();
+  isOpen = model(false);
 
   ideaAdded = output<Idea>();
-  closed = output<void>();
 
   private ideationService = inject(TopicIdeationService);
-  private notificationService = inject(NotificationService);
+  private notification = inject(NotificationService);
+  private translate = inject(TranslateService);
 
-  statement = signal('');
-  description = signal('');
-  errors = signal<Record<string, string>>({});
+  @ViewChild('imageUpload') imageUploadInput?: ElementRef<HTMLInputElement>;
+
+  ideaForm = new FormGroup({
+    statement: new FormControl('', [Validators.required, Validators.maxLength(1024)]),
+    description: new FormControl('', [Validators.required]),
+  });
+
+  IDEA_STATEMENT_MAXLENGTH = 1024;
+  toggleExpand = signal(false);
   isAutosaving = signal(false);
-  isPublished = signal(false);
+  newImages = signal<any[]>([]);
+  autosavedIdea = signal<Idea | null>(null);
 
-  STATEMENT_MAXLENGTH = STATEMENT_MAXLENGTH;
+  municipalities = municipalities;
+  filtersData = signal<any>({
+    residence: { selectedValue: '', items: municipalities.map(m => ({ title: m.name, value: m.name })), error: false },
+    gender: { selectedValue: '', items: [{ title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_FEMALE', value: 'female' }, { title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_MALE', value: 'male' }, { title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_OTHER_PLACEHOLDER', value: 'other' }], error: false }
+  });
 
-  private autosavedIdea: Idea | null = null;
-  private autosaveSubscription?: Subscription;
+  isCountryEstonia = computed(() => this.topic().country === 'ee');
 
-  ngOnDestroy() {
-    this.autosaveSubscription?.unsubscribe();
+  ngOnInit() {
+    const config = this.ideation().demographicsConfig;
+    if (config) {
+        Object.keys(config).forEach(key => {
+            (this.ideaForm as any).addControl('demographics_' + key, new FormControl(config[key].value || '', config[key].required ? [Validators.required] : []));
+        });
+    }
   }
 
-  onStatementChange(value: string) {
-    this.statement.set(value);
-    this.errors.update(e => ({ ...e, statement: '' }));
-    this.maybeStartAutosave();
+  getDemographicKeys() {
+    return this.ideation().demographicsConfig ? Object.keys(this.ideation().demographicsConfig!) : [];
   }
 
-  onDescriptionChange(value: string) {
-    this.description.set(value);
-    this.errors.update(e => ({ ...e, description: '' }));
-    this.maybeStartAutosave();
+  setFilterValue(key: string, value: string) {
+    this.filtersData.update(data => {
+        data[key].selectedValue = value;
+        return { ...data };
+    });
+    this.ideaForm.get('demographics_' + key)?.setValue(value);
   }
 
-  private maybeStartAutosave() {
-    if (this.isPublished() || this.autosaveSubscription && !this.autosaveSubscription.closed) return;
-    if (!this.statement() && !this.description()) return;
-    this.autosaveSubscription = interval(AUTOSAVE_INTERVAL).subscribe(() => {
-      this.saveIdea(IdeaStatus.draft, true);
+  ideaMaxLength() {
+    return 10000; // Placeholder
+  }
+
+  updateText(text: string) {
+    this.ideaForm.patchValue({ description: text });
+  }
+
+  uploadImage() {
+    this.imageUploadInput?.nativeElement.click();
+  }
+
+  fileUpload() {
+    const files = this.imageUploadInput?.nativeElement.files;
+    if (files) {
+        // Handle image upload logic
+    }
+  }
+
+  removeNewImage(index: number) {
+    this.newImages.update(images => {
+        images.splice(index, 1);
+        return [...images];
     });
   }
 
-  validate(): boolean {
-    const errs: Record<string, string> = {};
-    if (!this.statement().trim()) errs['statement'] = 'VIEWS.IDEATION_CREATE.ERROR_STATEMENT_REQUIRED';
-    if (!this.description().trim()) errs['description'] = 'VIEWS.IDEATION_CREATE.ERROR_DESCRIPTION_REQUIRED';
-    this.errors.set(errs);
-    return Object.keys(errs).length === 0;
-  }
+  publishIdea() {
+    if (this.ideaForm.invalid) {
+        Object.values(this.ideaForm.controls).forEach(control => {
+            control.markAsTouched();
+        });
+        return;
+    }
 
-  publish() {
-    if (!this.validate()) return;
-    this.saveIdea(IdeaStatus.published);
+    const ideaData: any = {
+      topicId: this.topic().id,
+      ideationId: this.ideation().id,
+      statement: this.ideaForm.value.statement,
+      description: this.ideaForm.value.description,
+      status: IdeaStatus.published
+    };
+
+    const config = this.ideation().demographicsConfig;
+    if (config) {
+        ideaData.demographics = {};
+        Object.keys(config).forEach(key => {
+            ideaData.demographics[key] = this.ideaForm.get('demographics_' + key)?.value;
+        });
+    }
+
+    this.ideationService.createIdea(ideaData).pipe(take(1)).subscribe({
+      next: (idea: Idea) => {
+        this.ideaAdded.emit(idea);
+        this.notification.success('COMPONENTS.ADD_IDEA.MSG_PUBLISH_SUCCESS');
+      },
+      error: (err: any) => {
+        console.error('Failed to publish idea', err);
+        this.notification.error('COMPONENTS.ADD_IDEA.MSG_PUBLISH_ERROR');
+      }
+    });
   }
 
   saveDraft() {
-    this.saveIdea(IdeaStatus.draft);
+    // Implement draft saving logic
+  }
+
+  deleteDraftIdea(_idea: Idea) {
+    // Implement delete draft logic
   }
 
   close() {
-    this.autosaveSubscription?.unsubscribe();
-    this.autosavedIdea = null;
-    this.closed.emit();
+    this.isOpen.set(false);
   }
 
-  private saveIdea(status: IdeaStatus, isAutosave = false) {
-    const topicId = this.topic().id;
-    const ideationId = this.ideation().id;
-    let statement = this.statement();
-    let description = this.description();
-
-    if (status === IdeaStatus.draft) {
-      if (!statement) statement = '';
-      if (!description) description = '';
+  numberOnly(event: any): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
     }
-
-    if (isAutosave) this.isAutosaving.set(true);
-
-    const save$ = this.autosavedIdea
-      ? this.ideationService.updateIdea({ topicId, ideationId, ideaId: this.autosavedIdea.id, statement, description, status })
-      : this.ideationService.createIdea({ topicId, ideationId, statement, description, status });
-
-    save$.pipe(take(1)).subscribe({
-      next: (idea) => {
-        if (isAutosave) {
-          this.autosavedIdea = idea;
-          setTimeout(() => this.isAutosaving.set(false), AUTOSAVE_HIDE_DELAY);
-        } else {
-          this.isPublished.set(true);
-          this.autosaveSubscription?.unsubscribe();
-          this.autosavedIdea = null;
-          this.ideaAdded.emit(idea);
-        }
-      },
-      error: (err) => {
-        if (isAutosave) {
-          setTimeout(() => this.isAutosaving.set(false), AUTOSAVE_HIDE_DELAY);
-        } else {
-          this.errors.set(err?.errors ?? {});
-        }
-      },
-    });
+    return true;
   }
 }

@@ -1,0 +1,54 @@
+.toggle_wrap {
+  display: flex;
+  position: relative;
+  gap: 16px;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  user-select: none;
+
+  .toggle_widget {
+    display: flex;
+    position: relative;
+    padding: 0 2px;
+    width: 32px;
+    height: 16px;
+    border-radius: 24px;
+    align-items: center;
+    transition: background-color 150ms ease-out;
+
+    .toggle_circle {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: var(--color-surfaces);
+      transition: transform 150ms ease-out;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    &.on {
+      background-color: var(--color-success);
+
+      .toggle_circle {
+        transform: translateX(16px);
+      }
+    }
+
+    &.off {
+      background-color: var(--color-danger);
+
+      .toggle_circle {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  .toggle_text {
+    font-size: 14px;
+    color: var(--color-text);
+    font-weight: 600;
+  }
+}

@@ -15,7 +15,7 @@ import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { Idea } from '../../../../../core/interfaces/idea';
-import { IdeaAttachment } from '../../../../../core/services/idea-attachment.service';
+import { Attachment } from '../../../../../core/interfaces/attachment';
 import { signal } from '@angular/core';
 
 const mockTopic = { id: 't1', country: null } as unknown as Topic;
@@ -163,7 +163,7 @@ describe('EditIdeaComponent', () => {
 
   it('removeNewImage removes the image at given index', () => {
     const comp = makeComp();
-    comp.newImages.set([{ name: 'a.jpg', link: 'data:a' }, { name: 'b.jpg', link: 'data:b' }]);
+    comp.newImages.set([{ file: new File([], 'a.jpg'), link: 'data:a', name: 'a.jpg' }, { file: new File([], 'b.jpg'), link: 'data:b', name: 'b.jpg' }]);
     comp.removeNewImage(0);
     expect(comp.newImages()).toHaveLength(1);
     expect(comp.newImages()[0].name).toBe('b.jpg');
@@ -171,7 +171,7 @@ describe('EditIdeaComponent', () => {
 
   it('removeImage calls attachmentService.delete and removes from list', () => {
     const comp = makeComp();
-    const mockAttachment = { id: 'att1', name: 'img.jpg', link: 'http://x.com/img.jpg' } as IdeaAttachment;
+    const mockAttachment = { id: 'att1', name: 'img.jpg', link: 'http://x.com/img.jpg' } as Attachment;
     comp.images.set([mockAttachment]);
     comp.removeImage(mockAttachment, 0);
     expect(mockAttachmentService.delete).toHaveBeenCalledWith(expect.objectContaining({

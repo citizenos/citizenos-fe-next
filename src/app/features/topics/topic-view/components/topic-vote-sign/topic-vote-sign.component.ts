@@ -8,12 +8,13 @@ import { TopicVoteService } from '../../../../../core/services/topic-vote.servic
 import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicVoteSignEsteidComponent } from '../topic-vote-sign-esteid/topic-vote-sign-esteid.component';
 import { TopicVoteSignSmartidComponent } from '../topic-vote-sign-smartid/topic-vote-sign-smartid.component';
+import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
 
 @Component({
   selector: 'app-topic-vote-sign',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DialogCloseDirective, IconComponent],
+  imports: [TranslateModule, DialogCloseDirective, IconComponent, NotificationComponent],
   templateUrl: './topic-vote-sign.component.html'
 })
 export class TopicVoteSignComponent {

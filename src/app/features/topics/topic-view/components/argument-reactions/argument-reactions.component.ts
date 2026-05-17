@@ -6,6 +6,7 @@ import { TopicArgumentService } from '../../../../../core/services/topic-argumen
 import { DIALOG_DATA, DialogCloseDirective } from '../../../../../shared/dialog';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
+import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
 
 export interface ArgumentReactionsData {
   commentId: string;
@@ -16,7 +17,7 @@ export interface ArgumentReactionsData {
 @Component({
   selector: 'app-argument-reactions',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, PaginationComponent],
+  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, PaginationComponent, NotificationComponent],
   templateUrl: './argument-reactions.component.html',
   styleUrls: ['./argument-reactions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

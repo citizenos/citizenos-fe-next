@@ -7,10 +7,10 @@
 
 ## PROJECT_OVERVIEW
 
-**purpose:**  
+**purpose:**
 The `citizenos-fe-next` application is the modern front-end for the CitizenOS platform, enabling civic participation, group decision-making, and secure electronic voting.
 
-**scope:**  
+**scope:**
 This Angular application acts as the user interface for civic discussions, group management, proposal ideation, and secure digital signature processes, replacing the legacy front-end with scalable, strongly-typed, zoneless Angular 21 patterns.
 
 **key_features:**
@@ -33,13 +33,13 @@ This Angular application acts as the user interface for civic discussions, group
 
 
 **directories:**
-- path: /src  
+- path: /src
   description: Contains all the Angular 21 source code including standalone components, routes, styles, and Signal state stores.
 
-- path: /docs  
+- path: /docs
   description: Contains comprehensive guides, architecture diagrams, API docs, and end-user guides.
 
-- path: /tests  
+- path: /tests
   description: E2E and Vitest setup/specs for complete application testing.
 
 ---
@@ -70,16 +70,16 @@ This Angular application acts as the user interface for civic discussions, group
 
 ## KEY_CONVENTIONS
 
-**code_style:**  
+**code_style:**
 Strict TypeScript with ESLint and Prettier rules; Zoneless Angular relying on Signals (`input()`, `output()`, `model()`) exclusively.
 
-**naming_conventions:**  
+**naming_conventions:**
 Kebab-case for file names and directories. PascalCase for classes. CamelCase for properties and signal methods.
 
-**commit_messages:**  
+**commit_messages:**
 Conventional Commits style, e.g., `feat: login page implementation`, `fix: header padding`.
 
-**documentation_rules:**  
+**documentation_rules:**
 Mandatory completion of english documentation for new features before any PR merging. No undocumented configurations.
 
 ---
@@ -87,20 +87,20 @@ Mandatory completion of english documentation for new features before any PR mer
 ## BRANCH_STRATEGY
 
 **main_branches:**
-- name: main  
+- name: main
   purpose: Deployable production-ready state of the user interface.
 
-- name: develop  
+- name: develop
   purpose: Aggregation of all completed feature branches before release to main.
 
 **supporting_branches:**
-- pattern: feature/*  
+- pattern: feature/*
   purpose: Development of new capabilities or migration tasks.
 
-- pattern: bugfix/*  
+- pattern: bugfix/*
   purpose: Quick patching of identified issues.
 
-- pattern: hotfix/*  
+- pattern: hotfix/*
   purpose: Direct patches to production code for critical severity issues.
 
 **merge_rules:**
@@ -112,17 +112,19 @@ Mandatory completion of english documentation for new features before any PR mer
 ## REFERENCES
 
 **internal:**
-- path: /docs/architecture  
+- path: /docs/architecture
   description: Frontend module architecture and state store structures.
 
-- path: /docs/api  
+- path: /docs/api
   description: Integration guide with the Citizenos API endpoints.
 
 **external:**
-- name: Angular Signals  
+- name: Angular Signals
   url: https://angular.dev/guide/signals
 
 ---
+
+
 
 ## AI_INSTRUCTIONS
 
@@ -131,11 +133,12 @@ Mandatory completion of english documentation for new features before any PR mer
 - Do not remove section headers
 - Keep formatting consistent
 - Validate against repository contents
+- **Do NOT use the `any` type** to resolve TypeScript errors; avoid introducing new lint warnings. Use proper typings, strict interfaces, or `Partial<T>`.
 
 ---
 
 ## METADATA
 
-**last_updated:** 2026-04-17  
-**updated_by:** Antigravity AI  
+**last_updated:** 2026-04-17
+**updated_by:** Antigravity AI
 **version:** 1.0.0

@@ -211,48 +211,6 @@ argument-reply {
     }
   }
 
-  .deleted_argument_wrap {
-    background-color: var(--color-warn-background);
-    border-radius: 8px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 100%;
-
-    .deleted_argument_content_wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 16px;
-
-      .deleted_icon {
-        color: var(--color-warn);
-      }
-
-      .bold {
-        font-weight: 600;
-        font-size: 14px;
-      }
-
-      .buttons_wrap {
-        display: flex;
-        gap: 16px;
-        a {
-          color: var(--color-link);
-          cursor: pointer;
-          font-weight: 600;
-          text-decoration: underline;
-
-          &:hover {
-            text-decoration: none;
-          }
-        }
-      }
-    }
-  }
-
   .argument_content {
     display: flex;
     flex-direction: column;
@@ -470,24 +428,6 @@ argument-reply {
         color: white;
       }
     }
-  }
-}
-
-.argument-deleted {
-  padding: 16px;
-  background: var(--color-surface-hover);
-  border-radius: 8px;
-  font-style: italic;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .btn-show-deleted {
-    background: transparent;
-    border: none;
-    color: var(--color-link);
-    cursor: pointer;
-    text-decoration: underline;
   }
 }
 

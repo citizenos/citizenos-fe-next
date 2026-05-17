@@ -9,8 +9,39 @@ import { NotificationService } from '../../../core/services/notification.service
 import { provideRouter, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
+import { Topic } from '../../../core/interfaces/topic';
 
 const mockGroup = { id: 'g1', name: 'New Group', imageUrl: null };
+
+const makeTopic = (overrides: Partial<Topic> = {}): Topic => ({
+  id: 't1',
+  title: 'T1',
+  intro: null,
+  description: '',
+  status: 'inProgress',
+  visibility: 'public',
+  hashtag: null,
+  join: { token: '', level: 'read' },
+  categories: [],
+  endsAt: null,
+  createdAt: '',
+  updatedAt: '',
+  sourcePartnerId: null,
+  sourcePartnerObjectId: null,
+  permission: { level: 'read' },
+  creator: { id: 'u1', name: 'User' },
+  lastActivity: null,
+  country: null,
+  language: null,
+  members: { users: { count: 0 }, groups: { count: 0 } },
+  voteId: null,
+  discussionId: null,
+  comments: null,
+  padUrl: null,
+  imageUrl: null,
+  authors: [],
+  ...overrides
+});
 
 const mockUserGroupService = {
   save: vi.fn().mockReturnValue(of(mockGroup)),
@@ -138,7 +169,7 @@ describe('GroupCreateComponent', () => {
       name: 'My Group',
       members: {
         users: [],
-        topics: { rows: [{ id: 't1', permission: { level: 'admin' } }], count: 1 },
+        topics: { rows: [makeTopic({ id: 't1', permission: { level: 'admin' } })], count: 1 },
       },
     });
     comp.createGroup();

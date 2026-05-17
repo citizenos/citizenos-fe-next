@@ -1,27 +1,33 @@
-import { Component, input, inject, signal, effect, computed, ChangeDetectionStrategy, PLATFORM_ID } from '@angular/core';
-import { DatePipe, isPlatformBrowser } from '@angular/common';
+import { Component, input, inject, signal, effect, computed, ChangeDetectionStrategy, PLATFORM_ID, HostListener } from '@angular/core';
+import { DatePipe, isPlatformBrowser, UpperCasePipe, TitleCasePipe, KeyValuePipe, AsyncPipe, CommonModule } from '@angular/common';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
-import { TranslateModule } from '@ngx-translate/core';
-import { RouterModule } from '@angular/router';
-import { of, tap, switchMap, take } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { of, tap, switchMap, take, map } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { Topic } from '../../../../../core/interfaces/topic';
-import { Ideation } from '../../../../../core/interfaces/ideation';
+import { Ideation, IdeationFolder, IdeaVoter } from '../../../../../core/interfaces/ideation';
 import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
 import { IdeaboxComponent } from '../ideabox/ideabox.component';
 import { AddIdeaComponent } from '../add-idea/add-idea.component';
-import { SearchInputComponent } from '../../../../../shared/components/search-input/search-input.component';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
-import { ListFilterToolbarComponent, FilterConfig } from '../../../../../shared/components/list-filter-toolbar/list-filter-toolbar.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
-
-const PAGE_SIZE = 15;
+import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
+import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
+import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { municipalities } from '../../../../../core/services/municipality.service';
+import { AddIdeaFolderComponent } from '../add-idea-folder/add-idea-folder.component';
+import { AddIdeasToFolderComponent } from '../add-ideas-to-folder/add-ideas-to-folder.component';
+import { CreateIdeaFolderComponent } from '../create-idea-folder/create-idea-folder.component';
+import { EditIdeaFolderComponent } from '../edit-idea-folder/edit-idea-folder.component';
+import { EditIdeationDeadlineComponent } from '../edit-ideation-deadline/edit-ideation-deadline.component';
 
 @Component({
   selector: 'app-topic-ideation',
@@ -29,15 +35,27 @@ const PAGE_SIZE = 15;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,
+    FormsModule,
     TranslateModule,
     RouterModule,
     IdeaboxComponent,
     AddIdeaComponent,
-    SearchInputComponent,
     PaginationComponent,
-    ListFilterToolbarComponent,
     IconComponent,
-    CosDropdownDirective
+    CosDropdownDirective,
+    InitialsComponent,
+    TooltipComponent,
+    InputComponent,
+    UpperCasePipe,
+    TitleCasePipe,
+    KeyValuePipe,
+    AsyncPipe,
+    CommonModule,
+    AddIdeaFolderComponent,
+    AddIdeasToFolderComponent,
+    CreateIdeaFolderComponent,
+    EditIdeaFolderComponent,
+    EditIdeationDeadlineComponent
   ],
   templateUrl: './topic-ideation.component.html',
   styleUrls: ['./topic-ideation.component.scss'],
@@ -50,41 +68,93 @@ export class TopicIdeationComponent {
   private topicService = inject(TopicService);
   private dialogService = inject(DialogService);
   private platformId = inject(PLATFORM_ID);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  public translate = inject(TranslateService);
   userStore = inject(UserStore);
 
+  PAGE_SIZE = 15;
+  AGE_LIMIT = 110;
+  municipalities = municipalities;
   loading = signal(false);
   showAddIdea = signal(false);
   currentPage = signal(1);
   searchValue = signal('');
   selectedOrder = signal('');
   selectedType = signal('');
-  private refreshTrigger = signal(0);
+  selectedParticipants = signal<IdeaVoter | null>(null);
+  selectedAge = signal<string[]>([]);
+  selectedGender = signal<string>('');
+  selectedResidence = signal<string>('');
   
+  tabSelected = signal<'ideas' | 'folders' | 'folder'>('ideas');
+  selectedFolder = signal<IdeationFolder | null>(null);
+  
+  private refreshTrigger = signal(0);
+  private refreshFoldersTrigger = signal(0);
+  
+  wWidth = signal(isPlatformBrowser(this.platformId) ? window.innerWidth : 1200);
+
+  @HostListener('window:resize')
+  onResize() {
+    this.wWidth.set(window.innerWidth);
+  }
+
+  showSearch = signal(false);
+  mobileIdeaFiltersList = signal(false);
+  mobileIdeaFilters = signal({
+    type: false as boolean | string,
+    orderBy: false as boolean | string,
+    participants: false as boolean | any,
+    age: false as boolean | string,
+    gender: false as boolean | string,
+    residence: false as boolean | string
+  });
+  mobileAges = signal<string[]>([]);
+
+  participants$ = toObservable(computed(() => ({ topicId: this.topic().id, ideationId: this.ideation().id }))).pipe(
+    switchMap(({ topicId, ideationId }) => this.ideationService.participants({ topicId, ideationId })),
+    map(res => res.rows)
+  );
+
+  private ideasParams = computed(() => ({
+    search: this.searchValue(),
+    type: this.selectedType(),
+    order: this.selectedOrder(),
+    page: this.currentPage(),
+    participant: this.selectedParticipants(),
+    age: this.selectedAge(),
+    gender: this.selectedGender(),
+    residence: this.selectedResidence(),
+    folderId: this.selectedFolder()?.id,
+    _v: this.refreshTrigger(),
+    topic: this.topic(),
+    ideation: this.ideation(),
+    tab: this.tabSelected()
+  }));
+
   private ideasResponse = toSignal(
-    toObservable(computed(() => ({
-      search: this.searchValue(),
-      type: this.selectedType(),
-      order: this.selectedOrder(),
-      page: this.currentPage(),
-      _v: this.refreshTrigger(),
-      topic: this.topic(),
-      ideation: this.ideation()
-    }))).pipe(
-      switchMap(({ search, type, order, page, topic, ideation }) => {
-        if (!topic?.id || !ideation?.id) return of({ rows: [] as Idea[], count: 0 });
+    toObservable(this.ideasParams).pipe(
+      switchMap(({ search, type, order, page, participant, age, gender, residence, folderId, topic, ideation, tab }) => {
+        if (!topic?.id || !ideation?.id || tab === 'folders') return of({ rows: [] as Idea[], count: 0 });
         this.loading.set(true);
-        const params: Record<string, string | number | boolean | null | undefined> = {
-          topicId: topic.id,
-          ideationId: ideation.id,
-          limit: PAGE_SIZE,
-          offset: (page - 1) * PAGE_SIZE,
+        const params: Record<string, any> = {
+          limit: this.PAGE_SIZE,
+          offset: (page - 1) * this.PAGE_SIZE,
         };
         if (search) params['search'] = search;
         if (order) { params['orderBy'] = order; params['order'] = 'desc'; }
         if (type === 'favourite') params['favourite'] = true;
         else if (type === 'iCreated') params['authorId'] = this.userStore.user()?.id;
+        else if (type === 'showModerated') params['showModerated'] = true;
 
-        return this.ideationService.getIdeas(params as { topicId: string; ideationId: string; [key: string]: string | number | boolean | null | undefined }).pipe(
+        if (participant) params['authorId'] = participant.id;
+        if (age.length) params['age'] = age;
+        if (gender) params['gender'] = gender;
+        if (residence) params['residence'] = residence;
+        if (folderId) params['folderId'] = folderId;
+
+        return this.ideationService.getIdeas({ topicId: topic.id, ideationId: ideation.id, ...params }).pipe(
           tap(() => this.loading.set(false))
         );
       })
@@ -103,41 +173,49 @@ export class TopicIdeationComponent {
     return res.count;
   });
 
+  folders$ = toObservable(computed(() => ({ topicId: this.topic().id, ideationId: this.ideation().id, _v: this.refreshFoldersTrigger() }))).pipe(
+    switchMap(({ topicId, ideationId }) => {
+        if (!topicId || !ideationId) return of({ rows: [] as IdeationFolder[], count: 0 });
+        return this.ideationService.getFolders({ topicId, ideationId });
+    }),
+    map((res: { rows: IdeationFolder[] }) => res.rows)
+  );
+
+  filtersSet = computed(() => {
+    const p = this.ideasParams();
+    return !!(p.search || p.type || p.order || p.participant || p.age.length || p.gender || p.residence);
+  });
+
+  sortedSelectedAges = computed(() => {
+    return this.selectedAge().map(Number).sort((a, b) => a - b).join(', ');
+  });
+
+  isCountryEstonia = computed(() => this.topic().country === 'ee');
+  
+  hasDemograficsField = computed(() => {
+    const config = this.ideation().demographicsConfig;
+    return {
+        age: config?.['age'],
+        gender: config?.['gender'],
+        residence: config?.['residence']
+    };
+  });
+
   Math = Math;
 
-  ORDER_OPTIONS = [
-    { value: 'all', label: 'COMPONENTS.TOPIC_IDEATION.ORDER_NEWEST' },
-    { value: 'rating', label: 'COMPONENTS.TOPIC_IDEATION.ORDER_RATING' },
-    { value: 'popularity', label: 'COMPONENTS.TOPIC_IDEATION.ORDER_POPULARITY' },
-  ];
-
-  TYPE_OPTIONS = [
-    { value: 'all', label: 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' },
-    { value: 'favourite', label: 'COMPONENTS.TOPIC_IDEATION.FILTER_FAVOURITE' },
-    { value: 'iCreated', label: 'COMPONENTS.TOPIC_IDEATION.FILTER_MY_IDEAS' },
-  ];
-
-  filterConfig = computed<FilterConfig[]>(() => [
-    {
-      key: 'type',
-      placeholder: 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL',
-      selectedValue: this.selectedType(),
-      items: this.TYPE_OPTIONS.map(o => ({ title: o.label, value: o.value }))
-    },
-    {
-      key: 'order',
-      placeholder: 'COMPONENTS.TOPIC_IDEATION.ORDER_NEWEST',
-      selectedValue: this.selectedOrder(),
-      items: this.ORDER_OPTIONS.map(o => ({ title: o.label, value: o.value }))
-    }
-  ]);
-
-
   constructor() {
-    // Reset page when search changes
     effect(() => {
-      this.searchValue();
-      this.currentPage.set(1);
+        const routeParams = this.route.snapshot.queryParams;
+        if (routeParams['folderId']) {
+            this.ideationService.getFolder({
+                topicId: this.topic().id,
+                ideationId: this.ideation().id,
+                folderId: routeParams['folderId']
+            }).pipe(take(1)).subscribe(folder => {
+                this.selectedFolder.set(folder);
+                this.tabSelected.set('folder');
+            });
+        }
     });
   }
 
@@ -161,9 +239,24 @@ export class TopicIdeationComponent {
     return this.ideationService.hasIdeationEnded(this.topic(), this.ideation());
   }
 
-  setOrder(value: string) {
-    this.selectedOrder.set(value);
+  selectTab(tab: 'ideas' | 'folders') {
+    this.tabSelected.set(tab);
     this.currentPage.set(1);
+    this.router.navigate([], { queryParams: { folderId: null }, queryParamsHandling: 'merge' });
+  }
+
+  viewFolder(folder: IdeationFolder) {
+    this.selectedFolder.set(folder);
+    this.tabSelected.set('folder');
+    this.currentPage.set(1);
+    this.router.navigate([], { queryParams: { folderId: folder.id }, queryParamsHandling: 'merge' });
+  }
+
+  leaveFolder() {
+    this.selectedFolder.set(null);
+    this.tabSelected.set('folders');
+    this.currentPage.set(1);
+    this.router.navigate([], { queryParams: { folderId: null }, queryParamsHandling: 'merge' });
   }
 
   setType(value: string) {
@@ -171,10 +264,56 @@ export class TopicIdeationComponent {
     this.currentPage.set(1);
   }
 
-  onFilterChange(event: { key: string, value: string }) {
-    const val = event.value === 'all' ? '' : event.value;
-    if (event.key === 'type') this.setType(val);
-    if (event.key === 'order') this.setOrder(val);
+  orderBy(value: string) {
+    this.selectedOrder.set(value);
+    this.currentPage.set(1);
+  }
+
+  setParticipant(user: IdeaVoter | null = null) {
+    this.selectedParticipants.set(user);
+    this.currentPage.set(1);
+  }
+
+  setAge(age: number | string) {
+    if (age === '') {
+        this.selectedAge.set([]);
+    } else {
+        const current = this.selectedAge();
+        const index = current.indexOf(age.toString());
+        if (index > -1) {
+            current.splice(index, 1);
+        } else {
+            current.push(age.toString());
+        }
+        this.selectedAge.set([...current]);
+    }
+    this.currentPage.set(1);
+  }
+
+  setGender(gender: string) {
+    this.selectedGender.set(gender);
+    this.currentPage.set(1);
+  }
+
+  setResidence(residence: string) {
+    this.selectedResidence.set(residence);
+    this.currentPage.set(1);
+  }
+
+  setSearch(search: string) {
+    this.searchValue.set(search);
+    this.currentPage.set(1);
+  }
+
+  doClearFilters() {
+    this.selectedType.set('');
+    this.selectedOrder.set('');
+    this.selectedParticipants.set(null);
+    this.selectedAge.set([]);
+    this.selectedGender.set('');
+    this.selectedResidence.set('');
+    this.searchValue.set('');
+    this.currentPage.set(1);
   }
 
   onPageChange(p: number) {
@@ -193,6 +332,11 @@ export class TopicIdeationComponent {
     this.showAddIdea.set(false);
     this.currentPage.set(1);
     this.refreshTrigger.update(n => n + 1);
+  }
+
+  addIdea() {
+    if (this.hasIdeationEnded()) return;
+    this.showAddIdea.set(true);
   }
 
   exportIdeas() {
@@ -222,4 +366,116 @@ export class TopicIdeationComponent {
       }
     });
   }
+
+  addFolder() {
+    const dialog = this.dialogService.open(CreateIdeaFolderComponent, {
+        data: {
+            topicId: this.topic().id,
+            ideationId: this.ideation().id
+        }
+    });
+    dialog.afterClosed().subscribe(result => {
+        if (result) {
+            this.refreshFoldersTrigger.update(n => n + 1);
+        }
+    });
+  }
+
+  editFolder(folder: IdeationFolder) {
+    const dialog = this.dialogService.open(EditIdeaFolderComponent, {
+        data: {
+            topicId: this.topic().id,
+            ideationId: this.ideation().id,
+            folder: folder
+        }
+    });
+    dialog.afterClosed().subscribe(result => {
+        if (result) {
+            this.refreshFoldersTrigger.update(n => n + 1);
+        }
+    });
+  }
+
+  editDeadline() {
+    const dialog = this.dialogService.open(EditIdeationDeadlineComponent, {
+      data: {
+        ideation: this.ideation(),
+        topic: this.topic(),
+      },
+    });
+    dialog.afterClosed().subscribe(() => {
+        // Topic reload is handled in dialog
+    });
+  }
+
+  deleteFolder(folder: IdeationFolder) {
+    const dialog = this.dialogService.open(ConfirmDialogComponent, {
+        data: {
+            level: 'delete',
+            heading: 'MODALS.TOPIC_IDEATION_FOLDER_DELETE_CONFIRM_HEADING',
+            points: ['MODALS.TOPIC_IDEATION_FOLDER_DELETE_CONFIRM_TXT_ARE_YOU_SURE'],
+            confirmBtn: 'MODALS.TOPIC_IDEATION_FOLDER_DELETE_CONFIRM_BTN_YES',
+            closeBtn: 'MODALS.TOPIC_IDEATION_FOLDER_DELETE_CONFIRM_BTN_NO',
+        }
+    });
+    dialog.afterClosed().subscribe(confirmed => {
+        if (confirmed) {
+            this.ideationService.deleteFolder({
+                topicId: this.topic().id,
+                ideationId: this.ideation().id,
+                folderId: folder.id
+            }).pipe(take(1)).subscribe(() => {
+                this.refreshFoldersTrigger.update(n => n + 1);
+            });
+        }
+    });
+  }
+
+  addIdeasToFolder(folder: IdeationFolder) {
+    this.dialogService.open(AddIdeasToFolderComponent, {
+        data: {
+            topicId: this.topic().id,
+            ideationId: this.ideation().id,
+            folder: folder
+        }
+    });
+  }
+
+  showMobileOverlay() {
+    const f = this.mobileIdeaFilters();
+    return f.type || f.orderBy || f.participants || f.age || f.gender || f.residence;
+  }
+
+  closeMobileFilter() {
+    this.mobileIdeaFilters.set({
+        type: false,
+        orderBy: false,
+        participants: false,
+        age: false,
+        gender: false,
+        residence: false
+    });
+  }
+
+  setMobileAges(age: number | string) {
+    const current = this.mobileAges();
+    if (age === '') {
+        this.mobileAges.set([]);
+    } else {
+        const index = current.indexOf(age.toString());
+        if (index > -1) {
+            current.splice(index, 1);
+        } else {
+            current.push(age.toString());
+        }
+        this.mobileAges.set([...current]);
+    }
+  }
+
+  applyAgeFilter() {
+    this.selectedAge.set([...this.mobileAges()]);
+    this.currentPage.set(1);
+  }
+
+  TopicService = this.topicService;
 }

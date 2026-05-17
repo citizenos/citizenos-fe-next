@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, signal, input } from '@angular/core
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
-  selector: 'cos-tooltip',
+  selector: 'cos-tooltip, [cos-tooltip], [tooltip]',
   standalone: true,
   imports: [IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,

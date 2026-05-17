@@ -4,7 +4,9 @@
       @if (user.imageUrl) {
         <img [src]="user.imageUrl" [alt]="user.name" />
       } @else {
-        <cos-initials [name]="user.name" />
+        <div class="profile_image_filler">
+          <cos-initials [name]="user.name" />
+        </div>
       }
     </div>
     <div class="small_heading">
@@ -13,7 +15,13 @@
   }
 </div>
 <div id="buttons_area">
-  <button id="show_search" class="btn_medium_close icon">
+  <button
+    id="show_search"
+    class="btn_medium_close icon"
+    [class.hidden]="searchService.showSearch()"
+    (click)="toggleSearch()"
+    [cosTourItem]="{tourid: 'dashboard', index: 4, position: 'left'}"
+  >
     <cos-icon name="search" [size]="24" />
   </button>
   <cos-activities-button />

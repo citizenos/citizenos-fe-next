@@ -51,7 +51,7 @@ describe('UserStore', () => {
     expect(store.isLoading()).toBeTruthy();
     
     req.flush({ data: { challengeID: 1234, token: 'tok' } });
-    const res = await promise;
+    const res = await promise as any;
     
     expect(res.challengeID).toBe(1234);
     expect(store.isLoading()).toBeFalsy();
@@ -63,7 +63,7 @@ describe('UserStore', () => {
     const req = httpMock.expectOne((r) => r.url.endsWith('/api/auth/smartid/status') && r.params.get('token') === 'tok');
     req.flush({ status: { code: 20001 } });
     
-    const res = await promise;
+    const res = await promise as any;
     expect(res.status.code).toBe(20001);
   });
 
@@ -74,7 +74,7 @@ describe('UserStore', () => {
     expect(store.isLoading()).toBeTruthy();
     
     req.flush({ data: { challengeID: 1234, token: 'tok' } });
-    const res = await promise;
+    const res = await promise as any;
     
     expect(res.challengeID).toBe(1234);
     expect(store.isLoading()).toBeFalsy();
@@ -86,7 +86,7 @@ describe('UserStore', () => {
     const req = httpMock.expectOne((r) => r.url.endsWith('/api/auth/mobile/status') && r.params.get('token') === 'tok');
     req.flush({ status: { code: 20001 } });
     
-    const res = await promise;
+    const res = await promise as any;
     expect(res.status.code).toBe(20001);
   });
 

@@ -1,0 +1,32 @@
+@if (totalPages() > 1) {
+  <div class="pagination" [class]="customClass()">
+    <button
+      type="button"
+      class="pagination-btn btn_medium_pagination icon btn_pagination"
+      [disabled]="page() === 1"
+      (click)="prev()"
+      [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.PAGINATION_PREV' | translate"
+    >
+      <cos-icon name="arrow-left"></cos-icon>
+    </button>
+
+    @for (p of pages(); track p) {
+      <button
+        type="button"
+        class="pagination-btn btn_medium_pagination"
+        [class.active]="p === page()"
+        (click)="doSelect(p)"
+      >{{ p }}</button>
+    }
+
+    <button
+      type="button"
+      class="pagination-btn btn_medium_pagination icon btn_pagination"
+      [disabled]="page() === totalPages()"
+      (click)="next()"
+      [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.PAGINATION_NEXT' | translate"
+    >
+      <cos-icon name="arrow-right"></cos-icon>
+    </button>
+  </div>
+}

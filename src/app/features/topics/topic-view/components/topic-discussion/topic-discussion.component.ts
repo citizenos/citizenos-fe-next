@@ -155,7 +155,7 @@ export class TopicDiscussionComponent {
   }
 
   reload() {
-    this.argumentService.loadPage(this.argumentService.page.value);
+    this.argumentService.reload();
   }
 
   openEditDeadline() {

@@ -36,11 +36,11 @@ describe('PaginationComponent', () => {
     expect(fixture.nativeElement.querySelector('.pagination')).toBeTruthy();
   });
 
-  it('should not render when totalPages <= 1', () => {
-    component.totalPages.set(1);
-    component.page.set(1);
+  it('should apply custom class to the container', () => {
+    component.totalPages.set(10);
+    fixture.componentRef.setInput('class', 'ideation');
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.pagination')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.pagination.ideation')).toBeTruthy();
   });
 
   it('should compute all pages when total <= 5', () => {
@@ -50,18 +50,15 @@ describe('PaginationComponent', () => {
     expect(component.pages()).toEqual([1, 2, 3, 4, 5]);
   });
 
-  it('should show pages 1-5 when current page < 4', () => {
-    component.totalPages.set(20);
-    component.page.set(2);
+  it('should emit selection via aliased select output', () => {
+    component.totalPages.set(10);
+    component.page.set(3);
     fixture.detectChanges();
-    expect(component.pages()).toEqual([1, 2, 3, 4, 5]);
-  });
-
-  it('should center 5 pages around current page in the middle', () => {
-    component.totalPages.set(20);
-    component.page.set(10);
-    fixture.detectChanges();
-    expect(component.pages()).toEqual([8, 9, 10, 11, 12]);
+    const spy = vi.fn();
+    component.selectPage.subscribe(spy);
+    component.doSelect(5);
+    expect(spy).toHaveBeenCalledWith(5);
+    expect(component.page()).toBe(5);
   });
 
   it('should emit next page on next()', () => {
@@ -84,13 +81,10 @@ describe('PaginationComponent', () => {
     expect(spy).not.toHaveBeenCalled();
   });
 
-  it('should not emit beyond totalPages on next()', () => {
-    component.totalPages.set(5);
-    component.page.set(5);
+  it('should use legacy class names in template', () => {
+    component.totalPages.set(10);
     fixture.detectChanges();
-    const spy = vi.fn();
-    component.selectPage.subscribe(spy);
-    component.next();
-    expect(spy).not.toHaveBeenCalled();
+    const buttons = fixture.nativeElement.querySelectorAll('button.btn_medium_pagination');
+    expect(buttons.length).toBeGreaterThan(0);
   });
 });

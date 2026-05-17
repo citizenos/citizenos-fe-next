@@ -8,11 +8,42 @@ import { GroupMemberTopicService } from '../../../../core/services/group-member-
 import { SearchService } from '../../../../core/services/search.service';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
+import { Topic } from '../../../../core/interfaces/topic';
 
 const mockGroup = { id: 'g1', name: 'Test Group', visibility: 'private' };
 const mockDialogRef = { close: vi.fn() };
 const mockGroupMemberTopicService = { addTopic: vi.fn().mockReturnValue(of({})) };
 const mockSearchService = { search: vi.fn().mockReturnValue(of({ results: { my: { topics: { rows: [] } } } })) };
+
+const makeTopic = (overrides: Partial<Topic> = {}): Topic => ({
+  id: 't1',
+  title: 'T1',
+  intro: null,
+  description: '',
+  status: 'inProgress',
+  visibility: 'public',
+  hashtag: null,
+  join: { token: '', level: 'read' },
+  categories: [],
+  endsAt: null,
+  createdAt: '',
+  updatedAt: '',
+  sourcePartnerId: null,
+  sourcePartnerObjectId: null,
+  permission: { level: 'read' },
+  creator: { id: 'u1', name: 'User' },
+  lastActivity: null,
+  country: null,
+  language: null,
+  members: { users: { count: 0 }, groups: { count: 0 } },
+  voteId: null,
+  discussionId: null,
+  comments: null,
+  padUrl: null,
+  imageUrl: null,
+  authors: [],
+  ...overrides
+});
 
 describe('GroupAddTopicsDialogComponent', () => {
   let injector: EnvironmentInjector;
@@ -45,29 +76,29 @@ describe('GroupAddTopicsDialogComponent', () => {
 
   it('addTopic adds to topicsToAdd with default level', () => {
     const comp = makeComp();
-    comp.addTopic({ id: 't1', title: 'T1' });
+    comp.addTopic(makeTopic({ id: 't1', title: 'T1' }));
     expect(comp.topicsToAdd().length).toBe(1);
     expect(comp.topicsToAdd()[0].selectedLevel).toBe('read');
   });
 
   it('addTopic prevents duplicates', () => {
     const comp = makeComp();
-    comp.addTopic({ id: 't1', title: 'T1' });
-    comp.addTopic({ id: 't1', title: 'T1' });
+    comp.addTopic(makeTopic({ id: 't1', title: 'T1' }));
+    comp.addTopic(makeTopic({ id: 't1', title: 'T1' }));
     expect(comp.topicsToAdd().length).toBe(1);
   });
 
   it('removeTopic removes from topicsToAdd', () => {
     const comp = makeComp();
-    const topic = { id: 't1', title: 'T1' };
+    const topic = makeTopic({ id: 't1', title: 'T1' });
     comp.addTopic(topic);
-    comp.removeTopic({ ...topic, selectedLevel: 'read' });
+    comp.removeTopic({ ...topic, selectedLevel: 'read' } as any);
     expect(comp.topicsToAdd()).toEqual([]);
   });
 
   it('updateLevel changes topic level', () => {
     const comp = makeComp();
-    comp.addTopic({ id: 't1', title: 'T1' });
+    comp.addTopic(makeTopic({ id: 't1', title: 'T1' }));
     const added = comp.topicsToAdd()[0];
     comp.updateLevel(added, 'admin');
     expect(comp.topicsToAdd()[0].selectedLevel).toBe('admin');
@@ -82,7 +113,7 @@ describe('GroupAddTopicsDialogComponent', () => {
 
   it('save with topics calls addTopic and closes dialog', () => {
     const comp = makeComp();
-    comp.addTopic({ id: 't1', title: 'T1' });
+    comp.addTopic(makeTopic({ id: 't1', title: 'T1' }));
     comp.save();
     expect(mockGroupMemberTopicService.addTopic).toHaveBeenCalledWith('g1', 't1', 'read');
     expect(mockDialogRef.close).toHaveBeenCalledWith(true);

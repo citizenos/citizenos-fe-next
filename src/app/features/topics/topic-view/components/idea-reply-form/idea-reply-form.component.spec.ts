@@ -24,9 +24,13 @@ class MockIconComponent {
 }
 
 describe('IdeaReplyFormComponent', () => {
-  let mockIdeationService: Partial<TopicIdeationService>;
+  let mockIdeationService: {
+    COMMENT_TYPES_MAXLENGTH: { reply: number };
+    saveIdeaComment: ReturnType<typeof vi.fn>;
+    updateIdeaComment: ReturnType<typeof vi.fn>;
+  };
   let mockNotification: Partial<NotificationService>;
-  let mockUserStore: Partial<UserStore>;
+  let mockUserStore: { isAuthenticated: ReturnType<typeof vi.fn>; user: ReturnType<typeof vi.fn> };
   let mockRouter: Partial<Router>;
 
   beforeEach(async () => {
@@ -34,7 +38,7 @@ describe('IdeaReplyFormComponent', () => {
       COMMENT_TYPES_MAXLENGTH: { reply: 2048 },
       saveIdeaComment: vi.fn().mockReturnValue(of({ id: 'new-comment' })),
       updateIdeaComment: vi.fn().mockReturnValue(of({ id: 'updated-comment' }))
-    } as unknown as TopicIdeationService;
+    };
     mockNotification = { success: vi.fn(), error: vi.fn() };
     mockUserStore = { isAuthenticated: vi.fn().mockReturnValue(true), user: vi.fn().mockReturnValue({ id: 'user1' }) };
     mockRouter = { navigate: vi.fn() };

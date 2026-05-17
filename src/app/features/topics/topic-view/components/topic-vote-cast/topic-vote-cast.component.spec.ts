@@ -1,5 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 import { of, Subject } from 'rxjs';
 import { TopicVoteCastComponent } from './topic-vote-cast.component';
 import { TopicService } from '../../../../../core/services/topic.service';

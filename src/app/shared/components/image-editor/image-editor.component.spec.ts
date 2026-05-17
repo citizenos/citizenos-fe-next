@@ -13,6 +13,14 @@ describe('ImageEditorComponent', () => {
 
     fixture = TestBed.createComponent(ImageEditorComponent);
     component = fixture.componentInstance;
+    
+    // Mock getContext to avoid JSDOM "Not implemented" errors
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
+      clearRect: vi.fn(),
+      drawImage: vi.fn(),
+      toBlob: vi.fn()
+    } as unknown as CanvasRenderingContext2D);
+    
     fixture.detectChanges();
   });
 

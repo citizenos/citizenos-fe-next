@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, Directive, Input } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';

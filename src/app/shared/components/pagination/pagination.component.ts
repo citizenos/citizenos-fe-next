@@ -1,4 +1,4 @@
-import { Component, output, computed, ChangeDetectionStrategy, ViewEncapsulation, model } from '@angular/core';
+import { Component, output, computed, ChangeDetectionStrategy, ViewEncapsulation, model, input } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -8,84 +8,40 @@ import { TranslateModule } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   imports: [IconComponent, TranslateModule],
-  template: `
-    @if (totalPages() > 1) {
-      <div class="pagination">
-        <button
-          class="pagination-btn icon"
-          [disabled]="page() === 1"
-          (click)="prev()"
-          [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.PAGINATION_PREV' | translate"
-        >
-          <cos-icon name="arrow-left"></cos-icon>
-        </button>
-
-        @for (p of pages(); track p) {
-          <button
-            class="pagination-btn"
-            [class.active]="p === page()"
-            (click)="selectPage.emit(p)"
-          >{{ p }}</button>
-        }
-
-        <button
-          class="pagination-btn icon"
-          [disabled]="page() === totalPages()"
-          (click)="next()"
-          [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.PAGINATION_NEXT' | translate"
-        >
-          <cos-icon name="arrow-right"></cos-icon>
-        </button>
-      </div>
-    }
-  `,
-  styles: [`
-    cos-pagination .pagination {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 8px;
-    }
-
-    cos-pagination .pagination-btn {
-      width: 40px;
-      height: 40px;
-      border: 1px solid var(--color-border-bold);
-      border-radius: var(--radius-sm);
-      background: var(--color-surfaces);
-      cursor: pointer;
-      font-size: 14px;
-      font-family: var(--font-family-base);
-      color: var(--color-text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
-
-      &:hover:not(:disabled) {
-        border-color: var(--color-link);
-        color: var(--color-link);
-      }
-
-      &.active {
-        background: var(--color-primary);
-        color: white;
-        border-color: var(--color-primary);
-      }
-
-      &:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-      }
-    }
-  `]
+  templateUrl: './pagination.component.html',
+  styleUrls: ['./pagination.component.scss']
 })
 export class PaginationComponent {
+  /**
+   * Total number of pages. Supports 2-way binding.
+   */
   totalPages = model<number>(0);
+
+  /**
+   * Current active page. Supports 2-way binding.
+   */
   page = model<number>(1);
 
+  /**
+   * Optional CSS class to apply to the pagination container (e.g. 'ideation').
+   */
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  customClass = input<string | undefined>(undefined, { alias: 'class' });
+
+  /**
+   * Emits the selected page number. Original modern name.
+   */
   selectPage = output<number>();
 
+  /**
+   * Emits the selected page number. Aliased for legacy compatibility.
+   */
+  // eslint-disable-next-line @angular-eslint/no-output-native
+  select = output<number>();
+
+  /**
+   * Computes the range of page numbers to display (max 5 pages).
+   */
   pages = computed(() => {
     const total = this.totalPages();
     const current = this.page();
@@ -104,11 +60,30 @@ export class PaginationComponent {
     return arr;
   });
 
+  /**
+   * Navigates to the previous page.
+   */
   prev() {
-    if (this.page() > 1) this.selectPage.emit(this.page() - 1);
+    if (this.page() > 1) {
+      this.doSelect(this.page() - 1);
+    }
   }
 
+  /**
+   * Navigates to the next page.
+   */
   next() {
-    if (this.page() < this.totalPages()) this.selectPage.emit(this.page() + 1);
+    if (this.page() < this.totalPages()) {
+      this.doSelect(this.page() + 1);
+    }
+  }
+
+  /**
+   * Emits the selection and updates the local page model.
+   */
+  doSelect(p: number) {
+    this.page.set(p);
+    this.select.emit(p);
+    this.selectPage.emit(p);
   }
 }

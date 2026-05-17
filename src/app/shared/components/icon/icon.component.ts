@@ -34,7 +34,7 @@ export class IconComponent {
   private registry = inject(IconRegistryService);
   private sanitizer = inject(DomSanitizer);
 
-  name = model.required<IconName>();
+  name = model<IconName | ''>('');
   size = model<string | number>(24);
   color = input<string>();
 
@@ -44,14 +44,14 @@ export class IconComponent {
   safeSvgContent = computed(() => {
     const name = this.name();
     if (!name) return '';
-    const data = this.registry.getIcon(name);
+    const data = this.registry.getIcon(name as IconName);
     return data ? this.sanitizer.bypassSecurityTrustHtml(data.content) : '';
   });
 
   viewBox = computed(() => {
     const name = this.name();
     if (!name) return '0 0 24 24';
-    const data = this.registry.getIcon(name);
+    const data = this.registry.getIcon(name as IconName);
     return data?.viewBox || '0 0 24 24';
   });
 }

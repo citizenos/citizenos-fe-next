@@ -5,8 +5,9 @@ import { DialogService } from '../../../../../shared/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { Argument } from '../../../../../core/interfaces/discussion';
 
-const BASE_ARG = {
+const BASE_ARG: Argument = {
   id: 'arg1',
+  type: 'pro',
   creator: { id: 'user1', name: 'Alice' },
   deletedBy: { id: 'mod1', name: 'Moderator' },
   deletedReasonType: 'abuse',
@@ -32,7 +33,7 @@ describe('ArgumentDeletedComponent', () => {
 
     fixture = TestBed.createComponent(ArgumentDeletedComponent);
     component = fixture.componentInstance;
-    setup({ ...BASE_ARG });
+    setup(BASE_ARG);
   });
 
   it('should create', () => {

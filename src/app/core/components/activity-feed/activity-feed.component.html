@@ -2,7 +2,7 @@
   <div class="overlay" (click)="close()" (keydown.enter)="close()" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
 }
 
-<div id="activity_feed" [class.open]="feedState.isOpen()" (scroll)="onScroll($event)">
+<div id="activity_feed" [class.open]="feedState.isOpen()" (scroll)="onScroll($event)" [cosTourItem]="{tourid: 'dashboard', index: 3, position: 'left'}">
   <div class="feed_heading_wrap">
     <div class="small_heading">
       {{ 'COMPONENTS.ACTIVITY_FEED.HEADING_' + feedType.toUpperCase() | translate }}
@@ -11,6 +11,24 @@
       <cos-icon name="close" [size]="24" />
     </button>
   </div>
+
+  @if (!this.feedState.groupId() && !this.feedState.topicId()) {
+    <div class="filter_wrap">
+      <div class="dropdown" cosDropdown>
+        <div trigger class="selection">
+          <div class="selected_item">{{'COMPONENTS.ACTIVITY_FEED.FILTER_' + (activityService.filter().toUpperCase() || 'ALL') | translate}}</div>
+          <cos-icon name="arrow-down" [size]="16"></cos-icon>
+        </div>
+        <div class="options">
+          @for (filter of activityService.filters; track filter) {
+            <div class="option" (click)="filterActivities(filter)" (keydown.enter)="filterActivities(filter)" tabindex="0">
+              {{ 'COMPONENTS.ACTIVITY_FEED.FILTER_' + filter.toUpperCase() | translate }}
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
 
   <div id="results_area">
     @for (group of activities(); track group.referer) {

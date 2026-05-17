@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
-import { InviteEditorsComponent } from './invite-editors.component';
+import { InviteEditorsComponent, EditorMember } from './invite-editors.component';
 import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicInviteUserService } from '../../../../../core/services/topic-invite-user.service';
@@ -117,14 +117,14 @@ describe('InviteEditorsComponent', () => {
   });
 
   it('addTopicMember adds a user to members list', () => {
-    const user = { id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null };
+    const user = { id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null, level: 'edit' } as unknown as EditorMember;
     component.addTopicMember(user);
     expect(component.members()).toHaveLength(1);
     expect(component.members()[0].id).toBe('u1');
   });
 
   it('addTopicMember does not add duplicate users', () => {
-    const user = { id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null };
+    const user = { id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null, level: 'edit' } as unknown as EditorMember;
     component.addTopicMember(user);
     component.addTopicMember(user);
     expect(component.members()).toHaveLength(1);
@@ -144,14 +144,14 @@ describe('InviteEditorsComponent', () => {
   });
 
   it('removeTopicMemberUser removes a member', () => {
-    const user = { id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null };
+    const user = { id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null, level: 'edit' } as unknown as EditorMember;
     component.addTopicMember(user);
     component.removeTopicMemberUser(component.members()[0]);
     expect(component.members()).toHaveLength(0);
   });
 
   it('updateTopicMemberUserLevel changes individual member level', () => {
-    const user = { id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null };
+    const user = { id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null, level: 'edit' } as unknown as EditorMember;
     component.addTopicMember(user);
     const member = component.members()[0];
     component.updateTopicMemberUserLevel(member, 'admin');
@@ -159,14 +159,14 @@ describe('InviteEditorsComponent', () => {
   });
 
   it('updateAllMemberLevels changes all members', () => {
-    component.addTopicMember({ id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null });
-    component.addTopicMember({ id: 'u2', name: 'Bob', email: 'bob@example.com', imageUrl: null });
+    component.addTopicMember({ id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null, level: 'edit' } as unknown as EditorMember);
+    component.addTopicMember({ id: 'u2', name: 'Bob', email: 'bob@example.com', imageUrl: null, level: 'edit' } as unknown as EditorMember);
     component.updateAllMemberLevels('admin');
     expect(component.members().every(m => m.level === 'admin')).toBe(true);
   });
 
   it('removeAllMembers clears the list', () => {
-    component.addTopicMember({ id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null });
+    component.addTopicMember({ id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null, level: 'edit' } as unknown as EditorMember);
     component.removeAllMembers();
     expect(component.members()).toHaveLength(0);
   });
@@ -182,7 +182,7 @@ describe('InviteEditorsComponent', () => {
   it('totalPages computed from members length', () => {
     expect(component.totalPages()).toBe(0);
     for (let i = 0; i < 11; i++) {
-      component.addTopicMember({ id: `u${i}`, name: `User${i}`, email: `u${i}@example.com`, imageUrl: null });
+      component.addTopicMember({ id: `u${i}`, name: `User${i}`, email: `u${i}@example.com`, imageUrl: null, level: 'edit' } as unknown as EditorMember);
     }
     expect(component.totalPages()).toBe(2);
   });
@@ -199,7 +199,7 @@ describe('InviteEditorsComponent', () => {
   });
 
   it('inviteEditors calls save and closes dialog', () => {
-    component.addTopicMember({ id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null });
+    component.addTopicMember({ id: 'u1', name: 'Alice', email: 'alice@example.com', imageUrl: null, level: 'edit' } as unknown as EditorMember);
     component.inviteEditors();
     expect(inviteUserService.save).toHaveBeenCalledWith('topic1', expect.any(Array));
     expect(notification.success).toHaveBeenCalled();

@@ -11,8 +11,10 @@ import { TranslateModule } from '@ngx-translate/core';
 
 const mockGroup = { id: 'g1', name: 'Test Group' };
 const mockDialogRef = { close: vi.fn() };
-const mockRequest1 = { id: 'r1', topic: { title: 'Topic A' } };
-const mockRequest2 = { id: 'r2', topic: { title: 'Topic B' } };
+import { TopicRequest } from '../../../../core/services/group-request-topic.service';
+
+const mockRequest1 = { id: 'r1', topicId: 't1', groupId: 'g1', level: 'read', topic: { title: 'Topic A' } } as unknown as TopicRequest;
+const mockRequest2 = { id: 'r2', topicId: 't2', groupId: 'g1', level: 'read', topic: { title: 'Topic B' } } as unknown as TopicRequest;
 const mockRequestService = {
   getRequests: vi.fn().mockReturnValue(of({ rows: [mockRequest1, mockRequest2] })),
   accept: vi.fn().mockReturnValue(of({})),

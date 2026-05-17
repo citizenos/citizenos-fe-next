@@ -84,6 +84,10 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
     );
   }
 
+  reload() {
+    this.params.next({ ...this.params.value });
+  }
+
   override getItems(params: TopicArgumentParams): Observable<ArgumentListResponse> {
     return this.getArguments(params);
   }

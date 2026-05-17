@@ -16,6 +16,8 @@ const mockRequestService = { request: vi.fn().mockReturnValue(of({})) };
 const mockSearchService = { search: vi.fn().mockReturnValue(of({ results: { my: { topics: { rows: [] } } } })) };
 const mockNotification = { success: vi.fn() };
 
+import { Topic } from '../../../../core/interfaces/topic';
+
 describe('GroupRequestTopicsDialogComponent', () => {
   let injector: EnvironmentInjector;
 
@@ -48,20 +50,20 @@ describe('GroupRequestTopicsDialogComponent', () => {
 
   it('addTopic adds a topic', () => {
     const comp = makeComp();
-    comp.addTopic({ id: 't1', title: 'T1' });
+    comp.addTopic({ id: 't1', title: 'T1' } as unknown as Topic);
     expect(comp.topicsToRequest().length).toBe(1);
   });
 
   it('addTopic prevents duplicates', () => {
     const comp = makeComp();
-    comp.addTopic({ id: 't1', title: 'T1' });
-    comp.addTopic({ id: 't1', title: 'T1' });
+    comp.addTopic({ id: 't1', title: 'T1' } as unknown as Topic);
+    comp.addTopic({ id: 't1', title: 'T1' } as unknown as Topic);
     expect(comp.topicsToRequest().length).toBe(1);
   });
 
   it('removeTopic removes the topic', () => {
     const comp = makeComp();
-    const topic = { id: 't1', title: 'T1' } as unknown as import('../../../../../core/interfaces/topic').Topic;
+    const topic = { id: 't1', title: 'T1' } as unknown as Topic;
     comp.addTopic(topic);
     comp.removeTopic(topic);
     expect(comp.topicsToRequest()).toEqual([]);
@@ -76,7 +78,7 @@ describe('GroupRequestTopicsDialogComponent', () => {
 
   it('send with topics calls request service and closes dialog', () => {
     const comp = makeComp();
-    comp.addTopic({ id: 't1', title: 'T1' });
+    comp.addTopic({ id: 't1', title: 'T1' } as unknown as Topic);
     comp.send();
     expect(mockRequestService.request).toHaveBeenCalledWith('g1', 't1', 'read', undefined);
     expect(mockDialogRef.close).toHaveBeenCalledWith(true);

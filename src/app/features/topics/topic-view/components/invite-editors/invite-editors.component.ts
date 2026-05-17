@@ -21,7 +21,7 @@ export interface InviteEditorsData {
   topic: Topic;
 }
 
-interface EditorMember {
+export interface EditorMember {
   id: string;
   name: string;
   email?: string;

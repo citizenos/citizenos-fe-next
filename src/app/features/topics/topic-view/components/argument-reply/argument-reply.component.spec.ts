@@ -113,14 +113,14 @@ describe('ArgumentReplyComponent', () => {
   });
 
   it('should set errors signal on API error', () => {
-    mockArgumentService.save.mockReturnValue(throwError(() => ({ errors: { text: 'Too long' } })));
+    mockArgumentService.save.mockReturnValue(throwError(() => ({ errors: { text: ['Too long'] } })));
     component.replyText.set('reply');
     component.saveReply();
-    expect(component.errors()).toEqual({ text: 'Too long' });
+    expect(component.errors()).toEqual({ text: ['Too long'] });
   });
 
   it('should show error label when errors.text is set', async () => {
-    component.errors.set({ text: 'COMPONENTS.ARGUMENT_REPLY.ERROR_NO_TEXT' });
+    component.errors.set({ text: ['COMPONENTS.ARGUMENT_REPLY.ERROR_NO_TEXT'] });
     fixture.detectChanges();
     await fixture.whenStable();
     const el: HTMLElement = fixture.nativeElement;

@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { SmartIdComponent } from './smart-id.component';
 import { UserStore } from '../../../../core/state/user.store';
 import { of } from 'rxjs';
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { vi, describe, it, expect, beforeEach, afterEach, Mock } from 'vitest';
 import { MockButtonComponent, MockIconComponent } from '../../../../shared/testing/mocks';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
@@ -70,22 +70,22 @@ describe('SmartIdComponent', () => {
   it('should call loginSmartIdInit on submit and start polling', async () => {
     vi.useFakeTimers();
     const initResponse = { challengeID: 1234, token: 'test-token' };
-    (mockUserStore as { loginSmartIdInit: vi.Mock }).loginSmartIdInit.mockResolvedValue(initResponse);
-    (mockUserStore as { loginSmartIdStatus: vi.Mock }).loginSmartIdStatus.mockReturnValue(of({ status: { code: 20001 } }));
+    (mockUserStore as { loginSmartIdInit: Mock }).loginSmartIdInit.mockResolvedValue(initResponse);
+    (mockUserStore as { loginSmartIdStatus: Mock }).loginSmartIdStatus.mockReturnValue(of({ status: { code: 20001 } }));
 
     component.smartIdForm.controls.pid.setValue('12345678901');
     await component.onSubmit();
     
-    expect((mockUserStore as { loginSmartIdInit: vi.Mock }).loginSmartIdInit).toHaveBeenCalledWith('12345678901');
+    expect((mockUserStore as { loginSmartIdInit: Mock }).loginSmartIdInit).toHaveBeenCalledWith('12345678901');
     expect(component.challengeID()).toBe(1234);
     
     await vi.advanceTimersByTimeAsync(3001);
-    expect((mockUserStore as { loginSmartIdStatus: vi.Mock }).loginSmartIdStatus).toHaveBeenCalledWith('test-token');
+    expect((mockUserStore as { loginSmartIdStatus: Mock }).loginSmartIdStatus).toHaveBeenCalledWith('test-token');
     vi.useRealTimers();
   });
 
   it('should show error when init fails', async () => {
-    (mockUserStore as { loginSmartIdInit: vi.Mock }).loginSmartIdInit.mockRejectedValue({ error: { status: { message: 'Error' } } });
+    (mockUserStore as { loginSmartIdInit: Mock }).loginSmartIdInit.mockRejectedValue({ error: { status: { message: 'Error' } } });
 
     component.smartIdForm.controls.pid.setValue('12345678901');
     await component.onSubmit();

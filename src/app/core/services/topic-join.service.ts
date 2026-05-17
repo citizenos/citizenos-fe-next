@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response';
 import { ConfigStore } from '../state/config.store';
+import { Topic } from '../interfaces/topic';
 
 export interface TopicJoin {
   token: string;
@@ -20,17 +21,17 @@ export class TopicJoinService {
     return this.configStore.api.baseUrl();
   }
 
-  get(token: string): Observable<unknown> {
+  get(token: string): Observable<Topic> {
     const path = `${this.apiUrl}/api/topics/join/${token}`;
-    return this.http.get<ApiResponse<unknown>>(path, { withCredentials: true }).pipe(
-      map(res => res.data)
+    return this.http.get<ApiResponse<Topic>>(path, { withCredentials: true }).pipe(
+      map(res => res.data!)
     );
   }
 
-  join(token: string): Observable<unknown> {
+  join(token: string): Observable<Topic> {
     const path = `${this.apiUrl}/api/topics/join/${token}`;
-    return this.http.post<ApiResponse<unknown>>(path, {}, { withCredentials: true }).pipe(
-      map(res => res.data)
+    return this.http.post<ApiResponse<Topic>>(path, {}, { withCredentials: true }).pipe(
+      map(res => res.data!)
     );
   }
 

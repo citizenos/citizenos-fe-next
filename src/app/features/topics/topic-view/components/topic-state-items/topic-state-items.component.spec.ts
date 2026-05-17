@@ -13,6 +13,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { DomainIconComponent } from '../../../../../shared/components/domain-icon/domain-icon.component';
 import { Component, Input } from '@angular/core';
 import { Topic } from '../../../../../core/interfaces/topic';
+import { Vote } from '../../../../../core/interfaces/vote';
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent { @Input() name = ''; @Input() size = 24; }
@@ -106,7 +107,7 @@ describe('TopicStateItemsComponent', () => {
     component.ideation.set(null);
     component.vote.set({
       votersCount: 42
-    });
+    } as unknown as Vote);
     component.eventCount.set(5);
     
     fixture.detectChanges();

@@ -23,7 +23,7 @@ class MockIconComponent {
 describe('IdeaReplyComponent', () => {
   let mockIdeationService: Partial<TopicIdeationService>;
   let mockNotification: Partial<NotificationService>;
-  let mockUserStore: Partial<UserStore>;
+  let mockUserStore: Record<string, unknown>;
   let mockDialog: Partial<DialogService>;
   let mockSanitizer: Partial<DomSanitizer>;
   let mockRouter: Partial<Router>;
@@ -31,7 +31,8 @@ describe('IdeaReplyComponent', () => {
   beforeEach(async () => {
     mockIdeationService = {
       deleteIdeaComment: vi.fn().mockReturnValue(of({})),
-      voteIdeaComment: vi.fn().mockReturnValue(of({ up: { count: 1 }, down: { count: 0 } }))
+      voteIdeaComment: vi.fn().mockReturnValue(of({ up: { count: 1 }, down: { count: 0 } })),
+      reportIdeaComment: vi.fn()
     };
     mockNotification = { success: vi.fn(), error: vi.fn() };
     mockUserStore = { isAuthenticated: vi.fn().mockReturnValue(true), user: vi.fn().mockReturnValue({ id: 'user1' }) };
@@ -72,7 +73,7 @@ describe('IdeaReplyComponent', () => {
     const component = fixture.componentInstance;
     const componentRef = fixture.componentRef;
 
-    component.argument.set((inputs.argument || { id: 'arg1', text: 'Test argument', creator: { id: 'user1', name: 'User 1' }, votes: { up: { count: 0 } } }) as IdeaComment);
+    component.argument.set((inputs.argument || { id: 'arg1', creator: { id: 'c1', name: 'Test Author' }, text: 'Test text', votes: { up: { count: 0 } } }) as IdeaComment);
     component.topicId.set('topic1');
     component.ideationId.set('ideation1');
     component.ideaId.set('idea1');

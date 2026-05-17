@@ -1,0 +1,45 @@
+.deleted_argument_wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .deleted_argument_content_wrap {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-surfaces);
+    border-radius: 8px;
+    gap: 16px;
+    padding: 24px;
+    align-items: center;
+    justify-content: center;
+
+    .bold {
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .buttons_wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+
+      .btn_link {
+        background: none;
+        border: none;
+        padding: 0;
+        color: var(--color-primary);
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: inherit;
+        text-decoration: underline;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

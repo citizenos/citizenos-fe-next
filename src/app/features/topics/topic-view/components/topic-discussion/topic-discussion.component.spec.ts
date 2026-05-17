@@ -9,7 +9,7 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { BehaviorSubject, of } from 'rxjs';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Discussion } from '../../../../../core/interfaces/discussion';
-import { Argument } from '../../../../../core/interfaces/argument';
+import { Argument } from '../../../../../core/interfaces/discussion';
 
 const mockTopic: Topic = { id: 'topic-1', discussionId: 'disc-1', status: 'inProgress' } as Topic;
 const mockDiscussion: Discussion = { id: 'disc-1', question: 'What do you think?', deadline: null } as Discussion;

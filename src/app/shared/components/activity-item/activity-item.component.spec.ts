@@ -5,7 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivityItemComponent } from './activity-item.component';
-import { ActivityService, ActivityGroup } from '../../../core/services/activity.service';
+import { ActivityService, ActivityGroup, ActivityItem } from '../../../core/services/activity.service';
 import { ActivityFeedState } from '../../../core/state/activity-feed.state';
 
 const MOCK_ACTIVITY = {
@@ -13,7 +13,7 @@ const MOCK_ACTIVITY = {
   updatedAt: '2024-01-15T10:00:00Z',
   string: 'ACTIVITY.TOPIC_CREATED',
   values: { className: 'discussion', topicTitle: 'My Topic' },
-};
+} as unknown as ActivityItem;
 
 const SINGLE_GROUP: ActivityGroup = {
   referer: 'ACTIVITY.TOPIC_CREATED',

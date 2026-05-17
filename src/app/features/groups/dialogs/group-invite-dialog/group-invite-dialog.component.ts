@@ -14,7 +14,7 @@ import { NotificationService } from '../../../../core/services/notification.serv
 import { DialogService } from '../../../../shared/dialog/dialog.service';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { DropdownComponent } from '../../../../shared/components/dropdown/dropdown.component';
-import { TypeaheadComponent } from '../../../../shared/components/typeahead/typeahead.component';
+import { TypeaheadComponent, TypeaheadItemDirective, TypeaheadSelectDirective } from '../../../../shared/components/typeahead/typeahead.component';
 import { GroupShareComponent } from '../../group-detail/components/group-share/group-share.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { TooltipComponent } from '../../../../shared/components/tooltip/tooltip.component';
@@ -49,7 +49,7 @@ function isEmail(s: string) { return EMAIL_RE.test(s.trim()); }
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TranslateModule, FormsModule, IconComponent, DropdownComponent,
-    TypeaheadComponent, DialogCloseDirective, GroupShareComponent, ButtonComponent,
+    TypeaheadComponent, TypeaheadItemDirective, TypeaheadSelectDirective, DialogCloseDirective, GroupShareComponent, ButtonComponent,
     TooltipComponent
   ],
   templateUrl: './group-invite-dialog.component.html',

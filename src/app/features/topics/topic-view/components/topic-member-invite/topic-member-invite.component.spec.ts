@@ -34,7 +34,7 @@ const MOCK_TOPIC: Topic = {
   sourcePartnerId: null,
   sourcePartnerObjectId: null,
   permission: { level: 'admin' },
-  creator: null,
+  creator: { id: '', name: '' },
   lastActivity: null,
   country: null,
   language: null,

@@ -1,0 +1,61 @@
+<div id="topic_tabs" class="topic_tabs" [class.tablet]="wWidth() <= 1024" [class.mobile_hidden]="wWidth() > 1024"
+  [class.tablet_show]="wWidth() <= 1024">
+  @if (tabSelected()) {
+  <div class="tabs_wrap discussion" [cosTourItem]="{tourid: 'topic', index: 1, position: 'bottom'}">
+    @if (topic().ideationId || topic().status === STATUSES.ideation) {
+    <a class="topic_tab ideation" [routerLink]="['./']" fragment="ideation"
+      [class.active]="tabSelected() === 'ideation'" (click)="selectTab('ideation')">
+      <cos-domain-icon type="ideation" [size]="32" />
+      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_IDEATION' | translate }}</span>
+    </a>
+    }
+
+    @if (topic().discussionId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress].includes(topic().status)) {
+    <a class="topic_tab discussion" [routerLink]="['./']" fragment="discussion"
+      [class.active]="tabSelected() === 'discussion' || !tabSelected()" (click)="selectTab('discussion')">
+      <cos-domain-icon type="topic" [size]="32" />
+      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_DISCUSSION' | translate }}</span>
+    </a>
+    }
+
+    @if (topic().voteId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress, STATUSES.voting].includes(topic().status)) {
+    <a class="topic_tab voting" [routerLink]="['./']" fragment="voting" [class.active]="tabSelected() === 'voting'"
+      (click)="selectTab('voting')">
+      <cos-domain-icon type="vote" [size]="32" />
+      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_VOTING' | translate }}</span>
+    </a>
+    }
+
+    <a class="topic_tab follow_up" [routerLink]="['./']" fragment="followUp"
+      [class.active]="tabSelected() === 'followUp'" (click)="selectTab('followUp')">
+      <cos-domain-icon type="follow-up" [size]="32" />
+      <span class="tab_text">{{ 'VIEWS.TOPICS_TOPICID.TAB_FOLLOW_UP' | translate }}</span>
+    </a>
+  </div>
+  }
+
+  <div id="activities_button_wrap" [cosTourItem]="{tourid: 'topic', index: 8, position: 'left'}">
+    @if (isLoggedIn()) {
+    <cos-tooltip [noIcon]="true"
+      [title]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE' : 'VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE') | translate">
+      <button trigger class="btn_medium_close icon" (click)="toggleFavourite(topic())"
+        [class.like_active]="topic().favourite">
+        @if (!topic().favourite) {
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12.4961 16.1318L12 15.8482L11.5039 16.1318L6 19.2768L6 6C6 5.44772 6.44772 5 7 5H17C17.5523 5 18 5.44772 18 6V19.2768L12.4961 16.1318Z"
+            stroke="#2C3B47" stroke-width="2" />
+        </svg>
+        } @else {
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12.5812 15.1863L12 14.7711L11.4188 15.1863L6 19.0568V6C6 5.44772 6.44772 5 7 5H17C17.5523 5 18 5.44772 18 6V19.0568L12.5812 15.1863Z"
+            fill="#2C3B47" stroke="#2C3B47" stroke-width="2" />
+        </svg>
+        }
+      </button>
+    </cos-tooltip>
+    <cos-activities-button [topicId]="topic().id"></cos-activities-button>
+    }
+  </div>
+</div>

@@ -7,11 +7,12 @@ import { take } from 'rxjs';
 import { Argument } from '../../../../../core/interfaces/discussion';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
 
 @Component({
   selector: 'app-edit-argument',
   standalone: true,
-  imports: [FormsModule, UpperCasePipe, TranslateModule, InputComponent],
+  imports: [FormsModule, UpperCasePipe, TranslateModule, InputComponent, MarkdownDirective],
   templateUrl: './edit-argument.component.html',
   styleUrls: ['./edit-argument.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -48,14 +49,17 @@ export class EditArgumentComponent implements OnInit {
       return;
     }
     this.argumentService.update({
-      id: arg.id,
+      commentId: arg.id,
       topicId: this.topicId(),
       discussionId: arg.discussionId || '',
       subject: this.editSubject(),
       text: this.editText(),
       type: this.editType(),
     }).pipe(take(1)).subscribe({
-      next: () => this.showEdit.emit(null),
+      next: () => {
+        this.argumentService.reload();
+        this.showEdit.emit(false);
+      },
       error: (res) => { this.errors = res.errors; }
     });
   }

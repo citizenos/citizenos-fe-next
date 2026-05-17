@@ -17,6 +17,7 @@ import { DialogService } from '../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { InitialsComponent } from '../../../shared/components/initials/initials.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { ImageEditorComponent } from '../../../shared/components/image-editor/image-editor.component';
 import { SeoService } from '../../../core/services/seo.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -39,7 +40,8 @@ type ProfileTab = 'profile' | 'notifications';
     AsyncPipe,
     UpperCasePipe,
     InitialsComponent,
-    PaginationComponent
+    PaginationComponent,
+    ImageEditorComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -79,8 +81,8 @@ export class ProfileComponent implements OnInit {
   errors: { name?: string; company?: string; email?: string; password?: string; newPassword?: string; general?: string } = {};
   resetPasswordMode = signal<boolean>(false);
   topicSearch = signal<string>('');
-  imageFile: File | null = null;
-  tmpImageUrl: string | null = null;
+  imageFile = signal<File | null>(null);
+  uploadedImage = signal<File | null>(null);
 
   languages: Record<string, string> = {
     en: 'English',
@@ -109,9 +111,6 @@ export class ProfileComponent implements OnInit {
         this.activeTab.set('profile');
       }
     });
-
-    // Load initial notification topics
-    // this.topicNotificationService.loadItems(); // Removed as it is protected and items$ is already initialized
   }
 
   selectTab(tab: ProfileTab) {
@@ -142,10 +141,11 @@ export class ProfileComponent implements OnInit {
       params['newPassword'] = this.form.newPassword;
     }
 
-    if (this.imageFile) {
+    const currentImageFile = this.imageFile();
+    if (currentImageFile) {
       try {
-        const res = await firstValueFrom(this.userService.uploadUserImage(this.imageFile)) as { imageUrl: string };
-        params['imageUrl'] = res.imageUrl; // The legacy component used res.link, but UserStore expects res.imageUrl or similar based on its logic. Let's check service.
+        const res = await firstValueFrom(this.userService.uploadUserImage(currentImageFile)) as { imageUrl: string };
+        params['imageUrl'] = res.imageUrl;
       } catch (err) {
         console.error('Image upload failed', err);
       }
@@ -157,8 +157,8 @@ export class ProfileComponent implements OnInit {
       this.form.password = '';
       this.form.newPassword = '';
       this.form.passwordConfirm = '';
-      this.imageFile = null;
-      this.tmpImageUrl = null;
+      this.imageFile.set(null);
+      this.uploadedImage.set(null);
     } catch (err: unknown) {
       const error = err as { error?: { errors?: { name?: string; company?: string; email?: string; password?: string; newPassword?: string } } };
       this.errors = error.error?.errors || { general: 'ERRORS.GENERAL' };
@@ -234,46 +234,16 @@ export class ProfileComponent implements OnInit {
     this.fileInput?.nativeElement.click();
   }
 
-  async fileUpload(event: Event) {
+  fileUpload(event: Event) {
     const target = event.target as HTMLInputElement;
     const file = target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        const resized = await this.resizeImage(reader.result as string);
-        this.tmpImageUrl = resized.imageUrl;
-        this.imageFile = resized.file;
-      };
-      reader.readAsDataURL(file);
+      this.uploadedImage.set(file);
     }
   }
 
-  private resizeImage(imageURL: string): Promise<{ file: File, imageUrl: string }> {
-    return new Promise((resolve) => {
-      if (!isPlatformBrowser(this.platformId)) {
-        resolve({ file: new File([], 'profileimage.jpg'), imageUrl: '' });
-        return;
-      }
-      const image = new Image();
-      image.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 320;
-        canvas.height = 320;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, 320, 320);
-        }
-        const data = canvas.toDataURL('image/jpeg', 1);
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const file = new File([blob], 'profileimage.jpg', { type: 'image/jpeg' });
-            resolve({ file, imageUrl: data });
-          }
-        }, 'image/jpeg');
-      };
-      image.src = imageURL;
-    });
+  updateUserImage(file: File) {
+    this.imageFile.set(file);
   }
 
   async deleteUserImage() {
@@ -281,8 +251,8 @@ export class ProfileComponent implements OnInit {
       this.fileInput.nativeElement.value = null;
     }
     this.form.imageUrl = '';
-    this.imageFile = null;
-    this.tmpImageUrl = null;
+    this.imageFile.set(null);
+    this.uploadedImage.set(null);
     
     try {
       await this.store.updateProfile({ imageUrl: '' });

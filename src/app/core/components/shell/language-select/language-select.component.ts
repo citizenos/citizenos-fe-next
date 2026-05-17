@@ -7,14 +7,16 @@ import { UserService } from '../../../services/user.service';
 import { firstValueFrom } from 'rxjs';
 import { SELECTED_LANGUAGES } from '../../../constants/languages';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
+import { NotificationComponent } from '../../../../shared/components/notification/notification.component';
 
 @Component({
   selector: 'cos-language-select',
   standalone: true,
-  imports: [DialogCloseDirective, TranslateModule, IconComponent],
+  imports: [DialogCloseDirective, TranslateModule, IconComponent, NotificationComponent],
   template: `
     <div class="overlay" dialogClose></div>
     <div class="dialog_wrap">
+      <cos-notifications />
       <div class="dialog">
         <div class="dialog_header">
           <div class="header_text">

@@ -5,7 +5,7 @@
   </div>
   <div class="edits_content">
     @for (entry of editsEntries(); track entry[0]) {
-      <div [id]="argument().id + '_v' + entry[0]" [class]="'argument_edit is_' + argument().type">
+      <div [id]="argument().id + '_v' + entry[0]" [class]="'argument_edit is_' + (entry[1].type || argument().type)">
         <div class="argument_header">
           <div class="date_wrap">
             <div>
@@ -17,6 +17,7 @@
             </div>
             <span>{{ entry[1].createdAt | date : 'y-MM-dd HH:mm' }}</span>
           </div>
+          <button type="button" class="btn_link" (click)="copyArgumentLink($event, entry[0])">{{ 'LNK_DIRECT_LINK' | translate }}</button>
         </div>
         <div class="argument_content">
           @if (entry[1].subject) {

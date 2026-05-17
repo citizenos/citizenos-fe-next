@@ -1,8 +1,9 @@
-import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { Argument } from '../../../../../core/interfaces/discussion';
+import { NotificationService } from '../../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-argument-edits',
@@ -15,9 +16,12 @@ import { Argument } from '../../../../../core/interfaces/discussion';
 export class ArgumentEditsComponent {
   argument = input.required<Argument>();
   topicId = input.required<string>();
+  showEdits = input<boolean>(false);
   showEditsChange = output<boolean>();
 
-  editsEntries(): [string, { subject?: string | null; text?: string | null; createdAt?: string }][] {
+  private notification = inject(NotificationService);
+
+  editsEntries(): [string, { subject?: string | null; text?: string | null; createdAt?: string; type?: string | null }][] {
     return Object.entries(this.argument().edits || {});
   }
 
@@ -28,6 +32,8 @@ export class ArgumentEditsComponent {
   copyArgumentLink(event: MouseEvent, version: string) {
     const id = this.argument().id + '_v' + version;
     const url = `${window.location.origin}${window.location.pathname}?argumentId=${id}`;
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(url).then(() => {
+      this.notification.success('VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_COPIED');
+    });
   }
 }

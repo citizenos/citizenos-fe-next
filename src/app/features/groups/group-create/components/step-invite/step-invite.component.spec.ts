@@ -77,7 +77,7 @@ describe('StepInviteComponent', () => {
 
   it('onSearch clears results when less than 2 chars', () => {
     const comp = makeComp();
-    comp.searchResults.set([{ id: 'u1' }]);
+    comp.searchResults.set([{ id: 'u1', name: 'u1' }]);
     comp.onSearch('a');
     expect(comp.searchResults().length).toBe(0);
   });

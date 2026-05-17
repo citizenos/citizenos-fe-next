@@ -34,7 +34,7 @@ describe('PageHeaderComponent', () => {
   });
 
   it('should show user profile section when user is logged in', () => {
-    mockUserStore.user.set({ name: 'Alice', imageUrl: null });
+    mockUserStore.user.set({ id: '1', name: 'Alice', email: 'alice@example.com', language: 'en', imageUrl: undefined });
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.profile_photo')).toBeTruthy();
   });
@@ -46,7 +46,7 @@ describe('PageHeaderComponent', () => {
   });
 
   it('should show user image when imageUrl is set', () => {
-    mockUserStore.user.set({ name: 'Alice', imageUrl: 'https://example.com/photo.jpg' });
+    mockUserStore.user.set({ id: '1', name: 'Alice', email: 'alice@example.com', language: 'en', imageUrl: 'https://example.com/photo.jpg' });
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('img')).toBeTruthy();
   });

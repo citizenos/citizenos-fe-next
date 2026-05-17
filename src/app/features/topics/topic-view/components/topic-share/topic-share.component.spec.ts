@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicShareComponent } from './topic-share.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';

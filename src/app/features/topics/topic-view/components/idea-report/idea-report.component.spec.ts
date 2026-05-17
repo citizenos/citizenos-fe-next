@@ -64,7 +64,7 @@ describe('IdeaReportComponent', () => {
 
   beforeEach(async () => {
     mockIdeaService = {
-      IDEA_REPORT_TYPES: { obscene: 'obscene', spam: 'spam' },
+      IDEA_REPORT_TYPES: { obscene: 'obscene', spam: 'spam', duplicate: 'duplicate', hate: 'hate', other: 'other' },
       reportIdea: vi.fn().mockReturnValue(of({}))
     };
     mockDialogRef = { close: vi.fn() };
@@ -120,7 +120,7 @@ describe('IdeaReportComponent', () => {
   });
 
   it('should handle error on doReport', () => {
-    mockIdeaService.reportIdea.mockReturnValue(throwError(() => ({ errors: { text: 'error' } })));
+    (mockIdeaService.reportIdea as ReturnType<typeof vi.fn>).mockReturnValue(throwError(() => ({ error: { errors: { text: 'error' } } })));
     component.report.get('text')?.setValue('Some text');
     component.doReport();
     expect(component.errors()).toEqual({ text: 'error' });

@@ -1,9 +1,8 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy, HostListener } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { interval, switchMap, takeWhile, take, map, catchError, of } from 'rxjs';
+import { interval, switchMap, takeWhile, take, map } from 'rxjs';
 import { UpperCasePipe } from '@angular/common';
-
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
@@ -12,12 +11,13 @@ import { TopicVoteService } from '../../../../../core/services/topic-vote.servic
 import { TopicService } from '../../../../../core/services/topic.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { Topic, TopicVoteCast } from '../../../../../core/interfaces/topic';
+import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
 
 @Component({
   selector: 'app-topic-vote-sign-smartid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, IconComponent],
+  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, IconComponent, NotificationComponent],
   templateUrl: './topic-vote-sign-smartid.component.html'
 })
 export class TopicVoteSignSmartidComponent {
@@ -29,12 +29,18 @@ export class TopicVoteSignSmartidComponent {
   private translate = inject(TranslateService);
 
   signForm = new FormGroup({
-    countryCode: new FormControl('EE', [Validators.required, Validators.pattern(/^[A-Z]{2}$/)]),
-    pid: new FormControl('', Validators.required)
+    pid: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]),
+    countryCode: new FormControl('EE', [Validators.required, Validators.pattern(/^[A-Z]{2}$/)])
   });
 
   isLoading = signal(false);
-  challengeID = signal<string | null | undefined>(null);
+  challengeID = signal<string | null>(null);
+  wWidth = signal(window.innerWidth);
+
+  @HostListener('window:resize')
+  onResize() {
+    this.wWidth.set(window.innerWidth);
+  }
 
   doSignWithSmartId() {
     if (this.signForm.invalid) return;
@@ -46,20 +52,19 @@ export class TopicVoteSignSmartidComponent {
       pid: this.signForm.value.pid,
       countryCode: this.signForm.value.countryCode
     };
-    this.topicVoteService.cast(userVote).pipe(take(1), catchError(_err => {
-      this.isLoading.set(false);
-      return of(null);
-    })).subscribe((result: { challengeID?: string; token?: string } | null) => {
-      if (!result) return;
-      this.isLoading.set(false);
-      if (result.challengeID && result.token) {
-        this.challengeID.set(result.challengeID);
-        this.pollStatus(result.token);
-      }
+    this.topicVoteService.cast(userVote).pipe(take(1)).subscribe({
+      next: (result: { challengeID?: string; token?: string }) => {
+        this.isLoading.set(false);
+        if (result.challengeID && result.token) {
+          this.challengeID.set(result.challengeID);
+          this.pollSmartIdStatus(result.token);
+        }
+      },
+      error: () => this.isLoading.set(false)
     });
   }
 
-  private pollStatus(token: string) {
+  private pollSmartIdStatus(token: string) {
     interval(10000).pipe(
       switchMap(() => this.topicVoteService.status({ topicId: this.data.topic.id, voteId: this.data.topic.voteId!, token })),
       takeWhile((res) => res?.status?.code === 20001, true),

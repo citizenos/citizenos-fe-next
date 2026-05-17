@@ -2,14 +2,30 @@
   <div class="ideation_header">
     <div class="header_section">
       <div class="question">{{ ideation().question }}</div>
-
       @if (canUpdate() && (canEditDeadline() || !hasIdeationEndedExpired())) {
         <div class="setting_button dropdown button_dropdown" cosDropdown>
           <button type="button" class="btn_medium_close mobile_hidden" trigger>
             <cos-icon name="more-vertical" [size]="24"></cos-icon>
             <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_IDEATION_ACTIONS' | translate }}</span>
           </button>
+          <button type="button" id="mobile_actions" class="btn_medium_close icon mobile_show" trigger>
+             <cos-icon name="more-vertical" [size]="24"></cos-icon>
+          </button>
           <div class="options">
+            @if (canEditDeadline()) {
+              <a class="option" [routerLink]="['/', translate.currentLang, 'topics', 'ideation', 'edit', topic().id]" fragment="ideation_system">
+                <div class="icon_wrap">
+                    <cos-icon name="edit" [size]="16" />
+                </div>
+                <span>{{ 'COMPONENTS.TOPIC_IDEATION.OPT_EDIT_IDEATION' | translate }}</span>
+              </a>
+              <div class="option" (click)="editDeadline()">
+                <div class="icon_wrap">
+                    <cos-icon name="calendar" [size]="16" />
+                </div>
+                <span>{{ (ideation().deadline ? 'COMPONENTS.TOPIC_IDEATION.OPT_EDIT_DEADLINE' : 'COMPONENTS.TOPIC_IDEATION.OPT_ADD_DEADLINE') | translate }}</span>
+              </div>
+            }
             @if (canEdit()) {
               <div class="option" (click)="exportIdeas()" (keydown.enter)="exportIdeas()" tabindex="0" role="button">
                 <div class="icon_wrap">
@@ -33,56 +49,301 @@
     </div>
 
     @if (ideation().deadline) {
-      <div class="ideation_deadline">
-        <span>{{ 'COMPONENTS.TOPIC_IDEATION.LBL_DEADLINE' | translate }}</span>
-        <span>{{ ideation().deadline | date:'y-MM-dd' }}</span>
+      <div class="data_section">
+        <div class="title">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_DEADLINE' | translate }}</div>
+        <div class="deadline">
+          <span class="bold">{{ ideation().deadline | date:'y-MM-dd HH:mm' }}</span>
+        </div>
       </div>
     }
   </div>
 
-  <div class="ideation_toolbar">
-    <app-search-input [(value)]="searchValue" [placeholder]="'COMPONENTS.TOPIC_IDEATION.SEARCH_PLACEHOLDER' | translate" />
+  <div class="ideation_content">
+    <div class="ideation_info_wrap">
+        @if (hasIdeationEndedExpired()) {
+            <div class="ideation_info_text_wrap">
+                <div class="text_area">
+                    <div class="bold">{{ 'COMPONENTS.TOPIC_IDEATION.HEADING_IDEATION_ENDED' | translate }}</div>
+                    <div>{{ 'COMPONENTS.TOPIC_IDEATION.TXT_IDEATION_ENDED' | translate }}</div>
+                </div>
+            </div>
+        }
 
-    <app-list-filter-toolbar [filters]="filterConfig()" (filterChange)="onFilterChange($event)" />
+        <div class="tabs_wrap">
+            <div class="tabs_row">
+                @if (tabSelected() !== 'folder') {
+                    <a class="tab_item" (click)="selectTab('ideas')" [class.active]="tabSelected() === 'ideas'">
+                        {{ 'COMPONENTS.TOPIC_IDEATION.TAB_IDEAS' | translate:{ count: ideation().ideas?.count || 0 } }}
+                    </a>
+                    <a class="tab_item" (click)="selectTab('folders')" [class.active]="tabSelected() === 'folders'">
+                        {{ 'COMPONENTS.TOPIC_IDEATION.TAB_FOLDERS' | translate:{ count: ideation().folders?.count || 0 } }}
+                    </a>
+                } @else {
+                    <div class="folder_data_wrap">
+                        <div class="left">
+                            <button type="button" class="btn_medium_close icon" (click)="leaveFolder()">
+                                <cos-icon name="chevron-left" [size]="24" />
+                            </button>
+                            <div class="icon">
+                                <cos-icon name="folder" [size]="24" />
+                            </div>
+                            <div class="folder_name">
+                                <span>{{ selectedFolder()?.name }}</span>
+                                <span>({{ selectedFolder()?.ideas?.count }})</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
 
-    @if (!hasIdeationEnded()) {
-      <button type="button" class="btn_medium" (click)="showAddIdea.set(true)">
-        <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_IDEA' | translate }}</span>
-      </button>
+            <div class="header_actions">
+                @if (tabSelected() === 'folder' && selectedFolder() && canUpdate()) {
+                    <button type="button" class="btn_medium_submit" (click)="addIdeasToFolder(selectedFolder()!)">
+                        <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_IDEAS_TO_FOLDER' | translate }}</span>
+                    </button>
+                }
+                @if (tabSelected() === 'ideas' && topic().status === TopicService.STATUSES.ideation) {
+                    @if (topic().visibility === TopicService.VISIBILITY.public || (topic().visibility === TopicService.VISIBILITY.private && canUpdate())) {
+                        <button type="button" class="btn_medium_submit" (click)="addIdea()" [disabled]="hasIdeationEnded()">
+                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_YOUR_IDEA' | translate }}</span>
+                        </button>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    @if (tabSelected() === 'ideas' || tabSelected() === 'folder') {
+        <div class="idea_filters_wrap">
+            <div class="options_row">
+                <div class="options_row_main">
+                    @if (!showSearch()) {
+                        <div class="dropdown_input">
+                            <div class="dropdown" cosDropdown>
+                                <div selection class="selection">
+                                    <div class="selected_item">
+                                        <div class="label">{{ 'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_TYPE' | translate }}</div>
+                                        @if (!selectedType()) {
+                                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</span>
+                                        } @else if (selectedType() === 'iCreated') {
+                                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_YOUR_IDEAS' | translate }}</span>
+                                        } @else if (selectedType() === 'favourite') {
+                                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_FAVOURITES' | translate }}</span>
+                                        } @else if (selectedType() === 'showModerated') {
+                                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_MODERATED' | translate }}</span>
+                                        }
+                                    </div>
+                                    <cos-icon name="chevron-down" />
+                                </div>
+                                <div options class="options">
+                                    <div class="option" (click)="setType('')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
+                                    @if (userStore.isAuthenticated()) {
+                                        <div class="option" (click)="setType('iCreated')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_YOUR_IDEAS' | translate }}</div>
+                                        <div class="option" (click)="setType('favourite')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_FAVOURITES' | translate }}</div>
+                                    }
+                                    <div class="option" (click)="setType('showModerated')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_MODERATED' | translate }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown_input">
+                            <div class="dropdown" cosDropdown>
+                                <div selection class="selection">
+                                    <div class="selected_item">
+                                        <div class="label">{{ 'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_ORDER' | translate }}</div>
+                                        @if (!selectedOrder()) {
+                                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</span>
+                                        } @else if (selectedOrder() === 'likes') {
+                                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_LIKED' | translate }}</span>
+                                        } @else if (selectedOrder() === 'recent') {
+                                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_RECENT' | translate }}</span>
+                                        } @else if (selectedOrder() === 'replies') {
+                                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_REPLIES' | translate }}</span>
+                                        }
+                                    </div>
+                                    <cos-icon name="chevron-down" />
+                                </div>
+                                <div options class="options">
+                                    <div class="option" (click)="orderBy('')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
+                                    <div class="option" (click)="orderBy('likes')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_LIKED' | translate }}</div>
+                                    <div class="option" (click)="orderBy('recent')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_RECENT' | translate }}</div>
+                                    <div class="option" (click)="orderBy('replies')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_REPLIES' | translate }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown_input">
+                            <div class="dropdown" cosDropdown>
+                                <div selection class="selection">
+                                    <div class="selected_item">
+                                        <div class="label">{{ 'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_PARTICIPANTS' | translate }}</div>
+                                        @if (!selectedParticipants()) {
+                                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</span>
+                                        } @else {
+                                            <span>{{ selectedParticipants()?.name }}</span>
+                                        }
+                                    </div>
+                                    <cos-icon name="chevron-down" />
+                                </div>
+                                <div options class="options">
+                                    <div class="option" (click)="setParticipant()">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
+                                    @for (user of participants$ | async; track user.id) {
+                                        <div class="option" (click)="setParticipant(user)">
+                                            <div class="author_wrap">
+                                                <div class="image_wrap">
+                                                    @if (user.imageUrl) {
+                                                        <img class="profile_image" [src]="user.imageUrl" />
+                                                    } @else {
+                                                        <div class="profile_image_filler">
+                                                            <cos-initials [name]="user.name || ''" />
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div class="author_name">{{ user.name }}</div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="search_input">
+                        <button type="button" (click)="showSearch.set(true)" class="search_start">
+                            <cos-icon name="search" />
+                            @if (searchValue() && !showSearch()) {
+                                <cos-icon name="check" class="text_exist_icon" />
+                            }
+                        </button>
+
+                        @if (showSearch()) {
+                            <cos-input [placeholder]="'COMPONENTS.TOPIC_IDEATION.SEARCH' | translate">
+                                <input type="text" [ngModel]="searchValue()" (ngModelChange)="setSearch($event)" />
+                            </cos-input>
+                            @if (searchValue()) {
+                                <a class="clear_search" (click)="setSearch('')">{{ 'VIEWS.MY_TOPICS.LNK_CLEAR' | translate }}</a>
+                            }
+                            <button type="button" (click)="showSearch.set(false)">
+                                <cos-icon name="close" [size]="20" />
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ideas_wrap">
+            @if (loading() && !ideas().length) {
+                <div class="loading">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_LOADING' | translate }}</div>
+            }
+
+            @if (!ideas().length && !filtersSet() && !loading()) {
+                <div class="no_feature_yet">
+                    <cos-icon name="idea" [size]="96" />
+                    <div class="description_heading">{{ 'COMPONENTS.TOPIC_IDEATION.NO_IDEAS_HEADING' | translate }}</div>
+                    <div class="button">
+                        <button type="button" class="btn_medium_submit" (click)="addIdea()" [disabled]="hasIdeationEnded()">
+                            <cos-icon name="plus" />
+                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.NO_IDEAS_BTN_ADD' | translate }}</span>
+                        </button>
+                    </div>
+                </div>
+            }
+
+            @for (idea of ideas(); track idea.id) {
+                <app-ideabox
+                    [idea]="idea"
+                    [topic]="topic()"
+                    [ideation]="ideation()"
+                    (ideaDeleted)="onIdeaDeleted($event)"
+                    (ideaUpdated)="onIdeaUpdated($event)" />
+            }
+
+            <div class="pagination_wrap">
+                @if (ideasCount() > PAGE_SIZE) {
+                    <cos-pagination
+                        [page]="currentPage()"
+                        [totalPages]="Math.ceil(ideasCount() / PAGE_SIZE)"
+                        (select)="onPageChange($event)" />
+                }
+            </div>
+
+            @if (tabSelected() === 'ideas' && topic().status === TopicService.STATUSES.ideation) {
+                <div class="bottom_actions mobile_hidden">
+                    <button type="button" class="btn_medium_submit" (click)="addIdea()" [disabled]="hasIdeationEnded()">
+                        <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_YOUR_IDEA' | translate }}</span>
+                    </button>
+                </div>
+            }
+        </div>
+    }
+
+    @if (tabSelected() === 'folders') {
+        <div class="folders_wrap">
+            <p class="folders_desc">{{ 'COMPONENTS.TOPIC_IDEATION.FOLDERS_DESCRIPTION' | translate }}</p>
+            
+            <div class="folder_row row_header mobile_hidden">
+                <div class="folder_name cell">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_FOLDER' | translate }}</div>
+                <div class="cell ideas_cell">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_IDEAS' | translate }}</div>
+                <div class="cell date_cell">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_LAST_ACTIVITY' | translate }}</div>
+                @if (canEdit()) {
+                    <div class="cell actions_cell">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_ACTIONS' | translate }}</div>
+                }
+            </div>
+
+            @for (folder of folders$ | async; track folder.id) {
+                <div class="folder_row" (click)="viewFolder(folder)">
+                    <div class="folder_name">
+                        <cos-icon name="folder" [size]="40" />
+                        <div class="name_wrap">
+                            <div class="name">
+                                <span>{{ folder.name }}</span>
+                                <span class="mobile_show">({{ folder.ideas?.count }})</span>
+                            </div>
+                            <span class="updated mobile_show">{{ folder.updatedAt | date:'y-MM-dd HH:mm' }}</span>
+                        </div>
+                    </div>
+                    <div class="cell ideas_cell mobile_hidden">{{ folder.ideas?.count }}</div>
+                    <div class="cell date_cell mobile_hidden">{{ folder.updatedAt | date:'y-MM-dd HH:mm' }}</div>
+                    @if (canEdit()) {
+                        <div class="cell actions_cell" (click)="$event.stopPropagation()">
+                            <div class="dropdown button_dropdown" cosDropdown>
+                                <button type="button" class="btn_small_plain icon" trigger>
+                                    <cos-icon name="more-vertical" [size]="24" />
+                                </button>
+                                <div class="options">
+                                    <button type="button" class="option" (click)="editFolder(folder)">
+                                        <cos-icon name="edit" [size]="16" />
+                                        <span>{{ 'CONTROL.EDIT' | translate }}</span>
+                                    </button>
+                                    <button type="button" class="option error_text" (click)="deleteFolder(folder)">
+                                        <cos-icon name="trash" [size]="16" />
+                                        <span>{{ 'CONTROL.DELETE' | translate }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (canEdit()) {
+                <div id="add_folder_btn">
+                    <button type="button" class="btn_medium_submit" (click)="addFolder()">
+                        <cos-icon name="plus" />
+                        <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_FOLDER' | translate }}</span>
+                    </button>
+                </div>
+            }
+        </div>
     }
   </div>
+</div>
 
-  @if (showAddIdea()) {
+@if (topic().status === TopicService.STATUSES.ideation) {
     <app-add-idea
       [topic]="topic()"
       [ideation]="ideation()"
-      (ideaAdded)="onIdeaAdded($event)"
-      (closed)="showAddIdea.set(false)" />
-  }
-
-  <div class="ideas_list">
-    @if (loading() && !ideas().length) {
-      <div class="loading">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_LOADING' | translate }}</div>
-    }
-
-    @for (idea of ideas(); track idea.id) {
-      <app-ideabox
-        [idea]="idea"
-        [topic]="topic()"
-        [ideation]="ideation()"
-        (ideaDeleted)="onIdeaDeleted($event)"
-        (ideaUpdated)="onIdeaUpdated($event)" />
-    } @empty {
-      @if (!loading()) {
-        <div class="empty_state">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_NO_IDEAS' | translate }}</div>
-      }
-    }
-  </div>
-
-  @if (ideasCount() > 15) {
-    <cos-pagination
-      [page]="currentPage()"
-      [totalPages]="Math.ceil(ideasCount() / 15)"
-      (selectPage)="onPageChange($event)" />
-  }
-</div>
+      [(isOpen)]="showAddIdea"
+      (ideaAdded)="onIdeaAdded($event)" />
+}

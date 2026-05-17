@@ -1,16 +1,17 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ConfigStore } from '../../../state/config.store';
 import { UiStateService } from '../../../services/ui-state.service';
 import { NotificationService } from '../../../services/notification.service';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-feedback',
   standalone: true,
-  imports: [FormsModule, TranslateModule, IconComponent],
+  imports: [FormsModule, TranslateModule, IconComponent, ButtonComponent],
   template: `
     @if (uiState.showFeedback()) {
       <div id="root_lightbox" class="feedback_overlay_root">
@@ -85,10 +86,10 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
               <div class="lightbox_section">
                 <div class="footer_button_wrap right">
                   @if (!isSubmitted()) {
-                    <button type="button" class="btn_link" (click)="uiState.showFeedback.set(false)">{{ 'MODALS.GIVE_FEEDBACK_BTN_CANCEL' | translate }}</button>
-                    <button type="button" class="btn_medium_submit" (click)="submitFeedback()">{{ 'MODALS.GIVE_FEEDBACK_BTN_SUBMIT' | translate }}</button>
+                    <cos-button variant="ghost" (clicked)="uiState.showFeedback.set(false)">{{ 'MODALS.GIVE_FEEDBACK_BTN_CANCEL' | translate }}</cos-button>
+                    <cos-button variant="primary" (clicked)="submitFeedback()">{{ 'MODALS.GIVE_FEEDBACK_BTN_SUBMIT' | translate }}</cos-button>
                   } @else {
-                    <button type="button" class="btn_medium_submit" (click)="uiState.showFeedback.set(false)">{{ 'MODALS.GIVE_FEEDBACK_BTN_CLOSE' | translate }}</button>
+                    <cos-button variant="primary" (clicked)="uiState.showFeedback.set(false)">{{ 'MODALS.GIVE_FEEDBACK_BTN_CLOSE' | translate }}</cos-button>
                   }
                 </div>
               </div>
@@ -290,7 +291,7 @@ ${this.allowContact ? 'Yes' : 'No'}
       next: () => {
         this.isSubmitted.set(true);
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         this.notification.error(err.message);
       }
     });

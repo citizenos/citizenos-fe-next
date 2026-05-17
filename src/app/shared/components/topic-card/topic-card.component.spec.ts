@@ -22,7 +22,7 @@ const BASE_TOPIC: Topic = {
   sourcePartnerId: null,
   sourcePartnerObjectId: null,
   permission: { level: 'read' },
-  creator: { name: 'Creator' },
+  creator: { id: 'c1', name: 'Creator', imageUrl: null },
   lastActivity: '2024-01-15T10:00:00Z',
   country: null,
   language: null,

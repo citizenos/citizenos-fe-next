@@ -27,11 +27,12 @@
             [attr.maxlength]="ARGUMENT_SUBJECT_MAXLENGTH" required>
         </cos-input>
       }
-      <textarea name="text" id="argument_text"
-        [ngModel]="editText()" (ngModelChange)="editText.set($event)"
+      <textarea cosMarkdown name="text" id="argument_text"
+        [item]="editText()" (itemChange)="editText.set($event)"
         class="gray_borders"
-        [placeholder]="'COMPONENTS.EDIT_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT' | translate"
-        [attr.maxlength]="argumentMaxLength()" required></textarea>
+        [placeholder]="'COMPONENTS.EDIT_ARGUMENT.PLACEHOLDER_EXPLAIN_YOUR_ARGUMENT'"
+        [limit]="argumentMaxLength()"
+        [cosMarkdownTranslateCharacterStatusKey]="'COMPONENTS.EDIT_ARGUMENT.ARGUMENT_TYPE_CHARACTER_LIMIT'" required></textarea>
     </form>
   </div>
   <div id="buttons_row">

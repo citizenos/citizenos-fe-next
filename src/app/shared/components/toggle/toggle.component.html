@@ -1,0 +1,17 @@
+<button type="button"
+  class="toggle_wrap"
+  [class.on]="isEnabled()"
+  [class.off]="!isEnabled()"
+  (click)="toggle()"
+  role="switch"
+  [attr.aria-checked]="isEnabled()"
+  [attr.aria-label]="isEnabled() ? cosToggleTextOn() : cosToggleTextOff()">
+
+  <div class="toggle_widget" [class.on]="isEnabled()" [class.off]="!isEnabled()">
+    <div class="toggle_circle"></div>
+  </div>
+
+  <div class="toggle_text">
+    <span class="bold">{{ isEnabled() ? cosToggleTextOn() : cosToggleTextOff() }}</span>
+  </div>
+</button>

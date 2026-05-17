@@ -1,5 +1,12 @@
+<div class="overlay" dialogClose></div>
 <div class="dialog_wrap">
+  <div id="notification_wrap_dialog" class="mobile_hidden">
+    <cos-notifications></cos-notifications>
+  </div>
   <div class="dialog">
+    <div id="notification_wrap_dialog" class="mobile_show">
+      <cos-notifications></cos-notifications>
+    </div>
     <div class="dialog_header">
       <div class="header_text">
         <h4 class="title">{{ 'MODALS.TOPIC_COMMENT_REACTIONS_HEADING' | translate }}</h4>
@@ -35,7 +42,7 @@
                       </div>
                     }
                   </div>
-                  <span class="user_name" [innerHTML]="member.name"></span>
+                  <a class="user_name" [innerHTML]="member.name"></a>
                 </div>
                 <div class="row_cell">
                   @if (member.vote === 'down') {
@@ -62,7 +69,7 @@
     @if (totalPages() > 1) {
       <div class="dialog_content no_footer">
         <div class="info_row">
-          <cos-pagination class="pagination" [totalPages]="totalPages()" [page]="page()" (selectPage)="loadPage($event)"></cos-pagination>
+          <cos-pagination class="pagination" [totalPages]="totalPages()" [page]="page()" (select)="loadPage($event)"></cos-pagination>
         </div>
       </div>
     }

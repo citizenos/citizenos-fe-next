@@ -8,11 +8,12 @@ import { Argument } from '../../../../../core/interfaces/discussion';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { UserStore } from '../../../../../core/state/user.store';
+import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
 
 @Component({
   selector: 'app-argument-reply',
   standalone: true,
-  imports: [FormsModule, TranslateModule],
+  imports: [FormsModule, TranslateModule, MarkdownDirective],
   templateUrl: './argument-reply.component.html',
   styleUrls: ['./argument-reply.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -54,7 +55,9 @@ export class ArgumentReplyComponent {
       topicId: this.topicId()
     }).pipe(take(1)).subscribe({
       next: (reply) => {
+        this.argumentService.reload();
         this.router.navigate(['/', 'topics', this.topicId()], { queryParams: { argumentId: reply.id + '_v0' } });
+        this.close();
       },
       error: (res) => {
         this.errors.set(res.errors);

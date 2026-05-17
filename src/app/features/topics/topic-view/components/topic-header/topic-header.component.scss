@@ -17,10 +17,25 @@
   }
 
   .dropdown {
+    position: relative;
     .options {
+      display: none;
       position: absolute;
       width: max-content;
       min-width: max-content;
+      right: 0;
+      top: 100%;
+      background: var(--color-surfaces);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      z-index: 10;
+      padding: 8px 0;
+    }
+
+    &.dropdown_active {
+      .options {
+        display: block;
+      }
     }
   }
 

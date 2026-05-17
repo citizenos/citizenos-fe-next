@@ -5,6 +5,7 @@ import { TopicSettingsPanelComponent } from './topic-settings-panel.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Topic } from '../../../core/interfaces/topic';
+import { Group } from '../../../core/interfaces/group';
 import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -34,13 +35,13 @@ describe('TopicSettingsPanelComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .overrideComponent(TopicSettingsPanelComponent, {
-      set: {
-        imports: [TranslateModule, UpperCasePipe, FormsModule],
-        schemas: [NO_ERRORS_SCHEMA]
-      }
-    })
-    .compileComponents();
+      .overrideComponent(TopicSettingsPanelComponent, {
+        set: {
+          imports: [TranslateModule, UpperCasePipe, FormsModule],
+          schemas: [NO_ERRORS_SCHEMA]
+        }
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(TopicSettingsPanelComponent);
     component = fixture.componentInstance;
@@ -118,7 +119,7 @@ describe('TopicSettingsPanelComponent', () => {
     component.topic.set(mockTopic);
     component.groups.set([]);
     fixture.detectChanges();
-    const group = { id: 'g1', name: 'Group 1' };
+    const group = { id: 'g1', name: 'Group 1' } as Group;
     component.addGroup(group);
     expect(component.addedGroups().length).toBe(1);
     expect(component.isGroupAdded(group)).toBe(true);

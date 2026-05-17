@@ -6,7 +6,7 @@ import { DragndropDirective } from './dragndrop.directive';
 @Component({
   standalone: true,
   imports: [DragndropDirective],
-  template: `<div dragndrop (fileDropped)="onDrop($event)"></div>`
+  template: `<div cosDragndrop (fileDropped)="onDrop($event)"></div>`
 })
 class HostComponent {
   droppedFiles: FileList | null = null;

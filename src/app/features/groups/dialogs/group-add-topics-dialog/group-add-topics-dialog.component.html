@@ -15,10 +15,10 @@
     <div class="dialog_content">
       <cos-typeahead
         [placeholder]="'COMPONENTS.GROUP_ADD_TOPICS_DIALOG.PLACEHOLDER_SEARCH' | translate"
-        (searchQuery)="onSearch($event)"
+        (search)="onSearch($event)"
       >
         @for (topic of searchResults(); track topic.id) {
-          <div class="typeahead-item" (mousedown)="addTopic(topic)" (keydown.enter)="addTopic(topic)" role="button" tabindex="0">{{ topic.title }}</div>
+          <div [typeaheadItem]="{ id: topic.id, topic }" [typeaheadSelect]="{ id: topic.id, topic }" (select)="addTopic(topic)" class="typeahead-item" role="button" tabindex="0">{{ topic.title }}</div>
         }
       </cos-typeahead>
 

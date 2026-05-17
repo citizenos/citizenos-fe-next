@@ -193,7 +193,7 @@
         border-radius: 16px;
         display: flex;
         flex-direction: column;
-        padding: 24px 32px;
+        padding: 24px 16px;
         margin-bottom: 90px;
 
         &.voting {
@@ -210,6 +210,10 @@
 
         &.follow_up {
           background-color: var(--color-dialog-follow-up);
+        }
+
+        &.ideation {
+          padding: 0;
         }
 
         @media (max-width: 768px) {
