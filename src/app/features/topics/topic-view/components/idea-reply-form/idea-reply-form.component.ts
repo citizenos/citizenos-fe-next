@@ -70,9 +70,9 @@ export class IdeaReplyFormComponent {
     };
 
     const argument = this.argument();
-    if (!argument) return;
 
     if (this.editMode()) {
+      if (!argument) return;
       this.ideationService.updateIdeaComment({ ...data, commentId: argument.id }).subscribe({
         next: (comment) => {
           this.notification.success('COMPONENTS.IDEA_REPLY_FORM.MSG_SUCCESS');
