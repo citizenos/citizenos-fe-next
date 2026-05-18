@@ -323,7 +323,7 @@ export class TopicService {
 
   joinPublic(topicId: string): Observable<{ userLevel: string }> {
     return this.http.post<ApiResponse<{ userLevel: string }>>(
-      this.getAbsoluteUrlApi(`/topics/${topicId}/join`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/join`, true),
       {}, { withCredentials: true }
     ).pipe(map(res => res.data!));
   }
@@ -357,8 +357,16 @@ export class TopicService {
     ).pipe(map(res => res.data));
   }
 
-  private getAbsoluteUrlApi(path: string): string {
-    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+  private getAbsoluteUrlApi(path: string, forceAuthorized = false): string {
+    const isPublicPath = !forceAuthorized && (
+      path.includes('/members/users') ||
+      path.includes('/members/groups') ||
+      path.includes('/attachments') ||
+      path.includes('/events') ||
+      path.includes('/mentions')
+    );
+
+    const prefix = (this.userStore.isAuthenticated() && !isPublicPath) ? '/api/users/self' : '/api';
     return `${this.apiUrl}${prefix}${path}`;
   }
 }

@@ -16,8 +16,14 @@ export class GroupDetailService {
 
   private get baseUrl() { return this.configStore.api.baseUrl(); }
 
-  private getAbsoluteUrlApi(path: string): string {
-    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+  private getAbsoluteUrlApi(path: string, forceAuthorized = false): string {
+    const isPublicPath = !forceAuthorized && (
+      path.includes('/members/users') ||
+      path.includes('/members/topics') ||
+      path.includes('/invites/users')
+    );
+
+    const prefix = (this.userStore.isAuthenticated() && !isPublicPath) ? '/api/users/self' : '/api';
     return `${this.baseUrl}${prefix}${path}`;
   }
 

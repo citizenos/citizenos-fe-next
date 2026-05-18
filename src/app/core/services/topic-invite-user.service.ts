@@ -26,28 +26,31 @@ export class TopicInviteUserService {
 
   private get baseUrl() { return this.configStore.api.baseUrl(); }
 
-  private getAbsoluteUrlApi(path: string): string {
-    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+  private getAbsoluteUrlApi(path: string, forceAuthorized = false): string {
+    const isPublicPath = !forceAuthorized && (
+      path.includes('/invites/users/')
+    );
+    const prefix = (this.userStore.isAuthenticated() && !isPublicPath) ? '/api/users/self' : '/api';
     return `${this.baseUrl}${prefix}${path}`;
   }
 
   loadItems(topicId: string): Observable<TopicInvite[]> {
     return this.http.get<ApiResponse<TopicInvite[]>>(
-      this.getAbsoluteUrlApi(`/topics/${topicId}/invites/users`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/invites/users`, true),
       { withCredentials: true }
     ).pipe(map(res => res.data ?? []));
   }
 
   save(topicId: string, data: Partial<TopicInvite>[]): Observable<unknown> {
     return this.http.post<ApiResponse<unknown>>(
-      this.getAbsoluteUrlApi(`/topics/${topicId}/invites/users`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/invites/users`, true),
       data, { withCredentials: true }
     ).pipe(map(res => res.data));
   }
 
   delete(topicId: string, inviteId: string): Observable<unknown> {
     return this.http.delete<ApiResponse<unknown>>(
-      this.getAbsoluteUrlApi(`/topics/${topicId}/invites/users/${inviteId}`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/invites/users/${inviteId}`, true),
       { withCredentials: true }
     ).pipe(map(res => res.data));
   }

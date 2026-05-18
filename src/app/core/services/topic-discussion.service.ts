@@ -13,39 +13,85 @@ export class TopicDiscussionService {
   private configStore = inject(ConfigStore);
   private userStore = inject(UserStore);
 
-  private base(topicId: string): string {
-    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
-    return `${this.configStore.api.baseUrl()}${prefix}/topics/${topicId}/discussions`;
+  private getAbsoluteUrlApi(path: string, forceAuthorized = false): string {
+    const isPublicPath = !forceAuthorized && (
+      path.includes('/discussions/')
+    );
+    const prefix = (this.userStore.isAuthenticated() && !isPublicPath) ? '/api/users/self' : '/api';
+    return `${this.configStore.api.baseUrl()}${prefix}${path}`;
   }
 
   get(topicId: string, discussionId: string): Observable<Discussion> {
     if (!topicId || !discussionId || topicId === 'undefined' || discussionId === 'undefined') {
       return EMPTY;
     }
-    return this.http
-      .get<ApiResponse<Discussion>>(`${this.base(topicId)}/${discussionId}`, { withCredentials: true })
+    const url = this.getAbsoluteUrlApi(`/topics/${topicId}/discussions/${discussionId}`);
+    return this.http.get<ApiResponse<Discussion>>(url, { withCredentials: true })
+      .pipe(map(res => res.data!));
+  }
+
+  save(topicId: string | DiscussionData, data?: DiscussionData): Observable<Discussion> {
+    let tId: string;
+    let d: DiscussionData;
+    if (typeof topicId === 'object') {
+      tId = topicId.topicId!;
+      d = topicId;
+    } else {
+      tId = topicId;
+      d = data!;
+    }
+    const url = this.getAbsoluteUrlApi(`/topics/${tId}/discussions`, true);
+    return this.http.post<ApiResponse<Discussion>>(url, d, { withCredentials: true })
+      .pipe(map(res => res.data!));
+  }
+
+  create(topicId: string | DiscussionData, data?: DiscussionData): Observable<Discussion> {
+    return this.save(topicId, data);
+  }
+
+  update(topicId: string | DiscussionData, discussionId?: string, data?: DiscussionData): Observable<Discussion> {
+    let tId: string;
+    let dId: string;
+    let d: DiscussionData;
+
+    if (typeof topicId === 'object') {
+      tId = topicId.topicId!;
+      dId = topicId.discussionId!;
+      d = topicId;
+    } else {
+      tId = topicId;
+      dId = discussionId!;
+      d = data!;
+    }
+    const url = this.getAbsoluteUrlApi(`/topics/${tId}/discussions/${dId}`, true);
+    return this.http.put<ApiResponse<Discussion>>(url, d, { withCredentials: true })
       .pipe(map(r => r.data!));
   }
 
-  create(topicId: string, payload: DiscussionData): Observable<Discussion> {
-    if (!topicId || topicId === 'undefined') {
-       return EMPTY;
+  patch(topicId: string | DiscussionData, discussionId?: string, data?: DiscussionData): Observable<Discussion> {
+    let tId: string;
+    let dId: string;
+    let d: DiscussionData;
+
+    if (typeof topicId === 'object') {
+      tId = topicId.topicId!;
+      dId = topicId.discussionId!;
+      d = topicId;
+    } else {
+      tId = topicId;
+      dId = discussionId!;
+      d = data!;
     }
-    return this.http
-      .post<ApiResponse<Discussion>>(this.base(topicId), payload, { withCredentials: true })
+    const url = this.getAbsoluteUrlApi(`/topics/${tId}/discussions/${dId}`, true);
+    return this.http.patch<ApiResponse<Discussion>>(url, d, { withCredentials: true })
       .pipe(map(r => r.data!));
   }
 
-  update(topicId: string, discussionId: string, payload: DiscussionData): Observable<Discussion> {
-    if (!topicId || !discussionId || topicId === 'undefined' || discussionId === 'undefined') {
-      return EMPTY;
-    }
-    return this.http
-      .put<ApiResponse<Discussion>>(`${this.base(topicId)}/${discussionId}`, payload, { withCredentials: true })
-      .pipe(map(r => r.data!));
+  hasDiscussionEnded(topic: Topic, discussion: Discussion) {
+    return (['draft', 'followUp', 'closed'].indexOf(topic.status) > -1) || (!!discussion.deadline && (new Date() > new Date(discussion.deadline)));
   }
 
   hasDiscussionEndedExpired(topic: Topic, discussion: Discussion) {
-    return (['draft', 'followUp', 'closed'].indexOf(topic.status) > -1) || (!!discussion.deadline && (new Date() > new Date(discussion.deadline)));
+    return this.hasDiscussionEnded(topic, discussion);
   }
 }

@@ -26,8 +26,11 @@ export class GroupInviteUserService {
 
   private get baseUrl() { return this.configStore.api.baseUrl(); }
 
-  private getAbsoluteUrlApi(path: string): string {
-    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+  private getAbsoluteUrlApi(path: string, forceAuthorized = false): string {
+    const isPublicPath = !forceAuthorized && (
+      path.includes('/invites/users/')
+    );
+    const prefix = (this.userStore.isAuthenticated() && !isPublicPath) ? '/api/users/self' : '/api';
     return `${this.baseUrl}${prefix}${path}`;
   }
 
@@ -38,14 +41,14 @@ export class GroupInviteUserService {
 
   loadItems(groupId: string): Observable<GroupInvite[]> {
     return this.http.get<ApiResponse<GroupInvite[]>>(
-      this.getAbsoluteUrlApi(`/groups/${groupId}/invites/users`),
+      this.getAbsoluteUrlApi(`/groups/${groupId}/invites/users`, true),
       { withCredentials: true }
     ).pipe(map(res => res.data ?? []));
   }
 
   save(groupId: string, data: Partial<GroupInvite>[]): Observable<unknown> {
     return this.http.post<ApiResponse<unknown>>(
-      this.getAbsoluteUrlApi(`/groups/${groupId}/invites/users`),
+      this.getAbsoluteUrlApi(`/groups/${groupId}/invites/users`, true),
       data, { withCredentials: true }
     ).pipe(map(res => res.data));
   }
@@ -56,7 +59,7 @@ export class GroupInviteUserService {
 
   delete(groupId: string, inviteId: string): Observable<unknown> {
     return this.http.delete<ApiResponse<unknown>>(
-      this.getAbsoluteUrlApi(`/groups/${groupId}/invites/users/${inviteId}`),
+      this.getAbsoluteUrlApi(`/groups/${groupId}/invites/users/${inviteId}`, true),
       { withCredentials: true }
     ).pipe(map(res => res.data));
   }
@@ -67,7 +70,7 @@ export class GroupInviteUserService {
 
   update(groupId: string, inviteId: string, level: string): Observable<unknown> {
     return this.http.put<ApiResponse<unknown>>(
-      this.getAbsoluteUrlApi(`/groups/${groupId}/invites/users/${inviteId}`),
+      this.getAbsoluteUrlApi(`/groups/${groupId}/invites/users/${inviteId}`, true),
       { level }, { withCredentials: true }
     ).pipe(map(res => res.data));
   }

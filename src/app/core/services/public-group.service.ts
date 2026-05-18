@@ -22,6 +22,15 @@ export class PublicGroupService extends ItemsListService<PublicGroupParams, Grou
     return this.configStore.api.baseUrl();
   }
 
+  private getAbsoluteUrlApi(path: string): string {
+    return `${this.apiUrl}/api${path}`;
+  }
+
+  constructor() {
+    super();
+    this.setDefaults({ limit: 12, offset: 0 });
+  }
+
   override getItems(params: PublicGroupParams): Observable<{ rows: Group[]; countTotal: number }> {
     let httpParams = new HttpParams()
       .set('limit', String(params.limit))
@@ -36,14 +45,14 @@ export class PublicGroupService extends ItemsListService<PublicGroupParams, Grou
     if (params.search) httpParams = httpParams.set('search', params.search);
 
     return this.http.get<ApiResponse<{ rows: Group[]; count: number }>>(
-      `${this.apiUrl}/api/groups`,
+      this.getAbsoluteUrlApi('/groups'),
       { withCredentials: true, params: httpParams }
     ).pipe(map(res => ({ rows: res.data?.rows ?? [], countTotal: res.data?.count ?? 0 })));
   }
 
   getPreview(limit: number): Observable<Group[]> {
     return this.http.get<ApiResponse<{ rows: Group[] }>>(
-      `${this.apiUrl}/api/groups`,
+      this.getAbsoluteUrlApi('/groups'),
       { withCredentials: true, params: { limit } }
     ).pipe(map(res => res.data?.rows ?? []));
   }

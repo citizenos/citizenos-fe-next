@@ -120,25 +120,25 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
   }
 
   save(data: { topicId: string; discussionId: string; [key: string]: ParamValue }): Observable<Argument> {
-    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments`);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments`, true);
     return this.http.post<ApiResponse<Argument>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   update(data: { topicId: string; discussionId: string; commentId: string; [key: string]: ParamValue }): Observable<Argument> {
-    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}`, true);
     return this.http.put<ApiResponse<Argument>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   delete(data: { topicId: string; discussionId: string; commentId: string }): Observable<unknown> {
-    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}`, true);
     return this.http.delete<ApiResponse<unknown>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   vote(data: { topicId: string; discussionId: string; commentId: string; value: number }): Observable<Argument['votes']> {
-    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}/votes`);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}/votes`, true);
     return this.http.post<ApiResponse<Argument['votes']>>(path, { value: data.value }, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
@@ -159,14 +159,14 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
   }
 
   moderate(data: { topicId: string; discussionId: string; commentId: string; [key: string]: any }): Observable<unknown> {
-    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}/moderate`);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}/moderate`, true);
     return this.http.post<ApiResponse<unknown>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   report(data: { topicId: string; discussionId: string; commentId?: string; id?: string; type: string; text?: string }): Observable<ArgumentReport> {
     const commentId = data.commentId || data.id;
-    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${commentId}/reports`);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${commentId}/reports`, true);
     return this.http.post<ApiResponse<ArgumentReport>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
@@ -175,8 +175,11 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
     return argumentId + this.ARGUMENT_VERSION_SEPARATOR + version;
   }
 
-  private getAbsoluteUrlApi(path: string): string {
-    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+  private getAbsoluteUrlApi(path: string, forceAuthorized = false): string {
+    const isPublicPath = !forceAuthorized && (
+      path.includes('/comments')
+    );
+    const prefix = (this.userStore.isAuthenticated() && !isPublicPath) ? '/api/users/self' : '/api';
     return `${this.apiUrl}${prefix}${path}`;
   }
 }

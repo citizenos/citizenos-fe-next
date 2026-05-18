@@ -12,6 +12,7 @@ export interface Discussion {
 
 export interface DiscussionData {
   topicId?: string;
+  discussionId?: string;
   question?: string;
   deadline?: string | Date | null;
 }

@@ -27,16 +27,7 @@ export class PublicTopicService extends ItemsListService<PublicTopicParams, Topi
   }
 
   private getAbsoluteUrlApi(path: string): string {
-    if (path.startsWith('/api/users/self')) {
-      if (!this.userStore.isAuthenticated()) {
-        path = path.replace('/api/users/self', '/api');
-      }
-    } else if (path.startsWith('/api/topics')) {
-      if (this.userStore.isAuthenticated()) {
-        path = path.replace('/api/topics', '/api/users/self/topics');
-      }
-    }
-    return `${this.apiUrl}${path}`;
+    return `${this.apiUrl}/api${path}`;
   }
 
   override getItems(params: PublicTopicParams): Observable<{ rows: Topic[]; countTotal: number }> {
@@ -55,14 +46,14 @@ export class PublicTopicService extends ItemsListService<PublicTopicParams, Topi
     if (params.search) httpParams = httpParams.set('search', params.search);
 
     return this.http.get<ApiResponse<{ rows: Topic[]; count: number }>>(
-      this.getAbsoluteUrlApi('/api/topics'),
+      this.getAbsoluteUrlApi('/topics'),
       { withCredentials: true, params: httpParams }
     ).pipe(map(res => ({ rows: res.data?.rows ?? [], countTotal: res.data?.count ?? 0 })));
   }
 
   getPreview(limit: number): Observable<Topic[]> {
     return this.http.get<ApiResponse<{ rows: Topic[] }>>(
-      this.getAbsoluteUrlApi('/api/topics'),
+      this.getAbsoluteUrlApi('/topics'),
       { withCredentials: true, params: { limit } }
     ).pipe(map(res => res.data?.rows ?? []));
   }

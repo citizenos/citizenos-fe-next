@@ -1,7 +1,7 @@
 import {
-  Component, input, signal, inject, ChangeDetectionStrategy, computed, HostListener, PLATFORM_ID
+  Component, input, signal, inject, ChangeDetectionStrategy, computed
 } from '@angular/core';
-import { NgClass, DatePipe, UpperCasePipe, AsyncPipe, KeyValuePipe, isPlatformBrowser, TitleCasePipe } from '@angular/common';
+import { DatePipe, UpperCasePipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { switchMap, of, take, tap } from 'rxjs';
 import { RouterLink } from '@angular/router';
@@ -25,19 +25,16 @@ import { DropdownComponent } from '../../../../../shared/components/dropdown/dro
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
-import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
-import { InputComponent } from '../../../../../shared/components/input/input.component';
 
 @Component({
   selector: 'cos-topic-discussion',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass, DatePipe, UpperCasePipe, TranslateModule, AsyncPipe, KeyValuePipe, TitleCasePipe,
+    DatePipe, UpperCasePipe, TranslateModule,
     ArgumentComponent, PostArgumentFormComponent,
     ButtonComponent, IconComponent, PaginationComponent,
-    CosDropdownDirective, InputComponent, DropdownComponent,
-    RouterLink
+    DropdownComponent, RouterLink
   ],
   templateUrl: './topic-discussion.component.html',
   styleUrls: ['./topic-discussion.component.scss']
@@ -51,21 +48,9 @@ export class TopicDiscussionComponent {
   private userStore = inject(UserStore);
   private dialog = inject(DialogService);
   private notification = inject(NotificationService);
-  private platformId = inject(PLATFORM_ID);
   translate = inject(TranslateService);
 
-  wWidth = signal<number>(isPlatformBrowser(this.platformId) ? window.innerWidth : 1280);
-
-  @HostListener('window:resize')
-  onResize() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.wWidth.set(window.innerWidth);
-    }
-  }
-
   showPostForm = signal(false);
-  mobileFiltersList = signal(false);
-  mobileFilterOpen = signal<string | null>(null);
 
   argumentTypes = [
     { value: 'pro', title: 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_PRO' },

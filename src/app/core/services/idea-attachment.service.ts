@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response';
 import { Attachment } from '../interfaces/attachment';
 import { ConfigStore } from '../state/config.store';
@@ -48,7 +48,7 @@ export class IdeaAttachmentService extends ItemsListService<IdeaAttachmentParams
   }
 
   save(topicId: string, ideationId: string, ideaId: string, data: Attachment): Observable<Attachment> {
-    const path = this.getAbsoluteUrlApi(`/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/attachments`);
+    const path = this.getAbsoluteUrlApi(`/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/attachments`, true);
     return this.http.post<ApiResponse<Attachment>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
@@ -73,39 +73,24 @@ export class IdeaAttachmentService extends ItemsListService<IdeaAttachmentParams
       aId = attachmentId!;
     }
 
-    const path = this.getAbsoluteUrlApi(`/topics/${tId}/ideations/${iId}/ideas/${idId}/attachments/${aId}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${tId}/ideations/${iId}/ideas/${idId}/attachments/${aId}`, true);
     return this.http.delete<ApiResponse<unknown>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   upload(topicId: string, ideationId: string, ideaId: string, file: File): Observable<Attachment> {
-    const path = this.getAbsoluteUrlApi(`/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/attachments/upload`);
+    const path = this.getAbsoluteUrlApi(`/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/attachments/upload`, true);
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post<ApiResponse<Attachment>>(path, formData, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
-  googleDriveSelect(): Promise<unknown> {
-    return new Promise((resolve) => {
-        resolve(null);
-    });
-  }
-
-  dropboxSelect(): Promise<unknown> {
-    return new Promise((resolve) => {
-        resolve(null);
-    });
-  }
-
-  oneDriveSelect(): Promise<unknown> {
-    return new Promise((resolve) => {
-        resolve(null);
-    });
-  }
-
-  private getAbsoluteUrlApi(path: string): string {
-    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+  private getAbsoluteUrlApi(path: string, forceAuthorized = false): string {
+    const isPublicPath = !forceAuthorized && (
+      path.includes('/attachments')
+    );
+    const prefix = (this.userStore.isAuthenticated() && !isPublicPath) ? '/api/users/self' : '/api';
     return `${this.apiUrl}${prefix}${path}`;
   }
 }

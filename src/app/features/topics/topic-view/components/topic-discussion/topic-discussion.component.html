@@ -7,8 +7,8 @@
       </div>
 
       @if (canUpdate() && (canEditDeadline() || !hasDiscussionEndedExpired())) {
-      <div class="setting_button dropdown button_dropdown" cosDropdown>
-        <button type="button" class="btn_medium_close mobile_hidden">
+      <cos-dropdown class="setting_button">
+        <button type="button" class="btn_medium_close mobile_hidden" selection>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
               d="M14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8C13.1 8 14 7.1 14 6ZM14 18C14 16.9 13.1 16 12 16C10.9 16 10 18C10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18ZM12 10C13.1 10 14 10.9 14 12C14 13.1 13.1 14 12 14C10.9 14 10 13.1 10 12C10 10.9 10.9 10 12 10Z"
@@ -16,14 +16,14 @@
           </svg>
           <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.BTN_DISCUSSION_ACTIONS' | translate }}</span>
         </button>
-        <button type="button" id="mobile_actions" class="btn_medium_close icon mobile_show">
+        <button type="button" id="mobile_actions" class="btn_medium_close icon mobile_show" selection>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
               d="M14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8C13.1 8 14 7.1 14 6ZM14 18C14 16.9 13.1 16 12 16C10.9 16 10 18C10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18ZM12 10C13.1 10 14 10.9 14 12C14 13.1 13.1 14 12 14C10.9 14 10 13.1 10 12C10 10.9 10.9 10 12 10Z"
               fill="#2C3B47" />
           </svg>
         </button>
-        <div class="options">
+        <div options>
           @if (canEditDeadline()) {
           <a class="option" [routerLink]="['/', translate.currentLang, 'topics', topic().id, 'edit']"
             fragment="discussion">
@@ -63,7 +63,7 @@
           </button>
           }
         </div>
-      </div>
+      </cos-dropdown>
       }
     </div>
 
@@ -139,110 +139,35 @@
     </div>
 
     <div class="arguments_filters">
-      @if (wWidth() <= 550) {
-        <div class="dropdown mobile_filters_selection mobile_show" [class.dropdown_active]="mobileFiltersList()">
-          <div class="selection" (click)="mobileFiltersList.set(!mobileFiltersList())" (keydown.enter)="mobileFiltersList.set(!mobileFiltersList())" tabindex="0" role="button">
-            <div class="selected_item">{{ 'VIEWS.MY_TOPICS.LBL_FILTER' | translate | titlecase }}</div>
-            <button type="button" class="btn_medium_plain icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
-              </svg>
-            </button>
-          </div>
-          <div class="options filter_options">
-            <div class="filter_option" (click)="mobileFilterOpen.set('argumentType')" (keydown.enter)="mobileFilterOpen.set('argumentType')" tabindex="0" role="button">
-              <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE' | translate }}</span>
-              <span>{{ getActiveTypeFilterText() | translate | uppercase }}</span>
-            </div>
-            <div class="filter_option" (click)="mobileFilterOpen.set('orderBy')" (keydown.enter)="mobileFilterOpen.set('orderBy')" tabindex="0" role="button">
-              <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ORDER_BY' | translate }}</span>
-              <span>{{ getActiveOrderFilterText() | translate | uppercase }}</span>
-            </div>
-          </div>
+      <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE' | translate" class="dropdown_input">
+        <div selection>
+          <span>{{ getActiveTypeFilterText() | translate | uppercase }}</span>
         </div>
+        <div options>
+          @for (type of argumentTypes; track type.value) {
+            <div class="option check">
+              <label class="checkbox" (click)="$event.stopPropagation()">
+                <span>{{ type.title | translate | uppercase }}</span>
+                <input type="checkbox" [checked]="selectedTypes().includes(type.value)" (change)="toggleTypeFilter(type.value)">
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          }
+        </div>
+      </cos-dropdown>
 
-        @if (mobileFilterOpen()) {
-          <div class="overlay" (click)="mobileFilterOpen.set(null)" (keydown.escape)="mobileFilterOpen.set(null)" tabindex="-1"></div>
-          <div class="mobile_filters_wrap active">
-            <div class="options button_options">
-              <button type="button" class="btn_medium_close icon" (click)="mobileFilterOpen.set(null)">
-                <cos-icon name="close" [size]="24"></cos-icon>
-              </button>
-
-              <div class="options_wrapper">
-                @if (mobileFilterOpen() === 'argumentType') {
-                  @for (type of argumentTypes; track type.value) {
-                    <label class="checkbox">
-                      <span>{{ type.title | translate | uppercase }}</span>
-                      <input type="checkbox" [checked]="selectedTypes().includes(type.value)" (change)="toggleTypeFilter(type.value)">
-                      <span class="checkmark"></span>
-                    </label>
-                  }
-                } @else if (mobileFilterOpen() === 'orderBy') {
-                  @for (option of orderByOptions; track option.value) {
-                    <label class="checkbox">
-                      <span>{{ option.title | translate | uppercase }}</span>
-                      <input type="radio" name="orderBy" [checked]="selectedOrder() === option.value" (change)="setOrder(option.value)">
-                      <span class="checkmark"></span>
-                    </label>
-                  }
-                }
-              </div>
-              <button type="button" class="btn_medium_secondary" (click)="mobileFilterOpen.set(null)">
-                {{ 'VIEWS.MY_TOPICS.BTN_APPLY' | translate }}
-              </button>
+      <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ORDER_BY' | translate" class="dropdown_input">
+        <div selection>
+          <span>{{ getActiveOrderFilterText() | translate | uppercase }}</span>
+        </div>
+        <div options>
+          @for (option of orderByOptions; track option.value) {
+            <div class="option" (click)="setOrder(option.value)" (keydown.enter)="setOrder(option.value)" tabindex="0" role="button">
+              {{ option.title | translate | uppercase }}
             </div>
-          </div>
-        }
-      } @else {
-        <cos-input [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE' | translate" class="dropdown_input">
-          <div class="dropdown" cosDropdown [multipleChoice]="true">
-            <div class="selection">
-              <div class="selected_item">
-                <span>{{ getActiveTypeFilterText() | translate | uppercase }}</span>
-              </div>
-              <div>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
-                </svg>
-              </div>
-            </div>
-            <div class="options">
-              @for (type of argumentTypes; track type.value) {
-                <div class="option check">
-                  <label class="checkbox">
-                    <span>{{ type.title | translate | uppercase }}</span>
-                    <input type="checkbox" [checked]="selectedTypes().includes(type.value)" (change)="toggleTypeFilter(type.value)">
-                    <span class="checkmark"></span>
-                  </label>
-                </div>
-              }
-            </div>
-          </div>
-        </cos-input>
-
-        <cos-input [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ORDER_BY' | translate" class="dropdown_input">
-          <div class="dropdown" cosDropdown>
-            <div class="selection">
-              <div class="selected_item">
-                <span>{{ getActiveOrderFilterText() | translate | uppercase }}</span>
-              </div>
-              <div>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
-                </svg>
-              </div>
-            </div>
-            <div class="options">
-              @for (option of orderByOptions; track option.value) {
-                <div class="option" (click)="setOrder(option.value)" (keydown.enter)="setOrder(option.value)" tabindex="0" role="button">
-                  {{ option.title | translate | uppercase }}
-                </div>
-              }
-            </div>
-          </div>
-        </cos-input>
-      }
+          }
+        </div>
+      </cos-dropdown>
     </div>
 
     <div id="arguments">

@@ -117,31 +117,19 @@ export class ActivityService {
   }
 
   private getAbsoluteUrlApi(path: string): string {
-    if (path.startsWith('/api/users/self')) {
-      if (!this.userStore.isAuthenticated()) {
-        path = path.replace('/api/users/self', '/api');
-      }
-    } else if (path.startsWith('/api/topics')) {
-      if (this.userStore.isAuthenticated()) {
-        path = path.replace('/api/topics', '/api/users/self/topics');
-      }
-    } else if (path.startsWith('/api/groups')) {
-       if (this.userStore.isAuthenticated()) {
-        path = path.replace('/api/groups', '/api/users/self/groups');
-      }
-    }
-    return `${this.apiUrl}${path}`;
+    const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
+    return `${this.apiUrl}${prefix}${path}`;
   }
 
   getUnreadCount(params?: { groupId?: string; topicId?: string }): Observable<number> {
     let url: string;
     if (params?.groupId) {
-      url = this.getAbsoluteUrlApi(`/api/groups/${params.groupId}/activities/unread`);
+      url = `${this.apiUrl}/api/groups/${params.groupId}/activities/unread`;
     } else if (params?.topicId) {
-      url = this.getAbsoluteUrlApi(`/api/topics/${params.topicId}/activities/unread`);
+      url = `${this.apiUrl}/api/topics/${params.topicId}/activities/unread`;
     } else {
       if (!this.userStore.isAuthenticated()) return of(0);
-      url = this.getAbsoluteUrlApi(`/api/users/self/activities/unread`);
+      url = this.getAbsoluteUrlApi('/activities/unread');
     }
     return this.http.get<ApiResponse<{ count: number }>>(url, { withCredentials: true })
       .pipe(map(res => res.data?.count ?? 0));
@@ -150,12 +138,12 @@ export class ActivityService {
   private fetchPage(params: ActivityContext & { offset: number }): Observable<ActivityGroup[]> {
     let url: string;
     if (params.groupId) {
-      url = this.getAbsoluteUrlApi(`/api/groups/${params.groupId}/activities`);
+      url = `${this.apiUrl}/api/groups/${params.groupId}/activities`;
     } else if (params.topicId) {
-      url = this.getAbsoluteUrlApi(`/api/topics/${params.topicId}/activities`);
+      url = `${this.apiUrl}/api/topics/${params.topicId}/activities`;
     } else {
       if (!this.userStore.isAuthenticated()) return of([]);
-      url = this.getAbsoluteUrlApi(`/api/users/self/activities`);
+      url = this.getAbsoluteUrlApi('/activities');
     }
     const httpParams: { offset: number; limit: number; include?: string } = { offset: params.offset, limit: this.limit };
     if (params.include) httpParams.include = params.include;
