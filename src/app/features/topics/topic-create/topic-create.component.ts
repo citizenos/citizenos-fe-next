@@ -1,6 +1,6 @@
 import { Component, signal, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TopicService } from '../../../core/services/topic.service';
 import { UploadService } from '../../../core/services/upload.service';
@@ -9,7 +9,7 @@ import { TopicMemberUserService } from '../../../core/services/topic-member-user
 import { TopicInviteUserService } from '../../../core/services/topic-invite-user.service';
 import { TopicDiscussionService } from '../../../core/services/topic-discussion.service';
 import { Topic } from '../../../core/interfaces/topic';
-import { DiscussionData } from '../../../core/interfaces/discussion';
+import { Discussion, DiscussionData } from '../../../core/interfaces/discussion';
 import { StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
 import { CreateWizardShellComponent } from '../../../shared/components/create-wizard-shell/create-wizard-shell.component';
 import { StepTopicInfoComponent } from './components/step-topic-info/step-topic-info.component';
@@ -17,7 +17,7 @@ import { StepTopicSettingsComponent } from './components/step-topic-settings/ste
 import { StepTopicDiscussionComponent } from './components/step-topic-discussion/step-topic-discussion.component';
 import { StepTopicPreviewComponent } from './components/step-topic-preview/step-topic-preview.component';
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
-import { switchMap, of, catchError, BehaviorSubject, forkJoin, take } from 'rxjs';
+import { switchMap, of, catchError, BehaviorSubject, forkJoin, take, Observable, map } from 'rxjs';
 import { AnyPipe } from '../../../shared/pipes/any.pipe';
 import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
 import { TopicMemberGroup } from '../../../shared/components/topic-settings-panel/topic-settings-panel.component';
@@ -55,6 +55,7 @@ export class TopicCreateComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private dialog = inject(DialogService);
   private groupDetailService = inject(GroupDetailService);
+  private translate = inject(TranslateService);
 
   topic = signal<Partial<Topic>>({
     title: '',
@@ -274,7 +275,19 @@ export class TopicCreateComponent implements OnInit {
         this.topic.set(updated);
         if (this.imageFile()) {
           const path = `/api/users/self/topics/${updated.id}/image`;
-          return this.uploadService.upload(path, this.imageFile()!);
+          return this.uploadService.upload<{ imageUrl?: string; link?: string; id?: string }>(path, this.imageFile()!).pipe(
+            map((uploaded) => {
+              if (uploaded) {
+                const imageUrl = uploaded.imageUrl || uploaded.link;
+                if (imageUrl) {
+                  this.topic.update(current => ({ ...current, imageUrl }));
+                } else if (uploaded.id) {
+                  this.topic.set(uploaded);
+                }
+              }
+              return uploaded;
+            })
+          );
         }
         return of(null);
       }),
@@ -312,6 +325,17 @@ export class TopicCreateComponent implements OnInit {
     });
   }
 
+  private saveGroups(topicId: string): Observable<unknown> {
+    const addOps = this.addedGroups().map(g => this.groupMemberTopicService.addTopic(g.id, topicId, g.level || 'read'));
+    const removeOps = this.groupsToRemove().map(g => this.groupMemberTopicService.removeTopicFromGroup(g.id, topicId));
+    if (addOps.length === 0 && removeOps.length === 0) {
+      return of(null);
+    }
+    return forkJoin([...addOps, ...removeOps]).pipe(
+      catchError(() => of(null))
+    );
+  }
+
   saveAsDraft() {
     const t = this.topic();
     if (!t.id) {
@@ -320,12 +344,17 @@ export class TopicCreateComponent implements OnInit {
     }
 
     this.isLoading.set(true);
-    this.topicService.patch(t).subscribe({
-      next: (savedTopic) => {
+    this.topicService.patch(t).pipe(
+      switchMap((savedTopic) => {
         this.topic.set(savedTopic);
+        return this.saveGroups(savedTopic.id!);
+      })
+    ).subscribe({
+      next: () => {
         this.isLoading.set(false);
+        this.groupsToRemove.set([]);
         this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
-        this.router.navigate(['/topics', savedTopic.id]);
+        this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', this.topic().id]);
       },
       error: () => {
         this.isLoading.set(false);
@@ -338,19 +367,27 @@ export class TopicCreateComponent implements OnInit {
     this.isLoading.set(true);
     const t = this.topic();
     const disc = this.discussion();
+    const isNewOrDraft = t.status === 'draft';
 
     const topicSave$ = t.id
-      ? this.topicService.patch({ ...t, status: 'inProgress' })
-      : this.topicService.save({ ...t, status: 'inProgress' });
+      ? this.topicService.patch({ ...t, status: 'inProgress', visibility: 'public' })
+      : this.topicService.save({ ...t, status: 'inProgress', visibility: 'public' });
 
     topicSave$.pipe(
       switchMap((savedTopic) => {
         this.topic.set(savedTopic);
-        if (!disc.question) return of(savedTopic);
-        const discSave$ = savedTopic.discussionId
-          ? this.discussionService.update(savedTopic.id, savedTopic.discussionId, disc)
-          : this.discussionService.create(savedTopic.id, disc);
-        return forkJoin({ topic: of(savedTopic), discussion: discSave$.pipe(catchError(() => of(null))) });
+        const groupsSave$ = this.saveGroups(savedTopic.id!);
+        const discSave$: Observable<Discussion | null> = disc.question
+          ? (savedTopic.discussionId
+              ? this.discussionService.update(savedTopic.id!, savedTopic.discussionId, disc)
+              : this.discussionService.create(savedTopic.id!, disc))
+          : of(null);
+
+        return forkJoin({
+          topic: of(savedTopic),
+          groups: groupsSave$,
+          discussion: discSave$.pipe(catchError(() => of(null)))
+        });
       }),
       catchError(() => {
         this.isLoading.set(false);
@@ -359,13 +396,21 @@ export class TopicCreateComponent implements OnInit {
       })
     ).subscribe((result) => {
       if (!result) return;
-      const savedTopic = (result as { topic?: Topic }).topic ?? result as Topic;
       this.isLoading.set(false);
-      this.notification.showRaw('success', 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');
-      this.dialog.open(TopicInviteDialogComponent, {
-        data: { topic: savedTopic }
-      }).afterClosed().subscribe(() => {
-        this.router.navigate(['/topics', savedTopic.id]);
+      this.groupsToRemove.set([]);
+
+      const successMessage = isNewOrDraft
+        ? 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE'
+        : 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE';
+
+      this.notification.showRaw('success', successMessage);
+
+      this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', this.topic().id]).then(() => {
+        if (isNewOrDraft) {
+          this.dialog.open(TopicInviteDialogComponent, {
+            data: { topic: this.topic() }
+          });
+        }
       });
     });
   }

@@ -5,6 +5,7 @@ import { TopicPreviewComponent } from '../../../../../shared/components/topic-pr
 import { AnyPipe } from '../../../../../shared/pipes/any.pipe';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { VoteWithOptions } from '../../../../../core/interfaces/vote';
+import { DiscussionData } from '../../../../../core/interfaces/discussion';
 
 @Component({
   selector: 'cos-step-topic-preview',
@@ -17,6 +18,7 @@ import { VoteWithOptions } from '../../../../../core/interfaces/vote';
         [topic]="topic() | any"
         [ideation]="ideation() | any"
         [vote]="vote() | any"
+        [discussion]="discussion() | any"
       ></cos-topic-preview>
     </div>
   `,
@@ -35,4 +37,6 @@ export class StepTopicPreviewComponent {
   });
   ideation = input<Partial<Ideation> | null>(null);
   vote = input<Partial<VoteWithOptions> | null>(null);
+  discussion = input<DiscussionData | null>(null);
 }
+
