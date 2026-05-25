@@ -94,12 +94,12 @@ describe('TopicInvitationComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TopicInvitationComponent],
       providers: [
+        provideRouter([{ path: '**', component: EmptyComponent }]),
         { provide: TopicInviteUserService, useValue: inviteService },
         { provide: DialogService, useValue: dialogService },
         { provide: UserStore, useValue: userStore },
         { provide: NotificationService, useValue: notification },
-        { provide: ActivatedRoute, useValue: { params: of({ topicId: 'topic1', inviteId: 'inv1' }), queryParams: of({ join: 'true' }) } },
-        provideRouter([{ path: '**', component: EmptyComponent }])
+        { provide: ActivatedRoute, useValue: { params: of({ topicId: 'topic1', inviteId: 'inv1' }), queryParams: of({ join: 'true' }) } }
       ]
     }).compileComponents();
     const f = TestBed.createComponent(TopicInvitationComponent);
