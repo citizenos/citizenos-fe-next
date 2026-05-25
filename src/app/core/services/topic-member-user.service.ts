@@ -40,7 +40,7 @@ export class TopicMemberUserService {
 
   loadItems(topicId: string): Observable<TopicMemberUser[]> {
     return this.http.get<ApiResponse<{ rows: TopicMemberUser[] }>>(
-      this.getAbsoluteUrlApi(`/topics/${topicId}/members/users`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/members/users`, true),
       { withCredentials: true }
     ).pipe(map(res => res.data?.rows ?? []));
   }

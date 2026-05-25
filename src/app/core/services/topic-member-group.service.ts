@@ -36,7 +36,7 @@ export class TopicMemberGroupService {
 
   loadItems(topicId: string): Observable<TopicMemberGroup[]> {
     return this.http.get<ApiResponse<TopicMemberGroup[]>>(
-      this.getAbsoluteUrlApi(`/topics/${topicId}/members/groups`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/members/groups`, true),
       { withCredentials: true }
     ).pipe(map(res => res.data ?? []));
   }

@@ -72,9 +72,10 @@
   &.has-sidebar {
     gap: 24px;
     padding: 32px 40px;
+    justify-content: center;
 
     .wizard-content {
-      flex: 1;
+      flex: 0 1 872px;
       min-width: 0;
       overflow-y: auto;
     }
@@ -109,7 +110,9 @@
   background: var(--color-surfaces);
   border-radius: 16px;
   padding: 12px 16px;
-  margin: 0 24px 24px;
+  margin: 0 auto 24px;
+  max-width: 872px;
+  width: calc(100% - 48px);
 
   .items_row {
     display: flex;

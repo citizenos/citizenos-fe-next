@@ -330,14 +330,14 @@ export class TopicService {
 
   loadGroups(topicId: string): Observable<TopicGroup[]> {
     return this.http.get<ApiResponse<{ rows: TopicGroup[] }>>(
-      this.getAbsoluteUrlApi(`/topics/${topicId}/members/groups`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/members/groups`, true),
       { withCredentials: true }
     ).pipe(map(res => res.data?.rows ?? []));
   }
 
   loadAttachments(topicId: string): Observable<TopicAttachment[]> {
     return this.http.get<ApiResponse<{ rows: TopicAttachment[] }>>(
-      this.getAbsoluteUrlApi(`/topics/${topicId}/attachments`),
+      this.getAbsoluteUrlApi(`/topics/${topicId}/attachments`, true),
       { withCredentials: true }
     ).pipe(map(res => res.data?.rows ?? []));
   }
