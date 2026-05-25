@@ -19,6 +19,12 @@ import { StepTopicPreviewComponent } from './components/step-topic-preview/step-
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
 import { switchMap, of, catchError, BehaviorSubject, forkJoin, take } from 'rxjs';
 import { AnyPipe } from '../../../shared/pipes/any.pipe';
+import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
+import { TopicMemberGroup } from '../../../shared/components/topic-settings-panel/topic-settings-panel.component';
+import { DialogService } from '../../../shared/dialog/dialog.service';
+import { TopicInviteDialogComponent } from '../topic-view/components/topic-invite-dialog/topic-invite-dialog.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { GroupDetailService } from '../../../core/services/group-detail.service';
 
 @Component({
   selector: 'cos-topic-create',
@@ -42,10 +48,13 @@ export class TopicCreateComponent implements OnInit {
   private uploadService = inject(UploadService);
   private memberUserService = inject(TopicMemberUserService);
   private inviteUserService = inject(TopicInviteUserService);
+  private groupMemberTopicService = inject(GroupMemberTopicService);
   private discussionService = inject(TopicDiscussionService);
   private notification = inject(NotificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialog = inject(DialogService);
+  private groupDetailService = inject(GroupDetailService);
 
   topic = signal<Partial<Topic>>({
     title: '',
@@ -53,13 +62,18 @@ export class TopicCreateComponent implements OnInit {
     description: '<html><head></head><body></body></html>',
     visibility: 'private',
     categories: [],
-    status: 'draft'
+    status: 'draft',
+    hashtag: null
   });
 
   discussion = signal<DiscussionData>({ question: '', deadline: null });
   imageFile = signal<File | null>(null);
   isLoading = signal(false);
   currentStep = signal('info');
+  isCreatedFromGroup = signal(false);
+
+  addedGroups = signal<TopicMemberGroup[]>([]);
+  groupsToRemove = signal<TopicMemberGroup[]>([]);
 
   private reloadMembers$ = new BehaviorSubject<void>(void 0);
 
@@ -94,6 +108,22 @@ export class TopicCreateComponent implements OnInit {
 
   ngOnInit() {
     const topicId = this.route.snapshot.paramMap.get('topicId');
+    
+    this.route.queryParams.pipe(take(1)).subscribe({
+      next: (params) => {
+        const grId = params['groupId'];
+        if (grId) {
+          this.isCreatedFromGroup.set(true);
+          this.groupDetailService.loadGroup(grId).subscribe({
+            next: (group) => {
+              this.onGroupsAdded([{ ...group, level: 'read' }]);
+              this.onTopicUpdate({ visibility: 'private' });
+            }
+          });
+        }
+      }
+    });
+
     if (topicId) {
       this.loadExistingTopic(topicId);
     } else {
@@ -150,7 +180,21 @@ export class TopicCreateComponent implements OnInit {
   onStepChange(step: string) {
     if (this.canNavigateTo(step)) {
       this.currentStep.set(step);
+      if (step === 'preview') {
+        this.loadDescription();
+      }
     }
+  }
+
+  private loadDescription() {
+    const id = this.topic().id;
+    if (!id) return;
+
+    this.topicService.readDescription(id).pipe(take(1)).subscribe({
+      next: (topic) => {
+        this.topic.update(t => ({ ...t, description: topic.description }));
+      }
+    });
   }
 
   canNavigateTo(step: string): boolean {
@@ -159,16 +203,35 @@ export class TopicCreateComponent implements OnInit {
   }
 
   isFooterNextDisabled(): boolean {
-    return this.currentStep() === 'info' && !this.topic().title;
+    if (this.currentStep() === 'info') return !this.topic().title;
+    if (this.currentStep() === 'discussion') return !this.discussion().question;
+    return false;
   }
 
   handleFooterContinue() {
     switch (this.currentStep()) {
       case 'info': this.saveToSettings(); break;
-      case 'settings': this.currentStep.set('discussion'); break;
+      case 'settings': this.saveGroupsAndContinue(); break;
       case 'discussion': this.transitionToPreview(); break;
       case 'preview': this.publishTopic(); break;
     }
+  }
+
+  private saveGroupsAndContinue() {
+    const topicId = this.topic().id;
+    if (!topicId) return;
+
+    this.isLoading.set(true);
+    const addOps = this.addedGroups().map(g => this.groupMemberTopicService.addTopic(g.id, topicId, g.level || 'read'));
+    const removeOps = this.groupsToRemove().map(g => this.groupMemberTopicService.removeTopicFromGroup(g.id, topicId));
+
+    forkJoin([...addOps, ...removeOps, this.topicService.patch(this.topic())]).pipe(
+      catchError(() => of(null))
+    ).subscribe(() => {
+      this.isLoading.set(false);
+      this.groupsToRemove.set([]);
+      this.onStepChange('discussion');
+    });
   }
 
   handleFooterBack() {
@@ -186,6 +249,15 @@ export class TopicCreateComponent implements OnInit {
 
   onImageFileUpdate(file: File | null) {
     this.imageFile.set(file);
+  }
+
+  onGroupsAdded(groups: TopicMemberGroup[]) {
+    this.addedGroups.set(groups);
+  }
+
+  onGroupRemoved(group: TopicMemberGroup) {
+    this.addedGroups.update(gs => gs.filter(g => g.id !== group.id));
+    this.groupsToRemove.update(gs => [...gs, group]);
   }
 
   saveToSettings() {
@@ -289,16 +361,57 @@ export class TopicCreateComponent implements OnInit {
       const savedTopic = (result as { topic?: Topic }).topic ?? result as Topic;
       this.isLoading.set(false);
       this.notification.showRaw('success', 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');
-      this.router.navigate(['/topics', savedTopic.id]);
+      this.dialog.open(TopicInviteDialogComponent, {
+        data: { topic: savedTopic }
+      }).afterClosed().subscribe(() => {
+        this.router.navigate(['/topics', savedTopic.id]);
+      });
     });
   }
 
   inviteEditors() {
-    const topicId = this.topic().id;
-    if (topicId) {
-      this.router.navigate(['/topics', topicId, 'settings']);
+    const topic = this.topic();
+    if (topic.id) {
+      this.dialog.open(TopicInviteDialogComponent, {
+        data: { topic: topic as Topic, allowedLevels: ['edit', 'admin'] }
+      }).afterClosed().subscribe(() => {
+        this.reloadMembers$.next();
+      });
     } else {
       this.notification.showRaw('info', 'VIEWS.TOPIC_CREATE.SAVE_FIRST_TO_INVITE');
     }
+  }
+
+  doDeleteTopic() {
+    const topicId = this.topic().id;
+    if (!topicId) return;
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        level: 'delete',
+        heading: 'MODALS.TOPIC_DELETE_CONFIRM_HEADING',
+        title: 'MODALS.TOPIC_DELETE_CONFIRM_TXT_ARE_YOU_SURE',
+        description: 'MODALS.TOPIC_DELETE_CONFIRM_TXT_NO_UNDO',
+        points: ['MODALS.TOPIC_DELETE_CONFIRM_TXT_TOPIC_DELETED', 'MODALS.TOPIC_DELETE_CONFIRM_TXT_DISCUSSION_DELETED', 'MODALS.TOPIC_DELETE_CONFIRM_TXT_TOPIC_REMOVED_FROM_GROUPS'],
+        confirmBtn: 'MODALS.TOPIC_DELETE_CONFIRM_YES',
+        closeBtn: 'MODALS.TOPIC_DELETE_CONFIRM_NO'
+      }
+    });
+
+    dialogRef.afterClosed().pipe(take(1)).subscribe(result => {
+      if (result === true) {
+        this.isLoading.set(true);
+        this.topicService.delete({ id: topicId }).pipe(take(1)).subscribe({
+          next: () => {
+            this.isLoading.set(false);
+            this.router.navigate(['/my/topics']);
+          },
+          error: () => {
+            this.isLoading.set(false);
+            this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
+          }
+        });
+      }
+    });
   }
 }

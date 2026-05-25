@@ -29,7 +29,7 @@ describe('GroupShareComponent', () => {
       updateLevel: vi.fn().mockReturnValue(of(null))
     };
     memberUserService = {
-      LEVELS: ['read', 'admin']
+      LEVELS: { read: 'read', admin: 'admin' }
     };
     groupDetailService = {
       canUpdate: vi.fn().mockReturnValue(true),

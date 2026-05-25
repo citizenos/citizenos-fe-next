@@ -54,7 +54,6 @@ describe('ArgumentComponent', () => {
     (component as unknown as { topicId: unknown }).topicId = signal('topic-1');
     (component as unknown as { discussionId: unknown }).discussionId = signal('disc-1');
     (component as unknown as { root: unknown }).root = signal(null);
-    component.ngOnInit();
   });
 
   it('argumentId should combine id and version', () => {

@@ -1,0 +1,124 @@
+#cos_calendar {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surfaces);
+  padding: 16px;
+  gap: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.cos_cal_month_selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: var(--color-background-hover, #f0f0f0);
+    }
+  }
+
+  .text_wrap {
+    font-weight: 600;
+    display: flex;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--color-text-main, #2c3b47);
+  }
+}
+
+.cos_cal_weekdays, .cos_cal_days {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.cos_cal_weekday, .cos_cal_day {
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 0;
+  height: 32px;
+}
+
+.cos_cal_weekday {
+  font-size: 12px;
+  color: var(--color-text-muted, #727c84);
+  text-transform: uppercase;
+}
+
+.cos_cal_day {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  .day_item {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--color-text-main, #2c3b47);
+    font-weight: 500;
+    transition: background-color 0.15s, border-radius 0.15s;
+
+    &:hover:not(.empty) {
+      background-color: var(--color-background-hover, #f0f0f0);
+      border-radius: 50%;
+    }
+  }
+}
+
+.line_separator {
+  height: 1px;
+  background-color: var(--color-border, #e1e7ee);
+  width: 100%;
+}
+
+.ideation {
+  .selected {
+    background-color: var(--color-dialog-ideation-contrast, #ffecb3);
+    border-radius: 50%;
+    font-weight: 600;
+  }
+}
+
+.discussion {
+  .selected {
+    background-color: var(--color-blue-200, #c1d8eb);
+    border-radius: 50%;
+    font-weight: 600;
+  }
+}
+
+.selected {
+  background-color: var(--color-voting-disabled, #e1e7ee);
+  border-radius: 50%;
+  font-weight: 600;
+}
+
+.cos_cal_week {
+  display: flex;
+  width: 100%;
+}
+
+.empty {
+  color: var(--color-border, #e1e7ee) !important;
+  pointer-events: none;
+}

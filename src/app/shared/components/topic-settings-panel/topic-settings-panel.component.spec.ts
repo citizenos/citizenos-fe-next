@@ -127,4 +127,35 @@ describe('TopicSettingsPanelComponent', () => {
     component.removeGroup(component.addedGroups()[0]);
     expect(component.addedGroups().length).toBe(0);
   });
+
+  it('should change group permission level with setGroupLevel', () => {
+    component.topic.set(mockTopic);
+    component.groups.set([]);
+    fixture.detectChanges();
+    const group = { id: 'g1', name: 'Group 1' } as Group;
+    component.addGroup(group);
+    const addedGroup = component.addedGroups()[0];
+    expect(addedGroup.level).toBe('read');
+
+    const emitSpy = vi.spyOn(component.groupsAdded, 'emit');
+    component.setGroupLevel(addedGroup, 'admin');
+    expect(component.addedGroups()[0].level).toBe('admin');
+    expect(emitSpy).toHaveBeenCalled();
+  });
+
+  it('should lock visibility to private when isCreatedFromGroup is true', () => {
+    fixture.destroy();
+    fixture = TestBed.createComponent(TopicSettingsPanelComponent);
+    component = fixture.componentInstance;
+    fixture.componentRef.setInput('isCreatedFromGroup', true);
+    component.topic.set(mockTopic);
+    component.groups.set([]);
+    fixture.detectChanges();
+
+    expect(component.visibility()).toBe('private');
+    
+    // Attempting to set visibility to public should be ignored
+    component.setVisibility('public');
+    expect(component.visibility()).toBe('private');
+  });
 });

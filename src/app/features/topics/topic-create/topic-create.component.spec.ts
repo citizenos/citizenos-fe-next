@@ -2,6 +2,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({ template: '', standalone: true })
 class EmptyComponent {}
@@ -11,19 +12,31 @@ import { NotificationService } from '../../../core/services/notification.service
 import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
 import { TopicInviteUserService } from '../../../core/services/topic-invite-user.service';
 import { TopicDiscussionService } from '../../../core/services/topic-discussion.service';
+import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
+import { DialogService } from '../../../shared/dialog/dialog.service';
 import { TopicCreateComponent } from './topic-create.component';
 import { of } from 'rxjs';
+import { GroupDetailService } from '../../../core/services/group-detail.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 const mockTopic = { id: 'new-id', title: '', visibility: 'private', status: 'draft', categories: [] };
-const mockTopicService = { save: vi.fn(), patch: vi.fn() };
+const mockTopicService = { save: vi.fn(), patch: vi.fn(), get: vi.fn() };
 const mockUploadService = { upload: vi.fn() };
 const mockNotificationService = { showRaw: vi.fn(), success: vi.fn() };
 const mockMemberUserService = { loadItems: vi.fn() };
 const mockInviteUserService = { loadItems: vi.fn() };
 const mockDiscussionService = { get: vi.fn(), create: vi.fn(), update: vi.fn() };
+const mockGroupMemberTopicService = { addTopic: vi.fn(), removeTopicFromGroup: vi.fn() };
+const mockDialogService = { open: vi.fn() };
+const mockGroup = { id: 'g1', name: 'Test Group', visibility: 'private' };
+const mockGroupDetailService = {
+  loadGroup: vi.fn().mockReturnValue(of(mockGroup)),
+  get: vi.fn().mockReturnValue(of(mockGroup))
+};
 
 function setupProviders() {
   TestBed.configureTestingModule({
+    imports: [TranslateModule.forRoot()],
     providers: [
       provideRouter([{ path: 'topics/:id', component: EmptyComponent }]),
       { provide: TopicService, useValue: mockTopicService },
@@ -31,7 +44,10 @@ function setupProviders() {
       { provide: NotificationService, useValue: mockNotificationService },
       { provide: TopicMemberUserService, useValue: mockMemberUserService },
       { provide: TopicInviteUserService, useValue: mockInviteUserService },
-      { provide: TopicDiscussionService, useValue: mockDiscussionService }
+      { provide: TopicDiscussionService, useValue: mockDiscussionService },
+      { provide: GroupMemberTopicService, useValue: mockGroupMemberTopicService },
+      { provide: DialogService, useValue: mockDialogService },
+      { provide: GroupDetailService, useValue: mockGroupDetailService }
     ]
   });
 }
@@ -48,6 +64,9 @@ describe('TopicCreateComponent (business logic)', () => {
     mockInviteUserService.loadItems.mockReturnValue(of([]));
     mockDiscussionService.create.mockReturnValue(of({ id: 'disc-1', question: '', deadline: null }));
     mockDiscussionService.update.mockReturnValue(of({ id: 'disc-1', question: '', deadline: null }));
+    mockGroupMemberTopicService.addTopic.mockReturnValue(of(null));
+    mockGroupMemberTopicService.removeTopicFromGroup.mockReturnValue(of(null));
+    mockDialogService.open.mockReturnValue({ afterClosed: () => of(true) });
     setupProviders();
     component = TestBed.runInInjectionContext(() => new TopicCreateComponent());
   });
@@ -92,4 +111,50 @@ describe('TopicCreateComponent (business logic)', () => {
     component.publishTopic();
     expect(mockTopicService.patch).toHaveBeenCalledWith(expect.objectContaining({ status: 'inProgress' }));
   });
+
+  it('inviteEditors opens dialog', () => {
+    component.topic.set({ id: 'topic-1', title: 'Test' });
+    component.inviteEditors();
+    expect(mockDialogService.open).toHaveBeenCalled();
+  });
+
+  it('onGroupsAdded updates signal', () => {
+    const groups = [{ id: 'g1', name: 'Group 1' }];
+    component.onGroupsAdded(groups);
+    expect(component.addedGroups()).toEqual(groups);
+  });
+
+  it('should initialize isCreatedFromGroup and load group when groupId query param is present', () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        { provide: ActivatedRoute, useValue: {
+            snapshot: { paramMap: { get: () => null } },
+            queryParams: of({ groupId: 'group-123' })
+          }
+        },
+        { provide: Router, useValue: { navigate: vi.fn() } },
+        { provide: TopicService, useValue: mockTopicService },
+        { provide: UploadService, useValue: mockUploadService },
+        { provide: NotificationService, useValue: mockNotificationService },
+        { provide: TopicMemberUserService, useValue: mockMemberUserService },
+        { provide: TopicInviteUserService, useValue: mockInviteUserService },
+        { provide: TopicDiscussionService, useValue: mockDiscussionService },
+        { provide: GroupMemberTopicService, useValue: mockGroupMemberTopicService },
+        { provide: DialogService, useValue: mockDialogService },
+        { provide: GroupDetailService, useValue: mockGroupDetailService }
+      ]
+    });
+    
+    const comp = TestBed.runInInjectionContext(() => new TopicCreateComponent());
+    comp.ngOnInit();
+
+    expect(comp.isCreatedFromGroup()).toBe(true);
+    expect(mockGroupDetailService.loadGroup).toHaveBeenCalledWith('group-123');
+    expect(comp.addedGroups().length).toBe(1);
+    expect(comp.addedGroups()[0].id).toBe('g1');
+    expect(comp.topic().visibility).toBe('private');
+  });
 });
+

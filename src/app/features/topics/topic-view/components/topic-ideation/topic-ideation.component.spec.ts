@@ -87,7 +87,7 @@ describe('TopicIdeationComponent', () => {
 
   it('setOrder updates selectedOrder and resets page', () => {
     const comp = makeComp();
-    comp.setOrder('rating');
+    comp.orderBy('rating');
     expect(comp.selectedOrder()).toBe('rating');
     expect(comp.currentPage()).toBe(1);
   });

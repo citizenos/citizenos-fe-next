@@ -10,7 +10,7 @@ import { signal } from '@angular/core';
 import { of, throwError } from 'rxjs';
 
 const mockGroup: Partial<Group> = { id: 'g1', permission: { level: 'admin' } };
-const mockMember: GroupMember = { id: 'u1', userId: 'u1', name: 'Test User', email: 'test@test.com', level: 'read', imageUrl: null };
+const mockMember: GroupMember = { id: 'u1', userId: 'u1', name: 'Test User', email: 'test@test.com', level: 'read', imageUrl: undefined };
 
 describe('GroupMemberUserComponent', () => {
   let component: GroupMemberUserComponent;
@@ -20,7 +20,7 @@ describe('GroupMemberUserComponent', () => {
 
   beforeEach(() => {
     memberUserService = {
-      LEVELS: ['read', 'admin'],
+      LEVELS: { read: 'read', admin: 'admin' },
       updateLevel: vi.fn().mockReturnValue(of(null)),
       removeMember: vi.fn().mockReturnValue(of(null))
     };

@@ -5,10 +5,12 @@
   [currentStep]="currentStep()"
   [hasSidebar]="currentStep() !== 'preview'"
   [isNextDisabled]="isFooterNextDisabled()"
+  [topic]="topic() | any"
   (stepChange)="onStepChange($event)"
   (saveDraft)="saveAsDraft()"
   (footerContinue)="handleFooterContinue()"
   (footerBack)="handleFooterBack()"
+  (deleteTopic)="doDeleteTopic()"
 >
   @if (isLoading()) {
     <div class="loading-overlay">
@@ -27,7 +29,10 @@
     @case ('settings') {
       <cos-step-topic-settings
         [topic]="topic() | any"
+        [isCreatedFromGroup]="isCreatedFromGroup()"
         (topicUpdate)="onTopicUpdate($any($event))"
+        (groupsAdded)="onGroupsAdded($event)"
+        (groupRemoved)="onGroupRemoved($event)"
       ></cos-step-topic-settings>
     }
     @case ('discussion') {

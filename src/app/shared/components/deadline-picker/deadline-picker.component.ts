@@ -1,157 +1,296 @@
-import { Component, input, output, signal, computed, ChangeDetectionStrategy, effect } from '@angular/core';
+import { Component, input, output, signal, computed, ChangeDetectionStrategy, effect, inject } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { inject } from '@angular/core';
+import { CommonModule, UpperCasePipe } from '@angular/common';
+import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
 
 @Component({
   selector: 'cos-deadline-picker',
   standalone: true,
-  imports: [TranslateModule, FormsModule],
+  imports: [TranslateModule, FormsModule, CommonModule, UpperCasePipe, CosCalenderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="deadline-picker">
-      <div class="deadline-toggle">
-        <label class="toggle-label">
-          <input type="checkbox" [checked]="enabled()" (change)="toggleDeadline()">
-          <span>{{ toggleLabel() | translate }}</span>
-        </label>
-      </div>
-
-      @if (enabled()) {
-        <div class="deadline-fields">
-          <div class="date-row">
-            <input
-              type="date"
-              class="date-input"
-              [min]="minDateStr()"
-              [ngModel]="dateStr()"
-              (ngModelChange)="onDateChange($event)"
-            />
-          </div>
-
-          <div class="time-row">
-            <div class="time-field">
-              <label for="deadline_hours">{{ 'VIEWS.DEADLINE_PICKER.HOURS' | translate }}</label>
-              <select id="deadline_hours" [ngModel]="hours()" (ngModelChange)="setHours($event)">
-                @for (h of hourOptions(); track h) {
-                  <option [value]="h">{{ formatTime(h) }}</option>
-                }
-              </select>
-            </div>
-            <div class="time-separator">:</div>
-            <div class="time-field">
-              <label for="deadline_minutes">{{ 'VIEWS.DEADLINE_PICKER.MINUTES' | translate }}</label>
-              <select id="deadline_minutes" [ngModel]="minutes()" (ngModelChange)="setMinutes($event)">
-                @for (m of minuteOptions; track m) {
-                  <option [value]="m">{{ formatTime(m) }}</option>
-                }
-              </select>
-            </div>
-          </div>
-
-          @if (daysLeft() !== null) {
-            <div class="days-left" [class.urgent]="daysLeft()! <= 1">
-              {{ daysLeft() }} {{ 'VIEWS.DEADLINE_PICKER.DAYS_LEFT' | translate }}
-            </div>
-          }
-
-          @if (showReminder()) {
-            <div class="reminder-section">
-              <label class="toggle-label">
-                <input type="checkbox" [checked]="reminderEnabled()" (change)="toggleReminder()">
-                <span>{{ 'VIEWS.DEADLINE_PICKER.SET_REMINDER' | translate }}</span>
-              </label>
-              @if (reminderEnabled() && availableReminders().length) {
-                <select
-                  id="deadline_reminder"
-                  class="reminder-select"
-                  [ngModel]="selectedReminderIndex()"
-                  (ngModelChange)="onReminderSelect($event)"
-                  [attr.aria-label]="'VIEWS.DEADLINE_PICKER.SET_REMINDER' | translate"
-                >
-                  @for (opt of availableReminders(); track $index; let i = $index) {
-                    <option [value]="i">{{ getReminderLabel(opt) }}</option>
-                  }
-                </select>
+    <div class="radio_wrap discussion date_selector" [class.selected]="enabled()">
+      <div class="radio_text_wrap date_selector">
+        <div class="radio_lable_wrap" (click)="toggleDeadline(); $event.stopPropagation();">
+          <label class="checkbox" [class.selected]="enabled()">
+            <span class="checkmark"></span>
+            <div class="checkbox_text_wrap">
+              <span class="bold" [translate]="toggleLabel()"></span>
+              @if (enabled() && dateValue()) {
+                <span class="deadline bold">{{ computeDeadline() | date: 'y-MM-dd HH:mm' }}</span>
               }
             </div>
-          }
+          </label>
         </div>
-      }
+
+        @if (enabled()) {
+          <div class="deadline_wrap">
+            <div class="date_row">
+              <span class="deadline" translate="VIEWS.TOPIC_CREATE.LBL_TIMEZONE"></span>
+            </div>
+            <div class="date_row">
+              <div class="bold date_row_title" translate="VIEWS.TOPIC_CREATE.DEADLINE_LBL_TIME"></div>
+              <div class="input_wrap">
+                <div class="time_wrap">
+                  <input
+                    class="time_input"
+                    type="number"
+                    [min]="minHours()"
+                    [max]="maxHours()"
+                    [ngModel]="endsAtH()"
+                    (ngModelChange)="setHours($event)"
+                  />
+                  <span class="time_separator">:</span>
+                  <input
+                    class="time_input"
+                    type="number"
+                    min="0"
+                    max="59"
+                    step="5"
+                    [ngModel]="endsAtMin()"
+                    (ngModelChange)="setMinutes($event)"
+                  />
+                </div>
+
+                <div class="dropdown" [class.dropdown_active]="showFormatOptions()" (click)="toggleFormatDropdown(); $event.stopPropagation();">
+                  <div class="selection">
+                    <div class="selected_item">
+                      {{ 'VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_' + timeFormat() | uppercase | translate }}
+                    </div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                  </div>
+                  @if (showFormatOptions()) {
+                    <div class="options">
+                      <div class="option" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_24" (click)="setTimeFormat(24)"></div>
+                      <div class="option" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_AM" (click)="setTimeFormat('AM')"></div>
+                      <div class="option" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_PM" (click)="setTimeFormat('PM')"></div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <cos-calender
+              [minDate]="datePickerMin()"
+              [date]="dateValue() || undefined"
+              (dateChange)="onCalenderDateChange($event)"
+              class="discussion"
+            ></cos-calender>
+
+            @if (showReminder()) {
+              <div class="reminder-section">
+                <label class="checkbox-label" (click)="toggleReminder(); $event.stopPropagation();">
+                  <input type="checkbox" [checked]="reminderEnabled()" (click)="$event.stopPropagation()">
+                  <span class="checkmark"></span>
+                  <span class="bold" translate="VIEWS.DEADLINE_PICKER.SET_REMINDER"></span>
+                </label>
+                @if (reminderEnabled() && availableReminders().length) {
+                  <select
+                    id="deadline_reminder"
+                    class="reminder-select"
+                    [ngModel]="selectedReminderIndex()"
+                    (ngModelChange)="onReminderSelect($event)"
+                    [attr.aria-label]="'VIEWS.DEADLINE_PICKER.SET_REMINDER' | translate"
+                  >
+                    @for (opt of availableReminders(); track $index; let i = $index) {
+                      <option [value]="i">{{ getReminderLabel(opt) }}</option>
+                    }
+                  </select>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
     </div>
   `,
   styles: [`
-    .deadline-picker {
-      width: 100%;
-    }
-
-    .deadline-toggle {
-      cursor: pointer;
-    }
-
-    .toggle-label {
+    .radio_wrap {
       display: flex;
-      align-items: center;
+      flex-direction: row;
+      position: relative;
+      padding: 16px;
       gap: 8px;
-      cursor: pointer;
-      font-weight: 500;
-    }
-
-    .deadline-fields {
-      margin-top: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .date-input {
-      width: 100%;
-      padding: 10px 12px;
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      font-size: 14px;
+      border-radius: 8px;
+      cursor: pointer;
       background: var(--color-surfaces);
+      width: 100%;
+      box-sizing: border-box;
+
+      &.selected {
+        border-color: var(--color-primary, #1168a8);
+      }
+
+      .radio_text_wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+
+        .radio_lable_wrap {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+        }
+      }
     }
 
-    .time-row {
+    .checkbox {
       display: flex;
-      align-items: flex-end;
-      gap: 8px;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+
+      input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+
+      .checkmark {
+        height: 24px;
+        width: 24px;
+        background-color: white;
+        border: 1px solid var(--color-border-bold, #727c84);
+        border-radius: 8px;
+        position: relative;
+        flex-shrink: 0;
+        
+        &:after {
+          content: "";
+          position: absolute;
+          display: none;
+          left: 7.5px;
+          top: 3.5px;
+          width: 5px;
+          height: 10px;
+          border: solid white;
+          border-width: 0 3px 3px 0;
+          transform: rotate(45deg);
+        }
+      }
+
+      &.selected .checkmark {
+        background-color: var(--color-link, #1168a8);
+        border-color: var(--color-link, #1168a8);
+        &:after {
+          display: block;
+        }
+      }
+
+      .checkbox_text_wrap {
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+
+        .deadline {
+          font-size: 14px;
+          color: var(--color-text-main, #2c3b47);
+        }
+      }
     }
 
-    .time-field {
+    .deadline_wrap {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      width: 100%;
+      gap: 16px;
+      margin-top: 16px;
+      padding-left: 36px;
+      box-sizing: border-box;
 
-      label {
-        font-size: 12px;
-        color: var(--color-text-muted);
-      }
+      .date_row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
 
-      select {
-        padding: 8px 12px;
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-md);
-        font-size: 14px;
-        background: var(--color-surfaces);
-        min-width: 80px;
-      }
-    }
+        .date_row_title {
+          min-width: 25%;
+          font-weight: 600;
+          font-size: 14px;
+        }
 
-    .time-separator {
-      font-size: 20px;
-      font-weight: 700;
-      padding-bottom: 8px;
-    }
+        .input_wrap {
+          flex-grow: 2;
+          display: flex;
+          gap: 8px;
+          align-items: center;
+          justify-content: flex-end;
+          width: 100%;
 
-    .days-left {
-      font-size: 13px;
-      color: var(--color-text-muted);
+          .time_wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
 
-      &.urgent {
-        color: var(--color-danger);
-        font-weight: 600;
+          .time_input {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+            background: var(--color-surfaces);
+            color: var(--color-text);
+          }
+
+          .time_separator {
+            font-weight: bold;
+          }
+
+          .dropdown {
+            position: relative;
+            cursor: pointer;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            padding: 8px 12px;
+            min-width: 80px;
+            background: var(--color-surfaces);
+
+            .selection {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              font-size: 13px;
+              font-weight: 600;
+            }
+
+            .options {
+              position: absolute;
+              top: 100%;
+              left: 0;
+              width: 100%;
+              background: var(--color-surfaces);
+              border: 1px solid var(--color-border);
+              border-top: none;
+              border-radius: 0 0 4px 4px;
+              z-index: 100;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+              .option {
+                padding: 8px 12px;
+                font-size: 13px;
+
+                &:hover {
+                  background-color: var(--color-background-hover, #f0f0f0);
+                }
+              }
+            }
+          }
+        }
       }
     }
 
@@ -159,16 +298,62 @@ import { inject } from '@angular/core';
       display: flex;
       flex-direction: column;
       gap: 8px;
-      padding-top: 8px;
+      padding-top: 16px;
       border-top: 1px solid var(--color-border);
-    }
+      width: 100%;
 
-    .reminder-select {
-      padding: 8px 12px;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      font-size: 14px;
-      background: var(--color-surfaces);
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+
+        input {
+          position: absolute;
+          opacity: 0;
+          height: 0;
+          width: 0;
+        }
+
+        .checkmark {
+          height: 20px;
+          width: 20px;
+          background-color: white;
+          border: 1px solid var(--color-border-bold);
+          border-radius: 4px;
+          position: relative;
+
+          &:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+          }
+        }
+
+        input:checked ~ .checkmark {
+          background-color: var(--color-link);
+          border-color: var(--color-link);
+          &:after {
+            display: block;
+          }
+        }
+      }
+
+      .reminder-select {
+        padding: 8px 12px;
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        font-size: 14px;
+        background: var(--color-surfaces);
+        margin-top: 8px;
+      }
     }
   `]
 })
@@ -183,9 +368,11 @@ export class DeadlinePickerComponent {
   reminderChange = output<Date | null>();
 
   enabled = signal(false);
-  hours = signal(0);
-  minutes = signal(0);
+  timeFormat = signal<number | string>(24);
+  endsAtH = signal(0);
+  endsAtMin = signal(0);
   dateValue = signal<Date | null>(null);
+  showFormatOptions = signal(false);
   reminderEnabled = signal(false);
   selectedReminderIndex = signal(0);
 
@@ -198,24 +385,20 @@ export class DeadlinePickerComponent {
     { value: 1, unit: 'month' }
   ];
 
-  minuteOptions = Array.from({ length: 12 }, (_, i) => i * 5);
+  datePickerMin = computed(() => new Date());
 
-  hourOptions = computed(() => {
-    const d = this.dateValue();
-    if (d && this.isSameDay(d, new Date())) {
-      return Array.from({ length: 24 - new Date().getHours() }, (_, i) => i + new Date().getHours());
+  minHours = computed(() => {
+    if (this.timeFormat() === 'AM' || this.timeFormat() === 'PM') {
+      return 1;
     }
-    return Array.from({ length: 24 }, (_, i) => i);
+    return 0;
   });
 
-  minDateStr = computed(() => {
-    const now = new Date();
-    return this.dateToStr(now);
-  });
-
-  dateStr = computed(() => {
-    const d = this.dateValue();
-    return d ? this.dateToStr(d) : '';
+  maxHours = computed(() => {
+    if (this.timeFormat() === 'AM' || this.timeFormat() === 'PM') {
+      return 12;
+    }
+    return 23;
   });
 
   daysLeft = computed(() => {
@@ -251,38 +434,86 @@ export class DeadlinePickerComponent {
       const d = this.deadline();
       if (d) {
         this.enabled.set(true);
-        this.dateValue.set(d);
-        this.hours.set(d.getHours());
-        this.minutes.set(d.getMinutes());
+        const parsedDate = new Date(d);
+        this.dateValue.set(parsedDate);
+        this.endsAtH.set(parsedDate.getHours());
+        this.endsAtMin.set(parsedDate.getMinutes());
+        this.timeFormat.set(24); // Default to 24h
       }
-    });
+    }, { allowSignalWrites: true });
   }
 
   toggleDeadline() {
     this.enabled.update(v => !v);
     if (this.enabled()) {
       const now = new Date();
-      this.hours.set(now.getHours());
-      this.minutes.set(Math.ceil(now.getMinutes() / 5) * 5);
+      this.endsAtH.set(now.getHours());
+      this.endsAtMin.set(Math.ceil(now.getMinutes() / 5) * 5);
       this.dateValue.set(now);
+      this.timeFormat.set(24);
       this.emitDeadline();
     } else {
       this.deadlineChange.emit(null);
     }
   }
 
-  onDateChange(dateStr: string) {
-    this.dateValue.set(new Date(dateStr));
+  onCalenderDateChange(date: Date) {
+    this.dateValue.set(date);
     this.emitDeadline();
   }
 
   setHours(h: number) {
-    this.hours.set(+h);
+    let hour = +h;
+    if (isNaN(hour)) hour = 0;
+    const min = this.minHours();
+    const max = this.maxHours();
+    if (hour < min) hour = min;
+    if (hour > max) hour = max;
+    this.endsAtH.set(hour);
     this.emitDeadline();
   }
 
   setMinutes(m: number) {
-    this.minutes.set(+m);
+    let min = +m;
+    if (isNaN(min)) min = 0;
+    if (min < 0) min = 0;
+    if (min > 59) min = 59;
+    this.endsAtMin.set(min);
+    this.emitDeadline();
+  }
+
+  toggleFormatDropdown() {
+    this.showFormatOptions.update(v => !v);
+  }
+
+  setTimeFormat(fmt: number | string) {
+    const prevFormat = this.timeFormat();
+    this.timeFormat.set(fmt);
+    this.showFormatOptions.set(false);
+
+    let h = this.endsAtH();
+    if (fmt === 24) {
+      if (prevFormat === 'PM' && h < 12) {
+        h += 12;
+      } else if (prevFormat === 'AM' && h === 12) {
+        h = 0;
+      }
+    } else {
+      if (prevFormat === 24) {
+        if (h > 12) {
+          h -= 12;
+          this.timeFormat.set('PM');
+        } else if (h === 0) {
+          h = 12;
+          this.timeFormat.set('AM');
+        } else if (h === 12) {
+          this.timeFormat.set('PM');
+        } else {
+          this.timeFormat.set('AM');
+        }
+      }
+    }
+    this.endsAtH.set(h);
     this.emitDeadline();
   }
 
@@ -308,12 +539,23 @@ export class DeadlinePickerComponent {
     return this.translate.instant('OPTION_' + opt.value + '_' + opt.unit.toUpperCase());
   }
 
-  private computeDeadline(): Date | null {
+  computeDeadline(): Date | null {
     const d = this.dateValue();
     if (!d) return null;
     const dl = new Date(d);
-    dl.setHours(this.hours());
-    dl.setMinutes(this.minutes());
+
+    let hour = this.endsAtH();
+    const fmt = this.timeFormat();
+    if (fmt === 'PM' && hour < 12) {
+      hour += 12;
+    } else if (fmt === 'AM' && hour === 12) {
+      hour = 0;
+    }
+
+    dl.setHours(hour);
+    dl.setMinutes(this.endsAtMin());
+    dl.setSeconds(0);
+    dl.setMilliseconds(0);
     return dl;
   }
 
@@ -341,18 +583,5 @@ export class DeadlinePickerComponent {
       }
       this.reminderChange.emit(rt);
     }
-  }
-
-  private isSameDay(a: Date, b: Date): boolean {
-    return a.getFullYear() === b.getFullYear() &&
-      a.getMonth() === b.getMonth() &&
-      a.getDate() === b.getDate();
-  }
-
-  private dateToStr(d: Date): string {
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
   }
 }

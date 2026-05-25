@@ -16,7 +16,7 @@ const mockInvite = {
   level: 'read',
   group: { id: 'group-1', name: 'Test Group', description: 'desc', visibility: 'private' },
   creator: { id: 'creator-1', name: 'Creator' },
-  user: { id: 'user-2', email: 'user@example.com', isRegistered: true },
+  user: { id: 'user-2', name: 'User 2', email: 'user@example.com', isRegistered: true },
 };
 
 const mockDialogRef = { afterClosed: () => of(true) };
@@ -92,7 +92,7 @@ describe('GroupInvitationComponent', () => {
 
   it('does not open dialog when hasDirectJoin and user matches and is logged in', () => {
     const { dialogServiceMock } = setup({
-      invite: { ...mockInvite, user: { id: 'user-1', email: 'me@test.com', isRegistered: true } },
+      invite: { ...mockInvite, user: { id: 'user-1', name: 'User 1', email: 'me@test.com', isRegistered: true } },
       isAuthenticated: true,
       currentUser: { id: 'user-1' },
       queryParams: { join: 'true' },
@@ -102,7 +102,7 @@ describe('GroupInvitationComponent', () => {
 
   it('calls accept when logged in and user ID matches after dialog confirm', () => {
     const { inviteServiceMock } = setup({
-      invite: { ...mockInvite, user: { id: 'user-1', email: 'me@test.com', isRegistered: true } },
+      invite: { ...mockInvite, user: { id: 'user-1', name: 'User 1', email: 'me@test.com', isRegistered: true } },
       isAuthenticated: true,
       currentUser: { id: 'user-1' },
     });
@@ -111,7 +111,7 @@ describe('GroupInvitationComponent', () => {
 
   it('navigates to groups/:groupId after successful accept', () => {
     const { routerMock } = setup({
-      invite: { ...mockInvite, user: { id: 'user-1', email: 'me@test.com', isRegistered: true } },
+      invite: { ...mockInvite, user: { id: 'user-1', name: 'User 1', email: 'me@test.com', isRegistered: true } },
       isAuthenticated: true,
       currentUser: { id: 'user-1' },
     });
@@ -128,7 +128,7 @@ describe('GroupInvitationComponent', () => {
 
   it('navigates to login for registered user not logged in after dialog confirm', () => {
     const { routerMock } = setup({
-      invite: { ...mockInvite, user: { id: 'user-2', email: 'user@example.com', isRegistered: true } },
+      invite: { ...mockInvite, user: { id: 'user-2', name: 'User 2', email: 'user@example.com', isRegistered: true } },
       isAuthenticated: false,
       currentUser: null,
     });
@@ -140,7 +140,7 @@ describe('GroupInvitationComponent', () => {
 
   it('navigates to signup for unregistered user after dialog confirm', () => {
     const { routerMock } = setup({
-      invite: { ...mockInvite, user: { id: 'user-2', email: 'user@example.com', isRegistered: false } },
+      invite: { ...mockInvite, user: { id: 'user-2', name: 'User 2', email: 'user@example.com', isRegistered: false } },
       isAuthenticated: false,
       currentUser: null,
     });

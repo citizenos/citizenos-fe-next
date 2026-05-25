@@ -60,8 +60,8 @@ describe('DeadlinePickerComponent', () => {
     TestBed.flushEffects();
 
     expect(component.enabled()).toBe(true);
-    expect(component.hours()).toBe(future.getHours());
-    expect(component.minutes()).toBe(future.getMinutes());
+    expect(component.endsAtH()).toBe(future.getHours());
+    expect(component.endsAtMin()).toBe(future.getMinutes());
   });
 
   it('should not show reminder section when showReminder is false', () => {

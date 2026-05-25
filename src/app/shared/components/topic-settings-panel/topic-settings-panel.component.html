@@ -2,7 +2,7 @@
   <!-- 1. Visibility -->
   <div class="create_content_section">
     <div class="number_wrap">1</div>
-    <div class="section_content_wrap">
+    <div class="section_content_wrap" [class.disabled]="isCreatedFromGroup()">
       <div class="header_wrap">
         <h2 class="small_heading">{{ 'VIEWS.TOPIC_CREATE.SETTINGS_HEADING_VISIBILITY' | translate }}</h2>
         <div class="description" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_DESC"></div>
@@ -19,7 +19,7 @@
           <div class="radio_text_wrap">
             <div class="radio_lable_wrap">
               <label class="radio_box">
-                <input type="radio" [checked]="visibility() === 'private'" name="visibility" value="private">
+                <input type="radio" [checked]="visibility() === 'private'" name="visibility" value="private" [disabled]="isCreatedFromGroup()">
                 <span class="radio"></span>
                 <div class="radio_lable" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PRIVATE"></div>
               </label>
@@ -38,7 +38,7 @@
           <div class="radio_text_wrap">
             <div class="radio_lable_wrap">
               <label class="radio_box">
-                <input type="radio" [checked]="visibility() === 'public'" name="visibility" value="public">
+                <input type="radio" [checked]="visibility() === 'public'" name="visibility" value="public" [disabled]="isCreatedFromGroup()">
                 <span class="radio"></span>
                 <div class="radio_lable" translate="VIEWS.TOPIC_CREATE.SETTINGS_VISIBILITY_PUBLIC"></div>
               </label>
@@ -139,14 +139,59 @@
             }
           </div>
         </cos-dropdown>
+        
         @if (addedGroups().length) {
-          <div class="group-list">
+          <div class="small_heading groups_list_heading" translate="VIEWS.TOPIC_CREATE.SETTINGS_HEADING_GROUP_LIST"></div>
+          
+          <div id="topic_members_list_wrap" class="table_section">
+            <div class="row_header mobile_hidden">
+              <div class="row_cell" translate="VIEWS.TOPIC_CREATE.GROUPS_LIST_TITLE"></div>
+              <div class="row_cell with_tooltip">
+                <span translate="VIEWS.TOPIC_CREATE.HEADING_GROUP_PERMISSIONS"></span>
+                <cos-tooltip
+                  [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_GROUP_PERMISSIONS_TITLE' | translate"
+                  [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_GROUP_PERMISSIONS_CONTENT' | translate"
+                ></cos-tooltip>
+              </div>
+              <div class="row_cell mobile_hide" translate="VIEWS.TOPIC_CREATE.HEADING_ACTIONS"></div>
+            </div>
+
             @for (group of addedGroups(); track group.id) {
-              <div class="group-row">
-                <span class="group-name">{{ group.name }}</span>
-                <button type="button" class="remove-group-btn" (click)="removeGroup(group)" [attr.aria-label]="'CONTROL.DELETE' | translate">
-                  <cos-icon name="close" [size]="16"></cos-icon>
-                </button>
+              <div class="row_list">
+                <div class="row_cell">
+                  <div class="cell_title" translate="VIEWS.TOPIC_CREATE.GROUPS_LIST_TITLE"></div>
+                  <a target="_blank" [routerLink]="['/', translate.currentLang, 'groups', group.id]" class="member_topic_title">
+                    {{ group.name }}
+                  </a>
+                </div>
+
+                <div class="row_cell">
+                  <div class="cell_title" translate="VIEWS.TOPIC_CREATE.HEADING_GROUP_PERMISSIONS">
+                    <cos-tooltip
+                      [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_GROUP_PERMISSIONS_TITLE' | translate"
+                      [description]="'VIEWS.TOPIC_CREATE.TOOLTIP_GROUP_PERMISSIONS_CONTENT' | translate"
+                    ></cos-tooltip>
+                  </div>
+
+                  <cos-dropdown class="permission-dropdown">
+                    <div selection role="button" tabindex="0">
+                      {{ 'TXT_TOPIC_LEVELS_' + (group.level || 'read') | uppercase | translate }}
+                    </div>
+                    <div options>
+                      @for (level of LEVELS; track level) {
+                        <div class="option" (click)="setGroupLevel(group, level)" (keydown.enter)="setGroupLevel(group, level)" tabindex="0" role="button">
+                          {{ 'TXT_TOPIC_LEVELS_' + level | uppercase | translate }}
+                        </div>
+                      }
+                    </div>
+                  </cos-dropdown>
+                </div>
+
+                <div class="row_cell remove_item_mobile">
+                  <button type="button" class="remove-btn" (click)="removeGroup(group)">
+                    <cos-icon name="trash" [size]="16"></cos-icon>
+                  </button>
+                </div>
               </div>
             }
           </div>

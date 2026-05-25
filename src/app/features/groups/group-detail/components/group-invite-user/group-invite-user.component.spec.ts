@@ -22,7 +22,7 @@ describe('GroupInviteUserComponent', () => {
 
   beforeEach(() => {
     inviteUserService = {
-      LEVELS: ['read', 'admin'],
+      LEVELS: { read: 'read', admin: 'admin' },
       updateInvite: vi.fn().mockReturnValue(of(null)),
       deleteInvite: vi.fn().mockReturnValue(of(null))
     };

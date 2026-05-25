@@ -1,7 +1,8 @@
-import { Component, output, signal, inject, ChangeDetectionStrategy, effect, model } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { Component, output, signal, inject, ChangeDetectionStrategy, effect, model, input, OnInit } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { UpperCasePipe } from '@angular/common';
+import { UpperCasePipe, CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Topic } from '../../../core/interfaces/topic';
 import { Group } from '../../../core/interfaces/group';
 import { TopicService } from '../../../core/services/topic.service';
@@ -22,18 +23,29 @@ export interface TopicMemberGroup {
 @Component({
   selector: 'cos-topic-settings-panel',
   standalone: true,
-  imports: [TranslateModule, FormsModule, UpperCasePipe, DropdownComponent, IconComponent, TooltipComponent],
+  imports: [
+    TranslateModule,
+    FormsModule,
+    UpperCasePipe,
+    CommonModule,
+    RouterLink,
+    DropdownComponent,
+    IconComponent,
+    TooltipComponent
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-settings-panel.component.html',
   styleUrl: './topic-settings-panel.component.scss'
 })
-export class TopicSettingsPanelComponent {
+export class TopicSettingsPanelComponent implements OnInit {
   private topicService = inject(TopicService);
   private countryService = inject(CountryService);
   private languageService = inject(LanguageService);
+  public translate = inject(TranslateService);
 
   topic = model<Topic>({} as Topic);
   groups = model<Group[]>([]);
+  isCreatedFromGroup = input<boolean>(false);
 
   visibilityChange = output<string>();
   categoriesChange = output<string[]>();
@@ -51,6 +63,7 @@ export class TopicSettingsPanelComponent {
   categoryKeys = Object.keys(this.topicService.CATEGORIES);
   countries = this.countryService.countries;
   languages = this.languageService.languages;
+  LEVELS = ['read', 'edit', 'admin'];
 
   availableGroups = signal<Group[]>([]);
 
@@ -58,19 +71,38 @@ export class TopicSettingsPanelComponent {
     effect(() => {
       const t = this.topic();
       if (t && t.id) {
-        this.visibility.set(t.visibility || 'private');
+        if (this.isCreatedFromGroup()) {
+          this.visibility.set('private');
+        } else {
+          this.visibility.set(t.visibility || 'private');
+        }
         this.categories.set([...(t.categories || [])]);
         this.country.set(t.country || null);
         this.language.set(t.language || null);
       }
-    });
+    }, { allowSignalWrites: true });
 
     effect(() => {
       this.availableGroups.set(this.groups());
     });
+
+    effect(() => {
+      if (this.isCreatedFromGroup()) {
+        this.visibility.set('private');
+        this.visibilityChange.emit('private');
+      }
+    }, { allowSignalWrites: true });
+  }
+
+  ngOnInit(): void {
+    if (this.isCreatedFromGroup()) {
+      this.visibility.set('private');
+      this.visibilityChange.emit('private');
+    }
   }
 
   setVisibility(v: string) {
+    if (this.isCreatedFromGroup()) return;
     this.visibility.set(v);
     this.visibilityChange.emit(v);
   }
@@ -104,7 +136,8 @@ export class TopicSettingsPanelComponent {
 
   addGroup(group: Group) {
     if (!this.isGroupAdded(group)) {
-      this.addedGroups.update(gs => [...gs, { ...group, level: 'read' }]);
+      const newGroup: TopicMemberGroup = { ...group, level: 'read' };
+      this.addedGroups.update(gs => [...gs, newGroup]);
       this.groupsAdded.emit(this.addedGroups());
     }
   }
@@ -112,5 +145,12 @@ export class TopicSettingsPanelComponent {
   removeGroup(group: TopicMemberGroup) {
     this.addedGroups.update(gs => gs.filter(g => g.id !== group.id));
     this.groupRemoved.emit(group);
+  }
+
+  setGroupLevel(group: TopicMemberGroup, level: string) {
+    this.addedGroups.update(gs =>
+      gs.map(g => (g.id === group.id ? { ...g, level } : g))
+    );
+    this.groupsAdded.emit(this.addedGroups());
   }
 }

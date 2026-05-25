@@ -41,13 +41,16 @@
 
 .header_wrap {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
 
   .small_heading {
     font-size: 16px;
     font-weight: 600;
     line-height: 24px;
+    margin: 0;
   }
 
   .description {
@@ -66,7 +69,7 @@
   }
 }
 
-// Radio button styles — matches legacy .radio_wrap / .radio_box / .radio pattern
+// Radio button styles
 .radio_wrap {
   width: 100%;
   display: flex;
@@ -81,6 +84,7 @@
 
   &.active {
     color: var(--color-link);
+    border-color: var(--color-link, #1168a8);
   }
 
   &:hover {
@@ -122,7 +126,7 @@
   }
 
   .radio_lable {
-    font-size: var(--font-size);
+    font-size: 14px;
     line-height: 16px;
     font-weight: 600;
   }
@@ -160,7 +164,7 @@
   }
 }
 
-// Category chips
+// Category selection
 #category_selection {
   display: flex;
   flex-wrap: wrap;
@@ -175,6 +179,7 @@
     font-weight: 600;
     cursor: pointer;
     align-items: center;
+    border: none;
   }
 }
 
@@ -192,7 +197,7 @@
     flex-direction: column;
     gap: 8px;
 
-    label {
+    .label {
       font-size: 13px;
       font-weight: 600;
       color: var(--color-text-muted);
@@ -200,37 +205,122 @@
   }
 }
 
-.group-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
+// Reconstructed Table Section for added groups (matching legacy look)
+.groups_list_heading {
+  margin-top: 24px;
+  font-weight: 600;
+  font-size: 15px;
 }
 
-.group-row {
+.table_section {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+}
+
+.row_header {
+  display: flex;
+  width: 100%;
   padding: 12px 16px;
-  background: var(--color-background);
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
+  background-color: var(--color-surfaces);
+  border-bottom: 2px solid var(--color-border, #e1e7ee);
+  box-sizing: border-box;
 
-  .group-name {
-    font-weight: 500;
-  }
-
-  .remove-group-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--color-text-muted);
-    padding: 4px;
+  .row_cell {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--color-text-muted, #727c84);
     display: flex;
+    align-items: center;
 
-    &:hover {
-      color: var(--color-danger);
+    &.with_tooltip {
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
+  }
+}
+
+.row_list {
+  display: flex;
+  width: 100%;
+  padding: 16px;
+  background-color: var(--color-background, #f8f9fa);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  align-items: center;
+  box-sizing: border-box;
+
+  .row_cell {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+
+    .cell_title {
+      display: none; // hidden on desktop
+    }
+
+    .member_topic_title {
+      font-weight: 600;
+      color: var(--color-link, #1168a8);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .permission-dropdown {
+      position: relative;
+      cursor: pointer;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 6px 12px;
+      min-width: 120px;
+      background: var(--color-surfaces);
+
+      .selection {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        font-weight: 600;
+      }
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: var(--color-secondary, #e1e7ee);
+        color: var(--color-danger, #ef4025);
+      }
+    }
+  }
+}
+
+// Row cell column size definitions
+.row_cell {
+  &:first-child {
+    width: 45%;
+    flex-grow: 1;
+  }
+  &:nth-child(2) {
+    width: 35%;
+    justify-content: flex-start;
+  }
+  &:nth-child(3) {
+    width: 20%;
+    justify-content: flex-end;
   }
 }
 
@@ -240,4 +330,35 @@
   color: var(--color-text-muted);
   background: var(--color-background);
   border-radius: 8px;
+}
+
+// Responsive layout for mobile (table elements stacked)
+@media (max-width: 768px) {
+  .row_header {
+    display: none !important; // hide header row on mobile
+  }
+
+  .row_list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+
+    .row_cell {
+      width: 100% !important;
+      justify-content: space-between !important;
+      flex-direction: row;
+
+      .cell_title {
+        display: block; // show custom cell headings
+        font-weight: 600;
+        font-size: 12px;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+      }
+
+      &.remove_item_mobile {
+        justify-content: flex-end !important;
+      }
+    }
+  }
 }
