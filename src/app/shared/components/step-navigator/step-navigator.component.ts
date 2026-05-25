@@ -46,6 +46,16 @@ export interface StepConfig {
       border-radius: 16px;
       padding: 0 16px;
       width: 100%;
+
+      @media (max-width: 1024px) {
+        border-radius: 0;
+        margin-top: -16px;
+        padding: 0 8px;
+      }
+
+      @media (max-width: 768px) {
+        justify-content: space-between;
+      }
     }
 
     .step-tab {
@@ -63,6 +73,10 @@ export interface StepConfig {
       &.active {
         border-bottom-color: var(--color-link);
         font-weight: 600;
+
+        .step-icon-mobile {
+          color: var(--color-link);
+        }
       }
 
       &.completed {
@@ -100,9 +114,14 @@ export interface StepConfig {
         flex-grow: 1;
         padding: 12px;
         justify-content: center;
+        gap: 4px;
       }
       .step-actions {
         display: none;
+      }
+      .step-icon-mobile {
+        display: flex;
+        align-items: center;
       }
     }
   `]
