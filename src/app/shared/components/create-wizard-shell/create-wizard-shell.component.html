@@ -5,8 +5,13 @@
         <cos-domain-icon [type]="domainType()"></cos-domain-icon>
         <span class="small_heading" [translate]="headingKey()"></span>
       </h1>
-      
-      <div class="buttons_wrap tablet_hidden">
+    </div>
+    <cos-step-navigator
+      [steps]="steps()"
+      [currentStep]="currentStep()"
+      (stepChange)="stepChange.emit($event)"
+    >
+      <div actions class="buttons_wrap tablet_hidden">
         @if (topic()?.id) {
           <a class="btn_medium_plain icon" [href]="getDownloadUrl()" target="_blank">
             <cos-icon name="download" [size]="24"></cos-icon>
@@ -18,12 +23,6 @@
           }
         }
       </div>
-    </div>
-    <cos-step-navigator
-      [steps]="steps()"
-      [currentStep]="currentStep()"
-      (stepChange)="stepChange.emit($event)"
-    >
     </cos-step-navigator>
   </div>
 
