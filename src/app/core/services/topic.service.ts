@@ -37,7 +37,7 @@ export class TopicService {
     agriculture: "agriculture", animal_protection: "animal_protection",
     arts: "arts", business: "business", civil_society: "civil_society",
     communities: "communities", culture: "culture", defence: "defence",
-    democracy: "democracy", diversity: "democracy", education: "education",
+    democracy: "democracy", diversity: "diversity", education: "education",
     entertainment: "entertainment", environment: "environment", equality: "equality",
     health: "health", human_rights: "human_rights", legal: "legal", media: "media",
     migration: "migration", politics: "politics", public_transportation: "public_transportation",

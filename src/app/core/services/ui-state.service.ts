@@ -6,6 +6,7 @@ export class UiStateService {
   showFeedback = signal(false);
   showOnboarding = signal(false);
   showAccessibility = signal(false);
+  onboardingContext = signal<'dashboard' | 'topic'>('dashboard');
 
   accessibility = signal({
     contrast: 'default',

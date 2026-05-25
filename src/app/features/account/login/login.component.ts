@@ -1,6 +1,6 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
@@ -229,6 +229,7 @@ import { UserService } from '../../../core/services/user.service';
 export class LoginComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private userService = inject(UserService);
   userStore = inject(UserStore);
 
@@ -245,7 +246,8 @@ export class LoginComponent {
   }
 
   doLoginPartner(partnerId: string) {
-    window.location.href = this.userService.getPartnerLoginUrl(partnerId);
+    const redirectSuccess = (this.route.snapshot.queryParams as any)['redirectSuccess'];
+    window.location.href = this.userService.getPartnerLoginUrl(partnerId, redirectSuccess);
   }
 
   async onSubmit() {
@@ -253,7 +255,12 @@ export class LoginComponent {
       const { email, password } = this.loginForm.getRawValue();
       try {
         await this.userStore.login(email!, password!);
-        this.router.navigate(['/']);
+        const redirectSuccess = (this.route.snapshot.queryParams as any)['redirectSuccess'];
+        if (redirectSuccess) {
+          window.location.href = redirectSuccess;
+        } else {
+          this.router.navigate(['/']);
+        }
       } catch {
         this.error.set('Login failed. Please check your credentials.');
       }

@@ -10,6 +10,11 @@
   font-family: inherit;
   user-select: none;
 
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
   .toggle_widget {
     display: flex;
     position: relative;

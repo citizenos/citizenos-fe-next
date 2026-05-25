@@ -78,7 +78,7 @@ export class TypeaheadSelectDirective implements OnDestroy {
 @Component({
   selector: 'cos-typeahead',
   standalone: true,
-  imports: [FormsModule, TranslateModule, IconComponent, TypeaheadItemDirective, TypeaheadSelectDirective],
+  imports: [FormsModule, TranslateModule, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

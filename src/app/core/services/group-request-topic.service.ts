@@ -55,6 +55,13 @@ export class GroupRequestTopicService {
     return this.save(groupId, topicId, level, text);
   }
 
+  get(params: { groupId: string; requestId: string }): Observable<GroupTopicRequest> {
+    return this.http.get<ApiResponse<GroupTopicRequest>>(
+      this.getAbsoluteUrlApi(`/groups/${params.groupId}/requests/topics/${params.requestId}`),
+      { withCredentials: true }
+    ).pipe(map(res => res.data!));
+  }
+
   accept(groupId: string, requestId: string): Observable<unknown> {
     return this.http.post<ApiResponse<unknown>>(
       this.getAbsoluteUrlApi(`/groups/${groupId}/requests/topics/${requestId}/accept`),

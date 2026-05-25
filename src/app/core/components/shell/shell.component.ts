@@ -10,6 +10,7 @@ import { OnboardingComponent } from './onboarding/onboarding.component';
 import { AccessibilityMenuComponent } from './accessibility-menu/accessibility-menu.component';
 import { UiStateService } from '../../services/ui-state.service';
 import { TourComponent } from '../../../shared/components/tour/tour.component';
+import { SiteNotificationComponent } from '../../../shared/components/site-notification/site-notification.component';
 
 @Component({
   selector: 'app-shell',
@@ -23,10 +24,12 @@ import { TourComponent } from '../../../shared/components/tour/tour.component';
     FeedbackComponent,
     OnboardingComponent,
     AccessibilityMenuComponent,
-    TourComponent
+    TourComponent,
+    SiteNotificationComponent
   ],
   template: `
     <div id="content_root" [class]="uiState.accessibilityClasses()" [class.dark-theme]="configStore.isDarkTheme()">
+      <cos-site-notification></cos-site-notification>
       <cos-nav />
       <div id="main-content" tabindex="-1">
         <router-outlet></router-outlet>

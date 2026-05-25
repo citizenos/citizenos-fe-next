@@ -5,7 +5,7 @@ export interface IdeationFolder {
   ideationId: string;
   name: string;
   description?: string | null;
-  ideas?: { count: number };
+  ideas?: { count: number; rows?: Idea[] };
   createdAt?: string;
   updatedAt?: string;
 }

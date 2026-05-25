@@ -1,13 +1,16 @@
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { take } from 'rxjs';
+import { take, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicReportService } from '../../../../../core/services/topic-report.service';
+import { TopicService } from '../../../../../core/services/topic.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
+import { DialogService } from '../../../../../shared/dialog/dialog.service';
 
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
@@ -79,3 +82,40 @@ export class TopicReportReviewComponent {
     this.dialogRef.close();
   }
 }
+
+@Component({
+  selector: 'app-topic-report-review-dialog',
+  standalone: true,
+  template: ''
+})
+export class TopicReportReviewDialogComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dialog = inject(DialogService);
+  private topicService = inject(TopicService);
+
+  ngOnInit() {
+    this.route.params.pipe(
+      take(1),
+      switchMap((params) => {
+        const topicId = params['topicId'];
+        return this.topicService.get(topicId).pipe(
+          take(1),
+          switchMap((topic) => {
+            const dialogRef = this.dialog.open(TopicReportReviewComponent, {
+              data: { topic }
+            });
+            return dialogRef.afterClosed().pipe(
+              take(1),
+              switchMap(() => {
+                const lang = this.router.url.split('/')[1] || 'en';
+                return this.router.navigate([lang, 'topics', topicId]);
+              })
+            );
+          })
+        );
+      })
+    ).subscribe();
+  }
+}
+

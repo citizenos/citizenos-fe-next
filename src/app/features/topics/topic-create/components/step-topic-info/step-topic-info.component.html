@@ -36,7 +36,7 @@
         }
       </div>
     </div>
-    @if (block().title || topic().title) {
+    @if (block().title) {
     <div class="block_content">
       <label class="hidden" for="title_input">{{ 'VIEWS.TOPIC_CREATE.TITLE_HEADING' | translate }}</label>
       <input #topicTitle id="title_input" type="text" placeholder="..." [ngModel]="topic().title"
@@ -58,7 +58,7 @@
         <div class="char_counter">{{ (topic().intro?.length || 0) }}/{{ introLimit }}</div>
       </div>
     </div>
-    @if (block().intro || topic().intro) {
+    @if (block().intro) {
     <div class="block_content">
       <label class="hidden" for="intro_input">{{ 'VIEWS.TOPIC_CREATE.TITLE_INTRO' | translate }}</label>
       <textarea #topicIntro id="intro_input" placeholder="..." [ngModel]="topic().intro"

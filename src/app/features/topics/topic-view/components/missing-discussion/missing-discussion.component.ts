@@ -4,7 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { DeadlinePickerComponent } from '../../../../../shared/components/deadline-picker/deadline-picker.component';
 import { TopicDiscussionService } from '../../../../../core/services/topic-discussion.service';
@@ -20,7 +19,7 @@ export interface MissingDiscussionData {
   selector: 'cos-missing-discussion',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, FormsModule, DialogCloseDirective, IconComponent, InputComponent, DeadlinePickerComponent],
+  imports: [TranslateModule, FormsModule, DialogCloseDirective, InputComponent, DeadlinePickerComponent],
   templateUrl: './missing-discussion.component.html',
   styleUrl: './missing-discussion.component.scss',
 })

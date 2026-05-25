@@ -30,9 +30,9 @@
 
 
         @if (isLoggedIn()) {
-          <cos-activities-button class="mobile_hidden"></cos-activities-button>
+          <cos-activities-button class="mobile_hidden" [groupId]="group.id"></cos-activities-button>
           <button type="button" class="btn_medium_close icon" (click)="toggleFavourite()" [attr.aria-label]="(group.favourite ? 'VIEWS.GROUP.BTN_OPTION_UNFAVOURITE' : 'VIEWS.GROUP.BTN_OPTION_FAVOURITE') | translate">
-            <cos-icon [name]="group.favourite ? 'favourite-filled-legacy' : 'favourite-legacy'" [size]="24"></cos-icon>
+            <cos-icon [name]="group.favourite ? 'favourite-filled' : 'favourite'" [size]="24"></cos-icon>
           </button>
         }
 
@@ -198,7 +198,74 @@
 
     <!-- TABS -->
     <cos-tabs [tabs]="groupTabs()" [activeTab]="tabSelected()" (selectTab)="selectTab($event)">
-      <!-- Topics tab: create/manage button -->
+      @if (tabSelected() === 'topics' && isAdmin()) {
+        <div class="tab_actions">
+          <div class="dropdown button_dropdown" [class.dropdown_active]="manageTopicsOpen()" (click)="$event.stopPropagation()">
+            <button type="button" class="btn_medium_close" (click)="manageTopicsOpen.set(!manageTopicsOpen())" [attr.aria-expanded]="manageTopicsOpen()">
+              <span>{{ 'VIEWS.GROUP.BTN_MANAGE_TOPICS' | translate }}</span>
+              <cos-icon name="chevron-down" [size]="16"></cos-icon>
+            </button>
+            @if (manageTopicsOpen()) {
+              <div class="options">
+                <button type="button" class="option" (click)="openAddTopics(); manageTopicsOpen.set(false)">
+                  <div class="icon_wrap"><cos-icon name="plus" [size]="16"></cos-icon></div>
+                  <span>{{ 'VIEWS.GROUP.LNK_ADD_TOPICS' | translate }}</span>
+                </button>
+                <button type="button" class="option" (click)="removeTopics.set(!removeTopics()); manageTopicsOpen.set(false)">
+                  <div class="icon_wrap"><cos-icon name="trash" [size]="16"></cos-icon></div>
+                  <span>{{ 'VIEWS.GROUP.LNK_REMOVE_TOPICS' | translate }}</span>
+                </button>
+                <button type="button" class="option" (click)="removeAllTopics(); manageTopicsOpen.set(false)">
+                  <div class="icon_wrap"><cos-icon name="trash" [size]="16"></cos-icon></div>
+                  <span>{{ 'VIEWS.GROUP.LNK_REMOVE_ALL_TOPICS' | translate }}</span>
+                </button>
+                <button type="button" class="option" (click)="openTopicRequests(); manageTopicsOpen.set(false)">
+                  <div class="icon_wrap"><cos-icon name="mail" [size]="16"></cos-icon></div>
+                  <span>{{ 'VIEWS.GROUP.LNK_TOPIC_REQUESTS' | translate }}</span>
+                </button>
+              </div>
+            }
+          </div>
+          <button type="button" class="btn_medium_submit mobile_hidden" (click)="showCreateInContent.set(true)">
+            <cos-icon name="plus" [size]="16"></cos-icon>
+            <span>{{ 'VIEWS.GROUP.BTN_ADD_OR_CREATE_TOPICS' | translate }}</span>
+          </button>
+        </div>
+      }
+      @if (tabSelected() === 'members' && isAdmin()) {
+        <div class="tab_actions">
+          <div class="dropdown button_dropdown" [class.dropdown_active]="manageMembersOpen()" (click)="$event.stopPropagation()">
+            <button type="button" class="btn_medium_close" (click)="manageMembersOpen.set(!manageMembersOpen())" [attr.aria-expanded]="manageMembersOpen()">
+              <span>{{ 'VIEWS.GROUP.BTN_MANAGE_MEMBERS' | translate }}</span>
+              <cos-icon name="chevron-down" [size]="16"></cos-icon>
+            </button>
+            @if (manageMembersOpen()) {
+              <div class="options">
+                <button type="button" class="option" (click)="openInvite(); manageMembersOpen.set(false)">
+                  <div class="icon_wrap"><cos-icon name="plus" [size]="16"></cos-icon></div>
+                  <span>{{ 'VIEWS.GROUP.LNK_ADD_MEMBERS' | translate }}</span>
+                </button>
+                <button type="button" class="option" (click)="setAllRights('admin'); manageMembersOpen.set(false)">
+                  <div class="icon_wrap"><cos-icon name="settings" [size]="16"></cos-icon></div>
+                  <span>{{ 'VIEWS.GROUP.LNK_ALL_MEMBERS_ADMIN' | translate }}</span>
+                </button>
+                <button type="button" class="option" (click)="setAllRights('edit'); manageMembersOpen.set(false)">
+                  <div class="icon_wrap"><cos-icon name="settings" [size]="16"></cos-icon></div>
+                  <span>{{ 'VIEWS.GROUP.LNK_ALL_MEMBERS_EDIT' | translate }}</span>
+                </button>
+                <button type="button" class="option" (click)="setAllRights('read'); manageMembersOpen.set(false)">
+                  <div class="icon_wrap"><cos-icon name="settings" [size]="16"></cos-icon></div>
+                  <span>{{ 'VIEWS.GROUP.LNK_ALL_MEMBERS_READ' | translate }}</span>
+                </button>
+                <button type="button" class="option error_text" (click)="removeAllMembers(); manageMembersOpen.set(false)">
+                  <div class="icon_wrap"><cos-icon name="trash" [size]="16"></cos-icon></div>
+                  <span>{{ 'VIEWS.GROUP.LNK_REMOVE_ALL_MEMBERS' | translate }}</span>
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
     </cos-tabs>
 
     <!-- TOPICS TAB CONTENT -->

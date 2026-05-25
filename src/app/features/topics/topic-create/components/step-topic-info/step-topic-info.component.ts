@@ -47,17 +47,26 @@ export class StepTopicInfoComponent implements OnInit {
 
   block = signal({
     headerImage: false,
-    title: true,
-    intro: true,
-    description: true
+    title: false,
+    intro: false,
+    description: false
   });
 
   ngOnInit() {
-    // Open image block if image exists
     const t = this.topic();
-    if (t.imageUrl) {
-      this.block.update(b => ({ ...b, headerImage: true }));
-    }
+    this.block.update(b => {
+      const updates = { ...b };
+      if (t.imageUrl) updates.headerImage = true;
+      if (t.title) updates.title = true;
+      if (t.intro) updates.intro = true;
+      if (t.description) {
+        const hasText = !!t.description.replace(/<[^>]*>/g, '').trim();
+        if (hasText) {
+          updates.description = true;
+        }
+      }
+      return updates;
+    });
   }
 
   // Cached so Angular doesn't see a new object on every render and reload the iframe

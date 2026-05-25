@@ -156,8 +156,8 @@
 }
 
 .radio_box input:checked ~ .radio {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
+  background-color: #5c9cd0;
+  border-color: #1168a8;
 
   &::after {
     display: block;

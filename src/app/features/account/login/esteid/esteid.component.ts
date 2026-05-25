@@ -1,7 +1,7 @@
 import { Component, inject, signal, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { interval, Subscription, takeWhile, switchMap } from 'rxjs';
 import { UserStore } from '../../../../core/state/user.store';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -209,6 +209,7 @@ import * as webeid from '@web-eid/web-eid-library/web-eid';
 })
 export class EstEidComponent implements OnDestroy {
   private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
   userStore = inject(UserStore);
 
   challengeID = signal<string | number | null>(null);
@@ -252,7 +253,12 @@ export class EstEidComponent implements OnDestroy {
       const nonce = "s26kIBTGw/XlFHtC3LF16i1hAwK9syO5NgcgAL77iu4=";
       const authResponse = await webeid.authenticate(nonce, { lang: 'et' });
       await this.userStore.loginIdCard(authResponse);
-      window.location.reload();
+      const redirectSuccess = this.route.snapshot.queryParams['redirectSuccess'];
+      if (redirectSuccess) {
+        window.location.href = redirectSuccess;
+      } else {
+        window.location.reload();
+      }
     } catch (err: unknown) {
       const error = err as { message?: string };
       this.error.set(error.message || 'ID-card authentication failed.');
@@ -277,7 +283,12 @@ export class EstEidComponent implements OnDestroy {
           if (res && res.status?.code !== 20001) {
             this.userStore.checkStatus();
             this.challengeID.set(null);
-            window.location.reload();
+            const redirectSuccess = this.route.snapshot.queryParams['redirectSuccess'];
+            if (redirectSuccess) {
+              window.location.href = redirectSuccess;
+            } else {
+              window.location.reload();
+            }
           }
         },
         error: (_err) => {

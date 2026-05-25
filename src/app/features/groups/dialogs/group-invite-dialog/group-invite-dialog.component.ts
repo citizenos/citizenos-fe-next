@@ -22,7 +22,7 @@ import { Group } from '../../../../core/interfaces/group';
 import { UserStore } from '../../../../core/state/user.store';
 import { of, switchMap, take } from 'rxjs';
 import { SearchResults } from '../../../../core/interfaces/search';
-import { KeyValuePipe, UpperCasePipe } from '@angular/common';
+import { KeyValuePipe } from '@angular/common';
 
 export interface GroupInviteUser {
   userId: string;
@@ -51,7 +51,7 @@ function isEmail(s: string) { return EMAIL_RE.test(s.trim()); }
   imports: [
     TranslateModule, FormsModule, IconComponent, DropdownComponent,
     TypeaheadComponent, TypeaheadItemDirective, TypeaheadSelectDirective, DialogCloseDirective, GroupShareComponent, ButtonComponent,
-    TooltipComponent, KeyValuePipe, UpperCasePipe
+    TooltipComponent, KeyValuePipe
   ],
   templateUrl: './group-invite-dialog.component.html',
   styleUrls: ['./group-invite-dialog.component.scss'],

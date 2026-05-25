@@ -1,5 +1,5 @@
-import { Component, input, inject, signal, effect, computed, ChangeDetectionStrategy, PLATFORM_ID, HostListener } from '@angular/core';
-import { DatePipe, isPlatformBrowser, UpperCasePipe, TitleCasePipe, KeyValuePipe, AsyncPipe, CommonModule } from '@angular/common';
+import { Component, input, inject, signal, computed, ChangeDetectionStrategy, PLATFORM_ID, HostListener, effect } from '@angular/core';
+import { DatePipe, isPlatformBrowser, AsyncPipe } from '@angular/common';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
@@ -20,7 +20,6 @@ import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
-import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { municipalities } from '../../../../../core/services/municipality.service';
 import { AddIdeaFolderComponent } from '../add-idea-folder/add-idea-folder.component';
@@ -44,18 +43,8 @@ import { EditIdeationDeadlineComponent } from '../edit-ideation-deadline/edit-id
     IconComponent,
     CosDropdownDirective,
     InitialsComponent,
-    TooltipComponent,
     InputComponent,
-    UpperCasePipe,
-    TitleCasePipe,
-    KeyValuePipe,
-    AsyncPipe,
-    CommonModule,
-    AddIdeaFolderComponent,
-    AddIdeasToFolderComponent,
-    CreateIdeaFolderComponent,
-    EditIdeaFolderComponent,
-    EditIdeationDeadlineComponent
+    AsyncPipe
   ],
   templateUrl: './topic-ideation.component.html',
   styleUrls: ['./topic-ideation.component.scss'],

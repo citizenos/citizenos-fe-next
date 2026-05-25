@@ -22,8 +22,6 @@ import { ConfirmDialogComponent } from '../../../../../shared/components/confirm
 import { ArgumentComponent } from '../argument/argument.component';
 import { PostArgumentFormComponent } from '../post-argument-form/post-argument-form.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 
 @Component({
@@ -33,7 +31,7 @@ import { PaginationComponent } from '../../../../../shared/components/pagination
   imports: [
     DatePipe, UpperCasePipe, TranslateModule,
     ArgumentComponent, PostArgumentFormComponent,
-    ButtonComponent, IconComponent, PaginationComponent,
+    PaginationComponent,
     DropdownComponent, RouterLink
   ],
   templateUrl: './topic-discussion.component.html',

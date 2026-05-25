@@ -14,7 +14,6 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
@@ -32,7 +31,7 @@ import { MarkdownPipe } from '../../../../../shared/pipes/markdown.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe, FormsModule, TranslateModule,
-    IconComponent, InitialsComponent, CosDropdownDirective,
+    InitialsComponent, CosDropdownDirective,
     TooltipComponent, ArgumentDeletedComponent,
     ArgumentReplyComponent, ArgumentEditsComponent, EditArgumentComponent,
     MarkdownPipe,

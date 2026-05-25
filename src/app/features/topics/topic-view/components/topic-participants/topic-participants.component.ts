@@ -2,11 +2,12 @@ import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } 
 import { FormsModule } from '@angular/forms';
 import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
+import { DIALOG_DATA, DialogRef, DialogService } from '../../../../../shared/dialog';
 import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
 import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
 import { TopicMemberGroupService } from '../../../../../core/services/topic-member-group.service';
 import { TopicInviteUserService } from '../../../../../core/services/topic-invite-user.service';
+import { TopicService } from '../../../../../core/services/topic.service';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
@@ -15,7 +16,8 @@ import { TopicMemberGroupComponent } from '../topic-member-group/topic-member-gr
 import { TopicMemberInviteComponent } from '../topic-member-invite/topic-member-invite.component';
 import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
-import { take } from 'rxjs';
+import { take, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
 import { TopicMemberGroup } from '../../../../../core/services/topic-member-group.service';
@@ -144,3 +146,40 @@ export class TopicParticipantsComponent implements OnInit {
   doGroupOrder(field: string, dir: 'asc' | 'desc') { this.groupOrderField.set(field); this.groupOrderDir.set(dir); this.groupPage.set(1); }
   doInviteOrder(field: string, dir: 'asc' | 'desc') { this.inviteOrderField.set(field); this.inviteOrderDir.set(dir); this.invitePage.set(1); }
 }
+
+@Component({
+  selector: 'app-topic-participants-dialog',
+  standalone: true,
+  template: ''
+})
+export class TopicParticipantsDialogComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dialog = inject(DialogService);
+  private topicService = inject(TopicService);
+
+  ngOnInit() {
+    this.route.params.pipe(
+      take(1),
+      switchMap((params) => {
+        const topicId = params['topicId'];
+        return this.topicService.loadTopic(topicId).pipe(
+          take(1),
+          switchMap((topic) => {
+            const dialogRef = this.dialog.open(TopicParticipantsComponent, {
+              data: { topic }
+            });
+            return dialogRef.afterClosed().pipe(
+              take(1),
+              switchMap(() => {
+                const lang = this.router.url.split('/')[1] || 'en';
+                return this.router.navigate([lang, 'topics', topicId]);
+              })
+            );
+          })
+        );
+      })
+    ).subscribe();
+  }
+}
+

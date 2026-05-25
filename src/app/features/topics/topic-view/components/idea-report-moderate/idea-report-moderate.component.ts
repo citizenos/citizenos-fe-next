@@ -1,8 +1,9 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { take } from 'rxjs';
+import { take, combineLatest, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { IdeaReport } from '../../../../../core/interfaces/ideation';
 import { Idea } from '../../../../../core/interfaces/idea';
@@ -74,3 +75,57 @@ export class IdeaReportModerateComponent {
     });
   }
 }
+
+@Component({
+  selector: 'app-idea-report-moderate-dialog',
+  standalone: true,
+  template: ''
+})
+export class IdeaReportModerateDialogComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dialog = inject(DialogService);
+  private ideationService = inject(TopicIdeationService);
+
+  ngOnInit() {
+    combineLatest([this.route.params, this.route.queryParams]).pipe(
+      take(1),
+      switchMap(([params, queryParams]) => {
+        const topicId = params['topicId'];
+        const ideationId = params['ideationId'];
+        const ideaId = params['ideaId'];
+        const token = queryParams['token'];
+        const reportId = params['reportId'];
+
+        return this.ideationService.getIdeaReport({
+          topicId,
+          ideationId,
+          ideaId,
+          reportId,
+          token
+        }).pipe(
+          take(1),
+          switchMap((report) => {
+            const dialogRef = this.dialog.open(IdeaReportModerateComponent, {
+              data: {
+                report,
+                topicId,
+                ideationId,
+                ideaId,
+                token
+              }
+            });
+            return dialogRef.afterClosed().pipe(
+              take(1),
+              switchMap(() => {
+                const lang = this.router.url.split('/')[1] || 'en';
+                return this.router.navigate([lang, 'topics', topicId]);
+              })
+            );
+          })
+        );
+      })
+    ).subscribe();
+  }
+}
+

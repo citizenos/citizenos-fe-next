@@ -7,7 +7,6 @@ import { take } from 'rxjs';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
 
@@ -15,7 +14,7 @@ import { MarkdownDirective } from '../../../../../shared/directives/markdown.dir
   selector: 'cos-post-argument-form',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, TranslateModule, InputComponent, ButtonComponent, IconComponent, MarkdownDirective],
+  imports: [FormsModule, TranslateModule, InputComponent, IconComponent, MarkdownDirective],
   templateUrl: './post-argument-form.component.html',
   styleUrls: ['./post-argument-form.component.scss']
 })

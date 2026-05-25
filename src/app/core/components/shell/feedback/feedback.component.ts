@@ -5,13 +5,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ConfigStore } from '../../../state/config.store';
 import { UiStateService } from '../../../services/ui-state.service';
 import { NotificationService } from '../../../services/notification.service';
-import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'cos-feedback',
   standalone: true,
-  imports: [FormsModule, TranslateModule, IconComponent, ButtonComponent],
+  imports: [FormsModule, TranslateModule, ButtonComponent],
   template: `
     @if (uiState.showFeedback()) {
       <div id="root_lightbox" class="feedback_overlay_root">

@@ -1,5 +1,4 @@
-import { Component, input, output, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, input, output, inject, computed, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -14,7 +13,6 @@ import { TourItemDirective } from '../../../../../shared/directives/tour-item.di
   selector: 'app-topic-tabs',
   standalone: true,
   imports: [
-    CommonModule,
     RouterModule,
     TranslateModule,
     DomainIconComponent,
@@ -23,7 +21,8 @@ import { TourItemDirective } from '../../../../../shared/directives/tour-item.di
     TourItemDirective
   ],
   templateUrl: './topic-tabs.component.html',
-  styleUrls: ['./topic-tabs.component.scss']
+  styleUrls: ['./topic-tabs.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopicTabsComponent {
   topic = input.required<Topic>();
@@ -47,3 +46,4 @@ export class TopicTabsComponent {
     this.topicService.toggleFavourite(topic);
   }
 }
+

@@ -1,6 +1,6 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
@@ -369,6 +369,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
 export class RegisterComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private userService = inject(UserService);
   userStore = inject(UserStore);
 
@@ -396,7 +397,8 @@ export class RegisterComponent {
   }
 
   doLoginPartner(partnerId: string) {
-    window.location.href = this.userService.getPartnerLoginUrl(partnerId);
+    const redirectSuccess = (this.route.snapshot.queryParams as any)['redirectSuccess'];
+    window.location.href = this.userService.getPartnerLoginUrl(partnerId, redirectSuccess);
   }
 
   async onSubmit() {
@@ -404,7 +406,12 @@ export class RegisterComponent {
       const data = this.registerForm.getRawValue();
       try {
         await this.userStore.signup(data);
-        this.router.navigate(['/']);
+        const redirectSuccess = (this.route.snapshot.queryParams as any)['redirectSuccess'];
+        if (redirectSuccess) {
+          window.location.href = redirectSuccess;
+        } else {
+          this.router.navigate(['/']);
+        }
       } catch {
         this.error.set('Registration failed. Please try again.');
       }

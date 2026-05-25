@@ -8,13 +8,12 @@ import { ConfigStore } from '../../../state/config.store';
 import { UiStateService } from '../../../services/ui-state.service';
 import { TourService } from '../../../services/tour.service';
 import { NotificationService } from '../../../services/notification.service';
-import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { TermsLinksComponent } from '../../../../shared/components/terms-links/terms-links.component';
 
 @Component({
   selector: 'cos-help',
   standalone: true,
-  imports: [TranslateModule, FormsModule, ReactiveFormsModule, IconComponent, TermsLinksComponent],
+  imports: [TranslateModule, FormsModule, ReactiveFormsModule, TermsLinksComponent],
   template: `
     @if (uiState.showHelp() || helptooltip()) {
       <div id="dark_overlay" class="help_overlay" (click)="toggleHelp()" (keydown.enter)="toggleHelp()" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>

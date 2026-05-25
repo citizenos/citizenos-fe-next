@@ -1,14 +1,15 @@
-import { Component, input, ChangeDetectionStrategy, model } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy, model, computed } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Topic } from '../../../core/interfaces/topic';
 import { TopicMemberGroup } from '../topic-settings-panel/topic-settings-panel.component';
 import { Ideation } from '../../../core/interfaces/ideation';
 import { Vote } from '../../../core/interfaces/vote';
+import { MarkdownPipe } from '../../pipes/markdown.pipe';
 
 @Component({
   selector: 'cos-topic-preview',
   standalone: true,
-  imports: [TranslateModule],
+  imports: [TranslateModule, MarkdownPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="topic-preview">
@@ -25,6 +26,8 @@ import { Vote } from '../../../core/interfaces/vote';
             <p class="preview-intro">{{ t.intro }}</p>
           }
         </div>
+
+        <div class="preview-description" [innerHTML]="t.description | markdown"></div>
 
         @if (ideation(); as i) {
           <div class="preview-ideation">
@@ -49,7 +52,7 @@ import { Vote } from '../../../core/interfaces/vote';
         }
 
         <div class="preview-meta">
-          @if (t.categories.length) {
+          @if (t.categories && t.categories.length) {
             <div class="meta-row">
               <span class="meta-label">{{ 'VIEWS.TOPIC_CREATE.SETTINGS_HEADING_CATEGORY_AND_LOCALITY' | translate }}</span>
               <div class="category-tags">
@@ -125,6 +128,20 @@ import { Vote } from '../../../core/interfaces/vote';
       line-height: 1.5;
     }
 
+    .preview-description {
+      margin-bottom: 24px;
+      line-height: 1.6;
+      font-size: 15px;
+      color: var(--color-text-main);
+      word-break: break-word;
+
+      ::ng-deep {
+        p { margin-bottom: 12px; }
+        ul, ol { margin-left: 20px; margin-bottom: 12px; }
+        h1, h2, h3 { margin-top: 20px; margin-bottom: 8px; }
+      }
+    }
+
     .preview-meta {
       display: flex;
       flex-direction: column;
@@ -197,7 +214,7 @@ import { Vote } from '../../../core/interfaces/vote';
   `]
 })
 export class TopicPreviewComponent {
-  topic = model.required<Topic>();
+  topic = model.required<Partial<Topic>>();
   topicGroups = model<TopicMemberGroup[]>([]);
   ideation = input<Partial<Ideation> | null>(null);
   vote = input<Partial<Vote> | null>(null);

@@ -4,10 +4,12 @@
   [steps]="steps"
   [currentStep]="currentStep()"
   [isNextDisabled]="isFooterNextDisabled()"
+  [topic]="topic() | any"
   (stepChange)="onStepChange($event)"
   (saveDraft)="saveAsDraft()"
   (footerContinue)="handleFooterContinue()"
   (footerBack)="handleFooterBack()"
+  (deleteTopic)="doDeleteTopic()"
 >
   @if (isLoading()) {
     <div class="loading-overlay">
@@ -26,6 +28,8 @@
       <cos-step-topic-settings
         [topic]="$any(topic())"
         (topicUpdate)="onTopicUpdate($event)"
+        (groupsAdded)="onGroupsAdded($event)"
+        (groupRemoved)="onGroupRemoved($event)"
       ></cos-step-topic-settings>
     }
     @case ('ideation') {
@@ -41,4 +45,14 @@
       ></cos-step-topic-preview>
     }
   }
+
+  <div sidebar class="sidebar_block">
+    <cos-member-editors-panel
+      [topic]="topic() | any"
+      [members]="members()"
+      [invites]="invites()"
+      (inviteEditors)="inviteEditors()"
+    ></cos-member-editors-panel>
+  </div>
 </cos-create-wizard-shell>
+

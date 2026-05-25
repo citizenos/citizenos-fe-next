@@ -1,8 +1,9 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { take } from 'rxjs';
+import { take, combineLatest, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Argument, ArgumentReport } from '../../../../../core/interfaces/discussion';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
@@ -75,3 +76,56 @@ export class ArgumentReportModerateComponent {
     });
   }
 }
+
+@Component({
+  selector: 'app-argument-report-moderate-dialog',
+  standalone: true,
+  template: ''
+})
+export class ArgumentReportModerateDialogComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dialog = inject(DialogService);
+  private argumentService = inject(TopicArgumentService);
+
+  ngOnInit() {
+    combineLatest([this.route.params, this.route.queryParams]).pipe(
+      take(1),
+      switchMap(([params, queryParams]) => {
+        const topicId = params['topicId'];
+        const commentId = params['commentId'];
+        const discussionId = params['discussionId'] || topicId;
+        const token = queryParams['token'];
+        const reportId = params['reportId'];
+
+        return this.argumentService.getReport({
+          topicId,
+          commentId,
+          reportId,
+          token
+        }).pipe(
+          take(1),
+          switchMap((report) => {
+            const dialogRef = this.dialog.open(ArgumentReportModerateComponent, {
+              data: {
+                report,
+                topicId,
+                discussionId,
+                commentId,
+                token
+              }
+            });
+            return dialogRef.afterClosed().pipe(
+              take(1),
+              switchMap(() => {
+                const lang = this.router.url.split('/')[1] || 'en';
+                return this.router.navigate([lang, 'topics', topicId]);
+              })
+            );
+          })
+        );
+      })
+    ).subscribe();
+  }
+}
+

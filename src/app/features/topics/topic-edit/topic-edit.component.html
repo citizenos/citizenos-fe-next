@@ -28,6 +28,8 @@
       <cos-step-topic-settings
         [topic]="topic() | any"
         (topicUpdate)="onTopicUpdate($any($event))"
+        (groupsAdded)="onGroupsAdded($event)"
+        (groupRemoved)="onGroupRemoved($event)"
       ></cos-step-topic-settings>
     }
     @case ('discussion') {

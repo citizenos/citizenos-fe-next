@@ -1,4 +1,4 @@
-import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, ViewChild, ElementRef, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TopicService } from '../../../core/services/topic.service';
@@ -7,6 +7,9 @@ import { UploadService } from '../../../core/services/upload.service';
 import { CosDropdownDirective } from '../../directives/cos-dropdown.directive';
 import { Topic } from '../../../core/interfaces/topic';
 import { NotificationService } from '../../../core/services/notification.service';
+import { DIALOG_DATA, DialogService } from '../../dialog';
+import { take, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonComponent } from '../button/button.component';
 
@@ -21,13 +24,15 @@ import { ButtonComponent } from '../button/button.component';
 export class TopicAttachmentsComponent implements OnInit {
   @ViewChild('attachmentInput') attachmentInput?: ElementRef;
 
-  topic = input.required<Partial<Topic>>();
+  topicInput = input<Partial<Topic>>({}, { alias: 'topic' });
   
+  private data = inject<{ topic: Topic }>(DIALOG_DATA, { optional: true });
   private topicService = inject(TopicService);
   private uploadService = inject(UploadService);
   private notification = inject(NotificationService);
   private translate = inject(TranslateService);
   
+  topic = computed(() => this.data?.topic || this.topicInput());
   attachments = signal<TopicAttachment[]>([]);
   blockAttachments = signal(false);
 
@@ -94,3 +99,40 @@ export class TopicAttachmentsComponent implements OnInit {
     });
   }
 }
+
+@Component({
+  selector: 'app-topic-attachments-dialog',
+  standalone: true,
+  template: ''
+})
+export class TopicAttachmentsDialogComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dialog = inject(DialogService);
+  private topicService = inject(TopicService);
+
+  ngOnInit() {
+    this.route.params.pipe(
+      take(1),
+      switchMap((params) => {
+        const topicId = params['topicId'];
+        return this.topicService.loadTopic(topicId).pipe(
+          take(1),
+          switchMap((topic) => {
+            const dialogRef = this.dialog.open(TopicAttachmentsComponent, {
+              data: { topic }
+            });
+            return dialogRef.afterClosed().pipe(
+              take(1),
+              switchMap(() => {
+                const lang = this.router.url.split('/')[1] || 'en';
+                return this.router.navigate([lang, 'topics', topicId]);
+              })
+            );
+          })
+        );
+      })
+    ).subscribe();
+  }
+}
+

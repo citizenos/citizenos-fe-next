@@ -48,9 +48,25 @@
 .ideation {
   .pagination-btn, .btn_medium_pagination {
     background-color: initial;
+    border: none;
 
     &:hover, &.active {
       background: var(--color-surfaces);
+      color: var(--color-text);
     }
   }
 }
+
+/* Discussion specific styling from legacy */
+.discussion {
+  .pagination-btn, .btn_medium_pagination {
+    background-color: var(--color-surfaces);
+    border: none;
+
+    &:hover, &.active {
+      background-color: initial;
+      color: var(--color-text);
+    }
+  }
+}
+

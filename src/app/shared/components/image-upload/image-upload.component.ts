@@ -35,17 +35,7 @@ import { NotificationService } from '../../../core/services/notification.service
         </div>
       } @else {
         <div class="image-preview">
-          <img [src]="previewUrl()" alt="" />
-          <button type="button" class="remove-btn" (click)="removeImage()" [attr.aria-label]="'VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_REMOVE' | translate">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 9H11V17H9L9 9Z" fill="#1168A8" />
-              <path d="M15 9H13V17H15V9Z" fill="#1168A8" />
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M17 5V4C17 2.89543 16.1046 2 15 2L9 2C7.89543 2 7 2.89543 7 4L7 5H4C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H5L5 18C5 19.6569 6.34315 21 8 21L16 21C17.6569 21 19 19.6569 19 18L19 7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5L17 5ZM15 4L9 4V5L15 5V4ZM17 7L7 7L7 18C7 18.5523 7.44772 19 8 19L16 19C16.5523 19 17 18.5523 17 18V7Z"
-                fill="#1168A8" />
-            </svg>
-            <span>{{ 'VIEWS.TOPIC_CREATE.HEADER_IMAGE_BTN_REMOVE' | translate }}</span>
-          </button>
+          <img [src]="previewUrl() || imageUrl()" alt="" />
         </div>
       }
 

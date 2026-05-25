@@ -19,7 +19,6 @@ import { CloseVotingComponent } from '../close-voting/close-voting.component';
 import { BigGraphComponent } from '../big-graph/big-graph.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 
@@ -27,7 +26,7 @@ import { TooltipComponent } from '../../../../../shared/components/tooltip/toolt
   selector: 'app-topic-vote-cast',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DatePipe, UpperCasePipe, BigGraphComponent, InitialsComponent, IconComponent, CosDropdownDirective, TooltipComponent],
+  imports: [TranslateModule, DatePipe, UpperCasePipe, BigGraphComponent, InitialsComponent, CosDropdownDirective, TooltipComponent],
   templateUrl: './topic-vote-cast.component.html',
   styleUrls: ['./topic-vote-cast.component.scss']
 })

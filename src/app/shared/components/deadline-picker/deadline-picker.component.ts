@@ -1,4 +1,4 @@
-import { Component, input, output, signal, computed, ChangeDetectionStrategy, effect, inject } from '@angular/core';
+import { Component, input, output, signal, computed, ChangeDetectionStrategy, effect, inject, untracked } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, UpperCasePipe } from '@angular/common';
@@ -12,8 +12,9 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
   template: `
     <div class="radio_wrap discussion date_selector" [class.selected]="enabled()">
       <div class="radio_text_wrap date_selector">
-        <div class="radio_lable_wrap" (click)="toggleDeadline(); $event.stopPropagation();">
+        <div class="radio_lable_wrap">
           <label class="checkbox" [class.selected]="enabled()">
+            <input type="checkbox" [checked]="enabled()" (change)="toggleDeadline()" (click)="$event.stopPropagation()">
             <span class="checkmark"></span>
             <div class="checkbox_text_wrap">
               <span class="bold" [translate]="toggleLabel()"></span>
@@ -433,12 +434,19 @@ export class DeadlinePickerComponent {
     effect(() => {
       const d = this.deadline();
       if (d) {
-        this.enabled.set(true);
         const parsedDate = new Date(d);
-        this.dateValue.set(parsedDate);
-        this.endsAtH.set(parsedDate.getHours());
-        this.endsAtMin.set(parsedDate.getMinutes());
-        this.timeFormat.set(24); // Default to 24h
+        parsedDate.setSeconds(0);
+        parsedDate.setMilliseconds(0);
+        const currentComputed = untracked(() => this.computeDeadline());
+        if (!currentComputed || parsedDate.getTime() !== currentComputed.getTime()) {
+          this.enabled.set(true);
+          this.dateValue.set(parsedDate);
+          this.endsAtH.set(parsedDate.getHours());
+          this.endsAtMin.set(parsedDate.getMinutes());
+          this.timeFormat.set(24); // Default to 24h
+        }
+      } else {
+        this.enabled.set(false);
       }
     }, { allowSignalWrites: true });
   }

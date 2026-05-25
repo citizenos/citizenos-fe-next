@@ -3,6 +3,7 @@ export interface VoteOption {
   voteId?: string;
   value: string;
   voteCount?: number;
+  ideaId?: string;
 }
 
 export interface Vote {
@@ -10,7 +11,7 @@ export interface Vote {
   topicId?: string;
   question: string; // Map to "description" in API
   description?: string | null; // API property name for question
-  type: 'regular' | 'multiple';
+  type: 'regular' | 'multiple' | 'ideation' | string;
   authType: 'soft' | 'hard';
   options: VoteOption[];
   delegationIsAllowed: boolean;

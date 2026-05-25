@@ -15,6 +15,8 @@ import { ActivitiesButtonComponent } from '../../../shared/components/activities
 import { PageListHeaderComponent } from '../../../shared/components/page-list-header/page-list-header.component';
 import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.constants';
 import { SeoService } from '../../../core/services/seo.service';
+import { countries } from '../../../core/constants/countries';
+import { languages } from '../../../core/constants/all-languages';
 
 @Component({
   selector: 'cos-public-topics',
@@ -37,6 +39,7 @@ import { SeoService } from '../../../core/services/seo.service';
 
       <app-list-filter-toolbar
         [filters]="filterConfigs()"
+        [filtersExtra]="filterExtraConfigs()"
         [searchPlaceholder]="'COMPONENTS.PUBLIC_TOPICS.PLACEHOLDER_SEARCH_TOPIC' | translate"
         [searchValue]="searchValue()"
         (filterChange)="onFilterChange($event)"
@@ -88,6 +91,9 @@ export class PublicTopicsComponent {
   private topicService = inject(PublicTopicService);
   private seoService = inject(SeoService);
 
+  private sortedCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
+  private sortedLanguages = [...languages].sort((a, b) => a.name.localeCompare(b.name));
+
   constructor() {
     this.seoService.setPageTitle('COMPONENTS.PUBLIC_TOPICS.HEADER');
   }
@@ -135,6 +141,30 @@ export class PublicTopicsComponent {
     ];
   });
 
+  filterExtraConfigs = computed<FilterConfig[]>(() => {
+    const sel = this.selectedFilters();
+    return [
+      {
+        key: 'country',
+        placeholder: 'COMPONENTS.PUBLIC_TOPICS.FILTER_COUNTRY',
+        selectedValue: sel['country'] ?? '',
+        items: [
+          { title: 'VIEWS.MY_TOPICS.FILTER_ALL', value: 'all' },
+          ...this.sortedCountries.map(c => ({ title: c.name, value: c.name })),
+        ],
+      },
+      {
+        key: 'language',
+        placeholder: 'COMPONENTS.PUBLIC_TOPICS.FILTER_LANGUAGE',
+        selectedValue: sel['language'] ?? '',
+        items: [
+          { title: 'VIEWS.MY_TOPICS.FILTER_ALL', value: 'all' },
+          ...this.sortedLanguages.map(l => ({ title: l.name, value: l.name })),
+        ],
+      },
+    ];
+  });
+
   onFilterChange(event: { key: string; value: string }) {
     const val = event.value === 'all' ? '' : event.value;
     this.selectedFilters.update(f => ({ ...f, [event.key]: val }));
@@ -152,6 +182,8 @@ export class PublicTopicsComponent {
     }
 
     if (f['category']) this.topicService.setParam('categories', [f['category']]);
+    if (f['country']) this.topicService.setParam('country', f['country']);
+    if (f['language']) this.topicService.setParam('language', f['language']);
     if (f['orderBy']) {
       this.topicService.setParam('orderBy', f['orderBy']);
       this.topicService.setParam('order', 'desc');

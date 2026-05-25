@@ -1,9 +1,24 @@
 <div class="wizard-container">
   <div class="create-header">
-    <h1 class="create_heading">
-      <cos-domain-icon [type]="domainType()"></cos-domain-icon>
-      <span class="small_heading" [translate]="headingKey()"></span>
-    </h1>
+    <div class="header-top-row">
+      <h1 class="create_heading">
+        <cos-domain-icon [type]="domainType()"></cos-domain-icon>
+        <span class="small_heading" [translate]="headingKey()"></span>
+      </h1>
+      
+      <div class="buttons_wrap tablet_hidden">
+        @if (topic()?.id) {
+          <a class="btn_medium_plain icon" [href]="getDownloadUrl()" target="_blank">
+            <cos-icon name="download" [size]="24"></cos-icon>
+          </a>
+          @if (topicService.canDelete($any(topic()))) {
+            <button class="btn_medium_plain icon" (click)="deleteTopic.emit()">
+              <cos-icon name="trash" [size]="24"></cos-icon>
+            </button>
+          }
+        }
+      </div>
+    </div>
     <cos-step-navigator
       [steps]="steps()"
       [currentStep]="currentStep()"

@@ -13,12 +13,11 @@ import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
 import { UserStore } from '../../../core/state/user.store';
 import { DialogService } from '../../../shared/dialog/dialog.service';
+import { UiStateService } from '../../../core/services/ui-state.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { SeoService } from '../../../core/services/seo.service';
-import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
 
-import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { TopicHeaderComponent } from './components/topic-header/topic-header.component';
 import { TopicContentComponent } from './components/topic-content/topic-content.component';
 import { TopicInfoSidebarComponent } from './components/topic-info-sidebar/topic-info-sidebar.component';
@@ -51,9 +50,7 @@ import { VoteWithOptions } from '../../../core/interfaces/vote';
     TopicVoteCastComponent,
     TopicMilestonesComponent,
     IconComponent,
-    DomainIconComponent,
     TourItemDirective,
-    ActivitiesButtonComponent,
     TopicTabsComponent
   ],
   templateUrl: './topic-view.component.html',
@@ -71,6 +68,7 @@ export class TopicViewComponent implements OnInit {
   userStore = inject(UserStore);
   translate = inject(TranslateService);
   private dialogService = inject(DialogService);
+  private uiState = inject(UiStateService);
   private platformId = inject(PLATFORM_ID);
   private seoService = inject(SeoService);
   private destroyRef = inject(DestroyRef);
@@ -177,17 +175,47 @@ export class TopicViewComponent implements OnInit {
           });
           return this.topicService.loadTopic(topicId).pipe(
             tap((topic: Topic) => {
+              if (topic.status === this.STATUSES.draft) {
+                this.router.navigate(['/', this.translate.currentLang, 'topics', 'edit', topic.id]);
+                return;
+              }
+
               this.topic.set(topic);
               this.hideTopicContent.set(!!topic.report?.moderatedReasonType);
               this.seoService.setPageTitle(topic.title || undefined);
               this.loading.set(false);
 
+              // Sanitize Pad URL
+              if (topic.padUrl) {
+                try {
+                  const padURL = new URL(topic.padUrl);
+                  if (padURL.searchParams.get('lang') !== this.translate.currentLang) {
+                    padURL.searchParams.set('lang', this.translate.currentLang);
+                  }
+                  padURL.searchParams.set('theme', 'default');
+                  topic.padUrl = padURL.href;
+                } catch (e) {
+                  console.error('Invalid padUrl', topic.padUrl);
+                }
+              }
+
+              // Tour logic
+              if (isPlatformBrowser(this.platformId) && !localStorage.getItem('show-topic-tour')) {
+                this.uiState.onboardingContext.set('topic');
+                this.uiState.showOnboarding.set(true);
+                localStorage.setItem('show-topic-tour', 'true');
+              }
+
               const fragment = this.route.snapshot.fragment;
               if (fragment) {
                 this.selectTab(fragment);
               } else if (!this.tabSelected()) {
-                if (topic.ideationId) {
+                if (topic.status === this.STATUSES.ideation) {
                   this.selectTab('ideation');
+                } else if (topic.status === this.STATUSES.voting) {
+                  this.selectTab('voting');
+                } else if (topic.status === this.STATUSES.followUp || topic.status === this.STATUSES.closed) {
+                  this.selectTab('followUp');
                 } else {
                   this.selectTab('discussion');
                 }
@@ -437,5 +465,10 @@ export class TopicViewComponent implements OnInit {
     } else {
       window.open(attachment.link, '_blank');
     }
+  }
+
+  takeTour() {
+    this.uiState.onboardingContext.set('topic');
+    this.uiState.showOnboarding.set(true);
   }
 }

@@ -19,7 +19,6 @@ import { StepSettingsComponent } from './components/step-settings/step-settings.
 import { StepTopicsComponent } from './components/step-topics/step-topics.component';
 import { StepInviteComponent } from './components/step-invite/step-invite.component';
 import { GroupCreateHelpComponent } from './components/group-create-help/group-create-help.component';
-import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { GroupCreateData } from './group-create.interface';
 
@@ -36,7 +35,6 @@ export type GroupCreateStep = 'info' | 'settings' | 'add_topics' | 'invite';
     StepTopicsComponent,
     StepInviteComponent,
     GroupCreateHelpComponent,
-    IconComponent,
     ButtonComponent,
   ],
   templateUrl: './group-create.component.html',

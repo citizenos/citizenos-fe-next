@@ -2,10 +2,12 @@
   class="toggle_wrap"
   [class.on]="isEnabled()"
   [class.off]="!isEnabled()"
+  [class.disabled]="disabled()"
   (click)="toggle()"
   role="switch"
   [attr.aria-checked]="isEnabled()"
-  [attr.aria-label]="isEnabled() ? cosToggleTextOn() : cosToggleTextOff()">
+  [attr.aria-label]="isEnabled() ? cosToggleTextOn() : cosToggleTextOff()"
+  [disabled]="disabled()">
 
   <div class="toggle_widget" [class.on]="isEnabled()" [class.off]="!isEnabled()">
     <div class="toggle_circle"></div>

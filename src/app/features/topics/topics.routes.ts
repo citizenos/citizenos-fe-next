@@ -62,8 +62,44 @@ export const TOPICS_ROUTES: Routes = [
         loadComponent: () => import('./topic-invitation/topic-invitation.component').then(m => m.TopicInvitationComponent)
       },
       {
-        path: 'ideations/:ideationId/ideas/:ideaId/comments/:commentId/reports/:reportId/moderate',
+        path: 'settings',
+        loadComponent: () => import('./topic-view/components/topic-settings/topic-settings.component').then(m => m.TopicSettingsDialogComponent)
+      },
+      {
+        path: 'files',
+        loadComponent: () => import('../../shared/components/topic-attachments/topic-attachments.component').then(m => m.TopicAttachmentsDialogComponent)
+      },
+      {
+        path: 'participants',
+        loadComponent: () => import('./topic-view/components/topic-participants/topic-participants.component').then(m => m.TopicParticipantsDialogComponent)
+      },
+      {
+        path: 'comments/:commentId/reports/:reportId/moderate',
+        loadComponent: () => import('./topic-view/components/argument-report-moderate/argument-report-moderate.component').then(m => m.ArgumentReportModerateDialogComponent)
+      },
+      {
+        path: 'ideation/:ideationId/ideas/:ideaId/reports/:reportId/moderate',
+        loadComponent: () => import('./topic-view/components/idea-report-moderate/idea-report-moderate.component').then(m => m.IdeaReportModerateDialogComponent)
+      },
+      {
+        path: 'ideation/:ideationId/ideas/:ideaId/comments/:commentId/reports/:reportId/moderate',
         loadComponent: () => import('./topic-view/components/idea-reply-report-moderate/idea-reply-report-moderate.component').then(m => m.IdeaReplyReportModerateDialogComponent)
+      },
+      {
+        path: 'report',
+        loadComponent: () => import('./topic-view/components/topic-report-form/topic-report-form.component').then(m => m.TopicReportFormDialogComponent)
+      },
+      {
+        path: 'reports/:reportId/moderate',
+        loadComponent: () => import('./topic-view/components/topic-report-moderate/topic-report-moderate.component').then(m => m.TopicReportModerateDialogComponent)
+      },
+      {
+        path: 'reports/:reportId/review',
+        loadComponent: () => import('./topic-view/components/topic-report-review/topic-report-review.component').then(m => m.TopicReportReviewDialogComponent)
+      },
+      {
+        path: 'reports/:reportId/resolve',
+        loadComponent: () => import('./topic-view/components/topic-report-resolve/topic-report-resolve.component').then(m => m.TopicReportResolveDialogComponent)
       },
       {
         path: 'votes',

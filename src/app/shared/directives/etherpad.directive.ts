@@ -47,20 +47,12 @@ export class EtherpadDirective {
     if (e && e.data) {
       const msg = e.data;
       if (msg.name === 'ep_resize') {
-        const width = Math.round(msg.data.width);
         const height = Math.round(msg.data.height);
         
-        if (Number.isSafeInteger(width) && width > this.minWidth) {
-          const newWidth = width + 'px';
-          if (newWidth !== this.element.nativeElement.width) {
-            this.element.nativeElement.width = newWidth;
-          }
-        }
-
         if (Number.isSafeInteger(height) && height > this.minHeight) {
           const newHeight = height + 'px';
-          if (newHeight !== this.element.nativeElement.height) {
-            this.element.nativeElement.height = newHeight;
+          if (newHeight !== this.element.nativeElement.style.height) {
+            this.element.nativeElement.style.height = newHeight;
           }
         }
       }

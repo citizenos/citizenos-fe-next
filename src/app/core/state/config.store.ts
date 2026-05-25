@@ -8,6 +8,7 @@ interface ConfigState {
   language: string;
   theme: 'light' | 'dark';
   fontSize: FontSize;
+  showIssueNotification: boolean;
   api: {
     baseUrl: string;
   };
@@ -26,6 +27,7 @@ const initialState: ConfigState = {
   language: 'en',
   theme: 'light',
   fontSize: 'medium',
+  showIssueNotification: false,
   api: {
     baseUrl: 'https://dev.api.citizenos.com:3003'
   },

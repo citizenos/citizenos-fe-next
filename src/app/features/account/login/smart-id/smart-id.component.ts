@@ -1,7 +1,7 @@
 import { Component, inject, signal, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { interval, Subscription, takeWhile, switchMap } from 'rxjs';
 import { UserStore } from '../../../../core/state/user.store';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -167,6 +167,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
 })
 export class SmartIdComponent implements OnDestroy {
   private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
   userStore = inject(UserStore);
 
   challengeID = signal<string | null | undefined>(null);
@@ -215,7 +216,12 @@ export class SmartIdComponent implements OnDestroy {
           if (res && res.status?.code !== 20001) {
              this.userStore.checkStatus();
              this.challengeID.set(null);
-             window.location.reload();
+             const redirectSuccess = this.route.snapshot.queryParams['redirectSuccess'];
+             if (redirectSuccess) {
+               window.location.href = redirectSuccess;
+             } else {
+               window.location.reload();
+             }
           }
         },
         error: (_err) => {

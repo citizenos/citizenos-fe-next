@@ -40,6 +40,8 @@ export class ToggleComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   cosToggleTextOff = input<string>('', { alias: 'textOff' });
 
+  disabled = input<boolean>(false);
+
   /**
    * Emits the new value after a toggle operation.
    */
@@ -63,6 +65,7 @@ export class ToggleComponent {
    * Performs the toggle action based on current state and input values.
    */
   toggle() {
+    if (this.disabled()) return;
     const v = this.value();
     const offV = this.offValue();
     let nextValue: any;

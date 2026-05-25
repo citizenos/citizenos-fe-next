@@ -5,7 +5,6 @@ import { interval, switchMap, takeWhile, take, map } from 'rxjs';
 import { UpperCasePipe } from '@angular/common';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -17,7 +16,7 @@ import { NotificationComponent } from '../../../../../shared/components/notifica
   selector: 'app-topic-vote-sign-smartid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, IconComponent, NotificationComponent],
+  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, NotificationComponent],
   templateUrl: './topic-vote-sign-smartid.component.html'
 })
 export class TopicVoteSignSmartidComponent {

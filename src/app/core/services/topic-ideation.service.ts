@@ -300,6 +300,14 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
       .pipe(map(res => res.data));
   }
 
+  getIdeaReport(params: { topicId: string; ideationId: string; ideaId: string; reportId: string; token?: string }): Observable<IdeaReportInterface> {
+    let httpParams = new HttpParams();
+    if (params.token) httpParams = httpParams.set('token', params.token);
+    const path = this.getAbsoluteUrlApi(`/topics/${params.topicId}/ideations/${params.ideationId}/ideas/${params.ideaId}/reports/${params.reportId}`, true);
+    return this.http.get<ApiResponse<IdeaReportInterface>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
+  }
+
   getFolders(topicId: string | { topicId: string; ideationId: string; [key: string]: ParamValue }, ideationId?: string, params: Record<string, ParamValue> = {}): Observable<{ rows: IdeationFolder[]; count: number }> {
     let tId: string;
     let iId: string;

@@ -74,6 +74,14 @@ export const routes: Routes = [
             loadComponent: () => import('./features/groups/group-invitation/group-invitation.component').then(m => m.GroupInvitationComponent)
           },
           {
+            path: 'groups/:groupId/requests/topics/:requestId',
+            children: [
+              { path: '', loadComponent: () => import('./features/groups/group-request-topics-handler/group-request-topics-handler.component').then(m => m.GroupRequestTopicsHandlerComponent) },
+              { path: 'accept', loadComponent: () => import('./features/groups/group-request-topics-handler/group-request-topics-handler.component').then(m => m.GroupRequestTopicsHandlerComponent) },
+              { path: 'reject', loadComponent: () => import('./features/groups/group-request-topics-handler/group-request-topics-handler.component').then(m => m.GroupRequestTopicsHandlerComponent) },
+            ]
+          },
+          {
             path: 'groups/:groupId',
             loadComponent: () => import('./features/groups/group-detail/group-detail.component').then(m => m.GroupDetailComponent)
           },

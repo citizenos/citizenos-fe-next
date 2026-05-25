@@ -12,6 +12,9 @@ import { TopicInviteUserService } from '../../../core/services/topic-invite-user
 import { TopicDiscussionService } from '../../../core/services/topic-discussion.service';
 import { TopicIdeationService } from '../../../core/services/topic-ideation.service';
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
+import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
+import { TopicMemberGroup } from '../../../shared/components/topic-settings-panel/topic-settings-panel.component';
+import { TopicInviteDialogComponent } from '../topic-view/components/topic-invite-dialog/topic-invite-dialog.component';
 import { Topic } from '../../../core/interfaces/topic';
 import { DiscussionData } from '../../../core/interfaces/discussion';
 import { Ideation } from '../../../core/interfaces/ideation';
@@ -56,6 +59,7 @@ export class TopicEditComponent implements OnInit {
   private uploadService = inject(UploadService);
   private memberUserService = inject(TopicMemberUserService);
   private inviteUserService = inject(TopicInviteUserService);
+  private groupMemberTopicService = inject(GroupMemberTopicService);
   private discussionService = inject(TopicDiscussionService);
   private ideationService = inject(TopicIdeationService);
   private voteService = inject(TopicVoteService);
@@ -71,6 +75,9 @@ export class TopicEditComponent implements OnInit {
   imageFile = signal<File | null>(null);
   isLoading = signal(false);
   currentStep = signal('info');
+
+  addedGroups = signal<TopicMemberGroup[]>([]);
+  groupsToRemove = signal<TopicMemberGroup[]>([]);
 
   private reloadMembers$ = new BehaviorSubject<void>(void 0);
 
@@ -174,7 +181,21 @@ export class TopicEditComponent implements OnInit {
     }
     if (this.canNavigateTo(step)) {
       this.currentStep.set(step);
+      if (step === 'preview') {
+        this.loadDescription();
+      }
     }
+  }
+
+  private loadDescription() {
+    const id = this.topic().id;
+    if (!id) return;
+
+    this.topicService.readDescription(id).pipe(take(1)).subscribe({
+      next: (topic) => {
+        this.topic.update(t => ({ ...t, description: topic.description }));
+      }
+    });
   }
 
   canNavigateTo(step: string): boolean {
@@ -189,12 +210,38 @@ export class TopicEditComponent implements OnInit {
   handleFooterContinue() {
     switch (this.currentStep()) {
       case 'info': this.saveToSettings(); break;
-      case 'settings': this.currentStep.set(this.steps()[2].key); break;
+      case 'settings': this.saveGroupsAndContinue(); break;
       case 'discussion': this.transitionToPreview(); break;
       case 'ideation': this.saveIdeation(); break;
       case 'voting': this.saveVote(); break;
       case 'preview': this.publishTopic(); break;
     }
+  }
+
+  private saveGroupsAndContinue() {
+    const topicId = this.topic().id;
+    if (!topicId) return;
+
+    this.isLoading.set(true);
+    const addOps = this.addedGroups().map(g => this.groupMemberTopicService.addTopic(g.id, topicId, g.level || 'read'));
+    const removeOps = this.groupsToRemove().map(g => this.groupMemberTopicService.removeTopicFromGroup(g.id, topicId));
+
+    forkJoin([...addOps, ...removeOps, this.topicService.patch(this.topic())]).pipe(
+      catchError(() => of(null))
+    ).subscribe(() => {
+      this.isLoading.set(false);
+      this.groupsToRemove.set([]);
+      this.onStepChange(this.steps()[2].key);
+    });
+  }
+
+  onGroupsAdded(groups: TopicMemberGroup[]) {
+    this.addedGroups.set(groups);
+  }
+
+  onGroupRemoved(group: TopicMemberGroup) {
+    this.addedGroups.update(gs => gs.filter(g => g.id !== group.id));
+    this.groupsToRemove.update(gs => [...gs, group]);
   }
 
   private updateSteps(status?: string) {
@@ -332,7 +379,11 @@ export class TopicEditComponent implements OnInit {
       const savedTopic = (result as { topic?: Topic }).topic ?? result as Topic;
       this.isLoading.set(false);
       this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
-      this.router.navigate(['/topics', savedTopic.id]);
+      this.dialog.open(TopicInviteDialogComponent, {
+        data: { topic: savedTopic }
+      }).afterClosed().subscribe(() => {
+        this.router.navigate(['/topics', savedTopic.id]);
+      });
     });
   }
 
@@ -378,9 +429,13 @@ export class TopicEditComponent implements OnInit {
   }
 
   inviteEditors() {
-    const topicId = this.topic().id;
-    if (topicId) {
-      this.router.navigate(['/topics', topicId, 'settings']);
+    const topic = this.topic();
+    if (topic.id) {
+      this.dialog.open(TopicInviteDialogComponent, {
+        data: { topic: topic as Topic, allowedLevels: ['edit', 'admin'] }
+      }).afterClosed().subscribe(() => {
+        this.reloadMembers$.next();
+      });
     }
   }
 }

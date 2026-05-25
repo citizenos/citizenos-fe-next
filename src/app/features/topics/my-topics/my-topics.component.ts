@@ -16,6 +16,8 @@ import { CreateMenuComponent } from '../../../shared/components/create-menu/crea
 import { PageListHeaderComponent } from '../../../shared/components/page-list-header/page-list-header.component';
 import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.constants';
 import { SeoService } from '../../../core/services/seo.service';
+import { countries } from '../../../core/constants/countries';
+import { languages } from '../../../core/constants/all-languages';
 
 @Component({
   selector: 'cos-my-topics',
@@ -39,6 +41,7 @@ import { SeoService } from '../../../core/services/seo.service';
 
       <app-list-filter-toolbar
         [filters]="filterConfigs()"
+        [filtersExtra]="filterExtraConfigs()"
         [searchPlaceholder]="'VIEWS.MY_TOPICS.PLACEHOLDER_SEARCH_TOPIC' | translate"
         [searchValue]="searchValue()"
         (filterChange)="onFilterChange($event)"
@@ -90,6 +93,9 @@ import { SeoService } from '../../../core/services/seo.service';
 export class MyTopicsComponent {
   private topicService = inject(UserTopicService);
   private seoService = inject(SeoService);
+
+  private sortedCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
+  private sortedLanguages = [...languages].sort((a, b) => a.name.localeCompare(b.name));
 
   constructor() {
     this.seoService.setPageTitle('VIEWS.MY_TOPICS.HEADER');
@@ -160,6 +166,30 @@ export class MyTopicsComponent {
     ];
   });
 
+  filterExtraConfigs = computed<FilterConfig[]>(() => {
+    const sel = this.selectedFilters();
+    return [
+      {
+        key: 'country',
+        placeholder: 'VIEWS.MY_TOPICS.FILTER_COUNTRY',
+        selectedValue: sel['country'] ?? '',
+        items: [
+          { title: 'VIEWS.MY_TOPICS.FILTER_ALL', value: 'all' },
+          ...this.sortedCountries.map(c => ({ title: c.name, value: c.name })),
+        ],
+      },
+      {
+        key: 'language',
+        placeholder: 'VIEWS.MY_TOPICS.FILTER_LANGUAGE',
+        selectedValue: sel['language'] ?? '',
+        items: [
+          { title: 'VIEWS.MY_TOPICS.FILTER_ALL', value: 'all' },
+          ...this.sortedLanguages.map(l => ({ title: l.name, value: l.name })),
+        ],
+      },
+    ];
+  });
+
   onFilterChange(event: { key: string; value: string }) {
     const val = event.value === 'all' ? '' : event.value;
     this.selectedFilters.update(f => ({ ...f, [event.key]: val }));
@@ -187,6 +217,8 @@ export class MyTopicsComponent {
       this.topicService.setParam('order', 'desc');
     }
     if (f['category']) this.topicService.setParam('categories', [f['category']]);
+    if (f['country']) this.topicService.setParam('country', f['country']);
+    if (f['language']) this.topicService.setParam('language', f['language']);
     if (this.searchValue()) this.topicService.setParam('search', this.searchValue());
   }
 

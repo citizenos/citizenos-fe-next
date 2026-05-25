@@ -71,6 +71,7 @@ export class TopicCreateComponent implements OnInit {
   isLoading = signal(false);
   currentStep = signal('info');
   isCreatedFromGroup = signal(false);
+  showHelp = signal(true);
 
   addedGroups = signal<TopicMemberGroup[]>([]);
   groupsToRemove = signal<TopicMemberGroup[]>([]);

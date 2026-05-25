@@ -3,7 +3,9 @@ import { UpperCasePipe, DatePipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { A11yModule } from '@angular/cdk/a11y';
 import { FormsModule } from '@angular/forms';
-import { take } from 'rxjs';
+import { take, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { Topic, TopicGroup } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
@@ -265,3 +267,40 @@ export class TopicSettingsComponent implements OnInit {
       });
   }
 }
+
+@Component({
+  selector: 'app-topic-settings-dialog',
+  standalone: true,
+  template: ''
+})
+export class TopicSettingsDialogComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dialog = inject(DialogService);
+  private topicService = inject(TopicService);
+
+  ngOnInit() {
+    this.route.params.pipe(
+      take(1),
+      switchMap((params) => {
+        const topicId = params['topicId'];
+        return this.topicService.loadTopic(topicId).pipe(
+          take(1),
+          switchMap((topic) => {
+            const dialogRef = this.dialog.open(TopicSettingsComponent, {
+              data: { topic }
+            });
+            return dialogRef.afterClosed().pipe(
+              take(1),
+              switchMap(() => {
+                const lang = this.router.url.split('/')[1] || 'en';
+                return this.router.navigate([lang, 'topics', topicId]);
+              })
+            );
+          })
+        );
+      })
+    ).subscribe();
+  }
+}
+

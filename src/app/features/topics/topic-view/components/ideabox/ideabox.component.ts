@@ -1,5 +1,5 @@
 import { Component, input, output, inject, signal, computed } from '@angular/core';
-import { DatePipe, UpperCasePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
@@ -15,8 +15,6 @@ import { IdeaReactionsComponent } from '../idea-reactions/idea-reactions.compone
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation, IdeaComment } from '../../../../../core/interfaces/ideation';
 import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
-import { IdeaReplyComponent } from '../idea-reply/idea-reply.component';
-import { IdeaReplyFormComponent } from '../idea-reply-form/idea-reply-form.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { IdeaReportComponent } from '../idea-report/idea-report.component';
@@ -27,7 +25,7 @@ import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
 @Component({
   selector: 'app-ideabox',
   standalone: true,
-  imports: [DatePipe, TranslateModule, RouterModule, InitialsComponent, IconComponent, IdeaReplyComponent, IdeaReplyFormComponent, CosDropdownDirective, TooltipComponent, UpperCasePipe, AddIdeaFolderComponent],
+  imports: [DatePipe, TranslateModule, RouterModule, InitialsComponent, IconComponent, CosDropdownDirective, TooltipComponent],
   templateUrl: './ideabox.component.html',
   styleUrls: ['./ideabox.component.scss'],
 })

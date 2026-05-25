@@ -2,7 +2,6 @@ import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { Topic } from '../../../../../core/interfaces/topic';
@@ -14,7 +13,7 @@ import { NotificationComponent } from '../../../../../shared/components/notifica
   selector: 'app-topic-vote-sign',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DialogCloseDirective, IconComponent, NotificationComponent],
+  imports: [TranslateModule, DialogCloseDirective, NotificationComponent],
   templateUrl: './topic-vote-sign.component.html'
 })
 export class TopicVoteSignComponent {

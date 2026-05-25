@@ -171,6 +171,14 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
       .pipe(map(res => res.data));
   }
 
+  getReport(params: { topicId: string; commentId: string; reportId: string; token?: string }): Observable<ArgumentReport> {
+    let httpParams = new HttpParams();
+    if (params.token) httpParams = httpParams.set('token', params.token);
+    const path = this.getAbsoluteUrlApi(`/topics/${params.topicId}/comments/${params.commentId}/reports/${params.reportId}`, true);
+    return this.http.get<ApiResponse<ArgumentReport>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
+  }
+
   getArgumentIdWithVersion(argumentId: string, version: number): string {
     return argumentId + this.ARGUMENT_VERSION_SEPARATOR + version;
   }
