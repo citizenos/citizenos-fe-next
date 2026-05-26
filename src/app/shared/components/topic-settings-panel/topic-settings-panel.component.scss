@@ -272,21 +272,8 @@
     }
 
     .permission-dropdown {
-      position: relative;
-      cursor: pointer;
-      border: 1px solid var(--color-border);
-      border-radius: 4px;
-      padding: 6px 12px;
       min-width: 120px;
-      background: var(--color-surfaces);
-
-      .selection {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 13px;
-        font-weight: 600;
-      }
+      display: inline-block;
     }
 
     .remove-btn {
@@ -362,3 +349,15 @@
     }
   }
 }
+
+.option {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text);
+
+  &:hover {
+    background-color: var(--color-background);
+  }
+}
+

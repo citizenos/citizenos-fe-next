@@ -13,11 +13,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonComponent } from '../button/button.component';
 import { IconComponent } from '../icon/icon.component';
+import { TooltipComponent } from '../tooltip/tooltip.component';
 
 @Component({
   selector: 'cos-topic-attachments',
   standalone: true,
-  imports: [FormsModule, TranslateModule, CosDropdownDirective, ButtonComponent, IconComponent],
+  imports: [FormsModule, TranslateModule, CosDropdownDirective, ButtonComponent, IconComponent, TooltipComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-attachments.component.html',
   styleUrl: './topic-attachments.component.scss'
@@ -32,6 +33,10 @@ export class TopicAttachmentsComponent implements OnInit {
   private uploadService = inject(UploadService);
   private notification = inject(NotificationService);
   private translate = inject(TranslateService);
+
+  limit = 10;
+  allowedFileSize = '50MB';
+  allowedFileTypes = ["txt", "pdf", "doc", "asice", "docx", "ddoc", "bdoc", "odf", "odt", "jpg", "jpeg", "img", "png", "rtf", "xls", "xlsx", "ppt", "pptx", "pps", "xlt"].join(', ');
   
   resolvedTopic = computed(() => this.data?.topic || this.topic());
   attachments = signal<TopicAttachment[]>([]);

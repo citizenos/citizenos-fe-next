@@ -1,6 +1,19 @@
 <div class="create_content_block discussion" [class.open]="blockAttachments()">
   <div class="block_title_wrap" (click)="blockAttachments.set(true)" (keydown.enter)="blockAttachments.set(true)" role="button" tabindex="0">
-    <div class="block_title">{{ 'VIEWS.TOPIC_CREATE.TITLE_ATTACHMENTS' | translate }}</div>
+    <div class="block_title">
+      <span>{{ 'VIEWS.TOPIC_CREATE.TITLE_ATTACHMENTS' | translate }}</span>
+      <cos-tooltip [title]="'VIEWS.TOPIC_CREATE.TOOLTIP_ATTACHMENTS_TITLE' | translate">
+        <div class="content_description">
+          {{ 'VIEWS.TOPIC_CREATE.TOOLTIP_ATTACHMENTS_DESCRIPTION_LIMIT' | translate: {limit: limit} }}
+        </div>
+        <div class="content_description">
+          {{ 'VIEWS.TOPIC_CREATE.TOOLTIP_ATTACHMENTS_DESCRIPTION_SIZE' | translate: {allowedFileSize: allowedFileSize} }}
+        </div>
+        <div class="content_description">
+          {{ 'VIEWS.TOPIC_CREATE.TOOLTIP_ATTACHMENTS_DESCRIPTION_TYPES' | translate: {allowedFileTypes: allowedFileTypes} }}
+        </div>
+      </cos-tooltip>
+    </div>
     
     <div class="dropdown button_dropdown" cosDropdown>
       <cos-button variant="secondary" (clicked)="blockAttachments.set(true)" icon="plus">
