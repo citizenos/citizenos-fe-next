@@ -12,7 +12,8 @@ describe('TopicAttachmentsComponent (business logic)', () => {
   const mockTopicService = {
     loadAttachments: vi.fn().mockReturnValue(of([])),
     updateAttachment: vi.fn().mockReturnValue(of({})),
-    deleteAttachment: vi.fn().mockReturnValue(of({}))
+    deleteAttachment: vi.fn().mockReturnValue(of({})),
+    saveAttachment: vi.fn().mockReturnValue(of({ id: 'saved-id', name: 'saved.pdf' }))
   };
   const mockUploadService = {
     upload: vi.fn().mockReturnValue(of({ id: 'new-id', name: 'test.pdf' }))
@@ -62,5 +63,55 @@ describe('TopicAttachmentsComponent (business logic)', () => {
       { name: 'test.pdf' }
     );
     expect(component.attachments()).toEqual([{ id: 'new-id', name: 'test.pdf' }]);
+  });
+
+  it('should save attachment and add to list on doSaveAttachment', () => {
+    component.doSaveAttachment({ name: 'saved.pdf' });
+    expect(mockTopicService.saveAttachment).toHaveBeenCalledWith('topic-1', { name: 'saved.pdf' });
+    expect(component.attachments()).toContainEqual({ id: 'saved-id', name: 'saved.pdf' });
+  });
+
+  it('should open Dropbox chooser and save chosen file on dropboxSelect', () => {
+    const mockDropbox = {
+      choose: vi.fn().mockImplementation((options) => {
+        options.success([{ name: 'db.pdf', bytes: 100, link: 'https://db.link' }]);
+      })
+    };
+    (globalThis as any).Dropbox = mockDropbox;
+
+    component.dropboxSelect();
+    expect(mockDropbox.choose).toHaveBeenCalled();
+    expect(mockTopicService.saveAttachment).toHaveBeenCalledWith('topic-1', {
+      name: 'db.pdf',
+      type: 'pdf',
+      source: 'dropbox',
+      size: 100,
+      link: 'https://db.link'
+    });
+  });
+
+  it('should open OneDrive and save chosen file on oneDriveSelect', () => {
+    const mockOneDrive = {
+      open: vi.fn().mockImplementation((options) => {
+        options.success({
+          value: [{
+            name: 'od.pdf',
+            size: 200,
+            permissions: [{ link: { webUrl: 'https://od.link' } }]
+          }]
+        });
+      })
+    };
+    (globalThis as any).OneDrive = mockOneDrive;
+
+    component.oneDriveSelect();
+    expect(mockOneDrive.open).toHaveBeenCalled();
+    expect(mockTopicService.saveAttachment).toHaveBeenCalledWith('topic-1', {
+      name: 'od.pdf',
+      type: 'pdf',
+      source: 'onedrive',
+      size: 200,
+      link: 'https://od.link'
+    });
   });
 });

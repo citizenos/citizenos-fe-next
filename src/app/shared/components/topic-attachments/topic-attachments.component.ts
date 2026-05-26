@@ -12,11 +12,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonComponent } from '../button/button.component';
 import { TooltipComponent } from '../tooltip/tooltip.component';
+import { CosDropdownDirective } from '../../directives/cos-dropdown.directive';
+
+declare let Dropbox: any;
+declare let OneDrive: any;
+declare let google: any;
+declare let gapi: any;
 
 @Component({
   selector: 'cos-topic-attachments',
   standalone: true,
-  imports: [FormsModule, TranslateModule, ButtonComponent, TooltipComponent],
+  imports: [FormsModule, TranslateModule, ButtonComponent, TooltipComponent, CosDropdownDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-attachments.component.html',
   styleUrl: './topic-attachments.component.scss'
@@ -31,6 +37,19 @@ export class TopicAttachmentsComponent implements OnInit {
   private uploadService = inject(UploadService);
   private notification = inject(NotificationService);
   private translate = inject(TranslateService);
+
+  config = {
+    dropbox: {
+      appKey: 'lkk7j6f41sfpm5b'
+    },
+    googleDrive: {
+      developerKey: 'AIzaSyBuEp5_A9tMjIZbIWzZ3pyh9wzLVcikD6I',
+      clientId: '11623449066-0pdp3p7mp4l4f3e7vm43pr7okjpmddmc.apps.googleusercontent.com'
+    },
+    oneDrive: {
+      clientId: 'deb735fe-1c3d-489c-93f4-0a8927101d09'
+    }
+  };
 
   limit = 10;
   allowedFileSize = '50MB';
@@ -106,6 +125,133 @@ export class TopicAttachmentsComponent implements OnInit {
         this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_ATTACHMENT_DELETE_FAILED');
       }
     });
+  }
+
+  doSaveAttachment(attachment: Partial<TopicAttachment>) {
+    const topicId = this.resolvedTopic().id;
+    if (!topicId) return;
+
+    this.topicService.saveAttachment(topicId, attachment).subscribe({
+      next: (res) => {
+        if (res && res.id) {
+          this.attachments.update(items => [...items, res]);
+        }
+      },
+      error: () => {
+        this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_ATTACHMENT_SAVE_FAILED');
+      }
+    });
+  }
+
+  dropboxSelect() {
+    if (typeof Dropbox === 'undefined') return;
+    Dropbox.appKey = this.config.dropbox.appKey;
+    Dropbox.choose({
+      success: (files: any[]) => {
+        if (files && files.length > 0) {
+          const attachment = {
+            name: files[0].name,
+            type: files[0].name.split('.').pop(),
+            source: 'dropbox',
+            size: files[0].bytes,
+            link: files[0].link
+          };
+          this.doSaveAttachment(attachment);
+          this.blockAttachments.set(true);
+        }
+      },
+      cancel: () => {
+        // No action needed on cancel
+      },
+      linkType: 'preview',
+      multiselect: false
+    });
+  }
+
+  oneDriveSelect() {
+    if (typeof OneDrive === 'undefined') return;
+    OneDrive.open({
+      clientId: this.config.oneDrive.clientId,
+      action: 'share',
+      advanced: {
+        redirectUri: window.location.origin + '/onedrive'
+      },
+      success: (res: any) => {
+        if (res && res.value && res.value.length > 0) {
+          const attachment = {
+            name: res.value[0].name,
+            type: res.value[0].name.split('.').pop(),
+            source: 'onedrive',
+            size: res.value[0].size,
+            link: res.value[0].permissions[0].link.webUrl
+          };
+          this.doSaveAttachment(attachment);
+          this.blockAttachments.set(true);
+        }
+      },
+      cancel: () => {
+        // No action needed on cancel
+      },
+      error: (err: any) => {
+        console.error(err);
+      }
+    });
+  }
+
+  googleDriveSelect() {
+    if (typeof gapi === 'undefined' || typeof google === 'undefined') return;
+    let googlePickerApiLoaded = false;
+    let oauthToken: any;
+
+    const createPicker = () => {
+      const pickerCallback = (data: any) => {
+        if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+          const doc = data[google.picker.Response.DOCUMENTS][0];
+          const attachment = {
+            name: doc[google.picker.Document.NAME],
+            type: doc[google.picker.Document.TYPE] || doc[google.picker.Document.NAME].split('.').pop(),
+            source: 'googledrive',
+            size: doc.sizeBytes || 0,
+            link: doc[google.picker.Document.URL]
+          };
+          this.doSaveAttachment(attachment);
+          this.blockAttachments.set(true);
+        }
+      };
+
+      const picker = new google.picker.PickerBuilder()
+        .addView(google.picker.ViewId.DOCS)
+        .setOAuthToken(oauthToken)
+        .setDeveloperKey(this.config.googleDrive.developerKey)
+        .setCallback(pickerCallback)
+        .setOrigin(window.location.origin)
+        .setSize(600, 400)
+        .build();
+      picker.setVisible(true);
+    };
+
+    const onAuthApiLoad = () => {
+      gapi.auth.authorize(
+        {
+          'client_id': this.config.googleDrive.clientId,
+          'scope': ['https://www.googleapis.com/auth/drive.file'],
+          'immediate': false
+        },
+        (authResult: any) => {
+          if (authResult && !authResult.error && googlePickerApiLoaded) {
+            oauthToken = authResult.access_token;
+            createPicker();
+          }
+        }
+      );
+    };
+
+    const onPickerApiLoad = () => {
+      googlePickerApiLoaded = true;
+    };
+
+    gapi.load('client', { 'callback': onAuthApiLoad });
+    gapi.load('picker', { 'callback': onPickerApiLoad });
   }
 }
 

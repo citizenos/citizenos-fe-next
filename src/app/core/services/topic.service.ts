@@ -348,12 +348,20 @@ export class TopicService {
     ).pipe(map(res => res.data?.rows ?? []));
   }
 
+  saveAttachment(topicId: string, attachment: Partial<TopicAttachment>): Observable<TopicAttachment> {
+    return this.http.post<ApiResponse<TopicAttachment>>(
+      this.getAbsoluteUrlApi(`/topics/${topicId}/attachments`, true),
+      attachment,
+      { withCredentials: true }
+    ).pipe(map(res => res.data!));
+  }
+
   updateAttachment(topicId: string, attachment: TopicAttachment): Observable<TopicAttachment> {
     return this.http.put<ApiResponse<TopicAttachment>>(
       this.getAbsoluteUrlApi(`/topics/${topicId}/attachments/${attachment.id}`),
       attachment,
       { withCredentials: true }
-    ).pipe(map(res => res.data));
+    ).pipe(map(res => res.data!));
   }
 
   deleteAttachment(topicId: string, attachmentId: string): Observable<unknown> {
