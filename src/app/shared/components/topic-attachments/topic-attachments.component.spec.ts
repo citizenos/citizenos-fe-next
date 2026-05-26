@@ -60,7 +60,7 @@ describe('TopicAttachmentsComponent (business logic)', () => {
     expect(mockUploadService.upload).toHaveBeenCalledWith(
       '/api/users/self/topics/topic-1/attachments/upload',
       mockFile,
-      { name: 'test.pdf' }
+      { name: 'test.pdf', type: 'pdf', source: 'upload' }
     );
     expect(component.attachments()).toEqual([{ id: 'new-id', name: 'test.pdf' }]);
   });

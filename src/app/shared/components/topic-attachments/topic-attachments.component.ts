@@ -84,11 +84,16 @@ export class TopicAttachmentsComponent implements OnInit {
     for (const file of files) {
       const path = `/api/users/self/topics/${topicId}/attachments/upload`;
       
-      this.uploadService.upload(path, file, { name: file.name }).subscribe({
+      this.uploadService.upload(path, file, {
+        name: file.name,
+        type: file.name.split('.').pop() || '',
+        source: 'upload'
+      }).subscribe({
         next: (result: unknown) => {
           const res = result as TopicAttachment;
           if (res && res.id) {
             this.attachments.update(items => [...items, res]);
+            this.blockAttachments.set(true);
           }
         },
         error: () => {
