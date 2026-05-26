@@ -2,12 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 import { filter, map, Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response';
+import { ConfigStore } from '../state/config.store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadService {
   private http = inject(HttpClient);
+  private configStore = inject(ConfigStore);
 
   upload<T = unknown>(path: string, file: File, data?: Record<string, unknown>): Observable<T> {
     const formData: FormData = new FormData();
@@ -19,7 +21,13 @@ export class UploadService {
       }
     }
 
-    const req = new HttpRequest('POST', path, formData, {
+    let fullPath = path;
+    if (!path.startsWith('http://') && !path.startsWith('https://')) {
+      const baseUrl = this.configStore.api.baseUrl();
+      fullPath = `${baseUrl}${path}`;
+    }
+
+    const req = new HttpRequest('POST', fullPath, formData, {
       withCredentials: true,
       reportProgress: true,
       responseType: 'json',

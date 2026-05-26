@@ -3,25 +3,27 @@
     <div class="block_title">{{ 'VIEWS.TOPIC_CREATE.TITLE_ATTACHMENTS' | translate }}</div>
     
     <div class="dropdown button_dropdown" cosDropdown>
-      <cos-button variant="secondary" (clicked)="blockAttachments.set(true); $event.stopPropagation()" icon="plus">
+      <cos-button variant="secondary" (clicked)="blockAttachments.set(true)" icon="plus">
         <span>{{ 'VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_ADD' | translate }}</span>
       </cos-button>
       <div class="options button_options">
-        <cos-button variant="ghost" (clicked)="triggerUpload()" icon="upload">
-          <input 
-            type="file" 
-            #attachmentInput 
-            class="hidden" 
-            (change)="onUpload()"
-            multiple="true" 
-            [attr.aria-label]="'VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_UPLOAD' | translate"
-          />
+        <button type="button" class="option" (click)="triggerUpload()">
+          <cos-icon name="upload" [size]="16"></cos-icon>
           <span>{{ 'VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_UPLOAD' | translate }}</span>
-        </cos-button>
+        </button>
         <!-- Dropbox/OneDrive/GoogleDrive could be added here if needed -->
       </div>
     </div>
   </div>
+
+  <input 
+    type="file" 
+    #attachmentInput 
+    class="hidden" 
+    (change)="onUpload()"
+    multiple="true" 
+    [attr.aria-label]="'VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_UPLOAD' | translate"
+  />
 
   @if (blockAttachments()) {
     <div class="block_content attachments_wrap">
@@ -41,3 +43,4 @@
     </div>
   }
 </div>
+

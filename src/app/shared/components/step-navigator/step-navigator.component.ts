@@ -79,8 +79,8 @@ export interface StepConfig {
         }
       }
 
+      // Completed steps do not have a special color, matching legacy design
       &.completed {
-        color: var(--color-success);
       }
     }
 

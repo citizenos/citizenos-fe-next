@@ -34,6 +34,7 @@ import { DialogService } from '../../../shared/dialog';
 import { TopicSettingsDisabledDialogComponent } from '../topic-view/components/topic-settings-disabled-dialog/topic-settings-disabled-dialog.component';
 import { TopicSettingsLockedComponent } from '../topic-view/components/topic-settings-locked/topic-settings-locked.component';
 import { TopicEditDisabledDialogComponent } from '../topic-view/components/topic-edit-disabled-dialog/topic-edit-disabled-dialog.component';
+import { PendingChangesComponent } from '../../../core/guards/pending-changes.guard';
 
 @Component({
   selector: 'cos-topic-edit',
@@ -54,7 +55,7 @@ import { TopicEditDisabledDialogComponent } from '../topic-view/components/topic
   templateUrl: './topic-edit.component.html',
   styleUrl: './topic-edit.component.scss'
 })
-export class TopicEditComponent implements OnInit {
+export class TopicEditComponent implements OnInit, PendingChangesComponent {
   private topicService = inject(TopicService);
   private uploadService = inject(UploadService);
   private memberUserService = inject(TopicMemberUserService);
@@ -68,7 +69,17 @@ export class TopicEditComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private dialog = inject(DialogService);
 
-  topic = signal<Partial<Topic>>({});
+  topic = signal<Partial<Topic>>({
+    title: '',
+    intro: '',
+    description: '<html><head></head><body></body></html>',
+    visibility: 'private',
+    categories: [],
+    status: 'draft',
+    hashtag: null
+  });
+
+  hasChanges = signal(true);
   discussion = signal<DiscussionData>({ question: '', deadline: null });
   ideation = signal<Partial<Ideation>>({});
   vote = signal<Partial<VoteWithOptions>>({});
@@ -297,7 +308,7 @@ export class TopicEditComponent implements OnInit {
       switchMap((updated) => {
         this.topic.set(updated);
         if (this.imageFile()) {
-          const path = `/api/users/self/topics/${updated.id}/image`;
+          const path = `/api/users/self/topics/${updated.id}/upload`;
           return this.uploadService.upload(path, this.imageFile()!);
         }
         return of(null);
@@ -346,6 +357,7 @@ export class TopicEditComponent implements OnInit {
         this.topic.set(savedTopic);
         this.isLoading.set(false);
         this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
+        this.hasChanges.set(false);
         this.router.navigate(['/topics', savedTopic.id]);
       },
       error: () => {
@@ -379,6 +391,7 @@ export class TopicEditComponent implements OnInit {
       const savedTopic = (result as { topic?: Topic }).topic ?? result as Topic;
       this.isLoading.set(false);
       this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
+      this.hasChanges.set(false);
       this.dialog.open(TopicInviteDialogComponent, {
         data: { topic: savedTopic }
       }).afterClosed().subscribe(() => {
@@ -436,6 +449,17 @@ export class TopicEditComponent implements OnInit {
       }).afterClosed().subscribe(() => {
         this.reloadMembers$.next();
       });
+    }
+  }
+
+  hasUnsavedChanges(): boolean {
+    return this.hasChanges();
+  }
+
+  removeChanges() {
+    const t = this.topic() as any;
+    if (t?.id && t?.revision) {
+      this.topicService.revert(t.id, t.revision).pipe(take(1)).subscribe();
     }
   }
 }

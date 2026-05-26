@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { pendingChangesGuard } from '../../core/guards/pending-changes.guard';
 
 export const TOPICS_ROUTES: Routes = [
   {
@@ -9,13 +10,14 @@ export const TOPICS_ROUTES: Routes = [
   {
     path: 'create',
     children: [
-      { path: '', loadComponent: () => import('./topic-create/topic-create.component').then(m => m.TopicCreateComponent) },
-      { path: ':topicId', loadComponent: () => import('./topic-create/topic-create.component').then(m => m.TopicCreateComponent) }
+      { path: '', loadComponent: () => import('./topic-create/topic-create.component').then(m => m.TopicCreateComponent), canDeactivate: [pendingChangesGuard] },
+      { path: ':topicId', loadComponent: () => import('./topic-create/topic-create.component').then(m => m.TopicCreateComponent), canDeactivate: [pendingChangesGuard] }
     ]
   },
   {
     path: 'edit/:topicId',
-    loadComponent: () => import('./topic-edit/topic-edit.component').then(m => m.TopicEditComponent)
+    loadComponent: () => import('./topic-edit/topic-edit.component').then(m => m.TopicEditComponent),
+    canDeactivate: [pendingChangesGuard]
   },
   {
     path: 'ideation',
@@ -23,13 +25,14 @@ export const TOPICS_ROUTES: Routes = [
       {
         path: 'create',
         children: [
-          { path: '', loadComponent: () => import('./ideation-create/ideation-create.component').then(m => m.IdeationCreateComponent) },
-          { path: ':topicId', loadComponent: () => import('./ideation-create/ideation-create.component').then(m => m.IdeationCreateComponent) }
+          { path: '', loadComponent: () => import('./ideation-create/ideation-create.component').then(m => m.IdeationCreateComponent), canDeactivate: [pendingChangesGuard] },
+          { path: ':topicId', loadComponent: () => import('./ideation-create/ideation-create.component').then(m => m.IdeationCreateComponent), canDeactivate: [pendingChangesGuard] }
         ]
       },
       {
         path: 'edit/:topicId',
-        loadComponent: () => import('./topic-edit/topic-edit.component').then(m => m.TopicEditComponent)
+        loadComponent: () => import('./topic-edit/topic-edit.component').then(m => m.TopicEditComponent),
+        canDeactivate: [pendingChangesGuard]
       }
     ]
   },
@@ -39,13 +42,14 @@ export const TOPICS_ROUTES: Routes = [
       {
         path: 'create',
         children: [
-          { path: '', loadComponent: () => import('./vote-create/vote-create.component').then(m => m.VoteCreateComponent) },
-          { path: ':topicId', loadComponent: () => import('./vote-create/vote-create.component').then(m => m.VoteCreateComponent) }
+          { path: '', loadComponent: () => import('./vote-create/vote-create.component').then(m => m.VoteCreateComponent), canDeactivate: [pendingChangesGuard] },
+          { path: ':topicId', loadComponent: () => import('./vote-create/vote-create.component').then(m => m.VoteCreateComponent), canDeactivate: [pendingChangesGuard] }
         ]
       },
       {
         path: 'edit/:topicId',
-        loadComponent: () => import('./topic-edit/topic-edit.component').then(m => m.TopicEditComponent)
+        loadComponent: () => import('./topic-edit/topic-edit.component').then(m => m.TopicEditComponent),
+        canDeactivate: [pendingChangesGuard]
       }
     ]
   },

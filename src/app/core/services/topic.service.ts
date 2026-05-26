@@ -125,7 +125,10 @@ export class TopicService {
     const path = this.getAbsoluteUrlApi(`/topics/${topicId}`);
 
     return this.http.put<ApiResponse<Topic>>(path, sendData, { withCredentials: true, observe: 'body', responseType: 'json' })
-      .pipe(map(res => res.data!));
+      .pipe(map(res => {
+        const responseData = res?.data || {};
+        return { ...data, ...responseData } as Topic;
+      }));
   }
 
   revert(topicId: string, rev: number): Observable<Topic> {
@@ -148,7 +151,10 @@ export class TopicService {
     const path = this.getAbsoluteUrlApi(`/topics/${topicId}`);
 
     return this.http.patch<ApiResponse<Topic>>(path, sendData, { withCredentials: true, observe: 'body', responseType: 'json' })
-      .pipe(map(res => res.data!));
+      .pipe(map(res => {
+        const responseData = res?.data || {};
+        return { ...data, ...responseData } as Topic;
+      }));
   }
 
   delete(data: TopicWithId): Observable<unknown> {

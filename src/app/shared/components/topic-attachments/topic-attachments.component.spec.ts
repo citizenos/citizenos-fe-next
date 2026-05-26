@@ -45,7 +45,22 @@ describe('TopicAttachmentsComponent (business logic)', () => {
     expect(mockTopicService.loadAttachments).toHaveBeenCalledWith('topic-1');
   });
 
-  it('should trigger upload on onUpload', () => {
-    // Upload requires a ViewChild file input; tested via integration only
+  it('should call uploadService.upload with /upload path on onUpload', () => {
+    const mockFile = new File(['hello'], 'test.pdf', { type: 'application/pdf' });
+    const mockInputElement = {
+      files: [mockFile]
+    };
+    component.attachmentInput = {
+      nativeElement: mockInputElement
+    } as any;
+
+    component.onUpload();
+
+    expect(mockUploadService.upload).toHaveBeenCalledWith(
+      '/api/users/self/topics/topic-1/attachments/upload',
+      mockFile,
+      { name: 'test.pdf' }
+    );
+    expect(component.attachments()).toEqual([{ id: 'new-id', name: 'test.pdf' }]);
   });
 });

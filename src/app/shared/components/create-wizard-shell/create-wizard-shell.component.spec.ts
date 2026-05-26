@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CreateWizardShellComponent } from './create-wizard-shell.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input, output } from '@angular/core';
+import { TopicService } from '../../../core/services/topic.service';
 
 @Component({ selector: 'cos-domain-icon', standalone: true, template: '' })
 class MockDomainIconComponent { @Input() type?: string; }
@@ -26,9 +27,17 @@ describe('CreateWizardShellComponent', () => {
   let component: CreateWizardShellComponent;
   let fixture: ComponentFixture<CreateWizardShellComponent>;
 
+  let mockTopicService = {
+    getDownloadUrl: vi.fn().mockReturnValue('http://api/dl/topic-1'),
+    canDelete: vi.fn().mockReturnValue(true)
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreateWizardShellComponent, TranslateModule.forRoot()]
+      imports: [CreateWizardShellComponent, TranslateModule.forRoot()],
+      providers: [
+        { provide: TopicService, useValue: mockTopicService }
+      ]
     })
     .overrideComponent(CreateWizardShellComponent, {
       set: { imports: [TranslateModule, MockDomainIconComponent, MockStepNavigatorComponent, MockIconComponent] }
@@ -41,6 +50,7 @@ describe('CreateWizardShellComponent', () => {
     fixture.componentRef.setInput('headingKey', 'CREATE_HEADING');
     fixture.componentRef.setInput('steps', MOCK_STEPS);
     fixture.componentRef.setInput('currentStep', 'step1');
+    fixture.componentRef.setInput('topic', { id: 'topic-1' });
     fixture.detectChanges();
   });
 
@@ -114,5 +124,10 @@ describe('CreateWizardShellComponent', () => {
   it('should not show sidebar when hasSidebar is false', () => {
     const el: HTMLElement = fixture.nativeElement;
     expect(el.querySelector('.wizard-sidebar')).toBeFalsy();
+  });
+
+  it('should call topicService.getDownloadUrl with correct topic id', () => {
+    expect(component.getDownloadUrl()).toBe('http://api/dl/topic-1');
+    expect(mockTopicService.getDownloadUrl).toHaveBeenCalledWith('topic-1');
   });
 });

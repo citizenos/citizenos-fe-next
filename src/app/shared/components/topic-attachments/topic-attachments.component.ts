@@ -12,11 +12,12 @@ import { take, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonComponent } from '../button/button.component';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'cos-topic-attachments',
   standalone: true,
-  imports: [FormsModule, TranslateModule, CosDropdownDirective, ButtonComponent],
+  imports: [FormsModule, TranslateModule, CosDropdownDirective, ButtonComponent, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-attachments.component.html',
   styleUrl: './topic-attachments.component.scss'
@@ -24,7 +25,7 @@ import { ButtonComponent } from '../button/button.component';
 export class TopicAttachmentsComponent implements OnInit {
   @ViewChild('attachmentInput') attachmentInput?: ElementRef;
 
-  topicInput = input<Partial<Topic>>({}, { alias: 'topic' });
+  topic = input<Partial<Topic>>({});
   
   private data = inject<{ topic: Topic }>(DIALOG_DATA, { optional: true });
   private topicService = inject(TopicService);
@@ -32,12 +33,12 @@ export class TopicAttachmentsComponent implements OnInit {
   private notification = inject(NotificationService);
   private translate = inject(TranslateService);
   
-  topic = computed(() => this.data?.topic || this.topicInput());
+  resolvedTopic = computed(() => this.data?.topic || this.topic());
   attachments = signal<TopicAttachment[]>([]);
   blockAttachments = signal(false);
 
   ngOnInit() {
-    const topicId = this.topic().id;
+    const topicId = this.resolvedTopic().id;
     if (topicId) {
       this.topicService.loadAttachments(topicId).subscribe(items => {
         this.attachments.set(items);
@@ -54,11 +55,11 @@ export class TopicAttachmentsComponent implements OnInit {
 
   onUpload() {
     const files = this.attachmentInput?.nativeElement.files;
-    const topicId = this.topic().id;
+    const topicId = this.resolvedTopic().id;
     if (!topicId || !files.length) return;
 
     for (const file of files) {
-      const path = `/api/users/self/topics/${topicId}/attachments`;
+      const path = `/api/users/self/topics/${topicId}/attachments/upload`;
       
       this.uploadService.upload(path, file, { name: file.name }).subscribe({
         next: (result: unknown) => {
@@ -72,10 +73,14 @@ export class TopicAttachmentsComponent implements OnInit {
         }
       });
     }
+
+    if (this.attachmentInput) {
+      this.attachmentInput.nativeElement.value = '';
+    }
   }
 
   onUpdate(attachment: TopicAttachment) {
-    const topicId = this.topic().id;
+    const topicId = this.resolvedTopic().id;
     if (!topicId) return;
 
     this.topicService.updateAttachment(topicId, attachment).subscribe({
@@ -86,7 +91,7 @@ export class TopicAttachmentsComponent implements OnInit {
   }
 
   onDelete(attachment: TopicAttachment) {
-    const topicId = this.topic().id;
+    const topicId = this.resolvedTopic().id;
     if (!topicId) return;
 
     this.topicService.deleteAttachment(topicId, attachment.id).subscribe({

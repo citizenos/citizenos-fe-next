@@ -24,6 +24,7 @@ import { TopicInviteDialogComponent } from '../topic-view/components/topic-invit
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { AnyPipe } from '../../../shared/pipes/any.pipe';
+import { PendingChangesComponent } from '../../../core/guards/pending-changes.guard';
 
 @Component({
   selector: 'cos-ideation-create',
@@ -42,7 +43,7 @@ import { AnyPipe } from '../../../shared/pipes/any.pipe';
   templateUrl: './ideation-create.component.html',
   styleUrl: './ideation-create.component.scss'
 })
-export class IdeationCreateComponent implements OnInit {
+export class IdeationCreateComponent implements OnInit, PendingChangesComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private topicService = inject(TopicService);
@@ -63,6 +64,7 @@ export class IdeationCreateComponent implements OnInit {
 
   currentStep = signal('info');
   isLoading = signal(false);
+  hasChanges = signal(true);
 
   topic = signal<Partial<Topic>>({
     title: '',
@@ -287,6 +289,7 @@ export class IdeationCreateComponent implements OnInit {
         }
         this.isLoading.set(false);
         this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
+        this.hasChanges.set(false);
         this.router.navigate(['/topics', t.id]);
       },
       error: () => {
@@ -306,6 +309,7 @@ export class IdeationCreateComponent implements OnInit {
           next: () => {
             this.isLoading.set(false);
             this.notification.showRaw('success', 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');
+            this.hasChanges.set(false);
             this.dialog.open(TopicInviteDialogComponent, {
               data: { topic: savedTopic }
             }).afterClosed().subscribe(() => {
@@ -347,6 +351,7 @@ export class IdeationCreateComponent implements OnInit {
         this.topicService.delete({ id: topicId }).pipe(take(1)).subscribe({
           next: () => {
             this.isLoading.set(false);
+            this.hasChanges.set(false);
             this.router.navigate(['/my/topics']);
           },
           error: () => {
@@ -356,6 +361,17 @@ export class IdeationCreateComponent implements OnInit {
         });
       }
     });
+  }
+
+  hasUnsavedChanges(): boolean {
+    return this.hasChanges();
+  }
+
+  removeChanges() {
+    const topicId = this.topic().id;
+    if (topicId) {
+      this.topicService.delete({ id: topicId }).pipe(take(1)).subscribe();
+    }
   }
 }
 

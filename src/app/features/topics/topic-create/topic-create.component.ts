@@ -25,6 +25,7 @@ import { DialogService } from '../../../shared/dialog/dialog.service';
 import { TopicInviteDialogComponent } from '../topic-view/components/topic-invite-dialog/topic-invite-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { GroupDetailService } from '../../../core/services/group-detail.service';
+import { PendingChangesComponent } from '../../../core/guards/pending-changes.guard';
 
 @Component({
   selector: 'cos-topic-create',
@@ -43,7 +44,7 @@ import { GroupDetailService } from '../../../core/services/group-detail.service'
   templateUrl: './topic-create.component.html',
   styleUrl: './topic-create.component.scss'
 })
-export class TopicCreateComponent implements OnInit {
+export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   private topicService = inject(TopicService);
   private uploadService = inject(UploadService);
   private memberUserService = inject(TopicMemberUserService);
@@ -73,6 +74,7 @@ export class TopicCreateComponent implements OnInit {
   currentStep = signal('info');
   isCreatedFromGroup = signal(false);
   showHelp = signal(true);
+  hasChanges = signal(true);
 
   addedGroups = signal<TopicMemberGroup[]>([]);
   groupsToRemove = signal<TopicMemberGroup[]>([]);
@@ -274,7 +276,7 @@ export class TopicCreateComponent implements OnInit {
       switchMap((updated) => {
         this.topic.set(updated);
         if (this.imageFile()) {
-          const path = `/api/users/self/topics/${updated.id}/image`;
+          const path = `/api/users/self/topics/${updated.id}/upload`;
           return this.uploadService.upload<{ imageUrl?: string; link?: string; id?: string }>(path, this.imageFile()!).pipe(
             map((uploaded) => {
               if (uploaded) {
@@ -354,6 +356,7 @@ export class TopicCreateComponent implements OnInit {
         this.isLoading.set(false);
         this.groupsToRemove.set([]);
         this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
+        this.hasChanges.set(false);
         this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', this.topic().id]);
       },
       error: () => {
@@ -405,6 +408,7 @@ export class TopicCreateComponent implements OnInit {
 
       this.notification.showRaw('success', successMessage);
 
+      this.hasChanges.set(false);
       this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', this.topic().id]).then(() => {
         if (isNewOrDraft) {
           this.dialog.open(TopicInviteDialogComponent, {
@@ -450,6 +454,7 @@ export class TopicCreateComponent implements OnInit {
         this.topicService.delete({ id: topicId }).pipe(take(1)).subscribe({
           next: () => {
             this.isLoading.set(false);
+            this.hasChanges.set(false);
             this.router.navigate(['/my/topics']);
           },
           error: () => {
@@ -459,5 +464,16 @@ export class TopicCreateComponent implements OnInit {
         });
       }
     });
+  }
+
+  hasUnsavedChanges(): boolean {
+    return this.hasChanges();
+  }
+
+  removeChanges() {
+    const topicId = this.topic().id;
+    if (topicId) {
+      this.topicService.delete({ id: topicId }).pipe(take(1)).subscribe();
+    }
   }
 }

@@ -46,7 +46,7 @@ export class CreateWizardShellComponent {
   getDownloadUrl(): string {
     const t = this.topic();
     if (!t?.id) return '';
-    return `${this.configStore.api.baseUrl()}/api/topics/${t.id}/reports/html`;
+    return this.topicService.getDownloadUrl(t.id);
   }
 }
 
