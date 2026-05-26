@@ -4,7 +4,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TopicService } from '../../../core/services/topic.service';
 import { TopicAttachment } from '../../../core/interfaces/topic';
 import { UploadService } from '../../../core/services/upload.service';
-import { CosDropdownDirective } from '../../directives/cos-dropdown.directive';
 import { Topic } from '../../../core/interfaces/topic';
 import { NotificationService } from '../../../core/services/notification.service';
 import { DIALOG_DATA, DialogService } from '../../dialog';
@@ -12,13 +11,12 @@ import { take, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonComponent } from '../button/button.component';
-import { IconComponent } from '../icon/icon.component';
 import { TooltipComponent } from '../tooltip/tooltip.component';
 
 @Component({
   selector: 'cos-topic-attachments',
   standalone: true,
-  imports: [FormsModule, TranslateModule, CosDropdownDirective, ButtonComponent, IconComponent, TooltipComponent],
+  imports: [FormsModule, TranslateModule, ButtonComponent, TooltipComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-attachments.component.html',
   styleUrl: './topic-attachments.component.scss'
@@ -56,6 +54,7 @@ export class TopicAttachmentsComponent implements OnInit {
 
   triggerUpload() {
     this.attachmentInput?.nativeElement.click();
+    this.blockAttachments.set(true);
   }
 
   onUpload() {

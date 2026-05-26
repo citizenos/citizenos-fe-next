@@ -15,18 +15,9 @@
       </cos-tooltip>
     </div>
     
-    <div class="dropdown button_dropdown" cosDropdown>
-      <cos-button variant="secondary" (clicked)="blockAttachments.set(true)" icon="plus">
-        <span>{{ 'VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_ADD' | translate }}</span>
-      </cos-button>
-      <div class="options button_options">
-        <button type="button" class="option" (click)="triggerUpload()">
-          <cos-icon name="upload" [size]="16"></cos-icon>
-          <span>{{ 'VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_UPLOAD' | translate }}</span>
-        </button>
-        <!-- Dropbox/OneDrive/GoogleDrive could be added here if needed -->
-      </div>
-    </div>
+    <cos-button variant="secondary" (clicked)="triggerUpload(); $event.stopPropagation();" icon="plus">
+      <span>{{ 'VIEWS.TOPIC_CREATE.ATTACHMENTS_BTN_ADD' | translate }}</span>
+    </cos-button>
   </div>
 
   <input 
