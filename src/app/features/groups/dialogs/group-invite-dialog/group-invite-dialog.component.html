@@ -41,8 +41,9 @@
 
           <div class="invite_options">
             <div class="option_item">
-              <label class="label">{{ 'VIEWS.GROUP.LBL_INVITE_MESSAGE' | translate }}</label>
+              <label class="label" for="invite_message">{{ 'VIEWS.GROUP.LBL_INVITE_MESSAGE' | translate }}</label>
               <textarea
+                id="invite_message"
                 class="message_area"
                 [ngModel]="inviteMessage()"
                 (ngModelChange)="inviteMessage.set($event)"
@@ -56,18 +57,18 @@
 
             <div class="option_item">
               <div class="level_select_header">
-                <label id="all_levels_label" class="label">{{ 'VIEWS.GROUP.LBL_MEMBER_LEVEL' | translate }}</label>
+                <div id="all_levels_label" class="label">{{ 'VIEWS.GROUP.LBL_MEMBER_LEVEL' | translate }}</div>
                 <cos-tooltip
                   [title]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_HEADING' | translate"
                   [description]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate">
                 </cos-tooltip>
                 <cos-dropdown>
-                  <div selection id="all_levels_dropdown" tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" aria-controls="all_levels_options" aria-labelledby="all_levels_label">
+                  <div selection id="all_levels_dropdown" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="all_levels_options" aria-labelledby="all_levels_label">
                     {{ 'TXT_GROUP_LEVELS_' + selectedLevel().toUpperCase() | translate }}
                   </div>
                   <div id="all_levels_options" options role="listbox">
                     @for (level of LEVELS | keyvalue; track level.key) {
-                      <div class="option" (click)="updateAllLevels(level.value)" (keydown.enter)="updateAllLevels(level.value)" role="option" tabindex="0" [attr.aria-selected]="selectedLevel() === level.value">
+                      <div class="option" (click)="updateAllLevels(level.value)" (keydown.enter)="updateAllLevels(level.value)" role="option" tabindex="0" aria-selected="{{ selectedLevel() === level.value }}">
                         {{ 'TXT_GROUP_LEVELS_' + level.value.toUpperCase() | translate }}
                       </div>
                     }
@@ -80,12 +81,12 @@
                   <div class="member_row">
                     <span class="member_name">{{ user.name }}</span>
                     <cos-dropdown>
-                      <div selection tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" [attr.aria-controls]="'member_levels_' + user.userId" [attr.aria-label]="user.name">
+                      <div selection tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="member_levels_{{ user.userId }}" aria-label="{{ user.name }}">
                         {{ 'TXT_GROUP_LEVELS_' + user.level.toUpperCase() | translate }}
                       </div>
                       <div [id]="'member_levels_' + user.userId" options role="listbox">
                         @for (level of LEVELS | keyvalue; track level.key) {
-                          <div class="option" (click)="updateLevel(user, level.value)" (keydown.enter)="updateLevel(user, level.value)" role="option" tabindex="0" [attr.aria-selected]="user.level === level.value">
+                          <div class="option" (click)="updateLevel(user, level.value)" (keydown.enter)="updateLevel(user, level.value)" role="option" tabindex="0" aria-selected="{{ user.level === level.value }}">
                             {{ 'TXT_GROUP_LEVELS_' + level.value.toUpperCase() | translate }}
                           </div>
                         }

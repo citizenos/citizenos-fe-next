@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true
 })
 export class CosEllipsisPipe implements PipeTransform {
-  transform(value: string | null | undefined, limit: number = 128): string {
+  transform(value: string | null | undefined, limit = 128): string {
     if (!value || typeof value !== 'string') {
       return '';
     }

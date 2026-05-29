@@ -1,3 +1,4 @@
+import { MockIconComponent } from '../../../../../shared/testing/mocks';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TopicParticipantsComponent } from './topic-participants.component';
@@ -94,7 +95,7 @@ describe('TopicParticipantsComponent', () => {
           MockInputComponent,
           MockPaginationComponent,
           MockTooltipComponent,
-        ]
+          MockIconComponent,]
       }
     })
     .compileComponents();

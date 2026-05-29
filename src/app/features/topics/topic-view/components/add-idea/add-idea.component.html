@@ -85,12 +85,12 @@
                         </div>
                         <div class="options">
                           @for (option of filtersData().residence.items; track option.value) {
-                            <div class="option" (click)="setFilterValue('residence', option.value)">
+                            <div class="option" role="button" tabindex="0" (click)="setFilterValue('residence', option.value)" (keydown.enter)="setFilterValue('residence', option.value)">
                               <span>{{ option.title }}</span>
                             </div>
                           }
                           <hr class="options_line" />
-                          <div class="option" (click)="setFilterValue('residence', 'other')">
+                          <div class="option" role="button" tabindex="0" (click)="setFilterValue('residence', 'other')" (keydown.enter)="setFilterValue('residence', 'other')">
                             <span>{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_OTHER" | translate }}</span>
                           </div>
                         </div>
@@ -117,7 +117,7 @@
                     </div>
                     <div class="options">
                       @for (option of filtersData().gender.items; track option.value) {
-                        <div class="option" (click)="setFilterValue('gender', option.value)">
+                        <div class="option" role="button" tabindex="0" (click)="setFilterValue('gender', option.value)" (keydown.enter)="setFilterValue('gender', option.value)">
                           <span>{{ option.title | translate }}</span>
                         </div>
                       }
@@ -155,7 +155,7 @@
           @for (image of newImages(); track $index) {
             <div class="image">
               <div class="image_data">
-                <img [src]="image.link" />
+                <img [src]="image.link" [alt]="image.name" />
                 <a class="name">{{ image.name }}</a>
               </div>
               <button type="button" class="btn_small_plain icon" (click)="removeNewImage($index)">

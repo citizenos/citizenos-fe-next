@@ -16,7 +16,7 @@ export interface GroupInvite {
   inviteId?: string;
 }
 
-export interface GroupInvitation extends GroupInvite {}
+export type GroupInvitation = GroupInvite;
 
 @Injectable({ providedIn: 'root' })
 export class GroupInviteUserService {

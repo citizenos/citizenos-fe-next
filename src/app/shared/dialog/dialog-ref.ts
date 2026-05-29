@@ -20,11 +20,10 @@ export class DialogCloseDirective {
 
 @Injectable()
 export class DialogRef<_T = unknown, R = unknown> {
+  private overlayRef = inject(OverlayRef);
+
   private afterClosedSubject = new Subject<R | undefined>();
   component?: { name: string };
-
-  // eslint-disable-next-line @angular-eslint/prefer-inject -- manually instantiated per dialog
-  constructor(private overlayRef: OverlayRef) {}
 
   close(result?: R) {
     this.overlayRef.dispose();

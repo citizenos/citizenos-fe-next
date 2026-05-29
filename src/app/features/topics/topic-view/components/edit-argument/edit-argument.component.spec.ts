@@ -1,3 +1,4 @@
+import { MockIconComponent } from '../../../../../shared/testing/mocks';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -38,7 +39,8 @@ describe('EditArgumentComponent', () => {
       providers: [{ provide: TopicArgumentService, useValue: MOCK_ARG_SERVICE }]
     })
     .overrideComponent(EditArgumentComponent, {
-      set: { imports: [FormsModule, UpperCasePipe, TranslateModule, MockInputComponent] }
+      set: { imports: [FormsModule, UpperCasePipe, TranslateModule, MockInputComponent,
+          MockIconComponent] }
     })
     .compileComponents();
 

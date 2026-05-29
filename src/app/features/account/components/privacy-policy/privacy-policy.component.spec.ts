@@ -1,3 +1,4 @@
+import { MockIconComponent } from '../../../../shared/testing/mocks';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Directive } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -56,7 +57,8 @@ describe('PrivacyPolicyComponent', () => {
         provideRouter([{ path: '**', component: EmptyComponent }])
       ]
     }).overrideComponent(PrivacyPolicyComponent, {
-      set: { imports: [TranslateModule, TermsLinksStub, DialogCloseStub] }
+      set: { imports: [TranslateModule, TermsLinksStub, DialogCloseStub,
+          MockIconComponent] }
     });
 
     fixture = TestBed.createComponent(PrivacyPolicyComponent);

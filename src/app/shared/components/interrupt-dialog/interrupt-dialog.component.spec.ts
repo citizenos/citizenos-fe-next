@@ -1,3 +1,5 @@
+import { MockIconComponent } from '../../testing/mocks';
+
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { InterruptDialogComponent } from './interrupt-dialog.component';
@@ -21,7 +23,8 @@ describe('InterruptDialogComponent', () => {
       providers: [{ provide: DialogRef, useValue: mockDialogRef }]
     })
     .overrideComponent(InterruptDialogComponent, {
-      set: { imports: [TranslateModule, DialogCloseDirective, MockNotificationsComponent] }
+      set: { imports: [TranslateModule, DialogCloseDirective, MockNotificationsComponent,
+          MockIconComponent] }
     })
     .compileComponents();
 

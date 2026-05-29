@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   input,
   output,
@@ -13,9 +14,6 @@ import {
   Input,
   HostBinding,
   forwardRef,
-  Inject,
-  OnDestroy,
-  AfterViewInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -28,10 +26,11 @@ export interface TypeaheadItemData {
 }
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[typeaheadItem]',
   standalone: true
 })
-export class TypeaheadItemDirective implements AfterViewInit, OnDestroy {
+export class TypeaheadItemDirective implements AfterViewInit {
   @Input('typeaheadItem') itemData!: TypeaheadItemData;
   @Input() noClose!: boolean;
 
@@ -52,15 +51,17 @@ export class TypeaheadItemDirective implements AfterViewInit, OnDestroy {
     this.typeahead.registerItem(this.itemData);
   }
 
-  ngOnDestroy() {}
+  
 }
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[typeaheadSelect]',
   standalone: true
 })
-export class TypeaheadSelectDirective implements OnDestroy {
+export class TypeaheadSelectDirective  {
   @Input('typeaheadSelect') itemData!: TypeaheadItemData;
+  // eslint-disable-next-line @angular-eslint/no-output-native
   select = output<TypeaheadItemData>();
 
   private typeahead = inject(forwardRef(() => TypeaheadComponent));
@@ -72,7 +73,7 @@ export class TypeaheadSelectDirective implements OnDestroy {
     this.select.emit(this.itemData);
   }
 
-  ngOnDestroy() {}
+  
 }
 
 @Component({
@@ -106,11 +107,11 @@ export class TypeaheadSelectDirective implements OnDestroy {
         (ngModelChange)="term.set($event); onQuery()"
         (focus)="onFocus()"
         (blur)="onBlur()"
-        autofocus
+       
       />
 
       @if (showEnterHint()) {
-        <a class="typeahead-enter-hint" (click)="doEnterAction()" translate>
+        <a class="typeahead-enter-hint" role="button" tabindex="0" (click)="doEnterAction()" (keydown.enter)="doEnterAction()" translate>
           COMPONENTS.TYPEAHEAD.PRESS_ENTER_TO_ADD
         </a>
       }
@@ -203,8 +204,9 @@ export class TypeaheadComponent {
   activeClass = input<string>();
   term = model<string>('');
 
-  // Restoring legacy output names
+  // eslint-disable-next-line @angular-eslint/no-output-native
   search = output<string>();
+  // eslint-disable-next-line @angular-eslint/no-output-native
   select = output<TypeaheadItemData>();
   enterAction = output<{ text: string; limit: boolean }>();
 

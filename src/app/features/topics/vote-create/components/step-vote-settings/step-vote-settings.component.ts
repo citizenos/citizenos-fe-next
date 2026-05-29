@@ -94,10 +94,10 @@ import { forkJoin, take } from 'rxjs';
   
         @if (vote().type === 'ideation') {
           <div class="ideation-options">
-            <h4 class="bold" translate="COMPONENTS.CREATE_IDEA_FOLDER.LBL_IDEAS_SELECTION"></h4>
+            <h4 class="bold">{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LBL_IDEAS_SELECTION' | translate }}</h4>
             <div class="idea-selection-wrap">
               <div class="idea-selection-header">
-                <label class="checkbox-label" (click)="toggleAllIdeas()">
+                <label class="checkbox-label" tabindex="-1" (click)="toggleAllIdeas()" (keydown.enter)="toggleAllIdeas()">
                   <input type="checkbox" [checked]="allIdeasChecked()" (click)="$event.stopPropagation()">
                   <span class="checkmark"></span>
                   <span translate="COMPONENTS.CREATE_IDEA_FOLDER.LBL_IDEAS" [translateParams]="{count: totalIdeasCount()}"></span>
@@ -108,10 +108,10 @@ import { forkJoin, take } from 'rxjs';
                 @for (folder of ideationFolders(); track folder.id) {
                   <div class="folder-group" [class.open]="folderExpanded[folder.id]">
                     <div class="folder-row">
-                      <label class="checkbox-label" (click)="toggleFolder(folder, $event)">
+                      <label class="checkbox-label" tabindex="-1" (click)="toggleFolder(folder, $event)" (keydown.enter)="toggleFolder(folder, $event)">
                         <input type="checkbox" [checked]="isFolderChecked(folder)" (click)="$event.stopPropagation()">
                         <span class="checkmark"></span>
-                        <div class="folder-title" (click)="toggleFolderExpand(folder.id, $event)">
+                        <div class="folder-title" tabindex="0" role="button" (click)="toggleFolderExpand(folder.id, $event)" (keydown.enter)="toggleFolderExpand(folder.id, $event)">
                           <cos-icon name="folder" [size]="16"></cos-icon>
                           <span [innerHTML]="folder.name + ' (' + folder.ideas?.count + ')'"></span>
                         </div>
@@ -121,7 +121,7 @@ import { forkJoin, take } from 'rxjs';
                       <div class="folder-ideas">
                         @for (idea of folder.ideas?.rows || []; track idea.id) {
                           <div class="idea-row">
-                            <label class="checkbox-label" (click)="toggleIdea(idea, $event)">
+                            <label class="checkbox-label" tabindex="-1" (click)="toggleIdea(idea, $event)" (keydown.enter)="toggleIdea(idea, $event)">
                               <input type="checkbox" [checked]="isIdeaChecked(idea)" (click)="$event.stopPropagation()">
                               <span class="checkmark"></span>
                               <cos-icon name="idea" [size]="16"></cos-icon>
@@ -141,7 +141,7 @@ import { forkJoin, take } from 'rxjs';
 
                 @for (idea of ideationIdeas(); track idea.id) {
                   <div class="idea-row">
-                    <label class="checkbox-label" (click)="toggleIdea(idea, $event)">
+                    <label class="checkbox-label" tabindex="-1" (click)="toggleIdea(idea, $event)" (keydown.enter)="toggleIdea(idea, $event)">
                       <input type="checkbox" [checked]="isIdeaChecked(idea)" (click)="$event.stopPropagation()">
                       <span class="checkmark"></span>
                       <span [innerHTML]="idea.statement"></span>
@@ -153,12 +153,12 @@ import { forkJoin, take } from 'rxjs';
             </div>
 
             <div class="vote-options-wrap">
-              <label class="checkbox-label" (click)="toggleOption('Neutral')">
+              <label class="checkbox-label" tabindex="-1" (click)="toggleOption('Neutral')" (keydown.enter)="toggleOption('Neutral')">
                 <input type="checkbox" [checked]="isPredefinedSelected('Neutral')" (click)="$event.stopPropagation()">
                 <span class="checkmark"></span>
                 <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_NEUTRAL"></span>
               </label>
-              <label class="checkbox-label" (click)="toggleOption('Veto')">
+              <label class="checkbox-label" tabindex="-1" (click)="toggleOption('Veto')" (keydown.enter)="toggleOption('Veto')">
                 <input type="checkbox" [checked]="isPredefinedSelected('Veto')" (click)="$event.stopPropagation()">
                 <span class="checkmark"></span>
                 <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_VETO"></span>
@@ -367,7 +367,7 @@ export class StepVoteSettingsComponent implements OnInit {
   
   ideationIdeas = signal<Idea[]>([]);
   ideationFolders = signal<IdeationFolder[]>([]);
-  folderExpanded: { [id: string]: boolean } = {};
+  folderExpanded: Record<string, boolean> = {};
 
   ngOnInit() {
     const t = this.topic();
@@ -436,7 +436,7 @@ export class StepVoteSettingsComponent implements OnInit {
 
   toggleAllIdeas() {
     const isChecked = this.allIdeasChecked();
-    let options = [...this.getOptions().filter(o => !o.ideaId)]; // keep non-idea options (e.g. neutral)
+    const options = [...this.getOptions().filter(o => !o.ideaId)]; // keep non-idea options (e.g. neutral)
     
     if (!isChecked) {
       this.ideationIdeas().forEach(idea => {
@@ -484,7 +484,7 @@ export class StepVoteSettingsComponent implements OnInit {
   }
 
   toggleOption(val: string) {
-    let options = [...this.getOptions()];
+    const options = [...this.getOptions()];
     const index = options.findIndex(o => o.value === val && !o.ideaId);
     if (index > -1) {
       options.splice(index, 1);

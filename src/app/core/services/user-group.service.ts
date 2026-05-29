@@ -39,10 +39,10 @@ export class UserGroupService extends ItemsListService<UserGroupParams, Group> {
     if (params.order) httpParams = httpParams.set('order', params.order);
     if (params.search) httpParams = httpParams.set('search', params.search);
 
-    return this.http.get<ApiResponse<{ rows: Group[]; count: number }>>(
+    return this.http.get<ApiResponse<{ rows: Group[]; count: number; countTotal: number }>>(
       `${this.apiUrl}/api/users/self/groups`,
       { withCredentials: true, params: httpParams }
-    ).pipe(map(res => ({ rows: res.data?.rows ?? [], countTotal: res.data?.count ?? 0 })));
+    ).pipe(map(res => ({ rows: res.data?.rows ?? [], countTotal: res.data?.countTotal ?? 0 })));
   }
 
   getPreview(limit: number): Observable<Group[]> {

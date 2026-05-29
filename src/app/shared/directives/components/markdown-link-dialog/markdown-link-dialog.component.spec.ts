@@ -1,3 +1,5 @@
+import { MockIconComponent } from '../../../testing/mocks';
+
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MarkdownLinkDialogComponent } from './markdown-link-dialog.component';
@@ -24,7 +26,8 @@ describe('MarkdownLinkDialogComponent', () => {
       ]
     })
     .overrideComponent(MarkdownLinkDialogComponent, {
-      set: { imports: [ReactiveFormsModule, TranslateModule, MockInputComponent] }
+      set: { imports: [ReactiveFormsModule, TranslateModule, MockInputComponent,
+          MockIconComponent] }
     })
     .compileComponents();
 

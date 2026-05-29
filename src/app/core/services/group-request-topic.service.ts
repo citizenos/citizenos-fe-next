@@ -15,7 +15,7 @@ export interface GroupTopicRequest {
   text?: string;
 }
 
-export interface TopicRequest extends GroupTopicRequest {}
+export type TopicRequest = GroupTopicRequest;
 
 @Injectable({ providedIn: 'root' })
 export class GroupRequestTopicService {

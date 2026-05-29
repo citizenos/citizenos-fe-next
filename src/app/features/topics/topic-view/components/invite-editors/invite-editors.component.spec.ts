@@ -1,3 +1,4 @@
+import { MockIconComponent } from '../../../../../shared/testing/mocks';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Directive, Input } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
@@ -69,8 +70,8 @@ describe('InviteEditorsComponent', () => {
       set: {
         imports: [
           UpperCasePipe, FormsModule, TranslateModule,
-          InputStub, InitialsStub, PaginationStub, CosDropdownStub, DialogCloseStub
-        ]
+          InputStub, InitialsStub, PaginationStub, CosDropdownStub, DialogCloseStub,
+          MockIconComponent]
       }
     }).compileComponents();
 

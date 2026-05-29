@@ -1,3 +1,4 @@
+import { MockIconComponent } from '../../../../../shared/testing/mocks';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
@@ -105,7 +106,8 @@ describe('TopicMemberUserComponent', () => {
       ],
     })
       .overrideComponent(TopicMemberUserComponent, {
-        set: { imports: [TranslateModule, RouterModule, UpperCasePipe, MockInitialsComponent, CosDropdownDirective] },
+        set: { imports: [TranslateModule, RouterModule, UpperCasePipe, MockInitialsComponent, CosDropdownDirective,
+          MockIconComponent] },
       })
       .compileComponents();
 

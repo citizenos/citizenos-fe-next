@@ -180,8 +180,8 @@
                         <cos-icon name="idea-icon-3-legacy" size="24"></cos-icon>
                       </button>
                     </div>
-                    <img [alt]="image.name" [src]="image.link" (click)="toggleImageView(image.id)" />
-                    <span class="name link" (click)="toggleImageView(image.id)">{{ image.name }}</span>
+                    <img [alt]="image.name" [src]="image.link" tabindex="0" (click)="toggleImageView(image.id)" (keydown.enter)="toggleImageView(image.id)" />
+                    <span class="name link" role="button" tabindex="0" (click)="toggleImageView(image.id)" (keydown.enter)="toggleImageView(image.id)">{{ image.name }}</span>
                   </div>
                 }
               </div>
@@ -195,7 +195,7 @@
                 <div class="text">
                   <span translate="COMPONENTS.IDEA_DIALOG.FOLDERS"></span>
                   @for (folder of folders$ | async; track folder.id) {
-                    <a class="folder" (click)="viewFolder(folder)">{{ folder.name }}</a>
+                    <a class="folder" role="button" tabindex="0" (click)="viewFolder(folder)" (keydown.enter)="viewFolder(folder)">{{ folder.name }}</a>
                   }
                   @if ((folders$ | async)!.length > 3) {
                     <span translate="COMPONENTS.IDEA_DIALOG.FOLDERS_MORE" [translateParams]="{ count: ((folders$ | async)!.length - 3) }"></span>
@@ -214,7 +214,7 @@
                   <cos-icon name="idea-icon-6-legacy" size="16"></cos-icon>
                 }
               </button>
-              <a class="like_counter_wrap" (click)="showReactions()">
+              <a class="like_counter_wrap" role="button" tabindex="0" (click)="showReactions()" (keydown.enter)="showReactions()">
                 <span>{{ idea().votes.up.count }}</span>
               </a>
             </div>

@@ -19,7 +19,7 @@
                 </div>
                 <span>{{ 'COMPONENTS.TOPIC_IDEATION.OPT_EDIT_IDEATION' | translate }}</span>
               </a>
-              <div class="option" (click)="editDeadline()">
+              <div class="option" role="button" tabindex="0" (click)="editDeadline()" (keydown.enter)="editDeadline()">
                 <div class="icon_wrap">
                     <cos-icon name="calendar" [size]="16" />
                 </div>
@@ -72,10 +72,10 @@
         <div class="tabs_wrap">
             <div class="tabs_row">
                 @if (tabSelected() !== 'folder') {
-                    <a class="tab_item" (click)="selectTab('ideas')" [class.active]="tabSelected() === 'ideas'">
+                    <a class="tab_item" role="button" tabindex="0" (click)="selectTab('ideas')" (keydown.enter)="selectTab('ideas')" [class.active]="tabSelected() === 'ideas'">
                         {{ 'COMPONENTS.TOPIC_IDEATION.TAB_IDEAS' | translate:{ count: ideation().ideas?.count || 0 } }}
                     </a>
-                    <a class="tab_item" (click)="selectTab('folders')" [class.active]="tabSelected() === 'folders'">
+                    <a class="tab_item" role="button" tabindex="0" (click)="selectTab('folders')" (keydown.enter)="selectTab('folders')" [class.active]="tabSelected() === 'folders'">
                         {{ 'COMPONENTS.TOPIC_IDEATION.TAB_FOLDERS' | translate:{ count: ideation().folders?.count || 0 } }}
                     </a>
                 } @else {
@@ -136,12 +136,12 @@
                                     <cos-icon name="chevron-down" />
                                 </div>
                                 <div options class="options">
-                                    <div class="option" (click)="setType('')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
+                                    <div class="option" role="button" tabindex="0" (click)="setType('')" (keydown.enter)="setType('')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
                                     @if (userStore.isAuthenticated()) {
-                                        <div class="option" (click)="setType('iCreated')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_YOUR_IDEAS' | translate }}</div>
-                                        <div class="option" (click)="setType('favourite')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_FAVOURITES' | translate }}</div>
+                                        <div class="option" role="button" tabindex="0" (click)="setType('iCreated')" (keydown.enter)="setType('iCreated')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_YOUR_IDEAS' | translate }}</div>
+                                        <div class="option" role="button" tabindex="0" (click)="setType('favourite')" (keydown.enter)="setType('favourite')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_FAVOURITES' | translate }}</div>
                                     }
-                                    <div class="option" (click)="setType('showModerated')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_MODERATED' | translate }}</div>
+                                    <div class="option" role="button" tabindex="0" (click)="setType('showModerated')" (keydown.enter)="setType('showModerated')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_MODERATED' | translate }}</div>
                                 </div>
                             </div>
                         </div>
@@ -164,10 +164,10 @@
                                     <cos-icon name="chevron-down" />
                                 </div>
                                 <div options class="options">
-                                    <div class="option" (click)="orderBy('')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
-                                    <div class="option" (click)="orderBy('likes')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_LIKED' | translate }}</div>
-                                    <div class="option" (click)="orderBy('recent')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_RECENT' | translate }}</div>
-                                    <div class="option" (click)="orderBy('replies')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_REPLIES' | translate }}</div>
+                                    <div class="option" role="button" tabindex="0" (click)="orderBy('')" (keydown.enter)="orderBy('')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
+                                    <div class="option" role="button" tabindex="0" (click)="orderBy('likes')" (keydown.enter)="orderBy('likes')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_LIKED' | translate }}</div>
+                                    <div class="option" role="button" tabindex="0" (click)="orderBy('recent')" (keydown.enter)="orderBy('recent')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_RECENT' | translate }}</div>
+                                    <div class="option" role="button" tabindex="0" (click)="orderBy('replies')" (keydown.enter)="orderBy('replies')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_REPLIES' | translate }}</div>
                                 </div>
                             </div>
                         </div>
@@ -186,13 +186,13 @@
                                     <cos-icon name="chevron-down" />
                                 </div>
                                 <div options class="options">
-                                    <div class="option" (click)="setParticipant()">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
+                                    <div class="option" role="button" tabindex="0" (click)="setParticipant()" (keydown.enter)="setParticipant()">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
                                     @for (user of participants$ | async; track user.id) {
-                                        <div class="option" (click)="setParticipant(user)">
+                                        <div class="option" role="button" tabindex="0" (click)="setParticipant(user)" (keydown.enter)="setParticipant(user)">
                                             <div class="author_wrap">
                                                 <div class="image_wrap">
                                                     @if (user.imageUrl) {
-                                                        <img class="profile_image" [src]="user.imageUrl" />
+                                                        <img class="profile_image" [src]="user.imageUrl" [alt]="user.name" />
                                                     } @else {
                                                         <div class="profile_image_filler">
                                                             <cos-initials [name]="user.name || ''" />
@@ -221,7 +221,7 @@
                                 <input type="text" [ngModel]="searchValue()" (ngModelChange)="setSearch($event)" />
                             </cos-input>
                             @if (searchValue()) {
-                                <a class="clear_search" (click)="setSearch('')">{{ 'VIEWS.MY_TOPICS.LNK_CLEAR' | translate }}</a>
+                                <a class="clear_search" role="button" tabindex="0" (click)="setSearch('')" (keydown.enter)="setSearch('')">{{ 'VIEWS.MY_TOPICS.LNK_CLEAR' | translate }}</a>
                             }
                             <button type="button" (click)="showSearch.set(false)">
                                 <cos-icon name="close" [size]="20" />
@@ -293,7 +293,7 @@
             </div>
 
             @for (folder of folders$ | async; track folder.id) {
-                <div class="folder_row" (click)="viewFolder(folder)">
+                <div class="folder_row" role="button" tabindex="0" (click)="viewFolder(folder)" (keydown.enter)="viewFolder(folder)">
                     <div class="folder_name">
                         <cos-icon name="folder" [size]="40" />
                         <div class="name_wrap">
@@ -307,7 +307,7 @@
                     <div class="cell ideas_cell mobile_hidden">{{ folder.ideas?.count }}</div>
                     <div class="cell date_cell mobile_hidden">{{ folder.updatedAt | date:'y-MM-dd HH:mm' }}</div>
                     @if (canEdit()) {
-                        <div class="cell actions_cell" (click)="$event.stopPropagation()">
+                        <div class="cell actions_cell" tabindex="-1" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()">
                             <div class="dropdown button_dropdown" cosDropdown>
                                 <button type="button" class="btn_small_plain icon" trigger>
                                     <cos-icon name="more-vertical" [size]="24" />

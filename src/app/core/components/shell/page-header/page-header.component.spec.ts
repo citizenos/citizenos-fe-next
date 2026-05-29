@@ -1,3 +1,5 @@
+import { MockIconComponent } from '../../../../shared/testing/mocks';
+
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -19,7 +21,8 @@ describe('PageHeaderComponent', () => {
       imports: [PageHeaderComponent, TranslateModule.forRoot()],
       providers: [{ provide: UserStore, useValue: mockUserStore }],
     })
-      .overrideComponent(PageHeaderComponent, { set: { imports: [TranslateModule], schemas: [NO_ERRORS_SCHEMA] } })
+      .overrideComponent(PageHeaderComponent, { set: { imports: [TranslateModule,
+          MockIconComponent], schemas: [NO_ERRORS_SCHEMA] } })
       .compileComponents();
 
     fixture = TestBed.createComponent(PageHeaderComponent);

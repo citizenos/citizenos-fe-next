@@ -27,7 +27,7 @@ describe('CreateWizardShellComponent', () => {
   let component: CreateWizardShellComponent;
   let fixture: ComponentFixture<CreateWizardShellComponent>;
 
-  let mockTopicService = {
+  const mockTopicService = {
     getDownloadUrl: vi.fn().mockReturnValue('http://api/dl/topic-1'),
     canDelete: vi.fn().mockReturnValue(true)
   };

@@ -1,3 +1,4 @@
+import { MockIconComponent } from '../../../../../shared/testing/mocks';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ArgumentReactionsComponent } from './argument-reactions.component';
@@ -40,7 +41,8 @@ describe('ArgumentReactionsComponent', () => {
       ]
     })
     .overrideComponent(ArgumentReactionsComponent, {
-      set: { imports: [TranslateModule, MockInitialsComponent, MockPaginationComponent] }
+      set: { imports: [TranslateModule, MockInitialsComponent, MockPaginationComponent,
+          MockIconComponent] }
     })
     .compileComponents();
 

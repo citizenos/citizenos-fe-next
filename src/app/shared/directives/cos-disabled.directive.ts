@@ -1,13 +1,21 @@
-import { Directive, Input, ElementRef, SimpleChanges, OnChanges, AfterViewInit } from '@angular/core';
+import {
+  Directive,
+  Input,
+  ElementRef,
+  SimpleChanges,
+  OnChanges,
+  AfterViewInit,
+  inject,
+} from '@angular/core';
 
 @Directive({
   selector: '[cosDisabled]',
-  standalone: true
+  standalone: true,
 })
 export class CosDisabledDirective implements AfterViewInit, OnChanges {
-  @Input() cosDisabled!: any;
+  private readonly ElementRef = inject(ElementRef);
 
-  constructor(private readonly ElementRef: ElementRef) {}
+  @Input() cosDisabled!: any;
 
   ngAfterViewInit(): void {
     if (this.cosDisabled) {

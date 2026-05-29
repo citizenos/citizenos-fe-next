@@ -200,7 +200,7 @@
     <cos-tabs [tabs]="groupTabs()" [activeTab]="tabSelected()" (selectTab)="selectTab($event)">
       @if (tabSelected() === 'topics' && isAdmin()) {
         <div class="tab_actions">
-          <div class="dropdown button_dropdown" [class.dropdown_active]="manageTopicsOpen()" (click)="$event.stopPropagation()">
+          <div class="dropdown button_dropdown" [class.dropdown_active]="manageTopicsOpen()" tabindex="-1" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()">
             <button type="button" class="btn_medium_close" (click)="manageTopicsOpen.set(!manageTopicsOpen())" [attr.aria-expanded]="manageTopicsOpen()">
               <span>{{ 'VIEWS.GROUP.BTN_MANAGE_TOPICS' | translate }}</span>
               <cos-icon name="chevron-down" [size]="16"></cos-icon>
@@ -234,7 +234,7 @@
       }
       @if (tabSelected() === 'members' && isAdmin()) {
         <div class="tab_actions">
-          <div class="dropdown button_dropdown" [class.dropdown_active]="manageMembersOpen()" (click)="$event.stopPropagation()">
+          <div class="dropdown button_dropdown" [class.dropdown_active]="manageMembersOpen()" tabindex="-1" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()">
             <button type="button" class="btn_medium_close" (click)="manageMembersOpen.set(!manageMembersOpen())" [attr.aria-expanded]="manageMembersOpen()">
               <span>{{ 'VIEWS.GROUP.BTN_MANAGE_MEMBERS' | translate }}</span>
               <cos-icon name="chevron-down" [size]="16"></cos-icon>

@@ -19,7 +19,7 @@ export interface GroupMemberUser extends Partial<User> {
   };
 }
 
-export interface GroupMember extends GroupMemberUser {}
+export type GroupMember = GroupMemberUser;
 
 @Injectable({ providedIn: 'root' })
 export class GroupMemberUserService {

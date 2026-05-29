@@ -1,3 +1,4 @@
+import { MockIconComponent } from '../../../../../shared/testing/mocks';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, Directive, Input } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
@@ -51,7 +52,8 @@ describe('IdeaReportModerateComponent', () => {
         { provide: DialogService, useValue: dialogService }
       ]
     }).overrideComponent(IdeaReportModerateComponent, {
-      set: { imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, InputStub, CosDropdownStub, DialogCloseStub] }
+      set: { imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, InputStub, CosDropdownStub, DialogCloseStub,
+          MockIconComponent] }
     }).compileComponents();
 
     fixture = TestBed.createComponent(IdeaReportModerateComponent);

@@ -41,8 +41,8 @@ export class GroupJoinService {
     ).pipe(map(res => res.data!));
   }
 
-  joinPublic(groupId: string): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
+  joinPublic(groupId: string): Observable<unknown> {
+    return this.http.post<ApiResponse<unknown>>(
       this.getAbsoluteUrlApi(`/groups/${groupId}/join`, true),
       {}, { withCredentials: true }
     ).pipe(map(res => res.data));

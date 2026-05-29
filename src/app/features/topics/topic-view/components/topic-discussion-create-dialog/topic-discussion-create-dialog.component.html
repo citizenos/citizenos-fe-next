@@ -33,6 +33,54 @@
     </div>
     <div class="dialog_content">
       @if (activeTab() === 1) {
+        <div class="introduction_wrap">
+          <div class="intro_heading">
+            <span translate="COMPONENTS.TOPIC_DISCUSSION_CREATE.DIALOG_TAB_INTRODUCTION_ARE_YOU_SURE"></span>
+            <span translate="COMPONENTS.TOPIC_DISCUSSION_CREATE.DIALOG_TAB_INTRODUCTION_KEEP_IN_MIND"></span>
+          </div>
+          <div class="dialog_info">
+            <div class="row">
+              <cos-icon name="close" size="24" color="#EF4025"></cos-icon>
+              <span class="error_text bold" translate="COMPONENTS.TOPIC_DISCUSSION_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_1"></span>
+            </div>
+            <div class="row">
+              <cos-icon name="close" size="24" color="#EF4025"></cos-icon>
+              <span class="error_text bold" translate="COMPONENTS.TOPIC_DISCUSSION_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_4"></span>
+            </div>
+            <div class="row">
+              <cos-icon name="check" size="24"></cos-icon>
+              <span translate="COMPONENTS.TOPIC_DISCUSSION_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_5"></span>
+            </div>
+            <div class="row">
+              <cos-icon name="check" size="24"></cos-icon>
+              <span translate="COMPONENTS.TOPIC_DISCUSSION_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_2"></span>
+            </div>
+            <div class="row">
+              <cos-icon name="check" size="24"></cos-icon>
+              <span translate="COMPONENTS.TOPIC_DISCUSSION_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_3"></span>
+            </div>
+            <div class="row">
+              <cos-icon name="check" size="24"></cos-icon>
+              <span translate="COMPONENTS.TOPIC_DISCUSSION_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_6"></span>
+            </div>
+          </div>
+          <div class="dialog_info_wrap">
+            <div class="dialog_info discussion">
+              <div class="row">
+                <div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="24" height="24" rx="12" fill="#5C9CD0" />
+                    <path d="M13.8002 6.91789C13.8002 7.75599 13.1555 8.4354 12.3602 8.4354C11.5649 8.4354 10.8002 7.75599 10.8002 6.91789C10.8002 6.0798 11.5649 5.40039 12.3602 5.40039C13.1555 5.40039 13.8002 6.0798 13.8002 6.91789Z" fill="white" />
+                    <path d="M10.4017 9.9218L13.6993 9.48627L12.2579 16.6261C12.1556 17.1421 12.2996 17.4349 12.6956 17.4349C12.975 17.4349 13.3955 17.3287 13.6835 17.0616L13.5568 17.6929C13.1435 18.218 12.232 18.6004 11.4472 18.6004C10.4348 18.6004 10.0043 17.96 10.2836 16.5988L11.3464 11.3361C11.4385 10.8915 11.355 10.7306 10.9316 10.6244L10.2836 10.4984L10.4017 9.9218Z" fill="white" />
+                  </svg>
+                </div>
+                <span translate="COMPONENTS.TOPIC_DISCUSSION_CREATE.DIALOG_TAB_INTRODUCTION_INFO"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+      @if (activeTab() === 2) {
         <div class="content_section">
           <div class="section_content_wrap">
             <h2 class="bold">{{ 'COMPONENTS.TOPIC_DISCUSSION_CREATE.HEADING_DISCUSSION_QUESTION' | translate }}</h2>
@@ -49,7 +97,7 @@
           </div>
         </div>
       }
-      @if (activeTab() === 2) {
+      @if (activeTab() === 3) {
         <div class="content_section">
           <div class="section_content_wrap">
             <div class="header_wrap">

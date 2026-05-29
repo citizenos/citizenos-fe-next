@@ -45,10 +45,10 @@ export class PublicTopicService extends ItemsListService<PublicTopicParams, Topi
     if (params.order) httpParams = httpParams.set('order', params.order);
     if (params.search) httpParams = httpParams.set('search', params.search);
 
-    return this.http.get<ApiResponse<{ rows: Topic[]; count: number }>>(
+    return this.http.get<ApiResponse<{ rows: Topic[]; count: number; countTotal: number }>>(
       this.getAbsoluteUrlApi('/topics'),
       { withCredentials: true, params: httpParams }
-    ).pipe(map(res => ({ rows: res.data?.rows ?? [], countTotal: res.data?.count ?? 0 })));
+    ).pipe(map(res => ({ rows: res.data?.rows ?? [], countTotal: res.data?.countTotal ?? 0 })));
   }
 
   getPreview(limit: number): Observable<Topic[]> {

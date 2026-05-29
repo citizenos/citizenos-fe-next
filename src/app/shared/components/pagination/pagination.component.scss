@@ -3,70 +3,66 @@
   flex-direction: row;
   align-items: center;
   gap: 8px;
+  justify-content: center;
 }
 
-.pagination-btn, .btn_medium_pagination {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--color-border-bold);
-  border-radius: var(--radius-sm);
-  background: var(--color-surfaces);
-  cursor: pointer;
-  font-size: 14px;
-  font-family: var(--font-family-base);
-  color: var(--color-text);
-  display: flex;
-  align-items: center;
+.btn_medium_pagination {
+  background: none;
+  position: relative;
   justify-content: center;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
-  padding: 0;
+  align-items: center;
+  border: none;
+  display: flex;
+  flex-direction: row;
+  font-family: var(--font-family-base);
+  font-style: normal;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: all 0.2s ease-in-out;
 
-  &:hover:not(:disabled) {
-    border-color: var(--color-link);
-    color: var(--color-link);
-  }
+  // Medium button dimensions
+  gap: 16px;
+  max-height: 40px;
+  min-height: 40px;
+  min-width: 40px;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
 
+  // Pagination theme: surfaces background
+  background: var(--color-surfaces);
+
+  &:hover,
   &.active {
-    background: var(--color-primary);
-    color: white;
-    border-color: var(--color-primary);
-  }
+    background: var(--color-blue-100, #ddeaf7);
+    color: var(--color-link);
 
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
+    path {
+      fill: var(--color-link);
+    }
   }
 
   &.btn_pagination {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0;
   }
 }
 
-/* Ideation specific styling from legacy */
+// Ideation-specific override (from legacy .ideation class)
 .ideation {
-  .pagination-btn, .btn_medium_pagination {
+  .btn_medium_pagination {
     background-color: initial;
-    border: none;
 
     &:hover, &.active {
       background: var(--color-surfaces);
       color: var(--color-text);
+
+      path {
+        fill: var(--color-text);
+      }
     }
   }
 }
-
-/* Discussion specific styling from legacy */
-.discussion {
-  .pagination-btn, .btn_medium_pagination {
-    background-color: var(--color-surfaces);
-    border: none;
-
-    &:hover, &.active {
-      background-color: initial;
-      color: var(--color-text);
-    }
-  }
-}
-

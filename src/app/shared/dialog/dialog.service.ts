@@ -1,4 +1,4 @@
-import { Overlay, ComponentType } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef, ComponentType } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { inject, Injectable, Injector } from '@angular/core';
 import { take } from 'rxjs';
@@ -34,16 +34,18 @@ export class DialogService {
       scrollStrategy: this.overlay.scrollStrategies.block(),
     });
 
-    const dialogRef = new DialogRef<T, R>(overlayRef);
-    dialogRef.setComponent(component as unknown as { name: string });
 
     const childInjector = Injector.create({
       parent: this.injector,
       providers: [
-        { provide: DialogRef, useValue: dialogRef },
+        { provide: DialogRef, useClass: DialogRef },
         { provide: DIALOG_DATA, useValue: config?.data ?? {} },
+        { provide: OverlayRef, useValue: overlayRef },
       ],
     });
+
+    const dialogRef = childInjector.get(DialogRef) as DialogRef<T, R>;
+    dialogRef.setComponent(component as unknown as { name: string });
 
     const portal = new ComponentPortal(component, null, childInjector);
     overlayRef.attach(portal);

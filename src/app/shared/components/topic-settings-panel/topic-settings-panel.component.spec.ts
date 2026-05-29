@@ -1,3 +1,5 @@
+import { MockIconComponent } from '../../testing/mocks';
+
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -37,7 +39,8 @@ describe('TopicSettingsPanelComponent', () => {
     })
       .overrideComponent(TopicSettingsPanelComponent, {
         set: {
-          imports: [TranslateModule, UpperCasePipe, FormsModule],
+          imports: [TranslateModule, UpperCasePipe, FormsModule,
+          MockIconComponent],
           schemas: [NO_ERRORS_SCHEMA]
         }
       })

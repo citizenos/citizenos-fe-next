@@ -1,17 +1,17 @@
-import { Directive, ElementRef, HostBinding, AfterContentInit } from '@angular/core';
+import { Directive, ElementRef, HostBinding, AfterContentInit, inject } from '@angular/core';
 
 @Directive({
-  selector: '[check-height]',
-  standalone: true
+  selector: '[cosCheckHeight]',
+  standalone: true,
 })
 export class CheckHeightDirective implements AfterContentInit {
-  offsetHeight!: any;
+  private elem = inject(ElementRef);
+
+  offsetHeight!: number;
   @HostBinding('class.overheight') overHeight = false;
 
   readMore = false;
   maxTextHeight = 200;
-
-  constructor(private elem: ElementRef) {}
 
   ngAfterContentInit(): void {
     this.offsetHeight = this.elem.nativeElement.offsetHeight;

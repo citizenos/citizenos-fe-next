@@ -1,3 +1,4 @@
+import { MockIconComponent } from '../../../../../shared/testing/mocks';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
@@ -44,7 +45,8 @@ describe('TopicMemberInviteDeleteComponent', () => {
       ],
     })
       .overrideComponent(TopicMemberInviteDeleteComponent, {
-        set: { imports: [TranslateModule, MockInitialsComponent, DialogCloseDirective] },
+        set: { imports: [TranslateModule, MockInitialsComponent, DialogCloseDirective,
+          MockIconComponent] },
       })
       .compileComponents();
 

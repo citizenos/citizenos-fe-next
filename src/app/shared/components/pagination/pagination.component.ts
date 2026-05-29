@@ -1,5 +1,4 @@
 import { Component, output, computed, ChangeDetectionStrategy, ViewEncapsulation, model, input } from '@angular/core';
-import { IconComponent } from '../icon/icon.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -7,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [IconComponent, TranslateModule],
+  imports: [TranslateModule],
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss']
 })

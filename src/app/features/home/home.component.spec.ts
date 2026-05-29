@@ -1,3 +1,4 @@
+import { MockIconComponent } from '../../shared/testing/mocks';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -53,7 +54,8 @@ describe('HomeComponent', () => {
     })
     .overrideComponent(HomeComponent, {
       set: {
-        imports: [TranslateModule, RouterLink],
+        imports: [TranslateModule, RouterLink,
+          MockIconComponent],
         schemas: [NO_ERRORS_SCHEMA]
       }
     })

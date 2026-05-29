@@ -1,4 +1,4 @@
-<div class="idea" [class.moderated]="idea().report?.id" [class.new]="isNew()" [class.draft]="isDraft()" (click)="(!idea().report?.id) ? goToView() : null">
+<div class="idea" role="button" tabindex="0" [class.moderated]="idea().report?.id" [class.new]="isNew()" [class.draft]="isDraft()" (click)="(!idea().report?.id) ? goToView() : null" (keydown.enter)="(!idea().report?.id) ? goToView() : null">
   @if (idea().report?.id || idea().deletedAt) {
     <div class="deleted_idea_wrap">
       <div class="deleted_idea_content_wrap">
@@ -40,7 +40,7 @@
                 <cos-icon name="ideabox-icon-2-legacy" size="16"></cos-icon>
               }
             </button>
-            <a class="like_counter_wrap" (click)="$event.stopPropagation(); showReactions()">
+            <a class="like_counter_wrap" role="button" tabindex="0" (click)="$event.stopPropagation(); showReactions()" (keydown.enter)="$event.stopPropagation(); showReactions()">
                 <span>{{ idea().votes.up.count }}</span>
             </a>
         </div>
@@ -64,7 +64,7 @@
 
     @if (userStore.isAuthenticated() || isEdited()) {
       <div class="idea_header_right">
-        <div class="dropdown button_dropdown" cosDropdown (click)="$event.stopPropagation()">
+        <div class="dropdown button_dropdown" cosDropdown tabindex="-1" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()">
            <button type="button" class="btn_small_plain icon" trigger aria-label="Idea actions">
                <cos-icon name="ideabox-icon-6-legacy" size="16"></cos-icon>
            </button>
@@ -130,7 +130,7 @@
     @if (!isDraft()) {
       <div class="date">{{ idea().createdAt | date:'y-MM-dd HH:mm' }}</div>
       <div class="replies_count">
-          <a (click)="$event.stopPropagation(); (!idea().report?.id) ? goToView(true) : null">{{ 'COMPONENTS.IDEABOX.REPLIES' | translate:{ count: idea().replies?.count ?? 0 } }}</a>
+          <a role="button" tabindex="0" (click)="$event.stopPropagation(); (!idea().report?.id) ? goToView(true) : null" (keydown.enter)="$event.stopPropagation(); (!idea().report?.id) ? goToView(true) : null">{{ 'COMPONENTS.IDEABOX.REPLIES' | translate:{ count: idea().replies?.count ?? 0 } }}</a>
       </div>
     } @else {
       <div class="date">{{ 'COMPONENTS.IDEABOX.DRAFT_UPDATED_AT' | translate:{ date: (idea().updatedAt | date:'y-MM-dd HH:mm') } }}</div>

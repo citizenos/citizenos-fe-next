@@ -90,7 +90,10 @@ export class GroupJoinComponent implements OnInit {
 
     if (token) {
       this.groupJoinService.join(token).pipe(take(1)).subscribe({
-        next: (joined: Group) => this.router.navigate(['/groups', joined.id ?? group.id]),
+        next: (joined: Group | unknown) => {
+          const joinedGroup = joined as Group;
+          this.router.navigate(['/groups', joinedGroup?.id ?? group.id]);
+        },
         error: (res) => {
           const code = res.status?.code;
           if (code === 40100) {
@@ -104,7 +107,10 @@ export class GroupJoinComponent implements OnInit {
       });
     } else {
       this.groupJoinService.joinPublic(group.id).pipe(take(1)).subscribe({
-        next: (joined: Group) => this.router.navigate(['/groups', joined.id ?? group.id]),
+        next: (joined: Group | unknown) => {
+          const joinedGroup = joined as Group;
+          this.router.navigate(['/groups', joinedGroup?.id ?? group.id]);
+        },
         error: (res) => {
           const code = res.status?.code;
           if (code === 40100) {

@@ -10,12 +10,12 @@
   </div>
   <div class="table_cell level">
     <div class="dropdown" cosDropdown>
-      <div class="selection" selection role="combobox" tabindex="0">
+      <div class="selection" selection role="combobox" tabindex="0" aria-expanded="false" aria-controls="member_user_levels_{{ member().userId }}">
         {{ 'TXT_GROUP_LEVELS_' + (member().level || '') | uppercase | translate }}
       </div>
-      <div class="options" options role="listbox">
+      <div id="member_user_levels_{{ member().userId }}" class="options" options role="listbox">
         @for (level of LEVELS | keyvalue; track level.key) {
-          <div class="option" (click)="doUpdateMemberUser(level.value)" (keydown.enter)="doUpdateMemberUser(level.value)" role="option" tabindex="0">
+          <div class="option" (click)="doUpdateMemberUser(level.value)" (keydown.enter)="doUpdateMemberUser(level.value)" role="option" tabindex="0" aria-selected="{{ member().level === level.value }}">
             {{ 'TXT_GROUP_LEVELS_' + level.value.toUpperCase() | translate }}
           </div>
         }

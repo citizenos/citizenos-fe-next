@@ -54,7 +54,7 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
                   />
                 </div>
 
-                <div class="dropdown" [class.dropdown_active]="showFormatOptions()" (click)="toggleFormatDropdown(); $event.stopPropagation();">
+                <div class="dropdown" role="button" tabindex="0" [class.dropdown_active]="showFormatOptions()" (click)="toggleFormatDropdown(); $event.stopPropagation();" (keydown.enter)="toggleFormatDropdown(); $event.stopPropagation();">
                   <div class="selection">
                     <div class="selected_item">
                       {{ 'VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_' + timeFormat() | uppercase | translate }}
@@ -65,9 +65,9 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
                   </div>
                   @if (showFormatOptions()) {
                     <div class="options">
-                      <div class="option" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_24" (click)="setTimeFormat(24)"></div>
-                      <div class="option" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_AM" (click)="setTimeFormat('AM')"></div>
-                      <div class="option" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_PM" (click)="setTimeFormat('PM')"></div>
+                      <div class="option" role="button" tabindex="0" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_24" (click)="setTimeFormat(24)" (keydown.enter)="setTimeFormat(24)"></div>
+                      <div class="option" role="button" tabindex="0" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_AM" (click)="setTimeFormat('AM')" (keydown.enter)="setTimeFormat('AM')"></div>
+                      <div class="option" role="button" tabindex="0" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_PM" (click)="setTimeFormat('PM')" (keydown.enter)="setTimeFormat('PM')"></div>
                     </div>
                   }
                 </div>
@@ -83,7 +83,7 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
 
             @if (showReminder()) {
               <div class="reminder-section">
-                <label class="checkbox-label" (click)="toggleReminder(); $event.stopPropagation();">
+                <label class="checkbox-label" tabindex="-1" (click)="toggleReminder(); $event.stopPropagation();" (keydown.enter)="toggleReminder(); $event.stopPropagation();">
                   <input type="checkbox" [checked]="reminderEnabled()" (click)="$event.stopPropagation()">
                   <span class="checkmark"></span>
                   <span class="bold" translate="VIEWS.DEADLINE_PICKER.SET_REMINDER"></span>

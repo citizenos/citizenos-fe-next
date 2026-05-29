@@ -55,13 +55,13 @@ export class IdeaAttachmentService extends ItemsListService<IdeaAttachmentParams
 
   delete(params: { topicId: string; ideationId: string; ideaId: string; attachmentId: string }): Observable<unknown>;
   delete(topicId: string, ideationId: string, ideaId: string, attachmentId: string): Observable<unknown>;
-  delete(topicIdOrParams: any, ideationId?: string, ideaId?: string, attachmentId?: string): Observable<unknown> {
+  delete(topicIdOrParams: { topicId: string; ideationId: string; ideaId: string; attachmentId: string } | string, ideationId?: string, ideaId?: string, attachmentId?: string): Observable<unknown> {
     let tId: string;
     let iId: string;
     let idId: string;
     let aId: string;
 
-    if (typeof topicIdOrParams === 'object') {
+    if (typeof topicIdOrParams === 'object' && topicIdOrParams !== null) {
       tId = topicIdOrParams.topicId;
       iId = topicIdOrParams.ideationId;
       idId = topicIdOrParams.ideaId;

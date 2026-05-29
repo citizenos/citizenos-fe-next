@@ -1,3 +1,4 @@
+import { MockIconComponent } from '../../../../../shared/testing/mocks';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ArgumentReportModerateComponent } from './argument-report-moderate.component';
@@ -46,7 +47,8 @@ describe('ArgumentReportModerateComponent', () => {
       ]
     })
     .overrideComponent(ArgumentReportModerateComponent, {
-      set: { imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, MockInputComponent] }
+      set: { imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, MockInputComponent,
+          MockIconComponent] }
     })
     .compileComponents();
 

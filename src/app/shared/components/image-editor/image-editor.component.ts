@@ -14,7 +14,9 @@ export class ImageEditorComponent implements AfterViewInit, OnChanges {
   @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
 
   file = input<File>();
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   canvasWidth = input<number>(320, { alias: 'width' });
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   canvasHeight = input<number>(320, { alias: 'heigth' });
   item = output<File>();
 

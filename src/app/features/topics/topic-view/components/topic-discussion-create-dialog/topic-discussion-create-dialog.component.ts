@@ -31,7 +31,7 @@ export class TopicDiscussionCreateDialogComponent {
   private topicService = inject(TopicService);
 
   topic = this.data.topic;
-  tabs = [1, 2];
+  tabs = [1, 2, 3];
   activeTab = signal(1);
   question = signal('');
   deadline = signal<Date | null>(null);

@@ -21,6 +21,7 @@ import { EditDiscussionDeadlineComponent } from '../edit-discussion-deadline/edi
 import { MissingDiscussionComponent } from '../missing-discussion/missing-discussion.component';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ArgumentComponent } from '../argument/argument.component';
+import { TopicDiscussionCreateDialogComponent } from '../topic-discussion-create-dialog/topic-discussion-create-dialog.component';
 import { PostArgumentFormComponent } from '../post-argument-form/post-argument-form.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
@@ -40,7 +41,7 @@ import { PaginationComponent } from '../../../../../shared/components/pagination
 export class TopicDiscussionComponent {
   topic = input.required<Topic>();
 
-  private topicService = inject(TopicService);
+  public topicService = inject(TopicService);
   private discussionService = inject(TopicDiscussionService);
   private argumentService = inject(TopicArgumentService);
   private userStore = inject(UserStore);
@@ -175,6 +176,12 @@ export class TopicDiscussionComponent {
         topic: this.topic(),
         discussion: this.discussion()
       }
+    });
+  }
+
+  openCreateDiscussion() {
+    this.dialog.open(TopicDiscussionCreateDialogComponent, {
+      data: { topic: this.topic() }
     });
   }
 

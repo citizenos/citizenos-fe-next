@@ -305,7 +305,11 @@ export class TopicViewComponent implements OnInit {
 
   sendToFollowUp(topic: Topic) {
     if (!this.topicService.canUpdate(topic)) return;
-    this.topicService.changeState(topic, 'followUp');
+    import('./components/topic-follow-up-create-dialog/topic-follow-up-create-dialog.component').then(m => {
+      this.dialogService.open(m.TopicFollowUpCreateDialogComponent, {
+        data: { topic }
+      });
+    });
   }
 
   appTopicNotificationSettings() {
