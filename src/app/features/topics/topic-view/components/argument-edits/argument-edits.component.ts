@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -8,7 +9,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
 @Component({
   selector: 'app-argument-edits',
   standalone: true,
-  imports: [DatePipe, TranslateModule],
+  imports: [DatePipe, TranslateModule, IconComponent],
   templateUrl: './argument-edits.component.html',
   styleUrls: ['./argument-edits.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

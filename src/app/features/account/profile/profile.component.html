@@ -2,14 +2,7 @@
   <div class="page_header">
     <h1 class="page_title">{{ 'VIEWS.ACCOUNT.HEADING' | translate }}</h1>
     <button type="button" class="btn_medium_close" (click)="store.logout()" [attr.aria-label]="'VIEWS.ACCOUNT.BTN_LOG_OUT' | translate">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M6 2C4.34315 2 3 3.34315 3 5L3 19C3 20.6569 4.34315 22 6 22L17 22V20L6 20C5.44772 20 5 19.5523 5 19L5 5C5 4.44772 5.44772 4 6 4L17 4V2L6 2Z"
-          fill="#2C3B47" />
-        <path
-          d="M10 13H17.4139L15.2069 15.207L16.6211 16.6212L21.2425 11.9998L16.6211 7.37842L15.2069 8.79263L17.4142 11H10V13Z"
-          fill="#2C3B47" />
-      </svg>
+      <cos-icon name="profile-icon-legacy" size="24"></cos-icon>
       <span class="bold" translate="VIEWS.ACCOUNT.BTN_LOG_OUT"></span>
     </button>
   </div>
@@ -25,9 +18,7 @@
     <cos-dropdown>
       <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.ACCOUNT.TAB_' + activeTab() | uppercase | translate">
         <div class="selected_item bold" [translate]="'VIEWS.ACCOUNT.TAB_' + activeTab() | uppercase"> </div>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
-        </svg>
+        <cos-icon name="topic-participants-icon-legacy" size="24"></cos-icon>
       </div>
       <div options>
         <div class="option" (click)="selectTab('profile')" (keydown.enter)="selectTab('profile')" tabindex="0"
@@ -46,13 +37,7 @@
           @if (form.imageUrl || uploadedImage()) {
           <button type="button" id="remove_profile_image" (click)="deleteUserImage()"
             (keydown.enter)="deleteUserImage()" [aria-label]="'VIEWS.ACCOUNT.UPLOAD_AVATAR' | translate">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 9H11V17H9V9Z" fill="#ef4025" />
-              <path d="M15 9H13V17H15V9Z" fill="#ef4025" />
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M17 5V4C17 2.89543 16.1046 2 15 2H9C7.89543 2 7 2.89543 7 4V5H4C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H5V18C5 19.6569 6.34315 21 8 21H16C17.6569 21 19 19.6569 19 18V7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H17ZM15 4H9V5H15V4ZM17 7H7V18C7 18.5523 7.44772 19 8 19H16C16.5523 19 17 18.5523 17 18V7Z"
-                fill="#ef4025" />
-            </svg>
+            <cos-icon name="profile-icon-2-legacy" size="24"></cos-icon>
           </button>
           }
 
@@ -78,11 +63,7 @@
             <input id="name" name="name" [(ngModel)]="form.name" required [maxlength]="255">
             @if (errors.name) {
             <label for="name" class="error_label">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                  d="M8.89438 1.78863C8.52586 1.05158 7.47405 1.05158 7.10553 1.78863L0.723562 14.5526C0.391112 15.2175 0.874608 15.9998 1.61799 15.9998H14.3819C15.1253 15.9998 15.6088 15.2175 15.2763 14.5526L8.89438 1.78863ZM6.99996 6.99977C6.99996 6.44749 7.44767 5.99977 7.99996 5.99977C8.55224 5.99977 8.99996 6.44749 8.99996 6.99977V9.99977C8.99996 10.5521 8.55224 10.9998 7.99996 10.9998C7.44767 10.9998 6.99996 10.5521 6.99996 9.99977V6.99977ZM6.99996 12.9998C6.99996 12.4475 7.44767 11.9998 7.99996 11.9998C8.55224 11.9998 8.99996 12.4475 8.99996 12.9998C8.99996 13.5521 8.55224 13.9998 7.99996 13.9998C7.44767 13.9998 6.99996 13.5521 6.99996 12.9998Z"
-                  fill="#EF4025" />
-              </svg>
+              <cos-icon name="argument-reply-icon-legacy" size="16"></cos-icon>
               <span [translate]="errors.name"></span>
             </label>
             }
@@ -92,11 +73,7 @@
             <input id="company" name="company" [(ngModel)]="form.company" [maxlength]="255">
             @if (errors.company) {
             <label for="company" class="error_label">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                  d="M8.89438 1.78863C8.52586 1.05158 7.47405 1.05158 7.10553 1.78863L0.723562 14.5526C0.391112 15.2175 0.874608 15.9998 1.61799 15.9998H14.3819C15.1253 15.9998 15.6088 15.2175 15.2763 14.5526L8.89438 1.78863ZM6.99996 6.99977C6.99996 6.44749 7.44767 5.99977 7.99996 5.99977C8.55224 5.99977 8.99996 6.44749 8.99996 6.99977V9.99977C8.99996 10.5521 8.55224 10.9998 7.99996 10.9998C7.44767 10.9998 6.99996 10.5521 6.99996 9.99977V6.99977ZM6.99996 12.9998C6.99996 12.4475 7.44767 11.9998 7.99996 11.9998C8.55224 11.9998 8.99996 12.4475 8.99996 12.9998C8.99996 13.5521 8.55224 13.9998 7.99996 13.9998C7.44767 13.9998 6.99996 13.5521 6.99996 12.9998Z"
-                  fill="#EF4025" />
-              </svg>
+              <cos-icon name="argument-reply-icon-legacy" size="16"></cos-icon>
               <span [translate]="errors.company"></span>
             </label>
             }
@@ -106,11 +83,7 @@
             <input id="email" name="email" [(ngModel)]="form.email" required [maxlength]="254">
             @if (errors.email) {
             <label for="email" class="error_label">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                  d="M8.89438 1.78863C8.52586 1.05158 7.47405 1.05158 7.10553 1.78863L0.723562 14.5526C0.391112 15.2175 0.874608 15.9998 1.61799 15.9998H14.3819C15.1253 15.9998 15.6088 15.2175 15.2763 14.5526L8.89438 1.78863ZM6.99996 6.99977C6.99996 6.44749 7.44767 5.99977 7.99996 5.99977C8.55224 5.99977 8.99996 6.44749 8.99996 6.99977V9.99977C8.99996 10.5521 8.55224 10.9998 7.99996 10.9998C7.44767 10.9998 6.99996 10.5521 6.99996 9.99977V6.99977ZM6.99996 12.9998C6.99996 12.4475 7.44767 11.9998 7.99996 11.9998C8.55224 11.9998 8.99996 12.4475 8.99996 12.9998C8.99996 13.5521 8.55224 13.9998 7.99996 13.9998C7.44767 13.9998 6.99996 13.5521 6.99996 12.9998Z"
-                  fill="#EF4025" />
-              </svg>
+              <cos-icon name="argument-reply-icon-legacy" size="16"></cos-icon>
               <span [translate]="errors.email"></span>
             </label>
             }
@@ -127,11 +100,7 @@
               [maxlength]="64">
             @if (errors.newPassword) {
             <label for="newPassword" class="error_label">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                  d="M8.89438 1.78863C8.52586 1.05158 7.47405 1.05158 7.10553 1.78863L0.723562 14.5526C0.391112 15.2175 0.874608 15.9998 1.61799 15.9998H14.3819C15.1253 15.9998 15.6088 15.2175 15.2763 14.5526L8.89438 1.78863ZM6.99996 6.99977C6.99996 6.44749 7.44767 5.99977 7.99996 5.99977C8.55224 5.99977 8.99996 6.44749 8.99996 6.99977V9.99977C8.99996 10.5521 8.55224 10.9998 7.99996 10.9998C7.44767 10.9998 6.99996 10.5521 6.99996 9.99977V6.99977ZM6.99996 12.9998C6.99996 12.4475 7.44767 11.9998 7.99996 11.9998C8.55224 11.9998 8.99996 12.4475 8.99996 12.9998C8.99996 13.5521 8.55224 13.9998 7.99996 13.9998C7.44767 13.9998 6.99996 13.5521 6.99996 12.9998Z"
-                  fill="#EF4025" />
-              </svg>
+              <cos-icon name="argument-reply-icon-legacy" size="16"></cos-icon>
               <span [translate]="errors.newPassword"></span>
             </label>
             }
@@ -143,11 +112,7 @@
             <input id="password" name="password" [(ngModel)]="form.password" type="password" required [maxlength]="64">
             @if (errors.password) {
             <label for="password" class="error_label">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                  d="M8.89438 1.78863C8.52586 1.05158 7.47405 1.05158 7.10553 1.78863L0.723562 14.5526C0.391112 15.2175 0.874608 15.9998 1.61799 15.9998H14.3819C15.1253 15.9998 15.6088 15.2175 15.2763 14.5526L8.89438 1.78863ZM6.99996 6.99977C6.99996 6.44749 7.44767 5.99977 7.99996 5.99977C8.55224 5.99977 8.99996 6.44749 8.99996 6.99977V9.99977C8.99996 10.5521 8.55224 10.9998 7.99996 10.9998C7.44767 10.9998 6.99996 10.5521 6.99996 9.99977V6.99977ZM6.99996 12.9998C6.99996 12.4475 7.44767 11.9998 7.99996 11.9998C8.55224 11.9998 8.99996 12.4475 8.99996 12.9998C8.99996 13.5521 8.55224 13.9998 7.99996 13.9998C7.44767 13.9998 6.99996 13.5521 6.99996 12.9998Z"
-                  fill="#EF4025" />
-              </svg>
+              <cos-icon name="argument-reply-icon-legacy" size="16"></cos-icon>
               <span [translate]="errors.password"></span>
             </label>
             }
@@ -200,13 +165,7 @@
           <h3 class="preference_title bold">{{ 'VIEWS.ACCOUNT.LBL_DELETE_ACCOUNT' | translate }}</h3>
           <div class="preference_description" translate="VIEWS.ACCOUNT.LBL_DELETE_ACCOUNT_DESCRIPTION"></div>
           <div class="delete_account">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 9H11V17H9V9Z" fill="#ef4025" />
-              <path d="M15 9H13V17H15V9Z" fill="#ef4025" />
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M17 5V4C17 2.89543 16.1046 2 15 2H9C7.89543 2 7 2.89543 7 4V5H4C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H5V18C5 19.6569 6.34315 21 8 21H16C17.6569 21 19 19.6569 19 18V7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H17ZM15 4H9V5H15V4ZM17 7H7V18C7 18.5523 7.44772 19 8 19H16C16.5523 19 17 18.5523 17 18V7Z"
-                fill="#ef4025" />
-            </svg>
+            <cos-icon name="profile-icon-2-legacy" size="24"></cos-icon>
             <button type="button" class="btn_link bold btn_delete" (click)="doDeleteAccount()">{{
               'VIEWS.ACCOUNT.LNK_DELETE' | translate }}</button>
           </div>
@@ -218,11 +177,7 @@
       <h2 class="small_heading">{{ 'VIEWS.ACCOUNT.NOTIFICATIONS_HEADING' | translate }}</h2>
       <div class="filter_section">
         <div class="input_area">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M14.1922 15.6064C13.0236 16.4816 11.5723 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10C17 11.5723 16.4816 13.0236 15.6064 14.1922L19.7071 18.2929C20.0976 18.6834 20.0976 19.3166 19.7071 19.7071C19.3166 20.0976 18.6834 20.0976 18.2929 19.7071L14.1922 15.6064ZM15 10C15 12.7614 12.7614 15 10 15C7.23858 15 5 12.7614 5 10C5 7.23858 7.23858 5 10 5C12.7614 5 15 7.23858 15 10Z"
-              fill="#727C84" />
-          </svg>
+          <cos-icon name="profile-icon-3-legacy" size="24"></cos-icon>
           <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_SEARCH' | translate">
             <input class="topic_search_input" [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_SEARCH' | translate"
               [(ngModel)]="topicSearch" (ngModelChange)="searchTopics()">
@@ -232,9 +187,7 @@
           <cos-dropdown>
             <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.ACCOUNT.SHOW_PER_PAGE' | translate">
               <div class="selected_item">{{notificationParams()?.limit}}</div>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />
-              </svg>
+              <cos-icon name="argument-report-moderate-icon-legacy" size="24"></cos-icon>
             </div>
             <div options>
               <div class="option" (click)="topicNotificationService.setParam('limit', 5)"
@@ -255,14 +208,9 @@
               <span>{{ 'VIEWS.ACCOUNT.TABLE_HEADER_TOPIC' | translate }}</span>
               @if (notificationParams()?.orderBy === 'title') {
               @if (notificationParams()?.order === 'ASC') {
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="#2C3B47" />
-              </svg>
+              <cos-icon name="topic-participants-icon-2-legacy" size="24"></cos-icon>
               } @else {
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                transform='rotate(180)'>
-                <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="#2C3B47" />
-              </svg>
+              <cos-icon name="topic-participants-icon-2-legacy" size="24"></cos-icon>
               }
               }
             </button>
@@ -279,11 +227,7 @@
             <cos-toggle [textOn]="'TOGGLE_ON' | translate" [textOff]="'TOGGLE_OFF' | translate"
               [model]="topic.allowNotifications" (toggleClick)="toggleTopicNotifications(topic)"></cos-toggle>
             <button class="btn_medium_plain icon">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M12.7701 8.84677L11.7883 8.65669L11.6502 9.37029L12.2863 9.72195L12.7701 8.84677ZM13.8467 9.44193L13.3629 10.3171L13.3668 10.3192L13.8467 9.44193ZM12.7701 7.14839L12.2863 6.27321L11.6502 6.62487L11.7883 7.33847L12.7701 7.14839ZM13.8467 6.55323L13.3668 5.67591L13.3629 5.67805L13.8467 6.55323ZM13.9857 6.21452L14.941 5.91885L14.9388 5.91182L14.9366 5.90483L13.9857 6.21452ZM12.6033 3.92582L13.3237 3.23226L13.3218 3.23024L12.6033 3.92582ZM12.2293 3.87018L12.7131 4.74536L12.7168 4.74327L12.2293 3.87018ZM11.2117 4.43271L10.5423 5.17568L11.0718 5.65266L11.6955 5.30789L11.2117 4.43271ZM9.61608 3.47885L8.61608 3.47885V4.18334L9.27946 4.42049L9.61608 3.47885ZM9.37852 2.14518L9.16935 3.12308L9.17406 3.12406L9.37852 2.14518ZM6.61874 2.14518L6.82319 3.12407L6.82796 3.12305L6.61874 2.14518ZM6.38118 3.47983L6.71837 4.42126L7.38118 4.18386V3.47983H6.38118ZM4.78567 4.43511L4.301 5.3098L4.92548 5.65583L5.45555 5.17757L4.78567 4.43511ZM3.77051 3.8726L4.25519 2.99789L4.25042 2.99528L3.77051 3.8726ZM3.39647 3.92824L4.11561 4.62319L4.12324 4.61513L3.39647 3.92824ZM2.01405 6.21694L2.96401 6.52934L2.96515 6.52585L2.01405 6.21694ZM2.15305 6.55565L2.63686 5.68046L2.63297 5.67834L2.15305 6.55565ZM3.22967 7.15081L4.21144 7.34089L4.3496 6.62729L3.71347 6.27563L3.22967 7.15081ZM3.22967 8.84919L3.71347 9.72437L4.3496 9.37271L4.21144 8.65911L3.22967 8.84919ZM2.15305 9.44435L2.63297 10.3217L2.63686 10.3195L2.15305 9.44435ZM2.01405 9.78306L1.05877 10.0787L1.06094 10.0858L1.06322 10.0928L2.01405 9.78306ZM3.39647 12.0718L2.67607 12.7653L2.67802 12.7673L3.39647 12.0718ZM3.77051 12.1274L3.2867 11.2522L3.28295 11.2543L3.77051 12.1274ZM4.78658 11.5657L5.45627 10.8231L4.92678 10.3456L4.30278 10.6905L4.78658 11.5657ZM6.3837 12.5211H7.3837V11.8166L6.72037 11.5795L6.3837 12.5211ZM6.62127 13.8548L6.83043 12.8769L6.82572 12.8759L6.62127 13.8548ZM9.38104 13.8548L9.17659 12.8759L9.17183 12.8769L9.38104 13.8548ZM9.61861 12.5203L9.28145 11.5788L8.61861 11.8162V12.5203H9.61861ZM11.2143 11.5649L11.7001 10.6905L11.0761 10.3456L10.5466 11.0882L11.2143 11.5649ZM12.7196 11.2543L12.7158 11.2522L12.232 12.1274L12.7168 12.1302L12.7196 11.2543ZM13.3235 12.7673L13.3255 12.7653L12.605 12.0718L12.5973 12.0799L13.3235 12.7673ZM14.9412 10.0928L14.9435 10.0858L14.9457 10.0787L13.9875 9.78306L14.9412 10.0928ZM13.3656 10.3195L13.3695 10.3217L13.8492 9.44435L13.8453 9.44214L13.3656 10.3195ZM12.2886 8.65911L11.3068 8.84919L11.7906 9.72437L12.7724 9.37271L12.2886 8.65911ZM12.2886 7.34089L12.7724 6.62729L11.7906 6.27563L11.3068 7.15081L12.2886 7.34089ZM13.8453 6.55786L13.8492 6.55565L13.3695 5.67834L13.3656 5.68046L13.8453 6.55786ZM14.9457 5.92127L14.9435 5.9142L14.9412 5.90717L13.9875 6.21694L14.9457 5.92127ZM12.5973 3.92015L12.605 3.92824L13.3255 3.23473L13.3179 3.22668L12.5973 3.92015ZM12.7168 3.86985L12.7196 4.74566L13.2033 3.8726L13.1998 3.87063L12.7168 3.86985ZM11.6972 5.30947L11.0732 5.65437L11.5427 6.27321L11.7001 7.14839L12.7701 6.62487L11.6972 5.30947ZM11.6972 6.69053L12.7701 1.34331L12.2863 1.34553L11.7883 1.34771L12.2863 1.34553L12.7701 1.34331L11.6972 6.69053ZM10.2816 4.42126L10.6188 3.47983L9.61882 3.47983V4.18386L10.2816 4.42126ZM10.826 3.12305L11.0308 2.14518L10.8213 2.14518L10.826 3.12305ZM8.17204 3.12305L8.17677 2.14518L7.96726 2.14518L8.17204 3.12305ZM8.72054 4.42049L9.38392 4.18334V3.47885H8.38392L8.72054 4.42049ZM7.2721 5.30789L7.89582 5.65266L8.42531 5.17568L7.75582 4.43271L7.2721 5.30789ZM6.28318 4.74327L6.28688 4.74536L6.77067 3.87018L6.28688 3.87018L6.28318 4.74327ZM5.67824 3.23024L5.67627 3.23226L6.39674 3.92582L6.4044 3.91773L5.67824 3.23024ZM4.06338 5.90483L4.06118 5.91182L4.05898 5.91885L5.01427 6.21452L4.06338 5.90483ZM5.63703 5.67805L5.63314 5.67591L5.14933 6.55323L5.15322 6.55537L5.63703 5.67805ZM6.7137 6.62487L6.22989 7.33847L7.21166 7.14839L6.7137 6.62487ZM6.7137 1.37513L7.21166 7.34089L6.22989 7.15081L6.7137 1.37513ZM5.63314 1.32195L5.63703 1.32409L5.15322 1.34677L5.14933 1.34463L5.63314 1.32195ZM4.05898 1.08115L4.06118 1.08818L4.06338 1.09517L5.01427 1.08548L4.05898 1.08115ZM6.4044 1.08227L6.39674 1.07418L5.67627 1.06774L5.68393 1.07582L6.4044 1.08227ZM6.28688 1.13015L6.28318 1.13224L6.767 1.35464L6.7707 1.35254L6.28688 1.13015ZM7.75582 11.5673L8.42531 10.8243L7.89582 10.3473L7.2721 11.6921L7.75582 11.5673ZM7.2721 10.3095L7.75582 1.34563L8.23951 1.34774L8.7232 1.35034L7.75582 1.34563L7.2721 10.3095ZM8.72054 1.57951L8.38392 11.5788V12.5203H9.38392L8.72054 1.57951ZM8.17204 1.12407L7.96726 12.1242L8.17677 12.1242L8.17204 1.12407ZM10.826 1.12407L10.6165 12.1242L10.8213 12.1242L10.826 1.12407ZM10.2816 1.57874L9.61882 12.5203V11.8162H10.6188L10.2816 1.57874ZM11.6972 10.6905L11.0732 10.3456L10.5373 11.0822L11.2117 11.5649L11.6972 10.6905ZM11.6972 11.3095L12.7701 1.34313L12.2863 1.34114L11.7883 1.33917L12.2863 1.34114L12.7701 1.34313L11.6972 11.3095Z"
-                  fill="#2C3B47" />
-              </svg>
+              <cos-icon name="profile-icon-4-legacy" size="16"></cos-icon>
             </button>
           </div>
         </div>

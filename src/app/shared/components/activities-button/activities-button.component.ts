@@ -1,3 +1,4 @@
+import { IconComponent } from '../icon/icon.component';
 import { Component, ChangeDetectionStrategy, inject, input } from '@angular/core';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
@@ -10,7 +11,7 @@ import { switchMap, of } from 'rxjs';
   selector: 'cos-activities-button',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule],
+  imports: [TranslateModule, IconComponent],
   templateUrl: './activities-button.component.html',
   styleUrls: ['./activities-button.component.scss']
 })

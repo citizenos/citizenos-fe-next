@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, ChangeDetectionStrategy, inject, signal, computed, DestroyRef } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -34,8 +35,7 @@ export interface EditorMember {
   standalone: true,
   imports: [
     UpperCasePipe, FormsModule, TranslateModule, DialogCloseDirective,
-    InitialsComponent, InputComponent, CosDropdownDirective, PaginationComponent
-  ],
+    InitialsComponent, InputComponent, CosDropdownDirective, PaginationComponent, IconComponent],
   templateUrl: './invite-editors.component.html',
   styleUrls: ['./invite-editors.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

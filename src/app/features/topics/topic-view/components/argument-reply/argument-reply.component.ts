@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, input, output, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -13,7 +14,7 @@ import { MarkdownDirective } from '../../../../../shared/directives/markdown.dir
 @Component({
   selector: 'app-argument-reply',
   standalone: true,
-  imports: [FormsModule, TranslateModule, MarkdownDirective],
+  imports: [FormsModule, TranslateModule, MarkdownDirective, IconComponent],
   templateUrl: './argument-reply.component.html',
   styleUrls: ['./argument-reply.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

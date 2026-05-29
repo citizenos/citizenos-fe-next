@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { take } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
@@ -17,7 +18,7 @@ export interface ArgumentReactionsData {
 @Component({
   selector: 'app-argument-reactions',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, PaginationComponent, NotificationComponent],
+  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, PaginationComponent, NotificationComponent, IconComponent],
   templateUrl: './argument-reactions.component.html',
   styleUrls: ['./argument-reactions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

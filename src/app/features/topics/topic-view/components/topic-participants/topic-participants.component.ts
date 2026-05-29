@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UpperCasePipe } from '@angular/common';
@@ -41,8 +42,7 @@ const PAGE_SIZE = 10;
     TopicMemberGroupComponent,
     TopicMemberInviteComponent,
     NotificationComponent,
-    TooltipComponent,
-  ],
+    TooltipComponent, IconComponent,],
   templateUrl: './topic-participants.component.html',
   styleUrl: './topic-participants.component.scss',
 })

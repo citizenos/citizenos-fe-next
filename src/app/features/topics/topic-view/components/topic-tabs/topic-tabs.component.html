@@ -41,17 +41,9 @@
       <button trigger class="btn_medium_close icon" (click)="toggleFavourite(topic())"
         [class.like_active]="topic().favourite">
         @if (!topic().favourite) {
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M12.4961 16.1318L12 15.8482L11.5039 16.1318L6 19.2768L6 6C6 5.44772 6.44772 5 7 5H17C17.5523 5 18 5.44772 18 6V19.2768L12.4961 16.1318Z"
-            stroke="#2C3B47" stroke-width="2" />
-        </svg>
+        <cos-icon name="topic-tabs-icon-legacy" size="24"></cos-icon>
         } @else {
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M12.5812 15.1863L12 14.7711L11.4188 15.1863L6 19.0568V6C6 5.44772 6.44772 5 7 5H17C17.5523 5 18 5.44772 18 6V19.0568L12.5812 15.1863Z"
-            fill="#2C3B47" stroke="#2C3B47" stroke-width="2" />
-        </svg>
+        <cos-icon name="topic-tabs-icon-2-legacy" size="24"></cos-icon>
         }
       </button>
     </cos-tooltip>

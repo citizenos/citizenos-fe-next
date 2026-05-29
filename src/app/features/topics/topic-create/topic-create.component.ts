@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { Component, signal, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -38,8 +39,7 @@ import { PendingChangesComponent } from '../../../core/guards/pending-changes.gu
     StepTopicDiscussionComponent,
     StepTopicPreviewComponent,
     MemberEditorsPanelComponent,
-    AnyPipe,
-  ],
+    AnyPipe, IconComponent,],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-create.component.html',
   styleUrl: './topic-create.component.scss'

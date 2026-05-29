@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, computed } from '@angular/core';
 import { DatePipe, UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -26,7 +27,7 @@ import { TooltipComponent } from '../../../../../shared/components/tooltip/toolt
   selector: 'app-topic-vote-cast',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DatePipe, UpperCasePipe, BigGraphComponent, InitialsComponent, CosDropdownDirective, TooltipComponent],
+  imports: [TranslateModule, DatePipe, UpperCasePipe, BigGraphComponent, InitialsComponent, CosDropdownDirective, TooltipComponent, IconComponent],
   templateUrl: './topic-vote-cast.component.html',
   styleUrls: ['./topic-vote-cast.component.scss']
 })

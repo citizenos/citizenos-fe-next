@@ -14,9 +14,7 @@
         </div>
       }
       <button type="button" class="btn_small_close icon close_button" (click)="close()" [attr.aria-label]="'CONTROL.CLOSE' | translate">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5.29311 17.2929C4.90258 17.6834 4.90258 18.3166 5.29311 18.7071C5.68363 19.0976 6.3168 19.0976 6.70732 18.7071L12.0002 13.4142L17.2931 18.7071C17.6836 19.0976 18.3168 19.0976 18.7073 18.7071C19.0978 18.3166 19.0978 17.6834 18.7073 17.2929L13.4144 12L18.7073 6.70711C19.0978 6.31658 19.0978 5.68342 18.7073 5.29289C18.3168 4.90237 17.6836 4.90237 17.2931 5.29289L12.0002 10.5858L6.70732 5.29289C6.3168 4.90237 5.68363 4.90237 5.29311 5.29289C4.90258 5.68342 4.90258 6.31658 5.29311 6.70711L10.586 12L5.29311 17.2929Z" fill="#2C3B47"/>
-        </svg>
+        <cos-icon name="edit-idea-icon-legacy" size="24"></cos-icon>
       </button>
     </div>
   </div>
@@ -61,9 +59,7 @@
                           <span>{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_OTHER' | translate }}</span>
                         }
                       </div>
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round"/>
-                      </svg>
+                      <cos-icon name="edit-idea-icon-2-legacy" size="24"></cos-icon>
                     </div>
                     <div class="options">
                       @for (option of residenceItems; track option.value) {
@@ -121,9 +117,7 @@
                         <span>{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_' + (genderValue() | uppercase) | translate }}</span>
                       }
                     </div>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
+                    <cos-icon name="edit-idea-icon-2-legacy" size="24"></cos-icon>
                   </div>
                   <div class="options">
                     @for (option of genderItems; track option.value) {
@@ -200,11 +194,7 @@
               <a class="name">{{ image.name }}</a>
             </div>
             <button type="button" class="btn_small_plain icon" (click)="removeNewImage(i)">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14 13.9997H15.3333L15.3333 19.333H14L14 13.9997Z" fill="#2C3B47"/>
-                <path d="M18 13.9997H16.6667V19.333H18V13.9997Z" fill="#2C3B47"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M19.3333 11.333V10.6663C19.3333 9.92996 18.7364 9.33301 18 9.33301L14 9.33301C13.2636 9.33301 12.6667 9.92996 12.6667 10.6663V11.333H10.6667C10.2985 11.333 10 11.6315 10 11.9997C10 12.3679 10.2985 12.6663 10.6667 12.6663H11.3333L11.3333 19.9997C11.3333 21.1043 12.2288 21.9997 13.3333 21.9997H18.6667C19.7713 21.9997 20.6667 21.1043 20.6667 19.9997V12.6663H21.3333C21.7015 12.6663 22 12.3679 22 11.9997C22 11.6315 21.7015 11.333 21.3333 11.333H19.3333ZM18 10.6663L14 10.6663V11.333L18 11.333V10.6663ZM19.3333 12.6663L12.6667 12.6663L12.6667 19.9997C12.6667 20.3679 12.9651 20.6663 13.3333 20.6663H18.6667C19.0349 20.6663 19.3333 20.3679 19.3333 19.9997V12.6663Z" fill="#2C3B47"/>
-              </svg>
+              <cos-icon name="edit-idea-icon-3-legacy" size="32"></cos-icon>
             </button>
           </div>
         }
@@ -215,11 +205,7 @@
               <a class="name">{{ image.name }}</a>
             </div>
             <button type="button" class="btn_small_plain icon" (click)="removeImage(image, i)">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14 13.9997H15.3333L15.3333 19.333H14L14 13.9997Z" fill="#2C3B47"/>
-                <path d="M18 13.9997H16.6667V19.333H18V13.9997Z" fill="#2C3B47"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M19.3333 11.333V10.6663C19.3333 9.92996 18.7364 9.33301 18 9.33301L14 9.33301C13.2636 9.33301 12.6667 9.92996 12.6667 10.6663V11.333H10.6667C10.2985 11.333 10 11.6315 10 11.9997C10 12.3679 10.2985 12.6663 10.6667 12.6663H11.3333L11.3333 19.9997C11.3333 21.1043 12.2288 21.9997 13.3333 21.9997H18.6667C19.7713 21.9997 20.6667 21.1043 20.6667 19.9997V12.6663H21.3333C21.7015 12.6663 22 12.3679 22 11.9997C22 11.6315 21.7015 11.333 21.3333 11.333H19.3333ZM18 10.6663L14 10.6663V11.333L18 11.333V10.6663ZM19.3333 12.6663L12.6667 12.6663L12.6667 19.9997C12.6667 20.3679 12.9651 20.6663 13.3333 20.6663H18.6667C19.0349 20.6663 19.3333 20.3679 19.3333 19.9997V12.6663Z" fill="#2C3B47"/>
-              </svg>
+              <cos-icon name="edit-idea-icon-3-legacy" size="32"></cos-icon>
             </button>
           </div>
         }
@@ -240,25 +226,18 @@
   <div id="buttons_row">
     <div class="btn_row_left">
       <button type="button" class="btn_medium_submit_ghost icon close_button" (click)="close()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5.29311 17.2929C4.90258 17.6834 4.90258 18.3166 5.29311 18.7071C5.68363 19.0976 6.3168 19.0976 6.70732 18.7071L12.0002 13.4142L17.2931 18.7071C17.6836 19.0976 18.3168 19.0976 18.7073 18.7071C19.0978 18.3166 19.0978 17.6834 18.7073 17.2929L13.4144 12L18.7073 6.70711C19.0978 6.31658 19.0978 5.68342 18.7073 5.29289C18.3168 4.90237 17.6836 4.90237 17.2931 5.29289L12.0002 10.5858L6.70732 5.29289C6.3168 4.90237 5.68363 4.90237 5.29311 5.29289C4.90258 5.68342 4.90258 6.31658 5.29311 6.70711L10.586 12L5.29311 17.2929Z" fill="#2C3B47"/>
-        </svg>
+        <cos-icon name="edit-idea-icon-legacy" size="24"></cos-icon>
       </button>
       @if (isDraft()) {
         <button type="button" class="option error_text btn_medium_error" (click)="deleteDraft()">
-          <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M10 3H6V4H10V3ZM11 4V3C11 2.44772 10.5523 2 10 2H6C5.44772 2 5 2.44772 5 3V4H4H2.5C2.22386 4 2 4.22386 2 4.5C2 4.77614 2.22386 5 2.5 5H4V13C4 13.5523 4.44772 14 5 14H11C11.5523 14 12 13.5523 12 13V5H13.5C13.7761 5 14 4.77614 14 4.5C14 4.22386 13.7761 4 13.5 4H12H11ZM7 7H6V11H7V7ZM10 7H9V11H10V7Z" fill="#2C3B47"/>
-          </svg>
+          <cos-icon name="edit-idea-icon-4-legacy" size="24"></cos-icon>
           <span class="btn_text" translate="COMPONENTS.ADD_IDEA.BTN_DELETE_DRAFT"></span>
         </button>
       }
     </div>
     <div class="btn_row_right">
       <button type="button" class="btn_medium_submit_ghost" (click)="uploadImage()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M7.42058 17.0297H16.6588C16.8706 17.0297 17.0206 16.9414 17.1088 16.7649C17.1971 16.5885 17.1794 16.412 17.0559 16.2355L14.5412 12.9002C14.4353 12.7591 14.3029 12.6885 14.1441 12.6885C13.9853 12.6885 13.8618 12.7591 13.7735 12.9002L11.1794 16.262L9.45882 14.0385C9.35293 13.9149 9.22058 13.8532 9.06176 13.8532C8.90293 13.8532 8.7794 13.9238 8.69117 14.0649L7.02352 16.2355C6.89999 16.412 6.88693 16.5885 6.98434 16.7649C7.08105 16.9414 7.22646 17.0297 7.42058 17.0297Z" fill="#2C3B47"/>
-          <rect x="4" y="4" width="16" height="16" rx="1" stroke="#2C3B47" stroke-width="2"/>
-        </svg>
+        <cos-icon name="edit-idea-icon-5-legacy" size="24"></cos-icon>
         <span translate="COMPONENTS.EDIT_IDEA.BTN_ADD_IMAGE"></span>
       </button>
       <button type="button" class="btn_medium_submit icon" (click)="publish()">

@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { Component, inject, signal, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, PLATFORM_ID, DestroyRef } from '@angular/core';
 import { isPlatformBrowser, KeyValuePipe, AsyncPipe, UpperCasePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -41,8 +42,7 @@ type ProfileTab = 'profile' | 'notifications';
     UpperCasePipe,
     InitialsComponent,
     PaginationComponent,
-    ImageEditorComponent
-  ],
+    ImageEditorComponent, IconComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })

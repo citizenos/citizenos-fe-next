@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import {
   Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit,
   ViewChild, ElementRef, forwardRef, computed
@@ -35,8 +36,7 @@ import { MarkdownPipe } from '../../../../../shared/pipes/markdown.pipe';
     TooltipComponent, ArgumentDeletedComponent,
     ArgumentReplyComponent, ArgumentEditsComponent, EditArgumentComponent,
     MarkdownPipe,
-    forwardRef(() => ArgumentComponent),
-  ],
+    forwardRef(() => ArgumentComponent), IconComponent,],
   templateUrl: './argument.component.html',
   styleUrls: ['./argument.component.scss']
 })

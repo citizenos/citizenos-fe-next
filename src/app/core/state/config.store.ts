@@ -21,6 +21,13 @@ interface ConfigState {
     about: string;
     donate: Record<string, string>;
   };
+  attachments: {
+    dropbox: { appKey: string; };
+    oneDrive: { clientId: string; };
+    googleDrive: { developerKey: string; clientId: string; appId: string; };
+  };
+  plausible: { domain: string; api: string; };
+  socialMentions: { systemNotificationEmail: string; };
 }
 
 const initialState: ConfigState = {
@@ -50,7 +57,14 @@ const initialState: ConfigState = {
       et: 'https://citizenos.com/et/toeta/',
       ru: 'https://citizenos.com/ru/pomoch-proektu/'
     }
-  }
+  },
+  attachments: {
+    dropbox: { appKey: '' },
+    oneDrive: { clientId: '' },
+    googleDrive: { developerKey: '', clientId: '', appId: '' }
+  },
+  plausible: { domain: '', api: '' },
+  socialMentions: { systemNotificationEmail: '' }
 };
 
 export const ConfigStore = signalStore(

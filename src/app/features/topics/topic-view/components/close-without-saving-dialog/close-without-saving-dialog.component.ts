@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog';
@@ -6,7 +7,7 @@ import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog';
   selector: 'app-close-without-saving-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DialogCloseDirective],
+  imports: [TranslateModule, DialogCloseDirective, IconComponent],
   templateUrl: './close-without-saving-dialog.component.html',
 })
 export class CloseWithoutSavingDialogComponent {

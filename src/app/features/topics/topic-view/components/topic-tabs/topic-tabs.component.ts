@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, input, output, inject, computed, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,8 +19,7 @@ import { TourItemDirective } from '../../../../../shared/directives/tour-item.di
     DomainIconComponent,
     ActivitiesButtonComponent,
     TooltipComponent,
-    TourItemDirective
-  ],
+    TourItemDirective, IconComponent],
   templateUrl: './topic-tabs.component.html',
   styleUrls: ['./topic-tabs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

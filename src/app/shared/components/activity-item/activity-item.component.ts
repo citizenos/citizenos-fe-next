@@ -1,3 +1,4 @@
+import { IconComponent } from '../icon/icon.component';
 import { Component, ChangeDetectionStrategy, inject, input } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -9,7 +10,7 @@ import { ActivityFeedState } from '../../../core/state/activity-feed.state';
   selector: 'cos-activity-item',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe],
+  imports: [DatePipe, IconComponent],
   templateUrl: './activity-item.component.html',
   styleUrls: ['./activity-item.component.scss']
 })

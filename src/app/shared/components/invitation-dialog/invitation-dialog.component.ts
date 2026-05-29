@@ -1,3 +1,4 @@
+import { IconComponent } from '../icon/icon.component';
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { UpperCasePipe } from '@angular/common';
@@ -38,7 +39,7 @@ export interface InviteDialogData {
 @Component({
   selector: 'cos-invitation-dialog',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, NotificationComponent, UpperCasePipe, A11yModule],
+  imports: [TranslateModule, DialogCloseDirective, InitialsComponent, NotificationComponent, UpperCasePipe, A11yModule, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './invitation-dialog.component.html',
   styleUrls: ['./invitation-dialog.component.scss'],

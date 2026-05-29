@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import {
   Component, input, signal, inject, ChangeDetectionStrategy, computed
 } from '@angular/core';
@@ -32,8 +33,7 @@ import { PaginationComponent } from '../../../../../shared/components/pagination
     DatePipe, UpperCasePipe, TranslateModule,
     ArgumentComponent, PostArgumentFormComponent,
     PaginationComponent,
-    DropdownComponent, RouterLink
-  ],
+    DropdownComponent, RouterLink, IconComponent],
   templateUrl: './topic-discussion.component.html',
   styleUrls: ['./topic-discussion.component.scss']
 })

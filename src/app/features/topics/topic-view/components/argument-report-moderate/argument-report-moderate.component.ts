@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -23,7 +24,7 @@ interface ArgumentReportModerateData {
 @Component({
   selector: 'app-argument-report-moderate',
   standalone: true,
-  imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, DialogCloseDirective, InputComponent, CosDropdownDirective],
+  imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, DialogCloseDirective, InputComponent, CosDropdownDirective, IconComponent],
   templateUrl: './argument-report-moderate.component.html',
   styleUrls: ['./argument-report-moderate.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

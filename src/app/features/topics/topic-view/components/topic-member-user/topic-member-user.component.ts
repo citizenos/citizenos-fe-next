@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, ChangeDetectionStrategy, input, inject, signal, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -21,8 +22,7 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
     TranslateModule,
     UpperCasePipe,
     InitialsComponent,
-    CosDropdownDirective,
-  ],
+    CosDropdownDirective, IconComponent,],
   templateUrl: './topic-member-user.component.html',
   styleUrls: ['./topic-member-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

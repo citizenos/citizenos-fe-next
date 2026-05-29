@@ -1,3 +1,4 @@
+import { IconComponent } from '../icon/icon.component';
 import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, ViewChild, ElementRef, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -22,7 +23,7 @@ declare let gapi: any;
 @Component({
   selector: 'cos-topic-attachments',
   standalone: true,
-  imports: [FormsModule, TranslateModule, ButtonComponent, TooltipComponent, CosDropdownDirective],
+  imports: [FormsModule, TranslateModule, ButtonComponent, TooltipComponent, CosDropdownDirective, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-attachments.component.html',
   styleUrl: './topic-attachments.component.scss'

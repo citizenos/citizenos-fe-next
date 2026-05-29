@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -12,7 +13,7 @@ interface ArgumentWhyDialogData {
 @Component({
   selector: 'app-argument-why-dialog',
   standalone: true,
-  imports: [UpperCasePipe, TranslateModule, DialogCloseDirective],
+  imports: [UpperCasePipe, TranslateModule, DialogCloseDirective, IconComponent],
   templateUrl: './argument-why-dialog.component.html',
   styleUrls: ['./argument-why-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

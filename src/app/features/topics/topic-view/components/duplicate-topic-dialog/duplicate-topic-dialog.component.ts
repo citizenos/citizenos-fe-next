@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
@@ -11,7 +12,7 @@ export interface DuplicateTopicDialogData {
 @Component({
   selector: 'cos-duplicate-topic-dialog',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective],
+  imports: [TranslateModule, DialogCloseDirective, IconComponent],
   templateUrl: './duplicate-topic-dialog.component.html',
   styleUrl: './duplicate-topic-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

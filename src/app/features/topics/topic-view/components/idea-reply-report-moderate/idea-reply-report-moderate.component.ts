@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -27,7 +28,7 @@ export interface IdeaReplyReportModerateData {
   selector: 'app-idea-reply-report-moderate',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, ReactiveFormsModule, NgClass, DialogCloseDirective, CosDropdownDirective],
+  imports: [TranslateModule, ReactiveFormsModule, NgClass, DialogCloseDirective, CosDropdownDirective, IconComponent],
   templateUrl: './idea-reply-report-moderate.component.html',
   styleUrl: './idea-reply-report-moderate.component.scss'
 })

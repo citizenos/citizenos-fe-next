@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, input, output, signal, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UpperCasePipe, KeyValuePipe } from '@angular/common';
@@ -12,7 +13,7 @@ import { MarkdownDirective } from '../../../../../shared/directives/markdown.dir
 @Component({
   selector: 'app-edit-argument',
   standalone: true,
-  imports: [FormsModule, UpperCasePipe, KeyValuePipe, TranslateModule, InputComponent, MarkdownDirective],
+  imports: [FormsModule, UpperCasePipe, KeyValuePipe, TranslateModule, InputComponent, MarkdownDirective, IconComponent],
   templateUrl: './edit-argument.component.html',
   styleUrls: ['./edit-argument.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

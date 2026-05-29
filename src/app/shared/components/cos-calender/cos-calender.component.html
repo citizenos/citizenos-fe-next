@@ -1,18 +1,14 @@
 <div id="cos_calendar" [class]="class()">
   <div class="cos_cal_month_selector">
     <button type="button" (click)="setMonth(-1)">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14.5 7.5L9.5 12.5L14.5 17.5" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
-      </svg>
+      <cos-icon name="cos-calender-icon-legacy" size="24"></cos-icon>
     </button>
     <div class="text_wrap">
       <span [translate]="'COMPONENTS.COS_CALENDAR.MONTHS.' + month()"></span>
       <span>{{ year() }}</span>
     </div>
     <button type="button" (click)="setMonth(1)">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9.5 17.5L14.5 12.5L9.5 7.5" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
-      </svg>
+      <cos-icon name="cos-calender-icon-2-legacy" size="24"></cos-icon>
     </button>
   </div>
   <div class="cos_cal_weekdays">

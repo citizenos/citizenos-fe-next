@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -20,7 +21,7 @@ export interface PrivacyPolicyData {
 @Component({
   selector: 'app-privacy-policy',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective, TermsLinksComponent],
+  imports: [TranslateModule, DialogCloseDirective, TermsLinksComponent, IconComponent],
   templateUrl: './privacy-policy.component.html',
   styleUrls: ['./privacy-policy.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

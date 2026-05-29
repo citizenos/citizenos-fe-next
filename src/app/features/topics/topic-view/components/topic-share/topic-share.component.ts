@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, ChangeDetectionStrategy, inject, signal, computed, ElementRef, ViewChild, OnInit, model } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UpperCasePipe } from '@angular/common';
@@ -22,8 +23,7 @@ import { take } from 'rxjs';
     QRCodeComponent,
     ButtonComponent,
     DropdownComponent,
-    TooltipComponent
-  ],
+    TooltipComponent, IconComponent],
   templateUrl: './topic-share.component.html',
   styleUrls: ['./topic-share.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

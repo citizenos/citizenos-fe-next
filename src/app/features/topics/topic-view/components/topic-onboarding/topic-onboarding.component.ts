@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
@@ -6,7 +7,7 @@ import { TourService } from '../../../../../core/services/tour.service';
 @Component({
   selector: 'cos-topic-onboarding',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective],
+  imports: [TranslateModule, DialogCloseDirective, IconComponent],
   templateUrl: './topic-onboarding.component.html',
   styleUrl: './topic-onboarding.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

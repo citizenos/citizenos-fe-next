@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
@@ -5,7 +6,7 @@ import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/di
 @Component({
   selector: 'cos-topic-edit-disabled-dialog',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective],
+  imports: [TranslateModule, DialogCloseDirective, IconComponent],
   templateUrl: './topic-edit-disabled-dialog.component.html',
   styleUrl: './topic-edit-disabled-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

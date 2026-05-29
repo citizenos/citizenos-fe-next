@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, ChangeDetectionStrategy, input, output, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DatePipe, UpperCasePipe } from '@angular/common';
@@ -18,8 +19,7 @@ import { TopicMemberInviteDeleteComponent } from '../topic-member-invite-delete/
     DatePipe,
     UpperCasePipe,
     InitialsComponent,
-    CosDropdownDirective,
-  ],
+    CosDropdownDirective, IconComponent,],
   templateUrl: './topic-member-invite.component.html',
   styleUrls: ['./topic-member-invite.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

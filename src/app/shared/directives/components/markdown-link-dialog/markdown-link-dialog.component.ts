@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../components/icon/icon.component';
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -8,7 +9,7 @@ import { InputComponent } from '../../../components/input/input.component';
   selector: 'app-markdown-link-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, TranslateModule, DialogCloseDirective, InputComponent],
+  imports: [ReactiveFormsModule, TranslateModule, DialogCloseDirective, InputComponent, IconComponent],
   templateUrl: './markdown-link-dialog.component.html',
   styleUrl: './markdown-link-dialog.component.scss',
 })

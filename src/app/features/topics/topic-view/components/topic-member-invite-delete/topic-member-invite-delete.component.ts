@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -12,8 +13,7 @@ import { InitialsComponent } from '../../../../../shared/components/initials/ini
   imports: [
     TranslateModule,
     InitialsComponent,
-    DialogCloseDirective,
-  ],
+    DialogCloseDirective, IconComponent,],
   templateUrl: './topic-member-invite-delete.component.html',
   styleUrls: ['./topic-member-invite-delete.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

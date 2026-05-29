@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, input, output, inject, signal, computed, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -58,7 +59,7 @@ const municipalities: { name: string }[] = [
 @Component({
   selector: 'app-edit-idea',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, MarkdownDirective, CosDropdownDirective, InputComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, MarkdownDirective, CosDropdownDirective, InputComponent, IconComponent],
   templateUrl: './edit-idea.component.html',
   styleUrls: ['./edit-idea.component.scss'],
 })
