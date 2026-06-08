@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Service, signal } from '@angular/core';
 
 export type NotificationLevel = 'success' | 'info' | 'warning' | 'error';
 
@@ -10,7 +10,7 @@ export interface Notification {
   message?: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NotificationService {
   private _notifications = signal<Notification[]>([]);
   readonly notifications = this._notifications.asReadonly();

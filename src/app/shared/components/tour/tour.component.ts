@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, computed, ViewChild, Renderer2, HostListener, effect, OnDestroy } from '@angular/core';
+import { Component, ElementRef, inject, computed, ViewChild, Renderer2, HostListener, effect, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TourService } from '../../../core/services/tour.service';
@@ -6,6 +6,7 @@ import { UserStore } from '../../../core/state/user.store';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-tour',
   standalone: true,
   imports: [TranslateModule, IconComponent],

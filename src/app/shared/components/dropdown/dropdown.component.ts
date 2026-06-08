@@ -1,7 +1,8 @@
-import { Component, input, signal, HostListener } from '@angular/core';
+import { Component, input, signal, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-dropdown',
   standalone: true,
   imports: [IconComponent],

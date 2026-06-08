@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
@@ -18,7 +18,7 @@ export interface UserTopicParams extends ListParams {
   creatorId?: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class UserTopicService extends ItemsListService<UserTopicParams, Topic> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

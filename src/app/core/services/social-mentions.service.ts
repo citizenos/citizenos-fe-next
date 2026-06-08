@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject  } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map, of } from 'rxjs';
 import { ItemsListService, ListParams } from './items-list.service';
@@ -23,9 +23,7 @@ export interface SocialMention {
   createdAt: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class SocialMentionsService extends ItemsListService<SocialMentionParams, SocialMention> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

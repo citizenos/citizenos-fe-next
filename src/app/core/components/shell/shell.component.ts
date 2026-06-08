@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ConfigStore } from '../../state/config.store';
 import { NavComponent } from './nav/nav.component';
@@ -13,6 +13,7 @@ import { TourComponent } from '../../../shared/components/tour/tour.component';
 import { SiteNotificationComponent } from '../../../shared/components/site-notification/site-notification.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-shell',
   standalone: true,
   imports: [

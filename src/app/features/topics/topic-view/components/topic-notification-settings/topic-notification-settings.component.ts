@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { take, catchError, EMPTY } from 'rxjs';
@@ -15,6 +15,7 @@ import { NotificationPreferences } from '../../../../../core/interfaces/notifica
 import { Topic } from '../../../../../core/interfaces/topic';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-topic-notification-settings',
   standalone: true,
   imports: [NgClass, TranslateModule, IconComponent, ToggleComponent, A11yModule],

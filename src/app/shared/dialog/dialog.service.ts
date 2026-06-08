@@ -1,6 +1,6 @@
 import { Overlay, OverlayRef, ComponentType } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { inject, Injectable, Injector } from '@angular/core';
+import { inject, Service, Injector } from '@angular/core';
 import { take } from 'rxjs';
 import { DialogRef } from './dialog-ref';
 import { DIALOG_DATA } from './dialog-tokens';
@@ -9,7 +9,7 @@ export interface DialogConfig<D = unknown> {
   data?: D;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class DialogService {
   private overlay = inject(Overlay);
   private injector = inject(Injector);

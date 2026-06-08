@@ -1,4 +1,4 @@
-import { ElementRef, Injectable, signal } from '@angular/core';
+import { ElementRef, Service, signal  } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { combineLatest, Observable, of, switchMap } from 'rxjs';
 
@@ -8,9 +8,7 @@ export interface TourItem {
   position: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class TourService {
   items = signal<Record<string, TourItem[]>>({});
   showTour = signal(false);

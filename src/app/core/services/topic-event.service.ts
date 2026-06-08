@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject  } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject, map, exhaustMap, shareReplay } from 'rxjs';
 
@@ -17,9 +17,7 @@ export interface TopicEventListResponse {
   count: number;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class TopicEventService extends ItemsListService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

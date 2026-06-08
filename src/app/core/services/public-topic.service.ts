@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
@@ -16,7 +16,7 @@ export interface PublicTopicParams extends ListParams {
   showModerated?: boolean | string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class PublicTopicService extends ItemsListService<PublicTopicParams, Topic> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

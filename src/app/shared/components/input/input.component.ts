@@ -1,8 +1,9 @@
-import { Component, ElementRef, AfterContentChecked, signal, ViewEncapsulation, inject, model } from '@angular/core';
+import { Component, ElementRef, AfterContentChecked, signal, ViewEncapsulation, inject, model, ChangeDetectionStrategy } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-input',
   standalone: true,
   imports: [IconComponent, TranslateModule],

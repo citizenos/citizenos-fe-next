@@ -1,9 +1,10 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, output, ChangeDetectionStrategy } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { GlobalSearchService } from '../../../core/services/global-search.service';
 import { TourItemDirective } from '../../directives/tour-item.directive';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-page-list-header',
   standalone: true,
   imports: [IconComponent, TourItemDirective],

@@ -1,11 +1,11 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
 import { ApiResponse } from '../interfaces/api-response';
 import { News } from '../interfaces/news';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NewsService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

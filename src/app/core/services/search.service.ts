@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject  } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
@@ -7,9 +7,7 @@ import { ApiResponse } from '../interfaces/api-response';
 
 import { SearchResults } from '../interfaces/search';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class SearchService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

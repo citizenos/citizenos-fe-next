@@ -1,4 +1,4 @@
-import { Component, OnInit, input, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, input, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,6 +15,7 @@ import { TooltipComponent } from '../../../../../shared/components/tooltip/toolt
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-topic-milestones',
   standalone: true,
   imports: [

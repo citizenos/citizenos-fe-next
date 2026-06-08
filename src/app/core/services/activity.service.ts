@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Service, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable, BehaviorSubject, exhaustMap, shareReplay, of } from 'rxjs';
 import { Router } from '@angular/router';
@@ -56,7 +56,7 @@ export interface ActivityContext {
   include?: string | null;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class ActivityService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

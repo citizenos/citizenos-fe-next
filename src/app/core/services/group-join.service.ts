@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response';
@@ -11,7 +11,7 @@ export interface GroupJoin {
   level: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GroupJoinService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

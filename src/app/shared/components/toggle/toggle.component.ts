@@ -1,6 +1,7 @@
-import { Component, input, model, output, computed } from '@angular/core';
+import { Component, input, model, output, computed, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-toggle',
   standalone: true,
   imports: [],

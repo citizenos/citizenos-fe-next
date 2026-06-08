@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
@@ -17,6 +17,7 @@ interface EditIdeationDeadlineDialogData {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-edit-ideation-deadline',
   standalone: true,
   imports: [

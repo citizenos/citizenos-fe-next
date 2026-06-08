@@ -1,8 +1,9 @@
-import { Component, computed, inject, model, input } from '@angular/core';
+import { Component, computed, inject, model, input, ChangeDetectionStrategy } from '@angular/core';
 import { IconName, IconRegistryService } from './icon.registry';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-icon',
   standalone: true,
   imports: [],

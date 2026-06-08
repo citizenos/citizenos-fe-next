@@ -1,6 +1,6 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Service, signal, computed } from '@angular/core';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class UiStateService {
   showHelp = signal(false);
   showFeedback = signal(false);

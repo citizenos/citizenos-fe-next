@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -15,6 +15,7 @@ interface IdeationFolderDialogData {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-add-ideas-to-folder',
   standalone: true,
   imports: [

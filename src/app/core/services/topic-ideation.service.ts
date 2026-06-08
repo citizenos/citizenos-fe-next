@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject  } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject, map, exhaustMap, shareReplay, of } from 'rxjs';
 
@@ -25,9 +25,7 @@ export interface IdeaReport {
 
 type ParamValue = string | number | boolean | null | undefined | Record<string, unknown> | Date;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class TopicIdeationService extends ItemsListService<TopicIdeationParams, Ideation> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

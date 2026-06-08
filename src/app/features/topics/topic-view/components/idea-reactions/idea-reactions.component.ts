@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { IdeaVoter } from '../../../../../core/interfaces/ideation';
@@ -9,6 +9,7 @@ import { PaginationComponent } from '../../../../../shared/components/pagination
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-idea-reactions',
   standalone: true,
   imports: [

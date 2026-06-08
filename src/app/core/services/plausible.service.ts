@@ -1,11 +1,9 @@
-import { Injectable, inject, isDevMode } from '@angular/core';
+import { Service, inject, isDevMode  } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { take } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class PlausibleService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

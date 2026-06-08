@@ -1,4 +1,4 @@
-import { Component, output, model } from '@angular/core';
+import { Component, output, model, ChangeDetectionStrategy } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 import { IconName } from '../icon/icon.registry';
 
@@ -6,6 +6,7 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'succ
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-button',
   standalone: true,
   imports: [IconComponent],

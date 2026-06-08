@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
@@ -19,6 +19,7 @@ export interface AddEmailData {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-add-email',
   standalone: true,
   imports: [TranslateModule, ReactiveFormsModule, DialogCloseDirective, NotificationComponent, IconComponent],

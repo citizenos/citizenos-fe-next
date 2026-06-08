@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
@@ -17,7 +17,7 @@ export interface GroupTopicRequest {
 
 export type TopicRequest = GroupTopicRequest;
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GroupRequestTopicService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

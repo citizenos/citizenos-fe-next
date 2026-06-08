@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject  } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response';
@@ -13,9 +13,7 @@ export interface IdeaAttachmentParams extends ListParams {
   ideaId: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class IdeaAttachmentService extends ItemsListService<IdeaAttachmentParams> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

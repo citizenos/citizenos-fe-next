@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject  } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
@@ -7,9 +7,7 @@ import { ApiResponse } from '../interfaces/api-response';
 import { ItemsListService, ListParams } from './items-list.service';
 import { TopicNotificationSettings } from '../interfaces/topic-notification-settings';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class TopicNotificationService extends ItemsListService<ListParams, TopicNotificationSettings> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

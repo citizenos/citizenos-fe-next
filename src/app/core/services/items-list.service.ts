@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service  } from '@angular/core';
 import { BehaviorSubject, shareReplay, switchMap, map, combineLatest, Observable, debounceTime, tap, catchError } from 'rxjs';
 
 export interface ListParams {
@@ -12,9 +12,7 @@ export interface ListParams {
   [key: string]: any;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export abstract class ItemsListService<T extends ListParams = ListParams, U = unknown> {
   protected defaultParams: T = {
     page: 1,

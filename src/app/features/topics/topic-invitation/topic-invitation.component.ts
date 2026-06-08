@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take, combineLatest } from 'rxjs';
 
@@ -9,6 +9,7 @@ import { InvitationDialogComponent, InviteDialogData } from '../../../shared/com
 import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-topic-invitation',
   standalone: true,
   template: '',

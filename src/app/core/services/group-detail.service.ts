@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { UploadService } from './upload.service';
@@ -7,7 +7,7 @@ import { UserStore } from '../state/user.store';
 import { ApiResponse } from '../interfaces/api-response';
 import { Group } from '../interfaces/group';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GroupDetailService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

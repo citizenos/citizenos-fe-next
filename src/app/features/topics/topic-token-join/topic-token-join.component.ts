@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { TopicJoinService } from '../../../core/services/topic-join.service';
@@ -8,6 +8,7 @@ import { InvitationDialogComponent } from '../../../shared/components/invitation
 import { Topic } from '../../../core/interfaces/topic';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-topic-token-join',
   template: '',
   standalone: true,

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { UiStateService } from '../../../services/ui-state.service';
 import { TourService } from '../../../services/tour.service';
@@ -6,6 +6,7 @@ import { UserStore } from '../../../state/user.store';
 import { DialogCloseDirective } from '../../../../shared/dialog';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-onboarding',
   standalone: true,
   imports: [TranslateModule, DialogCloseDirective],

@@ -1,12 +1,10 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service  } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 import { filter, map, Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response';
 import { ConfigStore } from '../state/config.store';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class UploadService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject  } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject, map, EMPTY, BehaviorSubject } from 'rxjs';
 
@@ -23,9 +23,7 @@ interface ArgumentListResponse {
 
 type ParamValue = string | number | boolean | null | undefined | Record<string, unknown> | Date;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class TopicArgumentService extends ItemsListService<TopicArgumentParams, Argument> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { GroupInviteUserService, GroupInvitation } from '../../../core/services/group-invite-user.service';
@@ -8,6 +8,7 @@ import { InvitationDialogComponent } from '../../../shared/components/invitation
 import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-group-invitation',
   template: '',
   standalone: true,

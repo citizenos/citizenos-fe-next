@@ -1,8 +1,9 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 
 export type DomainType = 'topic' | 'ideation' | 'vote' | 'follow-up';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-domain-icon',
   standalone: true,
   imports: [],

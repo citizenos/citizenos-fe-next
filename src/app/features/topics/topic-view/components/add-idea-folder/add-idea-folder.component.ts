@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
@@ -16,6 +16,7 @@ interface AddIdeaFolderDialogData {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-add-idea-folder',
   standalone: true,
   imports: [

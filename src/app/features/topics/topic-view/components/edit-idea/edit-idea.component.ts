@@ -1,5 +1,5 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { Component, input, output, inject, signal, computed, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, input, output, inject, signal, computed, OnDestroy, OnInit, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription, interval, take, lastValueFrom, takeWhile } from 'rxjs';
@@ -57,6 +57,7 @@ const municipalities: { name: string }[] = [
 ];
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-edit-idea',
   standalone: true,
   imports: [CommonModule, FormsModule, TranslateModule, MarkdownDirective, CosDropdownDirective, InputComponent, IconComponent],

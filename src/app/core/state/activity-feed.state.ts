@@ -1,6 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Service, signal } from '@angular/core';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class ActivityFeedState {
   readonly isOpen = signal(false);
   readonly groupId = signal<string | undefined>(undefined);

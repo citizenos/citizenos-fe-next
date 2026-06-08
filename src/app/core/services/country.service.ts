@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Service  } from '@angular/core';
 import { Country } from '../interfaces/country';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class CountryService {
   countries: Country[] = [
     { iso2: "AF", iso3: "AFG", name: "Afghanistan" },

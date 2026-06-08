@@ -1,4 +1,4 @@
-import { Component, input, output, inject, signal, computed } from '@angular/core';
+import { Component, input, output, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -23,6 +23,7 @@ import { EditIdeaComponent } from '../edit-idea/edit-idea.component';
 import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-ideabox',
   standalone: true,
   imports: [DatePipe, TranslateModule, RouterModule, InitialsComponent, IconComponent, CosDropdownDirective, TooltipComponent],

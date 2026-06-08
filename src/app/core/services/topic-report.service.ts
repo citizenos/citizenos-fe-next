@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject  } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
@@ -15,9 +15,7 @@ export interface TopicReport {
   status?: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class TopicReportService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

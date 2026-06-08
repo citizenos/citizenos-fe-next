@@ -1,4 +1,4 @@
-import { Component, input, output, signal, computed, model, effect } from '@angular/core';
+import { Component, input, output, signal, computed, model, effect, ChangeDetectionStrategy } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DropdownComponent } from '../dropdown/dropdown.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
@@ -18,6 +18,7 @@ export interface FilterConfig {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-list-filter-toolbar',
   standalone: true,
   imports: [DropdownComponent, SearchInputComponent, IconComponent, TranslateModule],

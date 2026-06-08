@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal, computed, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, signal, computed, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -11,6 +11,7 @@ import { NotificationService } from '../../../services/notification.service';
 import { TermsLinksComponent } from '../../../../shared/components/terms-links/terms-links.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-help',
   standalone: true,
   imports: [TranslateModule, FormsModule, ReactiveFormsModule, TermsLinksComponent],

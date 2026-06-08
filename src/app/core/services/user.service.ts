@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigStore } from '../state/config.store';
 import { map, Observable } from 'rxjs';
@@ -13,9 +13,7 @@ export interface UserConnection {
   [key: string]: unknown;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class UserService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

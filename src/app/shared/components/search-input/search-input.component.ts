@@ -1,9 +1,10 @@
-import { Component, input, model, ViewEncapsulation } from '@angular/core';
+import { Component, input, model, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { InputComponent } from '../input/input.component';
 import { IconComponent } from '../icon/icon.component';
 import { FormsModule } from '@angular/forms';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-search-input',
   standalone: true,
   imports: [InputComponent, IconComponent, FormsModule],

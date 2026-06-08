@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Service  } from '@angular/core';
 import { Language } from '../interfaces/language';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class LanguageService {
   languages: Language[] = [
     { code: "ab", name: "Abkhaz", nativeName: "аҧсуа" },

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router, PRIMARY_OUTLET } from '@angular/router';
 import { DialogRef, DialogCloseDirective } from '../../../../shared/dialog';
@@ -9,6 +9,7 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
 import { NotificationComponent } from '../../../../shared/components/notification/notification.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-language-select',
   standalone: true,
   imports: [DialogCloseDirective, TranslateModule, NotificationComponent],

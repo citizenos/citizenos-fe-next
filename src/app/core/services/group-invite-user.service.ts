@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
@@ -18,7 +18,7 @@ export interface GroupInvite {
 
 export type GroupInvitation = GroupInvite;
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GroupInviteUserService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

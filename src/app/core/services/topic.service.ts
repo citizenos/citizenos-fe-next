@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, shareReplay, switchMap, map, take, Subject, startWith } from 'rxjs';
 import { Router } from '@angular/router';
@@ -23,9 +23,7 @@ interface ConfirmDialogTemplate {
 type TopicUpdateFields = Pick<Topic, 'visibility' | 'status' | 'categories' | 'endsAt' | 'hashtag' | 'imageUrl' | 'title' | 'intro' | 'contact' | 'country' | 'language'>;
 type TopicWithId = Partial<TopicUpdateFields> & { id?: string; topicId?: string };
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class TopicService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

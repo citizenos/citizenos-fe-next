@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
@@ -18,7 +18,7 @@ export interface TopicInvite {
   [key: string]: unknown;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class TopicInviteUserService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);
@@ -66,7 +66,7 @@ export class TopicInviteUserService {
     }));
   }
 
-  accept(data: { topicId: string; inviteId: string; [key: string]: unknown }): Observable<unknown> {
+  accept(data: { topicId: string; inviteId: string;[key: string]: unknown }): Observable<unknown> {
     return this.http.post<ApiResponse<unknown>>(
       this.getAbsoluteUrlApi(`/topics/${data.topicId}/invites/users/${data.inviteId}/accept`),
       data, { withCredentials: true }

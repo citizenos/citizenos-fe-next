@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
@@ -13,7 +13,7 @@ export interface TopicMemberGroup extends Partial<Group> {
   userId?: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class TopicMemberGroupService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

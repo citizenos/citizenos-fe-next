@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable, take } from 'rxjs';
 import { ConfigStore } from '../state/config.store';
@@ -20,7 +20,7 @@ export interface TopicMemberUser {
   groups?: { rows: { id: string; name: string; imageUrl?: string | null; level?: string }[] };
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class TopicMemberUserService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

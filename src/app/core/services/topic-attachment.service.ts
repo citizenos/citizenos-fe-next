@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject  } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map, of } from 'rxjs';
 import { ItemsListService, ListParams } from './items-list.service';
@@ -20,9 +20,7 @@ declare let Dropbox: any;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let OneDrive: any;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class TopicAttachmentService extends ItemsListService<TopicAttachmentParams, TopicAttachment> {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

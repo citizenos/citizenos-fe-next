@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject  } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, exhaustMap, shareReplay, Subject, map, tap } from 'rxjs';
 
@@ -26,9 +26,7 @@ interface VoteCastResponse {
 
 interface VoteParams { topicId: string; voteId?: string; id?: string; [key: string]: string | number | boolean | null | undefined }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class TopicVoteService {
   private http = inject(HttpClient);
   private configStore = inject(ConfigStore);

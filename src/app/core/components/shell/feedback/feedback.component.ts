@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -8,6 +8,7 @@ import { NotificationService } from '../../../services/notification.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-feedback',
   standalone: true,
   imports: [FormsModule, TranslateModule, ButtonComponent],
