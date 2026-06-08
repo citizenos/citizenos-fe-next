@@ -206,20 +206,20 @@ export class TopicService {
     return topic && topic.visibility === this.VISIBILITY.private;
   }
 
-  canUpdate(topic: Topic): boolean {
-    return topic?.permission && topic.permission.level === this.LEVELS.admin && topic.status !== this.STATUSES.closed;
+  canUpdate(topic: Topic | Partial<Topic>): boolean {
+    return !!topic && !!topic.permission && topic.permission.level === this.LEVELS.admin && topic.status !== this.STATUSES.closed;
   }
 
-  canEdit(topic: Topic): boolean {
-    return topic && [this.LEVELS.admin, this.LEVELS.edit].indexOf(topic.permission.level) > -1 && topic.status !== this.STATUSES.closed;
+  canEdit(topic: Topic | Partial<Topic>): boolean {
+    return !!topic && !!topic.permission && [this.LEVELS.admin, this.LEVELS.edit].indexOf(topic.permission.level) > -1 && topic.status !== this.STATUSES.closed;
   }
 
-  canEditDescription(topic: Topic): boolean {
-    return this.canEdit(topic) && [this.STATUSES.ideation, this.STATUSES.inProgress, this.STATUSES.draft].indexOf(topic.status) > -1;
+  canEditDescription(topic: Topic | Partial<Topic>): boolean {
+    return !!topic.status && this.canEdit(topic) && [this.STATUSES.ideation, this.STATUSES.inProgress, this.STATUSES.draft].indexOf(topic.status) > -1;
   }
 
-  canDelete(topic: Topic): boolean {
-    return topic && topic.permission?.level === this.LEVELS.admin;
+  canDelete(topic: Topic | Partial<Topic>): boolean {
+    return !!topic && topic.permission?.level === this.LEVELS.admin;
   }
 
   canSendToFollowUp(topic: Topic): boolean {

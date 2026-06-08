@@ -81,7 +81,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
   query(params: TopicArgumentParams): Observable<ApiResponse<{ rows: Argument[]; count: ArgumentCount }>> {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
-      const val = (params as any)[key];
+      const val = (params as Record<string, unknown>)[key];
       if (val !== undefined && val !== null) {
         if (Array.isArray(val)) {
           val.forEach(v => httpParams = httpParams.append(key, String(v)));
@@ -158,7 +158,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
       .pipe(map(res => res.data));
   }
 
-  moderate(data: { topicId: string; discussionId: string; commentId: string; [key: string]: any }): Observable<unknown> {
+  moderate(data: { topicId: string; discussionId: string; commentId: string; [key: string]: unknown }): Observable<unknown> {
     const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}/moderate`, true);
     return this.http.post<ApiResponse<unknown>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));

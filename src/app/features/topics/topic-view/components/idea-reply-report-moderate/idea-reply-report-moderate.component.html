@@ -26,10 +26,10 @@
       <div class="dialog_info_wrap">
         <div class="dialog_info">
           <div class="delete_info_text bold" translate="COMPONENTS.IDEA_REPLY_REPORT_MODERATE.MESSAGE_MAIN"></div>
-          @if (argument?.subject) {
+          @if (argument.subject) {
             <div class="delete_info_text italic" [innerHtml]="argument.subject"></div>
           }
-          @if (argument?.text) {
+          @if (argument.text) {
             <div class="delete_info_text italic" [innerHtml]="argument.text"></div>
           }
         </div>

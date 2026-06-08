@@ -175,9 +175,12 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
           options
         });
         this.isLoading.set(false);
+        this.hasChanges.set(false);
         this.router.navigate([this.topic().id], {
           relativeTo: this.route,
           replaceUrl: true
+        }).then(() => {
+          this.hasChanges.set(true);
         });
       },
       error: () => {

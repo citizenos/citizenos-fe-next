@@ -246,7 +246,7 @@ export class LoginComponent {
   }
 
   doLoginPartner(partnerId: string) {
-    const redirectSuccess = (this.route.snapshot.queryParams as any)['redirectSuccess'];
+    const redirectSuccess = this.route.snapshot.queryParamMap.get('redirectSuccess') || undefined;
     window.location.href = this.userService.getPartnerLoginUrl(partnerId, redirectSuccess);
   }
 
@@ -255,7 +255,7 @@ export class LoginComponent {
       const { email, password } = this.loginForm.getRawValue();
       try {
         await this.userStore.login(email!, password!);
-        const redirectSuccess = (this.route.snapshot.queryParams as any)['redirectSuccess'];
+        const redirectSuccess = this.route.snapshot.queryParamMap.get('redirectSuccess');
         if (redirectSuccess) {
           window.location.href = redirectSuccess;
         } else {

@@ -40,7 +40,7 @@ import { ButtonComponent } from '../button/button.component';
           }
           <div class="item">
             <cos-icon name="users-filled" [size]="16"></cos-icon>
-            <span class="members_count_text">{{ group().members?.users?.count || 1 }}</span>
+            <span class="members_count_text">{{ group().members.users.count || 1 }}</span>
           </div>
         </div>
       </div>
@@ -54,19 +54,19 @@ import { ButtonComponent } from '../button/button.component';
         <div class="group_info_area">
           <div class="info_item">
             <cos-icon name="status-in-progress" [size]="16" color="#1168A8"></cos-icon>
-            <span class="bold">{{ group().members?.topics?.count?.inProgress || 0 }}</span>
+            <span class="bold">{{ group().members.topics?.count?.inProgress || 0 }}</span>
           </div>
           <div class="info_item">
             <cos-icon name="status-ideation" [size]="16" color="#E4B722"></cos-icon>
-            <span class="bold">{{ group().members?.topics?.count?.ideation || 0 }}</span>
+            <span class="bold">{{ group().members.topics?.count?.ideation || 0 }}</span>
           </div>
           <div class="info_item">
             <cos-icon name="status-voting" [size]="16" color="#5AB467"></cos-icon>
-            <span class="bold">{{ group().members?.topics?.count?.voting || 0 }}</span>
+            <span class="bold">{{ group().members.topics?.count?.voting || 0 }}</span>
           </div>
           <div class="info_item">
             <cos-icon name="status-follow-up" [size]="16" color="#DA7AB1"></cos-icon>
-            <span class="bold">{{ group().members?.topics?.count?.followUp || 0 }}</span>
+            <span class="bold">{{ group().members.topics?.count?.followUp || 0 }}</span>
           </div>
         </div>
 

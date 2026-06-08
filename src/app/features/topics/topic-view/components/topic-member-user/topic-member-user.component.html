@@ -19,7 +19,7 @@
       }
     </div>
     @if (member().groups; as groups) {
-      @if (groups.rows?.length && !member().levelUser) {
+      @if (groups.rows.length && !member().levelUser) {
         <div class="via">
           <span>{{ 'COMPONENTS.TOPIC_MEMBER_USER.LBL_VIA' | translate }}</span>
           @for (group of groups.rows; track group.id; let i = $index) {

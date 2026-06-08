@@ -41,7 +41,7 @@ export class EditArgumentComponent implements OnInit {
   }
 
   argumentMaxLength(): number {
-    return (this.argumentService.ARGUMENT_TYPES_MAXLENGTH as any)[this.editType()] || this.argumentService.ARGUMENT_TYPES_MAXLENGTH['pro'];
+    return (this.argumentService.ARGUMENT_TYPES_MAXLENGTH as Record<string, number>)[this.editType()] || this.argumentService.ARGUMENT_TYPES_MAXLENGTH['pro'];
   }
 
   updateArgument() {

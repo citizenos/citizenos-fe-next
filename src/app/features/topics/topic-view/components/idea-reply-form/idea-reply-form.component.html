@@ -1,7 +1,7 @@
 <div class="reply_wrap reply">
   @if (userStore.isAuthenticated()) {
     <form [formGroup]="replyForm" (ngSubmit)="save()">
-      <div class="field_wrap" [class.error]="errors()?.['text']">
+      <div class="field_wrap" [class.error]="errors()['text']">
         <label class="hidden" for="replyText">{{ 'COMPONENTS.IDEA_REPLY_FORM.PLACEHOLDER_WRITE_REPLY_HERE' | translate }}</label>
         <textarea
           id="replyText"

@@ -5,7 +5,7 @@ import { CheckHeightDirective } from './check-height.directive';
 describe('CheckHeightDirective', () => {
   it('should create an instance', () => {
     const elementRef = new ElementRef({ offsetHeight: 0 });
-    const directive = new CheckHeightDirective(elementRef);
+    const directive = new CheckHeightDirective();
     expect(directive).toBeTruthy();
   });
 
@@ -15,7 +15,7 @@ describe('CheckHeightDirective', () => {
 
     beforeEach(() => {
       elementRef = new ElementRef({ offsetHeight: 0 });
-      directive = new CheckHeightDirective(elementRef);
+      directive = new CheckHeightDirective();
     });
 
     it('should set overHeight to true if offsetHeight is greater than maxTextHeight', () => {

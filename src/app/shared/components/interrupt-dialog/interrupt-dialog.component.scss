@@ -1,0 +1,25 @@
+.dialog {
+  max-width: 560px;
+  .dialog_content {
+    .info_row {
+      text-align: center;
+    }
+  }
+
+  .button_wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+
+    button.btn_link {
+      cursor: pointer;
+      text-decoration: underline;
+      color: var(--color-text-muted);
+      &:hover {
+        color: var(--color-text);
+      }
+    }
+  }
+}

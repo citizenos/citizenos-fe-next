@@ -93,23 +93,23 @@
             <div id="info_items_wrap">
               <div class="info_item">
                 <cos-icon name="users-filled" [size]="16"></cos-icon>
-                <div class="info_number">{{ group.members?.users?.count ?? 0 }}</div>
+                <div class="info_number">{{ group.members.users.count }}</div>
               </div>
               <div class="info_item">
                 <cos-icon name="status-in-progress" [size]="16" color="#1168A8"></cos-icon>
-                <div class="info_number">{{ group.members?.topics?.count?.inProgress || 0 }}</div>
+                <div class="info_number">{{ group.members.topics?.count?.inProgress || 0 }}</div>
               </div>
               <div class="info_item">
                 <cos-icon name="status-ideation" [size]="16" color="#E4B722"></cos-icon>
-                <div class="info_number">{{ group.members?.topics?.count?.ideation || 0 }}</div>
+                <div class="info_number">{{ group.members.topics?.count?.ideation || 0 }}</div>
               </div>
               <div class="info_item">
                 <cos-icon name="status-voting" [size]="16" color="#5AB467"></cos-icon>
-                <div class="info_number">{{ group.members?.topics?.count?.voting || 0 }}</div>
+                <div class="info_number">{{ group.members.topics?.count?.voting || 0 }}</div>
               </div>
               <div class="info_item">
                 <cos-icon name="status-follow-up" [size]="16" color="#DA7AB1"></cos-icon>
-                <div class="info_number">{{ group.members?.topics?.count?.followUp || 0 }}</div>
+                <div class="info_number">{{ group.members.topics?.count?.followUp || 0 }}</div>
               </div>
             </div>
             @if (!moreInfo()) {
@@ -162,7 +162,7 @@
                     </div>
                     <div class="info_item">
                       <cos-icon name="creator-legacy" [size]="16"></cos-icon>
-                      <span>{{ group.creator?.name }}</span>
+                      <span>{{ group.creator.name }}</span>
                     </div>
                     <div class="info_item">
                       <cos-icon name="calendar-legacy" [size]="16"></cos-icon>

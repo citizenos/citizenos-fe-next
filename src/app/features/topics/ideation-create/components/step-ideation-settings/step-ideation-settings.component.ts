@@ -276,13 +276,14 @@ export class StepIdeationSettingsComponent {
   }
 
   isDemographicRequired(key: string): boolean {
-    const config = this.ideation().demographicsConfig as any;
-    return config && config[key] && config[key].required;
+    const config = this.ideation().demographicsConfig;
+    return !!(config && config[key] && config[key].required);
   }
 
-  toggleDemographic(key: string, event: any) {
-    const checked = event.target.checked;
-    let config = this.ideation().demographicsConfig as any || {};
+  toggleDemographic(key: string, event: Event) {
+    const target = event.target as HTMLInputElement;
+    const checked = target.checked;
+    let config = this.ideation().demographicsConfig || {};
     
     config = {
       ...config,

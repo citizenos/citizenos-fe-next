@@ -127,7 +127,7 @@ import { forkJoin, take } from 'rxjs';
                               <cos-icon name="idea" [size]="16"></cos-icon>
                               <span [innerHTML]="idea.statement"></span>
                             </label>
-                            <span class="votes">{{ idea.votes?.up?.count || 0 }}</span>
+                            <span class="votes">{{ idea.votes ? idea.votes.up.count : 0 }}</span>
                           </div>
                         }
                       </div>
@@ -146,7 +146,7 @@ import { forkJoin, take } from 'rxjs';
                       <span class="checkmark"></span>
                       <span [innerHTML]="idea.statement"></span>
                     </label>
-                    <span class="votes">{{ idea.votes?.up?.count || 0 }}</span>
+                    <span class="votes">{{ idea.votes ? idea.votes.up.count : 0 }}</span>
                   </div>
                 }
               </div>

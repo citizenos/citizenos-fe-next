@@ -23,7 +23,6 @@ import { DialogService } from '../../../shared/dialog/dialog.service';
 import { TopicInviteDialogComponent } from '../topic-view/components/topic-invite-dialog/topic-invite-dialog.component';
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { AnyPipe } from '../../../shared/pipes/any.pipe';
 import { PendingChangesComponent } from '../../../core/guards/pending-changes.guard';
 
 @Component({
@@ -37,7 +36,6 @@ import { PendingChangesComponent } from '../../../core/guards/pending-changes.gu
     StepIdeationSettingsComponent,
     StepTopicPreviewComponent,
     MemberEditorsPanelComponent,
-    AnyPipe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './ideation-create.component.html',
@@ -157,9 +155,12 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
       next: (savedIdeation) => {
         this.ideation.set(savedIdeation);
         this.isLoading.set(false);
+        this.hasChanges.set(false);
         this.router.navigate([this.topic().id], {
           relativeTo: this.route,
           replaceUrl: true
+        }).then(() => {
+          this.hasChanges.set(true);
         });
       },
       error: () => {

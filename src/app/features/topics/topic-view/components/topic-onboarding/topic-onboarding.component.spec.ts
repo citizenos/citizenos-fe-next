@@ -15,7 +15,7 @@ describe('TopicOnboardingComponent', () => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [
-        { provide: DialogRef, useValue: new DialogRef(mockOverlayRef) },
+        { provide: DialogRef, useValue: new DialogRef() },
         { provide: TourService, useValue: mockTourService },
       ]
     });

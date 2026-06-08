@@ -241,7 +241,7 @@ export interface TopicInvite {
 export class MemberEditorsPanelComponent {
   topicService = inject(TopicService);
 
-  topic = model.required<Topic>();
+  topic = model.required<Partial<Topic>>();
   members = model<TopicMember[]>([]);
   invites = model<TopicInvite[]>([]);
 

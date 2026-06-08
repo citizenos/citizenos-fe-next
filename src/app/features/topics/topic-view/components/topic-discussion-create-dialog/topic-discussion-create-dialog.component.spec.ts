@@ -28,7 +28,7 @@ describe('TopicDiscussionCreateDialogComponent', () => {
       imports: [TranslateModule.forRoot()],
       providers: [
         provideRouter([{ path: '**', component: EmptyComponent }]),
-        { provide: DialogRef, useValue: new DialogRef(mockOverlayRef) },
+        { provide: DialogRef, useValue: new DialogRef() },
         { provide: DIALOG_DATA, useValue: { topic: mockTopic } },
         { provide: TopicDiscussionService, useValue: mockDiscussionService },
         { provide: TopicService, useValue: mockTopicService },

@@ -19,7 +19,6 @@ import { StepTopicDiscussionComponent } from './components/step-topic-discussion
 import { StepTopicPreviewComponent } from './components/step-topic-preview/step-topic-preview.component';
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
 import { switchMap, of, catchError, BehaviorSubject, forkJoin, take, Observable, map } from 'rxjs';
-import { AnyPipe } from '../../../shared/pipes/any.pipe';
 import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
 import { TopicMemberGroup } from '../../../shared/components/topic-settings-panel/topic-settings-panel.component';
 import { DialogService } from '../../../shared/dialog/dialog.service';
@@ -39,7 +38,7 @@ import { PendingChangesComponent } from '../../../core/guards/pending-changes.gu
     StepTopicDiscussionComponent,
     StepTopicPreviewComponent,
     MemberEditorsPanelComponent,
-    AnyPipe, IconComponent,],
+    IconComponent,],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-create.component.html',
   styleUrl: './topic-create.component.scss'
@@ -169,9 +168,12 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
         this.reloadMembers$.next();
         this.isLoading.set(false);
         // Update URL to include topicId without triggering navigation
+        this.hasChanges.set(false);
         this.router.navigate([savedTopic.id], {
           relativeTo: this.route,
           replaceUrl: true
+        }).then(() => {
+          this.hasChanges.set(true);
         });
       },
       error: () => {

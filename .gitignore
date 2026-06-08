@@ -40,6 +40,13 @@ testem.log
 __screenshots__/
 /scratch
 
+# E2E / Playwright
+e2e/.auth/
+e2e/.env
+/playwright-report/
+/blob-report/
+/test-results/
+
 # System files
 .DS_Store
 Thumbs.db

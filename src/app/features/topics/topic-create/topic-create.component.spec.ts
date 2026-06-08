@@ -124,6 +124,26 @@ describe('TopicCreateComponent (business logic)', () => {
     expect(component.addedGroups()).toEqual(groups);
   });
 
+  it('shows loading overlay when isLoading is true', () => {
+    const fixture = TestBed.createComponent(TopicCreateComponent);
+    fixture.componentInstance.isLoading.set(true);
+    fixture.detectChanges();
+    const overlay = fixture.nativeElement.querySelector('.loading-overlay');
+    expect(overlay).toBeTruthy();
+  });
+
+  it('shows error notification when createTopicEagerly fails', () => {
+    vi.resetAllMocks();
+    mockTopicService.save.mockReturnValue({
+      pipe: () => ({
+        subscribe: (callbacks: any) => callbacks.error()
+      })
+    });
+    
+    component.ngOnInit();
+    expect(mockNotificationService.showRaw).toHaveBeenCalledWith('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
+  });
+
   it('should initialize isCreatedFromGroup and load group when groupId query param is present', () => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({

@@ -230,6 +230,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
               <button type="button" class="btn_big_submit" [routerLink]="['/', translate.currentLang, 'account', 'login']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
               <button type="button" class="btn_big_submit_ghost" [routerLink]="['/', translate.currentLang, 'account', 'signup']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
             </div>
+            <div class="line_separator"></div>
           }
           <!-- Public nav links -->
           <div class="nav_items_wrap">
