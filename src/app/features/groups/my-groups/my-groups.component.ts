@@ -42,10 +42,6 @@ import { SeoService } from '../../../core/services/seo.service';
         <span title>{{ 'VIEWS.MY_GROUPS.HEADER' | translate }}</span>
         <div activities class="header_actions">
           <cos-activities-button></cos-activities-button>
-          <button type="button" class="btn_medium_submit" (click)="toggleCreate()" [class.active]="showCreate()" [attr.aria-expanded]="showCreate()" [attr.aria-label]="'VIEWS.MY_GROUPS.HAVENT_ENGAGED_BTN_CREATE' | translate">
-            <cos-icon name="plus" [size]="24"></cos-icon>
-            <span>{{ 'VIEWS.MY_GROUPS.HAVENT_ENGAGED_BTN_CREATE' | translate }}</span>
-          </button>
         </div>
       </app-page-list-header>
 
@@ -181,8 +177,8 @@ export class MyGroupsComponent {
   searchValue = signal('');
   currentPage = signal(1);
 
-  groups = toSignal(this.groupService.items$, { initialValue: [] });
-  totalPages = toSignal(this.groupService.totalPages, { initialValue: 1 });
+  groups = this.groupService.items;
+  totalPages = this.groupService.totalPages;
 
   private selectedFilters = signal<Record<string, string>>({});
 

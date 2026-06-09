@@ -25,7 +25,7 @@
       </label>
 
       <cos-dropdown [class.disabled]="!canUpdate()">
-        <div id="share_access_level" selection class="selected_item" tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" aria-controls="share_access_level_options">
+        <div id="share_access_level" selection class="selected_item" [attr.aria-expanded]="false">
           {{ 'TXT_TOPIC_LEVELS_' + (join().level) | uppercase | translate }}
         </div>
         <div id="share_access_level_options" options role="listbox">

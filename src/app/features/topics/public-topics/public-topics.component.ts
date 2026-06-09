@@ -4,8 +4,9 @@ import {
   inject,
   signal,
   computed,
+  debounced,
+  effect,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { PublicTopicService } from '../../../core/services/public-topic.service';
 import { TopicCardComponent } from '../../../shared/components/topic-card/topic-card.component';
@@ -96,13 +97,18 @@ export class PublicTopicsComponent {
 
   constructor() {
     this.seoService.setPageTitle('COMPONENTS.PUBLIC_TOPICS.HEADER');
+    effect(() => {
+      this.debouncedSearch.value();
+      this.applyFilters();
+    });
   }
 
   searchValue = signal('');
+  debouncedSearch = debounced(this.searchValue, 300);
   currentPage = signal(1);
 
-  topics = toSignal(this.topicService.items$, { initialValue: [] });
-  totalPages = toSignal(this.topicService.totalPages, { initialValue: 1 });
+  topics = this.topicService.items;
+  totalPages = this.topicService.totalPages;
 
   private selectedFilters = signal<Record<string, string>>({});
 
@@ -116,7 +122,7 @@ export class PublicTopicsComponent {
         items: [
           { title: 'TXT_TOPIC_STATUS_ALL', value: 'all' },
           { title: 'COMPONENTS.PUBLIC_TOPICS.FILTER_TOPICS_MODERATED', value: 'showModerated' },
-          ...Object.keys(TOPIC_STATUSES).map(s => ({ title: `TXT_TOPIC_STATUS_${s}`, value: s })),
+          ...Object.keys(TOPIC_STATUSES).map(s => ({ title: `TXT_TOPIC_STATUS_${s.toUpperCase()}`, value: s })),
         ],
       },
       {
@@ -125,7 +131,7 @@ export class PublicTopicsComponent {
         selectedValue: sel['category'] ?? '',
         items: [
           { title: 'TXT_TOPIC_CATEGORY_ALL', value: 'all' },
-          ...Object.keys(TOPIC_CATEGORIES).map(c => ({ title: `TXT_TOPIC_CATEGORY_${c}`, value: c })),
+          ...Object.keys(TOPIC_CATEGORIES).map(c => ({ title: `TXT_TOPIC_CATEGORY_${c.toUpperCase()}`, value: c })),
         ],
       },
       {
@@ -188,12 +194,11 @@ export class PublicTopicsComponent {
       this.topicService.setParam('orderBy', f['orderBy']);
       this.topicService.setParam('order', 'desc');
     }
-    if (this.searchValue()) this.topicService.setParam('search', this.searchValue());
+    if (this.debouncedSearch.value()) this.topicService.setParam('search', this.debouncedSearch.value());
   }
 
   onSearch(value: string) {
     this.searchValue.set(value);
-    this.topicService.setParam('search', value || null);
   }
 
   onPageChange(page: number) {

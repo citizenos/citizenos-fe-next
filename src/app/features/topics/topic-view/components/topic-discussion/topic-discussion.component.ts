@@ -89,10 +89,10 @@ export class TopicDiscussionComponent {
     )
   );
 
-  arguments = toSignal(this.argumentService.items$, { initialValue: [] as Argument[] });
-  loading = toSignal(this.argumentService.isLoading$, { initialValue: false });
-  page = toSignal(this.argumentService.page, { initialValue: 1 });
-  totalPages = toSignal(this.argumentService.totalPages, { initialValue: 1 });
+  arguments = this.argumentService.items;
+  loading = this.argumentService.isLoading;
+  page = this.argumentService.page;
+  totalPages = this.argumentService.totalPages;
 
   private argumentCount = toSignal(this.argumentService.count, { initialValue: { total: 0, pro: 0, con: 0, poi: 0, reply: 0 } as ArgumentCount });
 

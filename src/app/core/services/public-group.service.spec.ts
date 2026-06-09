@@ -32,14 +32,13 @@ describe('PublicGroupService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch public groups', async () => {
-    const promise = firstValueFrom(service.items$);
-    await new Promise(resolve => setTimeout(resolve, 0));
-
+  it('should fetch public groups', () => {
+    TestBed.flushEffects();
     const req = httpMock.expectOne((request) => request.url.endsWith('/api/groups'));
     req.flush({ data: { rows: [{ id: '1', name: 'Public Group' }], count: 1 } });
+    TestBed.flushEffects();
     
-    const groups = await promise;
+    const groups = service.items();
     expect(groups.length).toBe(1);
   });
 

@@ -107,8 +107,8 @@ export class PublicGroupsComponent {
   private sortedCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
   private sortedLanguages = [...languages].sort((a, b) => a.name.localeCompare(b.name));
 
-  groups = toSignal(this.groupService.items$, { initialValue: [] });
-  totalPages = toSignal(this.groupService.totalPages, { initialValue: 1 });
+  groups = this.groupService.items;
+  totalPages = this.groupService.totalPages;
 
   private selectedFilters = signal<Record<string, string>>({});
 

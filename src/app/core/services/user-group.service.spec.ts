@@ -32,35 +32,30 @@ describe('UserGroupService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch groups with default params', async () => {
-    const promise = firstValueFrom(service.items$);
-
-    // Wait for the debounceTime(0)
-    await new Promise(resolve => setTimeout(resolve, 0));
+  it('should fetch groups with default params', () => {
+    TestBed.flushEffects();
 
     const req = httpMock.expectOne((request) => request.url.endsWith('/api/users/self/groups'));
     expect(req.request.params.get('limit')).toBe('10');
     expect(req.request.params.get('offset')).toBe('0');
     req.flush({ data: { rows: [{ id: '1', name: 'Test Group' }], count: 1 } });
     
-    const groups = await promise;
+    TestBed.flushEffects();
+    const groups = service.items();
     expect(groups.length).toBe(1);
     expect(groups[0].name).toBe('Test Group');
   });
 
-  it('should apply filters', async () => {
-    // Start observing items
-    const promise1 = firstValueFrom(service.items$);
-    await new Promise(resolve => setTimeout(resolve, 0));
+  it('should apply filters', () => {
+    TestBed.flushEffects();
     const initialReq = httpMock.expectOne((request) => request.url.endsWith('/api/users/self/groups'));
     initialReq.flush({ data: { rows: [], count: 0 } });
-    await promise1;
+    TestBed.flushEffects();
 
     service.setParam('visibility', 'private');
     service.setParam('search', 'query');
     
-    const promise2 = firstValueFrom(service.items$);
-    await new Promise(resolve => setTimeout(resolve, 0));
+    TestBed.flushEffects();
 
     // Only one request should be sent for both param changes due to debounceTime(0)
     const req = httpMock.expectOne((request) => 
@@ -69,7 +64,7 @@ describe('UserGroupService', () => {
         request.params.get('search') === 'query'
     );
     req.flush({ data: { rows: [], count: 0 } });
-    await promise2;
+    TestBed.flushEffects();
   });
 
   it('should getPreview with specific limit', async () => {

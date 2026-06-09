@@ -63,7 +63,7 @@
                   [description]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate">
                 </cos-tooltip>
                 <cos-dropdown>
-                  <div selection id="all_levels_dropdown" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="all_levels_options" aria-labelledby="all_levels_label">
+                  <div selection id="all_levels_dropdown">
                     {{ 'TXT_GROUP_LEVELS_' + selectedLevel().toUpperCase() | translate }}
                   </div>
                   <div id="all_levels_options" options role="listbox">
@@ -81,7 +81,7 @@
                   <div class="member_row">
                     <span class="member_name">{{ user.name }}</span>
                     <cos-dropdown>
-                      <div selection tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="member_levels_{{ user.userId }}" aria-label="{{ user.name }}">
+                      <div selection aria-label="{{ user.name }}">
                         {{ 'TXT_GROUP_LEVELS_' + user.level.toUpperCase() | translate }}
                       </div>
                       <div [id]="'member_levels_' + user.userId" options role="listbox">

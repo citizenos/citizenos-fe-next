@@ -1,9 +1,9 @@
-import { Component, OnInit, inject, signal, HostListener, ChangeDetectionStrategy, PLATFORM_ID, DestroyRef } from '@angular/core';
+import { Component, OnInit, inject, signal, HostListener, ChangeDetectionStrategy, PLATFORM_ID, DestroyRef, computed } from '@angular/core';
+import { rxResource, toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { NgClass, isPlatformBrowser } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { toSignal, toObservable } from '@angular/core/rxjs-interop';
-import { switchMap, combineLatest, map, of, tap, catchError, startWith, take } from 'rxjs';
+import { take, map, of, tap, catchError, switchMap, combineLatest, startWith } from 'rxjs';
 
 import { TopicService } from '../../../core/services/topic.service';
 import { TourItemDirective } from '../../../shared/directives/tour-item.directive';
@@ -29,8 +29,10 @@ import { TopicVoteCastComponent } from './components/topic-vote-cast/topic-vote-
 import { TopicMilestonesComponent } from './components/topic-milestones/topic-milestones.component';
 import { TopicTabsComponent } from './components/topic-tabs/topic-tabs.component';
 
-import { Topic, TopicAttachment } from '../../../core/interfaces/topic';
-import { VoteWithOptions } from '../../../core/interfaces/vote';
+import { Topic, TopicAttachment, TopicGroup, TopicVote } from '../../../core/interfaces/topic';
+import { Vote, VoteWithOptions } from '../../../core/interfaces/vote';
+import { TopicInvite } from '../../../core/services/topic-invite-user.service';
+import { TopicMemberUser } from '../../../core/services/topic-member-user.service';
 
 @Component({
   selector: 'app-topic-view',
@@ -79,66 +81,92 @@ export class TopicViewComponent implements OnInit {
   hideTopicContent = signal(false);
   topicId = '';
 
-  ideation = toSignal(
-    toObservable(this.topic).pipe(
-      switchMap(topic => topic?.ideationId ? this.topicIdeationService.get({ topicId: topic.id, ideationId: topic.ideationId }).pipe(catchError(() => of(null))) : of(null))
-    ), { initialValue: null }
-  );
+  private ideationResource = rxResource<any | null, Topic | null>({
+    params: () => this.topic(),
+    stream: ({ params: topic }) => {
+      if (topic?.ideationId) {
+        return this.topicIdeationService.get({ topicId: topic.id, ideationId: topic.ideationId }).pipe(
+          catchError(() => of(null))
+        );
+      }
+      return of(null);
+    }
+  });
+  ideation = computed(() => this.ideationResource.value() ?? null);
 
-  vote = toSignal(
-    toObservable(this.topic).pipe(
-      switchMap(topic => topic?.voteId ? this.topicVoteService.get({ topicId: topic.id, voteId: topic.voteId }).pipe(
-        map((v: VoteWithOptions) => {
-          if (!v) return null;
-          return {
-            ...v,
-            options: Array.isArray(v.options) ? v.options : (v.options?.rows || [])
-          };
-        }),
-        catchError(() => of(null))
-      ) : of(null))
-    ), { initialValue: null }
-  );
+  private voteResource = rxResource<TopicVote | null, Topic | null>({
+    params: () => this.topic(),
+    stream: ({ params: topic }) => {
+      if (topic?.voteId) {
+        return this.topicVoteService.get({ topicId: topic.id, voteId: topic.voteId }).pipe(
+          map((v: any) => {
+            if (!v) return null;
+            return {
+              ...v,
+              options: Array.isArray(v.options) ? v.options : (v.options?.rows || [])
+            } as TopicVote;
+          }),
+          catchError(() => of(null))
+        );
+      }
+      return of(null);
+    }
+  });
+  vote = computed(() => this.voteResource.value() ?? null);
 
-  eventsCount = toSignal(
-    toObservable(this.topic).pipe(
-      switchMap(topic => {
-        if (topic && (topic.status === this.topicService.STATUSES.followUp || topic.status === this.topicService.STATUSES.closed)) {
-          return this.topicEventService.query({ topicId: topic.id }).pipe(
-            map((res: { count?: number; countTotal?: number }) => res.count || res.countTotal || 0),
-            catchError(() => of(0))
-          );
-        }
-        return of(0);
-      })
-    ), { initialValue: 0 }
-  );
+  private eventsCountResource = rxResource<number, Topic | null>({
+    params: () => this.topic(),
+    stream: ({ params: topic }) => {
+      if (topic && (topic.status === this.topicService.STATUSES.followUp || topic.status === this.topicService.STATUSES.closed)) {
+        return this.topicEventService.query({ topicId: topic.id }).pipe(
+          map((res: { count?: number; countTotal?: number }) => res.count || res.countTotal || 0),
+          catchError(() => of(0))
+        );
+      }
+      return of(0);
+    }
+  });
+  eventsCount = computed(() => this.eventsCountResource.value() ?? 0);
 
-  groups = toSignal(
-    toObservable(this.topic).pipe(
-      switchMap(topic => {
-        if (topic) {
-          return this.topicService.loadGroups(topic.id).pipe(
-            tap(groups => this.updateNavigation(topic, groups)),
-            catchError(() => of([]))
-          );
-        }
-        return of([]);
-      })
-    ), { initialValue: [] }
-  );
+  private groupsResource = rxResource<TopicGroup[], Topic | null>({
+    params: () => this.topic(),
+    stream: ({ params: topic }) => {
+      if (topic) {
+        return this.topicService.loadGroups(topic.id).pipe(
+          tap(groups => this.updateNavigation(topic, groups)),
+          catchError(() => of([]))
+        );
+      }
+      return of([]);
+    }
+  });
+  groups = computed(() => this.groupsResource.value() ?? []);
 
-  attachments = toSignal(
-    toObservable(this.topic).pipe(
-      switchMap(topic => topic ? this.topicService.loadAttachments(topic.id).pipe(catchError(() => of([]))) : of([]))
-    ), { initialValue: [] }
-  );
+  private attachmentsResource = rxResource<TopicAttachment[], Topic | null>({
+    params: () => this.topic(),
+    stream: ({ params: topic }) => {
+      if (topic) {
+        return this.topicService.loadAttachments(topic.id).pipe(
+          catchError(() => of([]))
+        );
+      }
+      return of([]);
+    }
+  });
+  attachments = computed(() => this.attachmentsResource.value() ?? []);
 
-  members = toSignal(
-    toObservable(this.topic).pipe(
-      switchMap(topic => topic ? this.topicMemberUserService.loadItems(topic.id).pipe(catchError(() => of([]))) : of([]))
-    ), { initialValue: [] }
-  );
+  private membersResource = rxResource<TopicMemberUser[], Topic | null>({
+    params: () => this.topic(),
+    stream: ({ params: topic }) => {
+      if (topic) {
+        return this.topicMemberUserService.loadItems(topic.id).pipe(
+          catchError(() => of([]))
+        );
+      }
+      return of([]);
+    }
+  });
+  members = computed(() => this.membersResource.value() ?? []);
 
   tabSelected = signal<string | null>(null);
   tabTablet = signal<string>('');
@@ -164,7 +192,7 @@ export class TopicViewComponent implements OnInit {
       this.translate.onLangChange.pipe(startWith(null)),
       toObservable(this.userStore.isAuthenticated)
     ]).pipe(
-      switchMap(([params, _queryParams, _langChange, _isAuthenticated]) => {
+      switchMap(([params, _queryParams, _langChange, _isAuthenticated]: [any, any, any, any]) => {
         const topicId = params['topicId'];
         if (topicId) {
           this.topicId = topicId;

@@ -22,11 +22,11 @@
           </div>
           <div class="profile_image_wrap">
             @if (argument.creator?.imageUrl) {
-              <img class="profile_image" [src]="argument.creator?.imageUrl" alt="">
+              <img class="profile_image" [src]="argument.creator.imageUrl" alt="">
             } @else {
               <div class="profile_image_filler">
                 @if (argument.creator?.name) {
-                  <cos-initials [name]="argument.creator?.name || ''"></cos-initials>
+                  <cos-initials [name]="argument.creator.name || ''"></cos-initials>
                 }
               </div>
             }
@@ -39,7 +39,7 @@
         <div class="form_group">
           <label for="report_reason">{{ 'COMPONENTS.ARGUMENT_REPORT.LABLE_REASON' | translate }}</label>
           <cos-dropdown>
-            <div id="report_reason" selection class="selected_item" tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" aria-controls="report_reason_options">
+            <div id="report_reason" selection class="selected_item" [attr.aria-expanded]="false">
               {{ 'TXT_REPORT_TYPES_' + (reportForm.value.type | uppercase) | translate }}
             </div>
             <div id="report_reason_options" options role="listbox">

@@ -128,7 +128,7 @@
             <label for="locality_country">{{ 'COMPONENTS.GROUP_SETTINGS.SETTINGS_LOCALITY_SELECT_DESC' | translate }}</label>
 
             <cos-dropdown>
-              <div id="locality_country" selection tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" aria-controls="country_options">
+              <div id="locality_country" selection [attr.aria-expanded]="false">
                 @if (!group().country) {
                   <span>{{ 'COMPONENTS.GROUP_SETTINGS.SETTINGS_COUNTRY_SELECT' | translate }}</span>
                 } @else {
@@ -143,7 +143,7 @@
             </cos-dropdown>
 
             <cos-dropdown>
-              <div id="locality_language" selection tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" aria-controls="language_options">
+              <div id="locality_language" selection [attr.aria-expanded]="false">
                 @if (!group().language) {
                   <span>{{ 'COMPONENTS.GROUP_SETTINGS.SETTINGS_LANGUAGE_SELECT' | translate }}</span>
                 } @else {

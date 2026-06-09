@@ -50,7 +50,7 @@ describe('IdeationCreateComponent (business logic)', () => {
   });
 
   it('saveToSettings should skip save if topic has id', () => {
-    component.topic.set({ id: 'existing-id', title: 'Test' });
+    component.topicModel.set({ id: 'existing-id', title: 'Test' });
     component.saveToSettings();
     expect(mockTopicService.save).not.toHaveBeenCalled();
     expect(component.currentStep()).toBe('settings');
@@ -58,17 +58,17 @@ describe('IdeationCreateComponent (business logic)', () => {
 
   it('onTopicUpdate merges updates', () => {
     component.onTopicUpdate({ title: 'New Title' });
-    expect(component.topic().title).toBe('New Title');
+    expect(component.topicModel().title).toBe('New Title');
   });
 
   it('onIdeationUpdate merges updates', () => {
     component.onIdeationUpdate({ question: 'What do you think?' });
-    expect(component.ideation().question).toBe('What do you think?');
+    expect(component.ideationModel().question).toBe('What do you think?');
   });
 
   it('onPublish patches topic with ideation status', () => {
-    component.topic.set({ ...mockTopic });
-    component.ideation.set({ id: 'ideation-1', question: 'A question' });
+    component.topicModel.set({ ...mockTopic });
+    component.ideationModel.set({ id: 'ideation-1', question: 'A question' });
     component.onPublish();
     expect(mockTopicService.patch).toHaveBeenCalledWith(expect.objectContaining({ status: 'ideation' }));
   });

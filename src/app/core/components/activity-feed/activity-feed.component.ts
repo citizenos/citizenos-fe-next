@@ -6,14 +6,14 @@ import { ActivityService, ActivityGroup } from '../../services/activity.service'
 import { ActivityFeedState } from '../../state/activity-feed.state';
 import { ActivityItemComponent } from '../../../shared/components/activity-item/activity-item.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
-import { CosDropdownDirective } from '../../../shared/directives/cos-dropdown.directive';
 import { TourItemDirective } from '../../../shared/directives/tour-item.directive';
+import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 
 @Component({
   selector: 'cos-activity-feed',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, ActivityItemComponent, IconComponent, CosDropdownDirective, TourItemDirective],
+  imports: [TranslateModule, ActivityItemComponent, IconComponent, DropdownComponent, TourItemDirective],
   templateUrl: './activity-feed.component.html',
   styleUrls: ['./activity-feed.component.scss']
 })
@@ -47,10 +47,10 @@ export class ActivityFeedComponent {
         }
         this.activities.set([]);
         this.activityService.reset();
-        return this.activityService.loadItems({ 
-          groupId, 
-          topicId, 
-          include: filterVal === 'all' ? null : filterVal 
+        return this.activityService.loadItems({
+          groupId,
+          topicId,
+          include: filterVal === 'all' ? null : filterVal
         });
       }),
       tap(page => {

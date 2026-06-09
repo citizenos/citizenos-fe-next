@@ -47,7 +47,7 @@ describe('VoteCreateComponent (business logic)', () => {
   });
 
   it('saveToSettings should skip save if topic has id', () => {
-    component.topic.set({ id: 'existing-id', title: 'Test' });
+    component.topicModel.set({ id: 'existing-id', title: 'Test' });
     component.saveToSettings();
     expect(mockTopicService.save).not.toHaveBeenCalled();
     expect(component.currentStep()).toBe('settings');
@@ -55,17 +55,17 @@ describe('VoteCreateComponent (business logic)', () => {
 
   it('onTopicUpdate merges updates', () => {
     component.onTopicUpdate({ title: 'New Title' });
-    expect(component.topic().title).toBe('New Title');
+    expect(component.topicModel().title).toBe('New Title');
   });
 
   it('onVoteUpdate merges updates', () => {
     component.onVoteUpdate({ question: 'New question?' });
-    expect(component.vote().question).toBe('New question?');
+    expect(component.voteModel().question).toBe('New question?');
   });
 
   it('onPublish patches topic with voting status', () => {
-    component.topic.set({ ...mockTopic });
-    component.vote.set({ ...mockVote });
+    component.topicModel.set({ ...mockTopic });
+    component.voteModel.set({ ...mockVote });
     component.onPublish();
     expect(mockTopicService.patch).toHaveBeenCalledWith(expect.objectContaining({ status: 'voting' }));
   });

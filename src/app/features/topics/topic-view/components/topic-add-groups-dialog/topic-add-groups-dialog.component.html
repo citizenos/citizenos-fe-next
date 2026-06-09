@@ -46,12 +46,12 @@
                   [description]="'COMPONENTS.TOPIC_ADD_GROUPS.TOOLTIP_GROUP_PERMISSIONS_CONTENT' | translate">
                 </cos-tooltip>
                 <cos-dropdown>
-                  <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.TOPIC_ADD_GROUPS.LBL_ALL_GROUPS_LEVEL' | translate">
+                  <div selection class="selected_item" [attr.aria-label]="'COMPONENTS.TOPIC_ADD_GROUPS.LBL_ALL_GROUPS_LEVEL' | translate">
                     {{ 'TXT_TOPIC_LEVELS_' + (globalLevel() | uppercase) | translate }}
                   </div>
                   <div options>
                     @for (level of LEVELS; track level) {
-                      <div class="option" (click)="updateAllLevels(level)" (keydown.enter)="updateAllLevels(level)" role="button" tabindex="0">
+                      <div class="option" (click)="updateAllLevels(level)" (keydown.enter)="updateAllLevels(level)" role="option" tabindex="0">
                         {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                       </div>
                     }
@@ -66,12 +66,12 @@
                       <div class="name">{{ group.name }}</div>
                       <div class="level_select">
                         <cos-dropdown>
-                          <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="group.name">
+                          <div selection class="selected_item" [attr.aria-label]="group.name">
                             {{ 'TXT_TOPIC_LEVELS_' + (group.permission.level | uppercase) | translate }}
                           </div>
                           <div options>
                             @for (level of LEVELS; track level) {
-                              <div class="option" (click)="updateGroupLevel(group, level)" (keydown.enter)="updateGroupLevel(group, level)" role="button" tabindex="0">
+                              <div class="option" (click)="updateGroupLevel(group, level)" (keydown.enter)="updateGroupLevel(group, level)" role="option" tabindex="0">
                                 {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                               </div>
                             }

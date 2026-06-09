@@ -122,7 +122,7 @@ export interface TopicInvite {
               <div class="topic_member disabled">
                 <div class="profile_image_wrap">
                   @if (invite.user?.imageUrl) {
-                    <img class="profile_image" [src]="invite.user!.imageUrl" [attr.alt]="invite.user?.name || ''">
+                    <img class="profile_image" [src]="invite.user!.imageUrl" [attr.alt]="invite.user.name || ''">
                   } @else {
                     <div class="profile_image_filler small">
                       @if (invite.user?.name) {

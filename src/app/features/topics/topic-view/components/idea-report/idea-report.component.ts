@@ -62,7 +62,7 @@ export interface IdeaReportData {
               </div>
               <div class="profile_image_wrap">
                 @if (data.idea.author?.imageUrl) {
-                  <img class="profile_image" [src]="data.idea.author?.imageUrl" alt="" />
+                  <img class="profile_image" [src]="data.idea.author.imageUrl" alt="" />
                 } @else {
                   <div class="profile_image_filler">
                     <cos-initials [name]="data.idea.author?.name || ''"></cos-initials>
@@ -79,7 +79,7 @@ export interface IdeaReportData {
                 <div selection class="selected_item">{{ 'TXT_REPORT_TYPES_' + report.get('type')?.value?.toUpperCase() | translate }}</div>
                 <div options>
                   @for (type of reportTypes; track type) {
-                    <div class="option" (click)="selectReportType(type)" (keydown.enter)="selectReportType(type)" role="button" tabindex="0">
+                    <div class="option" (click)="selectReportType(type)" (keydown.enter)="selectReportType(type)" role="option" tabindex="0">
                       {{ 'TXT_REPORT_TYPES_' + type.toUpperCase() | translate }}
                     </div>
                   }

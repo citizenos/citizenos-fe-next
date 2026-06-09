@@ -54,23 +54,23 @@
 
     <div class="row_wrap">
       <cos-dropdown class="locality-dropdown">
-        <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.GROUP_CREATE.SETTINGS_COUNTRY_SELECT' | translate">
+        <div selection [attr.aria-label]="'VIEWS.GROUP_CREATE.SETTINGS_COUNTRY_SELECT' | translate">
           <span [translate]="group().country ? '' : 'VIEWS.GROUP_CREATE.SETTINGS_COUNTRY_SELECT'">{{group().country}}</span>
         </div>
         <div options>
           @for (country of countries; track country.iso2) {
-            <div class="option" (click)="updateCountry(country.name)" (keydown.enter)="updateCountry(country.name)" role="button" tabindex="0">{{country.name}}</div>
+            <div class="option" (click)="updateCountry(country.name)" (keydown.enter)="updateCountry(country.name)" role="option" tabindex="0">{{country.name}}</div>
           }
         </div>
       </cos-dropdown>
 
       <cos-dropdown class="locality-dropdown">
-        <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.GROUP_CREATE.SETTINGS_LANGUAGE_SELECT' | translate">
+        <div selection [attr.aria-label]="'VIEWS.GROUP_CREATE.SETTINGS_LANGUAGE_SELECT' | translate">
           <span [translate]="group().language ? '' : 'VIEWS.GROUP_CREATE.SETTINGS_LANGUAGE_SELECT'">{{group().language}}</span>
         </div>
         <div options>
           @for (language of languages; track language.code) {
-            <div class="option" (click)="updateLanguage(language.name)" (keydown.enter)="updateLanguage(language.name)" role="button" tabindex="0">{{language.name}}</div>
+            <div class="option" (click)="updateLanguage(language.name)" (keydown.enter)="updateLanguage(language.name)" role="option" tabindex="0">{{language.name}}</div>
           }
         </div>
       </cos-dropdown>

@@ -19,12 +19,12 @@
         </cos-tooltip>
       </span>
       <cos-dropdown [class.disabled]="!canUpdate()">
-        <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.GROUP_SHARE.LBL_ACCESS_LEVEL' | translate">
+        <div selection class="selected_item" [attr.aria-label]="'COMPONENTS.GROUP_SHARE.LBL_ACCESS_LEVEL' | translate">
           {{'TXT_GROUP_LEVELS_' + joinLevel() | uppercase | translate}}
         </div>
         <div options>
           @for (level of LEVELS | keyvalue; track level.key) {
-            <div class="option" (click)="doUpdateJoinToken(level.value)" (keydown.enter)="doUpdateJoinToken(level.value)" role="button" tabindex="0">
+            <div class="option" (click)="doUpdateJoinToken(level.value)" (keydown.enter)="doUpdateJoinToken(level.value)" role="option" tabindex="0">
               {{'TXT_GROUP_LEVELS_' + level.value.toUpperCase() | translate}}
             </div>
           }

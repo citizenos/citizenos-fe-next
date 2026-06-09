@@ -1,6 +1,6 @@
 import { IconComponent } from '../../../shared/components/icon/icon.component';
-import { Component, inject, signal, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, PLATFORM_ID, DestroyRef } from '@angular/core';
-import { isPlatformBrowser, KeyValuePipe, AsyncPipe, UpperCasePipe } from '@angular/common';
+import { Component, inject, signal, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { KeyValuePipe, UpperCasePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -20,7 +20,6 @@ import { InitialsComponent } from '../../../shared/components/initials/initials.
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { ImageEditorComponent } from '../../../shared/components/image-editor/image-editor.component';
 import { SeoService } from '../../../core/services/seo.service';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 type ProfileTab = 'profile' | 'notifications';
 
@@ -38,7 +37,6 @@ type ProfileTab = 'profile' | 'notifications';
     RouterLink,
     TermsLinksComponent,
     KeyValuePipe,
-    AsyncPipe,
     UpperCasePipe,
     InitialsComponent,
     PaginationComponent,
@@ -57,10 +55,9 @@ export class ProfileComponent implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
   dialog = inject(DialogService);
-  private platformId = inject(PLATFORM_ID);
   private seoService = inject(SeoService);
   private destroyRef = inject(DestroyRef);
-  notificationParams = toSignal(this.topicNotificationService.params);
+  notificationParams = this.topicNotificationService.params;
 
   activeTab = signal<ProfileTab>('profile');
 
@@ -253,7 +250,7 @@ export class ProfileComponent implements OnInit {
     this.form.imageUrl = '';
     this.imageFile.set(null);
     this.uploadedImage.set(null);
-    
+
     try {
       await this.store.updateProfile({ imageUrl: '' });
     } catch (err) {

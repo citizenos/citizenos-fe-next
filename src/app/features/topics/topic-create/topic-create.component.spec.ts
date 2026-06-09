@@ -60,8 +60,7 @@ describe('TopicCreateComponent (business logic)', () => {
     mockTopicService.save.mockReturnValue(of(mockTopic));
     mockTopicService.patch.mockReturnValue(of({ ...mockTopic, status: 'inProgress' }));
     mockUploadService.upload.mockReturnValue(of(null));
-    mockMemberUserService.loadItems.mockReturnValue(of([]));
-    mockInviteUserService.loadItems.mockReturnValue(of([]));
+
     mockDiscussionService.create.mockReturnValue(of({ id: 'disc-1', question: '', deadline: null }));
     mockDiscussionService.update.mockReturnValue(of({ id: 'disc-1', question: '', deadline: null }));
     mockGroupMemberTopicService.addTopic.mockReturnValue(of(null));
@@ -93,27 +92,27 @@ describe('TopicCreateComponent (business logic)', () => {
 
   it('saveToSettings skips save if topic already has id', () => {
     mockTopicService.patch.mockReturnValue(of({ id: 'existing-id', title: 'Test', status: 'inProgress' }));
-    component.topic.set({ id: 'existing-id', title: 'Test' });
+    component.topicModel.set({ id: 'existing-id', title: 'Test' });
     component.saveToSettings();
     expect(mockTopicService.save).not.toHaveBeenCalled();
     expect(component.currentStep()).toBe('settings');
   });
 
   it('saveAsDraft calls patch and shows success notification', () => {
-    component.topic.set({ id: 'topic-1', title: 'Draft Topic' });
+    component.topicModel.set({ id: 'topic-1', title: 'Draft Topic' });
     component.saveAsDraft();
     expect(mockTopicService.patch).toHaveBeenCalled();
     expect(mockNotificationService.showRaw).toHaveBeenCalledWith('success', expect.any(String));
   });
 
   it('publishTopic calls patch with status inProgress when topic has id', () => {
-    component.topic.set({ title: 'New Topic', id: 'topic-1' });
+    component.topicModel.set({ title: 'New Topic', id: 'topic-1' });
     component.publishTopic();
     expect(mockTopicService.patch).toHaveBeenCalledWith(expect.objectContaining({ status: 'inProgress' }));
   });
 
   it('inviteEditors opens dialog', () => {
-    component.topic.set({ id: 'topic-1', title: 'Test' });
+    component.topicModel.set({ id: 'topic-1', title: 'Test' });
     component.inviteEditors();
     expect(mockDialogService.open).toHaveBeenCalled();
   });
@@ -174,7 +173,7 @@ describe('TopicCreateComponent (business logic)', () => {
     expect(mockGroupDetailService.loadGroup).toHaveBeenCalledWith('group-123');
     expect(comp.addedGroups().length).toBe(1);
     expect(comp.addedGroups()[0].id).toBe('g1');
-    expect(comp.topic().visibility).toBe('private');
+    expect(comp.topicModel().visibility).toBe('private');
   });
 });
 

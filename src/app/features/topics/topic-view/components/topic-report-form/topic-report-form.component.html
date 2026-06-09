@@ -21,12 +21,12 @@
         <div class="form_group">
           <label for="report_type">{{ 'COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TYPE' | translate }}</label>
           <cos-dropdown id="report_type">
-            <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TYPE' | translate">
+            <div selection class="selected_item" [attr.aria-label]="'COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TYPE' | translate">
               {{ 'TXT_REPORT_TYPES_' + (reportForm.value.type | uppercase) | translate }}
             </div>
             <div options>
               @for (type of reportTypes; track type) {
-                <div class="option" (click)="changeType(type)" (keydown.enter)="changeType(type)" tabindex="0" role="button">
+                <div class="option" (click)="changeType(type)" (keydown.enter)="changeType(type)" tabindex="0" role="option">
                   {{ 'TXT_REPORT_TYPES_' + (type | uppercase) | translate }}
                 </div>
               }

@@ -1,7 +1,8 @@
-import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, OnInit, signal, inject, ChangeDetectionStrategy, computed } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { form, required } from '@angular/forms/signals';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TopicService } from '../../../core/services/topic.service';
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -13,17 +14,19 @@ import { StepTopicInfoComponent } from '../topic-create/components/step-topic-in
 import { StepTopicSettingsComponent } from '../topic-create/components/step-topic-settings/step-topic-settings.component';
 import { StepVoteSettingsComponent } from './components/step-vote-settings/step-vote-settings.component';
 import { StepTopicPreviewComponent } from '../topic-create/components/step-topic-preview/step-topic-preview.component';
-import { switchMap, take, BehaviorSubject, of, forkJoin, catchError } from 'rxjs';
-import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
-import { TopicInviteUserService } from '../../../core/services/topic-invite-user.service';
+import { switchMap, take, of, forkJoin, catchError } from 'rxjs';
+import { TopicMemberUser, TopicMemberUserService } from '../../../core/services/topic-member-user.service';
+import { TopicInvite, TopicInviteUserService } from '../../../core/services/topic-invite-user.service';
 import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
 import { TopicMemberGroup } from '../../../shared/components/topic-settings-panel/topic-settings-panel.component';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 import { TopicInviteDialogComponent } from '../topic-view/components/topic-invite-dialog/topic-invite-dialog.component';
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { AnyPipe } from '../../../shared/pipes/any.pipe';
 import { PendingChangesComponent } from '../../../core/guards/pending-changes.guard';
+import { NeverPipe } from '../../../shared/pipes/never.pipe';
+
+export type VoteCreateStep = 'info' | 'settings' | 'voting' | 'preview';
 
 @Component({
   selector: 'cos-vote-create',
@@ -35,10 +38,9 @@ import { PendingChangesComponent } from '../../../core/guards/pending-changes.gu
     StepTopicSettingsComponent,
     StepVoteSettingsComponent,
     StepTopicPreviewComponent,
-    MemberEditorsPanelComponent,
-    AnyPipe
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    MemberEditorsPanelComponent
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './vote-create.component.html',
   styleUrl: './vote-create.component.scss'
 })
@@ -52,6 +54,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   private inviteUserService = inject(TopicInviteUserService);
   private groupMemberTopicService = inject(GroupMemberTopicService);
   private dialog = inject(DialogService);
+  private translate = inject(TranslateService);
 
   readonly steps: StepConfig[] = [
     { key: 'info', label: 'VIEWS.VOTE_CREATE.CREATE_TAB_1', icon: 'edit' },
@@ -60,11 +63,11 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     { key: 'preview', label: 'VIEWS.VOTE_CREATE.CREATE_TAB_4', icon: 'eye' }
   ];
 
-  currentStep = signal('info');
+  currentStep = signal<VoteCreateStep>('info');
   isLoading = signal(false);
   hasChanges = signal(true);
 
-  topic = signal<Partial<Topic>>({
+  topicModel = signal<Partial<Topic>>({
     title: '',
     intro: '',
     description: '<html><head></head><body></body></html>',
@@ -73,7 +76,11 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     status: 'draft'
   });
 
-  vote = signal<Partial<VoteWithOptions>>({
+  topicForm = form(this.topicModel, (path: any) => {
+    required(path.title);
+  });
+
+  voteModel = signal<Partial<VoteWithOptions>>({
     question: '',
     type: 'regular',
     authType: 'soft',
@@ -83,32 +90,30 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     endsAt: null
   });
 
+  voteForm = form(this.voteModel, (path: any) => {
+    required(path.question);
+  });
+
   addedGroups = signal<TopicMemberGroup[]>([]);
   groupsToRemove = signal<TopicMemberGroup[]>([]);
 
-  private reloadMembers$ = new BehaviorSubject<void>(void 0);
+  private membersResource = rxResource<TopicMemberUser[], string | undefined>({
+    params: () => this.topicModel().id,
+    stream: ({ params: id }: { params: string | undefined }) => {
+      if (id) return this.memberUserService.loadItems(id);
+      return of([]);
+    }
+  });
+  members = computed(() => this.membersResource.value() ?? []);
 
-  members = toSignal(
-    this.reloadMembers$.pipe(
-      switchMap(() => {
-        const id = this.topic().id;
-        if (id) return this.memberUserService.loadItems(id);
-        return of([]);
-      })
-    ),
-    { initialValue: [] }
-  );
-
-  invites = toSignal(
-    this.reloadMembers$.pipe(
-      switchMap(() => {
-        const id = this.topic().id;
-        if (id) return this.inviteUserService.loadItems(id);
-        return of([]);
-      })
-    ),
-    { initialValue: [] }
-  );
+  private invitesResource = rxResource<TopicInvite[], string | undefined>({
+    params: () => this.topicModel().id,
+    stream: ({ params: id }: { params: string | undefined }) => {
+      if (id) return this.inviteUserService.loadItems(id);
+      return of([]);
+    }
+  });
+  invites = computed(() => this.invitesResource.value() ?? []);
 
   ngOnInit() {
     const topicId = this.route.snapshot.params['topicId'];
@@ -123,13 +128,14 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     this.isLoading.set(true);
     this.topicService.get(topicId).subscribe({
       next: (topic) => {
-        this.topic.set(topic);
-        this.reloadMembers$.next();
+        this.topicModel.set(topic);
+        this.membersResource.reload();
+        this.invitesResource.reload();
         if (topic.voteId) {
           this.voteService.get({ topicId: topic.id, voteId: topic.voteId }).subscribe({
             next: (vote: VoteWithOptions) => {
               const options = Array.isArray(vote.options) ? vote.options : (vote.options?.rows || []);
-              this.vote.set({
+              this.voteModel.set({
                 ...vote,
                 question: vote.description ?? undefined,
                 options
@@ -157,26 +163,27 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     this.topicService.save(initialPayload).pipe(
       take(1),
       switchMap((savedTopic) => {
-        this.topic.set(savedTopic);
-        this.reloadMembers$.next();
+        this.topicModel.set(savedTopic);
+        this.membersResource.reload();
+        this.invitesResource.reload();
         const voteData = {
-          ...this.vote(),
+          ...this.voteModel(),
           topicId: savedTopic.id,
-          description: this.vote().question || ' '
+          description: this.voteModel().question || ' '
         };
         return this.voteService.save(voteData);
       })
     ).subscribe({
       next: (savedVote: VoteWithOptions) => {
         const options = Array.isArray(savedVote.options) ? savedVote.options : (savedVote.options?.rows || []);
-        this.vote.set({
+        this.voteModel.set({
           ...savedVote,
           question: savedVote.description ?? undefined,
           options
         });
         this.isLoading.set(false);
         this.hasChanges.set(false);
-        this.router.navigate([this.topic().id], {
+        this.router.navigate([this.topicModel().id], {
           relativeTo: this.route,
           replaceUrl: true
         }).then(() => {
@@ -191,29 +198,29 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   onStepChange(step: string) {
-    this.currentStep.set(step);
+    this.currentStep.set(step as VoteCreateStep);
     if (step === 'preview') {
       this.loadDescription();
     }
   }
 
   private loadDescription() {
-    const id = this.topic().id;
+    const id = this.topicModel().id;
     if (!id) return;
 
     this.topicService.readDescription(id).pipe(take(1)).subscribe({
       next: (topic) => {
-        this.topic.update(t => ({ ...t, description: topic.description }));
+        this.topicModel.update((t: any) => ({ ...t, description: topic.description }));
       }
     });
   }
 
   isFooterNextDisabled(): boolean {
-    if (this.currentStep() === 'info') return !this.topic().title;
+    if (this.currentStep() === 'info') return !this.topicModel().title;
     if (this.currentStep() === 'voting') {
-      const v = this.vote();
+      const v = this.voteModel();
       const options = Array.isArray(v.options) ? v.options : (v.options?.rows || []);
-      const validOptionsCount = options.filter(o => !!o.value).length;
+      const validOptionsCount = options.filter((o: any) => !!o.value).length;
       return !v.question || validOptionsCount < 2;
     }
     return false;
@@ -229,14 +236,14 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   private saveGroupsAndContinue() {
-    const topicId = this.topic().id;
+    const topicId = this.topicModel().id;
     if (!topicId) return;
 
     this.isLoading.set(true);
     const addOps = this.addedGroups().map(g => this.groupMemberTopicService.addTopic(g.id, topicId, g.level || 'read'));
     const removeOps = this.groupsToRemove().map(g => this.groupMemberTopicService.removeTopicFromGroup(g.id, topicId));
 
-    forkJoin([...addOps, ...removeOps, this.topicService.patch(this.topic())]).pipe(
+    forkJoin([...addOps, ...removeOps, this.topicService.patch(this.topicModel() as any)]).pipe(
       catchError(() => of(null))
     ).subscribe(() => {
       this.isLoading.set(false);
@@ -248,18 +255,19 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   handleFooterBack() {
     const order = this.steps.map(s => s.key);
     const idx = order.indexOf(this.currentStep());
-    if (idx > 0) this.currentStep.set(order[idx - 1]);
+    if (idx > 0) this.currentStep.set(order[idx - 1] as VoteCreateStep);
   }
 
   onTopicUpdate(updates: Partial<Topic>) {
-    this.topic.update(t => ({ ...t, ...updates }));
+    this.topicModel.update((t: any) => ({ ...t, ...updates }));
     if (updates.id) {
-      this.reloadMembers$.next();
+      this.membersResource.reload();
+      this.invitesResource.reload();
     }
   }
 
   onVoteUpdate(updates: Partial<VoteWithOptions>) {
-    this.vote.update(v => ({ ...v, ...updates }));
+    this.voteModel.update((v: any) => ({ ...v, ...updates }));
   }
 
   onGroupsAdded(groups: TopicMemberGroup[]) {
@@ -272,12 +280,13 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   inviteEditors() {
-    const topic = this.topic();
+    const topic = this.topicModel();
     if (topic.id) {
       this.dialog.open(TopicInviteDialogComponent, {
         data: { topic: topic as Topic, allowedLevels: ['edit', 'admin'] }
       }).afterClosed().subscribe(() => {
-        this.reloadMembers$.next();
+        this.membersResource.reload();
+        this.invitesResource.reload();
       });
     } else {
       this.notification.showRaw('info', 'VIEWS.TOPIC_CREATE.SAVE_FIRST_TO_INVITE');
@@ -285,7 +294,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   saveToSettings() {
-    const t = this.topic();
+    const t = this.topicModel();
     if (!t.id) {
       this.createEagerly();
       return;
@@ -293,7 +302,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     this.isLoading.set(true);
     this.topicService.patch(t).subscribe({
       next: (updated) => {
-        this.topic.set(updated);
+        this.topicModel.set(updated);
         this.isLoading.set(false);
         this.onStepChange('settings');
       },
@@ -305,19 +314,19 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   saveAsDraft() {
-    const t = this.topic();
+    const t = this.topicModel();
     if (!t.id) return;
     this.isLoading.set(true);
     this.topicService.patch(t).subscribe({
       next: () => {
-        if (this.vote().id && t.id) {
-          const voteData = { ...this.vote(), topicId: t.id, description: this.vote().question };
+        if (this.voteModel().id && t.id) {
+          const voteData = { ...this.voteModel(), topicId: t.id, description: this.voteModel().question };
           this.voteService.update(voteData).pipe(take(1)).subscribe();
         }
         this.isLoading.set(false);
         this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
         this.hasChanges.set(false);
-        this.router.navigate(['/topics', t.id]);
+        this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', t.id]);
       },
       error: () => {
         this.isLoading.set(false);
@@ -327,13 +336,13 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   onPublish() {
-    const t = this.topic();
+    const t = this.topicModel();
     if (!t.id) return;
     this.isLoading.set(true);
     this.topicService.patch({ ...t, status: 'voting' }).subscribe({
       next: (savedTopic) => {
         if (!t.id) return;
-        const currentVote = this.vote();
+        const currentVote = this.voteModel();
         const voteData = { 
           ...currentVote, 
           topicId: t.id, 
@@ -348,7 +357,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
             this.dialog.open(TopicInviteDialogComponent, {
               data: { topic: savedTopic }
             }).afterClosed().subscribe(() => {
-              this.router.navigate(['/topics', savedTopic.id]);
+              this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', savedTopic.id]);
             });
           },
           error: () => {
@@ -365,7 +374,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   doDeleteTopic() {
-    const topicId = this.topic().id;
+    const topicId = this.topicModel().id;
     if (!topicId) return;
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -403,7 +412,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   removeChanges() {
-    const topicId = this.topic().id;
+    const topicId = this.topicModel().id;
     if (topicId) {
       this.topicService.delete({ id: topicId }).pipe(take(1)).subscribe();
     }

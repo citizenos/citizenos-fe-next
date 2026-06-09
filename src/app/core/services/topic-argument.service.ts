@@ -97,7 +97,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
   }
 
   getArguments(params?: TopicArgumentParams): Observable<ArgumentListResponse> {
-    return this.query(params ?? this.params.value).pipe(
+    return this.query(params ?? this.params()).pipe(
       map((res: ApiResponse<{ rows: Argument[]; count: ArgumentCount }>) => {
         if (res.data?.count) {
           this.count.next(res.data.count);

@@ -36,7 +36,7 @@ export interface FilterConfig {
                 </ng-container>
                 <ng-container options>
                   @for (option of filter.items; track option.value) {
-                    <div class="option" (click)="selectFilter(filter.key, option.value)" (keydown.enter)="selectFilter(filter.key, option.value)" tabindex="0" role="button">
+                    <div class="option" (click)="selectFilter(filter.key, option.value)" (keydown.enter)="selectFilter(filter.key, option.value)" tabindex="0" role="option">
                       {{ option.title | translate }}
                     </div>
                   }
@@ -66,7 +66,7 @@ export interface FilterConfig {
                     </ng-container>
                     <ng-container options>
                       @for (option of ($any(item).items); track option.value) {
-                        <div class="option" (click)="selectFilter($any(item).key, option.value)" (keydown.enter)="selectFilter($any(item).key, option.value)" tabindex="0" role="button">
+                        <div class="option" (click)="selectFilter($any(item).key, option.value)" (keydown.enter)="selectFilter($any(item).key, option.value)" tabindex="0" role="option">
                           {{ option.title | translate }}
                         </div>
                       }

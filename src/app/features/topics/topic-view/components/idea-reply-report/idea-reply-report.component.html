@@ -23,7 +23,7 @@
       <div class="form_group">
         <label for="report_type" [innerHTML]="'COMPONENTS.IDEA_REPORT.LABEL_REPORT_TYPE' | translate"></label>
         <cos-dropdown>
-          <div id="report_type" selection tabindex="0" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="false" aria-controls="report_type_options">
+          <div id="report_type" selection [attr.aria-expanded]="false">
             {{ 'COMPONENTS.IDEA_REPORT.REPORT_TYPE_' + report.get('type')?.value?.toUpperCase() | translate }}
           </div>
           <div id="report_type_options" options role="listbox">

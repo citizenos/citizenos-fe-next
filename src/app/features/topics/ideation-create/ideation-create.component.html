@@ -4,7 +4,7 @@
   [steps]="steps"
   [currentStep]="currentStep()"
   [isNextDisabled]="isFooterNextDisabled()"
-  [topic]="topic()"
+  [topic]="topicModel()"
   (stepChange)="onStepChange($event)"
   (saveDraft)="saveAsDraft()"
   (footerContinue)="handleFooterContinue()"
@@ -20,13 +20,13 @@
   @switch (currentStep()) {
     @case ('info') {
       <cos-step-topic-info
-        [topic]="topic()"
+        [topic]="topicModel()"
         (topicUpdate)="onTopicUpdate($event)"
       ></cos-step-topic-info>
     }
     @case ('settings') {
       <cos-step-topic-settings
-        [topic]="topic()"
+        [topic]="topicModel()"
         (topicUpdate)="onTopicUpdate($event)"
         (groupsAdded)="onGroupsAdded($event)"
         (groupRemoved)="onGroupRemoved($event)"
@@ -34,25 +34,26 @@
     }
     @case ('ideation') {
       <cos-step-ideation-settings
-        [ideation]="ideation()"
+        [ideation]="ideationModel()"
         (ideationUpdate)="onIdeationUpdate($event)"
       ></cos-step-ideation-settings>
     }
     @case ('preview') {
       <cos-step-topic-preview
-        [topic]="topic()"
-        [ideation]="ideation()"
+        [topic]="topicModel()"
+        [ideation]="ideationModel()"
       ></cos-step-topic-preview>
+    }
+    @default {
     }
   }
 
   <div sidebar class="sidebar_block">
     <cos-member-editors-panel
-      [topic]="topic()"
+      [topic]="topicModel()"
       [members]="members()"
       [invites]="invites()"
       (inviteEditors)="inviteEditors()"
     ></cos-member-editors-panel>
   </div>
 </cos-create-wizard-shell>
-

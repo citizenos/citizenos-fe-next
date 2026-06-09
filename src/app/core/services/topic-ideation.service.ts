@@ -75,7 +75,7 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
 
   loadIdeation(params?: TopicIdeationParams): Observable<{ rows: Ideation[]; countTotal: number }> {
     return this.loadIdeations$.pipe(
-      exhaustMap(() => this.getItems(params ?? this.params.value)),
+      exhaustMap(() => this.getItems(params ?? this.params())),
       shareReplay(1)
     );
   }

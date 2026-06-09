@@ -26,7 +26,7 @@
             </div>
             <div options>
               @for (type of reportTypes; track type) {
-                <div class="option" (click)="changeType(type)" (keydown.enter)="changeType(type)" tabindex="0" role="button">
+                <div class="option" (click)="changeType(type)" (keydown.enter)="changeType(type)" tabindex="0" role="option">
                   {{ 'TXT_REPORT_TYPES_' + (type | uppercase) | translate }}
                 </div>
               }

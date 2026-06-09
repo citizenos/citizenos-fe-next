@@ -16,15 +16,15 @@
 
   <div id="tab_dropdown" class="dropdown mobile_show">
     <cos-dropdown>
-      <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.ACCOUNT.TAB_' + activeTab() | uppercase | translate">
+      <div selection [attr.aria-label]="'VIEWS.ACCOUNT.TAB_' + activeTab() | uppercase | translate">
         <div class="selected_item bold" [translate]="'VIEWS.ACCOUNT.TAB_' + activeTab() | uppercase"> </div>
         <cos-icon name="topic-participants-icon-legacy" size="24"></cos-icon>
       </div>
       <div options>
         <div class="option" (click)="selectTab('profile')" (keydown.enter)="selectTab('profile')" tabindex="0"
-          role="button">{{ 'VIEWS.ACCOUNT.TAB_PROFILE' | translate }}</div>
+          role="option">{{ 'VIEWS.ACCOUNT.TAB_PROFILE' | translate }}</div>
         <div class="option" (click)="selectTab('notifications')" (keydown.enter)="selectTab('notifications')"
-          tabindex="0" role="button">{{ 'VIEWS.ACCOUNT.TAB_NOTIFICATIONS' | translate }}</div>
+          tabindex="0" role="option">{{ 'VIEWS.ACCOUNT.TAB_NOTIFICATIONS' | translate }}</div>
       </div>
     </cos-dropdown>
   </div>
@@ -141,7 +141,7 @@
             <ng-container options>
               @for (language of languages | keyvalue; track language.key) {
               <div class="option" (click)="setProfileLanguage(language.key)"
-                (keydown.enter)="setProfileLanguage(language.key)" tabindex="0" role="button">{{language.value}}</div>
+                (keydown.enter)="setProfileLanguage(language.key)" tabindex="0" role="option">{{language.value}}</div>
               }
             </ng-container>
           </cos-dropdown>
@@ -185,17 +185,17 @@
         </div>
         <cos-input [placeholder]="'VIEWS.ACCOUNT.SHOW_PER_PAGE' | translate" class="dropdown_input">
           <cos-dropdown>
-            <div selection role="button" tabindex="0" [attr.aria-label]="'VIEWS.ACCOUNT.SHOW_PER_PAGE' | translate">
-              <div class="selected_item">{{notificationParams()?.limit}}</div>
+            <div selection [attr.aria-label]="'VIEWS.ACCOUNT.SHOW_PER_PAGE' | translate">
+              <div class="selected_item">{{notificationParams().limit}}</div>
               <cos-icon name="argument-report-moderate-icon-legacy" size="24"></cos-icon>
             </div>
             <div options>
               <div class="option" (click)="topicNotificationService.setParam('limit', 5)"
-                (keydown.enter)="topicNotificationService.setParam('limit', 5)" tabindex="0" role="button">5</div>
+                (keydown.enter)="topicNotificationService.setParam('limit', 5)" tabindex="0" role="option">5</div>
               <div class="option" (click)="topicNotificationService.setParam('limit', 10)"
-                (keydown.enter)="topicNotificationService.setParam('limit', 10)" tabindex="0" role="button">10</div>
+                (keydown.enter)="topicNotificationService.setParam('limit', 10)" tabindex="0" role="option">10</div>
               <div class="option" (click)="topicNotificationService.setParam('limit', 15)"
-                (keydown.enter)="topicNotificationService.setParam('limit', 15)" tabindex="0" role="button">15</div>
+                (keydown.enter)="topicNotificationService.setParam('limit', 15)" tabindex="0" role="option">15</div>
             </div>
           </cos-dropdown>
         </cos-input>
@@ -206,8 +206,8 @@
           <div class="row_cell">
             <button type="button" class="btn_link" (click)="topicNotificationService.doOrder('title')">
               <span>{{ 'VIEWS.ACCOUNT.TABLE_HEADER_TOPIC' | translate }}</span>
-              @if (notificationParams()?.orderBy === 'title') {
-              @if (notificationParams()?.order === 'ASC') {
+              @if (notificationParams().orderBy === 'title') {
+              @if (notificationParams().order === 'ASC') {
               <cos-icon name="topic-participants-icon-2-legacy" size="24"></cos-icon>
               } @else {
               <cos-icon name="topic-participants-icon-2-legacy" size="24"></cos-icon>
@@ -218,7 +218,7 @@
           <div class="row_cell" translate="VIEWS.ACCOUNT.TABLE_HEADER_NOTIFICATIONS"></div>
         </div>
 
-        @for (topic of topicNotificationService.items$ | async; track topic.topicId) {
+        @for (topic of topicNotificationService.items(); track topic.topicId) {
         <div class="row_list">
           <div class="row_cell">
             <a class="blue_link" [routerLink]="['/topics', topic.topicId]" target="_blank">{{topic.title}}</a>
@@ -237,8 +237,8 @@
       <div class="filter_section">
         <div></div>
         <cos-pagination class="pagination" (selectPage)="topicNotificationService.loadPage($event)"
-          [totalPages]="(topicNotificationService.totalPages | async) || 0"
-          [page]="(topicNotificationService.page | async) || 0"></cos-pagination>
+          [totalPages]="topicNotificationService.totalPages() || 0"
+          [page]="topicNotificationService.page() || 0"></cos-pagination>
       </div>
     </div>
     }

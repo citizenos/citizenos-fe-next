@@ -1,13 +1,14 @@
 import { IconComponent } from '../../../shared/components/icon/icon.component';
-import { Component, signal, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, signal, inject, ChangeDetectionStrategy, OnInit, computed } from '@angular/core';
+import { toSignal, rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { form, submit, required } from '@angular/forms/signals';
 import { TopicService } from '../../../core/services/topic.service';
 import { UploadService } from '../../../core/services/upload.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
-import { TopicInviteUserService } from '../../../core/services/topic-invite-user.service';
+import { TopicMemberUser, TopicMemberUserService } from '../../../core/services/topic-member-user.service';
+import { TopicInvite, TopicInviteUserService } from '../../../core/services/topic-invite-user.service';
 import { TopicDiscussionService } from '../../../core/services/topic-discussion.service';
 import { Topic } from '../../../core/interfaces/topic';
 import { Discussion, DiscussionData } from '../../../core/interfaces/discussion';
@@ -18,6 +19,7 @@ import { StepTopicSettingsComponent } from './components/step-topic-settings/ste
 import { StepTopicDiscussionComponent } from './components/step-topic-discussion/step-topic-discussion.component';
 import { StepTopicPreviewComponent } from './components/step-topic-preview/step-topic-preview.component';
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
+import { NeverPipe } from '../../../shared/pipes/never.pipe';
 import { switchMap, of, catchError, BehaviorSubject, forkJoin, take, Observable, map } from 'rxjs';
 import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
 import { TopicMemberGroup } from '../../../shared/components/topic-settings-panel/topic-settings-panel.component';
@@ -26,6 +28,8 @@ import { TopicInviteDialogComponent } from '../topic-view/components/topic-invit
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { GroupDetailService } from '../../../core/services/group-detail.service';
 import { PendingChangesComponent } from '../../../core/guards/pending-changes.guard';
+
+export type TopicCreateStep = 'info' | 'settings' | 'discussion' | 'preview';
 
 @Component({
   selector: 'cos-topic-create',
@@ -38,7 +42,8 @@ import { PendingChangesComponent } from '../../../core/guards/pending-changes.gu
     StepTopicDiscussionComponent,
     StepTopicPreviewComponent,
     MemberEditorsPanelComponent,
-    IconComponent,],
+    IconComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-create.component.html',
   styleUrl: './topic-create.component.scss'
@@ -57,7 +62,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   private groupDetailService = inject(GroupDetailService);
   private translate = inject(TranslateService);
 
-  topic = signal<Partial<Topic>>({
+  topicModel = signal<Partial<Topic>>({
     title: '',
     intro: '',
     description: '<html><head></head><body></body></html>',
@@ -67,10 +72,14 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
     hashtag: null
   });
 
+  topicForm = form(this.topicModel, (path: any) => {
+    required(path.title);
+  });
+
   discussion = signal<DiscussionData>({ question: '', deadline: null });
   imageFile = signal<File | null>(null);
   isLoading = signal(false);
-  currentStep = signal('info');
+  currentStep = signal<TopicCreateStep>('info');
   isCreatedFromGroup = signal(false);
   showHelp = signal(true);
   hasChanges = signal(true);
@@ -78,29 +87,17 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   addedGroups = signal<TopicMemberGroup[]>([]);
   groupsToRemove = signal<TopicMemberGroup[]>([]);
 
-  private reloadMembers$ = new BehaviorSubject<void>(void 0);
+  membersResource = rxResource<TopicMemberUser[], string | undefined>({
+    params: () => this.topicModel().id,
+    stream: ({ params: id }: { params: string | undefined }) => id ? this.memberUserService.loadItems(id) : of([])
+  });
+  members = computed(() => this.membersResource.value() ?? []);
 
-  members = toSignal(
-    this.reloadMembers$.pipe(
-      switchMap(() => {
-        const id = this.topic().id;
-        if (id) return this.memberUserService.loadItems(id);
-        return of([]);
-      })
-    ),
-    { initialValue: [] }
-  );
-
-  invites = toSignal(
-    this.reloadMembers$.pipe(
-      switchMap(() => {
-        const id = this.topic().id;
-        if (id) return this.inviteUserService.loadItems(id);
-        return of([]);
-      })
-    ),
-    { initialValue: [] }
-  );
+  invitesResource = rxResource<TopicInvite[], string | undefined>({
+    params: () => this.topicModel().id,
+    stream: ({ params: id }: { params: string | undefined }) => id ? this.inviteUserService.loadItems(id) : of([])
+  });
+  invites = computed(() => this.invitesResource.value() ?? []);
 
   readonly steps: StepConfig[] = [
     { key: 'info', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_1', icon: 'edit' },
@@ -138,8 +135,9 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
     this.isLoading.set(true);
     this.topicService.get(topicId).subscribe({
       next: (topic) => {
-        this.topic.set(topic);
-        this.reloadMembers$.next();
+        this.topicModel.set(topic);
+        this.membersResource.reload();
+        this.invitesResource.reload();
         if (topic.discussionId) {
           this.discussionService.get(topicId, topic.discussionId).subscribe({
             next: (d) => this.discussion.set({ question: d.question, deadline: d.deadline }),
@@ -164,8 +162,9 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
     };
     this.topicService.save(initialPayload).pipe(take(1)).subscribe({
       next: (savedTopic) => {
-        this.topic.set(savedTopic);
-        this.reloadMembers$.next();
+        this.topicModel.set(savedTopic);
+        this.membersResource.reload();
+        this.invitesResource.reload();
         this.isLoading.set(false);
         // Update URL to include topicId without triggering navigation
         this.hasChanges.set(false);
@@ -185,7 +184,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
 
   onStepChange(step: string) {
     if (this.canNavigateTo(step)) {
-      this.currentStep.set(step);
+      this.currentStep.set(step as TopicCreateStep);
       if (step === 'preview') {
         this.loadDescription();
       }
@@ -193,23 +192,23 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   private loadDescription() {
-    const id = this.topic().id;
+    const id = this.topicModel().id;
     if (!id) return;
 
     this.topicService.readDescription(id).pipe(take(1)).subscribe({
       next: (topic) => {
-        this.topic.update(t => ({ ...t, description: topic.description }));
+        this.topicModel.update(t => ({ ...t, description: topic.description }));
       }
     });
   }
 
   canNavigateTo(step: string): boolean {
     if (step === 'info') return true;
-    return !!this.topic().title;
+    return !!this.topicModel().title;
   }
 
   isFooterNextDisabled(): boolean {
-    if (this.currentStep() === 'info') return !this.topic().title;
+    if (this.currentStep() === 'info') return !this.topicModel().title;
     if (this.currentStep() === 'discussion') return !this.discussion().question;
     return false;
   }
@@ -224,14 +223,14 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   private saveGroupsAndContinue() {
-    const topicId = this.topic().id;
+    const topicId = this.topicModel().id;
     if (!topicId) return;
 
     this.isLoading.set(true);
     const addOps = this.addedGroups().map(g => this.groupMemberTopicService.addTopic(g.id, topicId, g.level || 'read'));
     const removeOps = this.groupsToRemove().map(g => this.groupMemberTopicService.removeTopicFromGroup(g.id, topicId));
 
-    forkJoin([...addOps, ...removeOps, this.topicService.patch(this.topic())]).pipe(
+    forkJoin([...addOps, ...removeOps, this.topicService.patch(this.topicModel())]).pipe(
       catchError(() => of(null))
     ).subscribe(() => {
       this.isLoading.set(false);
@@ -243,13 +242,14 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   handleFooterBack() {
     const order = this.steps.map(s => s.key);
     const idx = order.indexOf(this.currentStep());
-    if (idx > 0) this.currentStep.set(order[idx - 1]);
+    if (idx > 0) this.currentStep.set(order[idx - 1] as TopicCreateStep);
   }
 
   onTopicUpdate(updates: Partial<Topic>) {
-    this.topic.update(t => ({ ...t, ...updates }));
+    this.topicModel.update(t => ({ ...t, ...updates }));
     if (updates.id) {
-      this.reloadMembers$.next();
+      this.membersResource.reload();
+      this.invitesResource.reload();
     }
   }
 
@@ -267,7 +267,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   saveToSettings() {
-    const t = this.topic();
+    const t = this.topicModel();
     if (!t.id) {
       // Topic not yet created (e.g. eager create failed) — create now
       this.createTopicEagerly();
@@ -276,7 +276,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
 
     const patchAndUpload$ = this.topicService.patch(t).pipe(
       switchMap((updated) => {
-        this.topic.set(updated);
+        this.topicModel.set(updated);
         if (this.imageFile()) {
           const path = `/api/users/self/topics/${updated.id}/upload`;
           return this.uploadService.upload<{ imageUrl?: string; link?: string; id?: string }>(path, this.imageFile()!).pipe(
@@ -284,9 +284,9 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
               if (uploaded) {
                 const imageUrl = uploaded.imageUrl || uploaded.link;
                 if (imageUrl) {
-                  this.topic.update(current => ({ ...current, imageUrl }));
+                  this.topicModel.update(current => ({ ...current, imageUrl }));
                 } else if (uploaded.id) {
-                  this.topic.set(uploaded);
+                  this.topicModel.set(uploaded);
                 }
               }
               return uploaded;
@@ -309,7 +309,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   transitionToPreview() {
-    const t = this.topic();
+    const t = this.topicModel();
     const disc = this.discussion();
 
     if (!t.id || !disc.question) {
@@ -323,7 +323,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
       : this.discussionService.create(t.id, disc);
 
     save$.pipe(catchError(() => of(null))).subscribe((d) => {
-      if (d) this.topic.update(current => ({ ...current, discussionId: d.id }));
+      if (d) this.topicModel.update(current => ({ ...current, discussionId: d.id }));
       this.isLoading.set(false);
       this.currentStep.set('preview');
     });
@@ -341,7 +341,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   saveAsDraft() {
-    const t = this.topic();
+    const t = this.topicModel();
     if (!t.id) {
       this.notification.showRaw('info', 'VIEWS.TOPIC_CREATE.SAVE_FIRST_TO_INVITE');
       return;
@@ -350,7 +350,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
     this.isLoading.set(true);
     this.topicService.patch(t).pipe(
       switchMap((savedTopic) => {
-        this.topic.set(savedTopic);
+        this.topicModel.set(savedTopic);
         return this.saveGroups(savedTopic.id!);
       })
     ).subscribe({
@@ -359,7 +359,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
         this.groupsToRemove.set([]);
         this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
         this.hasChanges.set(false);
-        this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', this.topic().id]);
+        this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', this.topicModel().id]);
       },
       error: () => {
         this.isLoading.set(false);
@@ -370,7 +370,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
 
   publishTopic() {
     this.isLoading.set(true);
-    const t = this.topic();
+    const t = this.topicModel();
     const disc = this.discussion();
     const isNewOrDraft = t.status === 'draft';
 
@@ -380,7 +380,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
 
     topicSave$.pipe(
       switchMap((savedTopic) => {
-        this.topic.set(savedTopic);
+        this.topicModel.set(savedTopic);
         const groupsSave$ = this.saveGroups(savedTopic.id!);
         const discSave$: Observable<Discussion | null> = disc.question
           ? (savedTopic.discussionId
@@ -411,10 +411,10 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
       this.notification.showRaw('success', successMessage);
 
       this.hasChanges.set(false);
-      this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', this.topic().id]).then(() => {
+      this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', this.topicModel().id]).then(() => {
         if (isNewOrDraft) {
           this.dialog.open(TopicInviteDialogComponent, {
-            data: { topic: this.topic() }
+            data: { topic: this.topicModel() }
           });
         }
       });
@@ -422,12 +422,13 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   inviteEditors() {
-    const topic = this.topic();
+    const topic = this.topicModel();
     if (topic.id) {
       this.dialog.open(TopicInviteDialogComponent, {
         data: { topic: topic as Topic, allowedLevels: ['edit', 'admin'] }
       }).afterClosed().subscribe(() => {
-        this.reloadMembers$.next();
+        this.membersResource.reload();
+        this.invitesResource.reload();
       });
     } else {
       this.notification.showRaw('info', 'VIEWS.TOPIC_CREATE.SAVE_FIRST_TO_INVITE');
@@ -435,7 +436,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   doDeleteTopic() {
-    const topicId = this.topic().id;
+    const topicId = this.topicModel().id;
     if (!topicId) return;
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -473,7 +474,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   removeChanges() {
-    const topicId = this.topic().id;
+    const topicId = this.topicModel().id;
     if (topicId) {
       this.topicService.delete({ id: topicId }).pipe(take(1)).subscribe();
     }

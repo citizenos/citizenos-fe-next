@@ -5,7 +5,7 @@
   [currentStep]="currentStep()"
   [hasSidebar]="true"
   [isNextDisabled]="isFooterNextDisabled()"
-  [topic]="topic()"
+  [topic]="topicModel()"
   (stepChange)="onStepChange($event)"
   (saveDraft)="saveAsDraft()"
   (footerContinue)="handleFooterContinue()"
@@ -21,14 +21,14 @@
   @switch (currentStep()) {
     @case ('info') {
       <cos-step-topic-info
-        [topic]="topic()"
+        [topic]="topicModel()"
         (topicUpdate)="onTopicUpdate($event)"
         (imageFileUpdate)="onImageFileUpdate($event)"
       ></cos-step-topic-info>
     }
     @case ('settings') {
       <cos-step-topic-settings
-        [topic]="topic()"
+        [topic]="topicModel()"
         [isCreatedFromGroup]="isCreatedFromGroup()"
         (topicUpdate)="onTopicUpdate($event)"
         (groupsAdded)="onGroupsAdded($event)"
@@ -43,15 +43,17 @@
     }
     @case ('preview') {
       <cos-step-topic-preview
-        [topic]="topic()"
+        [topic]="topicModel()"
         [discussion]="discussion()"
       ></cos-step-topic-preview>
+    }
+    @default {
     }
   }
 
   <div sidebar class="sidebar-block">
     <cos-member-editors-panel
-      [topic]="topic()"
+      [topic]="topicModel()"
       [members]="members()"
       [invites]="invites()"
       (inviteEditors)="inviteEditors()"

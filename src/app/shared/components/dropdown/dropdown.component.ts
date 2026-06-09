@@ -7,17 +7,17 @@ import { IconComponent } from '../icon/icon.component';
   standalone: true,
   imports: [IconComponent],
   template: `
-    <div class="dropdown-wrapper" [class.open]="isOpen()"
-         role="combobox"
-         [attr.aria-expanded]="isOpen()"
-         aria-haspopup="listbox"
-         aria-controls="dropdown-options-panel">
+    <div class="dropdown-wrapper" [class.open]="isOpen()">
       <div class="dropdown-selection"
+           [class.with_label]="placeholder()"
            (click)="toggle()"
            (keydown.enter)="toggle()"
            (keydown.space)="toggle(); $event.preventDefault()"
-           role="button"
+           role="combobox"
            tabindex="0"
+           aria-haspopup="listbox"
+           [attr.aria-expanded]="isOpen()"
+           aria-controls="dropdown-options-panel"
            [attr.aria-label]="placeholder() || 'Toggle dropdown'">
         <div class="dropdown-content">
           @if (placeholder()) {
@@ -45,10 +45,11 @@ import { IconComponent } from '../icon/icon.component';
       background: var(--color-surfaces);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
-      transition: border-color var(--transition-fast);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 
       &.open {
         border-color: var(--color-border-active);
+        box-shadow: 0 0 0 3px var(--color-focus-ring);
       }
     }
 
@@ -56,9 +57,12 @@ import { IconComponent } from '../icon/icon.component';
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 6px 12px;
+      padding: 6px 16px;
+      min-height: 48px;
       cursor: pointer;
       gap: 8px;
+      position: relative;
+      box-sizing: border-box;
     }
 
     .dropdown-content {
@@ -69,15 +73,22 @@ import { IconComponent } from '../icon/icon.component';
     }
 
     .dropdown-label {
+      position: absolute;
       font-size: 12px;
-      color: var(--color-text-muted);
       line-height: 16px;
+      top: 4px;
+      left: 16px;
+      color: #727C84;
+      pointer-events: none;
+      font-family: 'Noto Sans', sans-serif;
     }
 
     .dropdown-value {
       font-size: 14px;
       color: var(--color-text);
       line-height: 20px;
+      font-weight: 600;
+      padding: 14px 0px 5px;
     }
 
     .dropdown-arrow {
@@ -105,7 +116,21 @@ import { IconComponent } from '../icon/icon.component';
       overflow-y: auto;
     }
 
-    /* option item styles live in the parent component that projects them */
+    ::ng-deep .dropdown-options .option,
+    ::ng-deep .dropdown-options [role="option"] {
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-text);
+      outline: none;
+    }
+
+    ::ng-deep .dropdown-options .option:hover,
+    ::ng-deep .dropdown-options .option:focus,
+    ::ng-deep .dropdown-options [role="option"]:hover,
+    ::ng-deep .dropdown-options [role="option"]:focus {
+      background: var(--color-secondary);
+    }
   `],
 })
 export class DropdownComponent {

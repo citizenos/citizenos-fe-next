@@ -1,5 +1,5 @@
 import { OverlayRef } from '@angular/cdk/overlay';
-import { Directive, HostListener, inject, Injectable, Input } from '@angular/core';
+import { Directive, HostListener, inject, Input, Service } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 @Directive({
@@ -18,7 +18,7 @@ export class DialogCloseDirective {
   }
 }
 
-@Injectable()
+@Service({ autoProvided: false })
 export class DialogRef<_T = unknown, R = unknown> {
   private overlayRef = inject(OverlayRef);
 

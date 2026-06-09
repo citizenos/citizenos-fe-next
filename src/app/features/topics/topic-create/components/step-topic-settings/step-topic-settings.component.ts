@@ -48,7 +48,7 @@ export class StepTopicSettingsComponent {
   groupsAdded = output<TopicMemberGroup[]>();
   groupRemoved = output<TopicMemberGroup>();
 
-  groups = toSignal(this.userGroupService.loadItems());
+  groups = this.userGroupService.items;
 
   onUpdate(updates: Partial<Topic>) {
     this.topicUpdate.emit(updates);

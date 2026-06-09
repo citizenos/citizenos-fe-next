@@ -3,8 +3,9 @@
   headingKey="VIEWS.VOTE_CREATE.HEADING"
   [steps]="steps"
   [currentStep]="currentStep()"
+  [hasSidebar]="true"
   [isNextDisabled]="isFooterNextDisabled()"
-  [topic]="topic() | any"
+  [topic]="topicModel()"
   (stepChange)="onStepChange($event)"
   (saveDraft)="saveAsDraft()"
   (footerContinue)="handleFooterContinue()"
@@ -20,13 +21,13 @@
   @switch (currentStep()) {
     @case ('info') {
       <cos-step-topic-info
-        [topic]="$any(topic())"
+        [topic]="topicModel()"
         (topicUpdate)="onTopicUpdate($event)"
       ></cos-step-topic-info>
     }
     @case ('settings') {
       <cos-step-topic-settings
-        [topic]="$any(topic())"
+        [topic]="topicModel()"
         (topicUpdate)="onTopicUpdate($event)"
         (groupsAdded)="onGroupsAdded($event)"
         (groupRemoved)="onGroupRemoved($event)"
@@ -34,22 +35,23 @@
     }
     @case ('voting') {
       <cos-step-vote-settings
-        [vote]="$any(vote())"
-        [topic]="$any(topic())"
+        [vote]="voteModel()"
         (voteUpdate)="onVoteUpdate($event)"
       ></cos-step-vote-settings>
     }
     @case ('preview') {
       <cos-step-topic-preview
-        [topic]="$any(topic())"
-        [vote]="vote()"
+        [topic]="topicModel()"
+        [vote]="voteModel()"
       ></cos-step-topic-preview>
+    }
+    @default {
     }
   }
 
   <div sidebar class="sidebar_block">
     <cos-member-editors-panel
-      [topic]="topic() | any"
+      [topic]="topicModel()"
       [members]="members()"
       [invites]="invites()"
       (inviteEditors)="inviteEditors()"

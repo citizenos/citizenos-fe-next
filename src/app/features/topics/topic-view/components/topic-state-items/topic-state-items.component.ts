@@ -9,6 +9,7 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { Vote } from '../../../../../core/interfaces/vote';
+import { TopicVote } from '../../../../../core/interfaces/topic';
 
 import { DomainIconComponent } from '../../../../../shared/components/domain-icon/domain-icon.component';
 
@@ -26,7 +27,7 @@ export class TopicStateItemsComponent {
   // These could be passed down, but the component could also query them if it has id.
   // For UI representation, let's allow passing signals or objects
   ideation = model<Ideation | null>(null);
-  vote = model<Vote | null>(null);
+  vote = model<Vote | TopicVote | any>(null);
   eventCount = model<number>(0);
   
   // We can inject services to check logic

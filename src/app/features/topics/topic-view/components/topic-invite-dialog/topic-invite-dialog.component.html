@@ -69,12 +69,12 @@
                     [description]="'COMPONENTS.TOPIC_INVITE_EDITORS.TOOLTIP_TOPIC_ROLES_DESCRIPTION' | translate">
                   </cos-tooltip>
                   <cos-dropdown>
-                    <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="'COMPONENTS.TOPIC_INVITE.ROLE' | translate">
+                    <div selection class="selected_item" [attr.aria-label]="'COMPONENTS.TOPIC_INVITE.ROLE' | translate">
                       {{ 'TXT_TOPIC_LEVELS_' + (globalLevel() | uppercase) | translate }}
                     </div>
                     <div options>
                       @for (level of allowedLevels(); track level) {
-                        <div class="option" (click)="updateAllLevels(level)" (keydown.enter)="updateAllLevels(level)" tabindex="0" role="button">
+                        <div class="option" (click)="updateAllLevels(level)" (keydown.enter)="updateAllLevels(level)" tabindex="0" role="option">
                           {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                         </div>
                       }
@@ -89,12 +89,12 @@
                         <div class="name">{{ member.name }}</div>
                         <div class="level_select">
                           <cos-dropdown>
-                            <div selection class="selected_item" role="button" tabindex="0" [attr.aria-label]="member.name">
+                            <div selection class="selected_item" [attr.aria-label]="member.name">
                               {{ 'TXT_TOPIC_LEVELS_' + (member.level | uppercase) | translate }}
                             </div>
                             <div options>
                               @for (level of allowedLevels(); track level) {
-                                <div class="option" (click)="updateMemberLevel(member, level)" (keydown.enter)="updateMemberLevel(member, level)" tabindex="0" role="button">
+                                <div class="option" (click)="updateMemberLevel(member, level)" (keydown.enter)="updateMemberLevel(member, level)" tabindex="0" role="option">
                                   {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                                 </div>
                               }

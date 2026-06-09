@@ -4,8 +4,9 @@ import {
   inject,
   signal,
   computed,
+  debounced,
+  effect,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserTopicService } from '../../../core/services/user-topic.service';
 import { TopicCardComponent } from '../../../shared/components/topic-card/topic-card.component';
@@ -99,13 +100,18 @@ export class MyTopicsComponent {
 
   constructor() {
     this.seoService.setPageTitle('VIEWS.MY_TOPICS.HEADER');
+    effect(() => {
+      this.debouncedSearch.value();
+      this.applyFilters();
+    });
   }
 
   searchValue = signal('');
+  debouncedSearch = debounced(this.searchValue, 300);
   currentPage = signal(1);
 
-  topics = toSignal(this.topicService.items$, { initialValue: [] });
-  totalPages = toSignal(this.topicService.totalPages, { initialValue: 1 });
+  topics = this.topicService.items;
+  totalPages = this.topicService.totalPages;
 
   private selectedFilters = signal<Record<string, string>>({});
 
@@ -141,7 +147,7 @@ export class MyTopicsComponent {
         selectedValue: sel['status'] ?? '',
         items: [
           { title: 'TXT_TOPIC_STATUS_ALL', value: 'all' },
-          ...Object.keys(TOPIC_STATUSES).map(s => ({ title: `TXT_TOPIC_STATUS_${s}`, value: s })),
+          ...Object.keys(TOPIC_STATUSES).map(s => ({ title: `TXT_TOPIC_STATUS_${s.toUpperCase()}`, value: s })),
         ],
       },
       {
@@ -160,7 +166,7 @@ export class MyTopicsComponent {
         selectedValue: sel['category'] ?? '',
         items: [
           { title: 'TXT_TOPIC_CATEGORY_ALL', value: 'all' },
-          ...Object.keys(TOPIC_CATEGORIES).map(c => ({ title: `TXT_TOPIC_CATEGORY_${c}`, value: c })),
+          ...Object.keys(TOPIC_CATEGORIES).map(c => ({ title: `TXT_TOPIC_CATEGORY_${c.toUpperCase()}`, value: c })),
         ],
       },
     ];
@@ -219,12 +225,11 @@ export class MyTopicsComponent {
     if (f['category']) this.topicService.setParam('categories', [f['category']]);
     if (f['country']) this.topicService.setParam('country', f['country']);
     if (f['language']) this.topicService.setParam('language', f['language']);
-    if (this.searchValue()) this.topicService.setParam('search', this.searchValue());
+    if (this.debouncedSearch.value()) this.topicService.setParam('search', this.debouncedSearch.value());
   }
 
   onSearch(value: string) {
     this.searchValue.set(value);
-    this.topicService.setParam('search', value || null);
   }
 
   onPageChange(page: number) {

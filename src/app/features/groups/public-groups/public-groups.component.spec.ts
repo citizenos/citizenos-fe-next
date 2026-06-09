@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { runInInjectionContext, EnvironmentInjector } from '@angular/core';
+import { runInInjectionContext, EnvironmentInjector, signal } from '@angular/core';
 import { PublicGroupsComponent } from './public-groups.component';
 import { PublicGroupService } from '../../../core/services/public-group.service';
 import { UserStore } from '../../../core/state/user.store';
-import { of, BehaviorSubject } from 'rxjs';
+import { of } from 'rxjs';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 const mockGroupService: Partial<PublicGroupService> = {
-  items$: of([]),
-  totalPages: new BehaviorSubject(1) as unknown as BehaviorSubject<number>,
+  items: signal([]),
+  totalPages: signal(1),
   reset: vi.fn(),
   setParam: vi.fn(),
   loadPage: vi.fn(),

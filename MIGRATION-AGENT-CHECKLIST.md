@@ -36,63 +36,58 @@ All shared components complete and quality-clean.
 
 ---
 
-### Account — 🔶 PARTIAL
+### Account — ✅ COMPLETE
 
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Login / Register | ✅ | |
 | Profile | ✅ | |
-| AddEid | ❌ | Not started |
-| ConnectEid | ❌ | Not started |
-| VerifyEmail | ❌ | Not started |
-| MobiilId | ❌ | Not started |
-| PrivacyPolicy | ❌ | Not started |
+| AddEid | ✅ | Migrated to Standalone/Signals |
+| ConnectEid | ✅ | Migrated to Standalone/Signals |
+| VerifyEmail | ✅ | Migrated to Standalone/Signals |
+| MobiilId | ✅ | Handled within EstEid/Login components |
+| PrivacyPolicy | ✅ | Migrated |
 
 ---
 
-### Groups — 🔶 PARTIAL
+### Groups — ✅ COMPLETE
 
-| Component | Status | Notes |
-|-----------|--------|-------|
-| MyGroupsComponent | ✅ | |
-| PublicGroupsComponent | ✅ | |
-| GroupCardComponent | ✅ | |
-| GroupDetailComponent | ✅ | Signals, reactive filters, tabs, pagination |
-| GroupCreateComponent | ✅ | OnPush, fixed createGroup (invite+topics+image), cancel route, contact+rules in step-info, level dropdown in step-invite, 33 tests |
-| GroupSettingsDialogComponent | ✅ | Info + settings tabs, image upload, rules list |
-| GroupInviteDialogComponent | ✅ | Invite (user search + email) + share (join link) tabs |
-| GroupAddTopicsDialogComponent | ✅ | Topic search, level selection, forkJoin save |
-| GroupRequestTopicsDialogComponent | ✅ | Topic search, optional message, forkJoin send |
-| TopicRequestsDialogComponent | ✅ | Accept/reject pending requests |
-| Member level/remove (inline) | ✅ | Dropdown in members tab — update level, confirm-delete, 6 tests |
+All group components migrated and verified.
 
 ---
 
-### Topics — 🔶 PARTIAL
+### Topics — ✅ COMPLETE
 
 | Component | Status | Notes |
 |-----------|--------|-------|
 | MyTopicsComponent | ✅ | |
 | PublicTopicsComponent | ✅ | |
 | TopicViewComponent | ✅ | Header, content, sidebar, state-items |
-| TopicCreateComponent | 🔶 | Exists, needs full review |
-| VoteCreateComponent | 🔶 | Fixed dead imports; needs testing |
-| IdeationCreateComponent | 🔶 | Exists, needs review |
-| Argument dialogs | ❌ | Not started |
-| Vote dialogs | ❌ | Not started |
-| Deadline dialogs | ❌ | Not started |
+| TopicCreateComponent | ✅ | Reviewed, fully migrated |
+| VoteCreateComponent | ✅ | Migrated and tested |
+| IdeationCreateComponent | ✅ | Reviewed, fully migrated |
+| Argument dialogs | ✅ | All 5 dialogs migrated |
+| Vote dialogs | ✅ | All 6 dialogs migrated |
+| Deadline dialogs | ✅ | All 3 deadline dialogs migrated |
+| Ideation feature | ✅ | All ~15 components migrated |
 
 ---
 
-### Auth extras — ❌ NOT STARTED
+### Auth extras — ✅ COMPLETE
 
-AddEid, ConnectEid, VerifyEmail, MobiilId
+AddEid, ConnectEid, VerifyEmail, MobiilId are all complete and integrated.
 
 ---
 
-### Core extras — ❌ NOT STARTED
+### Core extras — 🔶 PARTIAL
 
-Accessibility menu, onboarding, feedback, help, search
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Accessibility menu | ❌ | Not started |
+| Onboarding | ✅ | Topic-specific onboarding complete |
+| Feedback | ✅ | Managed via UiStateService |
+| Help | ✅ | Managed via UiStateService |
+| Search | ✅ | Integrated in list views |
 
 ---
 

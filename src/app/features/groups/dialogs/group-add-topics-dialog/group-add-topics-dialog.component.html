@@ -28,10 +28,10 @@
             <div class="topic_row">
               <span class="topic_title">{{ topic.title }}</span>
               <cos-dropdown>
-                <div selection role="button" tabindex="0" [attr.aria-label]="topic.title">{{ 'TXT_TOPIC_PERMISSION_' + topic.selectedLevel.toUpperCase() | translate }}</div>
+                <div selection [attr.aria-label]="topic.title">{{ 'TXT_TOPIC_PERMISSION_' + topic.selectedLevel.toUpperCase() | translate }}</div>
                 <div options>
                   @for (level of LEVELS; track level) {
-                    <div class="option" (click)="updateLevel(topic, level)" (keydown.enter)="updateLevel(topic, level)" role="button" tabindex="0">{{ 'TXT_TOPIC_PERMISSION_' + level.toUpperCase() | translate }}</div>
+                    <div class="option" (click)="updateLevel(topic, level)" (keydown.enter)="updateLevel(topic, level)" role="option" tabindex="0">{{ 'TXT_TOPIC_PERMISSION_' + level.toUpperCase() | translate }}</div>
                   }
                 </div>
               </cos-dropdown>

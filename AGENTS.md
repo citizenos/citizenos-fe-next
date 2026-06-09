@@ -10,8 +10,8 @@
 **purpose:**
 The `citizenos-fe-next` application is the modern front-end for the CitizenOS platform, enabling civic participation, group decision-making, and secure electronic voting.
 
-**scope:**
-This Angular application acts as the user interface for civic discussions, group management, proposal ideation, and secure digital signature processes, replacing the legacy front-end with scalable, strongly-typed, zoneless Angular 21 patterns.
+scope:
+This Angular application acts as the user interface for civic discussions, group management, proposal ideation, and secure digital signature processes, replacing the legacy front-end with scalable, strongly-typed, zoneless Angular 22 patterns.
 
 **key_features:**
 - Interactive Public and Private Topics (Ideation/Discussion/Voting)
@@ -34,7 +34,7 @@ This Angular application acts as the user interface for civic discussions, group
 
 **directories:**
 - path: /src
-  description: Contains all the Angular 21 source code including standalone components, routes, styles, and Signal state stores.
+  description: Contains all the Angular 22 source code including standalone components, routes, styles, and Signal state stores.
 
 - path: /docs
   description: Contains comprehensive guides, architecture diagrams, API docs, and end-user guides.
@@ -52,7 +52,7 @@ This Angular application acts as the user interface for civic discussions, group
 - SCSS
 
 **frameworks:**
-- Angular 21 (Zoneless, Standalone)
+- Angular 22 (Zoneless, Standalone)
 
 **infrastructure:**
 - Webpack/Vite (Angular Build System)

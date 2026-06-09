@@ -1,12 +1,12 @@
 # CitizenosFeNext - Project Instructions
 
-This project is the modern Angular 21 frontend for the CitizenOS platform, replacing the legacy frontend with a scalable, strongly-typed, and zoneless architecture.
+This project is the modern Angular 22 frontend for the CitizenOS platform, replacing the legacy frontend with a scalable, strongly-typed, and zoneless architecture.
 
 ## Project Overview
 - **Purpose**: Modern frontend for CitizenOS, enabling civic participation, group decision-making, and secure electronic voting.
 - **Technology Stack**: 
-    - **Framework**: Angular 21 (Zoneless, Standalone Components).
-    - **State Management**: `@ngrx/signals`.
+    - **Framework**: Angular 22 (Zoneless, Standalone Components).
+    - **State Management**: `@ngrx/signals` and Angular Signals.
     - **Language**: TypeScript (Strict mode).
     - **Styling**: SCSS.
     - **Internationalization**: `@ngx-translate`.
@@ -24,18 +24,20 @@ This project is the modern Angular 21 frontend for the CitizenOS platform, repla
 ## Architectural Guidelines
 - **Zoneless Angular**: The project uses `provideZonelessChangeDetection()`.
 - **Standalone Components**: Every component, directive, and pipe must be `standalone: true`.
-- **Signals-First**: Use `signal()`, `computed()`, `input()`, `output()`, and `model()` for state and data flow.
+- **Signals-First**: Use `signal()`, `computed()`, `effect()`, `input()`, `output()`, and `model()` for state and data flow.
 - **Dependency Injection**: Use the `inject()` function instead of constructor injection.
-- **Change Detection**: Every component must use `ChangeDetectionStrategy.OnPush`.
-- **Control Flow**: Use the new `@if`, `@for`, `@else`, `@empty`, `@switch` syntax.
-- **Routing**: Localized routes are managed under `:lang` (e.g., `/en/topics`). Feature routes are lazy-loaded.
+- **Services**: Prefer the `@Service()` decorator over `@Injectable({ providedIn: 'root' })` for root-provided services.
+- **Data Fetching**: Use `resource()` and `httpResource()` for reactive data fetching.
+- **Change Detection**: Components default to `OnPush`. Only use `ChangeDetectionStrategy.Eager` if legacy behavior is strictly required.
+- **Control Flow**: Use the modern `@if`, `@for`, `@else`, `@empty`, `@switch` syntax.
+- **Routing**: Use `isActive()` signal for checking route activity. Localized routes are managed under `:lang`.
 
 ## Development Conventions
 - **No `any` Type**: Never use `any`. Use proper interfaces, `Partial<T>`, `unknown`, or specific types.
 - **Naming**: Use kebab-case for file and directory names.
 - **Component Checklist**:
     - `standalone: true`.
-    - `ChangeDetectionStrategy.OnPush`.
+    - `ChangeDetectionStrategy.OnPush` (Implicit default in Angular 22).
     - No `CommonModule` imports.
     - Use `inject()`.
     - Use Signals for local state.
