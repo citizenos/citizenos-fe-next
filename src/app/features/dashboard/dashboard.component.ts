@@ -48,10 +48,10 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  readonly myTopics = toSignal(this.userTopicService.loadItems(), { initialValue: [] });
-  readonly publicTopics = toSignal(this.publicTopicService.loadItems(), { initialValue: [] });
-  readonly myGroups = toSignal(this.userGroupService.loadItems(), { initialValue: [] });
-  readonly publicGroups = toSignal(this.publicGroupService.loadItems(), { initialValue: [] });
+  readonly myTopics = this.userTopicService.items;
+  readonly publicTopics = this.publicTopicService.items;
+  readonly myGroups = this.userGroupService.items;
+  readonly publicGroups = this.publicGroupService.items;
 
   private readonly allNews = toSignal(
     this.newsService.get().pipe(
