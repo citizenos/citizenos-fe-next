@@ -36,7 +36,7 @@ export class DashboardPage {
     // Create actions
     this.createTopicButton = page.locator('a[href*="topics/create"], button:has-text("Create topic")').first();
     this.createGroupButton = page.locator('a[href*="groups/create"], button:has-text("Create group")').first();
-    this.createMenu = page.locator('app-create-menu').first();
+    this.createMenu = page.locator('cos-create-menu').first();
 
     // Links
     this.myTopicsLink = page.locator('a[href*="my/topics"]').first();
@@ -57,7 +57,7 @@ export class DashboardPage {
   async expectTopicCardsVisible() {
     // Wait for at least one topic card, or an empty state
     const topicCard = this.topicCards.first();
-    const emptyState = this.page.locator('[class*="empty"], [class*="no-results"]').first();
+    const emptyState = this.page.locator('[class*="empty"], [class*="no-results"], .no_engagements').first();
     await expect(topicCard.or(emptyState)).toBeVisible({ timeout: 10000 });
   }
 }

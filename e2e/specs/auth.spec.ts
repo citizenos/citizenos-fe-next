@@ -3,6 +3,8 @@ import { LoginPage } from '../pages/login.page';
 import { route, waitForApp, getEnv } from '../fixtures/test-fixtures';
 
 test.describe('Authentication', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
+
   test('should display the login form', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();

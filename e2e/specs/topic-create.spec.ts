@@ -20,6 +20,7 @@ test.describe('Topic Creation Flow', () => {
     await topicCreatePage.fillInfo(testTitle, 'This is a test topic created by E2E automation.');
     
     // We expect Etherpad iframe to load
+    await page.getByRole('button', { name: /Topic text/i }).click();
     await expect(page.locator('iframe[cosEtherpad]')).toBeVisible();
 
     await topicCreatePage.proceedToNextStep(); // Goes to Settings
