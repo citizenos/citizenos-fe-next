@@ -62,14 +62,15 @@ test.describe('Topic Arguments Flow', () => {
     await topicViewPage.addArgument(subject, 'Deleting this');
     
     const arg = topicViewPage.argumentItems.filter({ hasText: subject });
-    await arg.locator('.btn_argument_actions').first().click();
-    await arg.locator('.option:has-text("Delete")').click();
+    await arg.hover();
+    await arg.locator('.btn_argument_actions:visible').first().click();
+    await arg.locator('.option', { hasText: 'Delete' }).click();
     
     // Confirm dialog
     await topicViewPage.page.locator('button:has-text("Yes")').click();
     
     // It should show "This argument has been deleted" or disappear depending on implementation
     // Usually it shows ArgumentDeletedComponent
-    await expect(topicViewPage.page.locator('cos-argument-deleted')).toBeVisible();
+    await expect(topicViewPage.page.locator('app-argument-deleted')).toBeVisible();
   });
 });

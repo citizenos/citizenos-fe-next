@@ -13,18 +13,18 @@ export class ParticipantsDialogPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.tabParticipants = page.locator('.dialog_tab').nth(0);
-    this.tabGroups = page.locator('.dialog_tab').nth(1);
-    this.tabInvited = page.locator('.dialog_tab').nth(2);
-    
     this.memberRows = page.locator('app-topic-member-user');
     this.inviteRows = page.locator('app-topic-member-invite');
     this.closeBtn = page.locator('button.btn_dialog_close');
   }
 
   async selectTab(tab: 'participants' | 'groups' | 'invited') {
-    if (tab === 'participants') await this.tabParticipants.click();
-    else if (tab === 'groups') await this.tabGroups.click();
-    else if (tab === 'invited') await this.tabInvited.click();
+    let text = 'Participants';
+    if (tab === 'groups') text = 'Groups';
+    else if (tab === 'invited') text = 'Invited';
+    
+    await this.page.locator('app-topic-participants button.dialog_tab.mobile_hidden')
+      .filter({ hasText: new RegExp(text, 'i') })
+      .click();
   }
 }

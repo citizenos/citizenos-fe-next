@@ -128,11 +128,19 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
         this.topicModel.set(topic);
         this.membersResource.reload();
         this.invitesResource.reload();
-        if (topic.ideationId) {
+        if (topic.ideationId && topic.ideationId !== 'undefined') {
+          console.log('BROWSER CONSOLE: loadExistingTopic fetching ideation:', topic.ideationId);
           this.ideationService.get({ topicId: topic.id, ideationId: topic.ideationId }).subscribe({
-            next: (ideation) => this.ideationModel.set(ideation),
-            error: () => { /* intentionally empty */ }
+            next: (ideation) => {
+              console.log('BROWSER CONSOLE: loadExistingTopic got ideation:', ideation.id);
+              this.ideationModel.set(ideation);
+            },
+            error: (err) => { 
+              console.log('BROWSER CONSOLE: loadExistingTopic err:', err);
+            }
           });
+        } else {
+          console.log('BROWSER CONSOLE: loadExistingTopic NO ideationId in topic:', topic);
         }
         this.isLoading.set(false);
       },
@@ -161,6 +169,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
       })
     ).subscribe({
       next: (savedIdeation) => {
+        console.log('BROWSER CONSOLE: CREATED IDEATION ID IS: ' + savedIdeation.id);
         this.ideationModel.set(savedIdeation);
         this.isLoading.set(false);
         this.hasChanges.set(false);
@@ -305,8 +314,11 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
     this.isLoading.set(true);
     this.topicService.patch(t).subscribe({
       next: () => {
-        if (this.ideationModel().id) {
-          this.ideationService.update({ ...this.ideationModel(), topicId: t.id || '' }).pipe(take(1)).subscribe();
+        const payload = { ...this.ideationModel(), topicId: t.id || '' };
+        if (payload.id && payload.id !== 'undefined') {
+          this.ideationService.update(payload).pipe(take(1)).subscribe();
+        } else if (payload.question && payload.question.trim().length > 0) {
+          this.ideationService.save(payload).pipe(take(1)).subscribe();
         }
         this.isLoading.set(false);
         this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
@@ -326,7 +338,13 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
     this.isLoading.set(true);
     this.topicService.patch({ ...t, status: 'ideation' }).subscribe({
       next: (savedTopic) => {
-        this.ideationService.update({ ...this.ideationModel(), topicId: t.id || '' }).pipe(take(1)).subscribe({
+        const payload = { ...this.ideationModel(), topicId: t.id || '' };
+        console.log('BROWSER CONSOLE: onPublish payload.id is:', payload.id);
+        const request$ = payload.id && payload.id !== 'undefined'
+          ? this.ideationService.update(payload)
+          : this.ideationService.save(payload);
+
+        request$.pipe(take(1)).subscribe({
           next: () => {
             this.isLoading.set(false);
             this.notification.showRaw('success', 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');

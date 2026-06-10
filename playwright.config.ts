@@ -85,9 +85,7 @@ export default defineConfig({
       name: 'mobile',
       use: {
         ...devices['iPhone 14'],
-        storageState: path.join(__dirname, 'e2e/.auth/user.json'),
       },
-      dependencies: ['auth-setup'],
       testMatch: ['home.spec.ts', 'navigation.spec.ts'],
     },
   ],

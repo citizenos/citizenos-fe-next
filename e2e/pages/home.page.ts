@@ -27,13 +27,13 @@ export class HomePage {
     // Navigation
     this.navbar = page.locator('nav, .nav, .header, app-shell header, cos-logo').first();
     this.logo = page.locator('.desktop_logo cos-logo, .nav_mobile cos-logo');
-    this.loginLink = page.locator('.nav_items_wrap a[href*="account/login"], .big_button_wrap a[href*="account/login"], #mobile_login button.btn_big_submit');
-    this.registerLink = page.locator('.nav_items_wrap a[href*="account/signup"], .big_button_wrap a[href*="account/signup"], #mobile_login button.btn_big_submit_ghost');
+    this.loginLink = page.locator('.nav_items_wrap a[href*="account/login"], .big_button_wrap button, #mobile_login button.btn_big_submit');
+    this.registerLink = page.locator('.nav_items_wrap a[href*="account/signup"], .big_button_wrap button.btn_big_submit_ghost, #mobile_login button.btn_big_submit_ghost');
     this.languageSelector = page.locator('[class*="language"], [data-testid="language-selector"]').first();
 
     // Content
     this.heroSection = page.locator('.hero, .home-hero, [class*="hero"]').first();
-    this.featureBoxes = page.locator('app-feature-box, [class*="feature"]');
+    this.featureBoxes = page.locator('cos-feature-box');
     this.publicTopicsLink = page.locator('a[href*="public/topics"]').first();
     this.publicGroupsLink = page.locator('a[href*="public/groups"]').first();
   }

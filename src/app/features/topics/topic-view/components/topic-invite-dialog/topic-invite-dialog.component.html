@@ -136,7 +136,7 @@
         <div></div>
         <div class="button_row">
           <cos-button variant="secondary" (clicked)="close()">{{ 'COMPONENTS.TOPIC_INVITE_DIALOG.LNK_CANCEL' | translate }}</cos-button>
-          <cos-button variant="primary" (clicked)="doInvite()">{{ 'COMPONENTS.TOPIC_INVITE_DIALOG.BTN_SAVE' | translate }}</cos-button>
+          <cos-button variant="primary" [isDisabled]="selectedMembers().length === 0" (clicked)="doInvite()">{{ 'COMPONENTS.TOPIC_INVITE_DIALOG.BTN_SAVE' | translate }}</cos-button>
         </div>
       </div>
     }

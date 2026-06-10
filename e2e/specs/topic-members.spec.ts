@@ -53,7 +53,10 @@ test.describe('Member Management Flow', () => {
     await expect(page.locator('app-topic-invite-dialog')).toBeHidden();
     
     // Verify user is in "Invited" list
-    await page.locator('app-topic-participants-section .manage_link').first().click({ force: true });
+    const manageLink = page.locator('app-topic-participants-section .manage_link').first();
+    await expect(manageLink).toBeVisible();
+    await manageLink.click();
+    
     await participantsDialogPage.selectTab('invited');
     await expect(participantsDialogPage.inviteRows.filter({ hasText: inviteEmail })).toBeVisible();
   });

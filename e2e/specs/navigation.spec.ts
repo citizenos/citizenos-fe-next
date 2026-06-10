@@ -13,7 +13,12 @@ test.describe('Navigation', () => {
     await expect(nav).toBeVisible();
   });
 
-  test('should navigate to public topics from navigation', async ({ page }) => {
+  test('should navigate to public topics from navigation', async ({ page, isMobile }) => {
+    if (isMobile) {
+      const navMenuBtn = page.locator('.nav_mobile_actions button').nth(1);
+      await navMenuBtn.click({ force: true });
+      await page.waitForTimeout(500);
+    }
     const topicsLink = page.locator('a[href*="public/topics"]').first();
     if (await topicsLink.isVisible()) {
       await topicsLink.click();
@@ -22,7 +27,12 @@ test.describe('Navigation', () => {
     }
   });
 
-  test('should navigate to public groups from navigation', async ({ page }) => {
+  test('should navigate to public groups from navigation', async ({ page, isMobile }) => {
+    if (isMobile) {
+      const navMenuBtn = page.locator('.nav_mobile_actions button').nth(1);
+      await navMenuBtn.click({ force: true });
+      await page.waitForTimeout(500);
+    }
     const groupsLink = page.locator('a[href*="public/groups"]').first();
     if (await groupsLink.isVisible()) {
       await groupsLink.click();

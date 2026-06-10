@@ -58,8 +58,8 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
           <div class="created_at">{{ argument().createdAt | date : 'y-MM-dd HH:mm' }}</div>
           
           <div class="dropdown button_dropdown mobile_hidden" cosDropdown>
-            <button type="button" class="btn_argument_actions" (click)="$event.stopPropagation()" [aria-label]="'COMPONENTS.ARGUMENT.LBL_ARGUMENT_ACTIONS' | translate">
-              <cos-icon name="more-vertical" size="16"></cos-icon>
+            <button type="button" class="btn_argument_actions" [aria-label]="'COMPONENTS.ARGUMENT.LBL_ARGUMENT_ACTIONS' | translate">
+              <cos-icon name="argument-icon-legacy" size="16"></cos-icon>
             </button>
             <div class="options">
               @if (canEdit()) {

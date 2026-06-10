@@ -143,8 +143,8 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
   }
 
   update(data: { topicId: string; ideationId?: string; id?: string; [key: string]: ParamValue }): Observable<Ideation> {
-    const ideationId = data.ideationId || data.id;
-    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/ideations/${ideationId}`, true);
+    const extractedId = (data.ideationId && data.ideationId !== 'undefined') ? data.ideationId : ((data.id && data.id !== 'undefined') ? data.id : '');
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/ideations/${extractedId}`, true);
     return this.http.put<ApiResponse<Ideation>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
