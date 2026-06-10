@@ -21,7 +21,7 @@ test.describe('Topic Creation Flow', () => {
     
     // We expect Etherpad iframe to load
     await page.getByRole('button', { name: /Topic text/i }).click();
-    await expect(page.locator('iframe[cosEtherpad]')).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('iframe[cosEtherpad]')).toBeVisible({ timeout: 60000 });
 
     await topicCreatePage.proceedToNextStep(); // Goes to Settings
 

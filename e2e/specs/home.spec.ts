@@ -17,13 +17,15 @@ test.describe('Home Page', () => {
   });
 
   test('should display the application logo', async () => {
-    await expect(homePage.logo).toBeVisible();
+    const isLogoVisible = await homePage.logo.first().isVisible().catch(() => false);
+    const isMobileLogoVisible = await homePage.logo.nth(1).isVisible().catch(() => false);
+    expect(isLogoVisible || isMobileLogoVisible).toBeTruthy();
   });
 
   test('should display login and register links for unauthenticated users', async () => {
     // At least one of login/register should be visible
-    const loginVisible = await homePage.loginLink.isVisible().catch(() => false);
-    const registerVisible = await homePage.registerLink.isVisible().catch(() => false);
+    const loginVisible = await homePage.loginLink.first().isVisible().catch(() => false);
+    const registerVisible = await homePage.registerLink.first().isVisible().catch(() => false);
     expect(loginVisible || registerVisible).toBeTruthy();
   });
 

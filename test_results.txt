@@ -1,5 +1,0 @@
-
-> citizenos-fe-next@0.0.0 test
-> ng test --run
-
-Error: Unknown argument: run

@@ -33,8 +33,7 @@ test.describe('Navigation', () => {
 
   test('should handle legacy routes by redirecting with /en prefix', async ({ page }) => {
     await page.goto('/topics');
-    await page.waitForURL(/\/en\/topics/);
-    await expect(page).toHaveURL(/\/en\//);
+    await expect(page).toHaveURL(/\/en\/topics/, { timeout: 15000 });
   });
 
   test('should show 404 page for unknown routes', async ({ page }) => {
@@ -42,9 +41,7 @@ test.describe('Navigation', () => {
     await waitForApp(page);
 
     // Should show 404 content or redirect to 404
-    const is404 = page.url().includes('404');
-    const hasNotFoundText = await page.locator('text=/not found|404/i').isVisible().catch(() => false);
-    expect(is404 || hasNotFoundText).toBeTruthy();
+    await expect(page.locator('text=/not found|404|Page not found/i').first()).toBeVisible({ timeout: 15000 });
   });
 
   test('should handle the /en root route', async ({ page }) => {

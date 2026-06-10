@@ -59,8 +59,9 @@ export function route(path: string): string {
  */
 export async function waitForApp(page: Page): Promise<void> {
   await page.waitForSelector('app-root', { state: 'attached', timeout: 15000 });
-  // Wait for Angular to finish rendering (no pending micro-tasks)
-  await page.waitForLoadState('networkidle');
+  // await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
+  await page.waitForTimeout(1500); // Give Angular zoneless a moment to fully render DOM
 }
 
 /**

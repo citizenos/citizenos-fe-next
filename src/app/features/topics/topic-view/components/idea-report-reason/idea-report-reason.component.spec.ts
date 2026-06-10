@@ -1,4 +1,6 @@
-import { MockIconComponent } from '../../../../../shared/testing/mocks';
+import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
+import { UpperCasePipe } from '@angular/common';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -25,7 +27,7 @@ describe('IdeaReportReasonComponent', () => {
         { provide: DIALOG_DATA, useValue: mockData },
       ],
     })
-      .overrideComponent(IdeaReportReasonComponent, { set: { schemas: [NO_ERRORS_SCHEMA] } })
+      .overrideComponent(IdeaReportReasonComponent, { set: { imports: [TranslateModule, IconComponent, UpperCasePipe, DialogCloseDirective] } })
       .compileComponents();
 
     fixture = TestBed.createComponent(IdeaReportReasonComponent);
@@ -53,7 +55,7 @@ describe('IdeaReportReasonComponent', () => {
   });
 
   it('should have a close button that closes the dialog', () => {
-    const closeBtn = fixture.nativeElement.querySelector('a[dialogClose]') as HTMLElement;
+    const closeBtn = fixture.nativeElement.querySelector('button[dialogClose]') as HTMLElement;
     expect(closeBtn).toBeTruthy();
     closeBtn.click();
     expect(mockDialogRef.close).toHaveBeenCalled();

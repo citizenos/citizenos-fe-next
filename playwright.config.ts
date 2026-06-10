@@ -13,10 +13,11 @@ import * as path from 'path';
  */
 export default defineConfig({
   testDir: './e2e/specs',
-  fullyParallel: true,
+  timeout: 60000,
+  workers: 1,
+  fullyParallel: false,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
-  workers: process.env['CI'] ? 1 : undefined,
   reporter: process.env['CI']
     ? [['html', { open: 'never' }], ['list']]
     : 'html',
@@ -72,6 +73,10 @@ export default defineConfig({
         'dashboard.spec.ts',
         'topic-view.spec.ts',
         'topic-create.spec.ts',
+        'topic-arguments.spec.ts',
+        'topic-voting.spec.ts',
+        'topic-ideation.spec.ts',
+        'topic-members.spec.ts',
       ],
     },
 

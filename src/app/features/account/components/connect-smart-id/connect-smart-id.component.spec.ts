@@ -5,6 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ConnectSmartIdComponent } from './connect-smart-id.component';
 import { DialogRef } from '../../../../shared/dialog/dialog-ref';
 
+import { IconComponent } from '../../../../shared/components/icon/icon.component';
+
 @Component({ selector: 'app-smart-id', template: '', standalone: true })
 class SmartIdStub {}
 
@@ -16,12 +18,10 @@ class CosNotificationsStub {}
 class DialogCloseStub {
   @Input() dialogClose: string | null = null;
 }
-@Component({ selector: 'cos-icon', standalone: true, template: '' })
-class MockIconComponent { @Input() name = ''; @Input() size: string | number = 24; }
 
 function createFixture(): ComponentFixture<ConnectSmartIdComponent> {
   TestBed.overrideComponent(ConnectSmartIdComponent, {
-    set: { imports: [TranslateModule, SmartIdStub, CosNotificationsStub, DialogCloseStub, MockIconComponent] },
+    set: { imports: [TranslateModule, SmartIdStub, CosNotificationsStub, DialogCloseStub, IconComponent] },
   });
   TestBed.configureTestingModule({
     imports: [ConnectSmartIdComponent, TranslateModule.forRoot()],

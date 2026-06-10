@@ -5,6 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ConnectEidComponent } from './connect-eid.component';
 import { DialogRef } from '../../../../shared/dialog/dialog-ref';
 
+import { IconComponent } from '../../../../shared/components/icon/icon.component';
+
 @Component({ selector: 'app-esteid', template: '', standalone: true })
 class EstEidStub {}
 
@@ -17,12 +19,9 @@ class DialogCloseStub {
   @Input() dialogClose: string | null = null;
 }
 
-@Component({ selector: 'cos-icon', standalone: true, template: '' })
-class MockIconComponent { @Input() name = ''; @Input() size: string | number = 24; }
-
 function createFixture(): ComponentFixture<ConnectEidComponent> {
   TestBed.overrideComponent(ConnectEidComponent, {
-    set: { imports: [TranslateModule, EstEidStub, CosNotificationsStub, DialogCloseStub, MockIconComponent] },
+    set: { imports: [TranslateModule, EstEidStub, CosNotificationsStub, DialogCloseStub, IconComponent] },
   });
   TestBed.configureTestingModule({
     imports: [ConnectEidComponent, TranslateModule.forRoot()],

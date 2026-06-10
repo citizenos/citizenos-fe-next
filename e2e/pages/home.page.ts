@@ -26,9 +26,9 @@ export class HomePage {
 
     // Navigation
     this.navbar = page.locator('nav, .nav, .header, app-shell header, cos-logo').first();
-    this.logo = page.locator('cos-logo, .logo').first();
-    this.loginLink = page.locator('a[href*="account/login"], button:has-text("log in"), button:has-text("Log in")').first();
-    this.registerLink = page.locator('a[href*="account/signup"], button:has-text("sign up"), button:has-text("Sign up")').first();
+    this.logo = page.locator('.desktop_logo cos-logo, .nav_mobile cos-logo');
+    this.loginLink = page.locator('.nav_items_wrap a[href*="account/login"], .big_button_wrap a[href*="account/login"], #mobile_login button.btn_big_submit');
+    this.registerLink = page.locator('.nav_items_wrap a[href*="account/signup"], .big_button_wrap a[href*="account/signup"], #mobile_login button.btn_big_submit_ghost');
     this.languageSelector = page.locator('[class*="language"], [data-testid="language-selector"]').first();
 
     // Content
