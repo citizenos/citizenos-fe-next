@@ -47,7 +47,7 @@ export class UserService {
   }
 
   signUp(data: Record<string, unknown>): Observable<unknown> {
-    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/signup`, data);
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/signup`, data, { withCredentials: true });
   }
 
   getPartnerLoginUrl(partnerId: string, redirectSuccess?: string): string {
@@ -73,25 +73,25 @@ export class UserService {
 
   // Mobiil-ID
   loginMobiilIdInit(pid: string, phoneNumber: string): Observable<unknown> {
-    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/mobile/init`, { pid, phoneNumber });
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/mobile/init`, { pid, phoneNumber }, { withCredentials: true });
   }
 
   loginMobiilIdStatus(token: string): Observable<unknown> {
-    return this.http.get<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/mobile/status`, { params: { token } });
+    return this.http.get<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/mobile/status`, { params: { token }, withCredentials: true });
   }
 
   // Smart-ID
   loginSmartIdInit(pid: string, countryCode: string): Observable<unknown> {
-    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/smartid/init`, { pid, countryCode });
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/smartid/init`, { pid, countryCode }, { withCredentials: true });
   }
 
   loginSmartIdStatus(token: string): Observable<unknown> {
-    return this.http.get<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/smartid/status`, { params: { token } });
+    return this.http.get<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/smartid/status`, { params: { token }, withCredentials: true });
   }
 
   // ID-card
   loginIdCard(data: Record<string, unknown>): Observable<unknown> {
-    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/id`, data);
+    return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/id`, data, { withCredentials: true });
   }
 
   update(params: {

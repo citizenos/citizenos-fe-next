@@ -1,4 +1,4 @@
-import { Service, inject  } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 

@@ -1,7 +1,7 @@
 import { Component, inject, signal, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterLink, ActivatedRoute } from '@angular/router';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { interval, Subscription, takeWhile, switchMap } from 'rxjs';
 import { UserStore } from '../../../../core/state/user.store';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -63,9 +63,9 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
           </form>
         } @else {
           <div class="challenge-container">
-            <p translate="MODALS.LOGIN_SMARTID_TXT_CONTROL_CODE" [translateParams]="{code: challengeID()}"></p>
+            <p translate="COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_TXT_CONTROL_CODE" [translateParams]="{code: challengeID()}"></p>
             <div class="challenge-id">{{ challengeID() }}</div>
-            <p class="verification-info" translate="MODALS.LOGIN_SMARTID_TXT_CHECK_CONTROL_CODE"></p>
+            <p class="verification-info" translate="COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_TXT_CHECK_CONTROL_CODE"></p>
             
             <div class="loading-spinner">
                <cos-icon name="spinner" [size]="32" class="spin"></cos-icon>
@@ -168,6 +168,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
 export class SmartIdComponent implements OnDestroy {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   userStore = inject(UserStore);
 
   challengeID = signal<string | null | undefined>(null);
@@ -211,16 +212,21 @@ export class SmartIdComponent implements OnDestroy {
         }, true)
       )
       .subscribe({
-        next: (rawRes) => {
+        next: async (rawRes) => {
           const res = rawRes as { status?: { code?: number } } | undefined;
           if (res && res.status?.code !== 20001) {
-             this.userStore.checkStatus();
+             this.stopPolling();
+             try {
+                await this.userStore.checkStatus();
+             } catch (e) {
+                // ignore
+             }
              this.challengeID.set(null);
              const redirectSuccess = this.route.snapshot.queryParams['redirectSuccess'];
              if (redirectSuccess) {
                window.location.href = redirectSuccess;
              } else {
-               window.location.reload();
+               this.router.navigate(['/']);
              }
           }
         },

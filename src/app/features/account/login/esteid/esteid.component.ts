@@ -1,7 +1,7 @@
 import { Component, inject, signal, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterLink, ActivatedRoute } from '@angular/router';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { interval, Subscription, takeWhile, switchMap } from 'rxjs';
 import { UserStore } from '../../../../core/state/user.store';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -210,6 +210,7 @@ import * as webeid from '@web-eid/web-eid-library/web-eid';
 export class EstEidComponent implements OnDestroy {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   userStore = inject(UserStore);
 
   challengeID = signal<string | number | null>(null);
@@ -257,7 +258,7 @@ export class EstEidComponent implements OnDestroy {
       if (redirectSuccess) {
         window.location.href = redirectSuccess;
       } else {
-        window.location.reload();
+        this.router.navigate(['/']);
       }
     } catch (err: unknown) {
       const error = err as { message?: string };
@@ -278,16 +279,21 @@ export class EstEidComponent implements OnDestroy {
         }, true)
       )
       .subscribe({
-        next: (rawRes) => {
+        next: async (rawRes) => {
           const res = rawRes as { status?: { code?: number } } | undefined;
           if (res && res.status?.code !== 20001) {
-            this.userStore.checkStatus();
+            this.stopPolling();
+            try {
+              await this.userStore.checkStatus();
+            } catch (e) {
+              // ignore
+            }
             this.challengeID.set(null);
             const redirectSuccess = this.route.snapshot.queryParams['redirectSuccess'];
             if (redirectSuccess) {
               window.location.href = redirectSuccess;
             } else {
-              window.location.reload();
+              this.router.navigate(['/']);
             }
           }
         },
