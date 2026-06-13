@@ -48,6 +48,13 @@
               </div>
             }
           </div>
+
+          <!-- Mobile action dropdown trigger -->
+          <div class="dropdown mobile_show">
+            <button type="button" class="btn_medium_close icon" (click)="mobileActions.set(true)" [attr.aria-label]="'VIEWS.GROUP.LBL_GROUP_ACTIONS' | translate">
+              <cos-icon name="more-vertical" [size]="24"></cos-icon>
+            </button>
+          </div>
         }
       </div>
     </div>
@@ -92,7 +99,7 @@
             <cos-activities-button [groupId]="group.id"></cos-activities-button>
             <div id="info_items_wrap">
               <div class="info_item">
-                <cos-icon name="users-filled" [size]="16"></cos-icon>
+                <cos-icon name="user" size="24"></cos-icon>
                 <div class="info_number">{{ group.members.users.count }}</div>
               </div>
               <div class="info_item">
@@ -104,29 +111,29 @@
                 <div class="info_number">{{ group.members.topics?.count?.ideation || 0 }}</div>
               </div>
               <div class="info_item">
-                <cos-icon name="status-voting" [size]="16" color="#5AB467"></cos-icon>
-                <div class="info_number">{{ group.members.topics?.count?.voting || 0 }}</div>
+                <cos-icon name="voting" size="24"></cos-icon>
+                <div class="info_number">{{ group.members.topics.count.voting || 0 }}</div>
               </div>
               <div class="info_item">
                 <cos-icon name="status-follow-up" [size]="16" color="#DA7AB1"></cos-icon>
                 <div class="info_number">{{ group.members.topics?.count?.followUp || 0 }}</div>
               </div>
             </div>
-            @if (!moreInfo()) {
-              <div class="mobile_hidden">
-                <button type="button" id="view_more" class="tablet_show" (click)="moreInfo.set(true)">
-                  <div class="bold">{{ 'VIEWS.GROUP.LNK_MORE_INFO' | translate }}</div>
-                  <cos-icon name="chevron-down" [size]="24" color="#1168A8"></cos-icon>
-                </button>
-              </div>
-              <div class="button_wrap mobile_show">
-                <button type="button" class="btn_medium_secondary" (click)="moreInfo.set(true)">
-                  <cos-icon name="chevron-down" [size]="24" color="#1168A8"></cos-icon>
-                  <span>{{ 'VIEWS.GROUP.LNK_MORE_INFO' | translate }}</span>
-                </button>
-              </div>
-            }
           </div>
+          @if (!moreInfo()) {
+            <div class="mobile_hidden">
+              <button type="button" id="view_more" class="tablet_show" (click)="moreInfo.set(true)">
+                <div class="bold">{{ 'VIEWS.GROUP.LNK_MORE_INFO' | translate }}</div>
+                <cos-icon name="chevron-down" [size]="24" color="#1168A8"></cos-icon>
+              </button>
+            </div>
+            <div class="button_wrap mobile_show">
+              <button type="button" class="btn_medium_secondary" (click)="moreInfo.set(true)">
+                <cos-icon name="chevron-down" [size]="24" color="#1168A8"></cos-icon>
+                <span>{{ 'VIEWS.GROUP.LNK_MORE_INFO' | translate }}</span>
+              </button>
+            </div>
+          }
         </div>
 
         <!-- EXTRA INFO (expanded) -->
@@ -183,16 +190,25 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="line_separator"></div>
-            <div class="close_info_wrap">
-              <button type="button" id="view_more" (click)="moreInfo.set(false)">
-                <div class="bold">{{ 'VIEWS.GROUP.LNK_CLOSE_INFO' | translate }}</div>
-                <cos-icon name="chevron-up" [size]="24" color="#1168A8"></cos-icon>
-              </button>
+              </div>
             </div>
           </div>
         </div>
+
+        @if (moreInfo()) {
+          <div class="line_separator"></div>
+          <button type="button" id="view_more" class="mobile_hidden tablet_hidden" (click)="moreInfo.set(false)">
+            <div class="bold">{{ 'VIEWS.GROUP.LNK_CLOSE_INFO' | translate }}</div>
+            <cos-icon name="chevron-up" [size]="24" color="#1168A8"></cos-icon>
+          </button>
+          <div class="button_wrap mobile_show tablet_show">
+            <button type="button" class="btn_medium_secondary" id="view_more_btn" (click)="moreInfo.set(false)">
+              <cos-icon name="chevron-up" [size]="24" color="#1168A8"></cos-icon>
+              <span>{{ 'VIEWS.GROUP.LNK_CLOSE_INFO' | translate }}</span>
+            </button>
+          </div>
+        }
+
       </div>
     </div>
 
@@ -290,31 +306,39 @@
             (remove)="removeTopicFromGroup($event)"
           ></cos-topic-card>
         } @empty {
-          <div id="topics_area_empty" class="no_engagements empty_state">
-            <div class="illustration">
-              <cos-illustration imagePath="assets/imgs/no_image_discussion.svg"></cos-illustration>
-            </div>
-            <div class="text_wrap">
-              <h2 class="small_heading">{{ 'VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_HEADING' | translate }}</h2>
-              <div>{{ 'VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_DESCRIPTION' | translate }}</div>
-            </div>
-            <div class="button_wrap">
-              @if (isLoggedIn()) {
-                @if (isAdmin()) {
-                  <button type="button" class="btn_medium_submit" (click)="showCreateInContent.set(true)">
-                    <span>{{ 'VIEWS.GROUP.BTN_ADD_OR_CREATE_TOPICS' | translate }}</span>
-                  </button>
-                } @else {
-                  <button type="button" class="btn_medium_secondary" (click)="openRequestTopics()">
-                    <span>{{ 'VIEWS.GROUP.BTN_REQUEST_ADD_TOPICS' | translate }}</span>
-                  </button>
+          @if (!topicsFiltersSet()) {
+            <div id="topics_area_empty" class="no_engagements empty_state">
+              <div class="illustration">
+                <cos-illustration imagePath="assets/imgs/group_empty_topics.svg"></cos-illustration>
+              </div>
+              <div class="text_wrap">
+                <h2 class="small_heading">{{ 'VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_HEADING' | translate }}</h2>
+                <div>{{ 'VIEWS.GROUP.HAVENT_ENGAGED_TOPICS_DESCRIPTION' | translate }}</div>
+              </div>
+              <div class="button_wrap">
+                @if (isLoggedIn()) {
+                  @if (isAdmin()) {
+                    <button type="button" class="btn_medium_submit" (click)="showCreateInContent.set(true)">
+                      <span>{{ 'VIEWS.GROUP.BTN_ADD_OR_CREATE_TOPICS' | translate }}</span>
+                    </button>
+                  } @else {
+                    <button type="button" class="btn_medium_secondary" (click)="openRequestTopics()">
+                      <span>{{ 'VIEWS.GROUP.BTN_REQUEST_ADD_TOPICS' | translate }}</span>
+                    </button>
+                  }
                 }
                 <button type="button" class="btn_medium_secondary" (click)="viewPublicTopics()">
                   <span>{{ 'VIEWS.GROUP.HAVENT_ENGAGED_BTN_VIEW_PUBLIC_TOPICS' | translate }}</span>
                 </button>
-              }
+              </div>
             </div>
-          </div>
+          } @else {
+            <div id="topics_area_empty" class="no_engagements empty_state">
+              <div class="text_wrap">
+                <h2 class="small_heading">{{ 'VIEWS.MY.NO_RESULTS_FOUND_TITLE' | translate }}</h2>
+              </div>
+            </div>
+          }
         }
       </div>
 
