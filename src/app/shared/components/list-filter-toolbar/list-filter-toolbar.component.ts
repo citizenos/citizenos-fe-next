@@ -24,7 +24,7 @@ export interface FilterConfig {
   imports: [DropdownComponent, SearchInputComponent, IconComponent, TranslateModule],
   template: `
     <div class="list-filter-toolbar" role="toolbar" aria-label="List Filters">
-      <div class="options_area">
+      <div class="options_area mobile_hidden">
         @for (row of mainRows(); track $index) {
           <div class="options_row">
             @for (filter of row; track filter.key) {
@@ -78,7 +78,7 @@ export interface FilterConfig {
           }
         </div>
       </div>
-      <div class="filter_control_buttons">
+      <div class="filter_control_buttons mobile_hidden">
         <button class="btn_big_secondary" (click)="moreFilters.update(v => !v)" aria-label="Toggle Filters">
           <cos-icon [name]="moreFilters() ? 'chevron-up' : 'chevron-down'"></cos-icon>
         </button>
@@ -87,6 +87,49 @@ export interface FilterConfig {
             <cos-icon name="refresh"></cos-icon>
           </button>
         }
+      </div>
+
+      <!-- MOBILE VIEW: Custom dropdown for filters -->
+      <div class="mobile_filters mobile_show">
+        <app-search-input
+          class="toolbar-search mobile-search-input"
+          [placeholder]="searchPlaceholder()"
+          [value]="searchValue()"
+          (valueChange)="searchValue.set($event)"
+        ></app-search-input>
+        <div class="dropdown mobile_filters_selection" [class.dropdown_active]="mobileFiltersOpen()">
+          <div class="selection" (click)="mobileFiltersOpen.update(v => !v)">
+            <div class="selected_item bold">{{ 'COMPONENTS.PUBLIC_TOPICS.LBL_FILTER' | translate | titlecase }}</div>
+            <button class="btn_medium_plain icon">
+              <cos-icon [name]="mobileFiltersOpen() ? 'chevron-up' : 'chevron-down'" [size]="24" color="#1168A8"></cos-icon>
+            </button>
+          </div>
+          
+          @if (mobileFiltersOpen()) {
+            <div class="options mobile_filter_wrap">
+              @for (filter of allFilters(); track filter.key) {
+                <div class="mobile_filter_group">
+                  <div class="bold">{{ filter.placeholder | translate }}</div>
+                  <div class="mobile_filter_options">
+                    @for (option of filter.items; track option.value) {
+                      <div class="mobile_filter_option" (click)="selectFilter(filter.key, option.value)">
+                        <div class="checkbox" [class.active]="filter.selectedValue === option.value || (filter.selectedValue === '' && option.value === 'all')"></div>
+                        <div>{{ option.title | translate }}</div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+              @if (hasActiveFilters()) {
+                <div class="mobile_filter_group">
+                  <div class="mobile_filter_option clear_filters_btn" (click)="clearAll()">
+                    <div>{{ 'VIEWS.GROUP.LNK_CLEAR_FILTERS' | translate }}</div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
       </div>
     </div>
   `,
@@ -137,10 +180,17 @@ export interface FilterConfig {
     }
     .toolbar-dropdown {
       flex: 1;
+      min-width: calc(25% - 12px);
     }
     .toolbar-search {
       display: flex;
       flex: 2;
+      min-width: calc(50% - 12px);
+    }
+    @media (max-width: 1024px) {
+      .toolbar-dropdown, .toolbar-search {
+        min-width: calc(50% - 12px);
+      }
     }
     .extra_area {
       display: flex;
@@ -181,6 +231,104 @@ export interface FilterConfig {
     .btn_big_secondary:hover {
       background: var(--color-background-hover);
     }
+
+    /* Mobile specific filters styling */
+    .mobile_filters {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .mobile_hidden {
+        display: none !important;
+      }
+      .mobile_show {
+        display: block !important;
+      }
+      .list-filter-toolbar {
+        padding: 0;
+        background: transparent;
+      }
+      .mobile_filters {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .mobile-search-input {
+        width: 100%;
+      }
+      .mobile_filters_selection {
+        background: var(--color-surfaces);
+        border-radius: 8px;
+        position: relative;
+      }
+      .mobile_filters_selection .selection {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        cursor: pointer;
+      }
+      .mobile_filter_wrap {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--color-surfaces);
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .mobile_filter_group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .mobile_filter_options {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .mobile_filter_option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 0;
+        cursor: pointer;
+      }
+      .mobile_filter_option .checkbox {
+        width: 16px;
+        height: 16px;
+        border: 2px solid var(--color-border);
+        border-radius: 4px;
+        position: relative;
+      }
+      .mobile_filter_option .checkbox.active {
+        background: var(--color-primary);
+        border-color: var(--color-primary);
+      }
+      .mobile_filter_option .checkbox.active::after {
+        content: '';
+        position: absolute;
+        left: 4px;
+        top: 0px;
+        width: 4px;
+        height: 8px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+      .clear_filters_btn {
+        color: var(--color-primary);
+        font-weight: 600;
+      }
+    }
   `],
 })
 export class ListFilterToolbarComponent {
@@ -192,6 +340,11 @@ export class ListFilterToolbarComponent {
   searchChange = output<string>();
 
   moreFilters = signal(false);
+  mobileFiltersOpen = signal(false);
+
+  allFilters = computed(() => {
+    return [...this.filters(), ...this.filtersExtra().map(f => ({...f, type: 'filter'}))] as FilterConfig[];
+  });
 
   constructor() {
     effect(() => this.searchChange.emit(this.searchValue()));
