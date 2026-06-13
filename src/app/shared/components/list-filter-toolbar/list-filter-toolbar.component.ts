@@ -1,5 +1,6 @@
 import { Component, input, output, signal, computed, model, effect, ChangeDetectionStrategy } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { TitleCasePipe } from '@angular/common';
 import { DropdownComponent } from '../dropdown/dropdown.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
 import { IconComponent } from '../icon/icon.component';
@@ -21,7 +22,7 @@ export interface FilterConfig {
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-list-filter-toolbar',
   standalone: true,
-  imports: [DropdownComponent, SearchInputComponent, IconComponent, TranslateModule],
+  imports: [DropdownComponent, SearchInputComponent, IconComponent, TranslateModule, TitleCasePipe],
   template: `
     <div class="list-filter-toolbar" role="toolbar" aria-label="List Filters">
       <div class="options_area mobile_hidden">
