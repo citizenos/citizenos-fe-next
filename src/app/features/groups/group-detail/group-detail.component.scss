@@ -14,7 +14,7 @@
 }
 
 #page_header {
-  padding: 16px 0;
+  padding: 16px 0 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -203,6 +203,9 @@
     display: flex;
     gap: 16px;
     align-items: center;
+    position: relative;
+    bottom: 16px;
+    margin-top: 8px;
     cursor: pointer;
     color: var(--color-link);
     text-decoration: none;
@@ -218,12 +221,29 @@
     cos-icon {
       transition: transform 0.3s ease;
     }
+
+    @include mixins.mobile {
+      align-self: center;
+    }
   }
 
   .close_info_wrap {
     display: flex;
-    justify-content: center;
     padding: 16px 0;
+
+    #close_info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+
+      .bold {
+        color: var(--color-primary);
+      }
+    }
   }
 
   #group_content_wrap {
@@ -357,8 +377,8 @@
             }
 
             .info_number {
-              font-weight: 700;
-              font-size: 20px;
+              font-weight: 600;
+              font-size: 14px;
             }
           }
         }
@@ -485,8 +505,6 @@
   padding: 80px 40px;
   text-align: center;
   gap: 24px;
-  background: var(--color-surfaces);
-  border-radius: 16px;
   width: 100%;
 
   .icon_wrap {

@@ -47,7 +47,7 @@ import { languages } from '../../../core/constants/all-languages';
         (searchChange)="onSearch($event)"
       ></app-list-filter-toolbar>
 
-      <div class="topics_grid">
+      <div class="topics_content">
         @for (topic of topics(); track topic.id) {
           <cos-topic-card [topic]="topic"></cos-topic-card>
         } @empty {
@@ -57,36 +57,16 @@ import { languages } from '../../../core/constants/all-languages';
         }
       </div>
 
-      <cos-pagination
-        [page]="currentPage()"
-        [totalPages]="totalPages()"
-        (selectPage)="onPageChange($event)"
-      ></cos-pagination>
+      <div class="pagination_wrap">
+        <cos-pagination
+          [page]="currentPage()"
+          [totalPages]="totalPages()"
+          (selectPage)="onPageChange($event)"
+        ></cos-pagination>
+      </div>
     </div>
   `,
-  styles: [`
-    .topics_grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-
-    .no_topics {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-      padding: 60px 0;
-      width: 100%;
-    }
-
-    .no_topics_heading {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--color-text);
-      text-align: center;
-    }
-  `]
+  styleUrl: './public-topics.component.scss'
 })
 export class PublicTopicsComponent {
   private topicService = inject(PublicTopicService);
@@ -199,6 +179,7 @@ export class PublicTopicsComponent {
 
   onSearch(value: string) {
     this.searchValue.set(value);
+    this.topicService.setParam('search', value || null);
   }
 
   onPageChange(page: number) {

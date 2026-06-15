@@ -10,6 +10,9 @@
           <cos-icon [name]="tab.icon" [size]="20"></cos-icon>
         }
         <span class="tab_text">{{ tab.label | translate }}</span>
+        @if (tab.count !== undefined && tab.count > 0) {
+          <div class="count">{{ tab.count }}</div>
+        }
       </button>
     }
   </div>

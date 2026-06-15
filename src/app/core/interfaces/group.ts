@@ -3,6 +3,7 @@ export interface GroupMembers {
   groups: { count: number };
   topics?: {
     count?: {
+      total?: number;
       inProgress?: number;
       ideation?: number;
       voting?: number;

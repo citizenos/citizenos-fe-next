@@ -57,6 +57,19 @@
     font-size: 18px;
   }
 
+  .count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-surfaces);
+    color: var(--color-text-default);
+    border-radius: 12px;
+    padding: 0 8px;
+    height: 24px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
   &:hover {
     color: var(--color-link);
     text-decoration: none;

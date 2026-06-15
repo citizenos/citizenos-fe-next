@@ -31,13 +31,13 @@ export class GroupMemberTopicService {
   loadTopics(groupId: string, params: GroupTopicParams): Observable<{ rows: Topic[]; count: number }> {
     const url = this.getAbsoluteUrlApi(`/groups/${groupId}/members/topics`);
 
-    const httpParams = new HttpParams();
+    let httpParams = new HttpParams();
     Object.entries(params).forEach(([key, val]) => {
       if (val != null) {
         if (Array.isArray(val)) {
-          val.forEach(v => httpParams.append(key, String(v)));
+          val.forEach(v => { httpParams = httpParams.append(key, String(v)); });
         } else {
-          httpParams.set(key, String(val));
+          httpParams = httpParams.set(key, String(val));
         }
       }
     });

@@ -47,7 +47,7 @@ import { SeoService } from '../../../core/services/seo.service';
         (searchChange)="onSearch($event)"
       ></app-list-filter-toolbar>
 
-      <div class="groups_grid">
+      <div class="groups_content">
         @for (group of groups(); track group.id) {
           <cos-group-card [group]="group" mode="public"></cos-group-card>
         } @empty {
@@ -58,37 +58,16 @@ import { SeoService } from '../../../core/services/seo.service';
         }
       </div>
 
-      <cos-pagination
-        [page]="currentPage()"
-        [totalPages]="totalPages()"
-        (selectPage)="onPageChange($event)"
-      ></cos-pagination>
+      <div class="pagination_wrap">
+        <cos-pagination
+          [page]="currentPage()"
+          [totalPages]="totalPages()"
+          (selectPage)="onPageChange($event)"
+        ></cos-pagination>
+      </div>
     </div>
   `,
-  styles: [`
-    .groups_grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-
-    .no_groups {
-      padding: 60px 0;
-      width: 100%;
-      text-align: center;
-    }
-
-    .no_groups_heading {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--color-text);
-      margin-bottom: 8px;
-    }
-
-    .no_groups_desc {
-      color: var(--color-text-muted);
-    }
-  `]
+  styleUrl: './public-groups.component.scss'
 })
 export class PublicGroupsComponent {
   private groupService = inject(PublicGroupService);

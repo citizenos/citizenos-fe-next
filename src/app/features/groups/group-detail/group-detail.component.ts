@@ -63,7 +63,7 @@ import { SeoService } from '../../../core/services/seo.service';
     PaginationComponent,
     ListFilterToolbarComponent,
     CosTabsComponent,
-    IllustrationComponent,
+   
     NgTemplateOutlet,
     FormsModule,
   ],
@@ -98,13 +98,10 @@ export class GroupDetailComponent {
   tabSelected = signal('topics');
   manageTopicsOpen = signal(false);
   manageMembersOpen = signal(false);
-  groupTabs = computed<TabItem[]>(() => {
-    const g = this.group();
-    return [
-      { id: 'topics', label: 'VIEWS.GROUP.TAB_TOPICS', count: g?.members.topics?.count?.total || 0 },
-      { id: 'members', label: 'VIEWS.GROUP.TAB_MEMBERS', count: g?.members.users.count || 0 },
-    ];
-  });
+  groupTabs = signal<TabItem[]>([
+    { id: 'topics', label: 'VIEWS.GROUP.TAB_TOPICS' },
+    { id: 'members', label: 'VIEWS.GROUP.TAB_MEMBERS' },
+  ]);
   moreInfo = signal(false);
   moreFilters = signal(false);
   removeTopics = signal(false);
@@ -144,20 +141,18 @@ export class GroupDetailComponent {
     search: this.topicSearch(),
   })));
 
-  topicsFiltersSet = computed(() => {
-    return !!(
-      this.topicVisibilityFilter() ||
-      this.topicStatusFilter() ||
-      this.topicOrderFilter() ||
-      this.topicCountryFilter() ||
-      this.topicLanguageFilter() ||
-      this.topicSearch()
-    );
-  });
-
   private memberFilters$ = toObservable(computed(() => ({
     search: this.memberSearch(),
   })));
+
+  topicsFiltersSet = computed(() => {
+    return this.topicVisibilityFilter() !== '' ||
+           this.topicStatusFilter() !== '' ||
+           this.topicOrderFilter() !== '' ||
+           this.topicCountryFilter() !== '' ||
+           this.topicLanguageFilter() !== '' ||
+           this.topicSearch() !== '';
+  });
 
   filterConfigs = computed<FilterConfig[]>(() => {
     return [
@@ -292,26 +287,10 @@ export class GroupDetailComponent {
   private fetchTopics(offset: number) {
     const status = this.topicStatusFilter();
     const orderBy = this.topicOrderFilter();
-    const visibilityFilter = this.topicVisibilityFilter();
-    
-    let visibility: string | undefined;
-    let favourite: boolean | undefined;
-    let showModerated: boolean | undefined;
-    
-    if (visibilityFilter === 'favourite') {
-      favourite = true;
-    } else if (visibilityFilter === 'showModerated') {
-      showModerated = true;
-    } else {
-      visibility = visibilityFilter || undefined;
-    }
-
     this.groupMemberTopicService.loadTopics(this.groupId(), {
       limit: this.TOPIC_LIMIT,
       offset,
-      visibility,
-      favourite,
-      showModerated,
+      visibility: this.topicVisibilityFilter() || undefined,
       statuses: status ? [status] : undefined,
       orderBy: orderBy || undefined,
       order: orderBy ? 'desc' : undefined,

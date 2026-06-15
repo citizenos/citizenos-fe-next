@@ -730,7 +730,9 @@
       "BTN_RESET_FILTERS": "@:BTN_RESET_FILTER",
       "BTN_APPLY": "@:BTN_APPLY",
       "LNK_CLEAR": "@:LNK_CLEAR",
-      "LBL_FILTER": "@:LNK_FILTER"
+      "LBL_FILTER": "@:LNK_FILTER",
+      "TEXT_TOPICS_NONE": "@:VIEWS.MY.NO_RESULTS_FOUND_TITLE",
+      "PLACEHOLDER_SEARCH_TOPIC": "Search for a topic"
     },
     "REGISTER_FORM": {
       "HEADING": "Register a free account",
@@ -2010,6 +2012,13 @@
     }
   },
   "VIEWS": {
+    "401": {
+      "HEADING_INSUFFICIENT_PERMISSIONS": "Sorry, insufficient permissions for access",
+      "DESCRIPTION_INSUFFICIENT_PERMISSIONS": "If you've received an invite to the topic or group you're trying to access, you need to accept it first. Please check your activity feed or email.",
+      "HEADING_YOU_MAY_RECOVER": "Here are two ways to resolve this:",
+      "BTN_LOGIN": "Log in",
+      "BTN_REQUEST_ACCESS": "Request access"
+    },
     "ACCOUNT": {
       "HEADING": "Profile",
       "BTN_LOG_OUT": "@:DEFAULT.NAV.LNK_LOG_OUT",
@@ -3207,12 +3216,8 @@
     "VOTE_EDIT": {
       "HEADING": "Edit voting topic"
     },
-    "401": {
-      "HEADING_INSUFFICIENT_PERMISSIONS": "Sorry, insufficient permissions for access",
-      "DESCRIPTION_INSUFFICIENT_PERMISSIONS": "If you've received an invite to the topic or group you're trying to access, you need to accept it first. Please check your activity feed or email.",
-      "HEADING_YOU_MAY_RECOVER": "Here are two ways to resolve this:",
-      "BTN_LOGIN": "Log in",
-      "BTN_REQUEST_ACCESS": "Request access"
+    "PUBLIC_TOPICS": {
+      "HEADING_TOPICS": "Public topics"
     }
   },
   "ACTIVITY_FEED": {

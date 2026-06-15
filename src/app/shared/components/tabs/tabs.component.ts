@@ -7,6 +7,7 @@ export interface TabItem {
   id: string;
   label: string;
   icon?: IconName;
+  count?: number;
 }
 
 @Component({
