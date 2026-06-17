@@ -86,6 +86,9 @@ export const ConfigStore = signalStore(
       },
       setFontSize(size: FontSize) {
         patchState(store, { fontSize: size });
+      },
+      loadConfig(config: Partial<ConfigState>) {
+        patchState(store, config);
       }
     };
   })
