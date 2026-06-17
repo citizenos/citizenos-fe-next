@@ -101,7 +101,8 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
         },
       ],
       preview: true,
-      blockStyles: { unorderedListStyle: '-', italic: '_' },
+      blockStyles: { italic: '_' },
+
       status: [
         {
           className: this.CHAR_COUNTER_ELEMENT_CLASS_NAME,
