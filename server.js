@@ -64,7 +64,7 @@ const DIST_FOLDER = path.join(__dirname, 'dist', 'citizenos-fe-next', 'browser')
 app.use(express.static(DIST_FOLDER));
 
 // Route all other requests to index.html for Angular routing
-app.get('*', browserDetect, (req, res) => {
+app.get('/{*path}', browserDetect, (req, res) => {
   res.set('Permissions-Policy', 'interest-cohort=()'); // Opt-out of Google FLoC
   res.sendFile(path.join(DIST_FOLDER, 'index.html'));
 });

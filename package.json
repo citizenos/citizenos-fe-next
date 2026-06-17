@@ -19,7 +19,7 @@
   "private": true,
   "packageManager": "npm@11.6.1",
   "engines": {
-    "node": "20.x"
+    "node": "26.x"
   },
   "dependencies": {
     "@angular-eslint/builder": "^22.0.0",
