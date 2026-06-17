@@ -100,7 +100,6 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
           title: this.translate.instant('MDEDITOR_TOOLTIP_BOLD'),
         },
       ],
-      preview: true,
       blockStyles: { italic: '_' },
 
       status: [
