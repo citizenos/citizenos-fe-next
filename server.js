@@ -9,6 +9,55 @@ const config = require('config');
 const _ = require('lodash');
 const { expressCspHeader, INLINE, NONE, SELF } = require('express-csp-header');
 
+// ── Regenerate frontend config.json at startup (like the old prebuildDist.js) ──
+// This ensures Heroku dyno restarts always use the latest env vars.
+(function generateFrontendConfig() {
+  const CONFIG_DIR = path.join(__dirname, 'src', 'assets', 'config');
+  const DIST_CONFIG = path.join(__dirname, 'dist', 'citizenos-fe-next', 'browser', 'assets', 'config', 'config.json');
+
+  function loadJson(p) {
+    try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return {}; }
+  }
+  function deepMerge(target, source) {
+    for (const key of Object.keys(source)) {
+      if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+        target[key] = deepMerge(target[key] || {}, source[key]);
+      } else { target[key] = source[key]; }
+    }
+    return target;
+  }
+  function applyEnvVars(cfg, mappings) {
+    for (const [key, value] of Object.entries(mappings)) {
+      if (typeof value === 'string') {
+        if (process.env[value] !== undefined) cfg[key] = process.env[value];
+      } else if (value && typeof value === 'object') {
+        if (value.__name) {
+          if (process.env[value.__name] !== undefined) {
+            const raw = process.env[value.__name];
+            try { cfg[key] = value.__format === 'json' ? JSON.parse(raw) : raw; } catch { cfg[key] = raw; }
+          }
+        } else {
+          if (!cfg[key] || typeof cfg[key] !== 'object') cfg[key] = {};
+          applyEnvVars(cfg[key], value);
+        }
+      }
+    }
+  }
+
+  const NODE_ENV = process.env.NODE_ENV || 'production';
+  let cfg = loadJson(path.join(CONFIG_DIR, 'default.json'));
+  deepMerge(cfg, loadJson(path.join(CONFIG_DIR, `${NODE_ENV}.json`)));
+  applyEnvVars(cfg, loadJson(path.join(CONFIG_DIR, 'custom-environment-variables.json')));
+
+  try {
+    fs.mkdirSync(path.dirname(DIST_CONFIG), { recursive: true });
+    fs.writeFileSync(DIST_CONFIG, JSON.stringify(cfg, null, 2));
+    console.log('Frontend config generated. api.baseUrl =', cfg.api && cfg.api.baseUrl);
+  } catch (err) {
+    console.error('Failed to write frontend config:', err);
+  }
+})();
+
 const app = express();
 
 // Content Security Policy setup

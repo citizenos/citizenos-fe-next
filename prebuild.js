@@ -4,9 +4,10 @@ const fs = require('fs');
 const path = require('path');
 
 const CONFIG_DIR = path.resolve('./src/assets/config');
-const OUTPUT_PATH = path.resolve('./src/assets/config/config.json');
-
-console.log(OUTPUT_PATH);
+const OUTPUT_PATHS = [
+  path.resolve('./src/assets/config/config.json'),   // for ng serve (dev)
+  path.resolve('./public/assets/config/config.json'), // web root copied into dist by ng build
+];
 
 // Load base default config
 function loadJson(filePath) {
@@ -69,9 +70,12 @@ const envMappings = loadJson(path.join(CONFIG_DIR, 'custom-environment-variables
 applyEnvVars(config, envMappings);
 
 try {
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(config, null, 2));
-  console.log('Config written successfully. api.baseUrl =', config.api && config.api.baseUrl);
+  for (const outputPath of OUTPUT_PATHS) {
+    fs.writeFileSync(outputPath, JSON.stringify(config, null, 2));
+    console.log('Config written to', outputPath);
+  }
+  console.log('api.baseUrl =', config.api && config.api.baseUrl);
 } catch (err) {
-  console.error('config.json write FAILED to ' + OUTPUT_PATH, err);
+  console.error('config.json write FAILED:', err);
   process.exit(1);
 }
