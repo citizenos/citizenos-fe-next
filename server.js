@@ -1,11 +1,15 @@
+'use strict';
+
 const express = require('express');
 const path = require('path');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
 const config = require('config');
 const _ = require('lodash');
 const { expressCspHeader, INLINE, NONE, SELF } = require('express-csp-header');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Content Security Policy setup
 const cspConfig = config.csp;
@@ -16,7 +20,7 @@ if (cspConfig) {
       cspConfig.directives = JSON.parse(cspConfig.directives);
       cspOptions.directives = {};
     }
-    Object.keys(cspConfig.directives).forEach(function (key, index) {
+    Object.keys(cspConfig.directives).forEach(function (key) {
       cspConfig.directives[key].forEach(function (value, k) {
         if (k === 0) {
           cspOptions.directives[key] = [];
@@ -43,15 +47,15 @@ const browserDetect = (req, res, next) => {
 
   const msie = ua.indexOf('MSIE ');
   if (msie > 0) {
-    // IE 10 or older => return version number
-    res.set('Permissions-Policy', 'interest-cohort=()'); // Opt-out of Google FLoC
+    // IE 10 or older
+    res.set('Permissions-Policy', 'interest-cohort=()');
     return res.status(400).send('Your browser is not supported. Please upgrade to a modern browser.');
   }
 
   const trident = ua.indexOf('Trident/');
   if (trident > 0) {
-    // IE 11 => return version number
-    res.set('Permissions-Policy', 'interest-cohort=()'); // Opt-out of Google FLoC
+    // IE 11
+    res.set('Permissions-Policy', 'interest-cohort=()');
     return res.status(400).send('Your browser is not supported. Please upgrade to a modern browser.');
   }
   next();
@@ -69,6 +73,31 @@ app.get('/{*path}', browserDetect, (req, res) => {
   res.sendFile(path.join(DIST_FOLDER, 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Node Express server listening on port ${PORT}`);
+// HTTP server — Heroku sets PORT automatically; locally defaults to 3000
+const host = process.env.HOST || null;
+const portHttp = process.env.PORT || 3000;
+
+http.createServer(app).listen(portHttp, host, function (err) {
+  if (err) {
+    console.log('Failed to start HTTP server on port ' + portHttp, err);
+    return;
+  }
+  console.log('HTTP server listening on port ' + portHttp);
 });
+
+// HTTPS server — development only, on port 3001
+if (app.get('env') === 'development') {
+  const portHttps = process.env.PORT_SSL || 3001;
+  const options = {
+    key: fs.readFileSync('./config/certs/dev.citizenos.com.key'),
+    cert: fs.readFileSync('./config/certs/dev.citizenos.com.crt')
+  };
+
+  https.createServer(options, app).listen(portHttps, host, function (err) {
+    if (err) {
+      console.log('Failed to start HTTPS server on port ' + portHttps, err);
+      return;
+    }
+    console.log('HTTPS server listening on port ' + portHttps);
+  });
+}
