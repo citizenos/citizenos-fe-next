@@ -25,6 +25,10 @@
     position: absolute;
     right: 24px;
     height: 100%;
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
   }
 
   @media (max-width: 1024px) {

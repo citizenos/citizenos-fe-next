@@ -50,16 +50,13 @@ describe('TopicTabsComponent', () => {
         { provide: UserStore, useValue: mockUserStore },
       ],
     })
-    .overrideComponent(TopicTabsComponent, {
-      remove: { imports: [TooltipComponent] },
-      add: { imports: [] },
-    })
     .compileComponents();
 
     fixture = TestBed.createComponent(TopicTabsComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
     componentRef.setInput('topic', MOCK_TOPIC);
+    componentRef.setInput('tabSelected', 'discussion');
     fixture.detectChanges();
   });
 

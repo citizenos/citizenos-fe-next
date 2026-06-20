@@ -1,12 +1,9 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-declare global {
-  var ResizeObserver: unknown;
-}
 globalThis.ResizeObserver = class {
   observe() { return; }
   unobserve() { return; }
   disconnect() { return; }
-};
+} as any;
 globalThis.HTMLElement.prototype.scrollIntoView = vi.fn();
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TopicContentComponent } from './topic-content.component';

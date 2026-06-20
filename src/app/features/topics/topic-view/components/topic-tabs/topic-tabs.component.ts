@@ -1,11 +1,9 @@
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, input, output, inject, computed, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { Topic } from '../../../../../core/interfaces/topic';
-import { DomainIconComponent } from '../../../../../shared/components/domain-icon/domain-icon.component';
 import { ActivitiesButtonComponent } from '../../../../../shared/components/activities-button/activities-button.component';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { TourItemDirective } from '../../../../../shared/directives/tour-item.directive';
@@ -16,10 +14,9 @@ import { TourItemDirective } from '../../../../../shared/directives/tour-item.di
   imports: [
     RouterModule,
     TranslateModule,
-    DomainIconComponent,
     ActivitiesButtonComponent,
     TooltipComponent,
-    TourItemDirective, IconComponent],
+    TourItemDirective],
   templateUrl: './topic-tabs.component.html',
   styleUrls: ['./topic-tabs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -40,6 +37,10 @@ export class TopicTabsComponent {
 
   selectTab(tab: string) {
     this.tabNavigate.emit(tab);
+  }
+
+  toggleFavourite() {
+    this.topicService.toggleFavourite(this.topic());
   }
 
 }
