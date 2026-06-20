@@ -26,15 +26,16 @@
     @if (isLoggedIn()) {
       <cos-tooltip class="tablet_show" [noIcon]="true"
         [title]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate">
-        <button
+        <cos-button
           trigger
-          class="btn_medium_close icon"
-          (click)="onToggleFavourite()"
+          variant="light"
+          [iconMode]="true"
+          (clicked)="onToggleFavourite()"
+          [icon]="topic().favourite ? 'favourite-filled-legacy' : 'favourite-legacy'"
           [class.like_active]="topic().favourite"
           [attr.aria-label]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate"
         >
-          <cos-icon [name]="topic().favourite ? 'favourite-filled-legacy' : 'favourite-legacy'"></cos-icon>
-        </button>
+        </cos-button>
       </cos-tooltip>
     }
 
@@ -45,9 +46,8 @@
     </div>
 
     <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" cosDropdown>
-      <button trigger class="btn_medium_close icon" [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
-        <cos-icon name="more-vertical-legacy"></cos-icon>
-      </button>
+      <cos-button trigger variant="light" [iconMode]="true" icon="more-vertical-legacy" [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
+      </cos-button>
 
       <div class="options">
         @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {
@@ -215,9 +215,15 @@
       </div>
     </div>
 
-    <button class="btn_medium_close icon mobile_show" (click)="mobileActions.set(!mobileActions())" [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
-      <cos-icon name="more-vertical-legacy"></cos-icon>
-    </button>
+    <cos-button
+      variant="light"
+      class="mobile_show"
+      [iconMode]="true"
+      (clicked)="mobileActions.set(!mobileActions())"
+      icon="more-vertical-legacy"
+      [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate"
+    >
+    </cos-button>
   </div>
 </div>
 

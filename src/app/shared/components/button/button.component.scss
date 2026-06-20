@@ -139,3 +139,29 @@ button {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Icon Only Mode */
+.btn-icon {
+  padding: 0;
+  border-radius: 50%;
+  gap: 0;
+  
+  .btn-content {
+    display: none;
+  }
+  
+  &.btn-sm {
+    min-width: 32px;
+    width: 32px;
+  }
+  
+  &.btn-md {
+    min-width: 40px;
+    width: 40px;
+  }
+  
+  &.btn-lg {
+    min-width: 48px;
+    width: 48px;
+  }
+}

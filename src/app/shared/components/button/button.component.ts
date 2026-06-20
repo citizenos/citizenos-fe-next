@@ -16,7 +16,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
       [disabled]="isDisabled() || isLoading()"
       [attr.aria-busy]="isLoading()"
       [attr.aria-disabled]="isDisabled()"
-      [class]="'btn-' + variant() + ' btn-' + size()"
+      [class]="'btn-' + variant() + ' btn-' + size() + (iconMode() ? ' btn-icon' : '')"
       (click)="onClick($event)"
     >
       @if (icon() && !isLoading()) {
@@ -40,6 +40,7 @@ export class ButtonComponent {
   type = model<'button' | 'submit' | 'reset'>('button');
   
   icon = model<IconName>();
+  iconMode = model<boolean>(false);
   
   isLoading = model<boolean>(false);
   isDisabled = model<boolean>(false);
