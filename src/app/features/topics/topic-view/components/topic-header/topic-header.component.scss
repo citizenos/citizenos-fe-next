@@ -107,11 +107,11 @@
     }
 
     #tablet_actions {
-      @include mixins.desktop {
-        display: none;
-      }
       display: inline-block;
       position: relative;
+      @media (min-width: 1025px) {
+        display: none;
+      }
 
       &.dropdown_active {
         .options {
