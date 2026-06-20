@@ -107,6 +107,9 @@
     }
 
     #tablet_actions {
+      @include mixins.desktop {
+        display: none;
+      }
       display: inline-block;
       position: relative;
 
