@@ -11,6 +11,7 @@ import { Component, Input, output } from '@angular/core';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { UpperCasePipe } from '@angular/common';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
+import { TourItemDirective } from '../../../../../shared/directives/tour-item.directive';
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent {
@@ -25,6 +26,7 @@ class MockButtonComponent {
   @Input() size = 'md';
   @Input() type = 'button';
   @Input() icon?: string;
+  @Input() iconMode?: boolean;
   @Input() isLoading = false;
   @Input() isDisabled = false;
   clicked = output<MouseEvent>();
@@ -85,6 +87,7 @@ describe('TopicHeaderComponent', () => {
           RouterModule,
           UpperCasePipe,
           CosDropdownDirective,
+          TourItemDirective,
           MockIconComponent,
           MockButtonComponent,
           MockTooltipComponent,

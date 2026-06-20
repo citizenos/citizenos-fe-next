@@ -23,17 +23,19 @@ $breakpoint-mobile: 576px;
       background: var(--color-background);
       color: var(--color-link);
 
-      path {
+      ::ng-deep path {
         fill: var(--color-link);
       }
     }
+
+    padding: 0;
+    justify-content: center;
 
     span {
       display: none;
     }
 
     div {
-      position: absolute;
       svg {
         circle {
           stroke: initial;
