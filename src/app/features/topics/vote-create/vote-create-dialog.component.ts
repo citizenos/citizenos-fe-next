@@ -1,18 +1,22 @@
-import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
+import { DatePipe, UpperCasePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { take } from 'rxjs';
-import { DIALOG_DATA } from '../../../shared/dialog/dialog-tokens';
-import { DialogRef } from '../../../shared/dialog/dialog-ref';
-import { DialogCloseDirective } from '../../../shared/dialog';
-import { Topic } from '../../../core/interfaces/topic';
-import { VoteWithOptions } from '../../../core/interfaces/vote';
+
+import { DIALOG_DATA, DialogRef, DialogCloseDirective } from '../../../shared/dialog';
 import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { StepVoteSettingsComponent } from './components/step-vote-settings/step-vote-settings.component';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
-import { DomainIconComponent } from '../../../shared/components/domain-icon/domain-icon.component';
+import { TopicService } from '../../../core/services/topic.service';
+
+import { Topic } from '../../../core/interfaces/topic';
+import { VoteWithOptions } from '../../../core/interfaces/vote';
+
 import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { InputComponent } from '../../../shared/components/input/input.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { NotificationComponent } from '../../../shared/components/notification/notification.component';
 
 @Component({
   selector: 'cos-vote-create-dialog',
@@ -21,210 +25,270 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
   imports: [
     TranslateModule,
     DialogCloseDirective,
-    StepVoteSettingsComponent,
-    ButtonComponent,
-    DomainIconComponent,
     IconComponent,
+    InputComponent,
+    ButtonComponent,
+    NotificationComponent,
+    DatePipe,
+    UpperCasePipe,
+    DragDropModule
   ],
-  template: `
-    <div class="dialog-overlay">
-      <div class="dialog">
-        <div class="dialog-header">
-          <div class="dialog-title">
-            <cos-domain-icon type="vote"></cos-domain-icon>
-            <h4>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_HEADING' | translate }}</h4>
-          </div>
-          <button type="button" class="btn-close" dialogClose aria-label="Close">
-            <cos-icon name="close"></cos-icon>
-          </button>
-        </div>
-
-        <div class="dialog-tabs">
-          @for (tab of TABS; track tab.key) {
-            <button
-              type="button"
-              class="dialog-tab"
-              [class.active]="currentStep() === tab.key"
-              (click)="goToStep(tab.key)"
-              [disabled]="tab.key === 'settings' && currentStep() === 'intro'"
-            >
-              {{ tab.label | translate }}
-            </button>
-          }
-        </div>
-
-        <div class="dialog-content">
-          @if (currentStep() === 'intro') {
-            <div class="intro-wrap">
-              <p class="intro-heading">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ARE_YOU_SURE' | translate }}</p>
-              <p class="intro-subheading">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_KEEP_IN_MIND' | translate }}</p>
-
-              <div class="info-list">
-                <div class="info-row warning">
-                  <cos-icon name="close" class="icon-error"></cos-icon>
-                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_1' | translate }}</span>
-                </div>
-                @if (topic.ideationId) {
-                  <div class="info-row warning">
-                    <cos-icon name="close" class="icon-error"></cos-icon>
-                    <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_7' | translate }}</span>
-                  </div>
-                }
-                @if (topic.ideationId && !topic.discussionId) {
-                  <div class="info-row warning">
-                    <cos-icon name="close" class="icon-error"></cos-icon>
-                    <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_9' | translate }}</span>
-                  </div>
-                }
-                <div class="info-row neutral">
-                  <cos-icon name="close"></cos-icon>
-                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_5' | translate }}</span>
-                </div>
-                <div class="info-row neutral">
-                  <cos-icon name="close"></cos-icon>
-                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_6' | translate }}</span>
-                </div>
-                <div class="info-row ok">
-                  <cos-icon name="check"></cos-icon>
-                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_2' | translate }}</span>
-                </div>
-                <div class="info-row ok">
-                  <cos-icon name="check"></cos-icon>
-                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_3' | translate }}</span>
-                </div>
-              </div>
-
-              <div class="intro-info-box">
-                <cos-icon name="info"></cos-icon>
-                <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_INFO' | translate }}</span>
-              </div>
-
-              <div class="intro-actions">
-                <cos-button variant="primary" (clicked)="goToStep('settings')">
-                  {{ 'COMPONENTS.TOPIC_VOTE_CREATE.BTN_CONTINUE' | translate }}
-                </cos-button>
-              </div>
-            </div>
-          }
-
-          @if (currentStep() === 'settings') {
-            <cos-step-vote-settings
-              [vote]="vote()"
-              (voteUpdate)="onVoteUpdate($event)"
-              (next)="onSubmit()"
-              (previous)="goToStep('intro')"
-            ></cos-step-vote-settings>
-          }
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .dialog-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,.5);
-      display: flex; align-items: center; justify-content: center; z-index: 1000;
-    }
-    .dialog {
-      background: var(--color-background);
-      border-radius: var(--radius-lg);
-      width: min(680px, 95vw);
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .dialog-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 24px 24px 0;
-    }
-    .dialog-title {
-      display: flex; align-items: center; gap: 12px;
-      h4 { margin: 0; font-size: 18px; font-weight: 700; }
-    }
-    .btn-close {
-      background: none; border: none; cursor: pointer; padding: 4px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .dialog-tabs {
-      display: flex; gap: 0; padding: 16px 24px 0; border-bottom: 1px solid var(--color-border);
-    }
-    .dialog-tab {
-      background: none; border: none; border-bottom: 2px solid transparent;
-      padding: 8px 16px; cursor: pointer; font-size: 14px; font-weight: 500;
-      color: var(--color-text-muted); transition: color .2s, border-color .2s;
-      &.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
-      &:disabled { opacity: .5; cursor: not-allowed; }
-    }
-    .dialog-content { padding: 24px; overflow-y: auto; flex: 1; }
-    .intro-wrap { display: flex; flex-direction: column; gap: 16px; }
-    .intro-heading { font-size: 16px; font-weight: 700; margin: 0; }
-    .intro-subheading { font-size: 14px; color: var(--color-text-muted); margin: 0; }
-    .info-list { display: flex; flex-direction: column; gap: 10px; }
-    .info-row {
-      display: flex; align-items: flex-start; gap: 12px; font-size: 14px;
-      &.warning cos-icon { color: var(--color-error, #EF4025); }
-      &.ok cos-icon { color: var(--color-success, #5AB467); }
-      &.neutral cos-icon { color: var(--color-text-muted); }
-    }
-    .intro-info-box {
-      display: flex; align-items: flex-start; gap: 10px;
-      background: var(--color-secondary); border-radius: var(--radius-md);
-      padding: 12px 16px; font-size: 13px;
-    }
-    .intro-actions { display: flex; justify-content: flex-end; padding-top: 8px; }
-  `]
+  templateUrl: './vote-create-dialog.component.html',
+  styleUrls: ['./vote-create-dialog.component.scss'],
 })
 export class VoteCreateDialogComponent {
   private data = inject<{ topic: Topic }>(DIALOG_DATA);
   private dialogRef = inject(DialogRef);
   private voteService = inject(TopicVoteService);
+  private topicService = inject(TopicService);
   private notification = inject(NotificationService);
   private router = inject(Router);
   private translate = inject(TranslateService);
 
   topic = this.data.topic;
 
-  TABS: { key: 'intro' | 'settings', label: string }[] = [
-    { key: 'intro', label: 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_1' },
-    { key: 'settings', label: 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_2' },
-  ];
+  VOTE_TYPES = {
+    regular: 'regular' as const,
+    multiple: 'multiple' as const,
+    ideation: 'ideation' as const
+  };
 
-  currentStep = signal<'intro' | 'settings'>('intro');
+  VOTE_AUTH_TYPES = {
+    soft: 'soft' as const,
+    hard: 'hard' as const
+  };
+
+  tabs = [0, 1, 2, 3];
+  tabActive = signal<number>(1);
 
   vote = signal<Partial<VoteWithOptions>>({
-    question: '',
+    description: '',
     type: 'regular',
     authType: 'soft',
-    options: [{ value: 'Yes' }, { value: 'No' }],
+    options: [],
+    minChoices: 1,
+    maxChoices: 1,
     delegationIsAllowed: false,
     autoClose: [{ value: 'allMembersVoted', enabled: false }],
     endsAt: null,
   });
 
-  goToStep(step: 'intro' | 'settings') {
-    this.currentStep.set(step);
+  predefinedOptions = signal({
+    yes: { value: 'Yes', enabled: true },
+    no: { value: 'No', enabled: true }
+  });
+
+  extraOptions = signal({
+    neutral: { value: 'Neutral', enabled: false },
+    veto: { value: 'Veto', enabled: false }
+  });
+
+  customOptions = signal<{value: string}[]>([
+    { value: '' },
+    { value: '' },
+    { value: '' }
+  ]);
+
+  deadline = signal<Date | null>(null);
+
+  compiledOptions = computed(() => {
+    const opts: {value: string}[] = [];
+    const v = this.vote();
+    if (v.type === this.VOTE_TYPES.regular) {
+      if (this.predefinedOptions().yes.enabled) opts.push({ value: 'Yes' });
+      if (this.predefinedOptions().no.enabled) opts.push({ value: 'No' });
+    } else {
+      this.customOptions().forEach(o => {
+        if (o.value.trim()) opts.push({ value: o.value.trim() });
+      });
+    }
+    
+    if (this.extraOptions().neutral.enabled) opts.push({ value: 'Neutral' });
+    if (this.extraOptions().veto.enabled) opts.push({ value: 'Veto' });
+    
+    return opts;
+  });
+
+  getOptionsLimit() {
+    let count = 0;
+    if (this.vote().type === this.VOTE_TYPES.regular) {
+      if (this.predefinedOptions().yes.enabled) count++;
+      if (this.predefinedOptions().no.enabled) count++;
+    } else {
+      count = this.customOptions().filter(o => o.value.trim().length > 0).length;
+    }
+    
+    if (this.extraOptions().neutral.enabled) count++;
+    if (this.extraOptions().veto.enabled) count++;
+    return count || 1;
   }
 
-  onVoteUpdate(updates: Partial<VoteWithOptions>) {
-    this.vote.update(v => ({ ...v, ...updates }));
+  updateVote<K extends keyof VoteWithOptions>(key: K, value: VoteWithOptions[K]) {
+    this.vote.update(v => ({ ...v, [key]: value }));
   }
 
-  onSubmit() {
-    const voteData = {
+  setVoteType(type: string) {
+    this.updateVote('type', type);
+    if (type === this.VOTE_TYPES.regular) {
+      this.updateVote('minChoices', 1);
+      this.updateVote('maxChoices', 1);
+    }
+  }
+
+  toggleOption(key: 'yes' | 'no') {
+    this.predefinedOptions.update(opts => ({
+      ...opts,
+      [key]: { ...opts[key], enabled: !opts[key].enabled }
+    }));
+  }
+
+  toggleExtraOption(key: 'neutral' | 'veto') {
+    this.extraOptions.update(opts => ({
+      ...opts,
+      [key]: { ...opts[key], enabled: !opts[key].enabled }
+    }));
+  }
+
+  updateCustomOption(index: number, value: string) {
+    this.customOptions.update(opts => {
+      const newOpts = [...opts];
+      newOpts[index].value = value;
+      return newOpts;
+    });
+  }
+
+  addOption() {
+    this.customOptions.update(opts => [...opts, { value: '' }]);
+  }
+
+  removeOption(index: number) {
+    this.customOptions.update(opts => {
+      const newOpts = [...opts];
+      newOpts.splice(index, 1);
+      return newOpts;
+    });
+  }
+
+  drop(event: CdkDragDrop<{value: string}[]>) {
+    this.customOptions.update(opts => {
+      const newOpts = [...opts];
+      moveItemInArray(newOpts, event.previousIndex, event.currentIndex);
+      return newOpts;
+    });
+  }
+
+  optionsCountUp(type: 'min' | 'max') {
+    const limit = this.getOptionsLimit();
+    if (type === 'min' && this.vote().minChoices! < limit) {
+      const newVal = this.vote().minChoices! + 1;
+      this.updateVote('minChoices', newVal);
+      if (newVal > this.vote().maxChoices!) {
+        this.updateVote('maxChoices', newVal);
+      }
+    } else if (type === 'max' && this.vote().maxChoices! < limit) {
+      this.updateVote('maxChoices', this.vote().maxChoices! + 1);
+    }
+  }
+
+  optionsCountDown(type: 'min' | 'max') {
+    if (type === 'min' && this.vote().minChoices! > 1) {
+      this.updateVote('minChoices', this.vote().minChoices! - 1);
+    } else if (type === 'max' && this.vote().maxChoices! > 1) {
+      const newVal = this.vote().maxChoices! - 1;
+      this.updateVote('maxChoices', newVal);
+      if (this.vote().minChoices! > newVal) {
+        this.updateVote('minChoices', newVal);
+      }
+    }
+  }
+
+  toggleDeadline() {
+    if (this.deadline()) {
+      this.deadline.set(null);
+    } else {
+      const d = new Date();
+      d.setHours(d.getHours() + 24);
+      d.setMinutes(0);
+      d.setSeconds(0);
+      d.setMilliseconds(0);
+      this.deadline.set(d);
+    }
+  }
+
+  deadlineString() {
+    const d = this.deadline();
+    if (!d) return '';
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  updateDeadline(val: string) {
+    if (!val) {
+      this.deadline.set(null);
+    } else {
+      this.deadline.set(new Date(val));
+    }
+  }
+
+  getInputValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+  }
+
+  getInputValueAsNumber(event: Event): number {
+    return (event.target as HTMLInputElement).valueAsNumber;
+  }
+
+  isNextDisabled() {
+    if (this.tabActive() === 2 && (!this.vote().type || !this.vote().description?.trim())) return true;
+    if (this.tabActive() === 3 && (!this.vote().authType || this.compiledOptions().length < 2)) return true;
+    return false;
+  }
+
+  tabNext() {
+    if (this.isNextDisabled()) return;
+    
+    if (this.tabActive() < 4) {
+      this.tabActive.set(this.tabActive() + 1);
+    } else {
+      this.createVote();
+    }
+  }
+
+  createVote() {
+    this.notification.clear();
+
+    const saveVote = {
       ...this.vote(),
       topicId: this.topic.id,
-      description: this.vote().question || '',
+      options: this.compiledOptions(),
+      endsAt: this.deadline(),
     };
 
-    this.voteService.save(voteData).pipe(take(1)).subscribe({
-      next: () => {
-        this.notification.success('VIEWS.VOTE_CREATE.SUCCESS_VOTE_STARTED');
-        this.dialogRef.close(true);
-        this.router.navigate(['/', this.translate.currentLang, 'topics', this.topic.id]);
-      },
-      error: () => {
-        this.notification.showRaw('error', 'VIEWS.VOTE_CREATE.ERROR_MISSING_QUESTION');
-      }
-    });
+    if (saveVote.type === this.VOTE_TYPES.ideation) saveVote.type = this.VOTE_TYPES.multiple;
+    
+    if (!saveVote.description?.trim()) {
+      this.notification.error('VIEWS.VOTE_CREATE.ERROR_MISSING_QUESTION');
+      return;
+    }
+
+    this.voteService.save(saveVote)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.topicService.reloadTopic();
+          this.router.navigate(['/', this.translate.currentLang, 'topics', this.topic.id], { fragment: 'voting' });
+          this.notification.success('VIEWS.VOTE_CREATE.SUCCESS_VOTE_STARTED');
+          this.dialogRef.close(true);
+        },
+        error: (res: { errors?: Record<string, unknown> }) => {
+          if (res.errors) {
+            Object.values(res.errors).forEach((message) => {
+              if (typeof message === 'string') {
+                this.notification.showRaw('error', message);
+              }
+            });
+          }
+        }
+      });
   }
 }

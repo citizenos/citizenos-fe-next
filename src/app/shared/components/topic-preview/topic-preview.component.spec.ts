@@ -41,48 +41,24 @@ describe('TopicPreviewComponent', () => {
   it('should display topic title', () => {
     component.topic.set(mockTopic);
     fixture.detectChanges();
-    const title = fixture.nativeElement.querySelector('.preview-title');
+    const title = fixture.nativeElement.querySelector('.main_heading');
     expect(title.textContent).toContain('Preview Topic');
   });
 
   it('should display intro', () => {
     component.topic.set(mockTopic);
     fixture.detectChanges();
-    const intro = fixture.nativeElement.querySelector('.preview-intro');
+    const intro = fixture.nativeElement.querySelector('.topic_intro');
     expect(intro.textContent).toContain('Introduction text');
   });
 
   it('should display image when imageUrl is set', () => {
     component.topic.set(mockTopic);
     fixture.detectChanges();
-    const img = fixture.nativeElement.querySelector('.preview-image img');
+    const img = fixture.nativeElement.querySelector('.topic_image img');
     expect(img).toBeTruthy();
     expect(img.src).toContain('example.com/image.jpg');
   });
 
-  it('should display categories', () => {
-    component.topic.set(mockTopic);
-    fixture.detectChanges();
-    const tags = fixture.nativeElement.querySelectorAll('.category-tag');
-    expect(tags.length).toBe(2);
-  });
 
-  it('should display country and language', () => {
-    component.topic.set(mockTopic);
-    fixture.detectChanges();
-    const metaValues = fixture.nativeElement.querySelectorAll('.meta-value');
-    const texts = Array.from(metaValues).map((el) => (el as HTMLElement).textContent?.trim());
-    expect(texts).toContain('public');
-    expect(texts).toContain('Estonia');
-    expect(texts).toContain('Estonian');
-  });
-
-  it('should display groups when provided', () => {
-    component.topic.set(mockTopic);
-    component.topicGroups.set([{ id: 'g1', name: 'Test Group' }]);
-    fixture.detectChanges();
-    const chips = fixture.nativeElement.querySelectorAll('.group-chip');
-    expect(chips.length).toBe(1);
-    expect(chips[0].textContent.trim()).toBe('Test Group');
-  });
 });

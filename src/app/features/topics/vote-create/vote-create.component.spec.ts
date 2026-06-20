@@ -12,6 +12,10 @@ const mockVote: Partial<Vote> = { id: 'vote-1', question: '', type: 'regular', a
 const mockTopicService = { save: vi.fn(), patch: vi.fn(), loadTopic: vi.fn() };
 const mockVoteService = { save: vi.fn(), update: vi.fn(), get: vi.fn() };
 const mockNotificationService = { success: vi.fn(), showRaw: vi.fn() };
+import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from '../../../shared/dialog';
+const mockTranslateService = { currentLang: 'en' };
+const mockDialogService = { open: vi.fn().mockReturnValue({ afterClosed: () => of(true) }) };
 
 describe('VoteCreateComponent (business logic)', () => {
   let component: VoteCreateComponent;
@@ -31,6 +35,8 @@ describe('VoteCreateComponent (business logic)', () => {
         { provide: TopicService, useValue: mockTopicService },
         { provide: TopicVoteService, useValue: mockVoteService },
         { provide: NotificationService, useValue: mockNotificationService },
+        { provide: TranslateService, useValue: mockTranslateService },
+        { provide: DialogService, useValue: mockDialogService },
         { provide: ActivatedRoute, useValue: { snapshot: { params: {} } } }
       ]
     });

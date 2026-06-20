@@ -1,5 +1,5 @@
 import { Component, input, ChangeDetectionStrategy, model } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Topic } from '../../../core/interfaces/topic';
 import { TopicMemberGroup } from '../topic-settings-panel/topic-settings-panel.component';
@@ -11,7 +11,7 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 @Component({
   selector: 'cos-topic-preview',
   standalone: true,
-  imports: [TranslateModule, SafeHtmlPipe, DatePipe],
+  imports: [TranslateModule, SafeHtmlPipe, DatePipe, UpperCasePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="topic_content_wrap">
@@ -139,11 +139,18 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
             </div>
           </div>
           <div class="vote_content">
-            <div class="preview-options">
+            <div class="vote_options">
               @for (opt of v.options; track opt.value) {
-                <div class="preview-option">
-                  <span class="bullet">○</span>
-                  <span>{{ opt.value }}</span>
+                <div class="vote_option radio_wrap voting">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label [class]="v.maxChoices === 1 ? 'radio_box' : 'checkbox'">
+                        <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_OPTION_' + (opt.value | uppercase) | translate: {default: opt.value} }}</span>
+                        <input [type]="v.maxChoices === 1 ? 'radio' : 'checkbox'" disabled />
+                        <span [class]="v.maxChoices === 1 ? 'radio' : 'checkmark'"></span>
+                      </label>
+                    </div>
+                  </div>
                 </div>
               }
             </div>
@@ -231,7 +238,7 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
       }
     }
 
-    .arguments_wrap, .ideation_wrap, .vote_wrap {
+    .arguments_wrap, .ideation_wrap {
       display: flex;
       flex-direction: column;
       margin-top: 24px;
@@ -239,7 +246,7 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
       border-radius: 16px;
       overflow: hidden;
 
-      .arguments_header, .ideation_header, .vote_header {
+      .arguments_header, .ideation_header {
         display: flex;
         flex-direction: column;
         padding: 24px 32px;
@@ -281,7 +288,7 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
         }
       }
 
-      .arguments_content, .ideation_content, .vote_content {
+      .arguments_content, .ideation_content {
         background-color: var(--color-blue-100);
         padding: 32px;
         display: flex;
@@ -300,10 +307,10 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
           width: 100%;
 
           .description_heading {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
-            color: var(--color-text-main);
             margin: 0;
+            color: var(--color-text-main);
           }
 
           .no_feature_description {
@@ -319,27 +326,59 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
             }
           }
         }
+      }
+    }
 
-        .preview-options {
+    .vote_wrap {
+      background-color: var(--color-argument-pro-light);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 24px;
+      margin-bottom: 20px;
+      width: 100%;
+
+      .vote_header {
+        display: flex;
+        width: 100%;
+        padding: 12px 16px;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--color-argument-pro-medium);
+        border-radius: 16px 16px 0px 0px;
+
+        .header_section {
+          display: flex;
+          gap: 16px;
+          align-items: center;
+
+          .question {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 24px;
+            color: var(--color-text-main);
+          }
+        }
+      }
+
+      .vote_content {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        padding: 16px;
+        gap: 16px;
+
+        .vote_options {
           display: flex;
           flex-direction: column;
-          gap: 12px;
-          background-color: var(--color-surfaces);
-          padding: 24px;
-          border-radius: 16px;
-        }
+          gap: 8px;
 
-        .preview-option {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          font-size: 16px;
-          color: var(--color-text-main);
-        }
-
-        .bullet {
-          color: var(--color-primary);
-          font-weight: bold;
+          .vote_option {
+            background-color: var(--color-surfaces);
+            &.voting {
+              border-color: var(--color-argument-pro);
+            }
+          }
         }
       }
     }

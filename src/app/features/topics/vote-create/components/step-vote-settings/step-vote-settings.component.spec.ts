@@ -1,6 +1,8 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { StepVoteSettingsComponent } from './step-vote-settings.component';
+import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
+import { TopicService } from '../../../../../core/services/topic.service';
 import { Vote } from '../../../../../core/interfaces/vote';
 
 describe('StepVoteSettingsComponent (business logic)', () => {
@@ -15,10 +17,16 @@ describe('StepVoteSettingsComponent (business logic)', () => {
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: TopicIdeationService, useValue: { getIdeas: vi.fn(), getFolders: vi.fn() } },
+        { provide: TopicService, useValue: { canEditDescription: vi.fn().mockReturnValue(true) } }
+      ]
+    });
     component = TestBed.runInInjectionContext(() => new StepVoteSettingsComponent());
     // Mock the required input signal
     vi.spyOn(component, 'vote').mockReturnValue(defaultVote as unknown as Vote);
+    vi.spyOn(component, 'topic').mockReturnValue({} as any);
   });
 
   it('should create', () => {

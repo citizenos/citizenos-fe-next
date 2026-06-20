@@ -1,0 +1,475 @@
+<div class="dialog-overlay" dialogClose>
+  <div class="dialog_wrap">
+    <div id="notification_wrap_dialog" class="mobile_hidden">
+      <cos-notifications></cos-notifications>
+    </div>
+    <div class="dialog" (click)="$event.stopPropagation()">
+      <div id="notification_wrap_dialog" class="mobile_show">
+        <cos-notifications></cos-notifications>
+      </div>
+      <div class="dialog_header voting">
+        <div class="header_text">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="20" fill="#5AB467" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M20 10C14.48 10 10 14.48 10 20C10 25.52 14.48 30 20 30C25.52 30 30 25.52 30 20C30 14.48 25.52 10 20 10ZM18.0556 25L25.8333 17.2807L24.375 15.8333L18.0556 22.1053L15.625 19.693L14.1667 21.1404L18.0556 25Z"
+              fill="white" />
+          </svg>
+          <h4 class="title">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_HEADING' | translate }}</h4>
+        </div>
+        <div class="dialog_close">
+          <a class="btn_dialog_close icon" dialogClose>
+            <cos-icon name="close"></cos-icon>
+          </a>
+        </div>
+      </div>
+      <div class="dialog_tabs_wrap voting">
+        @for (tab of tabs; track tab) {
+          <a class="dialog_tab success mobile_hidden"
+            [class.active]="tabActive() === tab + 1" (click)="tabActive.set(tab + 1)">
+            <span class="tab_number">{{tab + 1}}.&nbsp;</span>
+            @if (tabActive() === tab + 1) {
+              <span class="tab_text">
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_' + (tab + 1) | translate }}</span>
+              </span>
+            }
+          </a>
+        }
+      </div>
+      <div class="dialog_content">
+        @if (tabActive() === 1) {
+          <div class="introduction_wrap">
+            <div class="intro_heading">
+              <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ARE_YOU_SURE' | translate }}</span>
+              <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_KEEP_IN_MIND' | translate }}</span>
+            </div>
+            <div class="dialog_info">
+              <div class="row">
+                <cos-icon name="close" class="error_text"></cos-icon>
+                <span class="error_text bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_1' | translate }}</span>
+              </div>
+              @if (topic.ideationId) {
+                <div class="row">
+                  <cos-icon name="close" class="error_text"></cos-icon>
+                  <span class="error_text bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_7' | translate }}</span>
+                </div>
+              }
+              @if (topic.ideationId && !topic.discussionId) {
+                <div class="row">
+                  <cos-icon name="close" class="error_text"></cos-icon>
+                  <span class="error_text bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_9' | translate }}</span>
+                </div>
+              }
+              <div class="row">
+                <cos-icon name="close"></cos-icon>
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_5' | translate }}</span>
+              </div>
+              <div class="row">
+                <cos-icon name="close"></cos-icon>
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_6' | translate }}</span>
+              </div>
+              <div class="row">
+                <cos-icon name="check"></cos-icon>
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_2' | translate }}</span>
+              </div>
+              <div class="row">
+                <cos-icon name="check"></cos-icon>
+                <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_ITEM_3' | translate }}</span>
+              </div>
+            </div>
+            <div class="dialog_info_wrap">
+              <div class="dialog_info voting">
+                <div class="row">
+                  <cos-icon name="info"></cos-icon>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.DIALOG_TAB_INTRODUCTION_INFO' | translate }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        @else if (tabActive() === 2) {
+          <div id="form_area">
+            <div class="content_section">
+              <div class="section_content_wrap">
+                <div class="small_heading">1. <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_QUESTION_HEADING' | translate }}</span></div>
+                <div class="section_content_description">
+                  <cos-input [placeholder]="'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_QUESTION_PLACEHOLDER' | translate">
+                    <input id="groupName" [placeholder]="'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_QUESTION_PLACEHOLDER' | translate"
+                      [value]="vote().description" (input)="updateVote('description', getInputValue($event))">
+                  </cos-input>
+                </div>
+              </div>
+            </div>
+            <div class="content_section">
+              <div class="section_content_wrap">
+                <div class="small_heading">2. <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM' | translate }}</span></div>
+                <div>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM_DESC' | translate }}</div>
+
+                @if (topic.ideationId) {
+                  <div class="radio_wrap voting" (click)="setVoteType(VOTE_TYPES.ideation)"
+                    [class.selected]="vote().type === VOTE_TYPES.ideation">
+                    <div class="radio_text_wrap">
+                      <div class="radio_lable_wrap">
+                        <label class="radio_box">
+                          <input type="radio" [checked]="vote().type === VOTE_TYPES.ideation">
+                          <span class="radio"></span>
+                          <div class="radio_lable">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_' + VOTE_TYPES.ideation | uppercase | translate }}</div>
+                        </label>
+                      </div>
+                      <div class="radio_description">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_' + VOTE_TYPES.ideation + '_DESC' | uppercase | translate }}</div>
+                    </div>
+                  </div>
+                }
+
+                <div class="radio_wrap voting" (click)="setVoteType(VOTE_TYPES.regular)"
+                  [class.selected]="vote().type === VOTE_TYPES.regular">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="radio_box">
+                        <input type="radio" [checked]="vote().type === VOTE_TYPES.regular">
+                        <span class="radio"></span>
+                        <div class="radio_lable">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_' + VOTE_TYPES.regular | uppercase | translate }}</div>
+                      </label>
+                    </div>
+                    <div class="radio_description">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_' + VOTE_TYPES.regular + '_DESC' | uppercase | translate }}</div>
+                  </div>
+                </div>
+
+                <div class="radio_wrap voting" (click)="setVoteType(VOTE_TYPES.multiple)"
+                  [class.selected]="vote().type === VOTE_TYPES.multiple">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="radio_box">
+                        <input type="radio" [checked]="vote().type === VOTE_TYPES.multiple">
+                        <span class="radio"></span>
+                        <div class="radio_lable">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_' + VOTE_TYPES.multiple | uppercase | translate }}</div>
+                      </label>
+                    </div>
+                    <div class="radio_description">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_' + VOTE_TYPES.multiple + '_DESC' | uppercase | translate }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        @else if (tabActive() === 3) {
+          <div class="dialog_info_wrap">
+            <div id="voting_question_wrap" class="dialog_info voting">
+              <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTING_QUESTION' | translate }}</span>
+              <span class="bold">{{vote().description}}</span>
+            </div>
+          </div>
+          <div id="form_area">
+            <div class="content_section">
+              <div class="section_content_wrap">
+                <div class="small_heading">1. <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEFINE_VOTE_ANSWERS' | translate }}</span></div>
+                
+                @if (vote().type === VOTE_TYPES.regular) {
+                  <div class="vote_options_wrap">
+                    <div class="radio_wrap" [class.selected]="predefinedOptions().yes.enabled" (click)="toggleOption('yes')">
+                      <div class="radio_text_wrap">
+                        <div class="radio_lable_wrap">
+                          <label class="checkbox" [class.selected]="predefinedOptions().yes.enabled">
+                            <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_YES' | translate }}</span>
+                            <span class="checkmark"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="radio_wrap" [class.selected]="predefinedOptions().no.enabled" (click)="toggleOption('no')">
+                      <div class="radio_text_wrap">
+                        <div class="radio_lable_wrap">
+                          <label class="checkbox" [class.selected]="predefinedOptions().no.enabled">
+                            <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_NO' | translate }}</span>
+                            <span class="checkmark"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="radio_wrap" [class.selected]="extraOptions().neutral.enabled" (click)="toggleExtraOption('neutral')">
+                      <div class="radio_text_wrap">
+                        <div class="radio_lable_wrap">
+                          <label class="checkbox" [class.selected]="extraOptions().neutral.enabled">
+                            <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_NEUTRAL' | translate }}</span>
+                            <span class="checkmark"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="radio_wrap" [class.selected]="extraOptions().veto.enabled" (click)="toggleExtraOption('veto')">
+                      <div class="radio_text_wrap">
+                        <div class="radio_lable_wrap">
+                          <label class="checkbox" [class.selected]="extraOptions().veto.enabled">
+                            <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_VETO' | translate }}</span>
+                            <span class="checkmark"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
+
+                @if (vote().type === VOTE_TYPES.multiple || vote().type === VOTE_TYPES.ideation) {
+                  @if (vote().type === VOTE_TYPES.multiple) {
+                    <div class="vote_options_wrap">
+                      <div class="vote_options_list" cdkDropList (cdkDropListDropped)="drop($event)">
+                        @for (option of customOptions(); track option) {
+                          <div class="input_area" cdkDrag>
+                            <cos-input [placeholder]="'COMPONENTS.TOPIC_VOTE_CREATE.PLACEHOLDER_ENTER_A_POSSIBLE_ANSWER' | translate">
+                              <input [placeholder]="'COMPONENTS.TOPIC_VOTE_CREATE.PLACEHOLDER_ENTER_A_POSSIBLE_ANSWER' | translate"
+                                [id]="'voteOption' + $index"
+                                [value]="option.value"
+                                (input)="updateCustomOption($index, getInputValue($event))" />
+                            </cos-input>
+                            <div class="actions_wrap">
+                              <div class="icon_drag" cdkDragHandle>
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M5.33317 4.66667L7.99984 2L10.6665 4.66667H13.3332V6H2.6665V4.66667H5.33317Z" fill="#2C3B47" />
+                                  <path d="M13.3332 7.33333V8.66667H2.6665V7.33333H13.3332Z" fill="#2C3B47" />
+                                  <path d="M13.3332 10V11.3333H10.6665L7.99984 14L5.33317 11.3333H2.6665V10H13.3332Z" fill="#2C3B47" />
+                                </svg>
+                              </div>
+                              <button type="button" class="btn_medium_voting_light icon" (click)="removeOption($index)">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M6 6.00016H7.33333L7.33333 11.3335H6L6 6.00016Z" fill="#2C3B47" />
+                                  <path d="M10 6.00016H8.66667L8.66667 11.3335H10L10 6.00016Z" fill="#2C3B47" />
+                                  <path fill-rule="evenodd" clip-rule="evenodd" d="M11.3333 3.3335V2.66683C11.3333 1.93045 10.7364 1.3335 10 1.3335L6 1.3335C5.26362 1.3335 4.66667 1.93045 4.66667 2.66683V3.3335L2.66667 3.3335C2.29848 3.3335 2 3.63198 2 4.00016C2 4.36835 2.29848 4.66683 2.66667 4.66683H3.33333L3.33333 12.0002C3.33333 13.1048 4.22877 14.0002 5.33333 14.0002L10.6667 14.0002C11.7713 14.0002 12.6667 13.1048 12.6667 12.0002L12.6667 4.66683H13.3333C13.7015 4.66683 14 4.36835 14 4.00016C14 3.63198 13.7015 3.3335 13.3333 3.3335H11.3333ZM10 2.66683L6 2.66683V3.3335L10 3.3335V2.66683ZM11.3333 4.66683L4.66667 4.66683L4.66667 12.0002C4.66667 12.3684 4.96515 12.6668 5.33333 12.6668L10.6667 12.6668C11.0349 12.6668 11.3333 12.3684 11.3333 12.0002L11.3333 4.66683Z" fill="#2C3B47" />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                      <button type="button" class="btn_medium_plain animate" (click)="addOption()">
+                        <cos-icon name="plus"></cos-icon>
+                        <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.BTN_ADD_OPTION' | translate }}</span>
+                      </button>
+                    </div>
+                  }
+                  
+                  <div class="vote_options_wrap">
+                    <div class="description_text">
+                      <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_CAN_ADD_EXTRA_OPTIONS' | translate }}</span>
+                    </div>
+                    <div class="radio_wrap" [class.selected]="extraOptions().neutral.enabled" (click)="toggleExtraOption('neutral')">
+                      <div class="radio_text_wrap">
+                        <div class="radio_lable_wrap">
+                          <label class="checkbox" [class.selected]="extraOptions().neutral.enabled">
+                            <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_NEUTRAL' | translate }}</span>
+                            <span class="checkmark"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="radio_wrap" [class.selected]="extraOptions().veto.enabled" (click)="toggleExtraOption('veto')">
+                      <div class="radio_text_wrap">
+                        <div class="radio_lable_wrap">
+                          <label class="checkbox" [class.selected]="extraOptions().veto.enabled">
+                            <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_VETO' | translate }}</span>
+                            <span class="checkmark"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            @if (vote().type === VOTE_TYPES.multiple || vote().type === VOTE_TYPES.ideation) {
+              <div class="content_section">
+                <div class="section_content_wrap">
+                  <div class="small_heading">2. <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_MIN_MAX' | translate }}</span></div>
+                  <div>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_TXT_DESCRIPTION_CHOICE_RANGE' | translate }}</div>
+                  
+                  <div class="input_area min_max_options">
+                    <label class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_LBL_MIN_CHOICES' | translate }}</label>
+                    <div class="options_count_input_wrap">
+                      <button type="button" class="btn_medium_voting_light icon" (click)="optionsCountDown('min')">
+                        <cos-icon name="minus"></cos-icon>
+                      </button>
+                      <input class="options_count_input" type="number" [min]="1" [max]="getOptionsLimit()"
+                        [value]="vote().minChoices" (change)="updateVote('minChoices', getInputValueAsNumber($event))" />
+                      <button type="button" class="btn_medium_voting_light icon" (click)="optionsCountUp('min')">
+                        <cos-icon name="plus"></cos-icon>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div class="input_area min_max_options">
+                    <label class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_LBL_MAX_CHOICES' | translate }}</label>
+                    <div class="options_count_input_wrap">
+                      <button type="button" class="btn_medium_voting_light icon" (click)="optionsCountDown('max')">
+                        <cos-icon name="minus"></cos-icon>
+                      </button>
+                      <input class="options_count_input" type="number" [min]="1" [max]="getOptionsLimit()"
+                        [value]="vote().maxChoices" (change)="updateVote('maxChoices', getInputValueAsNumber($event))" />
+                      <button type="button" class="btn_medium_voting_light icon" (click)="optionsCountUp('max')">
+                        <cos-icon name="plus"></cos-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <div class="content_section">
+              <div class="section_content_wrap">
+                <div class="small_heading">{{ vote().type === VOTE_TYPES.regular ? '2.' : '3.' }} <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS' | translate }}</span></div>
+                <div>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS_DESC' | translate }}</div>
+                
+                <div class="radio_wrap date_selector" [class.selected]="vote().authType === 'soft'" (click)="updateVote('authType', 'soft')">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="radio_box" [class.selected]="vote().authType === 'soft'">
+                        <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_AUTH_SOFT_ID' | translate }}</span>
+                        <input type="radio" name="authType" value="soft" [checked]="vote().authType === 'soft'" />
+                        <span class="radio"></span>
+                      </label>
+                    </div>
+                    <div class="radio_description">
+                      <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_AUTH_SOFT_ID_DESC' | translate }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="radio_wrap date_selector" [class.selected]="vote().authType === 'hard'" (click)="updateVote('authType', 'hard')">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="radio_box" [class.selected]="vote().authType === 'hard'">
+                        <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_AUTH_HARD_ID' | translate }}</span>
+                        <input type="radio" name="authType" value="hard" [checked]="vote().authType === 'hard'" />
+                        <span class="radio"></span>
+                      </label>
+                    </div>
+                    <div class="radio_description">
+                      <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_AUTH_HARD_ID_DESC' | translate }}</span>
+                      <div class="id_icons_wrap">
+                        <!-- simplified eID representation -->
+                        <cos-icon name="mobile-id"></cos-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="content_section">
+              <div class="section_content_wrap">
+                <div class="small_heading">{{ vote().type === VOTE_TYPES.regular ? '3.' : '4.' }} <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION' | translate }}</span></div>
+                <div>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION_DESC' | translate }}</div>
+                <div class="radio_wrap" [class.selected]="vote().delegationIsAllowed" [class.disabled]="vote().authType === VOTE_AUTH_TYPES.hard"
+                  (click)="vote().authType !== VOTE_AUTH_TYPES.hard && updateVote('delegationIsAllowed', !vote().delegationIsAllowed)">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="checkbox" [class.selected]="vote().delegationIsAllowed">
+                        <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_DELEGATION' | translate }}</span>
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="content_section">
+              <div class="section_content_wrap">
+                <div class="small_heading">{{ vote().type === VOTE_TYPES.regular ? '4.' : '5.' }} <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEADLINE' | translate }}</span></div>
+                <div>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEADLINE_DESC' | translate }}</div>
+                
+                <div class="radio_wrap date_selector" [class.selected]="deadline()">
+                  <div class="radio_text_wrap date_selector">
+                    <div class="radio_lable_wrap" (click)="toggleDeadline()">
+                      <label class="checkbox" [class.selected]="deadline()">
+                        <span class="checkmark"></span>
+                        <div class="checkbox_text_wrap">
+                          <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_DEADLINE' | translate }}</span>
+                          @if (deadline()) {
+                            <span class="deadline bold">{{ deadline() | date: 'y-MM-dd HH:mm' }}</span>
+                          }
+                        </div>
+                      </label>
+                    </div>
+                    <div class="radio_description">
+                      <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_DEADLINE_DESC' | translate }}</span>
+                      <!-- For deadline configuration we skip the complex inputs and assume simplified date handling for now, or just use input type="datetime-local" -->
+                      @if (deadline()) {
+                        <div class="deadline_wrap" style="margin-top: 16px;">
+                          <input type="datetime-local" class="time_input" [value]="deadlineString()" (change)="updateDeadline(getInputValue($event))" />
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        @else if (tabActive() === 4) {
+          <div class="dialog_info_wrap">
+            <div class="vote_info_reminder" [innerHTML]="'COMPONENTS.TOPIC_VOTE_CREATE.PREVIEW_INFO_CHECK' | translate"></div>
+            <div class="dialog_info voting">
+              <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTING_QUESTION' | translate }}</span>
+              <span class="bold">{{vote().description}}</span>
+            </div>
+          </div>
+          <div class="dialog_info_wrap">
+            <div class="dialog_info voting no_padding">
+              <div class="dialog_info_header">
+                @if (vote().maxChoices === 1) {
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="24" r="24" fill="#98DAA2" />
+                    <rect x="12" y="12" width="24" height="24" rx="12" fill="white" />
+                    <rect x="18" y="18" width="12" height="12" rx="6" fill="#5AB467" />
+                  </svg>
+                } @else {
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="24" r="24" fill="#98DAA2" />
+                    <rect x="18" y="26" width="12" height="12" rx="1" fill="#F1FAF3" />
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.1992 32.1455L22.6278 35.6004L28.7992 29.3816L27.8324 28.4004L22.6278 33.6449L20.1661 31.1712L19.1992 32.1455Z" fill="#5AB467" />
+                    <rect x="18" y="10" width="12" height="12" rx="1" fill="#F1FAF3" />
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20 16.1209L22.8571 19L28 13.8177L27.1943 13L22.8571 17.3704L20.8057 15.309L20 16.1209Z" fill="#5AB467" />
+                  </svg>
+                }
+                <span>
+                  @if (vote().maxChoices === 1) {
+                    {{ 'COMPONENTS.TOPIC_VOTE_CREATE.PREVIEW_VOTE_TYPE_REGULAR' | translate }}
+                  } @else {
+                    {{ 'COMPONENTS.TOPIC_VOTE_CREATE.PREVIEW_VOTE_TYPE_MULTIPLE' | translate: {range: (vote().minChoices !== vote().maxChoices ? vote().minChoices + '-' + vote().maxChoices : vote().maxChoices)} }}
+                  }
+                </span>
+              </div>
+              <div class="dialog_info_content">
+                @for (option of compiledOptions(); track $index) {
+                  <div class="radio_wrap">
+                    <div class="radio_text_wrap">
+                      <div class="radio_lable_wrap">
+                        <label [class]="vote().maxChoices === 1 ? 'radio_box' : 'checkbox'">
+                          <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_' + (option.value | uppercase) | translate: {default: option.value} }}</span>
+                          <span [class]="vote().maxChoices === 1 ? 'radio' : 'checkmark'"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="dialog_footer with_buttons">
+        <a dialogClose style="cursor: pointer;">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LNK_CANCEL' | translate }}</a>
+        <div class="button_row">
+          @if (tabActive() > 1) {
+            <cos-button variant="ghost" (clicked)="tabActive.set(tabActive() - 1)">
+              <cos-icon name="chevron-left"></cos-icon>
+            </cos-button>
+          }
+          <cos-button variant="primary" (clicked)="tabNext()" [isDisabled]="isNextDisabled()">
+            {{ (tabActive() < 4 ? 'COMPONENTS.TOPIC_VOTE_CREATE.BTN_CONTINUE' : 'COMPONENTS.TOPIC_VOTE_CREATE.BTN_START_VOTE') | translate }}
+          </cos-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,7 +10,7 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
   imports: [TranslateModule, FormsModule, CommonModule, UpperCasePipe, CosCalenderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="radio_wrap discussion date_selector" [class.selected]="enabled()">
+    <div class="radio_wrap date_selector" [ngClass]="theme()" [class.selected]="enabled()">
       <div class="radio_text_wrap date_selector">
         <div class="radio_lable_wrap">
           <label class="checkbox" [class.selected]="enabled()">
@@ -28,10 +28,10 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
         @if (enabled()) {
           <div class="deadline_wrap">
             <div class="date_row">
-              <span class="deadline" translate="VIEWS.TOPIC_CREATE.LBL_TIMEZONE"></span>
+              <span class="deadline" translate="COMPONENTS.EDIT_IDEATION_DEADLINE.LBL_TIMEZONE"></span>
             </div>
             <div class="date_row">
-              <div class="bold date_row_title" translate="VIEWS.TOPIC_CREATE.DEADLINE_LBL_TIME"></div>
+              <div class="bold date_row_title" translate="COMPONENTS.EDIT_IDEATION_DEADLINE.DEADLINE_LBL_TIME"></div>
               <div class="input_wrap">
                 <div class="time_wrap">
                   <input
@@ -57,7 +57,7 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
                 <div class="dropdown" role="button" tabindex="0" [class.dropdown_active]="showFormatOptions()" (click)="toggleFormatDropdown(); $event.stopPropagation();" (keydown.enter)="toggleFormatDropdown(); $event.stopPropagation();">
                   <div class="selection">
                     <div class="selected_item">
-                      {{ 'VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_' + timeFormat() | uppercase | translate }}
+                      {{ 'COMPONENTS.EDIT_IDEATION_DEADLINE.DEADLINE_TIME_OPTION_' + timeFormat() | uppercase | translate }}
                     </div>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M17 10L12 15L7 10" stroke="#727C84" stroke-width="2" stroke-linecap="round" />
@@ -65,9 +65,9 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
                   </div>
                   @if (showFormatOptions()) {
                     <div class="options">
-                      <div class="option" role="button" tabindex="0" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_24" (click)="setTimeFormat(24)" (keydown.enter)="setTimeFormat(24)"></div>
-                      <div class="option" role="button" tabindex="0" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_AM" (click)="setTimeFormat('AM')" (keydown.enter)="setTimeFormat('AM')"></div>
-                      <div class="option" role="button" tabindex="0" translate="VIEWS.TOPIC_CREATE.DEADLINE_TIME_OPTION_PM" (click)="setTimeFormat('PM')" (keydown.enter)="setTimeFormat('PM')"></div>
+                      <div class="option" role="button" tabindex="0" translate="COMPONENTS.EDIT_IDEATION_DEADLINE.DEADLINE_TIME_OPTION_24" (click)="setTimeFormat(24)" (keydown.enter)="setTimeFormat(24)"></div>
+                      <div class="option" role="button" tabindex="0" translate="COMPONENTS.EDIT_IDEATION_DEADLINE.DEADLINE_TIME_OPTION_AM" (click)="setTimeFormat('AM')" (keydown.enter)="setTimeFormat('AM')"></div>
+                      <div class="option" role="button" tabindex="0" translate="COMPONENTS.EDIT_IDEATION_DEADLINE.DEADLINE_TIME_OPTION_PM" (click)="setTimeFormat('PM')" (keydown.enter)="setTimeFormat('PM')"></div>
                     </div>
                   }
                 </div>
@@ -82,19 +82,22 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
             ></cos-calender>
 
             @if (showReminder()) {
-              <div class="reminder-section">
-                <label class="checkbox-label" tabindex="-1" (click)="toggleReminder(); $event.stopPropagation();" (keydown.enter)="toggleReminder(); $event.stopPropagation();">
+              <div class="reminder-section" [ngClass]="theme()">
+                <label class="checkbox" tabindex="-1" [class.selected]="reminderEnabled()" (click)="toggleReminder(); $event.stopPropagation();" (keydown.enter)="toggleReminder(); $event.stopPropagation();">
                   <input type="checkbox" [checked]="reminderEnabled()" (click)="$event.stopPropagation()">
                   <span class="checkmark"></span>
-                  <span class="bold" translate="VIEWS.DEADLINE_PICKER.SET_REMINDER"></span>
+                  <div class="checkbox_text_wrap">
+                    <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CREATE.DEADLINE_LBL_OPTION_SET_VOTE_REMINDER"></span>
+                  </div>
                 </label>
+                <div class="reminder-desc" translate="COMPONENTS.TOPIC_VOTE_CREATE.DEADLINE_LBL_OPTION_SET_VOTE_REMINDER_DESC"></div>
                 @if (reminderEnabled() && availableReminders().length) {
                   <select
                     id="deadline_reminder"
                     class="reminder-select"
                     [ngModel]="selectedReminderIndex()"
                     (ngModelChange)="onReminderSelect($event)"
-                    [attr.aria-label]="'VIEWS.DEADLINE_PICKER.SET_REMINDER' | translate"
+                    [attr.aria-label]="'COMPONENTS.TOPIC_VOTE_CREATE.DEADLINE_LBL_OPTION_SET_VOTE_REMINDER' | translate"
                   >
                     @for (opt of availableReminders(); track $index; let i = $index) {
                       <option [value]="i">{{ getReminderLabel(opt) }}</option>
@@ -122,8 +125,33 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
       width: 100%;
       box-sizing: border-box;
 
-      &.selected {
+      &.discussion.selected {
         border-color: var(--color-primary, #1168a8);
+      }
+
+      &.discussion.selected > .radio_text_wrap > .radio_lable_wrap > .checkbox {
+        .checkmark {
+          background-color: var(--color-link, #1168a8);
+          border-color: var(--color-link, #1168a8);
+          &:after {
+            display: block;
+          }
+        }
+      }
+
+      &.voting.selected {
+        background-color: var(--color-argument-pro-light, #fef4f3);
+        border-color: var(--color-argument-pro, #ef4025);
+      }
+
+      &.voting.selected > .radio_text_wrap > .radio_lable_wrap > .checkbox {
+        .checkmark {
+          background-color: var(--color-argument-pro, #ef4025);
+          border-color: var(--color-argument-pro, #ef4025);
+          &:after {
+            display: block;
+          }
+        }
       }
 
       .radio_text_wrap {
@@ -142,6 +170,9 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
 
     .checkbox {
       display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
       position: relative;
       cursor: pointer;
       user-select: none;
@@ -180,7 +211,7 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
         }
       }
 
-      &.selected .checkmark {
+      input:checked ~ .checkmark {
         background-color: var(--color-link, #1168a8);
         border-color: var(--color-link, #1168a8);
         &:after {
@@ -188,11 +219,12 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
         }
       }
 
+
       .checkbox_text_wrap {
         font-weight: 500;
         display: flex;
         justify-content: space-between;
-        width: 100%;
+        flex: 1;
         align-items: center;
 
         .deadline {
@@ -299,61 +331,37 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
       display: flex;
       flex-direction: column;
       gap: 8px;
-      padding-top: 16px;
-      border-top: 1px solid var(--color-border);
+      padding: 16px;
+      border-radius: 8px;
       width: 100%;
+      box-sizing: border-box;
 
-      .checkbox-label {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        cursor: pointer;
+      &.discussion {
+        background-color: var(--color-ideation-medium, #EBF4FB);
+      }
 
-        input {
-          position: absolute;
-          opacity: 0;
-          height: 0;
-          width: 0;
-        }
+      &.voting {
+        background-color: var(--color-argument-pro-medium, #E0F5E3);
+      }
 
-        .checkmark {
-          height: 20px;
-          width: 20px;
-          background-color: white;
-          border: 1px solid var(--color-border-bold);
-          border-radius: 4px;
-          position: relative;
-
-          &:after {
-            content: "";
-            position: absolute;
-            display: none;
-            left: 6px;
-            top: 2px;
-            width: 4px;
-            height: 8px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-          }
-        }
-
-        input:checked ~ .checkmark {
-          background-color: var(--color-link);
-          border-color: var(--color-link);
-          &:after {
-            display: block;
-          }
-        }
+      .reminder-desc {
+        color: var(--color-text-main, #2c3b47);
+        font-size: 14px;
+        line-height: 20px;
+        margin-left: 36px;
       }
 
       .reminder-select {
         padding: 8px 12px;
         border: 1px solid var(--color-border);
-        border-radius: 4px;
+        border-radius: 8px;
         font-size: 14px;
+        font-weight: 500;
         background: var(--color-surfaces);
         margin-top: 8px;
+        height: 44px;
+        width: 100%;
+        color: var(--color-text-main);
       }
     }
   `]
@@ -363,7 +371,8 @@ export class DeadlinePickerComponent {
 
   deadline = input<Date | null>(null);
   showReminder = input<boolean>(false);
-  toggleLabel = input<string>('VIEWS.DEADLINE_PICKER.SET_DEADLINE');
+  toggleLabel = input<string>('COMPONENTS.EDIT_IDEATION_DEADLINE.LBL_OPTION_DEADLINE');
+  theme = input<'discussion' | 'voting'>('discussion');
 
   deadlineChange = output<Date | null>();
   reminderChange = output<Date | null>();

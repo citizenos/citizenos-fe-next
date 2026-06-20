@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit, signal, inject, ChangeDetectionStrategy, computed } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { form, required } from '@angular/forms/signals';
@@ -55,6 +56,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   private groupMemberTopicService = inject(GroupMemberTopicService);
   private dialog = inject(DialogService);
   private translate = inject(TranslateService);
+  private location = inject(Location);
 
   readonly steps: StepConfig[] = [
     { key: 'info', label: 'VIEWS.VOTE_CREATE.CREATE_TAB_1', icon: 'edit' },
@@ -183,12 +185,11 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
         });
         this.isLoading.set(false);
         this.hasChanges.set(false);
-        this.router.navigate([this.topicModel().id], {
-          relativeTo: this.route,
-          replaceUrl: true
-        }).then(() => {
-          this.hasChanges.set(true);
-        });
+        
+        const currentUrl = this.router.url;
+        const newUrl = `${currentUrl}/${this.topicModel().id}`;
+        this.location.replaceState(newUrl);
+        this.hasChanges.set(true);
       },
       error: () => {
         this.isLoading.set(false);
@@ -319,9 +320,14 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     this.isLoading.set(true);
     this.topicService.patch(t).subscribe({
       next: () => {
-        if (this.voteModel().id && t.id) {
+        if (t.id) {
           const voteData = { ...this.voteModel(), topicId: t.id, description: this.voteModel().question };
-          this.voteService.update(voteData).pipe(take(1)).subscribe();
+          const request = this.voteModel().id ? this.voteService.update(voteData) : this.voteService.save(voteData);
+          request.pipe(take(1)).subscribe({
+            next: (savedVote) => {
+              this.voteModel.update(v => ({ ...v, id: savedVote.id }));
+            }
+          });
         }
         this.isLoading.set(false);
         this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
@@ -339,31 +345,32 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     const t = this.topicModel();
     if (!t.id) return;
     this.isLoading.set(true);
-    this.topicService.patch({ ...t, status: 'voting' }).subscribe({
+
+    const currentVote = this.voteModel();
+    const voteData = { 
+      ...currentVote, 
+      topicId: t.id, 
+      description: currentVote.question,
+      type: currentVote.type === 'ideation' ? 'multiple' : currentVote.type
+    };
+
+    const request = currentVote.id ? this.voteService.update(voteData) : this.voteService.save(voteData);
+
+    request.pipe(
+      take(1),
+      switchMap((savedVote) => {
+        this.voteModel.update(v => ({ ...v, id: savedVote.id }));
+        return this.topicService.patch({ ...t, status: 'voting' }).pipe(take(1));
+      })
+    ).subscribe({
       next: (savedTopic) => {
-        if (!t.id) return;
-        const currentVote = this.voteModel();
-        const voteData = { 
-          ...currentVote, 
-          topicId: t.id, 
-          description: currentVote.question,
-          type: currentVote.type === 'ideation' ? 'multiple' : currentVote.type
-        };
-        this.voteService.update(voteData).pipe(take(1)).subscribe({
-          next: () => {
-            this.isLoading.set(false);
-            this.notification.showRaw('success', 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');
-            this.hasChanges.set(false);
-            this.dialog.open(TopicInviteDialogComponent, {
-              data: { topic: savedTopic }
-            }).afterClosed().subscribe(() => {
-              this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', savedTopic.id]);
-            });
-          },
-          error: () => {
-            this.isLoading.set(false);
-            this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_PUBLISH_FAILED');
-          }
+        this.isLoading.set(false);
+        this.notification.showRaw('success', 'VIEWS.TOPIC_CREATE.NOTIFICATION_SUCCESS_MESSAGE');
+        this.hasChanges.set(false);
+        this.dialog.open(TopicInviteDialogComponent, {
+          data: { topic: savedTopic }
+        }).afterClosed().subscribe(() => {
+          this.router.navigate(['/', this.translate.currentLang || 'en', 'topics', savedTopic.id]);
         });
       },
       error: () => {

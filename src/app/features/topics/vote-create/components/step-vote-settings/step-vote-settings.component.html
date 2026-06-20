@@ -1,0 +1,467 @@
+<div class="create_content">
+  <!-- Section 1: Question -->
+  <div class="create_content_section">
+    <div class="number_wrap mobile_hidden">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="16" height="16" rx="8" fill="white" />
+        <path d="M12.6558 9.32812C11.2233 8.52002 9.79067 7.71195 8.35815 6.90385C8.47123 7.10587 8.5843 7.30788 8.71632 7.4916V7.47328C8.71632 7.2345 8.58432 6.99582 8.35815 6.88553C6.92564 6.07743 5.49303 5.26936 4.06051 4.46126C3.26884 4.02046 2.55253 5.21426 3.3442 5.65493C4.77672 6.46303 6.20933 7.2711 7.64185 8.0792C7.52877 7.87718 7.41569 7.67517 7.28368 7.49145V7.50977C7.28368 7.74856 7.41569 7.98723 7.64185 8.09752C9.07436 8.90563 10.507 9.71369 11.9395 10.5218C12.7312 10.9626 13.4475 9.76892 12.6558 9.32812Z" fill="#EF4025" />
+        <path d="M8.71632 7.4916L8.71634 2.66112C8.71634 1.77963 7.30264 1.77963 7.30264 2.66112V7.49117C7.30264 8.3728 8.71632 8.37323 8.71632 7.4916Z" fill="#EF4025" />
+        <path d="M8.71627 12.3388V7.50873C8.71627 6.62723 7.30257 6.62723 7.30257 7.50873V12.3388C7.30257 13.2204 8.71627 13.2204 8.71627 12.3388Z" fill="#EF4025" />
+        <path d="M4.06051 10.5208C6.92563 8.90464 9.7907 7.28856 12.6558 5.69076C13.4475 5.24996 12.7311 4.05625 11.9395 4.49708C9.07435 6.11326 6.20929 7.72933 3.3442 9.32714C2.55253 9.76783 3.26886 10.9615 4.06051 10.5208Z" fill="#EF4025" />
+      </svg>
+      <div>1</div>
+    </div>
+    <div class="section_content_wrap">
+      <div class="header_wrap">
+        <div class="number_wrap mobile_show">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="16" height="16" rx="8" fill="white" />
+            <path d="M12.6558 9.32812C11.2233 8.52002 9.79067 7.71195 8.35815 6.90385C8.47123 7.10587 8.5843 7.30788 8.71632 7.4916V7.47328C8.71632 7.2345 8.58432 6.99582 8.35815 6.88553C6.92564 6.07743 5.49303 5.26936 4.06051 4.46126C3.26884 4.02046 2.55253 5.21426 3.3442 5.65493C4.77672 6.46303 6.20933 7.2711 7.64185 8.0792C7.52877 7.87718 7.41569 7.67517 7.28368 7.49145V7.50977C7.28368 7.74856 7.41569 7.98723 7.64185 8.09752C9.07436 8.90563 10.507 9.71369 11.9395 10.5218C12.7312 10.9626 13.4475 9.76892 12.6558 9.32812Z" fill="#EF4025" />
+            <path d="M8.71632 7.4916L8.71634 2.66112C8.71634 1.77963 7.30264 1.77963 7.30264 2.66112V7.49117C7.30264 8.3728 8.71632 8.37323 8.71632 7.4916Z" fill="#EF4025" />
+            <path d="M8.71627 12.3388V7.50873C8.71627 6.62723 7.30257 6.62723 7.30257 7.50873V12.3388C7.30257 13.2204 8.71627 13.2204 8.71627 12.3388Z" fill="#EF4025" />
+            <path d="M4.06051 10.5208C6.92563 8.90464 9.7907 7.28856 12.6558 5.69076C13.4475 5.24996 12.7311 4.05625 11.9395 4.49708C9.07435 6.11326 6.20929 7.72933 3.3442 9.32714C2.55253 9.76783 3.26886 10.9615 4.06051 10.5208Z" fill="#EF4025" />
+          </svg>
+          <div>1</div>
+        </div>
+        <div class="small_heading" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTING_QUESTION"></div>
+        <div class="mobile_hidden" translate="COMPONENTS.TOPIC_VOTE_CREATE.VOTE_QUESTION_HEADING"></div>
+      </div>
+      <div class="mobile_show" translate="COMPONENTS.TOPIC_VOTE_CREATE.VOTE_QUESTION_HEADING"></div>
+      <div class="row_wrap">
+        <cos-input placeholder="{{'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_QUESTION_PLACEHOLDER' | translate}}">
+          <input
+            id="voteQuestion"
+            [placeholder]="'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_QUESTION_PLACEHOLDER' | translate"
+            [ngModel]="vote().question"
+            (ngModelChange)="onUpdate({question: $event})"
+            [disabled]="!!topic() && !topicService.canEditDescription(topic()!)"
+            [class.disabled]="!!topic() && !topicService.canEditDescription(topic()!)"
+          >
+        </cos-input>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Voting System -->
+  <div class="create_content_section">
+    <div class="number_wrap mobile_hidden">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="16" height="16" rx="8" fill="white" />
+        <path d="M12.6558 9.32812C11.2233 8.52002 9.79067 7.71195 8.35815 6.90385C8.47123 7.10587 8.5843 7.30788 8.71632 7.4916V7.47328C8.71632 7.2345 8.58432 6.99582 8.35815 6.88553C6.92564 6.07743 5.49303 5.26936 4.06051 4.46126C3.26884 4.02046 2.55253 5.21426 3.3442 5.65493C4.77672 6.46303 6.20933 7.2711 7.64185 8.0792C7.52877 7.87718 7.41569 7.67517 7.28368 7.49145V7.50977C7.28368 7.74856 7.41569 7.98723 7.64185 8.09752C9.07436 8.90563 10.507 9.71369 11.9395 10.5218C12.7312 10.9626 13.4475 9.76892 12.6558 9.32812Z" fill="#EF4025" />
+        <path d="M8.71632 7.4916L8.71634 2.66112C8.71634 1.77963 7.30264 1.77963 7.30264 2.66112V7.49117C7.30264 8.3728 8.71632 8.37323 8.71632 7.4916Z" fill="#EF4025" />
+        <path d="M8.71627 12.3388V7.50873C8.71627 6.62723 7.30257 6.62723 7.30257 7.50873V12.3388C7.30257 13.2204 8.71627 13.2204 8.71627 12.3388Z" fill="#EF4025" />
+        <path d="M4.06051 10.5208C6.92563 8.90464 9.7907 7.28856 12.6558 5.69076C13.4475 5.24996 12.7311 4.05625 11.9395 4.49708C9.07435 6.11326 6.20929 7.72933 3.3442 9.32714C2.55253 9.76783 3.26886 10.9615 4.06051 10.5208Z" fill="#EF4025" />
+      </svg>
+      <div>2</div>
+    </div>
+    <div class="section_content_wrap">
+      <div class="header_wrap">
+        <div class="number_wrap mobile_show">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="16" height="16" rx="8" fill="white" />
+            <path d="M12.6558 9.32812C11.2233 8.52002 9.79067 7.71195 8.35815 6.90385C8.47123 7.10587 8.5843 7.30788 8.71632 7.4916V7.47328C8.71632 7.2345 8.58432 6.99582 8.35815 6.88553C6.92564 6.07743 5.49303 5.26936 4.06051 4.46126C3.26884 4.02046 2.55253 5.21426 3.3442 5.65493C4.77672 6.46303 6.20933 7.2711 7.64185 8.0792C7.52877 7.87718 7.41569 7.67517 7.28368 7.49145V7.50977C7.28368 7.74856 7.41569 7.98723 7.64185 8.09752C9.07436 8.90563 10.507 9.71369 11.9395 10.5218C12.7312 10.9626 13.4475 9.76892 12.6558 9.32812Z" fill="#EF4025" />
+            <path d="M8.71632 7.4916L8.71634 2.66112C8.71634 1.77963 7.30264 1.77963 7.30264 2.66112V7.49117C7.30264 8.3728 8.71632 8.37323 8.71632 7.4916Z" fill="#EF4025" />
+            <path d="M8.71627 12.3388V7.50873C8.71627 6.62723 7.30257 6.62723 7.30257 7.50873V12.3388C7.30257 13.2204 8.71627 13.2204 8.71627 12.3388Z" fill="#EF4025" />
+            <path d="M4.06051 10.5208C6.92563 8.90464 9.7907 7.28856 12.6558 5.69076C13.4475 5.24996 12.7311 4.05625 11.9395 4.49708C9.07435 6.11326 6.20929 7.72933 3.3442 9.32714C2.55253 9.76783 3.26886 10.9615 4.06051 10.5208Z" fill="#EF4025" />
+          </svg>
+          <div>2</div>
+        </div>
+        <div class="small_heading" translate="COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM"></div>
+        <div class="mobile_hidden" translate="COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM_DESC"></div>
+      </div>
+      <div class="mobile_show" translate="COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM_DESC"></div>
+
+      <!-- Regular Vote Type -->
+      <div class="radio_wrap voting" (click)="setType('regular')"
+        [class.selected]="vote().type === 'regular'">
+        <div class="radio_text_wrap">
+          <div class="radio_lable_wrap">
+            <label class="radio_box">
+              <input type="radio" [checked]="vote().type === 'regular'">
+              <span class="radio"></span>
+              <div class="radio_lable" translate="COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_REGULAR"></div>
+            </label>
+          </div>
+          <div class="radio_description" translate="COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_REGULAR_DESC"></div>
+          
+          @if (vote().type === 'regular') {
+            <div class="vote_options_wrap">
+              @for (opt of ['Yes', 'No']; track opt) {
+                <div class="radio_wrap"
+                  [class.selected]="isPredefinedSelected(opt)"
+                  (click)="togglePredefined(opt); $event.stopPropagation();">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="checkbox" [class.selected]="isPredefinedSelected(opt)">
+                        <span class="bold" [translate]="'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_' + opt.toUpperCase()"></span>
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              }
+              
+              <div class="description_text" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_CAN_ADD_EXTRA_OPTIONS"></div>
+              @for (opt of ['Neutral', 'Veto']; track opt) {
+                <div class="radio_wrap"
+                  [class.selected]="isPredefinedSelected(opt)"
+                  (click)="togglePredefined(opt); $event.stopPropagation();">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="checkbox" [class.selected]="isPredefinedSelected(opt)">
+                        <span class="bold" [translate]="'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_' + opt.toUpperCase()"></span>
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Multiple Vote Type -->
+      <div class="radio_wrap voting" (click)="setType('multiple')"
+        [class.selected]="vote().type === 'multiple'">
+        <div class="radio_text_wrap">
+          <div class="radio_lable_wrap">
+            <label class="radio_box">
+              <input type="radio" [checked]="vote().type === 'multiple'">
+              <span class="radio"></span>
+              <div class="radio_lable" translate="COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_MULTIPLE"></div>
+            </label>
+          </div>
+          <div class="radio_description" translate="COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_MULTIPLE_DESC"></div>
+          
+          @if (vote().type === 'multiple') {
+            <div class="vote_options_wrap">
+              @for (opt of vote().options || []; track $index) {
+                @if (!predefined.includes(opt.value) && !opt.ideaId) {
+                  <div class="input_area">
+                    <cos-input placeholder="{{'COMPONENTS.TOPIC_VOTE_CREATE.PLACEHOLDER_ENTER_A_POSSIBLE_ANSWER' | translate}}">
+                      <input
+                        id="voteOption{{$index}}"
+                        [placeholder]="'COMPONENTS.TOPIC_VOTE_CREATE.PLACEHOLDER_ENTER_A_POSSIBLE_ANSWER' | translate"
+                        [ngModel]="opt.value"
+                        (ngModelChange)="updateOption($index, $event)"
+                        maxlength="50"
+                      >
+                    </cos-input>
+                    <div class="actions_wrap">
+                      <button class="btn_medium_plain animate" (click)="removeOption($index); $event.stopPropagation();">
+                        <cos-icon name="close" size="16"></cos-icon>
+                      </button>
+                    </div>
+                  </div>
+                }
+              }
+              <button class="btn_medium_plain animate" (click)="addOption(); $event.stopPropagation();">
+                <cos-icon name="plus" size="16"></cos-icon>
+                <span translate="COMPONENTS.TOPIC_VOTE_CREATE.BTN_ADD_OPTION"></span>
+              </button>
+
+              <div class="description_text" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_CAN_ADD_EXTRA_OPTIONS"></div>
+              <div class="radio_wrap" [class.selected]="isPredefinedSelected('Neutral')" (click)="toggleOption('Neutral'); $event.stopPropagation();">
+                <div class="radio_text_wrap">
+                  <div class="radio_lable_wrap">
+                    <label class="checkbox" [class.selected]="isPredefinedSelected('Neutral')">
+                      <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_NEUTRAL"></span>
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="radio_wrap" [class.selected]="isPredefinedSelected('Veto')" (click)="toggleOption('Veto'); $event.stopPropagation();">
+                <div class="radio_text_wrap">
+                  <div class="radio_lable_wrap">
+                    <label class="checkbox" [class.selected]="isPredefinedSelected('Veto')">
+                      <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_VETO"></span>
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Ideation Vote Type -->
+      @if (topic()?.ideationId) {
+        <div class="radio_wrap voting" (click)="setType('ideation')"
+          [class.selected]="vote().type === 'ideation'">
+          <div class="radio_text_wrap">
+            <div class="radio_lable_wrap">
+              <label class="radio_box">
+                <input type="radio" [checked]="vote().type === 'ideation'">
+                <span class="radio"></span>
+                <div class="radio_lable" translate="COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_IDEATION"></div>
+              </label>
+            </div>
+            <div class="radio_description" translate="COMPONENTS.TOPIC_VOTE_CREATE.OPTION_VOTING_IDEATION_DESC"></div>
+            
+            @if (vote().type === 'ideation') {
+              <div class="ideation_options_wrap">
+                <h4 class="bold">{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LBL_IDEAS_SELECTION' | translate }}</h4>
+                <div class="idea-selection-wrap">
+                  <div class="idea-selection-header">
+                    <label class="checkbox" (click)="toggleAllIdeas(); $event.stopPropagation();">
+                      <input type="checkbox" [checked]="allIdeasChecked()">
+                      <span class="checkmark"></span>
+                      <span class="bold" translate="COMPONENTS.CREATE_IDEA_FOLDER.LBL_IDEAS" [translateParams]="{count: totalIdeasCount()}"></span>
+                    </label>
+                  </div>
+
+                  <div class="ideas-list">
+                    @for (folder of ideationFolders(); track folder.id) {
+                      <div class="folder-group" [class.open]="folderExpanded[folder.id]">
+                        <div class="folder-row">
+                          <label class="checkbox" (click)="toggleFolder(folder, $event); $event.stopPropagation();">
+                            <input type="checkbox" [checked]="isFolderChecked(folder)">
+                            <span class="checkmark"></span>
+                            <div class="folder-title" (click)="toggleFolderExpand(folder.id, $event); $event.stopPropagation();">
+                              <cos-icon name="folder" [size]="16"></cos-icon>
+                              <span [innerHTML]="folder.name + ' (' + folder.ideas?.count + ')'"></span>
+                            </div>
+                          </label>
+                        </div>
+                        @if (folderExpanded[folder.id]) {
+                          <div class="folder-ideas">
+                            @for (idea of folder.ideas?.rows || []; track idea.id) {
+                              <div class="idea-row">
+                                <label class="checkbox" (click)="toggleIdea(idea, $event); $event.stopPropagation();">
+                                  <input type="checkbox" [checked]="isIdeaChecked(idea)">
+                                  <span class="checkmark"></span>
+                                  <cos-icon name="idea" [size]="16"></cos-icon>
+                                  <span [innerHTML]="idea.statement"></span>
+                                </label>
+                                <span class="votes">{{ idea.votes ? idea.votes.up.count : 0 }}</span>
+                              </div>
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+
+                    @if (ideationFolders().length > 0 && ideationIdeas().length > 0) {
+                      <div class="line_separator"></div>
+                    }
+
+                    @for (idea of ideationIdeas(); track idea.id) {
+                      <div class="idea-row">
+                        <label class="checkbox" (click)="toggleIdea(idea, $event); $event.stopPropagation();">
+                          <input type="checkbox" [checked]="isIdeaChecked(idea)">
+                          <span class="checkmark"></span>
+                          <span [innerHTML]="idea.statement"></span>
+                        </label>
+                        <span class="votes">{{ idea.votes ? idea.votes.up.count : 0 }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="description_text" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_CAN_ADD_EXTRA_OPTIONS"></div>
+                <div class="radio_wrap voting" [class.selected]="isPredefinedSelected('Neutral')" (click)="toggleOption('Neutral'); $event.stopPropagation();">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="checkbox" [class.selected]="isPredefinedSelected('Neutral')">
+                        <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_NEUTRAL"></span>
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="radio_wrap voting" [class.selected]="isPredefinedSelected('Veto')" (click)="toggleOption('Veto'); $event.stopPropagation();">
+                  <div class="radio_text_wrap">
+                    <div class="radio_lable_wrap">
+                      <label class="checkbox" [class.selected]="isPredefinedSelected('Veto')">
+                        <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_VETO"></span>
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Section 3: Min/Max Choices (only for multiple) -->
+  @if (vote().type === 'multiple') {
+    <div class="create_content_section">
+      <div class="number_wrap mobile_hidden">
+        <div>3</div>
+      </div>
+      <div class="section_content_wrap">
+        <div class="header_wrap">
+          <div class="number_wrap mobile_show">
+            <div>3</div>
+          </div>
+          <div class="small_heading" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_MIN_MAX"></div>
+          <div class="mobile_hidden" translate="COMPONENTS.TOPIC_VOTE_CREATE.VOTE_TXT_DESCRIPTION_CHOICE_RANGE"></div>
+        </div>
+        <div class="mobile_show" translate="COMPONENTS.TOPIC_VOTE_CREATE.VOTE_TXT_DESCRIPTION_CHOICE_RANGE"></div>
+        <div class="vote_options_wrap">
+          <div class="input_area min_max_options">
+            <label class="bold" translate="VIEWS.TOPICS_TOPICID.VOTE_LBL_MIN_CHOICES"></label>
+            <div class="options_count_input_wrap">
+              <button class="btn_medium_voting_light icon" (click)="adjustCount('min', -1)">
+                <cos-icon name="minus" size="12"></cos-icon>
+              </button>
+              <input class="options_count_input" type="number" [min]="1" [max]="getOptionsLimit()" [ngModel]="vote().minChoices || 1" readonly />
+              <button class="btn_medium_voting_light icon" (click)="adjustCount('min', 1)">
+                <cos-icon name="plus" size="16"></cos-icon>
+              </button>
+            </div>
+          </div>
+          <div class="input_area min_max_options">
+            <label class="bold" translate="VIEWS.TOPICS_TOPICID.VOTE_LBL_MAX_CHOICES"></label>
+            <div class="options_count_input_wrap">
+              <button class="btn_medium_voting_light icon" (click)="adjustCount('max', -1)">
+                <cos-icon name="minus" size="12"></cos-icon>
+              </button>
+              <input class="options_count_input" type="number" [min]="1" [max]="getOptionsLimit()" [ngModel]="vote().maxChoices || getOptionsLimit()" readonly />
+              <button class="btn_medium_voting_light icon" (click)="adjustCount('max', 1)">
+                <cos-icon name="plus" size="16"></cos-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Section 4: Voting Rights -->
+  <div class="create_content_section">
+    <div class="number_wrap mobile_hidden">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="16" height="16" rx="8" fill="white" />
+        <path d="M12.6558 9.32812C11.2233 8.52002 9.79067 7.71195 8.35815 6.90385C8.47123 7.10587 8.5843 7.30788 8.71632 7.4916V7.47328C8.71632 7.2345 8.58432 6.99582 8.35815 6.88553C6.92564 6.07743 5.49303 5.26936 4.06051 4.46126C3.26884 4.02046 2.55253 5.21426 3.3442 5.65493C4.77672 6.46303 6.20933 7.2711 7.64185 8.0792C7.52877 7.87718 7.41569 7.67517 7.28368 7.49145V7.50977C7.28368 7.74856 7.41569 7.98723 7.64185 8.09752C9.07436 8.90563 10.507 9.71369 11.9395 10.5218C12.7312 10.9626 13.4475 9.76892 12.6558 9.32812Z" fill="#EF4025" />
+        <path d="M8.71632 7.4916L8.71634 2.66112C8.71634 1.77963 7.30264 1.77963 7.30264 2.66112V7.49117C7.30264 8.3728 8.71632 8.37323 8.71632 7.4916Z" fill="#EF4025" />
+        <path d="M8.71627 12.3388V7.50873C8.71627 6.62723 7.30257 6.62723 7.30257 7.50873V12.3388C7.30257 13.2204 8.71627 13.2204 8.71627 12.3388Z" fill="#EF4025" />
+        <path d="M4.06051 10.5208C6.92563 8.90464 9.7907 7.28856 12.6558 5.69076C13.4475 5.24996 12.7311 4.05625 11.9395 4.49708C9.07435 6.11326 6.20929 7.72933 3.3442 9.32714C2.55253 9.76783 3.26886 10.9615 4.06051 10.5208Z" fill="#EF4025" />
+      </svg>
+      <div>{{(vote().type === 'multiple') ? 4 : 3}}</div>
+    </div>
+    <div class="section_content_wrap">
+      <div class="header_wrap">
+        <div class="number_wrap mobile_show">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="16" height="16" rx="8" fill="white" />
+            <path d="M12.6558 9.32812C11.2233 8.52002 9.79067 7.71195 8.35815 6.90385C8.47123 7.10587 8.5843 7.30788 8.71632 7.4916V7.47328C8.71632 7.2345 8.58432 6.99582 8.35815 6.88553C6.92564 6.07743 5.49303 5.26936 4.06051 4.46126C3.26884 4.02046 2.55253 5.21426 3.3442 5.65493C4.77672 6.46303 6.20933 7.2711 7.64185 8.0792C7.52877 7.87718 7.41569 7.67517 7.28368 7.49145V7.50977C7.28368 7.74856 7.41569 7.98723 7.64185 8.09752C9.07436 8.90563 10.507 9.71369 11.9395 10.5218C12.7312 10.9626 13.4475 9.76892 12.6558 9.32812Z" fill="#EF4025" />
+            <path d="M8.71632 7.4916L8.71634 2.66112C8.71634 1.77963 7.30264 1.77963 7.30264 2.66112V7.49117C7.30264 8.3728 8.71632 8.37323 8.71632 7.4916Z" fill="#EF4025" />
+            <path d="M8.71627 12.3388V7.50873C8.71627 6.62723 7.30257 6.62723 7.30257 7.50873V12.3388C7.30257 13.2204 8.71627 13.2204 8.71627 12.3388Z" fill="#EF4025" />
+            <path d="M4.06051 10.5208C6.92563 8.90464 9.7907 7.28856 12.6558 5.69076C13.4475 5.24996 12.7311 4.05625 11.9395 4.49708C9.07435 6.11326 6.20929 7.72933 3.3442 9.32714C2.55253 9.76783 3.26886 10.9615 4.06051 10.5208Z" fill="#EF4025" />
+          </svg>
+          <div>{{(vote().type === 'multiple') ? 4 : 3}}</div>
+        </div>
+        <div class="small_heading" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS"></div>
+        <div class="mobile_hidden" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS_DESC"></div>
+      </div>
+      <div class="mobile_show" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS_DESC"></div>
+      
+      <div class="radio_wrap voting"
+        [class.selected]="vote().authType === 'soft'"
+        (click)="onUpdate({authType: 'soft'})">
+        <div class="radio_text_wrap">
+          <div class="radio_lable_wrap">
+            <label class="radio_box" [class.selected]="vote().authType === 'soft'">
+              <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_AUTH_SOFT_ID"></span>
+              <input type="radio" name="authType" [checked]="vote().authType === 'soft'" [value]="'soft'" />
+              <span class="radio"></span>
+            </label>
+          </div>
+          <div class="radio_description">
+            <span translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_AUTH_SOFT_ID_DESC"></span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="radio_wrap voting"
+        [class.selected]="vote().authType === 'hard'"
+        (click)="onUpdate({authType: 'hard', delegationIsAllowed: false})">
+        <div class="radio_text_wrap">
+          <div class="radio_lable_wrap">
+            <label class="radio_box" [class.selected]="vote().authType === 'hard'">
+              <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_AUTH_HARD_ID"></span>
+              <input type="radio" name="authType" [checked]="vote().authType === 'hard'" [value]="'hard'" />
+              <span class="radio"></span>
+            </label>
+          </div>
+          <div class="radio_description">
+            <span translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_AUTH_HARD_ID_DESC"></span>
+            <div class="id_icons_wrap" style="display: flex; gap: 8px; margin-top: 8px;">
+              <cos-icon name="smart-id" size="24"></cos-icon>
+              <cos-icon name="mobile-id" size="24"></cos-icon>
+              <cos-icon name="est-id" size="24"></cos-icon>
+              <cos-icon name="id-card" size="24"></cos-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Delegation -->
+  <div class="create_content_section">
+    <div class="number_wrap mobile_hidden">
+      <div>{{(vote().type === 'multiple') ? 5 : 4}}</div>
+    </div>
+    <div class="section_content_wrap">
+      <div class="header_wrap">
+        <div class="number_wrap mobile_show">
+          <div>{{(vote().type === 'multiple') ? 5 : 4}}</div>
+        </div>
+        <div class="small_heading" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION"></div>
+        <div class="mobile_hidden" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION_DESC"></div>
+      </div>
+      <div class="mobile_show" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION_DESC"></div>
+
+      <div class="radio_wrap voting"
+        (click)="toggleDelegation()"
+        [class.selected]="vote().delegationIsAllowed"
+        [class.disabled]="vote().authType === 'hard'">
+        <div class="radio_text_wrap">
+          <div class="radio_lable_wrap">
+            <label class="checkbox" [class.selected]="vote().delegationIsAllowed">
+              <span class="bold" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_DELEGATION"></span>
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: Deadline -->
+  <div class="create_content_section">
+    <div class="number_wrap mobile_hidden">
+      <div>{{(vote().type === 'multiple') ? 6 : 5}}</div>
+    </div>
+    <div class="section_content_wrap">
+      <div class="header_wrap">
+        <div class="number_wrap mobile_show">
+          <div>{{(vote().type === 'multiple') ? 6 : 5}}</div>
+        </div>
+        <div class="small_heading" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEADLINE"></div>
+        <div class="mobile_hidden" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEADLINE_DESC"></div>
+      </div>
+      <div class="mobile_show" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_DEADLINE_DESC"></div>
+      
+      <cos-deadline-picker
+        theme="voting"
+        [deadline]="getVoteDeadlineDate()"
+        [showReminder]="true"
+        [toggleLabel]="'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_DEADLINE'"
+        (deadlineChange)="onDeadlineChange($event)"
+      ></cos-deadline-picker>
+      
+
+    </div>
+  </div>
+
+</div>
