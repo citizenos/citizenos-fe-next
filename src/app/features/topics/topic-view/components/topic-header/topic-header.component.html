@@ -1,4 +1,8 @@
-<div id="page_header">
+<div id="page_header" [cosTourItem]="{
+    tourid: ['topic_mobile', 'topic_tablet'],
+    index: 2,
+    position: 'bottom'
+  }">
   <div id="user_info_area">
     <button type="button" [routerLink]="navigation().link" [aria-label]="'CONTROL.BACK' | translate">
       <cos-icon name="arrow-left"></cos-icon>
@@ -7,10 +11,14 @@
       [innerHTML]="navigation().title | translate"></div>
   </div>
   <div id="buttons_area">
-    <cos-activities-button [topicId]="topic().id"></cos-activities-button>
+    <div id="activities_button_wrap">
+      @if (isLoggedIn()) {
+        <cos-activities-button [topicId]="topic().id"></cos-activities-button>
+      }
+    </div>
 
     @if (!topic().permission.level || topic().permission.level === 'none') {
-      <cos-button id="join_button" (clicked)="onJoin()" variant="light" translate="VIEWS.TOPICS_TOPICID.BTN_JOIN"></cos-button>
+      <cos-button id="join_button" class="btn_medium_close" (clicked)="onJoin()" variant="light" translate="VIEWS.TOPICS_TOPICID.BTN_JOIN"></cos-button>
     }
 
     @if (topic().permission.level && topic().permission.level !== 'none') {
@@ -23,14 +31,15 @@
 
     @if (isLoggedIn()) {
       <cos-tooltip [noIcon]="true"
-        [title]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE' : 'VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE') | translate">
+        [title]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate">
         <cos-button
           trigger
           variant="light"
-          class="tablet_show"
+          class="btn_medium_close icon tablet_show"
           (clicked)="onToggleFavourite()"
           [icon]="topic().favourite ? 'favourite-filled' : 'favourite'"
           [class.like_active]="topic().favourite"
+          [attr.aria-label]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate"
         >
         </cos-button>
       </cos-tooltip>
@@ -38,18 +47,16 @@
 
     <cos-button
       variant="light"
-      class="mobile_show"
+      class="btn_medium_close icon mobile_show"
       (clicked)="mobileActions.set(!mobileActions())"
       icon="more-vertical"
+      [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate"
     >
     </cos-button>
 
     <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" cosDropdown>
-      <cos-tooltip [noIcon]="true" [title]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
-        <cos-button trigger variant="light" [icon]="wWidth() <= 1024 ? 'more-vertical' : 'settings-legacy'">
-          <cos-icon name="arrow-down-legacy" size="12"></cos-icon>
-        </cos-button>
-      </cos-tooltip>
+      <cos-button trigger variant="light" class="btn_medium_close icon" icon="more-vertical" [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
+      </cos-button>
 
       <div class="options">
         @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {

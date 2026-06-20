@@ -8,6 +8,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
+import { TourItemDirective } from '../../../../../shared/directives/tour-item.directive';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { ActivitiesButtonComponent } from '../../../../../shared/components/activities-button/activities-button.component';
 
@@ -16,7 +17,7 @@ import { ActivitiesButtonComponent } from '../../../../../shared/components/acti
   selector: 'app-topic-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UpperCasePipe, RouterModule, TranslateModule, IconComponent, CosDropdownDirective, ButtonComponent, TooltipComponent, ActivitiesButtonComponent],
+  imports: [UpperCasePipe, RouterModule, TranslateModule, IconComponent, CosDropdownDirective, TourItemDirective, ButtonComponent, TooltipComponent, ActivitiesButtonComponent],
   templateUrl: './topic-header.component.html',
   styleUrls: ['./topic-header.component.scss']
 })
