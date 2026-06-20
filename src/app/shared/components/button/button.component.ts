@@ -41,13 +41,18 @@ export class ButtonComponent {
   
   icon = model<IconName>();
   iconMode = model<boolean>(false);
+  customIconSize = model<string | number>();
   
   isLoading = model<boolean>(false);
   isDisabled = model<boolean>(false);
 
   clicked = output<MouseEvent>();
 
-  iconSize() {
+  iconSize(): string | number {
+    const custom = this.customIconSize();
+    if (custom !== undefined && custom !== null) {
+      return custom;
+    }
     return this.size() === 'sm' ? 16 : 20;
   }
 

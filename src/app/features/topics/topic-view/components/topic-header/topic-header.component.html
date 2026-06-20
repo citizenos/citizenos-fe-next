@@ -30,6 +30,7 @@
           trigger
           variant="light"
           [iconMode]="true"
+          customIconSize="24"
           (clicked)="onToggleFavourite()"
           [icon]="topic().favourite ? 'favourite-filled-legacy' : 'favourite-legacy'"
           [class.like_active]="topic().favourite"
@@ -46,7 +47,7 @@
     </div>
 
     <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" cosDropdown>
-      <cos-button trigger variant="light" [iconMode]="true" icon="more-vertical" [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
+      <cos-button trigger variant="light" [iconMode]="true" customIconSize="24" icon="more-vertical" [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
       </cos-button>
 
       <div class="options">
