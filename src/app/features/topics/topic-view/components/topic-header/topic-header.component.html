@@ -24,12 +24,11 @@
     }
 
     @if (isLoggedIn()) {
-      <cos-tooltip [noIcon]="true"
+      <cos-tooltip class="tablet_show" [noIcon]="true"
         [title]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate">
         <cos-button
           trigger
           variant="light"
-          class="tablet_show"
           (clicked)="onToggleFavourite()"
           [icon]="topic().favourite ? 'favourite-filled' : 'favourite'"
           [class.like_active]="topic().favourite"
