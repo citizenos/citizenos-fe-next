@@ -178,7 +178,7 @@ describe('TopicHeaderComponent', () => {
   it('should emit leaveTopic when leave button clicked', () => {
     vi.spyOn(component.leaveTopic, 'emit');
     const leaveBtn = Array.from(fixture.nativeElement.querySelectorAll('.options button') as NodeListOf<HTMLElement>)
-      .find(b => b.querySelector('span[translate="VIEWS.TOPICS_TOPICID.BTN_LEAVE"]'));
+      .find(b => b.textContent?.includes('VIEWS.TOPICS_TOPICID.BTN_LEAVE'));
     leaveBtn?.click();
     expect(component.leaveTopic.emit).toHaveBeenCalledWith(component.topic());
   });
@@ -198,14 +198,14 @@ describe('TopicHeaderComponent', () => {
   it('should emit openSettings when settings button clicked', () => {
     vi.spyOn(component.openSettings, 'emit');
     const settingsBtn = Array.from(fixture.nativeElement.querySelectorAll('.options button') as NodeListOf<HTMLElement>)
-      .find(b => b.querySelector('span[translate="VIEWS.TOPICS_TOPICID.NAV_LNK_SETTINGS"]'));
+      .find(b => b.textContent?.includes('VIEWS.TOPICS_TOPICID.NAV_LNK_SETTINGS'));
     settingsBtn?.click();
     expect(component.openSettings.emit).toHaveBeenCalledWith(component.topic());
   });
 
   it('should show report button only for public topics without a report', () => {
     const reportBtn = Array.from(fixture.nativeElement.querySelectorAll('.options button') as NodeListOf<HTMLElement>)
-      .find(b => b.querySelector('span[translate="VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC"]'));
+      .find(b => b.textContent?.includes('VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC'));
     expect(reportBtn).toBeTruthy();
   });
 
@@ -213,7 +213,7 @@ describe('TopicHeaderComponent', () => {
     component.topic.set({ ...BASE_TOPIC, report: { id: 'r1', type: null, text: null, moderatedReasonType: null, moderatedReasonText: null } } as unknown as Topic);
     fixture.detectChanges();
     const reportBtn = Array.from(fixture.nativeElement.querySelectorAll('.options button') as NodeListOf<HTMLElement>)
-      .find(b => b.querySelector('span[translate="VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC"]'));
+      .find(b => b.textContent?.includes('VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC'));
     expect(reportBtn).toBeFalsy();
   });
 
@@ -223,7 +223,7 @@ describe('TopicHeaderComponent', () => {
     component.topic.set({ ...BASE_TOPIC });
     fixture.detectChanges();
     const moderateBtn = Array.from(fixture.nativeElement.querySelectorAll('.options button') as NodeListOf<HTMLElement>)
-      .find(b => b.querySelector('span[translate="VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC"]'));
+      .find(b => b.textContent?.includes('VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC'));
     expect(moderateBtn).toBeTruthy();
   });
 });
