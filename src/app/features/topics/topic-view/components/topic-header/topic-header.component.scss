@@ -110,7 +110,7 @@
       display: inline-block;
       position: relative;
       @media (min-width: 1025px) {
-        display: none;
+        display: none !important;
       }
 
       &.dropdown_active {
