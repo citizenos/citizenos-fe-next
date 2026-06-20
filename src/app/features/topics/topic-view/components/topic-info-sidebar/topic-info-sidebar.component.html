@@ -4,176 +4,212 @@
       <div class="info_title bold">{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_TITLE_INFO' | translate }}</div>
 
       <div class="dropdown button_dropdown tablet_hidden" cosDropdown>
-      <button type="button" class="manage_link btn_link" trigger>{{ 'VIEWS.TOPICS_TOPICID.LNK_MANAGE' | translate }}</button>
+        <button type="button" class="manage_link btn_link" trigger>{{ 'VIEWS.TOPICS_TOPICID.LNK_MANAGE' | translate
+          }}</button>
         <div class="options">
           @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {
-            <button type="button" (click)="leaveTopic.emit(topic())" class="option">
-              <div class="icon_wrap">
-                <cos-icon name="leave" size="16"></cos-icon>
-              </div>
-              <span>{{ 'VIEWS.TOPICS_TOPICID.BTN_LEAVE' | translate }}</span>
-            </button>
+          <button type="button" (click)="leaveTopic.emit(topic())" class="option">
+            <div class="icon_wrap">
+              <cos-icon name="leave" size="16"></cos-icon>
+            </div>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.BTN_LEAVE' | translate }}</span>
+          </button>
           }
           @if (isLoggedIn()) {
-            <div class="line_separator"></div>
-            <button type="button" class="option" (click)="toggleFavourite.emit(topic())">
-              <div class="icon_wrap">
-                @if (topic().favourite) {
-                  <cos-icon name="favourite-filled" size="16"></cos-icon>
-                } @else {
-                  <cos-icon name="favourite" size="16"></cos-icon>
-                }
-              </div>
-              @if (!topic().favourite) {
-                <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE' | translate }}</span>
+          <div class="line_separator"></div>
+          <button type="button" class="option" (click)="toggleFavourite.emit(topic())">
+            <div class="icon_wrap">
+              @if (topic().favourite) {
+              <cos-icon name="favourite-filled" size="16"></cos-icon>
               } @else {
-                <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE' | translate }}</span>
+              <cos-icon name="favourite" size="16"></cos-icon>
               }
-            </button>
+            </div>
+            @if (!topic().favourite) {
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE' | translate }}</span>
+            } @else {
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE' | translate }}</span>
+            }
+          </button>
           }
           @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
-            <div class="line_separator"></div>
-            <button type="button" class="option" (click)="inviteEditors.emit(topic())">
-              <div class="icon_wrap">
-                <cos-icon name="invite" size="16"></cos-icon>
-              </div>
-              <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_INVITE_CO_EDITOR' | translate }}</span>
-            </button>
+          <div class="line_separator"></div>
+          <button type="button" class="option" (click)="inviteEditors.emit(topic())">
+            <div class="icon_wrap">
+              <cos-icon name="invite" size="16"></cos-icon>
+            </div>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_INVITE_CO_EDITOR' | translate }}</span>
+          </button>
           }
           @if (isLoggedIn() && topicService.canEdit(topic()) && !topic().voteId && !topic().ideationId) {
-            <div class="line_separator"></div>
-            <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'edit', topic().id]">
-              <div class="icon_wrap">
-                <cos-icon name="edit" size="16"></cos-icon>
-              </div>
-              <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
-            </button>
+          <div class="line_separator"></div>
+          <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'edit', topic().id]">
+            <div class="icon_wrap">
+              <cos-icon name="edit" size="16"></cos-icon>
+            </div>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
+          </button>
           }
           @if (isLoggedIn() && topicService.canEdit(topic()) && topic().ideationId && !topic().voteId) {
-            <div class="line_separator"></div>
-            <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'ideation', 'edit', topic().id]">
-              <div class="icon_wrap">
-                <cos-icon name="edit" size="16"></cos-icon>
-              </div>
-              <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
-            </button>
+          <div class="line_separator"></div>
+          <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'ideation', 'edit', topic().id]">
+            <div class="icon_wrap">
+              <cos-icon name="edit" size="16"></cos-icon>
+            </div>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
+          </button>
           }
           @if (isLoggedIn() && topicService.canEdit(topic()) && topic().voteId) {
-            <div class="line_separator"></div>
-            <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'vote', 'edit', topic().id]">
-              <div class="icon_wrap">
-                <cos-icon name="edit" size="16"></cos-icon>
-              </div>
-              <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
-            </button>
+          <div class="line_separator"></div>
+          <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'vote', 'edit', topic().id]">
+            <div class="icon_wrap">
+              <cos-icon name="edit" size="16"></cos-icon>
+            </div>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
+          </button>
           }
           @if (isLoggedIn() && topicService.canDelete(topic())) {
-            <div class="line_separator"></div>
-            <button type="button" (click)="duplicateTopic.emit(topic())" class="option">
-              <div class="icon_wrap">
-                <cos-icon name="copy" size="16"></cos-icon>
-              </div>
-              <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_DUPLICATE_TOPIC' | translate }}</span>
-            </button>
+          <div class="line_separator"></div>
+          <button type="button" (click)="duplicateTopic.emit(topic())" class="option">
+            <div class="icon_wrap">
+              <cos-icon name="copy" size="16"></cos-icon>
+            </div>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_DUPLICATE_TOPIC' | translate }}</span>
+          </button>
           }
           @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
-            <div class="line_separator"></div>
-            <button type="button" (click)="addGroupsDialog.emit(topic())" class="option">
-              <div class="icon_wrap">
-                <cos-icon name="users" size="16"></cos-icon>
-              </div>
-              <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_ADD_TO_GROUP' | translate }}</span>
-            </button>
+          <div class="line_separator"></div>
+          <button type="button" (click)="addGroupsDialog.emit(topic())" class="option">
+            <div class="icon_wrap">
+              <cos-icon name="users" size="16"></cos-icon>
+            </div>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_ADD_TO_GROUP' | translate }}</span>
+          </button>
+          }
+          @if (topic().visibility === 'public' && !topic().report) {
+          <div class="line_separator"></div>
+          <button type="button" class="option" [routerLink]="['/', lang(), 'topics', topic().id, 'report']">
+            <div class="icon_wrap">
+              <cos-icon name="report" size="16"></cos-icon>
+            </div>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_REPORT_TOPIC' | translate }}</span>
+          </button>
           }
           @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
-            <div class="line_separator"></div>
-            <button type="button" (click)="closeTopic.emit(topic())" class="option">
-              <div class="icon_wrap">
-                <cos-icon name="check-box" size="16"></cos-icon>
-              </div>
-              <span>{{ 'VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC' | translate }}</span>
-            </button>
+          <div class="line_separator"></div>
+          <button type="button" (click)="closeTopic.emit(topic())" class="option">
+            <div class="icon_wrap">
+              <cos-icon name="check-box" size="16"></cos-icon>
+            </div>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC' | translate }}</span>
+          </button>
           }
           @if (isLoggedIn() && topicService.canDelete(topic())) {
-            <div class="line_separator"></div>
-            <button type="button" (click)="deleteTopic.emit(topic())" class="option error_text">
-              <div class="icon_wrap">
-                <cos-icon name="trash" size="16"></cos-icon>
-              </div>
-              <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_DELETE_TOPIC' | translate }}</span>
-            </button>
+          <div class="line_separator"></div>
+          <button type="button" (click)="deleteTopic.emit(topic())" class="option error_text">
+            <div class="icon_wrap">
+              <cos-icon name="trash" size="16"></cos-icon>
+            </div>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_DELETE_TOPIC' | translate }}</span>
+          </button>
           }
         </div>
       </div>
     </div>
-    
-    <div class="info_item">
-      @if (topic().visibility === 'private') {
+
+    <div class="info_items open">
+      <div class="info_item">
+        @if (topic().visibility === 'private') {
         <cos-icon name="lock-legacy" size="16"></cos-icon>
-      } @else {
+        } @else {
         <cos-icon name="public-topic" size="16"></cos-icon>
-      }
-      <span>{{ ('TXT_TOPIC_VISIBILITY_' + topic().visibility.toUpperCase()) | translate }}</span>
-    </div>
-    <div class="info_item">
-      <cos-icon name="creator-legacy" size="16"></cos-icon>
-      <span>{{ topic().creator.name }}</span>
-    </div>
-    <div class="info_item">
-      <cos-icon name="calendar-legacy" size="16"></cos-icon>
-      <span>{{ topic().createdAt | date : "y-MM-dd HH:mm" }}</span>
-    </div>
-    <div class="info_item">
-      <cos-icon name="location-legacy" size="16"></cos-icon>
-      <span>{{ topic().country || ("VIEWS.TOPICS_TOPICID.SECTION_INFO_LBL_COUNTRY_NOT_SPECIFIED" | translate) }}</span>
-    </div>
-    <div class="info_item">
-      <cos-icon name="language-legacy" size="16"></cos-icon>
-      <span>{{ topic().language || ("VIEWS.TOPICS_TOPICID.SECTION_INFO_LBL_LANGUAGE_NOT_SPECIFIED" | translate) }}</span>
+        }
+        <span>{{ ('TXT_TOPIC_VISIBILITY_' + topic().visibility.toUpperCase()) | translate }}</span>
+      </div>
+      <div class="info_item">
+        <cos-icon name="creator-legacy" size="16"></cos-icon>
+        <span>{{ topic().creator.name }}</span>
+      </div>
+      <div class="info_item">
+        <cos-icon name="calendar-legacy" size="16"></cos-icon>
+        <span>{{ topic().createdAt | date : "y-MM-dd HH:mm" }}</span>
+      </div>
+      <div class="info_item">
+        <cos-icon name="location-legacy" size="16"></cos-icon>
+        <span>{{ topic().country || ("VIEWS.TOPICS_TOPICID.SECTION_INFO_LBL_COUNTRY_NOT_SPECIFIED" | translate)
+          }}</span>
+      </div>
+      <div class="info_item">
+        <cos-icon name="language-legacy" size="16"></cos-icon>
+        <span>{{ topic().language || ("VIEWS.TOPICS_TOPICID.SECTION_INFO_LBL_LANGUAGE_NOT_SPECIFIED" | translate)
+          }}</span>
+      </div>
     </div>
   </div>
 
   <!-- Attachments -->
   <div class="info_items_wrap">
-    <div class="info_title" (click)="showAttachments.set(!showAttachments())" (keydown.enter)="showAttachments.set(!showAttachments())" tabindex="0" role="button">
-      <span>{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_TITLE_ATTACHMENTS' | translate }}</span>
+    <div class="info_title" (click)="showAttachments.set(!showAttachments())"
+      (keydown.enter)="showAttachments.set(!showAttachments())" tabindex="0" role="button">
+      <div>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_TITLE_ATTACHMENTS' | translate }}</span>
+        <span> ({{ attachments().length }})</span>
+      </div>
       <span class="icon">
-        <cos-icon [name]="showAttachments() ? 'chevron-up' : 'chevron-down'" size="16"></cos-icon>
+        <cos-icon [name]="showAttachments() ? 'chevron-up' : 'chevron-down'" size="24"></cos-icon>
       </span>
     </div>
-    @if (showAttachments()) {
-      <div class="info_items" [@openClose]="showAttachments() ? 'open' : 'closed'">
-        @for (attachment of attachments(); track attachment.id) {
-          <button type="button" class="info_item btn_link" (click)="onDownloadAttachment($event, attachment)">
-            <cos-icon name="download" size="14"></cos-icon>
-            {{ attachment.name }}
-          </button>
-        } @empty {
-          <div class="info_item">{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_NO_ATTACHMENTS' | translate }}</div>
-        }
-      </div>
-    }
+    <div class="info_items" [@openClose]="showAttachments() ? 'open' : 'closed'">
+      @for (attachment of attachments(); track attachment.id) {
+      <button type="button" class="info_item btn_link" (click)="onDownloadAttachment($event, attachment)">
+        <cos-icon name="download" size="14"></cos-icon>
+        {{ attachment.name }}
+      </button>
+      } @empty {
+      <div class="info_item">{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_NO_ATTACHMENTS' | translate }}</div>
+      }
+    </div>
   </div>
 
   <!-- Groups -->
   <div class="info_items_wrap">
-    <div class="info_title" (click)="showGroups.set(!showGroups())" (keydown.enter)="showGroups.set(!showGroups())" tabindex="0" role="button">
+    <div class="info_title" (click)="showGroups.set(!showGroups())" (keydown.enter)="showGroups.set(!showGroups())"
+      tabindex="0" role="button">
       <span>{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_TITLE_GROUPS' | translate }}</span>
       <span class="icon">
-        <cos-icon [name]="showGroups() ? 'chevron-up' : 'chevron-down'" size="16"></cos-icon>
+        <cos-icon [name]="showGroups() ? 'chevron-up' : 'chevron-down'" size="24"></cos-icon>
       </span>
     </div>
-    @if (showGroups()) {
-      <div class="info_items" [@openClose]="showGroups() ? 'open' : 'closed'">
-        @for (group of groups(); track group.id) {
-          <a class="info_item" [routerLink]="['/', lang(), 'groups', group.id]">
-            <cos-icon name="groups" size="14"></cos-icon>
-            {{ group.name }}
-          </a>
-        } @empty {
-          <div class="info_item">{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_NO_GROUPS' | translate }}</div>
-        }
+    <div class="info_items" [@openClose]="showGroups() ? 'open' : 'closed'">
+      @for (group of groups(); track group.id) {
+      <a class="info_item" [routerLink]="['/', lang(), 'groups', group.id]">
+        <cos-icon name="groups" size="14"></cos-icon>
+        {{ group.name }}
+      </a>
+      } @empty {
+      <div class="info_item">{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_NO_GROUPS' | translate }}</div>
+      }
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <div class="info_items_wrap">
+    <div class="info_title" (click)="showCategories.set(!showCategories())"
+      (keydown.enter)="showCategories.set(!showCategories())" tabindex="0" role="button">
+      <span>{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_TITLE_CATEGORIES' | translate }}</span>
+      <span class="icon">
+        <cos-icon [name]="showCategories() ? 'chevron-up' : 'chevron-down'" size="24"></cos-icon>
+      </span>
+    </div>
+    <div class="info_items" [@openClose]="showCategories() ? 'open' : 'closed'">
+      @for (category of topic().categories; track category) {
+      <div class="info_item">
+        {{ ('TXT_TOPIC_CATEGORY_' + category.toUpperCase()) | translate : { default: category } }}
       </div>
-    }
+      }
+      @empty {
+      <span class="info_item">{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_NO_CATEGORIES' | translate }}</span>
+      }
+    </div>
   </div>
 </div>

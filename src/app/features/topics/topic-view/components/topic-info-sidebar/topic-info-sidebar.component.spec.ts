@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
@@ -28,7 +28,7 @@ describe('TopicInfoSidebarComponent', () => {
   let component: TopicInfoSidebarComponent;
   let fixture: ComponentFixture<TopicInfoSidebarComponent>;
 
-  const mockUserStore = { isAuthenticated: vi.fn().mockReturnValue(true) };
+  const mockUserStore = { isAuthenticated: signal(true) };
   const mockTopicService = {
     STATUSES: { closed: 'closed' },
     canDelete: vi.fn().mockReturnValue(true),
@@ -38,7 +38,7 @@ describe('TopicInfoSidebarComponent', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    mockUserStore.isAuthenticated.mockReturnValue(true);
+    mockUserStore.isAuthenticated.set(true);
     mockTopicService.canDelete.mockReturnValue(true);
     mockTopicService.canEdit.mockReturnValue(true);
 
@@ -148,6 +148,14 @@ describe('TopicInfoSidebarComponent', () => {
     expect(labels.some((t: string) => t.includes('OPTION_DUPLICATE_TOPIC'))).toBe(true);
   });
 
+  it('should show report button when visibility is public and no report exists', () => {
+    component.topic.set({ ...BASE_TOPIC, visibility: 'public', report: undefined });
+    fixture.detectChanges();
+    const buttons = fixture.nativeElement.querySelectorAll('button.option');
+    const labels = Array.from(buttons).map((b) => (b as HTMLElement).textContent);
+    expect(labels.some((t: string) => t?.includes('OPTION_REPORT_TOPIC'))).toBe(true);
+  });
+
   it('should emit leaveTopic when leave button is clicked', () => {
     const spy = vi.fn();
     component.leaveTopic.subscribe(spy);
@@ -185,11 +193,11 @@ describe('TopicInfoSidebarComponent', () => {
   });
 
   it('should toggle showAttachments when attachments header is clicked', () => {
-    expect(component.showAttachments).toBe(false);
+    expect(component.showAttachments()).toBe(false);
     const headers = fixture.nativeElement.querySelectorAll('.info_title');
     const attachmentHeader = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_ATTACHMENTS')) as HTMLElement;
     attachmentHeader.click();
-    expect(component.showAttachments).toBe(true);
+    expect(component.showAttachments()).toBe(true);
   });
 
   it('should show attachments list when attachments section is opened', () => {
@@ -220,17 +228,17 @@ describe('TopicInfoSidebarComponent', () => {
     const header = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_ATTACHMENTS')) as HTMLElement;
     header.click();
     fixture.detectChanges();
-    const link = fixture.nativeElement.querySelector('a.info_item') as HTMLElement;
+    const link = fixture.nativeElement.querySelector('button.info_item') as HTMLElement;
     link.click();
     expect(spy).toHaveBeenCalledWith(attachment);
   });
 
   it('should toggle showGroups when groups header is clicked', () => {
-    expect(component.showGroups).toBe(false);
+    expect(component.showGroups()).toBe(false);
     const headers = fixture.nativeElement.querySelectorAll('.info_title');
     const groupsHeader = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_GROUPS')) as HTMLElement;
     groupsHeader.click();
-    expect(component.showGroups).toBe(true);
+    expect(component.showGroups()).toBe(true);
   });
 
   it('should show groups list when groups section is opened', () => {
@@ -251,9 +259,36 @@ describe('TopicInfoSidebarComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('SECTION_INFO_NO_GROUPS');
   });
 
+  it('should toggle showCategories when categories header is clicked', () => {
+    expect(component.showCategories()).toBe(false);
+    const headers = fixture.nativeElement.querySelectorAll('.info_title');
+    const categoriesHeader = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_CATEGORIES')) as HTMLElement;
+    categoriesHeader.click();
+    expect(component.showCategories()).toBe(true);
+  });
+
+  it('should show categories list when categories section is opened', () => {
+    component.topic.set({ ...BASE_TOPIC, categories: ['environment'] });
+    fixture.detectChanges();
+    const headers = fixture.nativeElement.querySelectorAll('.info_title');
+    const header = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_CATEGORIES')) as HTMLElement;
+    header.click();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('TXT_TOPIC_CATEGORY_ENVIRONMENT');
+  });
+
+  it('should show no-categories message when categories are empty and section is opened', () => {
+    const headers = fixture.nativeElement.querySelectorAll('.info_title');
+    const header = Array.from(headers).find((h) => (h as HTMLElement).textContent?.includes('TITLE_CATEGORIES')) as HTMLElement;
+    header.click();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('SECTION_INFO_NO_CATEGORIES');
+  });
+
   it('should hide action buttons when user is not logged in', () => {
-    mockUserStore.isAuthenticated.mockReturnValue(false);
-    component.topic.set({ ...BASE_TOPIC });
+    mockUserStore.isAuthenticated.set(false);
+    TestBed.flushEffects();
+    component.topic.set({ ...BASE_TOPIC, visibility: 'private' });
     fixture.detectChanges();
     const buttons = fixture.nativeElement.querySelectorAll('button.option');
     expect(buttons.length).toBe(0);

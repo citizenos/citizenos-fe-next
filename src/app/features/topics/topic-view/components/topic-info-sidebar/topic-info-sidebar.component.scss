@@ -14,10 +14,6 @@
     max-width: 100%;
   }
 
-  cos-icon {
-    width: 16px;
-    height: 16px;
-  }
   .topic_visibility {
     display: flex;
     width: 32px;
@@ -71,6 +67,11 @@
         justify-content: space-between;
         align-items: center;
         color: var(--color-text);
+        .icon {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
       }
 
       .button_dropdown {
@@ -145,26 +146,29 @@
       }
     }
 
-    a.info_title {
+    .info_title {
       display: flex;
       justify-content: space-between;
       vertical-align: middle;
       align-items: center;
       color: var(--color-text);
       font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+      .icon {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
     }
 
     .info_items {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      min-height: 0;
-      max-height: 0;
-
-      &.open {
-        min-height: min-content;
-        max-height: min-content;
-      }
       .info_item {
         display: flex;
         gap: 8px;

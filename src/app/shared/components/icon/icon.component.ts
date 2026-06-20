@@ -39,8 +39,8 @@ export class IconComponent {
   size = model<string | number>(24);
   color = input<string>();
 
-  widthAttr = computed(() => typeof this.size() === 'number' ? this.size() : null);
-  heightAttr = computed(() => typeof this.size() === 'number' ? this.size() : null);
+  widthAttr = computed(() => this.size() ? this.size() : null);
+  heightAttr = computed(() => this.size() ? this.size() : null);
 
   safeSvgContent = computed(() => {
     const name = this.name();

@@ -56,6 +56,7 @@ export class TopicInfoSidebarComponent {
 
   showAttachments = signal(false);
   showGroups = signal(false);
+  showCategories = signal(false);
   manageOpen = signal(false);
   lang = computed(() => this.translate.currentLang || 'en');
 
