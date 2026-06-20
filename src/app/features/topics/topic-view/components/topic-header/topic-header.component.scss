@@ -80,6 +80,7 @@
   #buttons_area {
     display: flex;
     align-items: center;
+    gap: 8px;
 
     .permissions_lable {
       display: flex;
@@ -97,12 +98,7 @@
       margin-right: 16px;
     }
 
-    .btn_medium_close {
-      margin-left: 8px;
-    }
-
     cos-button {
-      margin-left: 8px;
       &.like_active {
         ::ng-deep button {
            background: var(--color-ideation-disabled) !important;
