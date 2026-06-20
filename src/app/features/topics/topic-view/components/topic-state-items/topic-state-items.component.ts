@@ -1,4 +1,5 @@
 import { Component, output, inject, ChangeDetectionStrategy, model } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { NgClass, DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -10,8 +11,8 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { Vote } from '../../../../../core/interfaces/vote';
 import { TopicVote } from '../../../../../core/interfaces/topic';
-
 import { DomainIconComponent } from '../../../../../shared/components/domain-icon/domain-icon.component';
+
 
 @Component({
   selector: 'app-topic-state-items',
@@ -42,7 +43,7 @@ export class TopicStateItemsComponent {
   startVote = output<Topic>();
   sendToFollowUp = output<Topic>();
 
-  argumentCount = this.topicArgumentService.count;
+  argumentCount = toSignal(this.topicArgumentService.count, { initialValue: { total: 0, pro: 0, con: 0, poi: 0, reply: 0 } });
 
   get isLoggedIn() { return this.userStore.isAuthenticated; }
 
@@ -74,7 +75,7 @@ export class TopicStateItemsComponent {
   }
 
   getArgumentPercentage(count: number) {
-    const total = this.argumentCount.value.total;
+    const total = this.argumentCount().total;
     if (total === 0) return 0;
     return (count / total) * 100;
   }

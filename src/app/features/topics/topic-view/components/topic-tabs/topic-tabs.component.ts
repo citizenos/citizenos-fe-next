@@ -7,6 +7,7 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { ActivitiesButtonComponent } from '../../../../../shared/components/activities-button/activities-button.component';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { TourItemDirective } from '../../../../../shared/directives/tour-item.directive';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-topic-tabs',
@@ -16,7 +17,8 @@ import { TourItemDirective } from '../../../../../shared/directives/tour-item.di
     TranslateModule,
     ActivitiesButtonComponent,
     TooltipComponent,
-    TourItemDirective],
+    TourItemDirective,
+    IconComponent],
   templateUrl: './topic-tabs.component.html',
   styleUrls: ['./topic-tabs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,4 +1,5 @@
 import { vi } from 'vitest';
+import { BehaviorSubject } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TopicStateItemsComponent } from './topic-state-items.component';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -17,12 +18,12 @@ import { Vote } from '../../../../../core/interfaces/vote';
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent { @Input() name = ''; @Input() size = 24; }
-
 @Component({ selector: 'cos-domain-icon', standalone: true, template: '' })
 class MockDomainIconComponent {
   @Input() type = '';
   @Input() size = 40;
 }
+
 
 describe('TopicStateItemsComponent', () => {
   let component: TopicStateItemsComponent;
@@ -56,15 +57,13 @@ describe('TopicStateItemsComponent', () => {
   };
 
   const mockTopicArgumentService = {
-    count: {
-      value: {
-        total: 10,
-        pro: 4,
-        con: 3,
-        poi: 2,
-        reply: 1
-      }
-    }
+    count: new BehaviorSubject({
+      total: 10,
+      pro: 4,
+      con: 3,
+      poi: 2,
+      reply: 1
+    })
   };
 
   beforeEach(async () => {

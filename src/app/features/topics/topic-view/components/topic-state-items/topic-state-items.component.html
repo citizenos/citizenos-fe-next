@@ -56,12 +56,12 @@
   <!-- DISCUSSION STATE -->
   @if (topic().discussionId || [STATUSES.draft, STATUSES.ideation, STATUSES.inProgress].includes(topic().status)) {
     <div class="state_item discussion" 
-      [ngClass]="{ empty: topic().status === STATUSES.ideation && !argumentCount.value.total }"
+      [ngClass]="{ empty: topic().status === STATUSES.ideation && !argumentCount().total }"
       (click)="topic().status === STATUSES.ideation && canUpdate(topic()) ? startDiscussion.emit(topic()) : navigateTab.emit('discussion')"
       (keydown.enter)="topic().status === STATUSES.ideation && canUpdate(topic()) ? startDiscussion.emit(topic()) : navigateTab.emit('discussion')"
       tabindex="0" role="button">
       
-      @if (topic().status === STATUSES.ideation && !argumentCount.value.total) {
+      @if (topic().status === STATUSES.ideation && !argumentCount().total) {
         <div class="icon_wrap">
           <cos-domain-icon type="topic" [size]="32"></cos-domain-icon>
         </div>
@@ -75,10 +75,10 @@
         </div>
       }
 
-      @if (topic().status !== STATUSES.ideation || argumentCount.value.total) {
+      @if (topic().status !== STATUSES.ideation || argumentCount().total) {
         <div class="item_header">
           <div class="item_title">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_DISCUSSION_HEADING' | translate }}</div>
-          <div class="item_title">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_DISCUSSION_CONTRIBUTION' | translate:{ count: argumentCount.value.total } }}</div>
+          <div class="item_title">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_DISCUSSION_CONTRIBUTION' | translate:{ count: argumentCount().total } }}</div>
         </div>
         <div class="item_content">
           <div class="graph_wrap">
@@ -87,30 +87,30 @@
                 <div class="legend_item pro">
                   <div class="dot"></div>
                   <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_PRO' | translate }}</div>
-                  <span>{{ argumentCount.value.pro }}</span>
+                  <span>{{ argumentCount().pro }}</span>
                 </div>
                 <div class="legend_item">
                   <div class="dot"></div>
                   <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_INFO' | translate }}</div>
-                  <span>{{ argumentCount.value.poi }}</span>
+                  <span>{{ argumentCount().poi }}</span>
                 </div>
               </div>
               <div class="legend_row">
                 <div class="legend_item con">
                   <div class="dot"></div>
                   <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_CON' | translate }}</div>
-                  <span>{{ argumentCount.value.con }}</span>
+                  <span>{{ argumentCount().con }}</span>
                 </div>
                 <div class="legend_item reply">
                   <div class="dot"></div>
                   <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.STATE_ITEM_CONTRIBUTION_REPLIES' | translate }}</div>
-                  <span>{{ argumentCount.value.reply }}</span>
+                  <span>{{ argumentCount().reply }}</span>
                 </div>
               </div>
             </div>
             <div class="graph">
-              <div class="arguments_pro" [style.width.%]="getArgumentPercentage(argumentCount.value.pro)"></div>
-              <div class="arguments_con" [style.width.%]="getArgumentPercentage(argumentCount.value.con)"></div>
+              <div class="arguments_pro" [style.width.%]="getArgumentPercentage(argumentCount().pro)"></div>
+              <div class="arguments_con" [style.width.%]="getArgumentPercentage(argumentCount().con)"></div>
             </div>
           </div>
         </div>

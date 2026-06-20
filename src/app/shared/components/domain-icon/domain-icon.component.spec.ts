@@ -10,9 +10,9 @@ describe('DomainIconComponent', () => {
 
   const TYPES: DomainType[] = ['topic', 'ideation', 'vote', 'follow-up'];
   const EXPECTED_COLORS: Record<DomainType, string> = {
-    topic: '#1168A8',
+    topic: '#5C9CD0',
     ideation: '#E4B722',
-    vote: '#5AB467',
+    vote: '#98DAA2',
     'follow-up': '#E3A8CC',
   };
 
