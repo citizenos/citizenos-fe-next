@@ -2,7 +2,7 @@ $breakpoint-tablet: 1024px;
 $breakpoint-mobile: 576px;
 
 :host {
-  display: contents;
+  display: flex;
 }
 
 .tablet_show,
@@ -18,15 +18,34 @@ $breakpoint-mobile: 576px;
 @media (max-width: $breakpoint-tablet) {
   button.btn_medium_activity {
     background: none;
-    border-radius: 40px;
 
-    &:hover {
+    &:hover, &.active {
       background: var(--color-background);
       color: var(--color-link);
+
+      path {
+        fill: var(--color-link);
+      }
     }
 
     span {
       display: none;
+    }
+
+    div {
+      position: absolute;
+      svg {
+        circle {
+          stroke: initial;
+        }
+        text {
+          font-size: 10px;
+          line-height: 10px;
+          text-align: center;
+          text-anchor: middle;
+          dominant-baseline: middle;
+        }
+      }
     }
   }
 

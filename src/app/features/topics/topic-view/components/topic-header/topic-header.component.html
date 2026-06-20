@@ -26,15 +26,15 @@
     @if (isLoggedIn()) {
       <cos-tooltip class="tablet_show" [noIcon]="true"
         [title]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate">
-        <cos-button
+        <button
           trigger
-          variant="light"
-          (clicked)="onToggleFavourite()"
-          [icon]="topic().favourite ? 'favourite-filled' : 'favourite'"
+          class="btn_medium_close icon"
+          (click)="onToggleFavourite()"
           [class.like_active]="topic().favourite"
           [attr.aria-label]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate"
         >
-        </cos-button>
+          <cos-icon [name]="topic().favourite ? 'favourite-filled-legacy' : 'favourite-legacy'"></cos-icon>
+        </button>
       </cos-tooltip>
     }
 
@@ -45,8 +45,9 @@
     </div>
 
     <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" cosDropdown>
-      <cos-button trigger variant="light" icon="more-vertical" [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
-      </cos-button>
+      <button trigger class="btn_medium_close icon" [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
+        <cos-icon name="more-vertical-legacy"></cos-icon>
+      </button>
 
       <div class="options">
         @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {
@@ -214,14 +215,9 @@
       </div>
     </div>
 
-    <cos-button
-      variant="light"
-      class="btn_medium_close icon mobile_show"
-      (clicked)="mobileActions.set(!mobileActions())"
-      icon="more-vertical"
-      [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate"
-    >
-    </cos-button>
+    <button class="btn_medium_close icon mobile_show" (click)="mobileActions.set(!mobileActions())" [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
+      <cos-icon name="more-vertical-legacy"></cos-icon>
+    </button>
   </div>
 </div>
 
