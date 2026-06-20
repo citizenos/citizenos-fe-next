@@ -11,14 +11,8 @@
       [innerHTML]="navigation().title | translate"></div>
   </div>
   <div id="buttons_area">
-    <div id="activities_button_wrap">
-      @if (isLoggedIn()) {
-        <cos-activities-button [topicId]="topic().id"></cos-activities-button>
-      }
-    </div>
-
     @if (!topic().permission.level || topic().permission.level === 'none') {
-      <cos-button id="join_button" class="btn_medium_close" (clicked)="onJoin()" variant="light" translate="VIEWS.TOPICS_TOPICID.BTN_JOIN"></cos-button>
+      <cos-button id="join_button" (clicked)="onJoin()">{{ 'VIEWS.TOPICS_TOPICID.BTN_JOIN' | translate }}</cos-button>
     }
 
     @if (topic().permission.level && topic().permission.level !== 'none') {
@@ -35,7 +29,7 @@
         <cos-button
           trigger
           variant="light"
-          class="btn_medium_close icon tablet_show"
+          class="tablet_show"
           (clicked)="onToggleFavourite()"
           [icon]="topic().favourite ? 'favourite-filled' : 'favourite'"
           [class.like_active]="topic().favourite"
@@ -45,17 +39,14 @@
       </cos-tooltip>
     }
 
-    <cos-button
-      variant="light"
-      class="btn_medium_close icon mobile_show"
-      (clicked)="mobileActions.set(!mobileActions())"
-      icon="more-vertical"
-      [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate"
-    >
-    </cos-button>
+    <div id="activities_button_wrap">
+      @if (isLoggedIn()) {
+        <cos-activities-button [topicId]="topic().id"></cos-activities-button>
+      }
+    </div>
 
     <div id="tablet_actions" class="dropdown button_dropdown mobile_hidden" cosDropdown>
-      <cos-button trigger variant="light" class="btn_medium_close icon" icon="more-vertical" [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
+      <cos-button trigger variant="light" icon="more-vertical" [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate">
       </cos-button>
 
       <div class="options">
@@ -224,6 +215,14 @@
       </div>
     </div>
 
+    <cos-button
+      variant="light"
+      class="btn_medium_close icon mobile_show"
+      (clicked)="mobileActions.set(!mobileActions())"
+      icon="more-vertical"
+      [attr.aria-label]="'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate"
+    >
+    </cos-button>
   </div>
 </div>
 
