@@ -1,9 +1,9 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { Component, inject, signal, ChangeDetectionStrategy, HostListener } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, HostListener, signal, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, UpperCasePipe } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { interval, switchMap, takeWhile, take, map } from 'rxjs';
-import { UpperCasePipe } from '@angular/common';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
@@ -24,6 +24,7 @@ export class TopicVoteSignSmartidComponent {
   data = inject<{ topic: Topic; options: TopicVoteCast['options'] }>(DIALOG_DATA);
   protected dialogRef = inject(DialogRef);
   private topicVoteService = inject(TopicVoteService);
+  private platformId = inject(PLATFORM_ID);
   private topicService = inject(TopicService);
   private notification = inject(NotificationService);
   private translate = inject(TranslateService);
@@ -35,11 +36,13 @@ export class TopicVoteSignSmartidComponent {
 
   isLoading = signal(false);
   challengeID = signal<string | null>(null);
-  wWidth = signal(window.innerWidth);
+  wWidth = signal(isPlatformBrowser(this.platformId) ? window.innerWidth : 1280);
 
   @HostListener('window:resize')
   onResize() {
-    this.wWidth.set(window.innerWidth);
+    if (isPlatformBrowser(this.platformId)) {
+      this.wWidth.set(window.innerWidth);
+    }
   }
 
   doSignWithSmartId() {

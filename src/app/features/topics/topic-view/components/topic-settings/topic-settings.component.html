@@ -60,6 +60,47 @@
             <div class="line lightest_line"></div>
           }
 
+          <div class="settings_section hashtag_section">
+            <div class="settings_cell hashtag_title_cell">
+              <div class="setting_title">{{ 'MODALS.TOPIC_SETTINGS_LBL_HASHTAG' | translate }}</div>
+              <div class="setting_description">{{ 'MODALS.TOPIC_SETTINGS_LBL_HASHTAG_EXT' | translate }}</div>
+            </div>
+            <div class="settings_cell hashtag_cell">
+              <div class="recycle_bin_wrap">
+                <div (click)="doDeleteHashtag()" (keydown.enter)="doDeleteHashtag()" class="btn_wrap recycle_bin" role="button" tabindex="0">
+                  <div class="btn">
+                    <div class="table_cell disabled_area">
+                      <cos-icon name="trash" [size]="24" class="desktop_fix"></cos-icon>
+                      <cos-icon name="trash" [size]="24" class="mobile_fix"></cos-icon>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <input id="hashtag" name="hashtag" [ngModel]="topic().hashtag" (ngModelChange)="topic().hashtag = $event; checkHashtag()"
+                [placeholder]="'MODALS.TOPIC_SETTINGS_PLACEHOLDER_HASHTAG' | translate"
+                [class.error_input]="errors()['hashtag']">
+              <div class="recycle_bin_wrap wrap_mobile">
+                <div (click)="doDeleteHashtag()" (keydown.enter)="doDeleteHashtag()" class="btn_wrap recycle_bin" role="button" tabindex="0">
+                  <div class="btn">
+                    <div class="table_cell disabled_area">
+                      <cos-icon name="trash" [size]="24" class="desktop_fix"></cos-icon>
+                      <cos-icon name="trash" [size]="24" class="mobile_fix"></cos-icon>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @if (errors()['hashtag']) {
+                <label for="hashtag" class="error_label">
+                  <div class="table_cell">
+                    <cos-icon name="warning" [size]="24"></cos-icon>
+                    <span>{{ errors()['hashtag'] | translate }}</span>
+                  </div>
+                </label>
+              }
+            </div>
+          </div>
+          <div class="line lightest_line"></div>
+
           @if (canSendToFollowUp() && canEdit()) {
             <div class="settings_section">
               <div class="settings_cell">

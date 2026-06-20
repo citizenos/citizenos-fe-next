@@ -70,7 +70,7 @@
                   </div>
                   <div class="option" (click)="doUserOrder('level', 'asc')" (keydown.enter)="doUserOrder('level', 'asc')" tabindex="0" role="button">
                     <span>{{ 'MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL' | translate }}</span>
-                    <cos-icon name="topic-participants-icon-2-legacy" size="24"></cos-icon>
+                    <cos-icon name="topic-participants-icon-2-legacy" size="24" style="transform: scaleY(-1);"></cos-icon>
                   </div>
                   <div class="option" (click)="doUserOrder('level', 'desc')" (keydown.enter)="doUserOrder('level', 'desc')" tabindex="0" role="button">
                     <span>{{ 'MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL' | translate }}</span>
@@ -104,7 +104,7 @@
               <cos-pagination class="pagination"
                 [totalPages]="userTotalPages()"
                 [page]="userPage()"
-                (selectPage)="userPage.set($event)"></cos-pagination>
+                (select)="userPage.set($event)"></cos-pagination>
             </div>
           </div>
         </div>
@@ -175,7 +175,7 @@
               <cos-pagination class="pagination"
                 [totalPages]="groupTotalPages()"
                 [page]="groupPage()"
-                (selectPage)="groupPage.set($event)"></cos-pagination>
+                (select)="groupPage.set($event)"></cos-pagination>
             </div>
           </div>
         </div>
@@ -228,7 +228,7 @@
               <cos-pagination class="pagination"
                 [totalPages]="inviteTotalPages()"
                 [page]="invitePage()"
-                (selectPage)="invitePage.set($event)"></cos-pagination>
+                (select)="invitePage.set($event)"></cos-pagination>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, input, output, inject, ChangeDetectionStrategy, PLATFORM_ID } from '@angular/core';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { Argument } from '../../../../../core/interfaces/discussion';
@@ -21,6 +21,7 @@ export class ArgumentEditsComponent {
   showEditsChange = output<boolean>();
 
   private notification = inject(NotificationService);
+  private platformId = inject(PLATFORM_ID);
 
   editsEntries(): [string, { subject?: string | null; text?: string | null; createdAt?: string; type?: string | null }][] {
     return Object.entries(this.argument().edits || {});
@@ -31,10 +32,12 @@ export class ArgumentEditsComponent {
   }
 
   copyArgumentLink(event: MouseEvent, version: string) {
-    const id = this.argument().id + '_v' + version;
-    const url = `${window.location.origin}${window.location.pathname}?argumentId=${id}`;
-    navigator.clipboard.writeText(url).then(() => {
-      this.notification.success('VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_COPIED');
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      const id = this.argument().id + '_v' + version;
+      const url = `${window.location.origin}${window.location.pathname}?argumentId=${id}`;
+      navigator.clipboard.writeText(url).then(() => {
+        this.notification.success('VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_COPIED');
+      });
+    }
   }
 }

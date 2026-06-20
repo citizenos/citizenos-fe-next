@@ -121,7 +121,7 @@
             translate:{ count: argument().replies?.count || 0 } }}
           </button>
           }
-          <button type="button" class="btn_reply_argument" (click)="showReplyForm.update(v => !v)">
+          <button type="button" class="btn_reply_argument" (click)="handleShowReply()">
             {{ 'COMPONENTS.ARGUMENT.BTN_REPLY' | translate }}
           </button>
         </div>

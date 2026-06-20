@@ -42,8 +42,8 @@ export class IdeaReactionsComponent implements OnInit {
       ideaId: this.data.ideaId,
       limit: this.itemsPerPage,
       offset: (this.page() - 1) * this.itemsPerPage
-    }).subscribe((res: any) => {
-      this.voteItems.set(res.rows.map((row: any) => ({
+    }).subscribe((res: { count: number; rows: IdeaVoter[] }) => {
+      this.voteItems.set(res.rows.map((row: IdeaVoter) => ({
         ...row,
         vote: row.value === 1 ? 'up' : 'down'
       })));

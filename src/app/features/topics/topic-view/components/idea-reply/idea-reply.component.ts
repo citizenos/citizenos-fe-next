@@ -1,5 +1,5 @@
-import { Component, inject, signal, input, model, ChangeDetectionStrategy, OnInit, AfterViewInit, ViewChild, ElementRef, forwardRef } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, inject, signal, input, model, ChangeDetectionStrategy, OnInit, AfterViewInit, ViewChild, ElementRef, forwardRef, PLATFORM_ID } from '@angular/core';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -401,13 +401,14 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
   private sanitizer = inject(DomSanitizer);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private platformId = inject(PLATFORM_ID);
 
   showEdit = signal(false);
   showEdits = signal(false);
   showDeletedArgument = signal(false);
   mobileActions = signal(false);
   isReply = signal(false);
-  wWidth = signal(window.innerWidth);
+  wWidth = signal(isPlatformBrowser(this.platformId) ? window.innerWidth : 1280);
 
   ngOnInit() {
     const arg = this.argument();
@@ -430,6 +431,12 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
     if (this.isReply()) {
       // Replicate legacy prepend author name logic if it's a direct reply
       // In a real app, this might be better handled in the template or via a pipe
+    }
+  }
+
+  onResize() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.wWidth.set(window.innerWidth);
     }
   }
 

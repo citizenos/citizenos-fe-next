@@ -12,7 +12,7 @@ import { MarkdownDirective } from '../../../../../shared/directives/markdown.dir
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { municipalities } from '../../../../../core/services/municipality.service';
-import { CommonModule, UpperCasePipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
@@ -27,7 +27,6 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
     MarkdownDirective,
     CosDropdownDirective,
     TooltipComponent,
-    CommonModule,
     UpperCasePipe,
     InputComponent,
     IconComponent
@@ -60,7 +59,7 @@ export class AddIdeaComponent implements OnInit {
   autosavedIdea = signal<Idea | null>(null);
 
   municipalities = municipalities;
-  filtersData = signal<any>({
+  filtersData = signal<Record<string, { selectedValue: string; items: { title: string; value: string }[]; error: boolean }>>({
     residence: { selectedValue: '', items: municipalities.map(m => ({ title: m.name, value: m.name })), error: false },
     gender: { selectedValue: '', items: [{ title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_FEMALE', value: 'female' }, { title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_MALE', value: 'male' }, { title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_OTHER_PLACEHOLDER', value: 'other' }], error: false }
   });
@@ -71,7 +70,7 @@ export class AddIdeaComponent implements OnInit {
     const config = this.ideation().demographicsConfig;
     if (config) {
         Object.keys(config).forEach(key => {
-            (this.ideaForm as any).addControl('demographics_' + key, new FormControl(config[key].value || '', config[key].required ? [Validators.required] : []));
+            this.ideaForm.addControl(('demographics_' + key) as any, new FormControl(config[key].value || '', config[key].required ? [Validators.required] : []));
         });
     }
   }
@@ -122,7 +121,7 @@ export class AddIdeaComponent implements OnInit {
         return;
     }
 
-    const ideaData: any = {
+    const ideaData: { [key: string]: any; topicId: string; ideationId: string; } = {
       topicId: this.topic().id,
       ideationId: this.ideation().id,
       statement: this.ideaForm.value.statement,
@@ -132,9 +131,9 @@ export class AddIdeaComponent implements OnInit {
 
     const config = this.ideation().demographicsConfig;
     if (config) {
-        ideaData.demographics = {};
+        ideaData['demographics'] = {};
         Object.keys(config).forEach(key => {
-            ideaData.demographics[key] = this.ideaForm.get('demographics_' + key)?.value;
+            ideaData['demographics'][key] = this.ideaForm.get('demographics_' + key)?.value;
         });
     }
 
@@ -143,7 +142,7 @@ export class AddIdeaComponent implements OnInit {
         this.ideaAdded.emit(idea);
         this.notification.success('COMPONENTS.ADD_IDEA.MSG_PUBLISH_SUCCESS');
       },
-      error: (err: any) => {
+      error: (err: unknown) => {
         console.error('Failed to publish idea', err);
         this.notification.error('COMPONENTS.ADD_IDEA.MSG_PUBLISH_ERROR');
       }
@@ -162,7 +161,7 @@ export class AddIdeaComponent implements OnInit {
     this.isOpen.set(false);
   }
 
-  numberOnly(event: any): boolean {
+  numberOnly(event: KeyboardEvent): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;

@@ -1,6 +1,6 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, computed } from '@angular/core';
-import { DatePipe, UpperCasePipe } from '@angular/common';
+import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, computed, PLATFORM_ID } from '@angular/core';
+import { DatePipe, UpperCasePipe, isPlatformBrowser } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { Topic, TopicVote } from '../../../../../core/interfaces/topic';
@@ -43,6 +43,7 @@ export class TopicVoteCastComponent implements OnInit {
     };
   });
 
+  private platformId = inject(PLATFORM_ID);
   private topicService = inject(TopicService);
   private topicVoteService = inject(TopicVoteService);
   private voteDelegationService = inject(VoteDelegationService);
@@ -93,7 +94,7 @@ export class TopicVoteCastComponent implements OnInit {
     const rows = Array.isArray(v?.options) ? v.options : v?.options?.rows;
     if (!rows) return false;
     const selected = rows.filter((o: { selected?: boolean }) => o.selected);
-    if (selected.length === 1 && (selected[0] as { value?: string }).value === 'Neutral' || (selected[0] as { value?: string }).value === 'Veto') return true;
+    if (selected.length === 1 && ((selected[0] as { value?: string }).value === 'Neutral' || (selected[0] as { value?: string }).value === 'Veto')) return true;
     return selected.length <= (v.maxChoices || 0) && selected.length >= (v.minChoices || 0);
   }
 
@@ -234,7 +235,7 @@ export class TopicVoteCastComponent implements OnInit {
       let url = type === 'zip' ? (v.downloads?.zipFinal || '') : (v.downloads?.bdocFinal || '');
       if (!url) return;
       if (includeCSV) url += '&include[]=csv';
-      window.location.href = url;
+      if (isPlatformBrowser(this.platformId)) window.location.href = url;
       return;
     }
     this.dialogService.open(DownloadVoteResultsComponent)
@@ -250,7 +251,7 @@ export class TopicVoteCastComponent implements OnInit {
               let url = type === 'zip' ? (vote.downloads?.zipFinal || '') : (vote.downloads?.bdocFinal || '');
               if (!url) return;
               if (includeCSV) url += '&include[]=csv';
-              window.location.href = url;
+              if (isPlatformBrowser(this.platformId)) window.location.href = url;
             });
           });
         }

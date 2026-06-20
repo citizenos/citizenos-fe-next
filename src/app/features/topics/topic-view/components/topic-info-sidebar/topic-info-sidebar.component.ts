@@ -1,4 +1,4 @@
-import { Component, output, inject, ChangeDetectionStrategy, computed, model } from '@angular/core';
+import { Component, output, inject, ChangeDetectionStrategy, computed, model, signal } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -54,14 +54,12 @@ export class TopicInfoSidebarComponent {
   userStore = inject(UserStore);
   private translate = inject(TranslateService);
 
-  showAttachments = false;
-  showGroups = false;
-  manageOpen = false;
+  showAttachments = signal(false);
+  showGroups = signal(false);
+  manageOpen = signal(false);
   lang = computed(() => this.translate.currentLang || 'en');
 
-  get isLoggedIn() {
-    return this.userStore.isAuthenticated();
-  }
+  isLoggedIn = computed(() => this.userStore.isAuthenticated());
 
   onDownloadAttachment(event: Event, attachment: TopicAttachment) {
     event.preventDefault();

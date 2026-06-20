@@ -1,9 +1,9 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { Component, inject, signal, ChangeDetectionStrategy, HostListener } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, HostListener, signal, PLATFORM_ID } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { interval, switchMap, takeWhile, take, map, catchError, of } from 'rxjs';
-import { UpperCasePipe } from '@angular/common';
+import { isPlatformBrowser, UpperCasePipe } from '@angular/common';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
@@ -37,6 +37,7 @@ export class TopicVoteSignEsteidComponent {
   private topicVoteService = inject(TopicVoteService);
   private topicService = inject(TopicService);
   private notification = inject(NotificationService);
+  private platformId = inject(PLATFORM_ID);
   private translate = inject(TranslateService);
 
   mobiilIdForm = new FormGroup({
@@ -47,11 +48,13 @@ export class TopicVoteSignEsteidComponent {
   isLoading = signal(false);
   isLoadingIdCard = signal(false);
   challengeID = signal<string | null>(null);
-  wWidth = signal(window.innerWidth);
+  wWidth = signal(isPlatformBrowser(this.platformId) ? window.innerWidth : 1280);
 
   @HostListener('window:resize')
   onResize() {
-    this.wWidth.set(window.innerWidth);
+    if (isPlatformBrowser(this.platformId)) {
+      this.wWidth.set(window.innerWidth);
+    }
   }
 
   doSignWithMobile() {
@@ -106,7 +109,7 @@ export class TopicVoteSignEsteidComponent {
               },
               error: () => this.isLoadingIdCard.set(false)
             });
-          } catch (err: any) {
+          } catch (err: unknown) {
             this.isLoadingIdCard.set(false);
             this.notification.error(this.hwCryptoErrorToTranslationKey(err));
           }
@@ -146,20 +149,21 @@ export class TopicVoteSignEsteidComponent {
     });
   }
 
-  private hwCryptoErrorToTranslationKey(err: any) {
+  private hwCryptoErrorToTranslationKey(err: unknown) {
     const errorKeyPrefix = 'MSG_ERROR_HWCRYPTO_';
-    switch (err.message) {
+    const errorMsg = err instanceof Error ? err.message : (err as { message?: string })?.message || '';
+    switch (errorMsg) {
       case hwcrypto.NO_CERTIFICATES:
       case hwcrypto.USER_CANCEL:
       case hwcrypto.NO_IMPLEMENTATION:
-        return errorKeyPrefix + err.message.toUpperCase();
+        return errorKeyPrefix + errorMsg.toUpperCase();
       case hwcrypto.INVALID_ARGUMENT:
       case hwcrypto.NOT_ALLOWED:
       case hwcrypto.TECHNICAL_ERROR:
-        console.error(err.message, 'Technical error from HWCrypto library', err);
+        console.error(errorMsg, 'Technical error from HWCrypto library', err);
         return errorKeyPrefix + 'TECHNICAL_ERROR';
       default:
-        console.error(err.message, 'Unknown error from HWCrypto library', err);
+        console.error(errorMsg, 'Unknown error from HWCrypto library', err);
         return errorKeyPrefix + 'TECHNICAL_ERROR';
     }
   }

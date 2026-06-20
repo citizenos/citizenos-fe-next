@@ -36,17 +36,6 @@
 
   <div id="activities_button_wrap" [cosTourItem]="{tourid: 'topic', index: 8, position: 'left'}">
     @if (isLoggedIn()) {
-    <cos-tooltip [noIcon]="true"
-      [title]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.OPTION_UNFAVOURITE' : 'VIEWS.TOPICS_TOPICID.OPTION_FAVOURITE') | translate">
-      <button trigger class="btn_medium_close icon" (click)="toggleFavourite(topic())"
-        [class.like_active]="topic().favourite">
-        @if (!topic().favourite) {
-        <cos-icon name="topic-tabs-icon-legacy" size="24"></cos-icon>
-        } @else {
-        <cos-icon name="topic-tabs-icon-2-legacy" size="24"></cos-icon>
-        }
-      </button>
-    </cos-tooltip>
     <cos-activities-button [topicId]="topic().id"></cos-activities-button>
     }
   </div>

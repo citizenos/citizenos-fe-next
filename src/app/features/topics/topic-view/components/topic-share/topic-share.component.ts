@@ -1,7 +1,7 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { Component, ChangeDetectionStrategy, inject, signal, computed, ElementRef, ViewChild, OnInit, model } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed, ElementRef, ViewChild, OnInit, model, PLATFORM_ID } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { UpperCasePipe } from '@angular/common';
+import { UpperCasePipe, isPlatformBrowser } from '@angular/common';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -12,7 +12,7 @@ import { ConfirmDialogComponent } from '../../../../../shared/components/confirm
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
-import { take } from 'rxjs';
+import { interval, switchMap, takeWhile, take, timer } from 'rxjs';
 
 @Component({
   selector: 'cos-topic-share',
@@ -38,6 +38,7 @@ export class TopicShareComponent implements OnInit {
   private topicJoinService = inject(TopicJoinService);
   private userStore = inject(UserStore);
   private dialog = inject(DialogService);
+  private platformId = inject(PLATFORM_ID);
 
   readonly LEVELS = Object.keys(this.topicService.LEVELS);
   
@@ -51,7 +52,7 @@ export class TopicShareComponent implements OnInit {
     const j = this.join();
     const t = this.topic();
     if (!t) return '';
-    const baseUrl = window.location.origin;
+    const baseUrl = isPlatformBrowser(this.platformId) ? window.location.origin : '';
 
     if (j.token && this.topicService.canShare(t)) {
       return `${baseUrl}/topics/join/${j.token}`;
@@ -136,18 +137,21 @@ export class TopicShareComponent implements OnInit {
 
   copyInviteLink() {
     this.joinDisabled.set(false);
-    setTimeout(() => {
+    timer(0).pipe(take(1)).subscribe(() => {
       const urlInputElement = this.linkInput.nativeElement as HTMLInputElement;
       urlInputElement.focus();
       urlInputElement.select();
       urlInputElement.setSelectionRange(0, 99999);
-      document.execCommand('copy');
-      this.copySuccess.set(true);
+      if (isPlatformBrowser(this.platformId)) {
+        navigator.clipboard.writeText(urlInputElement.value).then(() => {
+          this.copySuccess.set(true);
+        });
+      }
       
-      setTimeout(() => {
+      timer(500).pipe(take(1)).subscribe(() => {
         this.copySuccess.set(false);
         this.joinDisabled.set(true);
-      }, 500);
+      });
     });
   }
 }

@@ -235,7 +235,9 @@ export class TopicViewComponent implements OnInit {
               }
 
               const fragment = this.route.snapshot.fragment;
-              if (fragment) {
+              if (_queryParams['argumentId']) {
+                this.selectTab('discussion');
+              } else if (fragment) {
                 this.selectTab(fragment);
               } else if (!this.tabSelected()) {
                 if (topic.status === this.STATUSES.ideation) {
@@ -248,10 +250,21 @@ export class TopicViewComponent implements OnInit {
                   this.selectTab('discussion');
                 }
               }
+
+              if (_queryParams['notificationSettings']) {
+                this.appTopicNotificationSettings();
+              }
             }),
             catchError((err) => {
               console.error('Error loading topic:', err);
               this.loading.set(false);
+              if (err.status === 401 || err.status === 403 || err.status === 404) {
+                if (!this.userStore.isAuthenticated() && isPlatformBrowser(this.platformId)) {
+                  this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], { queryParams: { redirectSuccess: window.location.href } });
+                } else {
+                  this.router.navigate(['/', this.translate.currentLang, '404']);
+                }
+              }
               return of(null);
             })
           );
@@ -295,6 +308,7 @@ export class TopicViewComponent implements OnInit {
     if (this.wWidth() <= 1024) {
       this.tabTablet.set(tab);
     }
+    this.router.navigate([], { fragment: tab, replaceUrl: true, queryParamsHandling: 'preserve', relativeTo: this.route });
   }
 
   joinTopic(topic: Topic) {
@@ -490,6 +504,7 @@ export class TopicViewComponent implements OnInit {
   }
 
   downloadAttachment(attachment: TopicAttachment) {
+    if (!isPlatformBrowser(this.platformId)) return;
     if (attachment.source === 'upload') {
       const prefix = this.userStore.isAuthenticated() ? '/api/users/self' : '/api';
       const url = `${this.topicService['apiUrl']}${prefix}/topics/${this.topicId}/attachments/${attachment.id}/download`;

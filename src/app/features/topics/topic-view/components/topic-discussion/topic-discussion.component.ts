@@ -1,12 +1,13 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import {
-  Component, input, signal, inject, ChangeDetectionStrategy, computed
+  Component, input, signal, inject, ChangeDetectionStrategy, computed, effect, PLATFORM_ID
 } from '@angular/core';
-import { DatePipe, UpperCasePipe } from '@angular/common';
+import { DatePipe, UpperCasePipe, TitleCasePipe, DOCUMENT } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { switchMap, of, take, tap } from 'rxjs';
-import { RouterLink } from '@angular/router';
+import { switchMap, of, take, tap, timer } from 'rxjs';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { isPlatformBrowser } from '@angular/common';
 
 import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -31,7 +32,7 @@ import { PaginationComponent } from '../../../../../shared/components/pagination
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DatePipe, UpperCasePipe, TranslateModule,
+    DatePipe, UpperCasePipe, TitleCasePipe, TranslateModule,
     ArgumentComponent, PostArgumentFormComponent,
     PaginationComponent,
     DropdownComponent, RouterLink, IconComponent],
@@ -48,6 +49,11 @@ export class TopicDiscussionComponent {
   private dialog = inject(DialogService);
   private notification = inject(NotificationService);
   translate = inject(TranslateService);
+  private route = inject(ActivatedRoute);
+  private platformId = inject(PLATFORM_ID);
+  private doc = inject(DOCUMENT);
+
+  private scrolledToArgument = false;
 
   showPostForm = signal(false);
 
@@ -64,6 +70,9 @@ export class TopicDiscussionComponent {
 
   selectedTypes = signal<string[]>(['pro', 'con', 'poi']);
   selectedOrder = signal<string>('popularity');
+
+  mobileFiltersOpen = signal(false);
+  activeMobileFilter = signal<string | null>(null);
 
   discussion = toSignal(
     toObservable(this.topic).pipe(
@@ -104,10 +113,29 @@ export class TopicDiscussionComponent {
     return this.arguments();
   });
 
+  constructor() {
+    effect(() => {
+      const args = this.arguments();
+      const params = this.route.snapshot.queryParams;
+      const argumentId = params['argumentId'];
+      if (args.length > 0 && argumentId && !this.scrolledToArgument && isPlatformBrowser(this.platformId)) {
+        this.scrolledToArgument = true;
+        timer(100).pipe(take(1)).subscribe(() => this.goToArgument(argumentId));
+      }
+    });
+  }
 
-
+  goToArgument(argumentId: string) {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const el = this.doc.getElementById(argumentId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('highlight');
+      timer(2000).pipe(take(1)).subscribe(() => el.classList.remove('highlight'));
+    }
+  }
   canPost() {
-    return this.userStore.isAuthenticated();
+    return this.userStore.isAuthenticated() && (this.arguments().length > 0 || this.hasActiveFilters());
   }
 
   canUpdate() {
@@ -134,6 +162,10 @@ export class TopicDiscussionComponent {
     if (this.selectedTypes().length === 3 || this.selectedTypes().length === 0) return 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ALL';
     return this.selectedTypes().map(t => this.argumentTypes.find(at => at.value === t)?.title).join(', ');
   }
+
+  hasActiveFilters = computed(() => {
+    return this.selectedTypes().length !== 3 || this.selectedOrder() !== 'popularity';
+  });
 
   getActiveOrderFilterText() {
     return this.orderByOptions.find(o => o.value === this.selectedOrder())?.title || '';
@@ -200,7 +232,18 @@ export class TopicDiscussionComponent {
     }).afterClosed().subscribe(confirmed => {
       if (confirmed) {
         disc.deadline = new Date().toISOString();
-        this.saveDiscussion(disc);
+        const updateData = {
+          topicId: this.topic().id,
+          discussionId: disc.id,
+          deadline: new Date()
+        };
+        this.discussionService.update(updateData).pipe(
+          take(1),
+          switchMap(() => this.topicService.patch({ id: this.topic().id, status: this.topicService.STATUSES.inProgress }).pipe(take(1)))
+        ).subscribe(() => {
+          this.topicService.reloadTopic();
+          this.dialog.closeAll();
+        });
       }
     });
   }

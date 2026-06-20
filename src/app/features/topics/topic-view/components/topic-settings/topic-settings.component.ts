@@ -10,6 +10,7 @@ import { Topic, TopicGroup } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
+import { TopicMemberGroupService, TopicMemberGroup } from '../../../../../core/services/topic-member-group.service';
 import { DialogService, DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { ToggleComponent } from '../../../../../shared/components/toggle/toggle.component';
@@ -47,11 +48,12 @@ export class TopicSettingsComponent implements OnInit {
   private topicService = inject(TopicService);
   private topicVoteService = inject(TopicVoteService);
   private topicMemberUserService = inject(TopicMemberUserService);
+  private topicMemberGroupService = inject(TopicMemberGroupService);
   private translate = inject(TranslateService);
   private dialog = inject(DialogService);
 
   topic = signal<Topic>({ ...this.dialogData.topic });
-  groups = signal<TopicGroup[]>([]);
+  groups = signal<TopicMemberGroup[]>([]);
   tabSelected = signal('settings');
   errors = signal<Record<string, string>>({});
   
@@ -81,7 +83,7 @@ export class TopicSettingsComponent implements OnInit {
         });
     }
 
-    this.topicService.loadGroups(t.id).pipe(take(1)).subscribe((groups) => {
+    this.topicMemberGroupService.loadItems(t.id).pipe(take(1)).subscribe((groups) => {
       this.groups.set(groups);
     });
   }
@@ -111,6 +113,34 @@ export class TopicSettingsComponent implements OnInit {
     const hasPublicGroup = this.groups().some(g => g.visibility === 'public');
 
     return this.canDelete() && (t.visibility === this.VISIBILITY.private || !hasPublicGroup);
+  }
+
+  checkHashtag() {
+    let length = 0;
+    const str = this.topic().hashtag;
+    const hashtagMaxLength = 59;
+
+    if (str) {
+      length = str.length;
+      for (let i = 0; i < str.length; i++) {
+        const code = str.charCodeAt(i);
+        if (code > 0x7f && code <= 0x7ff) length++;
+        else if (code > 0x7ff && code <= 0xffff) length += 2;
+        if (code >= 0xDC00 && code <= 0xDFFF) i++; //trail surrogate
+      }
+    }
+
+    if ((hashtagMaxLength - length) < 0) {
+      this.errors.set({ ...this.errors(), hashtag: 'MSG_ERROR_40000_TOPIC_HASHTAG' });
+    } else if (this.errors()['hashtag']) {
+      const currentErrors = { ...this.errors() };
+      delete currentErrors['hashtag'];
+      this.errors.set(currentErrors);
+    }
+  }
+
+  doDeleteHashtag() {
+    this.topic.update(current => ({ ...current, hashtag: null }));
   }
 
   selectedReminderOption = computed(() => {
@@ -252,6 +282,16 @@ export class TopicSettingsComponent implements OnInit {
     
     // Cleanup as in legacy
     if (topicUpdate.endsAt) delete topicUpdate.endsAt;
+
+    if (t.vote?.reminderTime && !t.vote.reminderSent && !this.reminder()) {
+      const voteUpdate = { topicId: t.id, voteId: t.voteId!, reminderTime: null };
+      this.topicVoteService.update(voteUpdate).pipe(take(1)).subscribe((res) => {
+        this.topic.update(current => ({
+          ...current,
+          vote: { ...current.vote!, reminderTime: res.reminderTime }
+        }));
+      });
+    }
 
     this.topicService.update(topicUpdate as Topic)
       .pipe(take(1))

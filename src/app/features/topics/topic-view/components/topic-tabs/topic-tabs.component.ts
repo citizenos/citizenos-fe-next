@@ -42,8 +42,5 @@ export class TopicTabsComponent {
     this.tabNavigate.emit(tab);
   }
 
-  toggleFavourite(topic: Topic) {
-    this.topicService.toggleFavourite(topic);
-  }
 }
 

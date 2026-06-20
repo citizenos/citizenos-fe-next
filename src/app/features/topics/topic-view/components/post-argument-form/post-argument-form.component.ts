@@ -2,8 +2,9 @@ import {
   Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit, model
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
+import { Router } from '@angular/router';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
@@ -26,11 +27,15 @@ export class PostArgumentFormComponent implements OnInit {
 
   argumentService = inject(TopicArgumentService);
   private notification = inject(NotificationService);
+  private router = inject(Router);
+  private translate = inject(TranslateService);
 
   types = ['pro', 'con', 'poi'];
   argumentType = signal<string>('pro');
   subject = signal('');
   text = signal('');
+  subjectTouched = signal(false);
+  textTouched = signal(false);
   errors = signal<string | null>(null);
   focusArgumentSubject = signal<boolean>(false);
 
@@ -42,7 +47,7 @@ export class PostArgumentFormComponent implements OnInit {
   }
 
   argumentMaxLength() {
-    return (this.argumentService.ARGUMENT_TYPES_MAXLENGTH as any)[this.argumentType()] || this.argumentService.ARGUMENT_TYPES_MAXLENGTH.pro;
+    return (this.argumentService.ARGUMENT_TYPES_MAXLENGTH as Record<string, number>)[this.argumentType()] || this.argumentService.ARGUMENT_TYPES_MAXLENGTH.pro;
   }
 
   close() {
@@ -52,6 +57,8 @@ export class PostArgumentFormComponent implements OnInit {
   clear() {
     this.subject.set('');
     this.text.set('');
+    this.subjectTouched.set(false);
+    this.textTouched.set(false);
     this.errors.set(null);
   }
 
@@ -66,10 +73,18 @@ export class PostArgumentFormComponent implements OnInit {
     };
 
     this.argumentService.save(argument).pipe(take(1)).subscribe({
-      next: () => {
+      next: (res: any) => {
         this.clear();
         this.isOpen.set(false);
         this.posted.emit();
+        
+        const argId = res?.id || res?.data?.id || res;
+        if (argId && typeof argId === 'string' && typeof window !== 'undefined') {
+          this.router.navigate(['/', this.translate.currentLang, 'topics', this.topicId()], {
+            queryParams: { argumentId: argId },
+            fragment: 'discussion'
+          });
+        }
       },
       error: (err) => {
         this.errors.set(err?.message || 'Error posting argument');

@@ -86,7 +86,9 @@ export class TopicIdeationComponent {
 
   @HostListener('window:resize')
   onResize() {
-    this.wWidth.set(window.innerWidth);
+    if (isPlatformBrowser(this.platformId)) {
+      this.wWidth.set(window.innerWidth);
+    }
   }
 
   showSearch = signal(false);

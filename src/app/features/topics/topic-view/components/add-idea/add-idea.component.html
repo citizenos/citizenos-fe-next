@@ -71,12 +71,12 @@
                 @if (isCountryEstonia()) {
                     <div class="gender_wrapper">
                       <div class="dropdown" cosDropdown>
-                        <div class="selection" [class.error_input]="filtersData().residence.error" trigger>
+                        <div class="selection" [class.error_input]="filtersData()['residence'].error" trigger>
                           <div class="selected_item">
-                            @if (!filtersData().residence.selectedValue) {
+                            @if (!filtersData()['residence'].selectedValue) {
                               <span class="selected_item_placeholder">{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_" + key | uppercase | translate }}</span>
-                            } @else if (filtersData().residence.selectedValue !== 'other') {
-                              <span>{{ filtersData().residence.selectedValue }}</span>
+                            } @else if (filtersData()['residence'].selectedValue !== 'other') {
+                              <span>{{ filtersData()['residence'].selectedValue }}</span>
                             } @else {
                               <span>{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_OTHER" | translate }}</span>
                             }
@@ -84,7 +84,7 @@
                           <cos-icon name="chevron-down" />
                         </div>
                         <div class="options">
-                          @for (option of filtersData().residence.items; track option.value) {
+                          @for (option of filtersData()['residence'].items; track option.value) {
                             <div class="option" role="button" tabindex="0" (click)="setFilterValue('residence', option.value)" (keydown.enter)="setFilterValue('residence', option.value)">
                               <span>{{ option.title }}</span>
                             </div>
@@ -105,18 +105,18 @@
               @case ('gender') {
                 <div class="gender_wrapper">
                   <div class="dropdown" cosDropdown>
-                    <div class="selection" [class.error_input]="filtersData().gender.error" trigger>
+                    <div class="selection" [class.error_input]="filtersData()['gender'].error" trigger>
                       <div class="selected_item">
-                        @if (!filtersData().gender.selectedValue) {
+                        @if (!filtersData()['gender'].selectedValue) {
                           <span class="selected_item_placeholder">{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_" + key | uppercase | translate }}</span>
                         } @else {
-                          <span>{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_" + filtersData().gender.selectedValue | uppercase | translate }}</span>
+                          <span>{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_" + filtersData()['gender'].selectedValue | uppercase | translate }}</span>
                         }
                       </div>
                       <cos-icon name="chevron-down" />
                     </div>
                     <div class="options">
-                      @for (option of filtersData().gender.items; track option.value) {
+                      @for (option of filtersData()['gender'].items; track option.value) {
                         <div class="option" role="button" tabindex="0" (click)="setFilterValue('gender', option.value)" (keydown.enter)="setFilterValue('gender', option.value)">
                           <span>{{ option.title | translate }}</span>
                         </div>

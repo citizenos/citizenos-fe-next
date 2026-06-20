@@ -1,14 +1,15 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import {
   Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit,
-  ViewChild, ElementRef, forwardRef, computed
+  ViewChild, ElementRef, forwardRef, computed, PLATFORM_ID
 } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { take } from 'rxjs';
-
+import { timer, take } from 'rxjs';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Argument } from '../../../../../core/interfaces/discussion';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { UserStore } from '../../../../../core/state/user.store';
@@ -53,6 +54,10 @@ export class ArgumentComponent {
   private notification = inject(NotificationService);
   private dialog = inject(DialogService);
   private sanitizer = inject(DomSanitizer);
+  private router = inject(Router);
+  private platformId = inject(PLATFORM_ID);
+  private doc = inject(DOCUMENT);
+  private translate = inject(TranslateService);
   userStore = inject(UserStore);
 
   showEdit = signal(false);
@@ -99,6 +104,7 @@ export class ArgumentComponent {
   }
 
   async copyLink(_event: MouseEvent) {
+    if (!isPlatformBrowser(this.platformId)) return;
     const id = this.argumentId();
     const url = `${window.location.origin}${window.location.pathname}?argumentId=${id}`;
     
@@ -145,6 +151,16 @@ export class ArgumentComponent {
     });
   }
 
+  handleShowReply() {
+    if (!this.userStore.isAuthenticated()) {
+      if (isPlatformBrowser(this.platformId)) {
+        this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], { queryParams: { redirectSuccess: window.location.href } });
+      }
+      return;
+    }
+    this.showReplyForm.update(v => !v);
+  }
+
   getParentAuthor() {
     const arg = this.argument();
     if (arg.parent?.id === this.root()?.id) {
@@ -163,9 +179,11 @@ export class ArgumentComponent {
     if (!arg.parent?.id) return;
 
     const argumentIdWithVersion = arg.parent.id + '_v' + arg.parent.version;
-    const commentElement = document.getElementById(argumentIdWithVersion);
-    if (commentElement) {
-      this.scrollTo(commentElement as HTMLElement);
+    if (isPlatformBrowser(this.platformId)) {
+      const commentElement = this.doc.getElementById(argumentIdWithVersion);
+      if (commentElement) {
+        this.scrollTo(commentElement as HTMLElement);
+      }
     }
   }
 
@@ -175,8 +193,8 @@ export class ArgumentComponent {
       bodyEl.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
     }
     argumentEl.classList.add('highlight');
-    setTimeout(() => {
+    timer(2000).pipe(take(1)).subscribe(() => {
       argumentEl.classList.remove('highlight');
-    }, 2000);
+    });
   }
 }

@@ -6,7 +6,7 @@
       <div class="dropdown button_dropdown tablet_hidden" cosDropdown>
       <button type="button" class="manage_link btn_link" trigger>{{ 'VIEWS.TOPICS_TOPICID.LNK_MANAGE' | translate }}</button>
         <div class="options">
-          @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn) {
+          @if (topic().permission.level && topic().permission.level !== 'none' && isLoggedIn()) {
             <button type="button" (click)="leaveTopic.emit(topic())" class="option">
               <div class="icon_wrap">
                 <cos-icon name="leave" size="16"></cos-icon>
@@ -14,7 +14,7 @@
               <span>{{ 'VIEWS.TOPICS_TOPICID.BTN_LEAVE' | translate }}</span>
             </button>
           }
-          @if (isLoggedIn) {
+          @if (isLoggedIn()) {
             <div class="line_separator"></div>
             <button type="button" class="option" (click)="toggleFavourite.emit(topic())">
               <div class="icon_wrap">
@@ -31,7 +31,7 @@
               }
             </button>
           }
-          @if (isLoggedIn && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
+          @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
             <div class="line_separator"></div>
             <button type="button" class="option" (click)="inviteEditors.emit(topic())">
               <div class="icon_wrap">
@@ -40,7 +40,7 @@
               <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_INVITE_CO_EDITOR' | translate }}</span>
             </button>
           }
-          @if (isLoggedIn && topicService.canEdit(topic()) && !topic().voteId && !topic().ideationId) {
+          @if (isLoggedIn() && topicService.canEdit(topic()) && !topic().voteId && !topic().ideationId) {
             <div class="line_separator"></div>
             <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'edit', topic().id]">
               <div class="icon_wrap">
@@ -49,7 +49,7 @@
               <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
             </button>
           }
-          @if (isLoggedIn && topicService.canEdit(topic()) && topic().ideationId && !topic().voteId) {
+          @if (isLoggedIn() && topicService.canEdit(topic()) && topic().ideationId && !topic().voteId) {
             <div class="line_separator"></div>
             <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'ideation', 'edit', topic().id]">
               <div class="icon_wrap">
@@ -58,7 +58,7 @@
               <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
             </button>
           }
-          @if (isLoggedIn && topicService.canEdit(topic()) && topic().voteId) {
+          @if (isLoggedIn() && topicService.canEdit(topic()) && topic().voteId) {
             <div class="line_separator"></div>
             <button type="button" class="option" [routerLink]="['/', lang(), 'topics', 'vote', 'edit', topic().id]">
               <div class="icon_wrap">
@@ -67,7 +67,7 @@
               <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_EDIT_TOPIC' | translate }}</span>
             </button>
           }
-          @if (isLoggedIn && topicService.canDelete(topic())) {
+          @if (isLoggedIn() && topicService.canDelete(topic())) {
             <div class="line_separator"></div>
             <button type="button" (click)="duplicateTopic.emit(topic())" class="option">
               <div class="icon_wrap">
@@ -76,16 +76,16 @@
               <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_DUPLICATE_TOPIC' | translate }}</span>
             </button>
           }
-          @if (isLoggedIn && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
+          @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
             <div class="line_separator"></div>
             <button type="button" (click)="addGroupsDialog.emit(topic())" class="option">
               <div class="icon_wrap">
-                <cos-icon name="plus" size="16"></cos-icon>
+                <cos-icon name="users" size="16"></cos-icon>
               </div>
               <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_ADD_TO_GROUP' | translate }}</span>
             </button>
           }
-          @if (isLoggedIn && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
+          @if (isLoggedIn() && topicService.canDelete(topic()) && topic().status !== topicService.STATUSES.closed) {
             <div class="line_separator"></div>
             <button type="button" (click)="closeTopic.emit(topic())" class="option">
               <div class="icon_wrap">
@@ -94,7 +94,7 @@
               <span>{{ 'VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC' | translate }}</span>
             </button>
           }
-          @if (isLoggedIn && topicService.canDelete(topic())) {
+          @if (isLoggedIn() && topicService.canDelete(topic())) {
             <div class="line_separator"></div>
             <button type="button" (click)="deleteTopic.emit(topic())" class="option error_text">
               <div class="icon_wrap">
@@ -135,14 +135,14 @@
 
   <!-- Attachments -->
   <div class="info_items_wrap">
-    <div class="info_title" (click)="showAttachments = !showAttachments" (keydown.enter)="showAttachments = !showAttachments" tabindex="0" role="button">
+    <div class="info_title" (click)="showAttachments.set(!showAttachments())" (keydown.enter)="showAttachments.set(!showAttachments())" tabindex="0" role="button">
       <span>{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_TITLE_ATTACHMENTS' | translate }}</span>
       <span class="icon">
-        <cos-icon [name]="showAttachments ? 'chevron-up' : 'chevron-down'" size="16"></cos-icon>
+        <cos-icon [name]="showAttachments() ? 'chevron-up' : 'chevron-down'" size="16"></cos-icon>
       </span>
     </div>
-    @if (showAttachments) {
-      <div class="info_items" [@openClose]="showAttachments ? 'open' : 'closed'">
+    @if (showAttachments()) {
+      <div class="info_items" [@openClose]="showAttachments() ? 'open' : 'closed'">
         @for (attachment of attachments(); track attachment.id) {
           <button type="button" class="info_item btn_link" (click)="onDownloadAttachment($event, attachment)">
             <cos-icon name="download" size="14"></cos-icon>
@@ -157,14 +157,14 @@
 
   <!-- Groups -->
   <div class="info_items_wrap">
-    <div class="info_title" (click)="showGroups = !showGroups" (keydown.enter)="showGroups = !showGroups" tabindex="0" role="button">
+    <div class="info_title" (click)="showGroups.set(!showGroups())" (keydown.enter)="showGroups.set(!showGroups())" tabindex="0" role="button">
       <span>{{ 'VIEWS.TOPICS_TOPICID.SECTION_INFO_TITLE_GROUPS' | translate }}</span>
       <span class="icon">
-        <cos-icon [name]="showGroups ? 'chevron-up' : 'chevron-down'" size="16"></cos-icon>
+        <cos-icon [name]="showGroups() ? 'chevron-up' : 'chevron-down'" size="16"></cos-icon>
       </span>
     </div>
-    @if (showGroups) {
-      <div class="info_items" [@openClose]="showGroups ? 'open' : 'closed'">
+    @if (showGroups()) {
+      <div class="info_items" [@openClose]="showGroups() ? 'open' : 'closed'">
         @for (group of groups(); track group.id) {
           <a class="info_item" [routerLink]="['/', lang(), 'groups', group.id]">
             <cos-icon name="groups" size="14"></cos-icon>

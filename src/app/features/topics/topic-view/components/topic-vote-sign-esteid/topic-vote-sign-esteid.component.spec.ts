@@ -21,8 +21,10 @@ describe('TopicVoteSignEsteidComponent', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (globalThis as any).hwcrypto = {
+    declare global {
+      var hwcrypto: unknown;
+    }
+    globalThis.hwcrypto = {
       getCertificate: vi.fn(),
       sign: vi.fn()
     };

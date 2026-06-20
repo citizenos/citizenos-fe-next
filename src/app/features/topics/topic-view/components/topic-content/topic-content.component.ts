@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { timer, take } from 'rxjs';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
@@ -65,13 +66,13 @@ export class TopicContentComponent implements AfterViewInit, OnDestroy {
   toggleReadMore() {
     this.readMore.update(v => !v);
     if (!this.readMore()) {
-      setTimeout(() => {
+      timer(200).pipe(take(1)).subscribe(() => {
         this.topicTextEl?.nativeElement.scrollIntoView({
           behavior: 'smooth',
           block: 'center',
           inline: 'nearest'
         });
-      }, 200);
+      });
     }
   }
 

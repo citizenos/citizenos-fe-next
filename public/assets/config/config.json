@@ -1,6 +1,6 @@
 {
   "api": {
-    "baseUrl": "https://test.api.citizenos.com"
+    "baseUrl": "https://dev.api.citizenos.com:3003"
   },
   "etherpad": {
     "baseUrl": "https://dev.p.citizenos.com:9001"

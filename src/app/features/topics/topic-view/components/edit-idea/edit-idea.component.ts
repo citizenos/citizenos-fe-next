@@ -1,9 +1,9 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, input, output, inject, signal, computed, OnDestroy, OnInit, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Subscription, interval, take, lastValueFrom, takeWhile } from 'rxjs';
-import { CommonModule } from '@angular/common';
+import { Observable, Subscription, take, debounceTime, Subscription as RxSubscription, timer, interval, takeWhile, lastValueFrom } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { IdeaStatus } from '../../../../../core/interfaces/idea';
@@ -60,7 +60,7 @@ const municipalities: { name: string }[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-edit-idea',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, MarkdownDirective, CosDropdownDirective, InputComponent, IconComponent],
+  imports: [FormsModule, TranslateModule, MarkdownDirective, CosDropdownDirective, InputComponent, IconComponent, UpperCasePipe],
   templateUrl: './edit-idea.component.html',
   styleUrls: ['./edit-idea.component.scss'],
 })
@@ -375,7 +375,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
     }).pipe(take(1)).subscribe({
       next: (idea) => {
         if (isAutosave) {
-          setTimeout(() => this.isAutosaving.set(false), AUTOSAVE_HIDE_DELAY);
+          timer(AUTOSAVE_HIDE_DELAY).pipe(take(1)).subscribe(() => this.isAutosaving.set(false));
         } else {
           this.autosaveSubscription?.unsubscribe();
           this.ideaUpdated.emit(idea);
@@ -384,7 +384,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       },
       error: (err: { errors?: Record<string, string> }) => {
         if (isAutosave) {
-          setTimeout(() => this.isAutosaving.set(false), AUTOSAVE_HIDE_DELAY);
+          timer(AUTOSAVE_HIDE_DELAY).pipe(take(1)).subscribe(() => this.isAutosaving.set(false));
         } else {
           this.errors.set(err?.errors ?? {});
         }
