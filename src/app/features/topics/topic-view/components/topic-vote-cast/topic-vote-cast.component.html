@@ -65,6 +65,11 @@
         </div>
       </div>
     </div>
+    <div class="data_cell">
+      <div class="title">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES' | translate }}</div>
+      <div class="data_item">
+      </div>
+    </div>
   </div>
 
   <div class="vote_content">
@@ -154,7 +159,11 @@
           <div class="vote_info_text_wrap">
             @if (normalizedVote().type === 'regular' || (normalizedVote().type === 'multiple' && normalizedVote().maxChoices === 1)) {
               <div>
-                <cos-icon name="topic-vote-cast-icon-7-legacy" size="48"></cos-icon>
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="24" cy="24" r="24" fill="#98DAA2" />
+                  <rect x="12" y="12" width="24" height="24" rx="12" fill="white" />
+                  <rect x="18" y="18" width="12" height="12" rx="6" fill="#5AB467" />
+                </svg>
               </div>
               <div class="text_area">
                 <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.PREVIEW_VOTE_TYPE_REGULAR' | translate }}</span>
@@ -162,7 +171,17 @@
             }
             @if (normalizedVote().type === 'multiple' && (normalizedVote().maxChoices || 0) > 1) {
               <div>
-                <cos-icon name="topic-vote-cast-icon-8-legacy" size="48"></cos-icon>
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="24" cy="24" r="24" fill="#98DAA2" />
+                  <rect x="18" y="26" width="12" height="12" rx="1" fill="#F1FAF3" />
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M19.1992 32.1455L22.6278 35.6004L28.7992 29.3816L27.8324 28.4004L22.6278 33.6449L20.1661 31.1712L19.1992 32.1455Z"
+                    fill="#5AB467" />
+                  <rect x="18" y="10" width="12" height="12" rx="1" fill="#F1FAF3" />
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M20 16.1209L22.8571 19L28 13.8177L27.1943 13L22.8571 17.3704L20.8057 15.309L20 16.1209Z"
+                    fill="#5AB467" />
+                </svg>
               </div>
               <div class="text_area">
                 <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.TXT_YOU_CAN_CHOOSE_OPTIONS' | translate:{range: (normalizedVote().maxChoices !== normalizedVote().minChoices) ? (normalizedVote().minChoices + '-' + normalizedVote().maxChoices) : normalizedVote().maxChoices} }}</span>
@@ -171,7 +190,15 @@
           </div>
           <div class="vote_graph_wrap">
             <div id="vote_graph">
-              <cos-icon name="topic-vote-cast-icon-9-legacy" size="48"></cos-icon>
+              <svg width="48" height="48" viewBox="0 0 48 48" style="transform: rotate(-90deg)">
+                <circle id="graph_background" r="20" cx="24" cy="24" fill="transparent" stroke="#e0e0e0"
+                  stroke-width="5px">
+                </circle>
+                <circle id="graph_bar" r="20" cx="24" cy="24" fill="transparent" stroke="#60e6a8" stroke-width="5px"
+                  [attr.stroke-dasharray]="voteGraphDasharray()"
+                  [attr.stroke-dashoffset]="voteGraphDashOffset(((normalizedVote().votersCount || 0) / (topic().members.users.count || 1)) * 100)">
+                </circle>
+              </svg>
             </div>
             <div class="text_area">
               <div><span translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES"></span> <span class="bold">{{normalizedVote().votersCount || 0}}</span></div>
@@ -309,7 +336,15 @@
         <div class="vote_result_info mobile_show">
           <div class="vote_graph_wrap">
             <div id="vote_graph">
-              <cos-icon name="topic-vote-cast-icon-9-legacy" size="48"></cos-icon>
+              <svg width="48" height="48" viewBox="0 0 48 48" style="transform: rotate(-90deg)">
+                <circle id="graph_background" r="20" cx="24" cy="24" fill="transparent" stroke="#e0e0e0"
+                  stroke-width="5px">
+                </circle>
+                <circle id="graph_bar" r="20" cx="24" cy="24" fill="transparent" stroke="#60e6a8" stroke-width="5px"
+                  [attr.stroke-dasharray]="voteGraphDasharray()"
+                  [attr.stroke-dashoffset]="voteGraphDashOffset(((normalizedVote().votersCount || 0) / (topic().members.users.count || 1)) * 100)">
+                </circle>
+              </svg>
             </div>
             <div class="text_area">
               <div><span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES' | translate }}</span> <span class="bold">{{normalizedVote().votersCount || 0}}</span></div>

@@ -2,12 +2,13 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, computed, PLATFORM_ID } from '@angular/core';
 import { DatePipe, UpperCasePipe, isPlatformBrowser } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { take } from 'rxjs';
+import { take, combineLatest } from 'rxjs';
 import { Topic, TopicVote } from '../../../../../core/interfaces/topic';
 import { VoteWithOptions } from '../../../../../core/interfaces/vote';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { VoteDelegationService } from '../../../../../core/services/vote-delegation.service';
+import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -48,6 +49,7 @@ export class TopicVoteCastComponent implements OnInit {
   private topicVoteService = inject(TopicVoteService);
   private voteDelegationService = inject(VoteDelegationService);
   private notification = inject(NotificationService);
+  private ideationService = inject(TopicIdeationService);
   private dialogService = inject(DialogService);
 
   readonly VOTE_AUTH_TYPES = this.topicVoteService.VOTE_AUTH_TYPES;
@@ -261,13 +263,20 @@ export class TopicVoteCastComponent implements OnInit {
   viewIdea(option: { ideaId?: string }) {
     const t = this.topic();
     if (!t.ideationId || !option.ideaId) return;
-    this.dialogService.open(IdeaDialogComponent, {
-      data: {
-        topicId: t.id,
-        ideationId: t.ideationId,
-        ideaId: option.ideaId,
-        topic: t,
-      },
+
+    combineLatest([
+      this.ideationService.getIdea({ topicId: t.id, ideationId: t.ideationId, ideaId: option.ideaId }),
+      this.ideationService.get({ topicId: t.id, ideationId: t.ideationId })
+    ])
+    .pipe(take(1))
+    .subscribe(([idea, ideation]) => {
+      this.dialogService.open(IdeaDialogComponent, {
+        data: {
+          idea,
+          topic: t,
+          ideation,
+        },
+      });
     });
   }
 
