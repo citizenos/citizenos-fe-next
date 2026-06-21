@@ -1,0 +1,30 @@
+@if (tourService.showTour()) {
+  <div id="tour_container">
+    <div #arrow class="tour_arrow"></div>
+    <div #tourBox class="tour_box">
+      <button class="tour_close" (click)="closeTour($event)">
+         <cos-icon name="close" [size]="16"></cos-icon>
+      </button>
+      
+      <div class="tour_content">
+         <div #tourContent></div>
+      </div>
+
+      <div class="tour_footer">
+        <div class="tour_pagination">
+          @for (idx of itemIndexes(); track idx) {
+            <div class="dot" [class.active]="idx === tourService.activeItem()"></div>
+          }
+        </div>
+        <div class="tour_actions">
+          @if (activeIndex() > 0) {
+            <button class="btn_prev" (click)="prevItem($event)">{{ 'COMPONENTS.TOUR.BTN_PREVIOUS' | translate }}</button>
+          }
+          <button class="btn_next" (click)="nextItem($event)">
+            {{ (activeIndex() === itemIndexes().length - 1 ? 'COMPONENTS.TOUR.BTN_FINISH' : 'COMPONENTS.TOUR.BTN_NEXT') | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
