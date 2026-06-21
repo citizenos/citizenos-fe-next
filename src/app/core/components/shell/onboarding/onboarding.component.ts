@@ -3,13 +3,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UiStateService } from '../../../services/ui-state.service';
 import { TourService } from '../../../services/tour.service';
 import { UserStore } from '../../../state/user.store';
-import { DialogCloseDirective } from '../../../../shared/dialog';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-onboarding',
   standalone: true,
-  imports: [TranslateModule, DialogCloseDirective],
+  imports: [TranslateModule],
   template: `
     @if (uiState.showOnboarding()) {
       <div class="feedback_overlay_root">
@@ -182,7 +181,7 @@ import { DialogCloseDirective } from '../../../../shared/dialog';
             </div>
             <div class="dialog_content no_footer">
               <div class="button_wrap">
-                <button class="btn_big_submit" (click)="takeTour()" dialogClose>{{ 'COMPONENTS.ONBOARDING.BTN_SUBMIT' | translate }}</button>
+                <button class="btn_big_submit" (click)="takeTour()">{{ 'COMPONENTS.ONBOARDING.BTN_SUBMIT' | translate }}</button>
                 <a role="button" tabindex="0" (click)="uiState.showOnboarding.set(false)" (keydown.enter)="uiState.showOnboarding.set(false)">{{ 'COMPONENTS.ONBOARDING.BTN_CANCEL' | translate }}</a>
               </div>
             </div>

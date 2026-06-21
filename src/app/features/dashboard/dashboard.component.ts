@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, PLATFORM_ID } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -38,11 +38,13 @@ export class DashboardComponent implements OnInit {
   private uiState = inject(UiStateService);
   private seoService = inject(SeoService);
 
+  private platformId = inject(PLATFORM_ID);
+
   readonly showCreate = signal(false);
 
   ngOnInit() {
     this.seoService.setPageTitle('DEFAULT.NAV.LNK_DASHBOARD');
-    if (!localStorage.getItem('show-dashboard-tour')) {
+    if (isPlatformBrowser(this.platformId) && !localStorage.getItem('show-dashboard-tour')) {
       this.uiState.showOnboarding.set(true);
       localStorage.setItem('show-dashboard-tour', 'true');
     }

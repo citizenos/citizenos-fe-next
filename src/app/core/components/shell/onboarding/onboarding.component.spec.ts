@@ -7,7 +7,7 @@ import { TourService } from '../../../services/tour.service';
 import { UserStore } from '../../../state/user.store';
 import { OnboardingComponent } from './onboarding.component';
 
-const mockUiState = { showOnboarding: signal(false) };
+const mockUiState = { showOnboarding: signal(false), onboardingContext: signal('dashboard') };
 const mockTourService = { show: vi.fn() };
 const mockUserStore = { user: signal(null) };
 
