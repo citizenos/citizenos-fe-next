@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, computed, ViewChild, Renderer2, HostListener, effect, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ElementRef, inject, computed, ViewChild, viewChild, Renderer2, HostListener, effect, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TourService } from '../../../core/services/tour.service';
@@ -15,9 +15,9 @@ import { TourItemTemplateComponent } from '../../directives/tour-item.directive'
   styleUrl: './tour.component.scss'
 })
 export class TourComponent implements OnDestroy {
-  @ViewChild('arrow') arrow!: ElementRef;
-  @ViewChild('tourBox') tourBox!: ElementRef;
-  @ViewChild('tourContent') contentEl!: ElementRef;
+  arrow = viewChild<ElementRef>('arrow');
+  tourBox = viewChild<ElementRef>('tourBox');
+  contentEl = viewChild<ElementRef>('tourContent');
 
   public tourService = inject(TourService);
   public auth = inject(UserStore);
@@ -34,8 +34,9 @@ export class TourComponent implements OnDestroy {
   constructor() {
     effect(() => {
       const template = this.templateSignal();
-      if (template && template.length > 0) {
-        this.setContent(template);
+      const contentEl = this.contentEl();
+      if (template && template.length > 0 && contentEl) {
+        this.setContent(template, contentEl);
         // Small delay to ensure DOM is updated before positioning
         setTimeout(() => this.setPosition(), 0);
       }
@@ -58,13 +59,10 @@ export class TourComponent implements OnDestroy {
      this.tourService.hide();
   }
 
-  setContent(template: Node[]) {
-    if (this.contentEl) {
-      const el = this.contentEl.nativeElement;
-      while (el.firstChild) el.removeChild(el.firstChild);
-      if (Array.isArray(template)) {
-        template.forEach(node => el.appendChild(node.cloneNode(true)));
-      }
+  setContent(template: Node[], contentEl: ElementRef) {
+    const el = contentEl.nativeElement;
+    if (Array.isArray(template)) {
+      el.replaceChildren(...template);
     }
   }
 
@@ -93,7 +91,10 @@ export class TourComponent implements OnDestroy {
     const items = this.tourService.items()[tourId];
     const item = items?.find(i => i.index === itemId);
 
-    if (!item || !this.tourBox || !this.arrow) return;
+    const tourBoxEl = this.tourBox();
+    const arrowEl = this.arrow();
+
+    if (!item || !tourBoxEl || !arrowEl) return;
 
     // Find visible element
     const itemEl = item.elements.find(e => {
@@ -105,8 +106,8 @@ export class TourComponent implements OnDestroy {
 
     const el = itemEl.el.nativeElement;
     const rect = el.getBoundingClientRect();
-    const tourBox = this.tourBox.nativeElement;
-    const arrow = this.arrow.nativeElement;
+    const tourBox = tourBoxEl.nativeElement;
+    const arrow = arrowEl.nativeElement;
     const tourRect = tourBox.getBoundingClientRect();
 
     let top = 0;
