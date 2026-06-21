@@ -212,12 +212,24 @@
   cos-input {
     flex-grow: 1;
     width: 100%;
-  }
-
-  .actions_wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    
+    .input_inner_wrap {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      
+      input {
+        flex-grow: 1;
+      }
+      
+      .actions_wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-right: 8px;
+      }
+    }
   }
 
   .icon_drag {
@@ -614,4 +626,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.btn_medium_plain {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px 0;
+  color: var(--color-text);
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  
+  cos-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 150ms ease;
+  }
+  
+  &.animate:hover {
+    cos-icon {
+      transform: rotate(-180deg);
+    }
+  }
 }

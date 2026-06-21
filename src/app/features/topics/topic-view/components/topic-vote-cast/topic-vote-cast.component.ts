@@ -23,12 +23,13 @@ import { InitialsComponent } from '../../../../../shared/components/initials/ini
 import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
+import { VoteOptionsComponent } from '../../../../../shared/components/vote-options/vote-options.component';
 
 @Component({
   selector: 'app-topic-vote-cast',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DatePipe, UpperCasePipe, BigGraphComponent, InitialsComponent, CosDropdownDirective, TooltipComponent, IconComponent],
+  imports: [TranslateModule, DatePipe, BigGraphComponent, InitialsComponent, CosDropdownDirective, TooltipComponent, IconComponent, VoteOptionsComponent],
   templateUrl: './topic-vote-cast.component.html',
   styleUrls: ['./topic-vote-cast.component.scss']
 })
@@ -43,6 +44,10 @@ export class TopicVoteCastComponent implements OnInit {
       options: Array.isArray(v.options) ? v.options : (v.options?.rows || [])
     };
   });
+
+  selectedOptions = computed(() => this.normalizedVote().options.filter(o => o.selected));
+  unselectedOptions = computed(() => this.normalizedVote().options.filter(o => !o.selected));
+  selectedOptionValues = computed(() => this.selectedOptions().map(o => o.value));
 
   private platformId = inject(PLATFORM_ID);
   private topicService = inject(TopicService);

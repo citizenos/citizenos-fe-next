@@ -17,6 +17,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { NotificationComponent } from '../../../shared/components/notification/notification.component';
+import { DeadlinePickerComponent } from '../../../shared/components/deadline-picker/deadline-picker.component';
 
 @Component({
   selector: 'cos-vote-create-dialog',
@@ -29,9 +30,9 @@ import { NotificationComponent } from '../../../shared/components/notification/n
     InputComponent,
     ButtonComponent,
     NotificationComponent,
-    DatePipe,
     UpperCasePipe,
-    DragDropModule
+    DragDropModule,
+    DeadlinePickerComponent
   ],
   templateUrl: './vote-create-dialog.component.html',
   styleUrls: ['./vote-create-dialog.component.scss'],
@@ -202,32 +203,8 @@ export class VoteCreateDialogComponent {
     }
   }
 
-  toggleDeadline() {
-    if (this.deadline()) {
-      this.deadline.set(null);
-    } else {
-      const d = new Date();
-      d.setHours(d.getHours() + 24);
-      d.setMinutes(0);
-      d.setSeconds(0);
-      d.setMilliseconds(0);
-      this.deadline.set(d);
-    }
-  }
-
-  deadlineString() {
-    const d = this.deadline();
-    if (!d) return '';
-    const pad = (n: number) => n.toString().padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  }
-
-  updateDeadline(val: string) {
-    if (!val) {
-      this.deadline.set(null);
-    } else {
-      this.deadline.set(new Date(val));
-    }
+  onDeadlineChange(val: Date | null) {
+    this.deadline.set(val);
   }
 
   getInputValue(event: Event): string {

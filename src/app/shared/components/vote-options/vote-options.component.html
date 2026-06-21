@@ -1,0 +1,32 @@
+<div class="vote_options">
+  @for (opt of options(); track opt.value) {
+    <div class="vote_option radio_wrap" 
+         [ngClass]="{'selected': isSelected(opt), 'voting': !disabled() && canVote(), 'disabled': disabled()}"
+         [attr.disabled]="(!canVote() && !disabled()) ? '' : null"
+         (click)="toggleOption(opt)" (keydown.enter)="toggleOption(opt)" tabindex="0" role="button">
+      <div class="radio_text_wrap">
+        <div class="radio_lable_wrap">
+          <label [ngClass]="maxChoices() === 1 ? 'radio_box' : 'checkbox'">
+            <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_OPTION_' + (opt.value | uppercase) | translate: {default: opt.value} }}</span>
+            <input [type]="maxChoices() === 1 ? 'radio' : 'checkbox'" 
+                   [disabled]="disabled() || !canVote()" 
+                   [checked]="isSelected(opt)" 
+                   (change)="toggleOption(opt)" />
+            @if (showLockIcon()) {
+              <cos-icon name="topic-vote-cast-icon-11-legacy" size="24"></cos-icon>
+            } @else {
+              <span [ngClass]="maxChoices() === 1 ? 'radio' : 'checkmark'"></span>
+            }
+          </label>
+        </div>
+      </div>
+      @if (opt.ideaId) {
+        <div class="view_idea_wrap">
+          <button type="button" class="btn_link" (click)="$event.stopPropagation(); viewIdea.emit(opt)" (keydown.enter)="$event.stopPropagation(); viewIdea.emit(opt)">
+            {{ 'COMPONENTS.TOPIC_VOTE_CAST.LNK_VIEW_IDEA' | translate }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

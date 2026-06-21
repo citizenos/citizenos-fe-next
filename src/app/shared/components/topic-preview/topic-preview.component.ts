@@ -1,5 +1,5 @@
-import { Component, input, ChangeDetectionStrategy, model } from '@angular/core';
-import { DatePipe, UpperCasePipe } from '@angular/common';
+import { Component, ChangeDetectionStrategy, input, model, inject, signal, viewChild, ElementRef, afterNextRender } from '@angular/core';
+import { DatePipe, UpperCasePipe, NgClass } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Topic } from '../../../core/interfaces/topic';
 import { TopicMemberGroup } from '../topic-settings-panel/topic-settings-panel.component';
@@ -7,11 +7,14 @@ import { Ideation } from '../../../core/interfaces/ideation';
 import { Vote } from '../../../core/interfaces/vote';
 import { DiscussionData } from '../../../core/interfaces/discussion';
 import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
+import { IconComponent } from '../icon/icon.component';
+import { TopicService } from '../../../core/services/topic.service';
+import { VoteOptionsComponent } from '../vote-options/vote-options.component';
 
 @Component({
   selector: 'cos-topic-preview',
   standalone: true,
-  imports: [TranslateModule, SafeHtmlPipe, DatePipe, UpperCasePipe],
+  imports: [TranslateModule, SafeHtmlPipe, DatePipe, NgClass, IconComponent, VoteOptionsComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="topic_content_wrap">
@@ -37,7 +40,7 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
           </div>
         }
 
-        <div id="topic_text_wrap">
+        <div id="topic_text_wrap" #topicTextWrap [ngClass]="readMore() ? 'open' : 'closed'">
           <div class="topic_title">
             <h1 class="main_heading" [innerHTML]="t.title || ('VIEWS.TOPIC_CREATE.TITLE_HEADING' | translate)"></h1>
           </div>
@@ -48,6 +51,20 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
           
           @if (t.description) {
             <div class="topic_content" [innerHTML]="t.description | safeHtml"></div>
+          }
+
+          @if (readMoreButton()) {
+            <div class="button_wrap" [ngClass]="{open: readMore()}">
+              <button class="btn_medium_secondary" (click)="toggleReadMore()">
+                @if (!readMore()) {
+                  <cos-icon name="chevron-down"></cos-icon>
+                  <span>{{ 'VIEWS.TOPIC_CREATE.BTN_READ_MORE' | translate }}</span>
+                } @else {
+                  <cos-icon name="chevron-up"></cos-icon>
+                  <span>{{ 'VIEWS.TOPIC_CREATE.BTN_READ_LESS' | translate }}</span>
+                }
+              </button>
+            </div>
           }
         </div>
       }
@@ -60,6 +77,15 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
             <div class="header_section">
               <div class="question">
                 {{ d.question }}
+              </div>
+              <div class="setting_button dropdown button_dropdown">
+                <button class="btn_medium_close mobile_hidden">
+                  <cos-icon name="more-vertical-legacy"></cos-icon>
+                  <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.BTN_DISCUSSION_ACTIONS' | translate }}</span>
+                </button>
+                <button id="mobile_actions" class="btn_medium_close icon mobile_show">
+                  <cos-icon name="more-vertical-legacy"></cos-icon>
+                </button>
               </div>
             </div>
             @if (d.deadline) {
@@ -93,13 +119,32 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
                   </clipPath>
                 </defs>
               </svg>
-              <h2 class="description_heading">{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_DISCUSSION_YET' | translate }}</h2>
+              <div class="description_heading">{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_HEADING' | translate }}</div>
+              <div class="button">
+                <button class="btn_medium_submit"
+                  [ngClass]="{disabled: (topic().status === topicService.STATUSES.inProgress && !topicService.canDelete(topic()))}">
+                  <cos-icon name="plus-legacy"></cos-icon>
+                  <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_BTN_ADD' | translate }}</span>
+                </button>
+              </div>
               <div class="no_feature_description">
                 <div class="description_text">
-                  <h3 class="description_heading">{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_HEADING' | translate }}</h3>
+                  <div class="description_heading">{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_HEADING' | translate }}</div>
                   <div>
                     <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_BEFORE' | translate }}</span><br /><br />
                     <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_AFTER' | translate }}</span>
+                    @if (topic().status === topicService.STATUSES.ideation) {
+                      <br /><br />
+                      <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_INFO' | translate }}</span>
+                    }
+                    @if (topic().status === topicService.STATUSES.inProgress && !topicService.canDelete(topic())) {
+                      <br /><br />
+                      <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_PARTICIPANTS' | translate }}</span>
+                    }
+                    @if (topic().status === topicService.STATUSES.inProgress && topicService.canDelete(topic())) {
+                      <br /><br />
+                      <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_DESC_ADMIN' | translate }}</span>
+                    }
                   </div>
                 </div>
               </div>
@@ -129,29 +174,89 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
     }
 
     @if (vote(); as v) {
-      @if (v.question) {
+      @if (v.question || v.description) {
         <div class="vote_wrap">
           <div class="vote_header">
             <div class="header_section">
-              <div class="question">
-                {{ v.question }}
+              <div class="question">{{ v.question || v.description }}</div>
+              <div class="setting_button dropdown button_dropdown">
+                <button class="btn_medium_close mobile_hidden">
+                  <cos-icon name="more-vertical-legacy"></cos-icon>
+                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate }}</span>
+                </button>
+                <button id="mobile_actions" class="btn_medium_close icon mobile_show">
+                  <cos-icon name="more-vertical-legacy"></cos-icon>
+                </button>
+              </div>
+            </div>
+            <div class="data_section">
+              <div class="data_cell">
+                <div class="title">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_DEADLINE' | translate }}</div>
+                <div class="data_item">
+                  @if (v.endsAt) {
+                    <span class="bold">{{ v.endsAt | date:'y-MM-dd HH:mm' }}</span>
+                    <a>{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</a>
+                  } @else {
+                    <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.NO_DEADLINE' | translate }}</span>
+                  }
+                </div>
+              </div>
+              <div class="data_cell">
+                <div class="title">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES' | translate }}</div>
+                <div class="data_item">
+                  <span class="bold">{{ v.votersCount || 0 }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="data_section">
+              <div class="data_cell">
+                <div class="info_text" [innerHTML]="'COMPONENTS.TOPIC_VOTE_CAST.LBL_INFO_RESULTS_ADMIN' | translate">
+                </div>
               </div>
             </div>
           </div>
           <div class="vote_content">
-            <div class="vote_options">
-              @for (opt of v.options; track opt.value) {
-                <div class="vote_option radio_wrap voting">
-                  <div class="radio_text_wrap">
-                    <div class="radio_lable_wrap">
-                      <label [class]="v.maxChoices === 1 ? 'radio_box' : 'checkbox'">
-                        <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_OPTION_' + (opt.value | uppercase) | translate: {default: opt.value} }}</span>
-                        <input [type]="v.maxChoices === 1 ? 'radio' : 'checkbox'" disabled />
-                        <span [class]="v.maxChoices === 1 ? 'radio' : 'checkmark'"></span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
+            @if (v.maxChoices === 1) {
+              <div class="vote_info">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="24" cy="24" r="24" fill="#98DAA2" />
+                  <rect x="12" y="12" width="24" height="24" rx="12" fill="white" />
+                  <rect x="18" y="18" width="12" height="12" rx="6" fill="#5AB467" />
+                </svg>
+                <span>{{ 'VIEWS.VOTE_CREATE.PREVIEW_VOTE_TYPE_REGULAR' | translate }}</span>
+              </div>
+            }
+            @if (v.maxChoices !== undefined && v.maxChoices > 1) {
+              <div class="vote_info">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="24" cy="24" r="24" fill="#98DAA2" />
+                  <rect x="18" y="26" width="12" height="12" rx="1" fill="#F1FAF3" />
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M19.1992 32.1455L22.6278 35.6004L28.7992 29.3816L27.8324 28.4004L22.6278 33.6449L20.1661 31.1712L19.1992 32.1455Z"
+                    fill="#5AB467" />
+                  <rect x="18" y="10" width="12" height="12" rx="1" fill="#F1FAF3" />
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M20 16.1209L22.8571 19L28 13.8177L27.1943 13L22.8571 17.3704L20.8057 15.309L20 16.1209Z"
+                    fill="#5AB467" />
+                </svg>
+                <span>{{ 'VIEWS.VOTE_CREATE.TXT_YOU_CAN_CHOOSE_OPTIONS' | translate: {range: (v.maxChoices !== v.minChoices) ? (v.minChoices + '-' + v.maxChoices) : v.maxChoices} }}</span>
+              </div>
+            }
+            <cos-vote-options [options]="v.options || []" [maxChoices]="v.maxChoices || 1" [disabled]="true"></cos-vote-options>
+            <div class="line_separator vote"></div>
+            <div class="vote_buttons_wrap">
+              @if (v.delegationIsAllowed) {
+                <button class="btn_medium_close">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M18.3432 7.92286L19.0634 2L13.1505 2.72143L15.1001 4.67429L7.72208 12.0647L9.12918 13.4742L16.5072 6.08375L18.3432 7.92286Z"
+                      fill="#2C3B47" />
+                    <path
+                      d="M9.92821 21L20 10.9113L18.5929 9.50181L9.93524 18.174L5.4071 13.6524L4 15.0618L9.92821 21Z"
+                      fill="#2C3B47" />
+                  </svg>
+                  <span class="bold">{{ 'VIEWS.VOTE_CREATE.VOTE_HEADING_DELEGATE' | translate }}</span>
+                </button>
               }
             </div>
           </div>
@@ -205,6 +310,34 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
         padding: 32px;
         overflow: hidden;
         position: relative;
+        transition: max-height 0.1s;
+
+        &.open {
+          max-height: none;
+        }
+
+        &.closed {
+          max-height: 320px;
+        }
+
+        .button_wrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 96px;
+          background: linear-gradient(0deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+          
+          &.open {
+            background: none;
+            position: relative;
+            height: 48px;
+            margin-top: 24px;
+          }
+        }
 
         .topic_title {
           margin-bottom: 12px;
@@ -330,64 +463,151 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
     }
 
     .vote_wrap {
-      background-color: var(--color-argument-pro-light);
-      border-radius: 16px;
-      display: flex;
-      flex-direction: column;
       margin-top: 24px;
-      margin-bottom: 20px;
       width: 100%;
 
       .vote_header {
         display: flex;
-        width: 100%;
-        padding: 12px 16px;
-        justify-content: space-between;
-        align-items: center;
-        background-color: var(--color-argument-pro-medium);
-        border-radius: 16px 16px 0px 0px;
+        flex-direction: column;
+        padding: 24px;
+        gap: 16px;
+        border-radius: 16px 16px 0 0;
+        background-color: var(--color-dialog-voting-contrast);
+        align-items: initial;
 
         .header_section {
           display: flex;
-          gap: 16px;
-          align-items: center;
+          justify-content: space-between;
 
           .question {
-            font-size: 18px;
+            font-size: 24px;
+            font-style: normal;
             font-weight: 600;
-            line-height: 24px;
+            line-height: 32px;
             color: var(--color-text-main);
+          }
+        }
+
+        .data_section {
+          display: flex;
+          gap: 56px;
+
+          .data_cell {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            .title {
+              font-size: 12px;
+              font-weight: 400;
+              line-height: 16px;
+            }
+            .data_item {
+              display: flex;
+              gap: 8px;
+            }
+            .info_text {
+              font-size: 14px;
+              font-style: normal;
+              font-weight: 600;
+              line-height: 16px;
+            }
           }
         }
       }
 
       .vote_content {
         display: flex;
-        width: 100%;
         flex-direction: column;
-        padding: 16px;
-        gap: 16px;
+        background-color: var(--color-surfaces);
+        border-radius: 0 0 16px 16px;
+        padding: 24px;
+        gap: 24px;
 
-        .vote_options {
+        @media (max-width: 600px) {
+          padding: 16px;
+          gap: 16px;
+        }
+
+        .vote_info {
+          width: 100%;
           display: flex;
-          flex-direction: column;
-          gap: 8px;
+          padding: 8px;
+          background-color: var(--color-argument-pro-light);
+          border-radius: 8px;
+          align-items: center;
+          gap: 16px;
+        }
 
-          .vote_option {
-            background-color: var(--color-surfaces);
-            &.voting {
-              border-color: var(--color-argument-pro);
+        .vote_buttons_wrap {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+          min-height: 40px;
+
+          @media (max-width: 600px) {
+            flex-direction: column;
+            gap: 8px;
+            button {
+              width: 100%;
             }
           }
+
+          .btn_medium_close {
+            justify-self: flex-start;
+          }
+
+          .btn_medium_submit {
+            justify-self: flex-end;
+          }
         }
+      }
+
+      .radio_wrap {
+        padding: 16px;
+        border-radius: 8px;
       }
     }
   `]
 })
 export class TopicPreviewComponent {
+  topicService = inject(TopicService);
+
   topic = model.required<Partial<Topic>>();
   topicGroups = model<TopicMemberGroup[]>([]);
   ideation = input<Partial<Ideation> | null>(null);
   vote = input<Partial<Vote> | null>(null);
   discussion = input<DiscussionData | null>(null);
+
+  topicTextWrap = viewChild<ElementRef>('topicTextWrap');
+  readMore = signal(false);
+  readMoreButton = signal(false);
+
+  constructor() {
+    afterNextRender(() => {
+      const content = this.topicTextWrap()?.nativeElement;
+      if (content) {
+        if (content.offsetHeight >= 320) {
+          this.readMoreButton.set(true);
+        } else {
+          // The structure is roughly .topic_title, .topic_intro, .topic_content inside this wrapper
+          const children = content.children;
+          let h = 0;
+          for (const child of children) {
+            h += child.offsetHeight;
+            if (h >= 320) {
+              this.readMoreButton.set(true);
+              break;
+            }
+          }
+        }
+      }
+    });
+  }
+
+  toggleReadMore() {
+    this.readMore.update(val => !val);
+  }
 }

@@ -4,6 +4,8 @@ export interface VoteOption {
   value: string;
   voteCount?: number;
   ideaId?: string;
+  selected?: boolean;
+  optionId?: string;
 }
 
 export interface Vote {

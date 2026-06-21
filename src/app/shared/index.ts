@@ -20,3 +20,4 @@ export { InvitationDialogComponent, type InviteDialogData } from './components/i
 export { DialogService, type DialogConfig } from './dialog';
 export { DialogRef, DialogCloseDirective } from './dialog';
 export { DIALOG_DATA } from './dialog';
+export * from './components/vote-options/vote-options.component';

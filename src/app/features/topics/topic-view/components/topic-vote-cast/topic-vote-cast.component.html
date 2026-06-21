@@ -209,28 +209,14 @@
           </div>
         </div>
 
-        <div class="vote_options">
-          @for (option of normalizedVote().options; track option.id) {
-            <div class="vote_option radio_wrap voting" [class.selected]="option.selected"
-              [attr.disabled]="!canVote() || null" (click)="selectOption(option)" (keydown.enter)="selectOption(option)" tabindex="0" role="button">
-              <div class="radio_text_wrap">
-                <div class="radio_lable_wrap">
-                  <label [class]="normalizedVote().maxChoices === 1 ? 'radio_box' : 'checkbox'">
-                    <span [translate]="'COMPONENTS.TOPIC_VOTE_CAST.LBL_OPTION_' + option.value | uppercase"
-                      [translateParams]="{default: option.value}"></span>
-                    <input type="checkbox" [checked]="option.selected" (click)="selectOption(option)" />
-                    <span [class]="normalizedVote().maxChoices === 1 ? 'radio' : 'checkmark'"></span>
-                  </label>
-                </div>
-              </div>
-              @if (option.ideaId) {
-                <div class="view_idea_wrap">
-                  <button type="button" class="btn_link" (click)="$event.stopPropagation(); viewIdea(option)" (keydown.enter)="$event.stopPropagation(); viewIdea(option)">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LNK_VIEW_IDEA' | translate }}</button>
-                </div>
-              }
-            </div>
-          }
-        </div>
+        <cos-vote-options 
+          [options]="normalizedVote().options"
+          [maxChoices]="normalizedVote().maxChoices || 1"
+          [disabled]="!canVote()"
+          [canVote]="canVote()"
+          (selectionChange)="selectOption($event)"
+          (viewIdea)="viewIdea($event)">
+        </cos-vote-options>
 
         <div class="vote_buttons_wrap">
           @if (canDelegate() && normalizedVote().authType !== VOTE_AUTH_TYPES.hard) {
@@ -290,44 +276,26 @@
                 {{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_REVOKE_DELEGATION' | translate }}</button>
             </div>
           }
-          @for (option of normalizedVote().options; track option.id) {
-            @if (option.selected) {
-              <div class="vote_option radio_wrap selected">
-                <div class="radio_text_wrap">
-                  <div class="radio_lable_wrap">
-                    <label class="checkbox">
-                      <span [translate]="'COMPONENTS.TOPIC_VOTE_CAST.LBL_OPTION_' + option.value | uppercase"
-                        [translateParams]="{default: option.value}"></span>
-                      <input type="checkbox" [checked]="option.selected" disabled />
-                      <span class="checkmark"></span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            }
-          }
+          
+          <cos-vote-options 
+            [options]="selectedOptions()"
+            [maxChoices]="normalizedVote().maxChoices || 1"
+            [disabled]="true"
+            [canVote]="false">
+          </cos-vote-options>
         </div>
 
         <div class="line_separator vote mobile_show"></div>
 
         <div class="vote_options">
           <div class="vote_section_heading">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_OPTIONS_YOU_DIDNT_CHOOSE' | translate }}</div>
-          @for (option of normalizedVote().options; track option.id) {
-            @if (!option.selected) {
-              <div class="vote_option radio_wrap disabled">
-                <div class="radio_text_wrap">
-                  <div class="radio_lable_wrap">
-                    <label class="checkbox">
-                      <span [translate]="'COMPONENTS.TOPIC_VOTE_CAST.LBL_OPTION_' + option.value | uppercase"
-                        [translateParams]="{default: option.value}"></span>
-                      <input type="checkbox" [checked]="false" disabled />
-                      <cos-icon name="topic-vote-cast-icon-11-legacy" size="24"></cos-icon>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            }
-          }
+          <cos-vote-options 
+            [options]="unselectedOptions()"
+            [maxChoices]="normalizedVote().maxChoices || 1"
+            [disabled]="true"
+            [canVote]="false"
+            [showLockIcon]="true">
+          </cos-vote-options>
         </div>
       }
 

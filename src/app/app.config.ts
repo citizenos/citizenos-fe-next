@@ -2,11 +2,12 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessC
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
-import { provideTranslateService, provideTranslateCompiler } from '@ngx-translate/core';
+import { provideTranslateService, provideTranslateCompiler, MissingTranslationHandler } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { routes } from './app.routes';
 import { JSONPointerCompiler } from './core/translate/json-pointer.compiler';
+import { CosMissingTranslationHandler } from './core/translate/missing-translation.handler';
 import { UserStore } from './core/state/user.store';
 import { ConfigStore } from './core/state/config.store';
 import { lastValueFrom } from 'rxjs';
@@ -19,7 +20,13 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(),
-    provideTranslateService({ fallbackLang: 'en' }),
+    provideTranslateService({
+      fallbackLang: 'en',
+      missingTranslationHandler: {
+        provide: MissingTranslationHandler,
+        useClass: CosMissingTranslationHandler
+      }
+    }),
     provideTranslateHttpLoader(),
     provideTranslateCompiler(JSONPointerCompiler),
     provideAppInitializer(async () => {
