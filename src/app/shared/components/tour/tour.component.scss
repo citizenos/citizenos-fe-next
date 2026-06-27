@@ -1,3 +1,5 @@
+@use '../../../../styles/mixins';
+
 #tour_container {
   position: absolute;
   top: 0;
@@ -5,92 +7,169 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 10001;
+  z-index: 999999999999;
 }
 
 .tour_box {
-  position: absolute;
-  width: 320px;
-  background: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  z-index: 999999999999;
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  padding: 24px;
-  pointer-events: auto;
-  z-index: 10002;
-}
-
-.tour_close {
+  background: var(--color-text);
+  padding: 16px;
+  transition: all 0.5s ease-in-out;
+  gap: 16px;
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--color-text-muted);
-}
+  width: 560px;
+  /* Shadow/Heavy */
+  box-shadow: 0px 8px 20px 0px rgba(220, 231, 240, 0.3),
+    0px 12px 16px 0px rgba(50, 85, 112, 0.1);
+  pointer-events: auto;
 
-.tour_content {
-  margin-bottom: 24px;
-  font-size: 14px;
-  line-height: 1.6;
-}
+  @include mixins.mobile {
+    width: calc(100% - 16px);
+  }
 
-.tour_footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  &.hidden {
+    display: none;
+  }
 
-.tour_pagination {
-  display: flex;
-  gap: 6px;
-}
+  .tour_header,
+  .tour_footer {
+    display: flex;
+    justify-content: space-between;
+    color: var(--color-blue-200);
+    
+    a {
+      color: var(--color-blue-200);
+      cursor: pointer;
 
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-border);
-}
+      &.skip {
+        color: var(--color-error-background);
+      }
+    }
 
-.dot.active {
-  background: var(--color-primary);
-}
+    .nav_items_wrap {
+      display: flex;
+      gap: 8px;
 
-.tour_actions {
-  display: flex;
-  gap: 12px;
-}
+      .nav_item {
+        width: 8px;
+        height: 8px;
+        border-radius: 8px;
+        background-color: var(--color-argument-info);
 
-.btn_prev, .btn_next {
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  border: none;
-}
+        &.active {
+          background-color: var(--color-blue-200);
+        }
+      }
+    }
 
-.btn_prev {
-  background: transparent;
-  color: var(--color-primary);
-}
+    .nav_links_wrap {
+      display: flex;
+      gap: 16px;
+    }
+  }
 
-.btn_next {
-  background: var(--color-primary);
-  color: white;
+  .tour_content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    text-align: left;
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+
+    ::ng-deep .title {
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 24px; /* 133.333% */
+      color: var(--color-surfaces);
+    }
+
+    ::ng-deep .description {
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 142.857% */
+      color: var(--color-surfaces);
+      align-items: center;
+      vertical-align: middle;
+
+      span {
+        padding-right: 4px;
+        font-family: Noto Sans;
+        font-size: 14px;
+        font-style: normal;
+        line-height: 16px;
+      }
+      .icon {
+        vertical-align: middle;
+      }
+      .ideation_text {
+        font-weight: 600;
+        color: var(--color-ideation-disabled);
+      }
+      .discussion_text {
+        font-weight: 600;
+        color: var(--color-blue-200);
+      }
+      .vote_text {
+        font-weight: 600;
+        color: var(--color-voting-disabled);
+      }
+      .follow_up_text {
+        font-weight: 600;
+        color: var(--color-follow-up-disabled);
+      }
+    }
+  }
 }
 
 .tour_arrow {
+  border-bottom: 6px solid transparent;
+  border-top: 6px solid transparent;
+  content: "";
+  height: 0;
   position: absolute;
   width: 0;
-  height: 0;
-  border: 8px solid transparent;
-  z-index: 10003;
-  pointer-events: none;
-}
+  z-index: 999999999999;
+  transition: all .5s ease-in-out;
+  visibility: visible;
+  /* Shadow/Heavy */
+  box-shadow: 0px 8px 20px 0px rgba(220, 231, 240, 0.3),
+    0px 12px 16px 0px rgba(50, 85, 112, 0.1);
 
-.tour_arrow.top_arrow { border-bottom-color: var(--color-background); }
-.tour_arrow.bottom_arrow { border-top-color: var(--color-background); }
-.tour_arrow.left_arrow { border-right-color: var(--color-background); }
-.tour_arrow.right_arrow { border-left-color: var(--color-background); }
+  &.hidden {
+    visibility: hidden;
+  }
+  &.bottom_arrow {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid var(--color-text);
+    bottom: 100%;
+    left: 50%;
+  }
+  &.left_arrow {
+      border-right: 6px solid var(--color-text);
+      right: 100%;
+      top: 16px;
+      margin-top: -6px;
+  }
+
+  &.right_arrow {
+      border-left: 6px solid var(--color-text);
+      left: 100%;
+      top: 16px;
+      margin-top: -6px;
+  }
+  &.top_arrow {
+      border-top: 6px solid var(--color-text);
+      border-right: 6px solid transparent;
+      border-left: 6px solid transparent;
+      top: 100%;
+      left: 50%;
+  }
+}

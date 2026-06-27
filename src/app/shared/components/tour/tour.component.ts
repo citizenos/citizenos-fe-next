@@ -1,16 +1,16 @@
 import { Component, ElementRef, inject, computed, ViewChild, viewChild, Renderer2, HostListener, effect, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { UpperCasePipe } from '@angular/common';
 import { TourService } from '../../../core/services/tour.service';
 import { UserStore } from '../../../core/state/user.store';
-import { IconComponent } from '../icon/icon.component';
 import { TourItemTemplateComponent } from '../../directives/tour-item.directive';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-tour',
   standalone: true,
-  imports: [TranslateModule, IconComponent, TourItemTemplateComponent],
+  imports: [TranslateModule, TourItemTemplateComponent, UpperCasePipe],
   templateUrl: './tour.component.html',
   styleUrl: './tour.component.scss'
 })
@@ -29,7 +29,12 @@ export class TourComponent implements OnDestroy {
     return items ? items.map(item => item.index).sort((a, b) => a - b) : [];
   });
 
-  private templateSignal = toSignal(this.tourService.activeTemplate$);
+  public templateSignal = toSignal(this.tourService.activeTemplate$);
+
+  public showItem = computed(() => {
+    const template = this.templateSignal();
+    return !!(template && template.length > 0);
+  });
 
   constructor() {
     effect(() => {
