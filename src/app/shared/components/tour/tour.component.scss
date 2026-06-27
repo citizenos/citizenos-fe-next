@@ -38,6 +38,7 @@
   .tour_footer {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     color: var(--color-blue-200);
     
     a {
@@ -51,6 +52,7 @@
 
     .nav_items_wrap {
       display: flex;
+      align-items: center;
       gap: 8px;
 
       .nav_item {
