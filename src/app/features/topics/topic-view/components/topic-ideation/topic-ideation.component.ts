@@ -96,7 +96,7 @@ export class TopicIdeationComponent {
   mobileIdeaFilters = signal({
     type: false as boolean | string,
     orderBy: false as boolean | string,
-    participants: false as boolean | any,
+    participants: false as boolean | Record<string, unknown>,
     age: false as boolean | string,
     gender: false as boolean | string,
     residence: false as boolean | string
@@ -129,7 +129,7 @@ export class TopicIdeationComponent {
       switchMap(({ search, type, order, page, participant, age, gender, residence, folderId, topic, ideation, tab }) => {
         if (!topic?.id || !ideation?.id || tab === 'folders') return of({ rows: [] as Idea[], count: 0 });
         this.loading.set(true);
-        const params: Record<string, any> = {
+        const params: Record<string, unknown> = {
           limit: this.PAGE_SIZE,
           offset: (page - 1) * this.PAGE_SIZE,
         };

@@ -55,7 +55,7 @@ export class AddIdeaComponent implements OnInit {
   IDEA_STATEMENT_MAXLENGTH = 1024;
   toggleExpand = signal(false);
   isAutosaving = signal(false);
-  newImages = signal<any[]>([]);
+  newImages = signal<File[]>([]);
   autosavedIdea = signal<Idea | null>(null);
 
   municipalities = municipalities;
@@ -70,7 +70,7 @@ export class AddIdeaComponent implements OnInit {
     const config = this.ideation().demographicsConfig;
     if (config) {
         Object.keys(config).forEach(key => {
-            this.ideaForm.addControl(('demographics_' + key) as any, new FormControl(config[key].value || '', config[key].required ? [Validators.required] : []));
+            this.ideaForm.addControl(('demographics_' + key), new FormControl(config[key].value || '', config[key].required ? [Validators.required] : []));
         });
     }
   }
@@ -121,7 +121,7 @@ export class AddIdeaComponent implements OnInit {
         return;
     }
 
-    const ideaData: { [key: string]: any; topicId: string; ideationId: string; } = {
+    const ideaData: Record<string, unknown> & { topicId: string; ideationId: string; } = {
       topicId: this.topic().id,
       ideationId: this.ideation().id,
       statement: this.ideaForm.value.statement,

@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, signal, HostListener, ChangeDetectionStrategy, PLATFORM_ID, DestroyRef, computed } from '@angular/core';
 import { rxResource, toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { NgClass, isPlatformBrowser } from '@angular/common';
-import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { RouterModule, ActivatedRoute, Router, Params } from '@angular/router';
+import { TranslateModule, TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { take, map, of, tap, catchError, switchMap, combineLatest, startWith } from 'rxjs';
 
 import { TopicService } from '../../../core/services/topic.service';
@@ -99,7 +99,7 @@ export class TopicViewComponent implements OnInit {
     stream: ({ params: topic }) => {
       if (topic?.voteId) {
         return this.topicVoteService.get({ topicId: topic.id, voteId: topic.voteId }).pipe(
-          map((v: any) => {
+          map((v: VoteWithOptions) => {
             if (!v) return null;
             return {
               ...v,
@@ -192,7 +192,7 @@ export class TopicViewComponent implements OnInit {
       this.translate.onLangChange.pipe(startWith(null)),
       toObservable(this.userStore.isAuthenticated)
     ]).pipe(
-      switchMap(([params, _queryParams, _langChange, _isAuthenticated]: [any, any, any, any]) => {
+      switchMap(([params, _queryParams, _langChange, _isAuthenticated]: [Params, Params, LangChangeEvent | null, boolean]) => {
         const topicId = params['topicId'];
         if (topicId) {
           this.topicId = topicId;

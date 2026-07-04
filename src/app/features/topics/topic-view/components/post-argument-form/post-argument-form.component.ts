@@ -72,13 +72,13 @@ export class PostArgumentFormComponent implements OnInit {
       parentVersion: 0,
     };
 
-    this.argumentService.save(argument).pipe(take(1)).subscribe({
-      next: (res: any) => {
+    this.argumentService.save(argument as any).pipe(take(1)).subscribe({
+      next: (res: Argument) => {
         this.clear();
         this.isOpen.set(false);
         this.posted.emit();
         
-        const argId = res?.id || res?.data?.id || res;
+        const argId = res.id;
         if (argId && typeof argId === 'string' && typeof window !== 'undefined') {
           this.router.navigate(['/', this.translate.currentLang, 'topics', this.topicId()], {
             queryParams: { argumentId: argId },
