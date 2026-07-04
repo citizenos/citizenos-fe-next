@@ -33,12 +33,6 @@ export class PaginationComponent {
   selectPage = output<number>();
 
   /**
-   * Emits the selected page number. Aliased for legacy compatibility.
-   */
-  // eslint-disable-next-line @angular-eslint/no-output-native
-  select = output<number>();
-
-  /**
    * Computes the range of page numbers to display (max 5 pages).
    */
   pages = computed(() => {
@@ -82,7 +76,6 @@ export class PaginationComponent {
    */
   doSelect(p: number) {
     this.page.set(p);
-    this.select.emit(p);
     this.selectPage.emit(p);
   }
 }

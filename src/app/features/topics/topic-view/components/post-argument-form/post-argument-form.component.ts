@@ -4,6 +4,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
+import { Argument } from '../../../../../core/interfaces/discussion';
 import { Router } from '@angular/router';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { NotificationService } from '../../../../../core/services/notification.service';

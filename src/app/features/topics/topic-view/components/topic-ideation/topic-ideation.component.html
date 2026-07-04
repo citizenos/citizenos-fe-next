@@ -265,7 +265,7 @@
                         class="ideation"
                         [page]="currentPage()"
                         [totalPages]="Math.ceil(ideasCount() / PAGE_SIZE)"
-                        (select)="onPageChange($event)" />
+                        (selectPage)="onPageChange($event)" />
                 }
             </div>
 

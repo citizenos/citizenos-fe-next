@@ -57,7 +57,7 @@
     @if (totalPages() > 1) {
       <div class="dialog_content no_footer">
         <div class="info_row">
-          <cos-pagination class="pagination" [totalPages]="totalPages()" [page]="page()" (select)="loadPage($event)"></cos-pagination>
+          <cos-pagination class="pagination" [totalPages]="totalPages()" [page]="page()" (selectPage)="loadPage($event)"></cos-pagination>
         </div>
       </div>
     }

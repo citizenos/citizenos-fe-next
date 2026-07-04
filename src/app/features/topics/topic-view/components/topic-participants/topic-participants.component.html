@@ -104,7 +104,7 @@
               <cos-pagination class="pagination"
                 [totalPages]="userTotalPages()"
                 [page]="userPage()"
-                (select)="userPage.set($event)"></cos-pagination>
+                (selectPage)="userPage.set($event)"></cos-pagination>
             </div>
           </div>
         </div>
@@ -175,7 +175,7 @@
               <cos-pagination class="pagination"
                 [totalPages]="groupTotalPages()"
                 [page]="groupPage()"
-                (select)="groupPage.set($event)"></cos-pagination>
+                (selectPage)="groupPage.set($event)"></cos-pagination>
             </div>
           </div>
         </div>
@@ -228,7 +228,7 @@
               <cos-pagination class="pagination"
                 [totalPages]="inviteTotalPages()"
                 [page]="invitePage()"
-                (select)="invitePage.set($event)"></cos-pagination>
+                (selectPage)="invitePage.set($event)"></cos-pagination>
             </div>
           </div>
         </div>

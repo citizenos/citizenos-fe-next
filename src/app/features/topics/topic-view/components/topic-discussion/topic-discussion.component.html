@@ -295,7 +295,7 @@
 
       @if (totalPages() > 1) {
       <div class="pagination_wrap">
-        <cos-pagination class="discussion" (select)="loadPage($event)" [totalPages]="totalPages()" [page]="page()"></cos-pagination>
+        <cos-pagination class="discussion" (selectPage)="loadPage($event)" [totalPages]="totalPages()" [page]="page()"></cos-pagination>
       </div>
       }
     </div>
