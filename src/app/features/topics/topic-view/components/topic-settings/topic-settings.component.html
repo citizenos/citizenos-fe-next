@@ -147,7 +147,7 @@
                     [textOn]="('TOGGLE_ON' | translate)"
                     [textOff]="('TOGGLE_OFF' | translate)"
                     [model]="reminder()"
-                    (toggleClick)="reminder.set($event)"
+                    (toggleClick)="onReminderToggle($event)"
                   ></cos-toggle>
                 </div>
               </div>
