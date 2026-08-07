@@ -4,6 +4,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService, provideTranslateCompiler, MissingTranslationHandler } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { provideSignalFormsConfig } from '@angular/forms/signals';
+import { NG_STATUS_CLASSES } from '@angular/forms/signals/compat';
 
 import { routes } from './app.routes';
 import { JSONPointerCompiler } from './core/translate/json-pointer.compiler';
@@ -20,6 +22,12 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(),
+    provideSignalFormsConfig({
+      classes: {
+        ...NG_STATUS_CLASSES,
+        'is-invalid': field => field.state().invalid() && field.state().touched()
+      }
+    }),
     provideTranslateService({
       fallbackLang: 'en',
       missingTranslationHandler: {

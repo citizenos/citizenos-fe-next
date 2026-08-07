@@ -6,7 +6,7 @@ import { DatePipe, UpperCasePipe, TitleCasePipe, DOCUMENT } from '@angular/commo
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { switchMap, of, take, tap, timer } from 'rxjs';
 import { RouterLink, ActivatedRoute } from '@angular/router';
-import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { toSignal, rxResource } from '@angular/core/rxjs-interop';
 import { isPlatformBrowser } from '@angular/common';
 
 import { Topic } from '../../../../../core/interfaces/topic';
@@ -74,29 +74,30 @@ export class TopicDiscussionComponent {
   mobileFiltersOpen = signal(false);
   activeMobileFilter = signal<string | null>(null);
 
-  discussion = toSignal(
-    toObservable(this.topic).pipe(
-      switchMap(topic => {
-        if (topic.discussionId) {
-          return this.discussionService.get(topic.id, topic.discussionId).pipe(
-            tap(disc => {
-              this.argumentService.setParam('topicId', topic.id);
-              this.argumentService.setParam('discussionId', disc.id);
-              this.argumentService.setParam('limit', 5);
-              this.argumentService.loadPage(1);
+  private discussionResource = rxResource({
+    params: () => this.topic(),
+    stream: ({ params: topic }) => {
+      if (topic.discussionId) {
+        return this.discussionService.get(topic.id, topic.discussionId).pipe(
+          tap(disc => {
+            this.argumentService.setParam('topicId', topic.id);
+            this.argumentService.setParam('discussionId', disc.id);
+            this.argumentService.setParam('limit', 5);
+            this.argumentService.loadPage(1);
 
-              if (!disc.question && disc.createdAt === disc.updatedAt && this.canUpdate()) {
-                this.dialog.open(MissingDiscussionComponent, {
-                  data: { topic: topic }
-                });
-              }
-            })
-          );
-        }
-        return of(null);
-      })
-    )
-  );
+            if (!disc.question && disc.createdAt === disc.updatedAt && this.canUpdate()) {
+              this.dialog.open(MissingDiscussionComponent, {
+                data: { topic: topic }
+              });
+            }
+          })
+        );
+      }
+      return of(null);
+    }
+  });
+
+  discussion = computed(() => this.discussionResource.value());
 
   arguments = this.argumentService.items;
   loading = this.argumentService.isLoading;

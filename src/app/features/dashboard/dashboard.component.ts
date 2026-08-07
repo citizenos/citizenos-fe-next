@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, P
 import { RouterLink } from '@angular/router';
 import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { UserTopicService } from '../../core/services/user-topic.service';
 import { PublicTopicService } from '../../core/services/public-topic.service';
@@ -55,17 +55,19 @@ export class DashboardComponent implements OnInit {
   readonly myGroups = this.userGroupService.items;
   readonly publicGroups = this.publicGroupService.items;
 
-  private readonly allNews = toSignal(
-    this.newsService.get().pipe(
+  private readonly newsResource = rxResource({
+    params: () => null,
+    stream: () => this.newsService.get().pipe(
       map((items: News[]) => items.map(item => {
         const el = document.createElement('div');
         el.innerHTML = item.content;
         const img = el.querySelector('img');
         return img ? { ...item, imageUrl: img.src } : item;
       }))
-    ),
-    { initialValue: [] as News[] }
-  );
+    )
+  });
+
+  private readonly allNews = computed(() => this.newsResource.value() || [] as News[]);
 
   readonly hasNoEngagements = computed(() => this.myTopics().length === 0);
   readonly newsItems = computed(() => this.allNews().slice(0, 4));

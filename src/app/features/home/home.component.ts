@@ -1,9 +1,9 @@
 import { IconComponent } from '../../shared/components/icon/icon.component';
-import { Component, OnInit, inject, ChangeDetectionStrategy, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, PLATFORM_ID, computed } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 import { UserStore } from '../../core/state/user.store';
 import { PublicTopicService } from '../../core/services/public-topic.service';
@@ -48,9 +48,23 @@ export class HomeComponent implements OnInit {
     return 8;
   }
 
-  stats = toSignal(this.homeService.getStats());
-  topics = toSignal(this.topicService.getPreview(this.getLimit()));
-  groups = toSignal(this.groupService.getPreview(this.getLimit()));
+  private statsResource = rxResource({
+    params: () => null,
+    stream: () => this.homeService.getStats()
+  });
+  stats = computed(() => this.statsResource.value());
+
+  private topicsResource = rxResource({
+    params: () => this.getLimit(),
+    stream: ({ params }) => this.topicService.getPreview(params)
+  });
+  topics = computed(() => this.topicsResource.value());
+
+  private groupsResource = rxResource({
+    params: () => this.getLimit(),
+    stream: ({ params }) => this.groupService.getPreview(params)
+  });
+  groups = computed(() => this.groupsResource.value());
 
   ngOnInit() {
     this.seoService.setPageTitle();

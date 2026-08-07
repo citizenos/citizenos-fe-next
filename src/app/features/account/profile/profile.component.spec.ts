@@ -110,7 +110,7 @@ describe('ProfileComponent', () => {
           MockInputComponent,
           MockIconComponent,
           TranslateModule,
-          CommonModule,
+          
           FormsModule,
           ReactiveFormsModule
         ]

@@ -1,5 +1,5 @@
-import { Component, signal, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, signal, computed, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { switchMap, of, catchError, BehaviorSubject, forkJoin, take } from 'rxjs';
@@ -90,29 +90,30 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
   addedGroups = signal<TopicMemberGroup[]>([]);
   groupsToRemove = signal<TopicMemberGroup[]>([]);
 
-  private reloadMembers$ = new BehaviorSubject<void>(void 0);
+  private membersResource = rxResource({
+    params: () => this.topic().id,
+    stream: ({ params: id }) => {
+      if (id) return this.memberUserService.loadItems(id);
+      return of([]);
+    }
+  });
 
-  members = toSignal(
-    this.reloadMembers$.pipe(
-      switchMap(() => {
-        const id = this.topic().id;
-        if (id) return this.memberUserService.loadItems(id);
-        return of([]);
-      })
-    ),
-    { initialValue: [] }
-  );
+  members = computed(() => this.membersResource.value() || []);
 
-  invites = toSignal(
-    this.reloadMembers$.pipe(
-      switchMap(() => {
-        const id = this.topic().id;
-        if (id) return this.inviteUserService.loadItems(id);
-        return of([]);
-      })
-    ),
-    { initialValue: [] }
-  );
+  private invitesResource = rxResource({
+    params: () => this.topic().id,
+    stream: ({ params: id }) => {
+      if (id) return this.inviteUserService.loadItems(id);
+      return of([]);
+    }
+  });
+
+  invites = computed(() => this.invitesResource.value() || []);
+
+  private reloadMembers() {
+    this.membersResource.reload();
+    this.invitesResource.reload();
+  }
 
   steps = signal<StepConfig[]>([
     { key: 'info', label: 'VIEWS.TOPIC_CREATE.CREATE_TAB_1', icon: 'edit' as IconName },
@@ -139,7 +140,6 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
           return;
         }
         this.topic.set(topic);
-        this.reloadMembers$.next();
         this.updateSteps(topic.status);
 
         if (topic.discussionId) {
@@ -292,7 +292,7 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
   onTopicUpdate(updates: Partial<Topic>) {
     this.topic.update(t => ({ ...t, ...updates }));
     if (updates.id) {
-      this.reloadMembers$.next();
+      this.reloadMembers();
     }
   }
 
@@ -447,7 +447,7 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
       this.dialog.open(TopicInviteDialogComponent, {
         data: { topic: topic as Topic, allowedLevels: ['edit', 'admin'] }
       }).afterClosed().subscribe(() => {
-        this.reloadMembers$.next();
+        this.reloadMembers();
       });
     }
   }
@@ -457,7 +457,7 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
   }
 
   removeChanges() {
-    const t = this.topic() as any;
+    const t = this.topic() as Partial<Topic> & { revision?: number };
     if (t?.id && t?.revision) {
       this.topicService.revert(t.id, t.revision).pipe(take(1)).subscribe();
     }

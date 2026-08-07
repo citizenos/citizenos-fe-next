@@ -1,6 +1,6 @@
 import { Component, input, inject, signal, computed, ChangeDetectionStrategy, PLATFORM_ID, HostListener, effect } from '@angular/core';
 import { DatePipe, isPlatformBrowser, AsyncPipe } from '@angular/common';
-import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { toObservable, rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -65,7 +65,7 @@ export class TopicIdeationComponent {
   PAGE_SIZE = 15;
   AGE_LIMIT = 110;
   municipalities = municipalities;
-  loading = signal(false);
+  loading = computed(() => this.ideasResource.isLoading());
   showAddIdea = signal(false);
   currentPage = signal(1);
   searchValue = signal('');
@@ -124,42 +124,39 @@ export class TopicIdeationComponent {
     tab: this.tabSelected()
   }));
 
-  private ideasResponse = toSignal(
-    toObservable(this.ideasParams).pipe(
-      switchMap(({ search, type, order, page, participant, age, gender, residence, folderId, topic, ideation, tab }) => {
-        if (!topic?.id || !ideation?.id || tab === 'folders') return of({ rows: [] as Idea[], count: 0 });
-        this.loading.set(true);
-        const params: Record<string, unknown> = {
-          limit: this.PAGE_SIZE,
-          offset: (page - 1) * this.PAGE_SIZE,
-        };
-        if (search) params['search'] = search;
-        if (order) { params['orderBy'] = order; params['order'] = 'desc'; }
-        if (type === 'favourite') params['favourite'] = true;
-        else if (type === 'iCreated') params['authorId'] = this.userStore.user()?.id;
-        else if (type === 'showModerated') params['showModerated'] = true;
+  private ideasResource = rxResource({
+    params: () => this.ideasParams(),
+    stream: ({ params }) => {
+      const { search, type, order, page, participant, age, gender, residence, folderId, topic, ideation, tab } = params;
+      if (!topic?.id || !ideation?.id || tab === 'folders') return of({ rows: [] as Idea[], count: 0 });
+      const req: Record<string, unknown> = {
+        limit: this.PAGE_SIZE,
+        offset: (page - 1) * this.PAGE_SIZE,
+      };
+      if (search) req['search'] = search;
+      if (order) { req['orderBy'] = order; req['order'] = 'desc'; }
+      if (type === 'favourite') req['favourite'] = true;
+      else if (type === 'iCreated') req['authorId'] = this.userStore.user()?.id;
+      else if (type === 'showModerated') req['showModerated'] = true;
 
-        if (participant) params['authorId'] = participant.id;
-        if (age.length) params['age'] = age;
-        if (gender) params['gender'] = gender;
-        if (residence) params['residence'] = residence;
-        if (folderId) params['folderId'] = folderId;
+      if (participant) req['authorId'] = participant.id;
+      if (age.length) req['age'] = age;
+      if (gender) req['gender'] = gender;
+      if (residence) req['residence'] = residence;
+      if (folderId) req['folderId'] = folderId;
 
-        return this.ideationService.getIdeas({ topicId: topic.id, ideationId: ideation.id, ...params }).pipe(
-          tap(() => this.loading.set(false))
-        );
-      })
-    )
-  );
+      return this.ideationService.getIdeas({ topicId: topic.id, ideationId: ideation.id, ...req });
+    }
+  });
 
   ideas = computed(() => {
-    const res = this.ideasResponse();
+    const res = this.ideasResource.value();
     if (!res) return [];
     return [...res.rows].sort(a => a.status === IdeaStatus.draft ? -1 : 1);
   });
 
   ideasCount = computed(() => {
-    const res = this.ideasResponse();
+    const res = this.ideasResource.value();
     if (!res) return 0;
     return res.count;
   });

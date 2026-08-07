@@ -1,4 +1,4 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { form, FormRoot, FormField, required, email, minLength, validate } from '@angular/forms/signals';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
@@ -104,8 +104,8 @@ import { EstEidComponent } from '../login/esteid/esteid.component';
 
             <cos-input 
               [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate"
-              [hasError]="(registerForm.passwordConfirm().invalid() && registerForm.passwordConfirm().touched()) || (registerForm().hasError('passwordMismatch') ?? false)"
-              [errorMessage]="registerForm().hasError('passwordMismatch') ? 'Passwords do not match' : ''"
+              [hasError]="(registerForm.passwordConfirm().invalid() && registerForm.passwordConfirm().touched()) || hasPasswordMismatch()"
+              [errorMessage]="hasPasswordMismatch() ? 'Passwords do not match' : ''"
             >
               <input [type]="showPasswordConfirm() ? 'text' : 'password'" [formField]="registerForm.passwordConfirm" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate">
               <button type="button" class="view_password" (click)="togglePasswordConfirm()">
@@ -371,6 +371,8 @@ export class RegisterComponent {
   error = signal<string | null>(null);
   showPassword = signal<boolean>(false);
   showPasswordConfirm = signal<boolean>(false);
+
+  hasPasswordMismatch = computed(() => this.registerForm().errors().some(e => e.kind === 'passwordMismatch'));
 
   registerModel = signal({
     name: '',

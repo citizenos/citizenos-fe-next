@@ -30,6 +30,7 @@ import { TopicMilestonesComponent } from './components/topic-milestones/topic-mi
 import { TopicTabsComponent } from './components/topic-tabs/topic-tabs.component';
 
 import { Topic, TopicAttachment, TopicGroup, TopicVote } from '../../../core/interfaces/topic';
+import { Ideation } from '../../../core/interfaces/ideation';
 import { Vote, VoteWithOptions } from '../../../core/interfaces/vote';
 import { TopicInvite } from '../../../core/services/topic-invite-user.service';
 import { TopicMemberUser } from '../../../core/services/topic-member-user.service';

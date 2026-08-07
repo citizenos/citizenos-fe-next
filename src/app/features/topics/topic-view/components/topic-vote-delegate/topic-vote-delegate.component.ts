@@ -1,8 +1,8 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { debounceTime, distinctUntilChanged, of, Subject, switchMap, take } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { of, take, map } from 'rxjs';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
@@ -33,34 +33,28 @@ export class TopicVoteDelegateComponent {
   searchStr = signal('');
   delegateUser = signal<TopicMemberUser | null>(null);
 
-  private search$ = new Subject<string>();
+  private searchResultsResource = rxResource({
+    params: () => this.searchStr(),
+    stream: ({ params: str }) => {
+      if (!str || str.length < 2) return of([]);
+      return this.memberUserService.query({ topicId: this.data.topic.id, search: str }).pipe(
+        map(res => {
+          const me = this.userStore.user();
+          return (res.rows || []).filter((u: TopicMemberUser) => u.id !== me?.id);
+        })
+      );
+    }
+  });
 
-  searchResults = toSignal(
-    this.search$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      switchMap(str => {
-        if (!str || str.length < 2) return of([]);
-        return this.memberUserService.query({ topicId: this.data.topic.id, search: str }).pipe(
-          switchMap(res => {
-            const me = this.userStore.user();
-            const filtered = (res.rows || []).filter((u: TopicMemberUser) => u.id !== me?.id);
-            return of(filtered);
-          })
-        );
-      })
-    ),
-    { initialValue: [] }
-  );
+  searchResults = computed(() => this.searchResultsResource.value() || []);
 
   onSearch(event: Event) {
     const val = (event.target as HTMLInputElement).value;
-    this.search$.next(val);
+    this.searchStr.set(val);
   }
 
   selectUser(user: TopicMemberUser) {
     this.delegateUser.set(user);
-    this.search$.next('');
     this.searchStr.set('');
   }
 

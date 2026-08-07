@@ -120,7 +120,7 @@ describe('TopicSettingsComponent', () => {
     }).overrideComponent(TopicSettingsComponent, {
       set: {
         imports: [
-          CommonModule,
+          
           UpperCasePipe,
           DatePipe,
           TranslateModule,

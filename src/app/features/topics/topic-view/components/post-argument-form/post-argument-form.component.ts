@@ -73,7 +73,7 @@ export class PostArgumentFormComponent implements OnInit {
       parentVersion: 0,
     };
 
-    this.argumentService.save(argument as Partial<Argument>).pipe(take(1)).subscribe({
+    this.argumentService.save(argument as unknown as Parameters<typeof this.argumentService.save>[0]).pipe(take(1)).subscribe({
       next: (res: Argument) => {
         this.clear();
         this.isOpen.set(false);

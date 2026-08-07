@@ -67,7 +67,7 @@ describe('TopicDiscussionComponent', () => {
   });
 
   it('canPost returns truthy when authenticated', () => {
-    // Since discussion() depends on toSignal(toObservable(this.topic)...) which may not have emitted,
+    // Since discussion() depends on rxResource which may not have emitted,
     // we test the underlying conditions
     expect(mockUserStore.isAuthenticated()).toBe(true);
   });

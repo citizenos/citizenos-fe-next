@@ -124,21 +124,21 @@ export class AddIdeaComponent implements OnInit {
     const ideaData: Partial<Idea> & { topicId: string; ideationId: string; } = {
       topicId: this.topic().id,
       ideationId: this.ideation().id,
-      statement: this.ideaForm.value.statement,
-      description: this.ideaForm.value.description,
+      statement: this.ideaForm.value.statement || '',
+      description: this.ideaForm.value.description || '',
       status: IdeaStatus.published
     };
 
     const config = this.ideation().demographicsConfig;
     if (config) {
-        const demographics: Record<string, unknown> = {};
+        const demographics: Record<string, string> = {};
         Object.keys(config).forEach(key => {
-            demographics[key] = this.ideaForm.get('demographics_' + key)?.value;
+            demographics[key] = this.ideaForm.get('demographics_' + key)?.value as string;
         });
         ideaData['demographics'] = demographics;
     }
 
-    this.ideationService.createIdea(ideaData).pipe(take(1)).subscribe({
+    this.ideationService.createIdea(ideaData as unknown as Parameters<typeof this.ideationService.createIdea>[0]).pipe(take(1)).subscribe({
       next: (idea: Idea) => {
         this.ideaAdded.emit(idea);
         this.notification.success('COMPONENTS.ADD_IDEA.MSG_PUBLISH_SUCCESS');
