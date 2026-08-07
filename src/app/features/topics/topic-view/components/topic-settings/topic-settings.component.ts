@@ -283,28 +283,26 @@ export class TopicSettingsComponent implements OnInit {
     // Cleanup as in legacy
     if (topicUpdate.endsAt) delete topicUpdate.endsAt;
 
+    let update$ = this.topicService.update(topicUpdate as Topic).pipe(take(1));
+
     if (t.vote?.reminderTime && !t.vote.reminderSent && !this.reminder()) {
       const voteUpdate = { topicId: t.id, voteId: t.voteId!, reminderTime: null };
-      this.topicVoteService.update(voteUpdate).pipe(take(1)).subscribe((res) => {
-        this.topic.update(current => ({
-          ...current,
-          vote: { ...current.vote!, reminderTime: res.reminderTime }
-        }));
-      });
+      update$ = this.topicVoteService.update(voteUpdate).pipe(
+        take(1),
+        switchMap(() => this.topicService.update(topicUpdate as Topic).pipe(take(1)))
+      );
     }
 
-    this.topicService.update(topicUpdate as Topic)
-      .pipe(take(1))
-      .subscribe({
-        next: () => {
-          this.dialogRef.close(true);
-        },
-        error: (errorResponse) => {
-          if (errorResponse.errors) {
-            this.errors.set(errorResponse.errors);
-          }
+    update$.subscribe({
+      next: () => {
+        this.dialogRef.close(true);
+      },
+      error: (errorResponse) => {
+        if (errorResponse.errors) {
+          this.errors.set(errorResponse.errors);
         }
-      });
+      }
+    });
   }
 }
 
