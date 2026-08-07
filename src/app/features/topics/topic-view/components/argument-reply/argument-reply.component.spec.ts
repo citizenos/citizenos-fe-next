@@ -25,7 +25,8 @@ describe('ArgumentReplyComponent', () => {
 
   const mockArgumentService = {
     ARGUMENT_TYPES_MAXLENGTH: { reply: 2048 },
-    save: vi.fn().mockReturnValue(of({ id: 'new-reply-id' }))
+    save: vi.fn().mockReturnValue(of({ id: 'new-reply-id' })),
+    reload: vi.fn()
   };
   const mockNotification = { error: vi.fn() };
   const isAuthenticated = signal(true);

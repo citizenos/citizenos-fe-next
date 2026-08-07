@@ -132,7 +132,6 @@ describe('TopicCreateComponent (business logic)', () => {
   });
 
   it('shows error notification when createTopicEagerly fails', () => {
-    vi.resetAllMocks();
     mockTopicService.save.mockReturnValue({
       pipe: () => ({
         subscribe: (callbacks: any) => callbacks.error()
@@ -153,7 +152,7 @@ describe('TopicCreateComponent (business logic)', () => {
             queryParams: of({ groupId: 'group-123' })
           }
         },
-        { provide: Router, useValue: { navigate: vi.fn() } },
+        { provide: Router, useValue: { navigate: vi.fn().mockResolvedValue(true) } },
         { provide: TopicService, useValue: mockTopicService },
         { provide: UploadService, useValue: mockUploadService },
         { provide: NotificationService, useValue: mockNotificationService },

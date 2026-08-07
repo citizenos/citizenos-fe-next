@@ -61,8 +61,13 @@ describe('TopicShareComponent', () => {
   } as unknown as Topic;
 
   beforeEach(async () => {
-    // Mock document.execCommand
+    // Mock document.execCommand and navigator.clipboard
     document.execCommand = vi.fn();
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: vi.fn().mockResolvedValue(undefined)
+      }
+    });
 
     await TestBed.configureTestingModule({
       imports: [TopicShareComponent, TranslateModule.forRoot(), NoopAnimationsModule, MockIconComponent, MockButtonComponent, MockDropdownComponent, MockTooltipComponent],

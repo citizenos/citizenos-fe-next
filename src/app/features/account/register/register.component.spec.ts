@@ -70,13 +70,13 @@ describe('RegisterComponent', () => {
       password: 'password123',
       passwordConfirm: 'password456'
     });
-    expect(component.registerForm.hasError('passwordMismatch')).toBeTruthy();
+    expect(component.registerForm.errors()?.[passwordMismatch]('passwordMismatch')).toBeTruthy();
 
     component.registerForm.patchValue({
       password: 'password123',
       passwordConfirm: 'password123'
     });
-    expect(component.registerForm.hasError('passwordMismatch')).toBeFalsy();
+    expect(component.registerForm.errors()?.[passwordMismatch]('passwordMismatch')).toBeFalsy();
   });
 
   it('should require terms agreement', () => {

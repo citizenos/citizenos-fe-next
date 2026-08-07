@@ -19,7 +19,7 @@ const mockIdeationService = {
   createIdea: vi.fn().mockReturnValue(of(mockCreatedIdea)),
   updateIdea: vi.fn().mockReturnValue(of(mockCreatedIdea)),
 };
-const mockNotification = { addError: vi.fn() };
+const mockNotification = { addError: vi.fn(), success: vi.fn() };
 
 describe('AddIdeaComponent', () => {
   let injector: EnvironmentInjector;

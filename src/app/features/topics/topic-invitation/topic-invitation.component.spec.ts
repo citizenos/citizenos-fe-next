@@ -80,11 +80,12 @@ describe('TopicInvitationComponent', () => {
   });
 
   it('shows error notification when invite load fails', () => {
+    vi.useFakeTimers();
     inviteService.get = vi.fn().mockReturnValue(throwError(() => ({ message: 'Not found' })));
     fixture.detectChanges();
-    setTimeout(() => {
-      expect(notification.showRaw).toHaveBeenCalledWith('error', 'Not found');
-    }, 500);
+    vi.runAllTimers();
+    expect(notification.showRaw).toHaveBeenCalledWith('error', 'Not found');
+    vi.useRealTimers();
   });
 
   it('auto-joins when user matches and join=true', async () => {

@@ -1,23 +1,16 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { form, FormRoot, FormField, required, email, minLength, validate } from '@angular/forms/signals';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { InputComponent } from '../../../shared/components/input/input.component';
+
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { UserService } from '../../../core/services/user.service';
 import { SmartIdComponent } from '../login/smart-id/smart-id.component';
 import { EstEidComponent } from '../login/esteid/esteid.component';
-
-function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('password');
-  const passwordConfirm = control.get('passwordConfirm');
-  if (password && passwordConfirm && password.value !== passwordConfirm.value) {
-    return { passwordMismatch: true };
-  }
-  return null;
-}
 
 @Component({
   selector: 'app-register',
@@ -25,6 +18,8 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
+    FormRoot,
+    FormField,
     RouterModule,
     TranslateModule,
     ButtonComponent,
@@ -65,7 +60,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
              <span translate="VIEWS.REGISTER.REGISTER_OR"></span>
           </div>
 
-          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <form [formRoot]="registerForm">
             @if (error()) {
               <div class="error-banner" role="alert">
                 <cos-icon name="close" [size]="16"></cos-icon>
@@ -75,33 +70,33 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
 
             <cos-input 
               [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_NAME' | translate"
-              [hasError]="registerForm.controls.name.touched && registerForm.controls.name.invalid"
+              [hasError]="registerForm.name().invalid() && registerForm.name().touched()"
               [errorMessage]="'COMPONENTS.REGISTER_FORM.ERROR_NAME' | translate"
             >
-              <input type="text" formControlName="name" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_NAME' | translate">
+              <input type="text" [formField]="registerForm.name" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_NAME' | translate">
             </cos-input>
 
             <cos-input 
               [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_EMAIL' | translate"
-              [hasError]="registerForm.controls.email.touched && registerForm.controls.email.invalid"
+              [hasError]="registerForm.email().invalid() && registerForm.email().touched()"
               [errorMessage]="'COMPONENTS.REGISTER_FORM.ERROR_EMAIL' | translate"
             >
-              <input type="email" formControlName="email" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_EMAIL' | translate">
+              <input type="email" [formField]="registerForm.email" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_EMAIL' | translate">
             </cos-input>
 
             <cos-input 
               [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_COMPANY' | translate"
-              [hasError]="registerForm.controls.company.touched && registerForm.controls.company.invalid"
+              [hasError]="registerForm.company().invalid() && registerForm.company().touched()"
             >
-              <input type="text" formControlName="company" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_COMPANY' | translate">
+              <input type="text" [formField]="registerForm.company" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_COMPANY' | translate">
             </cos-input>
 
             <cos-input 
               [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD' | translate"
-              [hasError]="registerForm.controls.password.touched && registerForm.controls.password.invalid"
+              [hasError]="registerForm.password().invalid() && registerForm.password().touched()"
               [errorMessage]="'Password must be at least 8 characters'"
             >
-              <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD' | translate">
+              <input [type]="showPassword() ? 'text' : 'password'" [formField]="registerForm.password" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD' | translate">
               <button type="button" class="view_password" (click)="togglePassword()">
                  <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
               </button>
@@ -109,18 +104,18 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
 
             <cos-input 
               [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate"
-              [hasError]="(registerForm.controls.passwordConfirm.touched && registerForm.controls.passwordConfirm.invalid) || registerForm.hasError('passwordMismatch')"
-              [errorMessage]="registerForm.hasError('passwordMismatch') ? 'Passwords do not match' : ''"
+              [hasError]="(registerForm.passwordConfirm().invalid() && registerForm.passwordConfirm().touched()) || (registerForm().hasError('passwordMismatch') ?? false)"
+              [errorMessage]="registerForm().hasError('passwordMismatch') ? 'Passwords do not match' : ''"
             >
-              <input [type]="showPasswordConfirm() ? 'text' : 'password'" formControlName="passwordConfirm" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate">
+              <input [type]="showPasswordConfirm() ? 'text' : 'password'" [formField]="registerForm.passwordConfirm" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate">
               <button type="button" class="view_password" (click)="togglePasswordConfirm()">
                  <cos-icon [name]="showPasswordConfirm() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
               </button>
             </cos-input>
 
-            <div class="checkbox_wrap" [class.error]="registerForm.controls.agreeToTerms.touched && registerForm.controls.agreeToTerms.invalid">
+            <div class="checkbox_wrap" [class.error]="registerForm.agreeToTerms().invalid() && registerForm.agreeToTerms().touched()">
               <label class="checkbox">
-                <input type="checkbox" formControlName="agreeToTerms">
+                <input type="checkbox" [formField]="registerForm.agreeToTerms">
                 <span class="checkmark"></span>
               </label>
               <div class="checkbox_description">
@@ -132,7 +127,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
 
             <div class="checkbox_wrap">
               <label class="checkbox">
-                <input type="checkbox" formControlName="showInSearch">
+                <input type="checkbox" [formField]="registerForm.showInSearch">
                 <span class="checkmark"></span>
               </label>
               <div class="checkbox_description">
@@ -146,7 +141,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
                 variant="primary"
                 size="lg"
                 [isLoading]="userStore.isLoading()" 
-                [isDisabled]="registerForm.invalid"
+                [isDisabled]="registerForm().invalid()"
               >
                 {{ 'COMPONENTS.REGISTER_FORM.BTN_SAVE' | translate }}
               </cos-button>
@@ -367,7 +362,6 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
   `]
 })
 export class RegisterComponent {
-  private fb = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private userService = inject(UserService);
@@ -378,15 +372,36 @@ export class RegisterComponent {
   showPassword = signal<boolean>(false);
   showPasswordConfirm = signal<boolean>(false);
 
-  registerForm = this.fb.group({
-    name: ['', [Validators.required]],
-    email: ['', [Validators.required, Validators.email]],
-    company: [''],
-    password: ['', [Validators.required, Validators.minLength(8)]],
-    passwordConfirm: ['', [Validators.required]],
-    agreeToTerms: [false, [Validators.requiredTrue]],
-    showInSearch: [true]
-  }, { validators: passwordMatchValidator });
+  registerModel = signal({
+    name: '',
+    email: '',
+    company: '',
+    password: '',
+    passwordConfirm: '',
+    agreeToTerms: false,
+    showInSearch: true
+  });
+
+  registerForm = form(this.registerModel, (path) => {
+    required(path.name);
+    required(path.email);
+    email(path.email);
+    required(path.password);
+    minLength(path.password, 8);
+    required(path.passwordConfirm);
+    
+    validate(path, (val) => {
+      const v = val.value();
+      if (v.password && v.passwordConfirm && v.password !== v.passwordConfirm) {
+        return { kind: 'passwordMismatch', message: 'Passwords do not match' };
+      }
+      return null;
+    });
+  }, {
+    submission: {
+      action: async (f) => this.save(f().value()),
+    }
+  });
 
   togglePassword() {
     this.showPassword.update(v => !v);
@@ -401,20 +416,21 @@ export class RegisterComponent {
     window.location.href = this.userService.getPartnerLoginUrl(partnerId, redirectSuccess);
   }
 
-  async onSubmit() {
-    if (this.registerForm.valid) {
-      const data = this.registerForm.getRawValue();
-      try {
-        await this.userStore.signup(data);
-        const redirectSuccess = this.route.snapshot.queryParamMap.get('redirectSuccess');
-        if (redirectSuccess) {
-          window.location.href = redirectSuccess;
-        } else {
-          this.router.navigate(['/']);
-        }
-      } catch {
-        this.error.set('Registration failed. Please try again.');
+  async save(data: ReturnType<typeof this.registerModel>) {
+    try {
+      if (!data.agreeToTerms) {
+        // basic required true fallback if the validator isn't natively supported yet
+        throw new Error('Must agree to terms');
       }
+      await this.userStore.signup(data);
+      const redirectSuccess = this.route.snapshot.queryParamMap.get('redirectSuccess');
+      if (redirectSuccess) {
+        window.location.href = redirectSuccess;
+      } else {
+        this.router.navigate(['/']);
+      }
+    } catch {
+      this.error.set('Registration failed. Please try again.');
     }
   }
 }
