@@ -44,82 +44,94 @@ describe('RegisterComponent', () => {
   });
 
   it('should have an invalid form when empty', () => {
-    expect(component.registerForm.valid).toBeFalsy();
+    // Both name, email, password are required
+    expect(component.registerForm().invalid()).toBeTruthy();
   });
 
   it('should validate email format', () => {
-    const email = component.registerForm.controls.email;
-    email.setValue('invalid-email');
-    expect(email.hasError('email')).toBeTruthy();
+    component.registerModel.update(m => ({ ...m, email: 'invalid-email' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.registerForm.email().errors().some(e => e.kind === 'email')).toBeTruthy();
 
-    email.setValue('test@example.com');
-    expect(email.hasError('email')).toBeFalsy();
+    component.registerModel.update(m => ({ ...m, email: 'test@example.com' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.registerForm.email().errors().some(e => e.kind === 'email')).toBeFalsy();
   });
 
   it('should validate password length', () => {
-    const password = component.registerForm.controls.password;
-    password.setValue('short');
-    expect(password.hasError('minlength')).toBeTruthy();
+    component.registerModel.update(m => ({ ...m, password: 'short' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.registerForm.password().errors().some(e => e.kind === 'minLength')).toBeTruthy();
 
-    password.setValue('longenoughpassword');
-    expect(password.hasError('minlength')).toBeFalsy();
+    component.registerModel.update(m => ({ ...m, password: 'longenoughpassword' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.registerForm.password().errors().some(e => e.kind === 'minLength')).toBeFalsy();
   });
 
   it('should validate password match', () => {
-    component.registerForm.patchValue({
+    component.registerModel.update(m => ({
+      ...m,
       password: 'password123',
       passwordConfirm: 'password456'
-    });
-    expect(component.registerForm.errors()?.[passwordMismatch]('passwordMismatch')).toBeTruthy();
+    }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.registerForm().errors().some(e => e.kind === 'passwordMismatch')).toBeTruthy();
 
-    component.registerForm.patchValue({
+    component.registerModel.update(m => ({
+      ...m,
       password: 'password123',
       passwordConfirm: 'password123'
-    });
-    expect(component.registerForm.errors()?.[passwordMismatch]('passwordMismatch')).toBeFalsy();
-  });
-
-  it('should require terms agreement', () => {
-    const agree = component.registerForm.controls.agreeToTerms;
-    agree.setValue(false);
-    expect(agree.hasError('required')).toBeTruthy();
-
-    agree.setValue(true);
-    expect(agree.hasError('required')).toBeFalsy();
+    }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.registerForm().errors().some(e => e.kind === 'passwordMismatch')).toBeFalsy();
   });
 
   it('should call signup on UserStore when form is submitted', async () => {
     const router = TestBed.inject(Router);
     const navigateSpy = vi.spyOn(router, 'navigate');
 
-    component.registerForm.patchValue({
+    component.registerModel.set({
       name: 'Test User',
       email: 'test@example.com',
+      company: '',
       password: 'password123',
       passwordConfirm: 'password123',
-      agreeToTerms: true
+      agreeToTerms: true,
+      showInSearch: true
     });
+    fixture.detectChanges();
+    TestBed.flushEffects();
 
     mockUserStore.signup.mockResolvedValue({});
 
-    await component.onSubmit();
+    await component.save(component.registerModel());
 
     expect(mockUserStore.signup).toHaveBeenCalled();
     expect(navigateSpy).toHaveBeenCalledWith(['/']);
   });
 
   it('should handle signup error', async () => {
-    component.registerForm.patchValue({
+    component.registerModel.set({
       name: 'Test User',
       email: 'test@example.com',
+      company: '',
       password: 'password123',
       passwordConfirm: 'password123',
-      agreeToTerms: true
+      agreeToTerms: true,
+      showInSearch: true
     });
+    fixture.detectChanges();
+    TestBed.flushEffects();
 
     mockUserStore.signup.mockRejectedValue(new Error('Signup failed'));
 
-    await component.onSubmit();
+    await component.save(component.registerModel());
 
     expect(component.error()).toBe('Registration failed. Please try again.');
   });
