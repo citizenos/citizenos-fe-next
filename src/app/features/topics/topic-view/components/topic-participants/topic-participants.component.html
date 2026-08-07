@@ -70,7 +70,7 @@
                   </div>
                   <div class="option" (click)="doUserOrder('level', 'asc')" (keydown.enter)="doUserOrder('level', 'asc')" tabindex="0" role="button">
                     <span>{{ 'MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL' | translate }}</span>
-                    <cos-icon name="topic-participants-icon-2-legacy" size="24" style="transform: scaleY(-1);"></cos-icon>
+                    <cos-icon name="topic-participants-icon-2-legacy" size="24" [style.transform]="'scaleY(-1)'"></cos-icon>
                   </div>
                   <div class="option" (click)="doUserOrder('level', 'desc')" (keydown.enter)="doUserOrder('level', 'desc')" tabindex="0" role="button">
                     <span>{{ 'MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL' | translate }}</span>
@@ -134,7 +134,7 @@
                   <div class="option" (click)="doGroupOrder('level', 'asc')" (keydown.enter)="doGroupOrder('level', 'asc')" tabindex="0" role="button">
                     <span>{{ 'MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL' | translate }}</span>
                     <div>
-                      <cos-icon name="topic-participants-icon-2-legacy" size="24" style="transform: scaleY(-1);"></cos-icon>
+                      <cos-icon name="topic-participants-icon-2-legacy" size="24" [style.transform]="'scaleY(-1)'"></cos-icon>
                     </div>
                   </div>
                   <div class="option" (click)="doGroupOrder('level', 'desc')" (keydown.enter)="doGroupOrder('level', 'desc')" tabindex="0" role="button">
@@ -205,7 +205,7 @@
                   <div class="option" (click)="doInviteOrder('level', 'asc')" (keydown.enter)="doInviteOrder('level', 'asc')" tabindex="0" role="button">
                     <span>{{ 'MODALS.TOPIC_MEMBERS_ORDER_BY_LEVEL' | translate }}</span>
                     <div>
-                      <cos-icon name="topic-participants-icon-2-legacy" size="24" style="transform: scaleY(-1);"></cos-icon>
+                      <cos-icon name="topic-participants-icon-2-legacy" size="24" [style.transform]="'scaleY(-1)'"></cos-icon>
                     </div>
                   </div>
                   <div class="option" (click)="doInviteOrder('level', 'desc')" (keydown.enter)="doInviteOrder('level', 'desc')" tabindex="0" role="button">
