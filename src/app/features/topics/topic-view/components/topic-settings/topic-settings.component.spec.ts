@@ -9,7 +9,7 @@ import { TopicMemberUserService } from '../../../../../core/services/topic-membe
 import { DIALOG_DATA, DialogRef, DialogService } from '../../../../../shared/dialog';
 import { Component, Input, output } from '@angular/core';
 
-import { CommonModule, UpperCasePipe, DatePipe } from '@angular/common';
+import { UpperCasePipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { A11yModule } from '@angular/cdk/a11y';
 

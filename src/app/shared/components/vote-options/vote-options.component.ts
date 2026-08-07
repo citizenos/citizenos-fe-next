@@ -1,5 +1,5 @@
 import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { VoteOption } from '../../../core/interfaces/vote';
 import { IconComponent } from '../icon/icon.component';
@@ -7,7 +7,7 @@ import { IconComponent } from '../icon/icon.component';
 @Component({
   selector: 'cos-vote-options',
   standalone: true,
-  imports: [CommonModule, TranslateModule, IconComponent],
+  imports: [NgClass, UpperCasePipe, TranslateModule, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './vote-options.component.html',
   styleUrls: ['./vote-options.component.scss']

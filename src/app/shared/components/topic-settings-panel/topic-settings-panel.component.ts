@@ -1,7 +1,7 @@
 import { Component, output, signal, inject, ChangeDetectionStrategy, effect, model, input, OnInit } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { UpperCasePipe, CommonModule } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Topic } from '../../../core/interfaces/topic';
 import { Group } from '../../../core/interfaces/group';
@@ -27,7 +27,6 @@ export interface TopicMemberGroup {
     TranslateModule,
     FormsModule,
     UpperCasePipe,
-    CommonModule,
     RouterLink,
     DropdownComponent,
     IconComponent,

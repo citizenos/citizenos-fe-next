@@ -81,7 +81,7 @@ export class TopicViewComponent implements OnInit {
   hideTopicContent = signal(false);
   topicId = '';
 
-  private ideationResource = rxResource<any | null, Topic | null>({
+  private ideationResource = rxResource<Ideation | null, Topic | null>({
     params: () => this.topic(),
     stream: ({ params: topic }) => {
       if (topic?.ideationId) {

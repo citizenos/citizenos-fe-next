@@ -1,6 +1,6 @@
 import { IconComponent } from '../icon/icon.component';
 import { Component, OnInit, input, output, signal, computed, ChangeDetectionStrategy, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SlicePipe, NgClass } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './cos-calender.component.html',
   styleUrls: ['./cos-calender.component.scss'],
   standalone: true,
-  imports: [CommonModule, TranslateModule, IconComponent],
+  imports: [SlicePipe, NgClass, TranslateModule, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CosCalenderComponent implements OnInit {

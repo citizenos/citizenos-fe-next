@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-> This is `citizenos-fe-next` — the Angular 21 frontend replacing the legacy app. The parent `CLAUDE.md` (one directory up) has the full architecture reference. This file adds local corrections and quick-reference items.
+> This is `citizenos-fe-next` — the Angular 22 frontend replacing the legacy app. The parent `CLAUDE.md` (one directory up) has the full architecture reference. This file adds local corrections and quick-reference items.
 
 ## Commands
 

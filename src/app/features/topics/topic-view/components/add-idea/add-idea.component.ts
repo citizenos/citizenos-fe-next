@@ -121,7 +121,7 @@ export class AddIdeaComponent implements OnInit {
         return;
     }
 
-    const ideaData: Record<string, any> & { topicId: string; ideationId: string; } = {
+    const ideaData: Partial<Idea> & { topicId: string; ideationId: string; } = {
       topicId: this.topic().id,
       ideationId: this.ideation().id,
       statement: this.ideaForm.value.statement,

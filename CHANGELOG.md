@@ -18,6 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored `InputComponent` to use `ViewEncapsulation.None` for precise native input styling.
 - Global typography updated to Noto Sans across the application.
 - Standardized flexbox alignment for action buttons.
-- Migrated initial scaffolding to Angular 21 Zoneless patterns.
+- Migrated initial scaffolding to Angular 22 Zoneless patterns.
 - Vitest testing framework integration.
 - Standard project documentation files (`AGENTS.md`, `README.md`, `CHANGELOG.md`).

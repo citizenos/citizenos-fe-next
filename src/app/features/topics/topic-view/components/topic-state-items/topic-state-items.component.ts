@@ -28,7 +28,7 @@ export class TopicStateItemsComponent {
   // These could be passed down, but the component could also query them if it has id.
   // For UI representation, let's allow passing signals or objects
   ideation = model<Ideation | null>(null);
-  vote = model<Vote | TopicVote | any>(null);
+  vote = model<Vote | TopicVote | null>(null);
   eventCount = model<number>(0);
   
   // We can inject services to check logic

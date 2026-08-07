@@ -1,13 +1,13 @@
 import { Component, input, output, signal, computed, ChangeDetectionStrategy, effect, inject, untracked } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule, UpperCasePipe } from '@angular/common';
+import { DatePipe, NgClass, UpperCasePipe } from '@angular/common';
 import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
 
 @Component({
   selector: 'cos-deadline-picker',
   standalone: true,
-  imports: [TranslateModule, FormsModule, CommonModule, UpperCasePipe, CosCalenderComponent],
+  imports: [TranslateModule, FormsModule, DatePipe, NgClass, UpperCasePipe, CosCalenderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="radio_wrap date_selector" [ngClass]="theme()" [class.selected]="enabled()">

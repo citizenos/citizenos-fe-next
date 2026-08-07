@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CommonModule } from '@angular/common';
+
 import { ProfileComponent } from './profile.component';
 import { UserStore } from '../../../core/state/user.store';
 import { TopicNotificationService } from '../../../core/services/topic-notification.service';
