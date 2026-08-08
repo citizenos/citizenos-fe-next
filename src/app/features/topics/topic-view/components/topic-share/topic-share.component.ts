@@ -12,7 +12,7 @@ import { ConfirmDialogComponent } from '../../../../../shared/components/confirm
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
-import { interval, switchMap, takeWhile, take, timer } from 'rxjs';
+import { take, timer } from 'rxjs';
 
 @Component({
   selector: 'cos-topic-share',

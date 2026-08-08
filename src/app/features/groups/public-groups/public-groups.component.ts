@@ -5,7 +5,6 @@ import {
   signal,
   computed,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { PublicGroupService } from '../../../core/services/public-group.service';
 import { UserStore } from '../../../core/state/user.store';

@@ -34,7 +34,7 @@
     <div id="profile_settings" class="profile_area_section">
       <div id="profile_image_area">
         <div id="profile_image_wrap">
-          @if (form.imageUrl || uploadedImage()) {
+          @if (formModel().imageUrl || uploadedImage()) {
           <button type="button" id="remove_profile_image" (click)="deleteUserImage()"
             (keydown.enter)="deleteUserImage()" [aria-label]="'VIEWS.ACCOUNT.UPLOAD_AVATAR' | translate">
             <cos-icon name="profile-icon-2-legacy" size="24"></cos-icon>
@@ -43,11 +43,11 @@
 
           @if (uploadedImage(); as file) {
             <cos-image-editor [width]="160" [heigth]="160" [file]="file" (item)="updateUserImage($event)"></cos-image-editor>
-          } @else if (form.imageUrl) {
-            <img id="profile_image" [src]="form.imageUrl" [alt]="form.name">
+          } @else if (formModel().imageUrl) {
+            <img id="profile_image" [src]="formModel().imageUrl" [alt]="formModel().name">
           } @else {
             <div class="profile_image_filler">
-              <cos-initials [name]="form.name"></cos-initials>
+              <cos-initials [name]="formModel().name"></cos-initials>
             </div>
           }
         </div>
@@ -58,9 +58,9 @@
 
       <div id="profile_data_area">
         <h2 class="small_heading">{{ 'VIEWS.ACCOUNT.HEADING_ACCOUNT_DETAILS' | translate }}</h2>
-        <form id="profile_form" (submit)="doUpdateProfile(); $event.preventDefault()">
+        <form id="profile_form" [formRoot]="profileForm" (submit)="doUpdateProfile(); $event.preventDefault()">
           <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_NAME' | translate" [hasError]="!!errors.name">
-            <input id="name" name="name" [(ngModel)]="form.name" required [maxlength]="255">
+            <input id="name" [formField]="profileForm.name">
             @if (errors.name) {
             <label for="name" class="error_label">
               <cos-icon name="argument-reply-icon-legacy" size="16"></cos-icon>
@@ -70,7 +70,7 @@
           </cos-input>
 
           <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_COMPANY' | translate" [hasError]="!!errors.company">
-            <input id="company" name="company" [(ngModel)]="form.company" [maxlength]="255">
+            <input id="company" [formField]="profileForm.company">
             @if (errors.company) {
             <label for="company" class="error_label">
               <cos-icon name="argument-reply-icon-legacy" size="16"></cos-icon>
@@ -80,7 +80,7 @@
           </cos-input>
 
           <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_EMAIL' | translate" [hasError]="!!errors.email">
-            <input id="email" name="email" [(ngModel)]="form.email" required [maxlength]="254">
+            <input id="email" [formField]="profileForm.email">
             @if (errors.email) {
             <label for="email" class="error_label">
               <cos-icon name="argument-reply-icon-legacy" size="16"></cos-icon>
@@ -92,12 +92,11 @@
           @if (resetPasswordMode()) {
           <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_NEW_PASSWORD' | translate"
             [hasError]="!!errors.newPassword">
-            <input id="newPassword" name="newPassword" [(ngModel)]="form.newPassword" type="password" [maxlength]="64">
+            <input id="newPassword" [formField]="profileForm.newPassword" type="password">
           </cos-input>
           <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_PASSWORD_CONFIRM' | translate"
             [hasError]="!!errors.newPassword">
-            <input id="password_confirm" name="passwordConfirm" [(ngModel)]="form.passwordConfirm" type="password"
-              [maxlength]="64">
+            <input id="password_confirm" [formField]="profileForm.passwordConfirm" type="password">
             @if (errors.newPassword) {
             <label for="newPassword" class="error_label">
               <cos-icon name="argument-reply-icon-legacy" size="16"></cos-icon>
@@ -107,9 +106,9 @@
           </cos-input>
           }
 
-          @if (form.email !== store.user()?.email || resetPasswordMode()) {
+          @if (formModel().email !== store.user()?.email || resetPasswordMode()) {
           <cos-input [placeholder]="'VIEWS.ACCOUNT.PLACEHOLDER_PASSWORD' | translate" [hasError]="!!errors.password">
-            <input id="password" name="password" [(ngModel)]="form.password" type="password" required [maxlength]="64">
+            <input id="password" [formField]="profileForm.password" type="password">
             @if (errors.password) {
             <label for="password" class="error_label">
               <cos-icon name="argument-reply-icon-legacy" size="16"></cos-icon>
@@ -123,7 +122,7 @@
             'VIEWS.ACCOUNT.RESET_PASSWORD' | translate }}</button>
           <div>
             <button type="submit" class="btn_big_submit"
-              [disabled]="store.isLoading()">{{ 'VIEWS.ACCOUNT.BTN_SAVE' | translate }}</button>
+              [disabled]="store.isLoading() || profileForm().invalid()">{{ 'VIEWS.ACCOUNT.BTN_SAVE' | translate }}</button>
           </div>
         </form>
 
@@ -136,7 +135,7 @@
           <cos-dropdown class="toolbar-dropdown"
             [placeholder]="'VIEWS.ACCOUNT.LBL_SELECT_PROFILE_LANGUAEG' | translate">
             <ng-container selection>
-              <span class="selected-item">{{languages[form.language] || form.language}}</span>
+              <span class="selected-item">{{languages[formModel().language] || formModel().language}}</span>
             </ng-container>
             <ng-container options>
               @for (language of languages | keyvalue; track language.key) {
@@ -152,7 +151,7 @@
             <div class="preference_description" translate="VIEWS.ACCOUNT.LBL_SHOW_IN_SEARCH_DESCRIPTION"></div>
           </div>
           <cos-toggle [textOn]="'TOGGLE_ON' | translate" [textOff]="'TOGGLE_OFF' | translate"
-            [model]="form.preferences.showInSearch" (toggleClick)="form.preferences.showInSearch = $event"></cos-toggle>
+            [model]="formModel().preferences.showInSearch" (toggleClick)="formModel.update(m => ({...m, preferences: { ...m.preferences, showInSearch: $event }}))"></cos-toggle>
         </div>
 
         <div class="prefrence_box">

@@ -1,14 +1,13 @@
 <div class="reply_wrap reply">
   @if (userStore.isAuthenticated()) {
-    <form [formGroup]="replyForm" (ngSubmit)="save()">
+    <form [formRoot]="replyForm" (submit)="save(); $event.preventDefault()">
       <div class="field_wrap" [class.error]="errors()['text']">
         <label class="hidden" for="replyText">{{ 'COMPONENTS.IDEA_REPLY_FORM.PLACEHOLDER_WRITE_REPLY_HERE' | translate }}</label>
         <textarea
           id="replyText"
-          formControlName="text"
+          [formField]="replyForm.text"
           class="gray_borders"
           [placeholder]="'COMPONENTS.IDEA_REPLY_FORM.PLACEHOLDER_WRITE_REPLY_HERE' | translate"
-          [maxlength]="COMMENT_TYPES_MAXLENGTH['reply']"
           rows="4"></textarea>
         
         @if (errors()['text']) {
@@ -26,7 +25,7 @@
         <button
           type="submit"
           class="btn_medium"
-          [disabled]="replyForm.invalid">
+          [disabled]="replyForm().invalid()">
           {{ (editMode() ? 'COMPONENTS.IDEA_REPLY_FORM.BTN_UPDATE_REPLY' : 'COMPONENTS.IDEA_REPLY_FORM.BTN_POST_REPLY') | translate }}
         </button>
       </div>

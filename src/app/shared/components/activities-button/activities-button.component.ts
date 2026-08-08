@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ActivityService } from '../../../core/services/activity.service';
 import { ActivityFeedState } from '../../../core/state/activity-feed.state';
 import { UserStore } from '../../../core/state/user.store';
-import { switchMap, of } from 'rxjs';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'cos-activities-button',

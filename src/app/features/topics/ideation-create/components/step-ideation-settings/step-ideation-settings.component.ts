@@ -1,4 +1,4 @@
-import { Component, input, output, ChangeDetectionStrategy, model, computed } from '@angular/core';
+import { Component, output, ChangeDetectionStrategy, model } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { Ideation } from '../../../../../core/interfaces/ideation';

@@ -1,9 +1,9 @@
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { Component, signal, inject, ChangeDetectionStrategy, OnInit, computed } from '@angular/core';
-import { toSignal, rxResource } from '@angular/core/rxjs-interop';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { form, submit, required } from '@angular/forms/signals';
+import { form, required } from '@angular/forms/signals';
 import { TopicService } from '../../../core/services/topic.service';
 import { UploadService } from '../../../core/services/upload.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -19,8 +19,7 @@ import { StepTopicSettingsComponent } from './components/step-topic-settings/ste
 import { StepTopicDiscussionComponent } from './components/step-topic-discussion/step-topic-discussion.component';
 import { StepTopicPreviewComponent } from './components/step-topic-preview/step-topic-preview.component';
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
-import { NeverPipe } from '../../../shared/pipes/never.pipe';
-import { switchMap, of, catchError, BehaviorSubject, forkJoin, take, Observable, map } from 'rxjs';
+import { switchMap, of, catchError, forkJoin, take, Observable, map } from 'rxjs';
 import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
 import { TopicMemberGroup } from '../../../shared/components/topic-settings-panel/topic-settings-panel.component';
 import { DialogService } from '../../../shared/dialog/dialog.service';

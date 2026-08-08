@@ -2,7 +2,7 @@ import { Component, signal, computed, inject, ChangeDetectionStrategy, OnInit } 
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { switchMap, of, catchError, BehaviorSubject, forkJoin, take } from 'rxjs';
+import { switchMap, of, catchError, forkJoin, take } from 'rxjs';
 
 import { TopicService } from '../../../core/services/topic.service';
 import { UploadService } from '../../../core/services/upload.service';

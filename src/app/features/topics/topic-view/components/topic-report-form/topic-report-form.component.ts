@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { form, FormRoot, FormField, required, minLength, maxLength } from '@angular/forms/signals';
 import { take, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -27,8 +27,8 @@ export interface TopicReportFormData {
   imports: [
     UpperCasePipe,
     TranslateModule,
-    FormsModule,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     IconComponent,
     ButtonComponent,
     DropdownComponent,
@@ -43,29 +43,36 @@ export class TopicReportFormComponent {
   private dialogRef = inject(DialogRef<TopicReportFormComponent>);
   private topicReportService = inject(TopicReportService);
   private notificationService = inject(NotificationService);
-  private fb = inject(FormBuilder);
+
 
   topic = signal<Topic>(this.data.topic);
   reportTypes = Object.keys(this.topicReportService.TYPES);
   isLoading = signal(false);
 
-  reportForm = this.fb.group({
-    type: [this.reportTypes[0], Validators.required],
-    text: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(2024)]]
+  reportModel = signal({
+    type: this.reportTypes[0],
+    text: ''
+  });
+
+  reportForm = form(this.reportModel, (path) => {
+    required(path.type);
+    required(path.text);
+    minLength(path.text, 1);
+    maxLength(path.text, 2024);
   });
 
   changeType(type: string) {
-    this.reportForm.patchValue({ type });
+    this.reportModel.update(m => ({ ...m, type }));
   }
 
   doReport() {
-    if (this.reportForm.invalid || this.isLoading()) return;
+    if (this.reportForm().invalid() || this.isLoading()) return;
 
     this.isLoading.set(true);
     const reportData = {
       topicId: this.topic().id,
-      type: this.reportForm.value.type!,
-      text: this.reportForm.value.text!
+      type: this.reportForm().value().type!,
+      text: this.reportForm().value().text!
     };
 
     this.topicReportService.save(reportData)

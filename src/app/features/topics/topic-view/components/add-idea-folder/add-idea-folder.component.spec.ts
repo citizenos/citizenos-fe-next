@@ -81,7 +81,9 @@ describe('AddIdeaFolderComponent', () => {
 
   it('should add idea to new folder', () => {
     component.showFolderInput.set(true);
-    component.form.get('name')?.setValue('Wonderful New Folder');
+    component.model.update(m => ({ ...m, name: 'Wonderful New Folder' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
     component.save();
 
     expect(mockIdeationService.createFolder).toHaveBeenCalledWith({

@@ -3,7 +3,7 @@ import { Component, input, output, inject, signal, computed, OnDestroy, OnInit, 
 import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable, Subscription, take, debounceTime, Subscription as RxSubscription, timer, interval, takeWhile, lastValueFrom } from 'rxjs';
+import { Subscription, take, timer, interval, takeWhile, lastValueFrom } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { IdeaStatus } from '../../../../../core/interfaces/idea';

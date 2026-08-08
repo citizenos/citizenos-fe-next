@@ -3,7 +3,6 @@ import { UpperCasePipe } from '@angular/common';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IdeaReportReasonComponent, IdeaReportReasonData } from './idea-report-reason.component';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';

@@ -1,5 +1,5 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormRoot, FormField, required, email } from '@angular/forms/signals';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
@@ -13,7 +13,8 @@ import { UserService } from '../../../core/services/user.service';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     RouterModule,
     TranslateModule,
     ButtonComponent,
@@ -50,7 +51,7 @@ import { UserService } from '../../../core/services/user.service';
            <span>{{ 'COMPONENTS.LOGIN_FORM.LOGIN_OR' | translate }}</span>
         </div>
 
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <form [formRoot]="loginForm">
           @if (error()) {
             <div class="error-banner" role="alert">
               <cos-icon name="close" [size]="16"></cos-icon>
@@ -60,18 +61,18 @@ import { UserService } from '../../../core/services/user.service';
 
           <cos-input
             [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate"
-            [hasError]="loginForm.controls.email.touched && loginForm.controls.email.invalid"
+            [hasError]="loginForm.email().invalid() && loginForm.email().touched()"
             [errorMessage]="'Invalid email address'"
           >
-            <input type="email" formControlName="email" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate">
+            <input type="email" [formField]="loginForm.email" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate">
           </cos-input>
 
           <cos-input
             [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate"
-            [hasError]="loginForm.controls.password.touched && loginForm.controls.password.invalid"
+            [hasError]="loginForm.password().invalid() && loginForm.password().touched()"
             [errorMessage]="'Password is required'"
           >
-            <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate">
+            <input [type]="showPassword() ? 'text' : 'password'" [formField]="loginForm.password" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate">
             <button type="button" class="view_password" (click)="togglePassword()" [attr.aria-label]="(showPassword() ? 'CONTROL.HIDE' : 'CONTROL.SHOW') | translate">
                <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
             </button>
@@ -87,7 +88,7 @@ import { UserService } from '../../../core/services/user.service';
               variant="primary"
               size="lg"
               [isLoading]="userStore.isLoading()"
-              [isDisabled]="loginForm.invalid"
+              [isDisabled]="loginForm().invalid()"
             >
               {{ 'COMPONENTS.LOGIN_FORM.LOGIN_BTN_LOGIN' | translate }}
             </cos-button>
@@ -227,7 +228,6 @@ import { UserService } from '../../../core/services/user.service';
   `]
 })
 export class LoginComponent {
-  private fb = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private userService = inject(UserService);
@@ -236,9 +236,19 @@ export class LoginComponent {
   showPassword = signal(false);
   error = signal<string | null>(null);
 
-  loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]]
+  loginModel = signal({
+    email: '',
+    password: ''
+  });
+
+  loginForm = form(this.loginModel, (path) => {
+    required(path.email);
+    email(path.email);
+    required(path.password);
+  }, {
+    submission: {
+      action: async (f) => this.save(f().value())
+    }
   });
 
   togglePassword() {
@@ -250,20 +260,17 @@ export class LoginComponent {
     window.location.href = this.userService.getPartnerLoginUrl(partnerId, redirectSuccess);
   }
 
-  async onSubmit() {
-    if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.getRawValue();
-      try {
-        await this.userStore.login(email!, password!);
-        const redirectSuccess = this.route.snapshot.queryParamMap.get('redirectSuccess');
-        if (redirectSuccess) {
-          window.location.href = redirectSuccess;
-        } else {
-          this.router.navigate(['/']);
-        }
-      } catch {
-        this.error.set('Login failed. Please check your credentials.');
+  async save(data: ReturnType<typeof this.loginModel>) {
+    try {
+      await this.userStore.login(data.email, data.password);
+      const redirectSuccess = this.route.snapshot.queryParamMap.get('redirectSuccess');
+      if (redirectSuccess) {
+        window.location.href = redirectSuccess;
+      } else {
+        this.router.navigate(['/']);
       }
+    } catch {
+      this.error.set('Login failed. Please check your credentials.');
     }
   }
 }

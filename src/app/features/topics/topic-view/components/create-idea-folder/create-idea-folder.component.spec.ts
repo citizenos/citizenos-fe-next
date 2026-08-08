@@ -79,12 +79,15 @@ describe('CreateIdeaFolderComponent', () => {
   });
 
   it('should validate form', () => {
-    const nameControl = component.form.get('name');
-    nameControl?.setValue('');
-    expect(component.form.valid).toBe(false);
+    component.model.update(m => ({ ...m, name: '' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.form().invalid()).toBe(true);
 
-    nameControl?.setValue('My Folder');
-    expect(component.form.valid).toBe(true);
+    component.model.update(m => ({ ...m, name: 'My Folder' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.form().invalid()).toBe(false);
   });
 
   it('should toggle idea selection', () => {
@@ -109,7 +112,9 @@ describe('CreateIdeaFolderComponent', () => {
   });
 
   it('should create folder and close dialog', () => {
-    component.form.get('name')?.setValue('New Folder');
+    component.model.update(m => ({ ...m, name: 'New Folder' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
     component.createFolder();
 
     expect(mockIdeationService.createFolder).toHaveBeenCalledWith({
@@ -121,7 +126,9 @@ describe('CreateIdeaFolderComponent', () => {
   });
 
   it('should create folder and add selected ideas', () => {
-    component.form.get('name')?.setValue('New Folder');
+    component.model.update(m => ({ ...m, name: 'New Folder' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
     component.toggleAllIdeas();
     component.createFolder();
 
@@ -136,7 +143,9 @@ describe('CreateIdeaFolderComponent', () => {
 
   it('should handle creation error', () => {
     mockIdeationService.createFolder.mockReturnValue(throwError(() => new Error('Error')));
-    component.form.get('name')?.setValue('New Folder');
+    component.model.update(m => ({ ...m, name: 'New Folder' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
     component.createFolder();
 
     expect(component.loading()).toBe(false);

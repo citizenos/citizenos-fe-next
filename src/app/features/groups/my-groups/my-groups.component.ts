@@ -5,7 +5,6 @@ import {
   signal,
   computed,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserGroupService } from '../../../core/services/user-group.service';
 import { GroupCardComponent } from '../../../shared/components/group-card/group-card.component';

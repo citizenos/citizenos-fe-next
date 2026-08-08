@@ -4,6 +4,7 @@ const { defineConfig } = require('eslint/config');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const prettier = require('eslint-config-prettier');
+const unusedImports = require('eslint-plugin-unused-imports');
 
 module.exports = defineConfig([
   {
@@ -18,6 +19,9 @@ module.exports = defineConfig([
       angular.configs.tsRecommended,
     ],
     processor: angular.processInlineTemplates,
+    plugins: {
+      'unused-imports': unusedImports,
+    },
     rules: {
       '@angular-eslint/directive-selector': [
         'error',
@@ -36,7 +40,9 @@ module.exports = defineConfig([
         },
       ],
       // Relax rules that conflict with the migration codebase
-      '@typescript-eslint/no-unused-vars': [
+      '@typescript-eslint/no-unused-vars': 'off',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
         'warn',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],

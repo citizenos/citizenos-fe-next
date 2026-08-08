@@ -4,7 +4,7 @@ import { toObservable, rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { of, tap, switchMap, take, map } from 'rxjs';
+import { of, switchMap, take, map } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -22,7 +22,6 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { municipalities } from '../../../../../core/services/municipality.service';
-import { AddIdeaFolderComponent } from '../add-idea-folder/add-idea-folder.component';
 import { AddIdeasToFolderComponent } from '../add-ideas-to-folder/add-ideas-to-folder.component';
 import { CreateIdeaFolderComponent } from '../create-idea-folder/create-idea-folder.component';
 import { EditIdeaFolderComponent } from '../edit-idea-folder/edit-idea-folder.component';

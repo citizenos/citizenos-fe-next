@@ -1,5 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TypeaheadComponent, TypeaheadItemData, TypeaheadItemDirective, TypeaheadSelectDirective } from './typeahead.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { Component } from '@angular/core';

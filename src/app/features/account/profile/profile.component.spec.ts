@@ -128,8 +128,8 @@ describe('ProfileComponent', () => {
   });
 
   it('should initialize form with user data', async () => {
-    expect(component.form.name).toBe('Test User');
-    expect(component.form.language).toBe('en');
+    expect(component.formModel().name).toBe('Test User');
+    expect(component.formModel().language).toBe('en');
     
     fixture.detectChanges();
     await fixture.whenStable();
@@ -151,7 +151,7 @@ describe('ProfileComponent', () => {
   });
 
   it('should update profile', async () => {
-    component.form.name = 'Updated Name';
+    component.formModel.update(m => ({ ...m, name: 'Updated Name' }));
     await component.doUpdateProfile();
     expect((mockUserStore as { updateProfile: Mock }).updateProfile).toHaveBeenCalledWith(expect.objectContaining({
       name: 'Updated Name'
@@ -160,9 +160,8 @@ describe('ProfileComponent', () => {
 
   it('should show error on password mismatch during update', async () => {
     component.resetPasswordMode.set(true);
+    component.formModel.update(m => ({ ...m, newPassword: 'pass1', passwordConfirm: 'pass2' }));
     fixture.detectChanges();
-    component.form.newPassword = 'pass1';
-    component.form.passwordConfirm = 'pass2';
     
     await component.doUpdateProfile();
     fixture.detectChanges();
@@ -176,7 +175,7 @@ describe('ProfileComponent', () => {
 
   it('should set profile language', async () => {
     await component.setProfileLanguage('et');
-    expect(component.form.language).toBe('et');
+    expect(component.formModel().language).toBe('et');
     expect((mockConfigStore as { setLanguage: Mock }).setLanguage).toHaveBeenCalledWith('et');
     expect((mockUserStore as { updateProfile: Mock }).updateProfile).toHaveBeenCalledWith({ language: 'et' });
   });
@@ -199,9 +198,9 @@ describe('ProfileComponent', () => {
   });
 
   it('should delete user image', async () => {
-    component.form.imageUrl = 'some-url';
+    component.formModel.update(m => ({ ...m, imageUrl: 'some-url' }));
     await component.deleteUserImage();
-    expect(component.form.imageUrl).toBe('');
+    expect(component.formModel().imageUrl).toBe('');
     expect((mockUserStore as { updateProfile: Mock }).updateProfile).toHaveBeenCalledWith({ imageUrl: '' });
   });
 

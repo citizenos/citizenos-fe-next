@@ -13,7 +13,7 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicDiscussionService } from '../../../../../core/services/topic-discussion.service';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
-import { Argument, ArgumentCount } from '../../../../../core/interfaces/discussion';
+import { ArgumentCount } from '../../../../../core/interfaces/discussion';
 import { Discussion } from '../../../../../core/interfaces/discussion';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { UserStore } from '../../../../../core/state/user.store';

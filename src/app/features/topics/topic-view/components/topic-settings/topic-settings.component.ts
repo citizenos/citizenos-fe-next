@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { take, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Topic, TopicGroup } from '../../../../../core/interfaces/topic';
+import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';

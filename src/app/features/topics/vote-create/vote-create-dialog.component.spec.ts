@@ -8,7 +8,6 @@ import { NotificationService } from '../../../core/services/notification.service
 import { TopicService } from '../../../core/services/topic.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
-import { DatePipe, UpperCasePipe } from '@angular/common';
 
 const mockTopic = { id: 'topic-1', title: 'Test Topic', ideationId: null, discussionId: null };
 const mockVoteService = { save: vi.fn() };

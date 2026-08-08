@@ -4,7 +4,6 @@ import { runInInjectionContext, EnvironmentInjector, signal } from '@angular/cor
 import { PublicGroupsComponent } from './public-groups.component';
 import { PublicGroupService } from '../../../core/services/public-group.service';
 import { UserStore } from '../../../core/state/user.store';
-import { of } from 'rxjs';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, input, model, inject, signal, viewChild, ElementRef, afterNextRender } from '@angular/core';
-import { DatePipe, UpperCasePipe, NgClass } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Topic } from '../../../core/interfaces/topic';
 import { TopicMemberGroup } from '../topic-settings-panel/topic-settings-panel.component';

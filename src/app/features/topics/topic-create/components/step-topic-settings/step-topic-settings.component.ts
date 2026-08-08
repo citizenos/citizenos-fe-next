@@ -4,7 +4,6 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicSettingsPanelComponent, TopicMemberGroup } from '../../../../../shared/components/topic-settings-panel/topic-settings-panel.component';
 import { AnyPipe } from '../../../../../shared/pipes/any.pipe';
 import { UserGroupService } from '../../../../../core/services/user-group.service';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'cos-step-topic-settings',

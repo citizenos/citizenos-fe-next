@@ -1,6 +1,6 @@
 import { Service, signal, computed } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Observable, map, firstValueFrom } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface ListParams {
   page: number;

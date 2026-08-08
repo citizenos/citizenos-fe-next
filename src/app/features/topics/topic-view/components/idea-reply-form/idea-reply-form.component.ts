@@ -1,5 +1,5 @@
 import { Component, inject, signal, output, ChangeDetectionStrategy, effect, model } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { form, FormRoot, FormField, required, maxLength } from '@angular/forms/signals';
 import { TranslateModule } from '@ngx-translate/core';
 import { IdeaComment } from '../../../../../core/interfaces/ideation';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -13,7 +13,8 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
   standalone: true,
   imports: [
     TranslateModule,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     IconComponent
   ],
   templateUrl: './idea-reply-form.component.html',
@@ -40,8 +41,10 @@ export class IdeaReplyFormComponent {
 
   COMMENT_TYPES_MAXLENGTH = this.ideationService.COMMENT_TYPES_MAXLENGTH;
 
-  replyForm = new FormGroup({
-    text: new FormControl('', [Validators.required, Validators.maxLength(this.ideationService.COMMENT_TYPES_MAXLENGTH.reply)])
+  replyModel = signal({ text: '' });
+  replyForm = form(this.replyModel, (path) => {
+    required(path.text);
+    maxLength(path.text, this.COMMENT_TYPES_MAXLENGTH.reply);
   });
 
   errors = signal<Record<string, string[]>>({});
@@ -50,9 +53,7 @@ export class IdeaReplyFormComponent {
     effect(() => {
       const arg = this.argument();
       if (this.editMode() && arg) {
-        this.replyForm.patchValue({
-          text: arg.text || ''
-        }, { emitEvent: false });
+        this.replyModel.update(m => ({ ...m, text: arg.text || '' }));
       }
     });
   }
@@ -60,10 +61,10 @@ export class IdeaReplyFormComponent {
 
 
   save() {
-    if (this.replyForm.invalid) return;
+    if (this.replyForm().invalid()) return;
 
     const data = {
-      ...this.replyForm.value,
+      ...this.replyForm().value(),
       topicId: this.topicId(),
       ideationId: this.ideationId(),
       ideaId: this.ideaId()

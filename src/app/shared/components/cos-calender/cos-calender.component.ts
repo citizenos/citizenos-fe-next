@@ -1,5 +1,5 @@
 import { IconComponent } from '../icon/icon.component';
-import { Component, OnInit, input, output, signal, computed, ChangeDetectionStrategy, effect } from '@angular/core';
+import { Component, OnInit, input, output, signal, ChangeDetectionStrategy, effect } from '@angular/core';
 import { SlicePipe, NgClass } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 

@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, computed, ViewChild, viewChild, Renderer2, HostListener, effect, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ElementRef, inject, computed, viewChild, Renderer2, HostListener, effect, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UpperCasePipe } from '@angular/common';

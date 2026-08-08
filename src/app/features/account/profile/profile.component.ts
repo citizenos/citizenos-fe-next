@@ -2,7 +2,8 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { Component, inject, signal, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
 import { KeyValuePipe, UpperCasePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { form, FormRoot, FormField, required, maxLength, email } from '@angular/forms/signals';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
 import { ConfigStore } from '../../../core/state/config.store';
@@ -29,7 +30,8 @@ type ProfileTab = 'profile' | 'notifications';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FormsModule,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     TranslateModule,
     ToggleComponent,
     DropdownComponent,
@@ -61,7 +63,7 @@ export class ProfileComponent implements OnInit {
 
   activeTab = signal<ProfileTab>('profile');
 
-  form = {
+  formModel = signal({
     name: '',
     email: '',
     company: '',
@@ -73,7 +75,19 @@ export class ProfileComponent implements OnInit {
     preferences: {
       showInSearch: false
     }
-  };
+  });
+
+  profileForm = form(this.formModel, (path) => {
+    required(path.name);
+    maxLength(path.name, 255);
+    required(path.email);
+    email(path.email);
+    maxLength(path.email, 254);
+    maxLength(path.company, 255);
+    maxLength(path.password, 64);
+    maxLength(path.newPassword, 64);
+    maxLength(path.passwordConfirm, 64);
+  });
 
   errors: { name?: string; company?: string; email?: string; password?: string; newPassword?: string; general?: string } = {};
   resetPasswordMode = signal<boolean>(false);
@@ -92,12 +106,17 @@ export class ProfileComponent implements OnInit {
     // Initialize form with user data
     const user = this.store.user();
     if (user) {
-      this.form.name = user.name;
-      this.form.email = user.email || '';
-      this.form.company = user.company || '';
-      this.form.language = user.language;
-      this.form.imageUrl = user.imageUrl || '';
-      this.form.preferences.showInSearch = user.preferences?.showInSearch || false;
+      this.formModel.update(m => ({
+        ...m,
+        name: user.name,
+        email: user.email || '',
+        company: user.company || '',
+        language: user.language,
+        imageUrl: user.imageUrl || '',
+        preferences: {
+          showInSearch: user.preferences?.showInSearch || false
+        }
+      }));
     }
 
     // Handle tab fragments
@@ -120,22 +139,25 @@ export class ProfileComponent implements OnInit {
 
   async doUpdateProfile() {
     this.errors = {};
+    if (this.profileForm().invalid()) return;
+
+    const formVal = this.formModel();
     const params: Record<string, unknown> = {
-      name: this.form.name,
-      email: this.form.email,
-      company: this.form.company,
-      language: this.form.language,
-      preferences: this.form.preferences,
-      imageUrl: this.form.imageUrl
+      name: formVal.name,
+      email: formVal.email,
+      company: formVal.company,
+      language: formVal.language,
+      preferences: formVal.preferences,
+      imageUrl: formVal.imageUrl
     };
 
     if (this.resetPasswordMode()) {
-      if (this.form.newPassword !== this.form.passwordConfirm) {
+      if (formVal.newPassword !== formVal.passwordConfirm) {
         this.errors.newPassword = 'MODALS.PASSWORD_MISMATCH';
         return;
       }
-      params['password'] = this.form.password;
-      params['newPassword'] = this.form.newPassword;
+      params['password'] = formVal.password;
+      params['newPassword'] = formVal.newPassword;
     }
 
     const currentImageFile = this.imageFile();
@@ -151,9 +173,12 @@ export class ProfileComponent implements OnInit {
     try {
       await this.store.updateProfile(params);
       this.resetPasswordMode.set(false);
-      this.form.password = '';
-      this.form.newPassword = '';
-      this.form.passwordConfirm = '';
+      this.formModel.update(m => ({
+        ...m,
+        password: '',
+        newPassword: '',
+        passwordConfirm: ''
+      }));
       this.imageFile.set(null);
       this.uploadedImage.set(null);
     } catch (err: unknown) {
@@ -188,7 +213,7 @@ export class ProfileComponent implements OnInit {
   }
 
   async setProfileLanguage(lang: string) {
-    this.form.language = lang;
+    this.formModel.update(m => ({ ...m, language: lang }));
     this.configStore.setLanguage(lang);
     try {
       await this.store.updateProfile({ language: lang });
@@ -247,7 +272,7 @@ export class ProfileComponent implements OnInit {
     if (this.fileInput) {
       this.fileInput.nativeElement.value = null;
     }
-    this.form.imageUrl = '';
+    this.formModel.update(m => ({ ...m, imageUrl: '' }));
     this.imageFile.set(null);
     this.uploadedImage.set(null);
 

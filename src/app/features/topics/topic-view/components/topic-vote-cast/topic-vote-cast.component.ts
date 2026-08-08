@@ -1,6 +1,6 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, computed, PLATFORM_ID } from '@angular/core';
-import { DatePipe, UpperCasePipe, isPlatformBrowser } from '@angular/common';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { take, combineLatest } from 'rxjs';
 import { Topic, TopicVote } from '../../../../../core/interfaces/topic';

@@ -1,6 +1,6 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import {
-  Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit,
+  Component, input, output, signal, inject, ChangeDetectionStrategy,
   ViewChild, ElementRef, forwardRef, computed, PLATFORM_ID
 } from '@angular/core';
 import { DatePipe, isPlatformBrowser, DOCUMENT } from '@angular/common';

@@ -43,7 +43,6 @@ import { SearchInputComponent } from '../../../shared/components/search-input/se
 import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { CosTabsComponent, TabItem } from '../../../shared/components/tabs/tabs.component';
-import { IllustrationComponent } from '../../../shared/components/illustration/illustration.component';
 import { SeoService } from '../../../core/services/seo.service';
 
 @Component({

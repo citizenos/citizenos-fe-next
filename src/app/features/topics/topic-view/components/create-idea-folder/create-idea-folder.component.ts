@@ -1,5 +1,5 @@
 import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { form, FormRoot, FormField, required, maxLength } from '@angular/forms/signals';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -18,7 +18,8 @@ interface IdeationFolderDialogData {
   selector: 'app-create-idea-folder',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     TranslateModule,
     InputComponent,
     IconComponent
@@ -41,15 +42,14 @@ interface IdeationFolderDialogData {
           <div class="content_section">
             <div class="section_content_wrap">
               <label class="bold" for="name">{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LBL_NAME' | translate }}</label>
-              <form [formGroup]="form">
+              <form [formRoot]="form">
                 <cos-input
                   [placeholder]="'COMPONENTS.CREATE_IDEA_FOLDER.PLACEHOLDER_NAME' | translate"
-                  [hasError]="!!(form.get('name')?.touched && form.get('name')?.invalid)"
+                  [hasError]="form.name().invalid() && form.name().touched()"
                   [errorMessage]="'COMPONENTS.CREATE_IDEA_FOLDER.ADD_NAME_ERROR_MSG_INVALID' | translate"
                 >
-                  <input id="name" formControlName="name" type="text"
-                    [placeholder]="'COMPONENTS.CREATE_IDEA_FOLDER.PLACEHOLDER_NAME' | translate"
-                    [maxlength]="254">
+                  <input id="name" [formField]="form.name" type="text"
+                    [placeholder]="'COMPONENTS.CREATE_IDEA_FOLDER.PLACEHOLDER_NAME' | translate">
                 </cos-input>
               </form>
 
@@ -91,7 +91,7 @@ interface IdeationFolderDialogData {
 
         <div class="dialog_footer with_buttons">
           <button type="button" class="btn_link" (click)="dialogRef.close()">{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LNK_CANCEL' | translate }}</button>
-          <button type="button" class="btn_big_submit" (click)="createFolder()" [disabled]="form.invalid || loading()">
+          <button type="button" class="btn_big_submit" (click)="createFolder()" [disabled]="form().invalid() || loading()">
             {{ 'COMPONENTS.CREATE_IDEA_FOLDER.BTN_CREATE' | translate }}
           </button>
         </div>
@@ -212,8 +212,10 @@ export class CreateIdeaFolderComponent {
   public dialogRef = inject(DialogRef<CreateIdeaFolderComponent>);
   private dialogData = inject<IdeationFolderDialogData>(DIALOG_DATA);
 
-  form = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.maxLength(254)]),
+  model = signal({ name: '' });
+  form = form(this.model, (path) => {
+    required(path.name);
+    maxLength(path.name, 254);
   });
 
   ideas = signal<Idea[]>([]);
@@ -268,13 +270,13 @@ export class CreateIdeaFolderComponent {
   }
 
   createFolder() {
-    if (this.form.invalid) return;
+    if (this.form().invalid()) return;
 
     this.loading.set(true);
     const data = {
       topicId: this.dialogData.topicId,
       ideationId: this.dialogData.ideationId,
-      name: this.form.value.name!
+      name: this.form().value().name!
     };
 
     this.ideationService.createFolder(data).pipe(take(1)).subscribe({

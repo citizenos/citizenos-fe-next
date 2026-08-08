@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchInputComponent } from './search-input.component';
 import { ComponentRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconRegistryService } from '../icon/icon.registry';
-import { IconComponent } from '../icon/icon.component';
 import { Component, Input } from '@angular/core';
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })

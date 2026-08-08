@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { signal, NO_ERRORS_SCHEMA, ComponentRef } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ComponentRef } from '@angular/core';
 import { of, Subject } from 'rxjs';
 import { TopicVoteCastComponent } from './topic-vote-cast.component';
 import { TopicService } from '../../../../../core/services/topic.service';

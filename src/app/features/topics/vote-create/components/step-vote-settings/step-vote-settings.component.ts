@@ -10,7 +10,7 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { DeadlinePickerComponent } from '../../../../../shared/components/deadline-picker/deadline-picker.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { forkJoin, take } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'cos-step-vote-settings',

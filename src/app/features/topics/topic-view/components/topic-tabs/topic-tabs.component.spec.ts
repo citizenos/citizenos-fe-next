@@ -7,7 +7,6 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { signal } from '@angular/core';
-import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { By } from '@angular/platform-browser';
 import { vi } from 'vitest';
 

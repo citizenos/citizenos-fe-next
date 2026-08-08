@@ -7,7 +7,7 @@ import { GroupInviteUserService } from '../../../core/services/group-invite-user
 import { UserStore } from '../../../core/state/user.store';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { GroupInvite, GroupInvitation } from '../../../core/services/group-invite-user.service';
+import { GroupInvitation } from '../../../core/services/group-invite-user.service';
 import { User } from '../../../core/interfaces/user';
 
 const mockInvite = {

@@ -25,7 +25,6 @@ import { TopicInviteDialogComponent } from '../topic-view/components/topic-invit
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { PendingChangesComponent } from '../../../core/guards/pending-changes.guard';
-import { NeverPipe } from '../../../shared/pipes/never.pipe';
 
 export type IdeationCreateStep = 'info' | 'settings' | 'ideation' | 'preview';
 
