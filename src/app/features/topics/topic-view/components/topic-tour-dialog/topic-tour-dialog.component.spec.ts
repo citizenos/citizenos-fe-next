@@ -38,14 +38,14 @@ describe('TopicTourDialogComponent', () => {
   });
 
   it('should have a take-the-tour button that closes dialog with true', () => {
-    const btn = fixture.nativeElement.querySelector('button[translate="VIEWS.TOPICS_TOPICID.TUTORIAL_BTN_TAKE_THE_TOUR"]');
+    const btn = fixture.nativeElement.querySelector('.btn_big_submit[dialogClose]');
     expect(btn).toBeTruthy();
     btn.click();
     expect(mockDialogRef.close).toHaveBeenCalledWith(true);
   });
 
   it('should have a skip link that closes the dialog', () => {
-    const skip = fixture.nativeElement.querySelector('a[dialogClose]');
+    const skip = fixture.nativeElement.querySelector('.btn_link[dialogClose]');
     expect(skip).toBeTruthy();
     skip.click();
     expect(mockDialogRef.close).toHaveBeenCalled();

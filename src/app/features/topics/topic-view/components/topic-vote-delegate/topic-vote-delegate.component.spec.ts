@@ -75,7 +75,7 @@ describe('TopicVoteDelegateComponent', () => {
     expect(mockVoteDelegationService.save).toHaveBeenCalledWith({
       topicId: 't1',
       voteId: 'v1',
-      userId: 'u2'
+      userId: 'user2'
     });
   });
 

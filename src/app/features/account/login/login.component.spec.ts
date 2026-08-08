@@ -44,16 +44,19 @@ describe('LoginComponent', () => {
   });
 
   it('should have an invalid form when empty', () => {
-    expect(component.loginForm.valid).toBeFalsy();
+    expect(component.loginForm().invalid()).toBeTruthy();
   });
 
   it('should validate email format', () => {
-    const email = component.loginForm.controls.email;
-    email.setValue('invalid-email');
-    expect(email.hasError('email')).toBeTruthy();
+    component.loginModel.update(m => ({ ...m, email: 'invalid-email' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.loginForm.email().errors().some(e => e.kind === 'email')).toBeTruthy();
 
-    email.setValue('test@example.com');
-    expect(email.hasError('email')).toBeFalsy();
+    component.loginModel.update(m => ({ ...m, email: 'test@example.com' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.loginForm.email().errors().some(e => e.kind === 'email')).toBeFalsy();
   });
 
   it('should toggle password visibility', () => {
@@ -65,28 +68,32 @@ describe('LoginComponent', () => {
   it('should call login on UserStore when form is submitted', async () => {
     const router = TestBed.inject(Router);
     const navigateSpy = vi.spyOn(router, 'navigate');
-    component.loginForm.setValue({
+    component.loginModel.set({
       email: 'test@example.com',
       password: 'password123'
     });
+    fixture.detectChanges();
+    TestBed.flushEffects();
 
     (mockUserStore as { login: Mock }).login.mockResolvedValue({});
 
-    await component.onSubmit();
+    await component.save(component.loginModel());
 
     expect((mockUserStore as { login: Mock }).login).toHaveBeenCalledWith('test@example.com', 'password123');
     expect(navigateSpy).toHaveBeenCalledWith(['/']);
   });
 
   it('should handle login error', async () => {
-    component.loginForm.setValue({
+    component.loginModel.set({
       email: 'test@example.com',
       password: 'wrong-password'
     });
+    fixture.detectChanges();
+    TestBed.flushEffects();
 
     (mockUserStore as { login: Mock }).login.mockRejectedValue(new Error('Login failed'));
 
-    await component.onSubmit();
+    await component.save(component.loginModel());
 
     expect(component.error()).toBe('Login failed. Please check your credentials.');
   });
@@ -99,7 +106,7 @@ describe('LoginComponent', () => {
 
     component.doLoginPartner('google');
 
-    expect((mockUserService as any).getPartnerLoginUrl).toHaveBeenCalledWith('google');
+    expect((mockUserService as any).getPartnerLoginUrl).toHaveBeenCalledWith('google', undefined);
     expect(window.location.href).toBe('http://partner-login.url');
 
     vi.unstubAllGlobals();
