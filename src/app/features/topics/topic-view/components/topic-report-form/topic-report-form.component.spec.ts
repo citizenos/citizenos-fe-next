@@ -1,7 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
@@ -12,7 +11,7 @@ import { TopicReportService } from '../../../../../core/services/topic-report.se
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { FormRoot, FormField } from '@angular/forms/signals';
-import { DialogCloseDirective } from 'src/app/shared/dialog/dialog-ref';
+import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent { @Input() name = ''; @Input() size = 24; }

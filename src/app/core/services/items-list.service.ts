@@ -57,9 +57,6 @@ export abstract class ItemsListService<T extends ListParams = ListParams, U = un
 
   isLoading = this.resource.isLoading;
   error = this.resource.error;
-
-  constructor() {}
-
   protected setDefaults(defaults: Partial<T>) {
     this.defaultParams = { ...this.defaultParams, ...defaults };
     this.params.set({ ...this.defaultParams });

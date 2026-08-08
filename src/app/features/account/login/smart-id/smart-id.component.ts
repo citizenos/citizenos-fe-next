@@ -218,7 +218,7 @@ export class SmartIdComponent implements OnDestroy {
              this.stopPolling();
              try {
                 await this.userStore.checkStatus();
-             } catch (_e) {
+             } catch {
                 // ignore
              }
              this.challengeID.set(null);

@@ -222,7 +222,7 @@ export class TopicViewComponent implements OnInit {
                   }
                   padURL.searchParams.set('theme', 'default');
                   topic.padUrl = padURL.href;
-                } catch (_e) {
+                } catch {
                   console.error('Invalid padUrl', topic.padUrl);
                 }
               }
