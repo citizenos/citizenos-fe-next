@@ -191,9 +191,9 @@ describe('TopicInviteDialogComponent', () => {
     expect(mockDialogRef.close).toHaveBeenCalledWith();
   });
 
-  it('canInvite() returns topicService.canUpdate result', () => {
+  it('canInvite() returns topicService.canDelete result', () => {
     expect(component.canInvite()).toBe(true);
-    mockTopicService.canUpdate.mockReturnValue(false);
+    mockTopicService.canDelete.mockReturnValue(false);
     expect(component.canInvite()).toBe(false);
   });
 });
