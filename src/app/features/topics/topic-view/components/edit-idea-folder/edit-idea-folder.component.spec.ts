@@ -88,7 +88,7 @@ describe('EditIdeaFolderComponent', () => {
   });
 
   it('should patch form with initial data', () => {
-    expect(component.form.get('name')?.value).toBe('Initial Folder');
+    expect(component.form().value().name).toBe('Initial Folder');
   });
 
   it('should load initial data and selections', () => {
@@ -98,7 +98,9 @@ describe('EditIdeaFolderComponent', () => {
   });
 
   it('should handle idea diff on save (add new idea)', () => {
-    component.form.get('name')?.setValue('Renamed Folder');
+    component.model.update(m => ({ ...m, name: 'Renamed Folder' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
     component.toggleIdea({ id: 'idea2' } as Idea); // Add idea2
     component.editFolder();
 

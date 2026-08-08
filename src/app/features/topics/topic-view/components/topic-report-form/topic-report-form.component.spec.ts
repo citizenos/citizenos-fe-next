@@ -69,16 +69,18 @@ describe('TopicReportFormComponent', () => {
   });
 
   it('should initialise form with first report type', () => {
-    expect(component.reportForm.value.type).toBe('spam');
+    expect(component.reportForm().value().type).toBe('spam');
   });
 
   it('should have invalid form when text is empty', () => {
-    expect(component.reportForm.invalid).toBe(true);
+    expect(component.reportForm().invalid()).toBe(true);
   });
 
   it('changeType() should update form type', () => {
     component.changeType('inappropriate');
-    expect(component.reportForm.value.type).toBe('inappropriate');
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.reportForm().value().type).toBe('inappropriate');
   });
 
   it('doReport() should not call service when form is invalid', () => {
@@ -87,7 +89,9 @@ describe('TopicReportFormComponent', () => {
   });
 
   it('doReport() should call service and close on success', () => {
-    component.reportForm.patchValue({ text: 'This is spam' });
+    component.reportModel.update(m => ({ ...m, text: 'This is spam' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
     component.doReport();
     expect(mockTopicReportService.save).toHaveBeenCalledWith({
       topicId: 'topic-1', type: 'spam', text: 'This is spam',
@@ -97,7 +101,9 @@ describe('TopicReportFormComponent', () => {
   });
 
   it('doReport() should show error when service fails', () => {
-    component.reportForm.patchValue({ text: 'content' });
+    component.reportModel.update(m => ({ ...m, text: 'content' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
     mockTopicReportService.save.mockReturnValue(throwError(() => new Error('fail')));
     component.doReport();
     expect(mockNotificationService.error).toHaveBeenCalled();
@@ -110,7 +116,9 @@ describe('TopicReportFormComponent', () => {
   });
 
   it('should not submit when isLoading is true', () => {
-    component.reportForm.patchValue({ text: 'content' });
+    component.reportModel.update(m => ({ ...m, text: 'content' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
     component.isLoading.set(true);
     component.doReport();
     expect(mockTopicReportService.save).not.toHaveBeenCalled();

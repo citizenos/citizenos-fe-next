@@ -92,18 +92,23 @@ describe('IdeaReplyFormComponent', () => {
   });
 
   it('should validate form requirements', async () => {
-    const { component } = await createComponent();
-    const textControl = component.replyForm.get('text');
-    textControl?.setValue('');
-    expect(textControl?.valid).toBe(false);
+    const { component, fixture } = await createComponent();
+    component.replyModel.update(m => ({ ...m, text: '' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.replyForm.text().invalid()).toBe(true);
 
-    textControl?.setValue('A valid reply');
-    expect(textControl?.valid).toBe(true);
+    component.replyModel.update(m => ({ ...m, text: 'A valid reply' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    expect(component.replyForm.text().invalid()).toBe(false);
   });
 
   it('should call saveIdeaComment on save when in post mode', async () => {
-    const { component } = await createComponent();
-    component.replyForm.get('text')?.setValue('Test reply');
+    const { component, fixture } = await createComponent();
+    component.replyModel.update(m => ({ ...m, text: 'Test reply' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
     component.save();
     expect(mockIdeationService.saveIdeaComment).toHaveBeenCalled();
     expect(mockNotification.success).toHaveBeenCalled();
@@ -121,18 +126,22 @@ describe('IdeaReplyFormComponent', () => {
     }
     fixture.detectChanges();
 
-    expect(component.replyForm.get('text')?.value).toBe('Old text');
+    expect(component.replyForm().value().text).toBe('Old text');
     
-    component.replyForm.get('text')?.setValue('Updated text');
+    component.replyModel.update(m => ({ ...m, text: 'Updated text' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
     component.save();
     expect(mockIdeationService.updateIdeaComment).toHaveBeenCalled();
     expect(mockNotification.success).toHaveBeenCalled();
   });
 
   it('should handle service errors', async () => {
-    const { component } = await createComponent();
+    const { component, fixture } = await createComponent();
     mockIdeationService.saveIdeaComment.mockReturnValue(throwError(() => ({ errors: { text: 'too long' } })));
-    component.replyForm.get('text')?.setValue('Test reply');
+    component.replyModel.update(m => ({ ...m, text: 'Test reply' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
     component.save();
     expect(component.errors()).toEqual({ text: 'too long' });
   });
