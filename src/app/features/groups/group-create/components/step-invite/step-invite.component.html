@@ -51,7 +51,7 @@
               </div>
               <div options>
                 @for (level of LEVELS; track level) {
-                  <div class="option" (click)="updateLevel(user, level)" (keydown.enter)="updateLevel(user, level)" role="option" tabindex="0">
+                  <div class="option" (click)="updateLevel(user, level)" (keydown.enter)="updateLevel(user, level)" role="option" tabindex="0" [attr.aria-selected]="(user.level || 'read') === level">
                     <span [translate]="'TXT_GROUP_LEVELS_' + level.toUpperCase()"></span>
                   </div>
                 }

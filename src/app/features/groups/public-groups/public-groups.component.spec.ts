@@ -15,9 +15,9 @@ const mockGroupService: Partial<PublicGroupService> = {
   loadPage: vi.fn(),
 };
 
-const mockUserStore: { isAuthenticated: any; user: any } = {
-  isAuthenticated: vi.fn().mockReturnValue(false) as unknown as () => boolean,
-  user: vi.fn().mockReturnValue(null) as unknown as () => null,
+const mockUserStore: { isAuthenticated: import('vitest').Mock; user: import('vitest').Mock } = {
+  isAuthenticated: vi.fn().mockReturnValue(false),
+  user: vi.fn().mockReturnValue(null),
 };
 
 describe('PublicGroupsComponent', () => {

@@ -3,7 +3,7 @@
     <div id="notification_wrap_dialog" class="mobile_hidden">
       <cos-notifications></cos-notifications>
     </div>
-    <div class="dialog" (click)="$event.stopPropagation()">
+    <div class="dialog" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" tabindex="-1">
       <div id="notification_wrap_dialog" class="mobile_show">
         <cos-notifications></cos-notifications>
       </div>
@@ -26,7 +26,7 @@
       <div class="dialog_tabs_wrap voting">
         @for (tab of tabs; track tab) {
           <a class="dialog_tab success mobile_hidden"
-            [class.active]="tabActive() === tab + 1" (click)="tabActive.set(tab + 1)">
+            [class.active]="tabActive() === tab + 1" (click)="tabActive.set(tab + 1)" (keydown.enter)="tabActive.set(tab + 1)" tabindex="0">
             <span class="tab_number">{{tab + 1}}.&nbsp;</span>
             @if (tabActive() === tab + 1) {
               <span class="tab_text">
@@ -106,7 +106,7 @@
                 <div>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.SELECT_VOTING_SYSTEM_DESC' | translate }}</div>
 
                 @if (topic.ideationId) {
-                  <div class="radio_wrap voting" (click)="setVoteType(VOTE_TYPES.ideation)"
+                  <div class="radio_wrap voting" (click)="setVoteType(VOTE_TYPES.ideation)" (keydown.enter)="setVoteType(VOTE_TYPES.ideation)" tabindex="0"
                     [class.selected]="vote().type === VOTE_TYPES.ideation">
                     <div class="radio_text_wrap">
                       <div class="radio_lable_wrap">
@@ -121,7 +121,7 @@
                   </div>
                 }
 
-                <div class="radio_wrap voting" (click)="setVoteType(VOTE_TYPES.regular)"
+                <div class="radio_wrap voting" (click)="setVoteType(VOTE_TYPES.regular)" (keydown.enter)="setVoteType(VOTE_TYPES.regular)" tabindex="0"
                   [class.selected]="vote().type === VOTE_TYPES.regular">
                   <div class="radio_text_wrap">
                     <div class="radio_lable_wrap">
@@ -135,7 +135,7 @@
                   </div>
                 </div>
 
-                <div class="radio_wrap voting" (click)="setVoteType(VOTE_TYPES.multiple)"
+                <div class="radio_wrap voting" (click)="setVoteType(VOTE_TYPES.multiple)" (keydown.enter)="setVoteType(VOTE_TYPES.multiple)" tabindex="0"
                   [class.selected]="vote().type === VOTE_TYPES.multiple">
                   <div class="radio_text_wrap">
                     <div class="radio_lable_wrap">
@@ -166,43 +166,43 @@
                 
                 @if (vote().type === VOTE_TYPES.regular) {
                   <div class="vote_options_wrap">
-                    <div class="radio_wrap" [class.selected]="predefinedOptions().yes.enabled" (click)="toggleOption('yes')">
+                    <div class="radio_wrap" [class.selected]="predefinedOptions().yes.enabled" (click)="toggleOption('yes')" (keydown.enter)="toggleOption('yes')" tabindex="0">
                       <div class="radio_text_wrap">
                         <div class="radio_lable_wrap">
-                          <label class="checkbox" [class.selected]="predefinedOptions().yes.enabled">
+                          <div class="checkbox" [class.selected]="predefinedOptions().yes.enabled">
                             <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_YES' | translate }}</span>
                             <span class="checkmark"></span>
-                          </label>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="radio_wrap" [class.selected]="predefinedOptions().no.enabled" (click)="toggleOption('no')">
+                    <div class="radio_wrap" [class.selected]="predefinedOptions().no.enabled" (click)="toggleOption('no')" (keydown.enter)="toggleOption('no')" tabindex="0">
                       <div class="radio_text_wrap">
                         <div class="radio_lable_wrap">
-                          <label class="checkbox" [class.selected]="predefinedOptions().no.enabled">
+                          <div class="checkbox" [class.selected]="predefinedOptions().no.enabled">
                             <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_NO' | translate }}</span>
                             <span class="checkmark"></span>
-                          </label>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="radio_wrap" [class.selected]="extraOptions().neutral.enabled" (click)="toggleExtraOption('neutral')">
+                    <div class="radio_wrap" [class.selected]="extraOptions().neutral.enabled" (click)="toggleExtraOption('neutral')" (keydown.enter)="toggleExtraOption('neutral')" tabindex="0">
                       <div class="radio_text_wrap">
                         <div class="radio_lable_wrap">
-                          <label class="checkbox" [class.selected]="extraOptions().neutral.enabled">
+                          <div class="checkbox" [class.selected]="extraOptions().neutral.enabled">
                             <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_NEUTRAL' | translate }}</span>
                             <span class="checkmark"></span>
-                          </label>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="radio_wrap" [class.selected]="extraOptions().veto.enabled" (click)="toggleExtraOption('veto')">
+                    <div class="radio_wrap" [class.selected]="extraOptions().veto.enabled" (click)="toggleExtraOption('veto')" (keydown.enter)="toggleExtraOption('veto')" tabindex="0">
                       <div class="radio_text_wrap">
                         <div class="radio_lable_wrap">
-                          <label class="checkbox" [class.selected]="extraOptions().veto.enabled">
+                          <div class="checkbox" [class.selected]="extraOptions().veto.enabled">
                             <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_VETO' | translate }}</span>
                             <span class="checkmark"></span>
-                          </label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -253,23 +253,23 @@
                     <div class="description_text">
                       <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_CAN_ADD_EXTRA_OPTIONS' | translate }}</span>
                     </div>
-                    <div class="radio_wrap" [class.selected]="extraOptions().neutral.enabled" (click)="toggleExtraOption('neutral')">
+                    <div class="radio_wrap" [class.selected]="extraOptions().neutral.enabled" (click)="toggleExtraOption('neutral')" (keydown.enter)="toggleExtraOption('neutral')" tabindex="0">
                       <div class="radio_text_wrap">
                         <div class="radio_lable_wrap">
-                          <label class="checkbox" [class.selected]="extraOptions().neutral.enabled">
+                          <div class="checkbox" [class.selected]="extraOptions().neutral.enabled">
                             <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_NEUTRAL' | translate }}</span>
                             <span class="checkmark"></span>
-                          </label>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="radio_wrap" [class.selected]="extraOptions().veto.enabled" (click)="toggleExtraOption('veto')">
+                    <div class="radio_wrap" [class.selected]="extraOptions().veto.enabled" (click)="toggleExtraOption('veto')" (keydown.enter)="toggleExtraOption('veto')" tabindex="0">
                       <div class="radio_text_wrap">
                         <div class="radio_lable_wrap">
-                          <label class="checkbox" [class.selected]="extraOptions().veto.enabled">
+                          <div class="checkbox" [class.selected]="extraOptions().veto.enabled">
                             <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_VETO' | translate }}</span>
                             <span class="checkmark"></span>
-                          </label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -285,7 +285,7 @@
                   <div>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_TXT_DESCRIPTION_CHOICE_RANGE' | translate }}</div>
                   
                   <div class="input_area min_max_options">
-                    <label class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_LBL_MIN_CHOICES' | translate }}</label>
+                    <div class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_LBL_MIN_CHOICES' | translate }}</div>
                     <div class="options_count_input_wrap">
                       <button type="button" class="btn_medium_voting_light icon" (click)="optionsCountDown('min')">
                         <cos-icon name="minus"></cos-icon>
@@ -299,7 +299,7 @@
                   </div>
                   
                   <div class="input_area min_max_options">
-                    <label class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_LBL_MAX_CHOICES' | translate }}</label>
+                    <div class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.VOTE_LBL_MAX_CHOICES' | translate }}</div>
                     <div class="options_count_input_wrap">
                       <button type="button" class="btn_medium_voting_light icon" (click)="optionsCountDown('max')">
                         <cos-icon name="minus"></cos-icon>
@@ -320,7 +320,7 @@
                 <div class="small_heading">{{ vote().type === VOTE_TYPES.regular ? '2.' : '3.' }} <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS' | translate }}</span></div>
                 <div>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_SET_UP_VOTING_RIGHTS_DESC' | translate }}</div>
                 
-                <div class="radio_wrap date_selector" [class.selected]="vote().authType === 'soft'" (click)="updateVote('authType', 'soft')">
+                <div class="radio_wrap date_selector" [class.selected]="vote().authType === 'soft'" (click)="updateVote('authType', 'soft')" (keydown.enter)="updateVote('authType', 'soft')" tabindex="0">
                   <div class="radio_text_wrap">
                     <div class="radio_lable_wrap">
                       <label class="radio_box" [class.selected]="vote().authType === 'soft'">
@@ -335,7 +335,7 @@
                   </div>
                 </div>
 
-                <div class="radio_wrap date_selector" [class.selected]="vote().authType === 'hard'" (click)="updateVote('authType', 'hard')">
+                <div class="radio_wrap date_selector" [class.selected]="vote().authType === 'hard'" (click)="updateVote('authType', 'hard')" (keydown.enter)="updateVote('authType', 'hard')" tabindex="0">
                   <div class="radio_text_wrap">
                     <div class="radio_lable_wrap">
                       <label class="radio_box" [class.selected]="vote().authType === 'hard'">
@@ -361,13 +361,13 @@
                 <div class="small_heading">{{ vote().type === VOTE_TYPES.regular ? '3.' : '4.' }} <span>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION' | translate }}</span></div>
                 <div>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_VOTE_DELEGATION_DESC' | translate }}</div>
                 <div class="radio_wrap" [class.selected]="vote().delegationIsAllowed" [class.disabled]="vote().authType === VOTE_AUTH_TYPES.hard"
-                  (click)="vote().authType !== VOTE_AUTH_TYPES.hard && updateVote('delegationIsAllowed', !vote().delegationIsAllowed)">
+                  (click)="vote().authType !== VOTE_AUTH_TYPES.hard && updateVote('delegationIsAllowed', !vote().delegationIsAllowed)" (keydown.enter)="vote().authType !== VOTE_AUTH_TYPES.hard && updateVote('delegationIsAllowed', !vote().delegationIsAllowed)" tabindex="0">
                   <div class="radio_text_wrap">
                     <div class="radio_lable_wrap">
-                      <label class="checkbox" [class.selected]="vote().delegationIsAllowed">
+                      <div class="checkbox" [class.selected]="vote().delegationIsAllowed">
                         <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LBL_OPTION_DELEGATION' | translate }}</span>
                         <span class="checkmark"></span>
-                      </label>
+                      </div>
                     </div>
                   </div>
                 </div>

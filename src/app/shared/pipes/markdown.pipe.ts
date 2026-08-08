@@ -13,8 +13,8 @@ export class MarkdownPipe implements PipeTransform {
     renderer.code = ({ text }: { text: string }) => {
       return `<code>${text}</code>`;
     };
-    renderer.heading = (token: { level: number, text: string }) => {
-      return `<h${token.level}>${token.text}</h${token.level}>`;
+    renderer.heading = ({ depth, text }: import('marked').Tokens.Heading) => {
+      return `<h${depth}>${text}</h${depth}>`;
     };
     
     marked.use({ renderer });

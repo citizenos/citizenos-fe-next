@@ -70,7 +70,7 @@ export class GroupShareComponent implements OnInit {
     }).afterClosed().pipe(take(1)).subscribe(result => {
       if (result === true) {
         this.groupJoinService.generateToken(this.group().id, this.joinLevel())
-          .pipe(take(1)).subscribe((res: any) => {
+          .pipe(take(1)).subscribe((res: { token: string, level?: string }) => {
             this.joinToken.set(res.token);
             if (res.level) this.joinLevel.set(res.level);
           });

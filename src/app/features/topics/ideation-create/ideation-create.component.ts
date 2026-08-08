@@ -76,6 +76,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
     status: 'draft'
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   topicForm = form(this.topicModel, (path: any) => {
     required(path.title);
   });
@@ -86,6 +87,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
     disableReplies: false
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ideationForm = form(this.ideationModel, (path: any) => {
     required(path.question);
   });
@@ -201,7 +203,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
 
     this.topicService.readDescription(id).pipe(take(1)).subscribe({
       next: (topic) => {
-        this.topicModel.update((t: any) => ({ ...t, description: topic.description }));
+        this.topicModel.update((t: Partial<Topic>) => ({ ...t, description: topic.description }));
       }
     });
   }
@@ -236,7 +238,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
     const addOps = this.addedGroups().map(g => this.groupMemberTopicService.addTopic(g.id, topicId, g.level || 'read'));
     const removeOps = this.groupsToRemove().map(g => this.groupMemberTopicService.removeTopicFromGroup(g.id, topicId));
 
-    forkJoin([...addOps, ...removeOps, this.topicService.patch(this.topicModel() as any)]).pipe(
+    forkJoin([...addOps, ...removeOps, this.topicService.patch(this.topicModel() as unknown as Topic)]).pipe(
       catchError(() => of(null))
     ).subscribe(() => {
       this.isLoading.set(false);
@@ -252,7 +254,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
   }
 
   onTopicUpdate(updates: Partial<Topic>) {
-    this.topicModel.update((t: any) => ({ ...t, ...updates }));
+    this.topicModel.update((t: Partial<Topic>) => ({ ...t, ...updates }));
     if (updates.id) {
       this.membersResource.reload();
       this.invitesResource.reload();
@@ -260,7 +262,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
   }
 
   onIdeationUpdate(updates: Partial<Ideation>) {
-    this.ideationModel.update((i: any) => ({ ...i, ...updates }));
+    this.ideationModel.update((i: Partial<Ideation>) => ({ ...i, ...updates }));
   }
 
   onGroupsAdded(groups: TopicMemberGroup[]) {

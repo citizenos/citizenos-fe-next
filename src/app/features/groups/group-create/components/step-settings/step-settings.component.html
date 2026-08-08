@@ -59,7 +59,7 @@
         </div>
         <div options>
           @for (country of countries; track country.iso2) {
-            <div class="option" (click)="updateCountry(country.name)" (keydown.enter)="updateCountry(country.name)" role="option" tabindex="0">{{country.name}}</div>
+            <div class="option" (click)="updateCountry(country.name)" (keydown.enter)="updateCountry(country.name)" role="option" tabindex="0" [attr.aria-selected]="group().country === country.name">{{country.name}}</div>
           }
         </div>
       </cos-dropdown>
@@ -70,7 +70,7 @@
         </div>
         <div options>
           @for (language of languages; track language.code) {
-            <div class="option" (click)="updateLanguage(language.name)" (keydown.enter)="updateLanguage(language.name)" role="option" tabindex="0">{{language.name}}</div>
+            <div class="option" (click)="updateLanguage(language.name)" (keydown.enter)="updateLanguage(language.name)" role="option" tabindex="0" [attr.aria-selected]="group().language === language.name">{{language.name}}</div>
           }
         </div>
       </cos-dropdown>

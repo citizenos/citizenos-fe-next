@@ -134,7 +134,7 @@ describe('TopicCreateComponent (business logic)', () => {
   it('shows error notification when createTopicEagerly fails', () => {
     mockTopicService.save.mockReturnValue({
       pipe: () => ({
-        subscribe: (callbacks: any) => callbacks.error()
+        subscribe: (callbacks: { error: () => void }) => callbacks.error()
       })
     });
     

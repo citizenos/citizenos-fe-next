@@ -74,7 +74,7 @@
                     </div>
                     <div options>
                       @for (level of allowedLevels(); track level) {
-                        <div class="option" (click)="updateAllLevels(level)" (keydown.enter)="updateAllLevels(level)" tabindex="0" role="option">
+                        <div class="option" (click)="updateAllLevels(level)" (keydown.enter)="updateAllLevels(level)" tabindex="0" role="option" [attr.aria-selected]="globalLevel() === level">
                           {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                         </div>
                       }
@@ -94,7 +94,7 @@
                             </div>
                             <div options>
                               @for (level of allowedLevels(); track level) {
-                                <div class="option" (click)="updateMemberLevel(member, level)" (keydown.enter)="updateMemberLevel(member, level)" tabindex="0" role="option">
+                                <div class="option" (click)="updateMemberLevel(member, level)" (keydown.enter)="updateMemberLevel(member, level)" tabindex="0" role="option" [attr.aria-selected]="member.level === level">
                                   {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                                 </div>
                               }

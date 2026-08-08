@@ -26,7 +26,7 @@ describe('StepVoteSettingsComponent (business logic)', () => {
     component = TestBed.runInInjectionContext(() => new StepVoteSettingsComponent());
     // Mock the required input signal
     vi.spyOn(component, 'vote').mockReturnValue(defaultVote as unknown as Vote);
-    vi.spyOn(component, 'topic').mockReturnValue({} as any);
+    vi.spyOn(component, 'topic').mockReturnValue({} as unknown as import('../../../../../core/interfaces/topic').Topic);
   });
 
   it('should create', () => {

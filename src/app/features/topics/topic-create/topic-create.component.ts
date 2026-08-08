@@ -71,6 +71,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
     hashtag: null
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   topicForm = form(this.topicModel, (path: any) => {
     required(path.title);
   });

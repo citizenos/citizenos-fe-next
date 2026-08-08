@@ -24,7 +24,7 @@
         </div>
         <div options>
           @for (level of LEVELS | keyvalue; track level.key) {
-            <div class="option" (click)="doUpdateJoinToken(level.value)" (keydown.enter)="doUpdateJoinToken(level.value)" role="option" tabindex="0">
+            <div class="option" (click)="doUpdateJoinToken(level.value)" (keydown.enter)="doUpdateJoinToken(level.value)" role="option" tabindex="0" [attr.aria-selected]="joinLevel() === level.value">
               {{'TXT_GROUP_LEVELS_' + level.value.toUpperCase() | translate}}
             </div>
           }

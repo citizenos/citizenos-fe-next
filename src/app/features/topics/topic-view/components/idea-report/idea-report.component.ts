@@ -79,7 +79,7 @@ export interface IdeaReportData {
                 <div selection class="selected_item">{{ 'TXT_REPORT_TYPES_' + report.get('type')?.value?.toUpperCase() | translate }}</div>
                 <div options>
                   @for (type of reportTypes; track type) {
-                    <div class="option" (click)="selectReportType(type)" (keydown.enter)="selectReportType(type)" role="option" tabindex="0">
+                    <div class="option" (click)="selectReportType(type)" (keydown.enter)="selectReportType(type)" role="option" tabindex="0" [attr.aria-selected]="report.get('type')?.value === type">
                       {{ 'TXT_REPORT_TYPES_' + type.toUpperCase() | translate }}
                     </div>
                   }

@@ -21,7 +21,7 @@ describe('TopicVoteSignEsteidComponent', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (globalThis as any).hwcrypto = {
+    (globalThis as unknown as { hwcrypto: unknown }).hwcrypto = {
       getCertificate: vi.fn(),
       sign: vi.fn()
     };

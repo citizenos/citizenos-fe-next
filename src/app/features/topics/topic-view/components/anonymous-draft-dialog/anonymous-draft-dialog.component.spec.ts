@@ -8,7 +8,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 describe('AnonymousDraftDialogComponent', () => {
   let component: AnonymousDraftDialogComponent;
   let fixture: ComponentFixture<AnonymousDraftDialogComponent>;
-  let mockDialogRef: any;
+  let mockDialogRef: { close: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     mockDialogRef = {

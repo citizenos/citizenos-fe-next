@@ -17,8 +17,8 @@ describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let mockUserStore: { isAuthenticated: ReturnType<typeof signal<boolean>> };
-  let mockTopicService: { getPreview: any };
-  let mockGroupService: { getPreview: any };
+  let mockTopicService: { getPreview: ReturnType<typeof vi.fn> };
+  let mockGroupService: { getPreview: ReturnType<typeof vi.fn> };
   let mockHomeService: Partial<HomeService>;
 
   beforeEach(async () => {

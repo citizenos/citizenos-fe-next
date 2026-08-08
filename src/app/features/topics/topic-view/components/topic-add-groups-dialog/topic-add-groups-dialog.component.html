@@ -51,7 +51,7 @@
                   </div>
                   <div options>
                     @for (level of LEVELS; track level) {
-                      <div class="option" (click)="updateAllLevels(level)" (keydown.enter)="updateAllLevels(level)" role="option" tabindex="0">
+                      <div class="option" (click)="updateAllLevels(level)" (keydown.enter)="updateAllLevels(level)" role="option" tabindex="0" [attr.aria-selected]="globalLevel() === level">
                         {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                       </div>
                     }
@@ -71,7 +71,7 @@
                           </div>
                           <div options>
                             @for (level of LEVELS; track level) {
-                              <div class="option" (click)="updateGroupLevel(group, level)" (keydown.enter)="updateGroupLevel(group, level)" role="option" tabindex="0">
+                              <div class="option" (click)="updateGroupLevel(group, level)" (keydown.enter)="updateGroupLevel(group, level)" role="option" tabindex="0" [attr.aria-selected]="group.permission.level === level">
                                 {{ 'TXT_TOPIC_LEVELS_' + (level | uppercase) | translate }}
                               </div>
                             }

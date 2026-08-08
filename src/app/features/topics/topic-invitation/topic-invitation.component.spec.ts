@@ -27,7 +27,7 @@ describe('TopicInvitationComponent', () => {
   let fixture: ComponentFixture<TopicInvitationComponent>;
   let inviteService: Partial<TopicInviteUserService>;
   let dialogService: Partial<DialogService>;
-  let userStore: { isAuthenticated: () => boolean; user: () => any; logout: ReturnType<typeof vi.fn> };
+  let userStore: { isAuthenticated: () => boolean; user: () => unknown; logout: ReturnType<typeof vi.fn> };
   let notification: Partial<NotificationService>;
 
   beforeEach(() => TestBed.resetTestingModule());
