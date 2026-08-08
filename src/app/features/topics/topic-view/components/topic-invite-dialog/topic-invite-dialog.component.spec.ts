@@ -31,6 +31,7 @@ describe('TopicInviteDialogComponent', () => {
   const mockTopicService = {
     LEVELS: { read: 1, edit: 2, admin: 3 },
     canUpdate: vi.fn().mockReturnValue(true),
+    canDelete: vi.fn().mockReturnValue(true),
   };
   const mockTopicInviteUserService = { save: vi.fn().mockReturnValue(of({})) };
   const mockSearchService = {
