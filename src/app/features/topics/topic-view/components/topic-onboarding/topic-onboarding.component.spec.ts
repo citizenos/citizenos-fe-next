@@ -6,7 +6,7 @@ import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { TourService } from '../../../../../core/services/tour.service';
 import { TopicOnboardingComponent } from './topic-onboarding.component';
 
-const mockOverlayRef = { dispose: () => { return; } } as unknown as OverlayRef;
+const _mockOverlayRef = { dispose: () => { return; } } as unknown as OverlayRef;
 const mockTourService = { show: vi.fn() };
 
 describe('TopicOnboardingComponent', () => {

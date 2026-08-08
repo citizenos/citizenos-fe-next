@@ -15,7 +15,7 @@ import { EditDiscussionDeadlineComponent } from './edit-discussion-deadline.comp
 @Component({ template: '', standalone: true })
 class EmptyComponent {}
 
-const mockOverlayRef = { dispose: () => { return; } } as unknown as OverlayRef;
+const _mockOverlayRef = { dispose: () => { return; } } as unknown as OverlayRef;
 const mockDiscussion = { id: 'disc-1', question: 'Q?', deadline: null };
 const mockTopic = { id: 'topic-1', title: 'T', status: 'inProgress', categories: [] };
 

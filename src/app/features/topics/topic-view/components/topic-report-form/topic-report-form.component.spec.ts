@@ -11,6 +11,8 @@ import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { TopicReportService } from '../../../../../core/services/topic-report.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { Topic } from '../../../../../core/interfaces/topic';
+import { FormRoot, FormField } from '@angular/forms/signals';
+import { DialogCloseDirective } from 'src/app/shared/dialog/dialog-ref';
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
 class MockIconComponent { @Input() name = ''; @Input() size = 24; }
@@ -53,7 +55,7 @@ describe('TopicReportFormComponent', () => {
       ],
     })
       .overrideComponent(TopicReportFormComponent, {
-        set: { imports: [TranslateModule, ReactiveFormsModule, UpperCasePipe, MockIconComponent, MockButtonComponent, MockDropdownComponent] },
+        set: { imports: [TranslateModule, FormRoot, FormField, UpperCasePipe, MockIconComponent, MockButtonComponent, MockDropdownComponent, DialogCloseDirective] },
       })
       .compileComponents();
 

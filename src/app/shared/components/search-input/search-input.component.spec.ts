@@ -12,7 +12,7 @@ class MockIconComponent { @Input() name = ''; @Input() size = 24; }
 describe('SearchInputComponent', () => {
   let component: SearchInputComponent;
   let fixture: ComponentFixture<SearchInputComponent>;
-  let componentRef: ComponentRef<SearchInputComponent>;
+  let _componentRef: ComponentRef<SearchInputComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -26,7 +26,7 @@ describe('SearchInputComponent', () => {
 
     fixture = TestBed.createComponent(SearchInputComponent);
     component = fixture.componentInstance;
-    componentRef = fixture.componentRef;
+    _componentRef = fixture.componentRef;
     fixture.detectChanges();
   });
 

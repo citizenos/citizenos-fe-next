@@ -73,7 +73,7 @@ export class TopicTokenJoinComponent implements OnInit {
     });
   }
 
-  private showJoinDialog(topic: Topic, token: string, redirectUrl: string) {
+  private showJoinDialog(topic: Topic, token: string, _redirectUrl: string) {
     const publicAccess = topic.visibility === 'public'
       ? { title: 'COMPONENTS.TOPIC_JOIN.BTN_GO_TO_TOPIC', link: ['/topics/', topic.id] }
       : null;

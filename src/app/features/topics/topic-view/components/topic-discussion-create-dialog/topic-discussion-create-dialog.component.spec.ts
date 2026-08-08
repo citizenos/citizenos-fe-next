@@ -14,7 +14,7 @@ import { TopicDiscussionCreateDialogComponent } from './topic-discussion-create-
 @Component({ template: '', standalone: true })
 class EmptyComponent {}
 
-const mockOverlayRef = { dispose: () => { return; } } as unknown as OverlayRef;
+const _mockOverlayRef = { dispose: () => { return; } } as unknown as OverlayRef;
 const mockTopic = { id: 'topic-1', title: 'T', status: 'inProgress', categories: [], discussionId: undefined };
 
 describe('TopicDiscussionCreateDialogComponent', () => {

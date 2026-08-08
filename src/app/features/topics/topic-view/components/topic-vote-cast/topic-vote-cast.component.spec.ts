@@ -183,7 +183,7 @@ describe('TopicVoteCastComponent', () => {
   it('should render interactive elements and trigger closeVoting', () => {
     // Open dropdown first to reveal closeVoting option
     // It's a bit hard to test cosDropdown click directly, so we can just call it
-    const closeSpy = vi.spyOn(component, 'closeVoting');
+    const _closeSpy = vi.spyOn(component, 'closeVoting');
     // But testing that template bindings work:
     const actionsBtn = fixture.debugElement.query(By.css('.setting_button'));
     expect(actionsBtn).toBeTruthy();

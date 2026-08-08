@@ -4,7 +4,7 @@ import { CheckHeightDirective } from './check-height.directive';
 
 describe('CheckHeightDirective', () => {
   it('should create an instance', () => {
-    const elementRef = new ElementRef({ offsetHeight: 0 });
+    const _elementRef = new ElementRef({ offsetHeight: 0 });
     const directive = new CheckHeightDirective();
     expect(directive).toBeTruthy();
   });

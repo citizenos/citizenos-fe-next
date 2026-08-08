@@ -285,7 +285,7 @@ export class EstEidComponent implements OnDestroy {
             this.stopPolling();
             try {
               await this.userStore.checkStatus();
-            } catch (e) {
+            } catch (_e) {
               // ignore
             }
             this.challengeID.set(null);
