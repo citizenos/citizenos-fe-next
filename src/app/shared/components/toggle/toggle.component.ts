@@ -69,7 +69,7 @@ export class ToggleComponent {
     if (this.disabled()) return;
     const v = this.value();
     const offV = this.offValue();
-    let nextValue: any;
+    let nextValue: unknown;
 
     if (v !== undefined) {
       if (this.modelValue() === v && offV !== undefined) {

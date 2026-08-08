@@ -95,15 +95,16 @@ export class GroupInviteDialogComponent implements OnInit {
     if (str.length < 2) { this.searchResults.set([]); return; }
     this.searchService.searchUsers(str).pipe(
       switchMap(data => {
-        const rows = (data as any)?.results?.public?.users?.rows ?? (data as any)?.rows ?? [];
-        const processedRows = rows.map((r: any) => ({ ...r, id: r.id ?? r.userId }));
-        if (!processedRows.length && isEmail(str)) return of([{ name: str, userId: str, email: str, id: str }]);
+        const typedData = data as { results?: { public?: { users?: { rows?: SearchResultUser[] } } }, rows?: SearchResultUser[] };
+        const rows = typedData?.results?.public?.users?.rows ?? typedData?.rows ?? [];
+        const processedRows = rows.map((r: SearchResultUser & { userId?: string }) => ({ ...r, id: r.id ?? r.userId }));
+        if (!processedRows.length && isEmail(str)) return of([{ name: str, userId: str, email: str, id: str } as SearchResultUser]);
         return of(processedRows);
       })
     ).subscribe((rows: SearchResultUser[]) => this.searchResults.set(rows));
   }
 
-  addMember(user?: any) {
+  addMember(user?: SearchResultUser & { userId?: string }) {
     this.searchResults.set([]);
     if (!user) return;
     const id = user.userId ?? user.id;
@@ -152,7 +153,7 @@ export class GroupInviteDialogComponent implements OnInit {
     if (!users.length) { this.noUsersSelected.set(true); setTimeout(() => this.noUsersSelected.set(false), 5000); return; }
 
     const invites = users.map(u => ({ userId: u.userId ?? u.id, level: u.level, inviteMessage: this.inviteMessage() }));
-    this.inviteUserService.invite(this.group().id, invites as any).pipe(take(1)).subscribe(() => this.dialogRef.close(true));
+    this.inviteUserService.invite(this.group().id, invites as unknown as Parameters<typeof this.inviteUserService.invite>[1]).pipe(take(1)).subscribe(() => this.dialogRef.close(true));
   }
 
   private generateJoinUrl() {

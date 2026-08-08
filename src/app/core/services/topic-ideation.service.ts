@@ -112,7 +112,7 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
     const path = this.getAbsoluteUrlApi(`/topics/${params.topicId}/ideations`);
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
-      const val = (params as any)[key];
+      const val = (params as Record<string, unknown>)[key];
       if (val !== undefined && val !== null) {
         httpParams = httpParams.set(key, String(val));
       }
@@ -234,7 +234,7 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
     if (typeof topicId === 'object') {
       tId = topicId.topicId;
       iId = topicId.ideationId;
-      idId = (topicId as any).ideaId || (topicId as any).id;
+      idId = (topicId as Record<string, string>)['ideaId'] || (topicId as Record<string, string>)['id'];
       rest = topicId;
     } else {
       tId = topicId;
@@ -291,7 +291,7 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
       .pipe(map(res => res.data!));
   }
 
-  moderateIdea(data: { topicId: string; ideationId: string; ideaId: string; [key: string]: any }): Observable<unknown> {
+  moderateIdea(data: { topicId: string; ideationId: string; ideaId: string; [key: string]: unknown }): Observable<unknown> {
     const { topicId, ideationId, ideaId, ...body } = data;
     const path = this.getAbsoluteUrlApi(`/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/moderate`, true);
     return this.http.post<ApiResponse<unknown>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })
@@ -459,7 +459,7 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
       .pipe(map(res => res.data!));
   }
 
-  moderateIdeaComment(data: { topicId: string; ideationId: string; ideaId: string; commentId: string; [key: string]: any }): Observable<unknown> {
+  moderateIdeaComment(data: { topicId: string; ideationId: string; ideaId: string; commentId: string; [key: string]: unknown }): Observable<unknown> {
     const { topicId, ideationId, ideaId, commentId, ...body } = data;
     const path = this.getAbsoluteUrlApi(`/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/comments/${commentId}/moderate`, true);
     return this.http.post<ApiResponse<unknown>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })

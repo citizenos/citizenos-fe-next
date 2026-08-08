@@ -14,7 +14,7 @@ describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let mockUserStore: unknown;
-  let mockUserService: unknown;
+  let mockUserService: { getPartnerLoginUrl: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     mockUserStore = {
@@ -106,7 +106,7 @@ describe('LoginComponent', () => {
 
     component.doLoginPartner('google');
 
-    expect((mockUserService as any).getPartnerLoginUrl).toHaveBeenCalledWith('google', undefined);
+    expect(mockUserService.getPartnerLoginUrl).toHaveBeenCalledWith('google', undefined);
     expect(window.location.href).toBe('http://partner-login.url');
 
     vi.unstubAllGlobals();

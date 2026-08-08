@@ -1,0 +1,1838 @@
+
+> citizenos-fe-next@0.0.0 test
+> ng test --watch=false
+
+❯ Building...
+✔ Building...
+Application bundle generation complete. [7.329 seconds] - 2026-08-08T15:38:21.016Z
+
+▲ [WARNING] NG8113: All imports are unused [plugin angular-compiler]
+
+    src/app/shared/directives/download.directive.spec.ts:8:2:
+      8 │   imports: [DownloadDirective],
+        ╵   ~~~~~~~
+
+
+
+ RUN  v4.1.8 /home/ilmar/citizenos/citizenos-fe-next
+
+ ❯ |citizenos-fe-next| src/app/shared/components/toggle/toggle.component.spec.ts (7 tests | 1 failed) 78ms
+     ✓ should create 40ms
+     ✓ should default to off (modelValue = false) 5ms
+     ✓ should show on class when boolean model is true 5ms
+     ✓ should support string value and offValue 4ms
+     × should display cosToggleTextOn when enabled 11ms
+     ✓ should emit toggleClick with inverted value on toggle() 7ms
+     ✓ should toggle on button click 5ms
+ ❯ |citizenos-fe-next| src/app/shared/directives/etherpad.directive.spec.ts (7 tests | 2 failed) 80ms
+     ✓ should create 27ms
+     ✓ should not update dimensions on unrelated window message 7ms
+     × should update iframe width on ep_resize message with larger width 9ms
+     × should update iframe height on ep_resize message with larger height 8ms
+     ✓ should not update width when new width is not greater than minWidth (800) 8ms
+     ✓ should not update height when new height is not greater than minHeight (600) 9ms
+     ✓ should ignore message with no data 11ms
+ ❯ |citizenos-fe-next| src/app/features/groups/group-create/components/group-create-help/group-create-help.component.spec.ts (5 tests | 4 failed) 75ms
+     ✓ should create 45ms
+     × should display info help when step is info 12ms
+     × should display settings help when step is settings 6ms
+     × should display add_topics help when step is add_topics 5ms
+     × should display invite help when step is invite 6ms
+ ❯ |citizenos-fe-next| src/app/shared/components/icon/icon.component.spec.ts (5 tests | 1 failed) 64ms
+     ✓ should create 33ms
+     ✓ should render SVG content from registry 14ms
+     ✓ should set numeric width and height attributes 5ms
+     × should remove width and height attributes when size is "auto" or other string 6ms
+     ✓ should render empty content for invalid icon name 6ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-settings-disabled-dialog/topic-settings-disabled-dialog.component.spec.ts (5 tests | 2 failed) 114ms
+     ✓ should create 61ms
+     × should render the heading 17ms
+     × should render the description 13ms
+     ✓ should have a close button with dialogClose attribute 10ms
+     ✓ close button should call dialogRef.close when clicked 11ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-edit-disabled-dialog/topic-edit-disabled-dialog.component.spec.ts (5 tests | 2 failed) 115ms
+     ✓ should create 58ms
+     × should render the heading 18ms
+     × should render the description 13ms
+     ✓ should have a close button with dialogClose attribute 11ms
+     ✓ close button should call dialogRef.close when clicked 14ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-tour-dialog/topic-tour-dialog.component.spec.ts (5 tests | 1 failed) 144ms
+     ✓ should create 68ms
+     ✓ should render the tour title 21ms
+     ✓ should render the tour description 19ms
+     × should have a take-the-tour button that closes dialog with true 18ms
+     ✓ should have a skip link that closes the dialog 17ms
+ ❯ |citizenos-fe-next| src/app/core/services/user-group.service.spec.ts (4 tests | 1 failed) 28ms
+     ✓ should be created 11ms
+     × should fetch groups with default params 10ms
+     ✓ should apply filters 3ms
+     ✓ should getPreview with specific limit 2ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/duplicate-topic-dialog/duplicate-topic-dialog.component.spec.ts (6 tests | 3 failed) 188ms
+     ✓ should create 82ms
+     ✓ should expose topic from dialog data 22ms
+     ✓ should display topic title in the template 20ms
+     × should render the heading 20ms
+     × confirm button should close dialog with true 24ms
+     × cancel link should close dialog 18ms
+Not implemented: navigation to another Document
+ ❯ |citizenos-fe-next| src/app/shared/directives/download.directive.spec.ts (2 tests | 1 failed) 9ms
+     ✓ should create 3ms
+     × should open link in new tab on click 6ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-onboarding/topic-onboarding.component.spec.ts (3 tests | 3 failed) 3ms
+     × should create 2ms
+     × should call tourService.show with topic tour on desktop 1ms
+     × should call tourService.show with topic_mobile tour on mobile 0ms
+ ❯ |citizenos-fe-next| src/app/core/components/shell/feedback/feedback.component.spec.ts (7 tests | 7 failed) 107ms
+     × should create 59ms
+     × should render the feedback form when showFeedback is true 8ms
+     × should close the feedback form when clicking cancel 10ms
+     × should set error when submitting without message 9ms
+     × should call API and show success message on submit 6ms
+     × should close the feedback form when clicking close button after submission 6ms
+     × should hide the form when showFeedback signal is false 8ms
+ ❯ |citizenos-fe-next| src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.spec.ts (6 tests | 4 failed) 8ms
+     ✓ should create 1ms
+     × should have default ideation values 2ms
+     ✓ onIdeationUpdate() should emit the current ideation state 2ms
+     × when allowAnonymous is toggled on, disableReplies should also become true 1ms
+     × when allowAnonymous is toggled off, should not force disableReplies 1ms
+     × when allowAnonymous is on but disableReplies already true, should not force-override 1ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-follow-up-create-dialog/topic-follow-up-create-dialog.component.spec.ts (7 tests | 1 failed) 144ms
+     ✓ renders without error 73ms
+     ✓ has a close button 14ms
+     ✓ shows the introduction content 13ms
+     ✓ shows info items in dialog_info 12ms
+     ✓ has a start follow-up button 9ms
+     × has a cancel link 13ms
+     ✓ startFollowUp calls TopicService.changeState with followUp 9ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-member-invite-delete/topic-member-invite-delete.component.spec.ts (9 tests | 1 failed) 213ms
+     ✓ renders without errors 71ms
+     ✓ shows user name 23ms
+     ✓ shows initials when no imageUrl 24ms
+     × shows image when user has imageUrl 32ms
+     ✓ does not close dialog when no option selected 12ms
+     ✓ closes dialog with "1" when option 1 selected 11ms
+     ✓ closes dialog with "all" when all option selected 12ms
+     ✓ sets invitesToDelete to "1" when first radio input changed 12ms
+     ✓ sets invitesToDelete to "all" when second radio input changed 13ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-reply-report-moderate/idea-reply-report-moderate.component.spec.ts (13 tests | 1 failed) 168ms
+     ✓ renders without error 49ms
+     × shows heading 15ms
+     ✓ shows argument subject when set 10ms
+     ✓ hides argument subject when null 16ms
+     ✓ pre-populates form type from report data 7ms
+     ✓ pre-populates form text from report data 7ms
+     ✓ selectReportType() updates form type value 9ms
+     ✓ submit button is disabled when form text is empty 11ms
+     ✓ submit button is enabled when form is valid 9ms
+     ✓ doModerate() calls moderateIdeaComment with correct params 8ms
+     ✓ doModerate() calls dialogRef.close(true) on success 7ms
+     ✓ shows error label when text is touched and empty 8ms
+     ✓ hides error label when text is not touched 10ms
+ ❯ |citizenos-fe-next| src/app/core/services/public-group.service.spec.ts (3 tests | 1 failed) 11ms
+     ✓ should be created 3ms
+     × should fetch public groups 5ms
+     ✓ should getPreview 2ms
+ ❯ |citizenos-fe-next| src/app/features/groups/group-detail/components/group-member-user/group-member-user.component.spec.ts (9 tests | 1 failed) 31ms
+     ✓ should create 12ms
+     ✓ canUpdate delegates to groupDetailService 4ms
+     × LEVELS comes from memberUserService 5ms
+       ✓ does nothing if level is unchanged 2ms
+       ✓ calls updateLevel and updates member.level on success 2ms
+       ✓ rolls back level on error 1ms
+       ✓ opens confirm dialog 1ms
+       ✓ calls removeMember and emits memberChanged on confirm 1ms
+       ✓ does not call removeMember when dialog cancelled 1ms
+ ❯ |citizenos-fe-next| src/app/features/groups/group-detail/components/group-invite-user/group-invite-user.component.spec.ts (9 tests | 1 failed) 33ms
+     ✓ should create 11ms
+     ✓ canUpdate delegates to groupDetailService 3ms
+     × LEVELS comes from inviteUserService 4ms
+       ✓ does nothing if level is unchanged 3ms
+       ✓ calls updateInvite and updates invite.level 3ms
+       ✓ rolls back invite.level on error 1ms
+       ✓ opens confirm dialog 2ms
+       ✓ calls deleteInvite and emits memberChanged on confirm 2ms
+       ✓ does not call deleteInvite when dialog cancelled 2ms
+ ❯ |citizenos-fe-next| src/app/shared/directives/check-height.directive.spec.ts (3 tests | 3 failed) 2ms
+     × should create an instance 1ms
+       × should set overHeight to true if offsetHeight is greater than maxTextHeight 0ms
+       × should set overHeight to false if offsetHeight is less than or equal to maxTextHeight 0ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.spec.ts (4 tests | 2 failed) 6ms
+     ✓ should create 2ms
+     × should load reactions on init 2ms
+     × should handle pagination 1ms
+     ✓ should close dialog when close is called 1ms
+ ❯ |citizenos-fe-next| src/app/features/groups/group-detail/components/group-share/group-share.component.spec.ts (15 tests | 1 failed) 33ms
+     ✓ should create 10ms
+     ✓ ngOnInit sets joinToken and joinLevel from group.join 3ms
+     ✓ ngOnInit generates join URL with token when canShare 1ms
+     ✓ ngOnInit generates group join URL when no token 1ms
+     ✓ canUpdate delegates to groupDetailService 1ms
+     × LEVELS comes from memberUserService 4ms
+       ✓ opens confirm dialog 2ms
+       ✓ calls generateToken and updates joinToken on confirm 2ms
+       ✓ does not call generateToken when cancelled 2ms
+       ✓ calls updateLevel with current token 1ms
+       ✓ updates joinLevel on success 1ms
+       ✓ does nothing if no token 1ms
+       ✓ writes to clipboard and sets copySuccess 1ms
+       ✓ starts as false 1ms
+       ✓ can be set to true 1ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts (4 tests | 1 failed) 166ms
+     ✓ should create 99ms
+     ✓ should validate form 24ms
+     ✓ should call service on doReport 20ms
+     × should handle error on doReport 22ms
+stderr | src/app/features/topics/topic-view/components/topic-report-moderate/topic-report-moderate.component.spec.ts > TopicReportModerateComponent > doModerate() should show error when service fails
+Failed to moderate report Error: error
+    at /home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-report-moderate/topic-report-moderate.component.spec.ts:94:100
+    at Observable.init [as _subscribe] (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/observable/throwError.js:8:64)
+    at Observable._trySubscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:41:25)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+    at Observable.subscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:26:24)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/operators/take.js:13:20
+    at SafeSubscriber.<anonymous> (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/lift.js:14:28)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:30:30
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts (24 tests | 11 failed) 354ms
+     × should default to pro type 13ms
+     × should have all three types available 2ms
+     × ngOnInit calls setParam for topicId and discussionId 1ms
+     × close() sets isOpen to false 1ms
+     × clear() resets subject, text, and errors 2ms
+     × argumentMaxLength() returns type-specific limit 2ms
+     × submit should call save with correct payload 1ms
+     × submit should clear form and emit posted on success 1ms
+     × submit should set isOpen to false on success 2ms
+     × submit should set error on failure 1ms
+     × submit with empty subject trims to empty string 1ms
+     ✓ should render without error 100ms
+     ✓ tablet button click sets isOpen to true 30ms
+     ✓ footer menu button click sets isOpen to true 25ms
+     ✓ mobile close button click sets isOpen to false 20ms
+     ✓ close_create button click sets isOpen to false 20ms
+     ✓ overlay not present when isOpen is false 18ms
+     ✓ overlay present when isOpen is true 18ms
+     ✓ overlay click sets isOpen to false 17ms
+     ✓ type radio change updates argumentType 19ms
+     ✓ submit button is disabled when subject is empty 16ms
+     ✓ submit button is disabled when text is empty 14ms
+     ✓ footer menu has class open when isOpen is false 15ms
+     ✓ footer form has class open when isOpen is true 16ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.spec.ts (10 tests | 10 failed) 188ms
+     × should create 66ms
+     × should call votes service on init 23ms
+     × should populate members from API response 15ms
+     × should set totalPages based on member count 10ms
+     × should render member rows 14ms
+     × should render profile image when imageUrl is set 10ms
+     × should show empty message when no members 11ms
+     × loadPage updates page signal 12ms
+     × isOnPage returns true for items on current page 15ms
+     × should have a close button with dialogClose 12ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-report-moderate/topic-report-moderate.component.spec.ts (9 tests | 1 failed) 209ms
+     ✓ should create 74ms
+     × should expose report types from service 27ms
+     ✓ should have invalid form when text is empty 14ms
+     ✓ changeType() should update form type 22ms
+     ✓ doModerate() should not call service when form is invalid 16ms
+     ✓ doModerate() should call service and close on success 14ms
+     ✓ doModerate() should show error when service fails 12ms
+     ✓ close() should close dialog 11ms
+     ✓ should not submit when isLoading is true 18ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts (11 tests | 11 failed) 241ms
+     × should create 85ms
+     × should pre-fill edit signals from argument on init 22ms
+     × should filter out reply from ARGUMENT_TYPES 18ms
+     × should render type select section when argument.type is not reply 18ms
+     × should hide type select section when argument.type is reply 14ms
+     × should call argumentService.update with correct data on updateArgument 16ms
+     × should not call update when nothing changed 12ms
+     × should emit null on successful update 17ms
+     × should emit false and reset signals on argumentEditMode 13ms
+     × should render save button 12ms
+     × should render cancel button 11ms
+ ❯ |citizenos-fe-next| src/app/features/groups/dialogs/group-invite-dialog/group-invite-dialog.component.spec.ts (12 tests | 1 failed) 26ms
+     ✓ should instantiate 9ms
+     ✓ activeTab defaults to invite 2ms
+     ✓ pendingUsers starts empty 1ms
+     × joinUrl is generated from group join token 3ms
+     ✓ addMember adds user to pendingUsers 1ms
+     ✓ addMember prevents duplicates 1ms
+     ✓ removeMember removes from pendingUsers 1ms
+     ✓ addEmail with valid email adds user 1ms
+     ✓ addEmail with invalid email adds to invalidEmails 2ms
+     ✓ invite with no users sets noUsersSelected 1ms
+     ✓ invite with users calls invite service 2ms
+     ✓ updateAllLevels changes level for all pending users 1ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-discussion-deadline/edit-discussion-deadline.component.spec.ts (4 tests | 4 failed) 3ms
+     × should create 2ms
+     × should set isNew true when discussion has no deadline 0ms
+     × should set isNew false when discussion has a deadline 0ms
+     × should call discussionService.update on save 0ms
+ ❯ |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts (11 tests | 11 failed) 358ms
+     × should create 103ms
+     × should initialize form with user data 37ms
+     × should switch tabs 29ms
+     × should toggle password reset mode 26ms
+     × should update profile 25ms
+     × should show error on password mismatch during update 25ms
+     × should set profile language 23ms
+     × should delete account after confirmation 22ms
+     × should delete user image 24ms
+     × should search topics in notifications tab 22ms
+     × should toggle topic notifications (delete) 20ms
+ ✓ |citizenos-fe-next| src/app/shared/components/typeahead/typeahead.component.spec.ts (18 tests) 295ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion-create-dialog/topic-discussion-create-dialog.component.spec.ts (4 tests | 4 failed) 2ms
+     × should create 1ms
+     × should start on tab 1 0ms
+     × should navigate to tab 2 0ms
+     × should call create on save when no discussionId 0ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts (6 tests | 6 failed) 338ms
+     × should create 151ms
+     × should switch tabs 47ms
+     × should load groups on init 35ms
+     × should toggle visibility 37ms
+     × should save topic and close 37ms
+     × should add and remove categories 30ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/missing-discussion/missing-discussion.component.spec.ts (4 tests | 4 failed) 3ms
+     × should create 1ms
+     × should expose topic from dialog data 0ms
+     × should call create when topic has no discussionId 0ms
+     × should call update when topic has existing discussionId 0ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-create/components/step-topic-settings/step-topic-settings.component.spec.ts (5 tests | 5 failed) 12ms
+     × should create 5ms
+     × should have default visibility private 2ms
+     × should emit topicUpdate when onUpdate is called with visibility 2ms
+     × should emit topicUpdate when onUpdate is called with country 2ms
+     × should emit topicUpdate when onUpdate is called with categories 1ms
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should create
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should initialize with topic visibility
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should initialize with topic categories
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should emit visibilityChange on setVisibility
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should toggle category
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/features/topics/topic-view/components/edit-idea-folder/edit-idea-folder.component.spec.ts > EditIdeaFolderComponent > should handle update error
+Error updating folder Error: Error
+    at /home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/edit-idea-folder/edit-idea-folder.component.spec.ts:141:71
+    at Observable.init [as _subscribe] (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/observable/throwError.js:8:64)
+    at Observable._trySubscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:41:25)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+    at Observable.subscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:26:24)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/operators/take.js:13:20
+    at SafeSubscriber.<anonymous> (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/lift.js:14:28)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:30:30
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-idea-folder/edit-idea-folder.component.spec.ts (7 tests) 201ms
+ ✓ |citizenos-fe-next| src/app/shared/components/tour/tour.component.spec.ts (5 tests) 313ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/argument/argument.component.spec.ts (7 tests | 7 failed) 34ms
+     × argumentId should combine id and version 18ms
+     × isEdited returns false for single-edit argument 3ms
+     × canEdit returns true when user is owner and not deleted 3ms
+     × canEdit returns false when user is not owner 3ms
+     × vote should call argumentService.vote 3ms
+     × vote should not call service when not authenticated 2ms
+     × doDelete should open confirm dialog and call delete on confirm 2ms
+stderr | src/app/features/topics/topic-view/components/create-idea-folder/create-idea-folder.component.spec.ts > CreateIdeaFolderComponent > should handle creation error
+Error creating folder Error: Error
+    at /home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/create-idea-folder/create-idea-folder.component.spec.ts:145:71
+    at Observable.init [as _subscribe] (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/observable/throwError.js:8:64)
+    at Observable._trySubscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:41:25)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+    at Observable.subscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:26:24)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/operators/take.js:13:20
+    at SafeSubscriber.<anonymous> (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/lift.js:14:28)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:30:30
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should remove existing category on toggle
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should not exceed max categories
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should emit countryChange
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should add and remove groups
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should change group permission level with setGroupLevel
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should lock visibility to private when isCreatedFromGroup is true
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts > TopicSettingsPanelComponent > should lock visibility to private when isCreatedFromGroup is true
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/create-idea-folder/create-idea-folder.component.spec.ts (8 tests) 246ms
+ ✓ |citizenos-fe-next| src/app/shared/components/list-filter-toolbar/list-filter-toolbar.component.spec.ts (4 tests) 216ms
+ ✓ |citizenos-fe-next| src/app/shared/components/topic-settings-panel/topic-settings-panel.component.spec.ts (11 tests) 624ms
+ ✓ |citizenos-fe-next| src/app/shared/components/confirm-dialog/confirm-dialog.component.spec.ts (12 tests) 316ms
+ ❯ |citizenos-fe-next| src/app/features/topics/my-topics/my-topics.component.spec.ts (10 tests | 2 failed) 74ms
+     ✓ should instantiate 35ms
+     ✓ filterConfigs has all required filter keys 6ms
+     ✓ status filter contains all topic statuses 4ms
+     ✓ onFilterChange with status calls setParam with statuses array 4ms
+     ✓ onFilterChange with all does not set statuses param 4ms
+     ✓ onPageChange updates currentPage and calls loadPage 3ms
+     × onSearch sets search param 7ms
+     × onSearch with empty string passes null 3ms
+     ✓ onFilterChange with favourite sets favourite param 4ms
+     ✓ onFilterChange with showModerated sets showModerated param 2ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-notification-settings/topic-notification-settings.component.spec.ts (11 tests) 475ms
+ ✓ |citizenos-fe-next| src/app/shared/components/topic-card/topic-card.component.spec.ts (17 tests) 294ms
+ ✓ |citizenos-fe-next| src/app/shared/components/group-card/group-card.component.spec.ts (16 tests) 342ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.spec.ts (7 tests | 7 failed) 18ms
+     × should have showPostForm initially false 7ms
+     × canPost returns truthy when authenticated 2ms
+     × canPost returns falsy when not authenticated 2ms
+     × toggleTypeFilter should update selectedTypes 2ms
+     × toggleTypeFilter toggling twice should remove filter 2ms
+     × onArgumentPosted hides form and reloads 1ms
+     × reload calls loadPage 1ms
+ ✓ |citizenos-fe-next| src/app/features/account/register/register.component.spec.ts (8 tests) 369ms
+ ✓ |citizenos-fe-next| src/app/shared/components/invitation-dialog/invitation-dialog.component.spec.ts (22 tests) 706ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reply/argument-reply.component.spec.ts (11 tests) 519ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-header/topic-header.component.spec.ts (18 tests) 891ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-info-sidebar/topic-info-sidebar.component.spec.ts (29 tests) 904ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/invite-editors/invite-editors.component.spec.ts (20 tests) 633ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/ideabox/ideabox.component.spec.ts (8 tests | 1 failed) 42ms
+     ✓ should instantiate 15ms
+     ✓ isDraft returns false for published idea 3ms
+     ✓ canVote returns true when topic status is ideation 2ms
+     ✓ canEditIdea returns true for idea author when topic is in ideation 3ms
+     × vote calls voteIdea service 6ms
+     ✓ toggleFavourite adds to favourites when not favourite 4ms
+     ✓ confirmDelete opens dialog and calls deleteIdea on confirm 4ms
+     ✓ showReactions opens reactions dialog 2ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-edit/topic-edit.component.spec.ts (8 tests | 8 failed) 40ms
+     × should create and load topic 21ms
+     × should redirect to create if topic is draft 3ms
+     × should save topic on publish 3ms
+     × should load ideation data if topic has ideationId 2ms
+     × should load vote data if topic has voteId 2ms
+     × should open TopicSettingsLockedComponent when navigating to discussion if canEditDescription is false 2ms
+     × should open TopicEditDisabledDialogComponent when navigating to info if canEditDescription is false 3ms
+     × should open TopicSettingsDisabledDialogComponent when navigating to settings if canDelete is false 2ms
+stderr | src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.spec.ts > TopicInviteDialogComponent > doInvite() should show error when service fails
+Failed to send invites Error: fail
+    at /home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.spec.ts:182:70
+    at Observable.init [as _subscribe] (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/observable/throwError.js:8:64)
+    at Observable._trySubscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:41:25)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+    at Observable.subscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:26:24)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/operators/take.js:13:20
+    at SafeSubscriber.<anonymous> (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/lift.js:14:28)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:30:30
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+
+ ❯ |citizenos-fe-next| src/app/features/topics/ideation-create/ideation-create.component.spec.ts (6 tests | 6 failed) 36ms
+     × should start at info step 19ms
+     × saveToSettings should save topic and ideation if no id 4ms
+     × saveToSettings should skip save if topic has id 3ms
+     × onTopicUpdate merges updates 3ms
+     × onIdeationUpdate merges updates 3ms
+     × onPublish patches topic with ideation status 3ms
+stderr | src/app/features/topics/topic-view/components/topic-report-review/topic-report-review.component.spec.ts > TopicReportReviewComponent > doReview() should show error when service fails
+Failed to review report Error: fail
+    at /home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-report-review/topic-report-review.component.spec.ts:91:68
+    at Observable.init [as _subscribe] (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/observable/throwError.js:8:64)
+    at Observable._trySubscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:41:25)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+    at Observable.subscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:26:24)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/operators/take.js:13:20
+    at SafeSubscriber.<anonymous> (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/lift.js:14:28)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:30:30
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+
+stderr | src/app/features/topics/topic-view/components/topic-report-form/topic-report-form.component.spec.ts > TopicReportFormComponent > doReport() should show error when service fails
+Failed to send report Error: fail
+    at /home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-report-form/topic-report-form.component.spec.ts:108:66
+    at Observable.init [as _subscribe] (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/observable/throwError.js:8:64)
+    at Observable._trySubscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:41:25)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+    at Observable.subscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:26:24)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/operators/take.js:13:20
+    at SafeSubscriber.<anonymous> (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/lift.js:14:28)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:30:30
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-tabs/topic-tabs.component.spec.ts (7 tests) 312ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-invite-dialog/topic-invite-dialog.component.spec.ts (20 tests) 656ms
+ ✓ |citizenos-fe-next| src/app/features/account/password-reset/password-reset.component.spec.ts (7 tests) 185ms
+ ✓ |citizenos-fe-next| src/app/features/account/login/smart-id/smart-id.component.spec.ts (6 tests) 208ms
+ ✓ |citizenos-fe-next| src/app/features/account/login/esteid/esteid.component.spec.ts (5 tests) 188ms
+ ✓ |citizenos-fe-next| src/app/features/account/login/login.component.spec.ts (7 tests) 236ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-member-group/topic-member-group.component.spec.ts (9 tests) 268ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-member-user/topic-member-user.component.spec.ts (13 tests) 283ms
+ ✓ |citizenos-fe-next| src/app/shared/components/tooltip/tooltip.component.spec.ts (12 tests) 163ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-report-moderate/argument-report-moderate.component.spec.ts (10 tests) 275ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-milestones/topic-milestones.component.spec.ts (8 tests) 446ms
+ ✓ |citizenos-fe-next| src/app/shared/components/create-wizard-shell/create-wizard-shell.component.spec.ts (11 tests) 240ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-member-invite/topic-member-invite.component.spec.ts (10 tests) 265ms
+ ✓ |citizenos-fe-next| src/app/features/home/home.component.spec.ts (11 tests) 912ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-report-review/topic-report-review.component.spec.ts (10 tests) 187ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-report/argument-report.component.spec.ts (6 tests) 229ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-create/topic-create.component.spec.ts (12 tests | 1 failed) 260ms
+     ✓ should start at info step 39ms
+     ✓ canNavigateTo info always returns true 10ms
+     ✓ canNavigateTo settings requires title 7ms
+     ✓ saveToSettings creates topic if none exists 16ms
+     ✓ saveToSettings skips save if topic already has id 4ms
+     ✓ saveAsDraft calls patch and shows success notification 5ms
+     ✓ publishTopic calls patch with status inProgress when topic has id 5ms
+     ✓ inviteEditors opens dialog 3ms
+     ✓ onGroupsAdded updates signal 5ms
+     × shows loading overlay when isLoading is true 157ms
+     ✓ shows error notification when createTopicEagerly fails 2ms
+     ✓ should initialize isCreatedFromGroup and load group when groupId query param is present 5ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-add-groups-dialog/topic-add-groups-dialog.component.spec.ts (8 tests) 253ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-participants-section/topic-participants-section.component.spec.ts (14 tests) 228ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-state-items/topic-state-items.component.spec.ts (3 tests) 229ms
+ ❯ |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-dialog/idea-dialog.component.spec.ts (29 tests | 2 failed) 688ms
+     ✓ renders without error 148ms
+     ✓ sets idea signal from DIALOG_DATA on init 59ms
+     ✓ isLoading is false after init 53ms
+     ✓ hasError is false on successful init 30ms
+     ✓ loads idea folders on init 42ms
+     ✓ loads idea attachments on init 22ms
+     × loads replies on init and sets replyCount 23ms
+     ✓ loads ideas list and sets currentIndex 15ms
+     ✓ shows close button 20ms
+     ✓ shows statement in content 16ms
+     ✓ shows author name when author is present 15ms
+     ✓ shows ideaNumber when author is absent 12ms
+     ✓ showReply is false initially 14ms
+     ✓ showReplies is false initially 15ms
+     ✓ sets showReply and showReplies when showReplies data flag is true 14ms
+     ✓ hasPrev returns false when currentIndex is 0 and only one idea 11ms
+     ✓ hasPrev and hasNext return true when multiple ideas 17ms
+     ✓ prevIdea decrements currentIndex and loads new idea data 13ms
+     ✓ nextIdea increments currentIndex and loads new idea data 14ms
+     ✓ toggleFavourite calls removeIdeaFromFavourites when idea is already favourite 17ms
+     ✓ toggleFavourite calls addIdeaToFavourites when idea is not favourite 16ms
+     ✓ voteIdea does nothing when not authenticated 11ms
+     ✓ voteIdea calls service when authenticated and voting is allowed 15ms
+     ✓ canVote returns true when topic status is ideation 11ms
+     ✓ canEditIdea returns false when user is not the author 14ms
+     ✓ canEditIdea returns true when user is the author and idea is not deleted 15ms
+     ✓ isImageViewed returns false before toggling 11ms
+     ✓ toggleImageView adds then removes image from viewed set 14ms
+     × onReplyAdded reloads idea data 12ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-report-form/topic-report-form.component.spec.ts (10 tests) 311ms
+ ✓ |citizenos-fe-next| src/app/core/components/shell/nav/nav.component.spec.ts (6 tests) 257ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-reply-report/idea-reply-report.component.spec.ts (4 tests) 70ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-report-moderate/idea-report-moderate.component.spec.ts (7 tests) 161ms
+stderr | src/app/shared/components/cos-calender/cos-calender.component.spec.ts > CosCalenderComponent > should create
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/cos-calender/cos-calender.component.spec.ts > CosCalenderComponent > should generate calendar weeks array
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts > DeadlinePickerComponent > should create
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-share/topic-share.component.spec.ts (5 tests) 125ms
+stderr | src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts > DeadlinePickerComponent > should start disabled
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+ ✓ |citizenos-fe-next| src/app/shared/components/pagination/pagination.component.spec.ts (7 tests) 90ms
+stderr | src/app/shared/components/cos-calender/cos-calender.component.spec.ts > CosCalenderComponent > should change month when setMonth is called
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts > DeadlinePickerComponent > should toggle enabled state
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+ ✓ |citizenos-fe-next| src/app/features/account/password-forgot/password-forgot.component.spec.ts (5 tests) 117ms
+ ✓ |citizenos-fe-next| src/app/features/home/components/feature-box/feature-box.component.spec.ts (5 tests) 114ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-reply-form/idea-reply-form.component.spec.ts (6 tests) 123ms
+stderr | src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts > DeadlinePickerComponent > should emit null when disabled
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/cos-calender/cos-calender.component.spec.ts > CosCalenderComponent > should select date and emit event
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-settings-locked/topic-settings-locked.component.spec.ts (5 tests) 127ms
+stderr | src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts > DeadlinePickerComponent > should emit deadline when enabled
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts > DeadlinePickerComponent > should format time correctly
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts > DeadlinePickerComponent > should initialize from deadline input
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+ ✓ |citizenos-fe-next| src/app/shared/components/activities-button/activities-button.component.spec.ts (10 tests) 112ms
+ ✓ |citizenos-fe-next| src/app/shared/components/cos-calender/cos-calender.component.spec.ts (4 tests) 129ms
+ ✓ |citizenos-fe-next| src/app/shared/directives/components/markdown-link-dialog/markdown-link-dialog.component.spec.ts (5 tests) 157ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/anonymous-dialog/anonymous-dialog.component.spec.ts (8 tests) 148ms
+ ✓ |citizenos-fe-next| src/app/shared/components/input/input.component.spec.ts (7 tests) 168ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-edits/argument-edits.component.spec.ts (8 tests) 156ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-content/topic-content.component.spec.ts (4 tests) 108ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-report-reason/idea-report-reason.component.spec.ts (6 tests) 174ms
+ ✓ |citizenos-fe-next| src/app/shared/components/dropdown/dropdown.component.spec.ts (9 tests) 173ms
+ ✓ |citizenos-fe-next| src/app/shared/components/tabs/tabs.component.spec.ts (6 tests) 169ms
+ ✓ |citizenos-fe-next| src/app/features/account/components/privacy-policy/privacy-policy.component.spec.ts (6 tests) 104ms
+ ✓ |citizenos-fe-next| src/app/shared/components/topic-preview/topic-preview.component.spec.ts (4 tests) 160ms
+stderr | src/app/features/topics/topic-view/components/topic-report-resolve/topic-report-resolve.component.spec.ts > TopicReportResolveComponent > doResolve() should show error and not close when service fails
+Failed to resolve report Error: fail
+    at /home/ilmar/citizenos/citizenos-fe-next/src/app/features/topics/topic-view/components/topic-report-resolve/topic-report-resolve.component.spec.ts:81:69
+    at Observable.init [as _subscribe] (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/observable/throwError.js:8:64)
+    at Observable._trySubscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:41:25)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+    at Observable.subscribe (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:26:24)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/operators/take.js:13:20
+    at SafeSubscriber.<anonymous> (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/lift.js:14:28)
+    at /home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/Observable.js:30:30
+    at Object.errorContext (/home/ilmar/citizenos/citizenos-fe-next/node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9)
+
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-reply/idea-reply.component.spec.ts (4 tests | 1 skipped) 170ms
+stderr | src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts > DeadlinePickerComponent > should initialize from deadline input
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts > DeadlinePickerComponent > should not show reminder section when showReminder is false
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+ ✓ |citizenos-fe-next| src/app/features/account/components/add-eid/add-eid.component.spec.ts (5 tests) 122ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-deleted/argument-deleted.component.spec.ts (9 tests) 177ms
+ ✓ |citizenos-fe-next| src/app/features/account/components/add-email/add-email.component.spec.ts (8 tests) 115ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-report-resolve/topic-report-resolve.component.spec.ts (8 tests) 198ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/add-ideas-to-folder/add-ideas-to-folder.component.spec.ts (5 tests) 213ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-report-reason/topic-report-reason.component.spec.ts (5 tests) 40ms
+ ✓ |citizenos-fe-next| src/app/shared/components/interrupt-dialog/interrupt-dialog.component.spec.ts (8 tests) 196ms
+ ✓ |citizenos-fe-next| src/app/shared/components/activity-item/activity-item.component.spec.ts (12 tests) 198ms
+stderr | src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts > DeadlinePickerComponent > should not show reminder section when showReminder is false
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+stderr | src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts > DeadlinePickerComponent > should toggle reminder
+The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)
+
+ ✓ |citizenos-fe-next| src/app/shared/components/deadline-picker/deadline-picker.component.spec.ts (9 tests) 261ms
+ ✓ |citizenos-fe-next| src/app/shared/components/notification/notification.component.spec.ts (5 tests) 37ms
+ ✓ |citizenos-fe-next| src/app/shared/components/search-input/search-input.component.spec.ts (5 tests) 54ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/add-idea-folder/add-idea-folder.component.spec.ts (4 tests) 261ms
+ ✓ |citizenos-fe-next| src/app/features/account/components/connect-smart-id/connect-smart-id.component.spec.ts (3 tests) 21ms
+ ✓ |citizenos-fe-next| src/app/shared/components/image-upload/image-upload.component.spec.ts (6 tests) 22ms
+ ✓ |citizenos-fe-next| src/app/shared/components/create-menu/create-menu.component.spec.ts (3 tests) 46ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-token-join/topic-token-join.component.spec.ts (13 tests) 27ms
+ ✓ |citizenos-fe-next| src/app/shared/components/step-navigator/step-navigator.component.spec.ts (6 tests) 37ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/download-vote-results/download-vote-results.component.spec.ts (4 tests) 25ms
+ ✓ |citizenos-fe-next| src/app/features/groups/group-invitation/group-invitation.component.spec.ts (12 tests) 27ms
+ ✓ |citizenos-fe-next| src/app/shared/components/member-editors-panel/member-editors-panel.component.spec.ts (5 tests) 27ms
+ ✓ |citizenos-fe-next| src/app/features/account/components/verify-email-dialog/verify-email-dialog.component.spec.ts (4 tests) 47ms
+ ✓ |citizenos-fe-next| src/app/shared/components/page-list-header/page-list-header.component.spec.ts (5 tests) 27ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-invitation/topic-invitation.component.spec.ts (8 tests) 36ms
+ ✓ |citizenos-fe-next| src/app/core/components/shell/page-header/page-header.component.spec.ts (5 tests) 37ms
+stderr | src/app/features/groups/group-join/group-join.component.spec.ts > GroupJoinComponent > navigates to /404 on 404 error
+Group join error { status: { code: 40400 } }
+
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-why-dialog/argument-why-dialog.component.spec.ts (4 tests) 27ms
+ ✓ |citizenos-fe-next| src/app/features/account/components/connect-eid/connect-eid.component.spec.ts (3 tests) 24ms
+ ✓ |citizenos-fe-next| src/app/shared/components/image-editor/image-editor.component.spec.ts (9 tests) 25ms
+ ✓ |citizenos-fe-next| src/app/shared/components/domain-icon/domain-icon.component.spec.ts (9 tests) 25ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/close-without-saving-dialog/close-without-saving-dialog.component.spec.ts (6 tests) 27ms
+ ✓ |citizenos-fe-next| src/app/features/groups/group-join/group-join.component.spec.ts (12 tests) 21ms
+ ✓ |citizenos-fe-next| src/app/features/account/components/account-layout/account-layout.component.spec.ts (4 tests) 20ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/close-voting/close-voting.component.spec.ts (4 tests) 12ms
+ ✓ |citizenos-fe-next| src/app/shared/components/site-notification/site-notification.component.spec.ts (4 tests) 21ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-participants/topic-participants.component.spec.ts (14 tests) 498ms
+ ✓ |citizenos-fe-next| src/app/core/components/shell/language-select/language-select.component.spec.ts (6 tests) 10ms
+ ✓ |citizenos-fe-next| src/app/shared/directives/cos-dropdown.directive.spec.ts (4 tests) 13ms
+ ✓ |citizenos-fe-next| src/app/core/services/user.service.spec.ts (8 tests) 10ms
+ ✓ |citizenos-fe-next| src/app/shared/components/initials/initials.component.spec.ts (6 tests) 9ms
+ ✓ |citizenos-fe-next| src/app/shared/components/terms-links/terms-links.component.spec.ts (3 tests) 13ms
+ ✓ |citizenos-fe-next| src/app/core/state/user.store.spec.ts (6 tests) 10ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-vote-delegate/topic-vote-delegate.component.spec.ts (8 tests) 8ms
+ ✓ |citizenos-fe-next| src/app/shared/directives/tour-item.directive.spec.ts (6 tests) 12ms
+ ✓ |citizenos-fe-next| src/app/core/components/page-unauthorized/page-unauthorized.component.spec.ts (3 tests) 9ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-idea/edit-idea.component.spec.ts (21 tests) 21ms
+ ✓ |citizenos-fe-next| src/app/core/components/shell/global-search-panel/global-search-panel.component.spec.ts (9 tests) 9ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-vote-sign-smartid/topic-vote-sign-smartid.component.spec.ts (5 tests) 6ms
+ ✓ |citizenos-fe-next| src/app/shared/directives/dragndrop.directive.spec.ts (4 tests) 7ms
+ ✓ |citizenos-fe-next| src/app/shared/components/illustration/illustration.component.spec.ts (5 tests) 11ms
+ ✓ |citizenos-fe-next| src/app/features/groups/group-create/components/step-info/step-info.component.spec.ts (8 tests) 7ms
+ ✓ |citizenos-fe-next| src/app/app.spec.ts (1 test) 5ms
+ ✓ |citizenos-fe-next| src/app/features/topics/public-topics/public-topics.component.spec.ts (7 tests) 16ms
+ ✓ |citizenos-fe-next| src/app/features/groups/public-groups/public-groups.component.spec.ts (8 tests) 18ms
+ ✓ |citizenos-fe-next| src/app/features/groups/group-create/components/step-topics/step-topics.component.spec.ts (8 tests) 8ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-vote-deadline/topic-vote-deadline.component.spec.ts (7 tests) 7ms
+ ✓ |citizenos-fe-next| src/app/shared/components/button/button.component.spec.ts (6 tests) 5ms
+ ✓ |citizenos-fe-next| src/app/features/topics/vote-create/vote-create-dialog.component.spec.ts (7 tests) 10ms
+ ✓ |citizenos-fe-next| src/app/shared/components/topic-attachments/topic-attachments.component.spec.ts (6 tests) 7ms
+ ✓ |citizenos-fe-next| src/app/features/groups/dialogs/group-settings-dialog/group-settings-dialog.component.spec.ts (9 tests) 8ms
+ ✓ |citizenos-fe-next| src/app/features/groups/dialogs/group-add-topics-dialog/group-add-topics-dialog.component.spec.ts (8 tests) 9ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/big-graph/big-graph.component.spec.ts (7 tests) 7ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-ideation/topic-ideation.component.spec.ts (11 tests) 25ms
+ ✓ |citizenos-fe-next| src/app/shared/components/logo/logo.component.spec.ts (3 tests) 9ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/add-idea/add-idea.component.spec.ts (7 tests) 8ms
+ ✓ |citizenos-fe-next| src/app/shared/components/icon/icon.registry.spec.ts (4 tests) 4ms
+ ✓ |citizenos-fe-next| src/app/core/components/activity-feed/activity-feed.component.spec.ts (6 tests) 7ms
+ ✓ |citizenos-fe-next| src/app/shared/directives/cos-disabled.directive.spec.ts (4 tests) 4ms
+ ✓ |citizenos-fe-next| src/app/features/groups/group-create/components/step-invite/step-invite.component.spec.ts (8 tests) 8ms
+ ✓ |citizenos-fe-next| src/app/core/components/page-not-found/page-not-found.component.spec.ts (3 tests) 7ms
+ ✓ |citizenos-fe-next| src/app/features/groups/my-groups/my-groups.component.spec.ts (7 tests) 16ms
+ ✓ |citizenos-fe-next| src/app/features/topics/vote-create/components/step-vote-settings/step-vote-settings.component.spec.ts (4 tests) 4ms
+ ✓ |citizenos-fe-next| src/app/core/components/shell/accessibility-menu/accessibility-menu.component.spec.ts (5 tests) 5ms
+ ✓ |citizenos-fe-next| src/app/features/groups/dialogs/group-request-topics-dialog/group-request-topics-dialog.component.spec.ts (7 tests) 7ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-vote-reminder-dialog/topic-vote-reminder-dialog.component.spec.ts (4 tests) 4ms
+Not implemented: Window's scrollTo() method
+ ✓ |citizenos-fe-next| src/app/core/components/shell/help/help.component.spec.ts (4 tests) 7ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-ideation-deadline/edit-ideation-deadline.component.spec.ts (6 tests) 6ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-vote-sign-esteid/topic-vote-sign-esteid.component.spec.ts (5 tests) 9ms
+ ✓ |citizenos-fe-next| src/app/features/groups/group-create/group-create.component.spec.ts (13 tests) 13ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-create/components/step-topic-info/step-topic-info.component.spec.ts (3 tests) 3ms
+ ✓ |citizenos-fe-next| src/app/features/groups/group-create/components/step-settings/step-settings.component.spec.ts (4 tests) 4ms
+ ✓ |citizenos-fe-next| src/app/features/groups/dialogs/topic-requests-dialog/topic-requests-dialog.component.spec.ts (3 tests) 3ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-vote-sign/topic-vote-sign.component.spec.ts (6 tests) 6ms
+ ✓ |citizenos-fe-next| src/app/shared/pipes/safe-html.pipe.spec.ts (2 tests) 2ms
+ ✓ |citizenos-fe-next| src/app/shared/pipes/time-ago.pipe.spec.ts (7 tests) 1ms
+ ✓ |citizenos-fe-next| src/app/features/dashboard/dashboard.component.spec.ts (8 tests) 4ms
+ ✓ |citizenos-fe-next| src/app/core/guards/pending-changes.guard.spec.ts (3 tests) 4ms
+ ✓ |citizenos-fe-next| src/app/shared/pipes/cos-ellipsis.pipe.spec.ts (5 tests) 1ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-create/components/step-topic-discussion/step-topic-discussion.component.spec.ts (3 tests) 4ms
+ ✓ |citizenos-fe-next| src/app/core/components/shell/onboarding/onboarding.component.spec.ts (4 tests) 4ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-create/components/step-topic-preview/step-topic-preview.component.spec.ts (3 tests) 3ms
+ ✓ |citizenos-fe-next| src/app/core/components/shell/shell.component.spec.ts (3 tests) 23ms
+ ✓ |citizenos-fe-next| src/app/features/topics/vote-create/vote-create.component.spec.ts (6 tests) 17ms
+ ✓ |citizenos-fe-next| src/app/features/groups/group-detail/group-detail.component.spec.ts (19 tests) 39ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-vote-cast/topic-vote-cast.component.spec.ts (17 tests) 800ms
+ ✓ |citizenos-fe-next| src/app/features/topics/topic-view/topic-view.component.spec.ts (12 tests) 403ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 147 ⎯⎯⎯⎯⎯⎯
+
+ FAIL  |citizenos-fe-next| src/app/core/services/public-group.service.spec.ts > PublicGroupService > should fetch public groups
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/app/core/services/public-group.service.spec.ts:42:27
+     40|
+     41|     const groups = service.items();
+     42|     expect(groups.length).toBe(1);
+       |                           ^
+     43|   });
+     44|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/core/services/user-group.service.spec.ts > UserGroupService > should fetch groups with default params
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/app/core/services/user-group.service.spec.ts:45:27
+     43|     TestBed.flushEffects();
+     44|     const groups = service.items();
+     45|     expect(groups.length).toBe(1);
+       |                           ^
+     46|     expect(groups[0].name).toBe('Test Group');
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/shared/directives/check-height.directive.spec.ts > CheckHeightDirective > should create an instance
+Error: NG0203: The `ElementRef` token injection failed. `inject()` function must be called from an injection context such as a constructor, a factory function, a field initializer, or a function used with `runInInjectionContext`. Find more at https://v22.angular.dev/errors/NG0203
+ ❯ injectInjectorOnly ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:99:10
+ ❯ resolveForwardRef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:145:4
+ ❯ ɵɵinject ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:296:9
+ ❯ _CheckHeightDirective.<instance_members_initializer> src/app/shared/directives/check-height.directive.ts:8:18
+ ❯ new _CheckHeightDirective src/app/shared/directives/check-height.directive.ts:7:7
+ ❯ src/app/shared/directives/check-height.directive.spec.ts:8:23
+      6|   it('should create an instance', () => {
+      7|     const _elementRef = new ElementRef({ offsetHeight: 0 });
+      8|     const directive = new CheckHeightDirective();
+       |                       ^
+      9|     expect(directive).toBeTruthy();
+     10|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/shared/directives/check-height.directive.spec.ts > CheckHeightDirective > CheckHeightDirective behavior > should set overHeight to true if offsetHeight is greater than maxTextHeight
+ FAIL  |citizenos-fe-next| src/app/shared/directives/check-height.directive.spec.ts > CheckHeightDirective > CheckHeightDirective behavior > should set overHeight to false if offsetHeight is less than or equal to maxTextHeight
+Error: NG0203: The `ElementRef` token injection failed. `inject()` function must be called from an injection context such as a constructor, a factory function, a field initializer, or a function used with `runInInjectionContext`. Find more at https://v22.angular.dev/errors/NG0203
+ ❯ injectInjectorOnly ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:99:10
+ ❯ resolveForwardRef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:145:4
+ ❯ ɵɵinject ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:296:9
+ ❯ _CheckHeightDirective.<instance_members_initializer> src/app/shared/directives/check-height.directive.ts:8:18
+ ❯ new _CheckHeightDirective src/app/shared/directives/check-height.directive.ts:7:7
+ ❯ src/app/shared/directives/check-height.directive.spec.ts:18:19
+     16|     beforeEach(() => {
+     17|       elementRef = new ElementRef({ offsetHeight: 0 });
+     18|       directive = new CheckHeightDirective();
+       |                   ^
+     19|     });
+     20|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/shared/directives/download.directive.spec.ts > DownloadDirective > should open link in new tab on click
+AssertionError: expected "bound " to be called with arguments: [ 'http://example.com/file.pdf', …(1) ]
+
+Number of calls: 0
+
+ ❯ src/app/shared/directives/download.directive.spec.ts:32:21
+     30|     const link: HTMLAnchorElement = fixture.nativeElement.querySelecto…
+     31|     link.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+     32|     expect(openSpy).toHaveBeenCalledWith('http://example.com/file.pdf'…
+       |                     ^
+     33|     openSpy.mockRestore();
+     34|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/shared/directives/etherpad.directive.spec.ts > EtherpadDirective > should update iframe width on ep_resize message with larger width
+AssertionError: expected '800' to be '1200px' // Object.is equality
+
+Expected: "1200px"
+Received: "800"
+
+ ❯ src/app/shared/directives/etherpad.directive.spec.ts:42:26
+     40|     window.dispatchEvent(new MessageEvent('message', { data: { name: '…
+     41|     fixture.detectChanges();
+     42|     expect(iframe.width).toBe('1200px');
+       |                          ^
+     43|   });
+     44|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/shared/directives/etherpad.directive.spec.ts > EtherpadDirective > should update iframe height on ep_resize message with larger height
+AssertionError: expected '600' to be '900px' // Object.is equality
+
+Expected: "900px"
+Received: "600"
+
+ ❯ src/app/shared/directives/etherpad.directive.spec.ts:48:27
+     46|     window.dispatchEvent(new MessageEvent('message', { data: { name: '…
+     47|     fixture.detectChanges();
+     48|     expect(iframe.height).toBe('900px');
+       |                           ^
+     49|   });
+     50|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts > ProfileComponent > should create
+ FAIL  |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts > ProfileComponent > should initialize form with user data
+ FAIL  |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts > ProfileComponent > should switch tabs
+ FAIL  |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts > ProfileComponent > should toggle password reset mode
+ FAIL  |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts > ProfileComponent > should update profile
+ FAIL  |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts > ProfileComponent > should show error on password mismatch during update
+ FAIL  |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts > ProfileComponent > should set profile language
+ FAIL  |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts > ProfileComponent > should delete account after confirmation
+ FAIL  |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts > ProfileComponent > should delete user image
+ FAIL  |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts > ProfileComponent > should search topics in notifications tab
+ FAIL  |citizenos-fe-next| src/app/features/account/profile/profile.component.spec.ts > ProfileComponent > should toggle topic notifications (delete)
+Error: NG0302: The pipe 'uppercase' could not be found in the '_ProfileComponent' component. Verify that it is included in the '@Component.imports' of this component. Find more at https://v22.angular.dev/errors/NG0302
+ ❯ getPipeDef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/pipe.ts:114:10
+ ❯ getPipeDef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/pipe.ts:49:14
+ ❯ _ProfileComponent_Template ng:/_ProfileComponent.js:684:9
+ ❯ templateFn ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:108:4
+ ❯ executeTemplate ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/render.ts:107:6
+ ❯ renderView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/render.ts:47:4
+ ❯ renderComponent ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/render.ts:160:4
+ ❯ renderChildComponents ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/render.ts:140:6
+ ❯ renderView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/component_ref.ts:386:6
+ ❯ createComponentRef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/component_ref.ts:277:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/ideation-create/ideation-create.component.spec.ts > IdeationCreateComponent (business logic) > should start at info step
+ FAIL  |citizenos-fe-next| src/app/features/topics/ideation-create/ideation-create.component.spec.ts > IdeationCreateComponent (business logic) > saveToSettings should save topic and ideation if no id
+ FAIL  |citizenos-fe-next| src/app/features/topics/ideation-create/ideation-create.component.spec.ts > IdeationCreateComponent (business logic) > saveToSettings should skip save if topic has id
+ FAIL  |citizenos-fe-next| src/app/features/topics/ideation-create/ideation-create.component.spec.ts > IdeationCreateComponent (business logic) > onTopicUpdate merges updates
+ FAIL  |citizenos-fe-next| src/app/features/topics/ideation-create/ideation-create.component.spec.ts > IdeationCreateComponent (business logic) > onIdeationUpdate merges updates
+ FAIL  |citizenos-fe-next| src/app/features/topics/ideation-create/ideation-create.component.spec.ts > IdeationCreateComponent (business logic) > onPublish patches topic with ideation status
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-edit/topic-edit.component.spec.ts > TopicEditComponent > should create and load topic
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-edit/topic-edit.component.spec.ts > TopicEditComponent > should redirect to create if topic is draft
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-edit/topic-edit.component.spec.ts > TopicEditComponent > should save topic on publish
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-edit/topic-edit.component.spec.ts > TopicEditComponent > should load ideation data if topic has ideationId
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-edit/topic-edit.component.spec.ts > TopicEditComponent > should load vote data if topic has voteId
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-edit/topic-edit.component.spec.ts > TopicEditComponent > should open TopicSettingsLockedComponent when navigating to discussion if canEditDescription is false
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-edit/topic-edit.component.spec.ts > TopicEditComponent > should open TopicEditDisabledDialogComponent when navigating to info if canEditDescription is false
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-edit/topic-edit.component.spec.ts > TopicEditComponent > should open TopicSettingsDisabledDialogComponent when navigating to settings if canDelete is false
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-create/components/step-topic-settings/step-topic-settings.component.spec.ts > StepTopicSettingsComponent (business logic) > should create
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-create/components/step-topic-settings/step-topic-settings.component.spec.ts > StepTopicSettingsComponent (business logic) > should have default visibility private
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-create/components/step-topic-settings/step-topic-settings.component.spec.ts > StepTopicSettingsComponent (business logic) > should emit topicUpdate when onUpdate is called with visibility
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-create/components/step-topic-settings/step-topic-settings.component.spec.ts > StepTopicSettingsComponent (business logic) > should emit topicUpdate when onUpdate is called with country
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-create/components/step-topic-settings/step-topic-settings.component.spec.ts > StepTopicSettingsComponent (business logic) > should emit topicUpdate when onUpdate is called with categories
+ɵNotFound: NG0201: No provider found for `TranslateService`. Find more at https://v22.angular.dev/errors/NG0201
+ ❯ createRuntimeError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/errors_di.ts:130:16
+ ❯ createRuntimeError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/null_injector.ts:20:20
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:26
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:26
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:250:51
+ ❯ retrieve ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:110:34
+ ❯ resolveForwardRef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:145:4
+ ❯ ɵɵinject ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:296:9
+ ❯ src/app/core/state/config.store.ts:77:23
+ ❯ modules/signals/src/with-methods.ts:50:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/my-topics/my-topics.component.spec.ts > MyTopicsComponent > onSearch sets search param
+AssertionError: expected "vi.fn()" to be called with arguments: [ 'search', 'angular' ]
+
+Number of calls: 0
+
+ ❯ src/app/features/topics/my-topics/my-topics.component.spec.ts:88:34
+     86|     comp.onSearch('angular');
+     87|     expect(comp.searchValue()).toBe('angular');
+     88|     expect(mockService.setParam).toHaveBeenCalledWith('search', 'angul…
+       |                                  ^
+     89|   });
+     90|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/my-topics/my-topics.component.spec.ts > MyTopicsComponent > onSearch with empty string passes null
+AssertionError: expected "vi.fn()" to be called with arguments: [ 'search', null ]
+
+Number of calls: 0
+
+ ❯ src/app/features/topics/my-topics/my-topics.component.spec.ts:94:34
+     92|     const comp = makeComp();
+     93|     comp.onSearch('');
+     94|     expect(mockService.setParam).toHaveBeenCalledWith('search', null);
+       |                                  ^
+     95|   });
+     96|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-create/topic-create.component.spec.ts > TopicCreateComponent (business logic) > shows loading overlay when isLoading is true
+Error: Resource is currently in an error state (see Error.cause for details): Cannot read properties of undefined (reading 'subscribe')
+ ❯ Object.ResourceImpl.computed.equal.equal [as computation] ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/resource/resource.ts:234:18
+ ❯ computation ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/primitives/signals/src/computed.ts:147:24
+ ❯ producerRecomputeValue ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/primitives/signals/src/graph.ts:318:7
+ ❯ producerUpdateValueVersion ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/primitives/signals/src/computed.ts:72:4
+ ❯ Object.TopicCreateComponent.members.ngDevMode.debugName [as computation] src/app/features/topics/topic-create/topic-create.component.ts:93:49
+ ❯ computation ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/primitives/signals/src/computed.ts:147:24
+ ❯ producerRecomputeValue ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/primitives/signals/src/graph.ts:318:7
+ ❯ producerUpdateValueVersion ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/primitives/signals/src/computed.ts:72:4
+ ❯ TopicCreateComponent_Template src/app/features/topics/topic-create/topic-create.component.html:56:29
+ ❯ templateFn ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:108:4
+
+Caused by: TypeError: Cannot read properties of undefined (reading 'subscribe')
+ ❯ ResourceImpl.stream [as loaderFn] node_modules/@angular/core/fesm2022/rxjs-interop.mjs:249:29
+ ❯ node_modules/@angular/core/fesm2022/_resource-chunk.mjs:380:21
+ ❯ untracked node_modules/@angular/core/fesm2022/_untracked-chunk.mjs:95:12
+ ❯ untracked node_modules/@angular/core/fesm2022/_resource-chunk.mjs:77:10
+ ❯ ResourceImpl.loadEffect node_modules/@angular/core/fesm2022/_resource-chunk.mjs:379:22
+ ❯ Object.fn node_modules/@angular/core/fesm2022/_pending_tasks-chunk.mjs:3069:5
+ ❯ runEffect node_modules/@angular/core/fesm2022/_effect-chunk.mjs:414:10
+ ❯ Object.run node_modules/@angular/core/fesm2022/_pending_tasks-chunk.mjs:2991:7
+ ❯ runEffectsInView node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs:5857:16
+ ❯ refreshView node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs:5957:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/shared/components/icon/icon.component.spec.ts > IconComponent > should remove width and height attributes when size is "auto" or other string
+AssertionError: expected 'auto' to be null
+
+- Expected:
+null
+
++ Received:
+"auto"
+
+ ❯ src/app/shared/components/icon/icon.component.spec.ts:49:46
+     47|
+     48|     const svgElement = fixture.nativeElement.querySelector('svg');
+     49|     expect(svgElement.getAttribute('width')).toBeNull();
+       |                                              ^
+     50|     expect(svgElement.getAttribute('height')).toBeNull();
+     51|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/shared/components/toggle/toggle.component.spec.ts > ToggleComponent > should display cosToggleTextOn when enabled
+Error: NG0303: Can't set value of the 'cosToggleTextOn' input on the '_ToggleComponent' component. Make sure that the 'cosToggleTextOn' property is declared as an input using the input() or model() function or the @Input() decorator.
+ ❯ reportUnknownPropertyError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/element_validation.ts:228:10
+ ❯ reportUnknownPropertyError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/component_ref.ts:596:6
+ ❯ src/app/shared/components/toggle/toggle.component.spec.ts:55:26
+     53|   it('should display cosToggleTextOn when enabled', async () => {
+     54|     fixture.componentRef.setInput('model', true);
+     55|     fixture.componentRef.setInput('cosToggleTextOn', 'Enabled');
+       |                          ^
+     56|     fixture.detectChanges();
+     57|     await fixture.whenStable();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/core/components/shell/feedback/feedback.component.spec.ts > FeedbackComponent > should create
+ FAIL  |citizenos-fe-next| src/app/core/components/shell/feedback/feedback.component.spec.ts > FeedbackComponent > should render the feedback form when showFeedback is true
+ FAIL  |citizenos-fe-next| src/app/core/components/shell/feedback/feedback.component.spec.ts > FeedbackComponent > should close the feedback form when clicking cancel
+ FAIL  |citizenos-fe-next| src/app/core/components/shell/feedback/feedback.component.spec.ts > FeedbackComponent > should set error when submitting without message
+ FAIL  |citizenos-fe-next| src/app/core/components/shell/feedback/feedback.component.spec.ts > FeedbackComponent > should call API and show success message on submit
+ FAIL  |citizenos-fe-next| src/app/core/components/shell/feedback/feedback.component.spec.ts > FeedbackComponent > should close the feedback form when clicking close button after submission
+ FAIL  |citizenos-fe-next| src/app/core/components/shell/feedback/feedback.component.spec.ts > FeedbackComponent > should hide the form when showFeedback signal is false
+TypeError: Cannot read properties of undefined (reading 'subscribe')
+ ❯ TranslatePipe.transform node_modules/projects/ngx-translate/src/lib/translate.pipe.ts:104:74
+ ❯ transform ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/pipe.ts:184:19
+ ❯ FeedbackComponent_Conditional_0_Template src/app/core/components/shell/feedback/feedback.component.ts:22:36
+ ❯ templateFn ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:108:4
+ ❯ executeTemplate ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:232:6
+ ❯ refreshView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:497:4
+ ❯ detectChangesInView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:445:2
+ ❯ detectChangesInViewIfAttached ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:387:6
+ ❯ detectChangesInEmbeddedViews ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:264:4
+ ❯ refreshView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:497:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/groups/dialogs/group-invite-dialog/group-invite-dialog.component.spec.ts > GroupInviteDialogComponent > joinUrl is generated from group join token
+AssertionError: expected '' to contain 'tok123'
+
+- Expected
++ Received
+
+- tok123
+
+ ❯ src/app/features/groups/dialogs/group-invite-dialog/group-invite-dialog.component.spec.ts:72:28
+     70|   it('joinUrl is generated from group join token', () => {
+     71|     const comp = makeComp();
+     72|     expect(comp.joinUrl()).toContain('tok123');
+       |                            ^
+     73|   });
+     74|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/groups/group-create/components/group-create-help/group-create-help.component.spec.ts > GroupCreateHelpComponent > should display info help when step is info
+AssertionError: expected null to be 'VIEWS.GROUP_CREATE.HELP_INFO_HEADING' // Object.is equality
+
+- Expected:
+"VIEWS.GROUP_CREATE.HELP_INFO_HEADING"
+
++ Received:
+null
+
+ ❯ src/app/features/groups/group-create/components/group-create-help/group-create-help.component.spec.ts:33:81
+     31|   it('should display info help when step is info', () => {
+     32|     const compiled = setup('info');
+     33|     expect(compiled.querySelector('.small_heading')?.getAttribute('tra…
+       |                                                                                 ^
+     34|   });
+     35|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/groups/group-create/components/group-create-help/group-create-help.component.spec.ts > GroupCreateHelpComponent > should display settings help when step is settings
+AssertionError: expected null to be 'VIEWS.GROUP_CREATE.HELP_SETTINGS_HEAD…' // Object.is equality
+
+- Expected:
+"VIEWS.GROUP_CREATE.HELP_SETTINGS_HEADING"
+
++ Received:
+null
+
+ ❯ src/app/features/groups/group-create/components/group-create-help/group-create-help.component.spec.ts:38:81
+     36|   it('should display settings help when step is settings', () => {
+     37|     const compiled = setup('settings');
+     38|     expect(compiled.querySelector('.small_heading')?.getAttribute('tra…
+       |                                                                                 ^
+     39|   });
+     40|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/groups/group-create/components/group-create-help/group-create-help.component.spec.ts > GroupCreateHelpComponent > should display add_topics help when step is add_topics
+AssertionError: expected null to be 'VIEWS.GROUP_CREATE.HELP_ADD_TOPICS_HE…' // Object.is equality
+
+- Expected:
+"VIEWS.GROUP_CREATE.HELP_ADD_TOPICS_HEADING"
+
++ Received:
+null
+
+ ❯ src/app/features/groups/group-create/components/group-create-help/group-create-help.component.spec.ts:43:81
+     41|   it('should display add_topics help when step is add_topics', () => {
+     42|     const compiled = setup('add_topics');
+     43|     expect(compiled.querySelector('.small_heading')?.getAttribute('tra…
+       |                                                                                 ^
+     44|   });
+     45|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/groups/group-create/components/group-create-help/group-create-help.component.spec.ts > GroupCreateHelpComponent > should display invite help when step is invite
+AssertionError: expected null to be 'VIEWS.GROUP_CREATE.HELP_INVITE_HEADING' // Object.is equality
+
+- Expected:
+"VIEWS.GROUP_CREATE.HELP_INVITE_HEADING"
+
++ Received:
+null
+
+ ❯ src/app/features/groups/group-create/components/group-create-help/group-create-help.component.spec.ts:48:81
+     46|   it('should display invite help when step is invite', () => {
+     47|     const compiled = setup('invite');
+     48|     expect(compiled.querySelector('.small_heading')?.getAttribute('tra…
+       |                                                                                 ^
+     49|   });
+     50| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/groups/group-detail/components/group-invite-user/group-invite-user.component.spec.ts > GroupInviteUserComponent > LEVELS comes from inviteUserService
+AssertionError: expected { read: 'read', admin: 'admin' } to deeply equal [ 'read', 'admin' ]
+
+- Expected:
+[
+  "read",
+  "admin",
+]
+
++ Received:
+{
+  "admin": "admin",
+  "read": "read",
+}
+
+ ❯ src/app/features/groups/group-detail/components/group-invite-user/group-invite-user.component.spec.ts:60:30
+     58|
+     59|   it('LEVELS comes from inviteUserService', () => {
+     60|     expect(component.LEVELS).toEqual(['read', 'admin']);
+       |                              ^
+     61|   });
+     62|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/groups/group-detail/components/group-member-user/group-member-user.component.spec.ts > GroupMemberUserComponent > LEVELS comes from memberUserService
+AssertionError: expected { read: 'read', admin: 'admin' } to deeply equal [ 'read', 'admin' ]
+
+- Expected:
+[
+  "read",
+  "admin",
+]
+
++ Received:
+{
+  "admin": "admin",
+  "read": "read",
+}
+
+ ❯ src/app/features/groups/group-detail/components/group-member-user/group-member-user.component.spec.ts:57:30
+     55|
+     56|   it('LEVELS comes from memberUserService', () => {
+     57|     expect(component.LEVELS).toEqual(['read', 'admin']);
+       |                              ^
+     58|   });
+     59|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/groups/group-detail/components/group-share/group-share.component.spec.ts > GroupShareComponent > LEVELS comes from memberUserService
+AssertionError: expected { read: 'read', admin: 'admin' } to deeply equal [ 'read', 'admin' ]
+
+- Expected:
+[
+  "read",
+  "admin",
+]
+
++ Received:
+{
+  "admin": "admin",
+  "read": "read",
+}
+
+ ❯ src/app/features/groups/group-detail/components/group-share/group-share.component.spec.ts:81:30
+     79|
+     80|   it('LEVELS comes from memberUserService', () => {
+     81|     expect(component.LEVELS).toEqual(['read', 'admin']);
+       |                              ^
+     82|   });
+     83|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.spec.ts > StepIdeationSettingsComponent (business logic) > should have default ideation values
+Error: NG0952: Model is required but no value is available yet.
+ ❯ assertModelSet ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/authoring/model/model_signal.ts:112:10
+ ❯ assertModelSet ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/authoring/model/model_signal.ts:72:4
+ ❯ src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.spec.ts:19:22
+     17|
+     18|   it('should have default ideation values', () => {
+     19|     expect(component.ideation().question).toBe('');
+       |                      ^
+     20|     expect(component.ideation().allowAnonymous).toBe(false);
+     21|     expect(component.ideation().disableReplies).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.spec.ts > StepIdeationSettingsComponent (business logic) > when allowAnonymous is toggled on, disableReplies should also become true
+Error: NG0952: Model is required but no value is available yet.
+ ❯ assertModelSet ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/authoring/model/model_signal.ts:112:10
+ ❯ assertModelSet ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/authoring/model/model_signal.ts:88:4
+ ❯ _StepIdeationSettingsComponent.onToggleAnonymous src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.ts:261:19
+ ❯ src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.spec.ts:34:15
+     32|     vi.spyOn(component, 'ideation').mockReturnValue({ allowAnonymous: …
+     33|     const spy = vi.spyOn(component.ideationUpdate, 'emit');
+     34|     component.onToggleAnonymous();
+       |               ^
+     35|     expect(spy).toHaveBeenCalledWith(expect.objectContaining({ disable…
+     36|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.spec.ts > StepIdeationSettingsComponent (business logic) > when allowAnonymous is toggled off, should not force disableReplies
+Error: NG0952: Model is required but no value is available yet.
+ ❯ assertModelSet ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/authoring/model/model_signal.ts:112:10
+ ❯ assertModelSet ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/authoring/model/model_signal.ts:88:4
+ ❯ _StepIdeationSettingsComponent.onToggleAnonymous src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.ts:261:19
+ ❯ src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.spec.ts:41:15
+     39|     vi.spyOn(component, 'ideation').mockReturnValue({ allowAnonymous: …
+     40|     const spy = vi.spyOn(component.ideationUpdate, 'emit');
+     41|     component.onToggleAnonymous();
+       |               ^
+     42|     expect(spy).toHaveBeenCalledWith(expect.objectContaining({ disable…
+     43|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.spec.ts > StepIdeationSettingsComponent (business logic) > when allowAnonymous is on but disableReplies already true, should not force-override
+Error: NG0952: Model is required but no value is available yet.
+ ❯ assertModelSet ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/authoring/model/model_signal.ts:112:10
+ ❯ assertModelSet ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/authoring/model/model_signal.ts:88:4
+ ❯ _StepIdeationSettingsComponent.onToggleAnonymous src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.ts:261:19
+ ❯ src/app/features/topics/ideation-create/components/step-ideation-settings/step-ideation-settings.component.spec.ts:48:15
+     46|     vi.spyOn(component, 'ideation').mockReturnValue({ allowAnonymous: …
+     47|     const spy = vi.spyOn(component.ideationUpdate, 'emit');
+     48|     component.onToggleAnonymous();
+       |               ^
+     49|     expect(spy).toHaveBeenCalledWith(expect.objectContaining({ disable…
+     50|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument/argument.component.spec.ts > ArgumentComponent > argumentId should combine id and version
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument/argument.component.spec.ts > ArgumentComponent > isEdited returns false for single-edit argument
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument/argument.component.spec.ts > ArgumentComponent > canEdit returns true when user is owner and not deleted
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument/argument.component.spec.ts > ArgumentComponent > canEdit returns false when user is not owner
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument/argument.component.spec.ts > ArgumentComponent > vote should call argumentService.vote
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument/argument.component.spec.ts > ArgumentComponent > vote should not call service when not authenticated
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument/argument.component.spec.ts > ArgumentComponent > doDelete should open confirm dialog and call delete on confirm
+ɵNotFound: NG0201: No provider found for `TranslateService`. Find more at https://v22.angular.dev/errors/NG0201
+ ❯ createRuntimeError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/errors_di.ts:130:16
+ ❯ createRuntimeError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/null_injector.ts:20:20
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:26
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:26
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:250:51
+ ❯ retrieve ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:110:34
+ ❯ resolveForwardRef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:145:4
+ ❯ ɵɵinject ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:296:9
+ ❯ _ArgumentComponent.<instance_members_initializer> src/app/features/topics/topic-view/components/argument/argument.component.ts:60:23
+ ❯ new _ArgumentComponent src/app/features/topics/topic-view/components/argument/argument.component.ts:44:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.spec.ts > ArgumentReactionsComponent > should create
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.spec.ts > ArgumentReactionsComponent > should call votes service on init
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.spec.ts > ArgumentReactionsComponent > should populate members from API response
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.spec.ts > ArgumentReactionsComponent > should set totalPages based on member count
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.spec.ts > ArgumentReactionsComponent > should render member rows
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.spec.ts > ArgumentReactionsComponent > should render profile image when imageUrl is set
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.spec.ts > ArgumentReactionsComponent > should show empty message when no members
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.spec.ts > ArgumentReactionsComponent > loadPage updates page signal
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.spec.ts > ArgumentReactionsComponent > isOnPage returns true for items on current page
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/argument-reactions/argument-reactions.component.spec.ts > ArgumentReactionsComponent > should have a close button with dialogClose
+Error: NG0304: 'cos-notifications' is not a known element (used in the '_ArgumentReactionsComponent' component template):
+1. If 'cos-notifications' is an Angular component, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-notifications' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+ ❯ validateElementIsKnown ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/element_validation.ts:116:14
+ ❯ validateElementIsKnown ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/element.ts:151:4
+ ❯ initializeElement ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/element.ts:127:2
+ ❯ ɵɵelementStart ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/element.ts:218:2
+ ❯ _ArgumentReactionsComponent_Template ng:/_ArgumentReactionsComponent.js:126:9
+ ❯ templateFn ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:108:4
+ ❯ executeTemplate ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/render.ts:107:6
+ ❯ renderView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/render.ts:47:4
+ ❯ renderComponent ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/render.ts:160:4
+ ❯ renderChildComponents ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/render.ts:140:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/duplicate-topic-dialog/duplicate-topic-dialog.component.spec.ts > DuplicateTopicDialogComponent > should render the heading
+AssertionError: expected null to be truthy
+
+- Expected:
+true
+
++ Received:
+null
+
+ ❯ src/app/features/topics/topic-view/components/duplicate-topic-dialog/duplicate-topic-dialog.component.spec.ts:45:21
+     43|   it('should render the heading', () => {
+     44|     const heading = fixture.nativeElement.querySelector('[translate="C…
+     45|     expect(heading).toBeTruthy();
+       |                     ^
+     46|   });
+     47|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/duplicate-topic-dialog/duplicate-topic-dialog.component.spec.ts > DuplicateTopicDialogComponent > confirm button should close dialog with true
+TypeError: Cannot read properties of null (reading 'click')
+ ❯ src/app/features/topics/topic-view/components/duplicate-topic-dialog/duplicate-topic-dialog.component.spec.ts:50:9
+     48|   it('confirm button should close dialog with true', () => {
+     49|     const btn = fixture.nativeElement.querySelector('button[translate=…
+     50|     btn.click();
+       |         ^
+     51|     expect(mockDialogRef.close).toHaveBeenCalledWith(true);
+     52|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/duplicate-topic-dialog/duplicate-topic-dialog.component.spec.ts > DuplicateTopicDialogComponent > cancel link should close dialog
+TypeError: Cannot read properties of null (reading 'click')
+ ❯ src/app/features/topics/topic-view/components/duplicate-topic-dialog/duplicate-topic-dialog.component.spec.ts:56:12
+     54|   it('cancel link should close dialog', () => {
+     55|     const cancel = fixture.nativeElement.querySelector('a[translate="C…
+     56|     cancel.click();
+       |            ^
+     57|     expect(mockDialogRef.close).toHaveBeenCalled();
+     58|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts > EditArgumentComponent > should create
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts > EditArgumentComponent > should pre-fill edit signals from argument on init
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts > EditArgumentComponent > should filter out reply from ARGUMENT_TYPES
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts > EditArgumentComponent > should render type select section when argument.type is not reply
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts > EditArgumentComponent > should hide type select section when argument.type is reply
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts > EditArgumentComponent > should call argumentService.update with correct data on updateArgument
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts > EditArgumentComponent > should not call update when nothing changed
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts > EditArgumentComponent > should emit null on successful update
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts > EditArgumentComponent > should emit false and reset signals on argumentEditMode
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts > EditArgumentComponent > should render save button
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-argument/edit-argument.component.spec.ts > EditArgumentComponent > should render cancel button
+Error: NG0303: Can't bind to 'item' since it isn't a known property of 'textarea' (used in the '_EditArgumentComponent' component template).
+1. If 'textarea' is an Angular component and it has the 'item' input, then verify that it is included in the '@Component.imports' of this component.
+2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+ ❯ reportUnknownPropertyError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/element_validation.ts:228:10
+ ❯ reportUnknownPropertyError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/element_validation.ts:223:2
+ ❯ handleUnknownPropertyError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:308:8
+ ❯ setDomProperty ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:280:2
+ ❯ setPropertyAndInputs ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/property.ts:48:4
+ ❯ _EditArgumentComponent_Template ng:/_EditArgumentComponent.js:177:9
+ ❯ templateFn ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:108:4
+ ❯ executeTemplate ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:232:6
+ ❯ refreshView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:497:4
+ ❯ detectChangesInView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:445:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-discussion-deadline/edit-discussion-deadline.component.spec.ts > EditDiscussionDeadlineComponent > should create
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-discussion-deadline/edit-discussion-deadline.component.spec.ts > EditDiscussionDeadlineComponent > should set isNew true when discussion has no deadline
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-discussion-deadline/edit-discussion-deadline.component.spec.ts > EditDiscussionDeadlineComponent > should set isNew false when discussion has a deadline
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/edit-discussion-deadline/edit-discussion-deadline.component.spec.ts > EditDiscussionDeadlineComponent > should call discussionService.update on save
+Error: NG0203: The `OverlayRef` token injection failed. `inject()` function must be called from an injection context such as a constructor, a factory function, a field initializer, or a function used with `runInInjectionContext`. Find more at https://v22.angular.dev/errors/NG0203
+ ❯ injectInjectorOnly ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:99:10
+ ❯ resolveForwardRef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:145:4
+ ❯ ɵɵinject ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:296:9
+ ❯ _DialogRef.<instance_members_initializer> src/app/shared/dialog/dialog-ref.ts:23:24
+ ❯ new _DialogRef src/app/shared/dialog/dialog-ref.ts:22:7
+ ❯ src/app/features/topics/topic-view/components/edit-discussion-deadline/edit-discussion-deadline.component.spec.ts:34:41
+     32|       providers: [
+     33|         provideRouter([{ path: '**', component: EmptyComponent }]),
+     34|         { provide: DialogRef, useValue: new DialogRef() },
+       |                                         ^
+     35|         { provide: DIALOG_DATA, useValue: { discussion: mockDiscussion…
+     36|         { provide: TopicDiscussionService, useValue: mockDiscussionSer…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-dialog/idea-dialog.component.spec.ts > IdeaDialogComponent > loads replies on init and sets replyCount
+AssertionError: expected +0 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ src/app/features/topics/topic-view/components/idea-dialog/idea-dialog.component.spec.ts:139:52
+    137|     const fixture = createFixture();
+    138|     fixture.detectChanges();
+    139|     expect(fixture.componentInstance.replyCount()).toBe(2);
+       |                                                    ^
+    140|   });
+    141|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-dialog/idea-dialog.component.spec.ts > IdeaDialogComponent > onReplyAdded reloads idea data
+AssertionError: expected "vi.fn()" to be called at least once
+ ❯ src/app/features/topics/topic-view/components/idea-dialog/idea-dialog.component.spec.ts:283:48
+    281|     vi.clearAllMocks();
+    282|     fixture.componentInstance.onReplyAdded();
+    283|     expect(ideationServiceMock.getIdeaFolders).toHaveBeenCalled();
+       |                                                ^
+    284|   });
+    285| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.spec.ts > IdeaReactionsComponent > should load reactions on init
+TypeError: this.ideationService.getIdeaVoters is not a function
+ ❯ _IdeaReactionsComponent.loadReactions src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.ts:39:26
+ ❯ _IdeaReactionsComponent.ngOnInit src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.ts:35:10
+ ❯ src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.spec.ts:67:15
+     65|
+     66|     const component = makeComp();
+     67|     component.ngOnInit();
+       |               ^
+     68|
+     69|     expect(mockIdeationService.getIdeaVotes).toHaveBeenCalledWith(expe…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.spec.ts > IdeaReactionsComponent > should handle pagination
+TypeError: this.ideationService.getIdeaVoters is not a function
+ ❯ _IdeaReactionsComponent.loadReactions src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.ts:39:26
+ ❯ _IdeaReactionsComponent.ngOnInit src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.ts:35:10
+ ❯ src/app/features/topics/topic-view/components/idea-reactions/idea-reactions.component.spec.ts:87:15
+     85|
+     86|     const component = makeComp();
+     87|     component.ngOnInit();
+       |               ^
+     88|     expect(component.totalPages()).toBe(3);
+     89|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-reply-report-moderate/idea-reply-report-moderate.component.spec.ts > IdeaReplyReportModerateComponent > shows heading
+AssertionError: expected null to be 'COMPONENTS.IDEA_REPLY_REPORT_MODERATE…' // Object.is equality
+
+- Expected:
+"COMPONENTS.IDEA_REPLY_REPORT_MODERATE.HEADING"
+
++ Received:
+null
+
+ ❯ src/app/features/topics/topic-view/components/idea-reply-report-moderate/idea-reply-report-moderate.component.spec.ts:63:47
+     61|     const heading = fixture.nativeElement.querySelector('.title');
+     62|     expect(heading).toBeTruthy();
+     63|     expect(heading.getAttribute('translate')).toBe('COMPONENTS.IDEA_RE…
+       |                                               ^
+     64|   });
+     65|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts > IdeaReportComponent > should handle error on doReport
+AssertionError: expected undefined to deeply equal { text: 'error' }
+
+- Expected:
+{
+  "text": "error",
+}
+
++ Received:
+undefined
+
+ ❯ src/app/features/topics/topic-view/components/idea-report/idea-report.component.spec.ts:126:32
+    124|     component.report.get('text')?.setValue('Some text');
+    125|     component.doReport();
+    126|     expect(component.errors()).toEqual({ text: 'error' });
+       |                                ^
+    127|     expect(mockDialogRef.close).not.toHaveBeenCalled();
+    128|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[40/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/ideabox/ideabox.component.spec.ts > IdeaboxComponent > vote calls voteIdea service
+TypeError: this.userStore.isAuthenticated is not a function
+ ❯ _IdeaboxComponent.vote src/app/features/topics/topic-view/components/ideabox/ideabox.component.ts:86:25
+ ❯ src/app/features/topics/topic-view/components/ideabox/ideabox.component.spec.ts:92:10
+     90|     const comp = makeComp();
+     91|     const emitSpy = vi.spyOn(comp.ideaUpdated, 'emit');
+     92|     comp.vote(1);
+       |          ^
+     93|     expect(mockIdeationService.voteIdea).toHaveBeenCalledWith({
+     94|       topicId: 't1', ideationId: 'i1', ideaId: 'idea1', value: 1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[41/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/missing-discussion/missing-discussion.component.spec.ts > MissingDiscussionComponent > should create
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/missing-discussion/missing-discussion.component.spec.ts > MissingDiscussionComponent > should expose topic from dialog data
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/missing-discussion/missing-discussion.component.spec.ts > MissingDiscussionComponent > should call create when topic has no discussionId
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/missing-discussion/missing-discussion.component.spec.ts > MissingDiscussionComponent > should call update when topic has existing discussionId
+Error: NG0203: The `OverlayRef` token injection failed. `inject()` function must be called from an injection context such as a constructor, a factory function, a field initializer, or a function used with `runInInjectionContext`. Find more at https://v22.angular.dev/errors/NG0203
+ ❯ injectInjectorOnly ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:99:10
+ ❯ resolveForwardRef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:145:4
+ ❯ ɵɵinject ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:296:9
+ ❯ _DialogRef.<instance_members_initializer> src/app/shared/dialog/dialog-ref.ts:23:24
+ ❯ new _DialogRef src/app/shared/dialog/dialog-ref.ts:22:7
+ ❯ src/app/features/topics/topic-view/components/missing-discussion/missing-discussion.component.spec.ts:31:41
+     29|       providers: [
+     30|         provideRouter([{ path: '**', component: EmptyComponent }]),
+     31|         { provide: DialogRef, useValue: new DialogRef() },
+       |                                         ^
+     32|         { provide: DIALOG_DATA, useValue: { topic: mockTopic } },
+     33|         { provide: TopicDiscussionService, useValue: mockDiscussionSer…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[42/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts > PostArgumentFormComponent (class) > should default to pro type
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts > PostArgumentFormComponent (class) > should have all three types available
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts > PostArgumentFormComponent (class) > ngOnInit calls setParam for topicId and discussionId
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts > PostArgumentFormComponent (class) > close() sets isOpen to false
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts > PostArgumentFormComponent (class) > clear() resets subject, text, and errors
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts > PostArgumentFormComponent (class) > argumentMaxLength() returns type-specific limit
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts > PostArgumentFormComponent (class) > submit should call save with correct payload
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts > PostArgumentFormComponent (class) > submit should clear form and emit posted on success
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts > PostArgumentFormComponent (class) > submit should set isOpen to false on success
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts > PostArgumentFormComponent (class) > submit should set error on failure
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.spec.ts > PostArgumentFormComponent (class) > submit with empty subject trims to empty string
+ɵNotFound: NG0201: No provider found for `TranslateService`. Find more at https://v22.angular.dev/errors/NG0201
+ ❯ createRuntimeError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/errors_di.ts:130:16
+ ❯ createRuntimeError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/null_injector.ts:20:20
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:26
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:26
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:250:51
+ ❯ retrieve ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:110:34
+ ❯ resolveForwardRef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:145:4
+ ❯ ɵɵinject ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:296:9
+ ❯ _PostArgumentFormComponent.<instance_members_initializer> src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.ts:32:23
+ ❯ new _PostArgumentFormComponent src/app/features/topics/topic-view/components/post-argument-form/post-argument-form.component.ts:23:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[43/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.spec.ts > TopicDiscussionComponent > should have showPostForm initially false
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.spec.ts > TopicDiscussionComponent > canPost returns truthy when authenticated
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.spec.ts > TopicDiscussionComponent > canPost returns falsy when not authenticated
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.spec.ts > TopicDiscussionComponent > toggleTypeFilter should update selectedTypes
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.spec.ts > TopicDiscussionComponent > toggleTypeFilter toggling twice should remove filter
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.spec.ts > TopicDiscussionComponent > onArgumentPosted hides form and reloads
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.spec.ts > TopicDiscussionComponent > reload calls loadPage
+ɵNotFound: NG0201: No provider found for `TranslateService`. Find more at https://v22.angular.dev/errors/NG0201
+ ❯ createRuntimeError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/errors_di.ts:130:16
+ ❯ createRuntimeError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/null_injector.ts:20:20
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:26
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:26
+ ❯ get ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:250:51
+ ❯ retrieve ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:110:34
+ ❯ resolveForwardRef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:145:4
+ ❯ ɵɵinject ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:296:9
+ ❯ _TopicDiscussionComponent.<instance_members_initializer> src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.ts:51:15
+ ❯ new _TopicDiscussionComponent src/app/features/topics/topic-view/components/topic-discussion/topic-discussion.component.ts:117:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[44/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion-create-dialog/topic-discussion-create-dialog.component.spec.ts > TopicDiscussionCreateDialogComponent > should create
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion-create-dialog/topic-discussion-create-dialog.component.spec.ts > TopicDiscussionCreateDialogComponent > should start on tab 1
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion-create-dialog/topic-discussion-create-dialog.component.spec.ts > TopicDiscussionCreateDialogComponent > should navigate to tab 2
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-discussion-create-dialog/topic-discussion-create-dialog.component.spec.ts > TopicDiscussionCreateDialogComponent > should call create on save when no discussionId
+Error: NG0203: The `OverlayRef` token injection failed. `inject()` function must be called from an injection context such as a constructor, a factory function, a field initializer, or a function used with `runInInjectionContext`. Find more at https://v22.angular.dev/errors/NG0203
+ ❯ injectInjectorOnly ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:99:10
+ ❯ resolveForwardRef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:145:4
+ ❯ ɵɵinject ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:296:9
+ ❯ _DialogRef.<instance_members_initializer> src/app/shared/dialog/dialog-ref.ts:23:24
+ ❯ new _DialogRef src/app/shared/dialog/dialog-ref.ts:22:7
+ ❯ src/app/features/topics/topic-view/components/topic-discussion-create-dialog/topic-discussion-create-dialog.component.spec.ts:31:41
+     29|       providers: [
+     30|         provideRouter([{ path: '**', component: EmptyComponent }]),
+     31|         { provide: DialogRef, useValue: new DialogRef() },
+       |                                         ^
+     32|         { provide: DIALOG_DATA, useValue: { topic: mockTopic } },
+     33|         { provide: TopicDiscussionService, useValue: mockDiscussionSer…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[45/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-edit-disabled-dialog/topic-edit-disabled-dialog.component.spec.ts > TopicEditDisabledDialogComponent > should render the heading
+AssertionError: expected null to be truthy
+
+- Expected:
+true
+
++ Received:
+null
+
+ ❯ src/app/features/topics/topic-view/components/topic-edit-disabled-dialog/topic-edit-disabled-dialog.component.spec.ts:31:21
+     29|   it('should render the heading', () => {
+     30|     const heading = fixture.nativeElement.querySelector('[translate="M…
+     31|     expect(heading).toBeTruthy();
+       |                     ^
+     32|   });
+     33|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[46/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-edit-disabled-dialog/topic-edit-disabled-dialog.component.spec.ts > TopicEditDisabledDialogComponent > should render the description
+AssertionError: expected null to be truthy
+
+- Expected:
+true
+
++ Received:
+null
+
+ ❯ src/app/features/topics/topic-view/components/topic-edit-disabled-dialog/topic-edit-disabled-dialog.component.spec.ts:36:18
+     34|   it('should render the description', () => {
+     35|     const desc = fixture.nativeElement.querySelector('[translate="MODA…
+     36|     expect(desc).toBeTruthy();
+       |                  ^
+     37|   });
+     38|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[47/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-follow-up-create-dialog/topic-follow-up-create-dialog.component.spec.ts > TopicFollowUpCreateDialogComponent > has a cancel link
+AssertionError: expected null to be truthy
+
+- Expected:
+true
+
++ Received:
+null
+
+ ❯ src/app/features/topics/topic-view/components/topic-follow-up-create-dialog/topic-follow-up-create-dialog.component.spec.ts:69:18
+     67|     const fixture = createFixture();
+     68|     const link = fixture.nativeElement.querySelector('.dialog_footer a…
+     69|     expect(link).toBeTruthy();
+       |                  ^
+     70|   });
+     71|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[48/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-member-invite-delete/topic-member-invite-delete.component.spec.ts > TopicMemberInviteDeleteComponent > shows image when user has imageUrl
+AssertionError: expected 'http://example.com/img.jpg' to contain 'img.png'
+
+Expected: "img.png"
+Received: "http://example.com/img.jpg"
+
+ ❯ src/app/features/topics/topic-view/components/topic-member-invite-delete/topic-member-invite-delete.component.spec.ts:80:21
+     78|     const img = fixtureWithImage.nativeElement.querySelector('img.prof…
+     79|     expect(img).toBeTruthy();
+     80|     expect(img.src).toContain('img.png');
+       |                     ^
+     81|   });
+     82|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[49/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-onboarding/topic-onboarding.component.spec.ts > TopicOnboardingComponent > should create
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-onboarding/topic-onboarding.component.spec.ts > TopicOnboardingComponent > should call tourService.show with topic tour on desktop
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-onboarding/topic-onboarding.component.spec.ts > TopicOnboardingComponent > should call tourService.show with topic_mobile tour on mobile
+Error: NG0203: The `OverlayRef` token injection failed. `inject()` function must be called from an injection context such as a constructor, a factory function, a field initializer, or a function used with `runInInjectionContext`. Find more at https://v22.angular.dev/errors/NG0203
+ ❯ injectInjectorOnly ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:99:10
+ ❯ resolveForwardRef ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:145:4
+ ❯ ɵɵinject ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:296:9
+ ❯ _DialogRef.<instance_members_initializer> src/app/shared/dialog/dialog-ref.ts:23:24
+ ❯ new _DialogRef src/app/shared/dialog/dialog-ref.ts:22:7
+ ❯ src/app/features/topics/topic-view/components/topic-onboarding/topic-onboarding.component.spec.ts:18:41
+     16|       imports: [TranslateModule.forRoot()],
+     17|       providers: [
+     18|         { provide: DialogRef, useValue: new DialogRef() },
+       |                                         ^
+     19|         { provide: TourService, useValue: mockTourService },
+     20|       ]
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[50/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-report-moderate/topic-report-moderate.component.spec.ts > TopicReportModerateComponent > should expose report types from service
+AssertionError: expected [ 'spam', 'duplicate', 'abuse', …(3) ] to deeply equal [ 'spam', 'inappropriate' ]
+
+- Expected
++ Received
+
+  [
+    "spam",
+-   "inappropriate",
++   "duplicate",
++   "abuse",
++   "hate",
++   "other",
++   "obscene",
+  ]
+
+ ❯ src/app/features/topics/topic-view/components/topic-report-moderate/topic-report-moderate.component.spec.ts:67:35
+     65|
+     66|   it('should expose report types from service', () => {
+     67|     expect(component.reportTypes).toEqual(['spam', 'inappropriate']);
+       |                                   ^
+     68|   });
+     69|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[51/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts > TopicSettingsComponent > should create
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts > TopicSettingsComponent > should switch tabs
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts > TopicSettingsComponent > should load groups on init
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts > TopicSettingsComponent > should toggle visibility
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts > TopicSettingsComponent > should save topic and close
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts > TopicSettingsComponent > should add and remove categories
+Error: NG0303: Can't bind to 'value' since it isn't a known property of 'cos-toggle' (used in the '_TopicSettingsComponent' component template).
+1. If 'cos-toggle' is an Angular component and it has the 'value' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'cos-toggle' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.
+ ❯ reportUnknownPropertyError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/element_validation.ts:228:10
+ ❯ reportUnknownPropertyError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/element_validation.ts:223:2
+ ❯ handleUnknownPropertyError ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:308:8
+ ❯ setDomProperty ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:280:2
+ ❯ setPropertyAndInputs ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/property.ts:48:4
+ ❯ _TopicSettingsComponent_Conditional_22_Conditional_2_Template ng:/_TopicSettingsComponent.js:71:5
+ ❯ templateFn ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:108:4
+ ❯ executeTemplate ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:232:6
+ ❯ refreshView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:497:4
+ ❯ detectChangesInView ../darwin_arm64-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:445:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[52/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-settings-disabled-dialog/topic-settings-disabled-dialog.component.spec.ts > TopicSettingsDisabledDialogComponent > should render the heading
+AssertionError: expected null to be truthy
+
+- Expected:
+true
+
++ Received:
+null
+
+ ❯ src/app/features/topics/topic-view/components/topic-settings-disabled-dialog/topic-settings-disabled-dialog.component.spec.ts:31:21
+     29|   it('should render the heading', () => {
+     30|     const heading = fixture.nativeElement.querySelector('[translate="M…
+     31|     expect(heading).toBeTruthy();
+       |                     ^
+     32|   });
+     33|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[53/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-settings-disabled-dialog/topic-settings-disabled-dialog.component.spec.ts > TopicSettingsDisabledDialogComponent > should render the description
+AssertionError: expected null to be truthy
+
+- Expected:
+true
+
++ Received:
+null
+
+ ❯ src/app/features/topics/topic-view/components/topic-settings-disabled-dialog/topic-settings-disabled-dialog.component.spec.ts:36:18
+     34|   it('should render the description', () => {
+     35|     const desc = fixture.nativeElement.querySelector('[translate="MODA…
+     36|     expect(desc).toBeTruthy();
+       |                  ^
+     37|   });
+     38|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[54/147]⎯
+
+ FAIL  |citizenos-fe-next| src/app/features/topics/topic-view/components/topic-tour-dialog/topic-tour-dialog.component.spec.ts > TopicTourDialogComponent > should have a take-the-tour button that closes dialog with true
+AssertionError: expected null to be truthy
+
+- Expected:
+true
+
++ Received:
+null
+
+ ❯ src/app/features/topics/topic-view/components/topic-tour-dialog/topic-tour-dialog.component.spec.ts:41:17
+     39|   it('should have a take-the-tour button that closes dialog with true'…
+     40|     const btn = fixture.nativeElement.querySelector('.btn_big_submit[d…
+     41|     expect(btn).toBeTruthy();
+       |                 ^
+     42|     btn.click();
+     43|     expect(mockDialogRef.close).toHaveBeenCalledWith(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[55/147]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 6 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+HttpErrorResponse: Http failure response for https://dev.api.citizenos.com:3003/api/topics/123/members/groups: 0 undefined
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { headers: { headers: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, normalizedNames: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, lazyInit: undefined, lazyUpdate: null, constructor: 'Function<HttpHeaders>', has: 'Function<has>', get: 'Function<get>', keys: 'Function<keys>', getAll: 'Function<getAll>', append: 'Function<append>', set: 'Function<set>', delete: 'Function<delete>', maybeSetNormalizedName: 'Function<maybeSetNormalizedName>', init: 'Function<init>', copyFrom: 'Function<copyFrom>', clone: 'Function<clone>', applyUpdate: 'Function<applyUpdate>', addHeaderEntry: 'Function<addHeaderEntry>', setHeaderEntries: 'Function<setHeaderEntries>', forEach: 'Function<forEach>' }, status: +0, statusText: 'Unknown Error', url: 'https://dev.api.citizenos.com:3003/api/topics/123/members/groups', redirected: undefined, responseType: undefined, error: { stack: 'TypeError: fetch failed\n    at node:internal/deps/undici/undici:15157:13\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)', message: 'fetch failed', cause: { stack: 'Error: unable to verify the first certificate\n    at TLSSocket.onConnectSecure (node:internal/tls/wrap:1787:34)\n    at TLSSocket.emit (node:events:519:28)\n    at TLSSocket._finishInit (node:internal/tls/wrap:1176:8)\n    at TLSWrap.ssl.onhandshakedone (node:internal/tls/wrap:962:12)', message: 'unable to verify the first certificate', code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE', constructor: 'Function<Error>', name: 'Error', toString: 'Function<toString>' }, constructor: 'Function<TypeError>', name: 'TypeError', toString: 'Function<toString>' } }
+This error originated in "src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+HttpErrorResponse: Http failure response for https://dev.api.citizenos.com:3003/api/topics/123/members/groups: 0 undefined
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { headers: { headers: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, normalizedNames: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, lazyInit: undefined, lazyUpdate: null, constructor: 'Function<HttpHeaders>', has: 'Function<has>', get: 'Function<get>', keys: 'Function<keys>', getAll: 'Function<getAll>', append: 'Function<append>', set: 'Function<set>', delete: 'Function<delete>', maybeSetNormalizedName: 'Function<maybeSetNormalizedName>', init: 'Function<init>', copyFrom: 'Function<copyFrom>', clone: 'Function<clone>', applyUpdate: 'Function<applyUpdate>', addHeaderEntry: 'Function<addHeaderEntry>', setHeaderEntries: 'Function<setHeaderEntries>', forEach: 'Function<forEach>' }, status: +0, statusText: 'Unknown Error', url: 'https://dev.api.citizenos.com:3003/api/topics/123/members/groups', redirected: undefined, responseType: undefined, error: { stack: 'TypeError: fetch failed\n    at node:internal/deps/undici/undici:15157:13\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)', message: 'fetch failed', cause: { stack: 'Error: unable to verify the first certificate\n    at TLSSocket.onConnectSecure (node:internal/tls/wrap:1787:34)\n    at TLSSocket.emit (node:events:519:28)\n    at TLSSocket._finishInit (node:internal/tls/wrap:1176:8)\n    at TLSWrap.ssl.onhandshakedone (node:internal/tls/wrap:962:12)', message: 'unable to verify the first certificate', code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE', constructor: 'Function<Error>', name: 'Error', toString: 'Function<toString>' }, constructor: 'Function<TypeError>', name: 'TypeError', toString: 'Function<toString>' } }
+This error originated in "src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+HttpErrorResponse: Http failure response for https://dev.api.citizenos.com:3003/api/topics/123/members/groups: 0 undefined
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { headers: { headers: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, normalizedNames: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, lazyInit: undefined, lazyUpdate: null, constructor: 'Function<HttpHeaders>', has: 'Function<has>', get: 'Function<get>', keys: 'Function<keys>', getAll: 'Function<getAll>', append: 'Function<append>', set: 'Function<set>', delete: 'Function<delete>', maybeSetNormalizedName: 'Function<maybeSetNormalizedName>', init: 'Function<init>', copyFrom: 'Function<copyFrom>', clone: 'Function<clone>', applyUpdate: 'Function<applyUpdate>', addHeaderEntry: 'Function<addHeaderEntry>', setHeaderEntries: 'Function<setHeaderEntries>', forEach: 'Function<forEach>' }, status: +0, statusText: 'Unknown Error', url: 'https://dev.api.citizenos.com:3003/api/topics/123/members/groups', redirected: undefined, responseType: undefined, error: { stack: 'TypeError: fetch failed\n    at node:internal/deps/undici/undici:15157:13\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)', message: 'fetch failed', cause: { stack: 'Error: unable to verify the first certificate\n    at TLSSocket.onConnectSecure (node:internal/tls/wrap:1787:34)\n    at TLSSocket.emit (node:events:519:28)\n    at TLSSocket._finishInit (node:internal/tls/wrap:1176:8)\n    at TLSWrap.ssl.onhandshakedone (node:internal/tls/wrap:962:12)', message: 'unable to verify the first certificate', code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE', constructor: 'Function<Error>', name: 'Error', toString: 'Function<toString>' }, constructor: 'Function<TypeError>', name: 'TypeError', toString: 'Function<toString>' } }
+This error originated in "src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+HttpErrorResponse: Http failure response for https://dev.api.citizenos.com:3003/api/topics/123/members/groups: 0 undefined
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { headers: { headers: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, normalizedNames: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, lazyInit: undefined, lazyUpdate: null, constructor: 'Function<HttpHeaders>', has: 'Function<has>', get: 'Function<get>', keys: 'Function<keys>', getAll: 'Function<getAll>', append: 'Function<append>', set: 'Function<set>', delete: 'Function<delete>', maybeSetNormalizedName: 'Function<maybeSetNormalizedName>', init: 'Function<init>', copyFrom: 'Function<copyFrom>', clone: 'Function<clone>', applyUpdate: 'Function<applyUpdate>', addHeaderEntry: 'Function<addHeaderEntry>', setHeaderEntries: 'Function<setHeaderEntries>', forEach: 'Function<forEach>' }, status: +0, statusText: 'Unknown Error', url: 'https://dev.api.citizenos.com:3003/api/topics/123/members/groups', redirected: undefined, responseType: undefined, error: { stack: 'TypeError: fetch failed\n    at node:internal/deps/undici/undici:15157:13\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)', message: 'fetch failed', cause: { stack: 'Error: unable to verify the first certificate\n    at TLSSocket.onConnectSecure (node:internal/tls/wrap:1787:34)\n    at TLSSocket.emit (node:events:519:28)\n    at TLSSocket._finishInit (node:internal/tls/wrap:1176:8)\n    at TLSWrap.ssl.onhandshakedone (node:internal/tls/wrap:962:12)', message: 'unable to verify the first certificate', code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE', constructor: 'Function<Error>', name: 'Error', toString: 'Function<toString>' }, constructor: 'Function<TypeError>', name: 'TypeError', toString: 'Function<toString>' } }
+This error originated in "src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+HttpErrorResponse: Http failure response for https://dev.api.citizenos.com:3003/api/topics/123/members/groups: 0 undefined
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { headers: { headers: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, normalizedNames: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, lazyInit: undefined, lazyUpdate: null, constructor: 'Function<HttpHeaders>', has: 'Function<has>', get: 'Function<get>', keys: 'Function<keys>', getAll: 'Function<getAll>', append: 'Function<append>', set: 'Function<set>', delete: 'Function<delete>', maybeSetNormalizedName: 'Function<maybeSetNormalizedName>', init: 'Function<init>', copyFrom: 'Function<copyFrom>', clone: 'Function<clone>', applyUpdate: 'Function<applyUpdate>', addHeaderEntry: 'Function<addHeaderEntry>', setHeaderEntries: 'Function<setHeaderEntries>', forEach: 'Function<forEach>' }, status: +0, statusText: 'Unknown Error', url: 'https://dev.api.citizenos.com:3003/api/topics/123/members/groups', redirected: undefined, responseType: undefined, error: { stack: 'TypeError: fetch failed\n    at node:internal/deps/undici/undici:15157:13\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)', message: 'fetch failed', cause: { stack: 'Error: unable to verify the first certificate\n    at TLSSocket.onConnectSecure (node:internal/tls/wrap:1787:34)\n    at TLSSocket.emit (node:events:519:28)\n    at TLSSocket._finishInit (node:internal/tls/wrap:1176:8)\n    at TLSWrap.ssl.onhandshakedone (node:internal/tls/wrap:962:12)', message: 'unable to verify the first certificate', code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE', constructor: 'Function<Error>', name: 'Error', toString: 'Function<toString>' }, constructor: 'Function<TypeError>', name: 'TypeError', toString: 'Function<toString>' } }
+This error originated in "src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+HttpErrorResponse: Http failure response for https://dev.api.citizenos.com:3003/api/topics/123/members/groups: 0 undefined
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { headers: { headers: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, normalizedNames: { constructor: 'Function<Map>', get: 'Function<get>', set: 'Function<set>', has: 'Function<has>', delete: 'Function<delete>', clear: 'Function<clear>', entries: 'Function<entries>', forEach: 'Function<forEach>', keys: 'Function<keys>', size: +0, values: 'Function<values>' }, lazyInit: undefined, lazyUpdate: null, constructor: 'Function<HttpHeaders>', has: 'Function<has>', get: 'Function<get>', keys: 'Function<keys>', getAll: 'Function<getAll>', append: 'Function<append>', set: 'Function<set>', delete: 'Function<delete>', maybeSetNormalizedName: 'Function<maybeSetNormalizedName>', init: 'Function<init>', copyFrom: 'Function<copyFrom>', clone: 'Function<clone>', applyUpdate: 'Function<applyUpdate>', addHeaderEntry: 'Function<addHeaderEntry>', setHeaderEntries: 'Function<setHeaderEntries>', forEach: 'Function<forEach>' }, status: +0, statusText: 'Unknown Error', url: 'https://dev.api.citizenos.com:3003/api/topics/123/members/groups', redirected: undefined, responseType: undefined, error: { stack: 'TypeError: fetch failed\n    at node:internal/deps/undici/undici:15157:13\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)', message: 'fetch failed', cause: { stack: 'Error: unable to verify the first certificate\n    at TLSSocket.onConnectSecure (node:internal/tls/wrap:1787:34)\n    at TLSSocket.emit (node:events:519:28)\n    at TLSSocket._finishInit (node:internal/tls/wrap:1176:8)\n    at TLSWrap.ssl.onhandshakedone (node:internal/tls/wrap:962:12)', message: 'unable to verify the first certificate', code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE', constructor: 'Function<Error>', name: 'Error', toString: 'Function<toString>' }, constructor: 'Function<TypeError>', name: 'TypeError', toString: 'Function<toString>' } }
+This error originated in "src/app/features/topics/topic-view/components/topic-settings/topic-settings.component.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  42 failed | 152 passed (194)
+      Tests  147 failed | 1328 passed | 1 skipped (1476)
+     Errors  6 errors
+   Start at  18:38:21
+   Duration  16.78s (transform 152.48s, setup 40.26s, import 337.18s, tests 25.94s, environment 105.97s)
+
+npm notice
+npm notice New major version of npm available! 10.9.8 -> 12.0.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+npm notice To update run: npm install -g npm@12.0.2
+npm notice

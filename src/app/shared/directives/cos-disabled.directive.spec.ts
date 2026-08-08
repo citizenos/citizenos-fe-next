@@ -1,4 +1,4 @@
-import { ElementRef } from '@angular/core';
+import { ElementRef, SimpleChanges } from '@angular/core';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { CosDisabledDirective } from './cos-disabled.directive';
 import { TestBed } from '@angular/core/testing';
@@ -59,7 +59,7 @@ describe('CosDisabledDirective', () => {
             isFirstChange: () => false
           }
         };
-        directive.ngOnChanges(changesMock as any);
+        directive.ngOnChanges(changesMock as unknown as SimpleChanges);
         expect(element.getAttribute('disabled')).toBe('true');
       });
     });
@@ -84,7 +84,7 @@ describe('CosDisabledDirective', () => {
             isFirstChange: () => false
           }
         };
-        directive.ngOnChanges(changesMock as any);
+        directive.ngOnChanges(changesMock as unknown as SimpleChanges);
         expect(element.getAttribute('disabled')).toBeNull();
       });
     });

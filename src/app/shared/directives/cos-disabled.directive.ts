@@ -15,7 +15,7 @@ import {
 export class CosDisabledDirective implements AfterViewInit, OnChanges {
   private readonly ElementRef = inject(ElementRef);
 
-  @Input() cosDisabled!: any;
+  @Input() cosDisabled!: boolean | string | unknown;
 
   ngAfterViewInit(): void {
     if (this.cosDisabled) {

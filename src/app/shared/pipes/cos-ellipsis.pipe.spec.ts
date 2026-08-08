@@ -13,7 +13,7 @@ describe('CosEllipsisPipe', () => {
     it('should return empty string for null, undefined, or non-string values', () => {
       expect(pipe.transform(null)).toBe('');
       expect(pipe.transform(undefined)).toBe('');
-      expect(pipe.transform(123 as any)).toBe('');
+      expect(pipe.transform(123 as unknown as string)).toBe('');
     });
 
     it('should truncate string to default 128 characters if no limit is specified', () => {

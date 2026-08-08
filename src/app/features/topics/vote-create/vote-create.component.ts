@@ -77,8 +77,8 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     status: 'draft'
   });
 
-  topicForm = form(this.topicModel, (path: any) => {
-    required(path.title);
+  topicForm = form(this.topicModel, (path) => {
+    required(path.title!);
   });
 
   voteModel = signal<Partial<VoteWithOptions>>({
@@ -91,8 +91,8 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     endsAt: null
   });
 
-  voteForm = form(this.voteModel, (path: any) => {
-    required(path.question);
+  voteForm = form(this.voteModel, (path) => {
+    required(path.question!);
   });
 
   addedGroups = signal<TopicMemberGroup[]>([]);
@@ -210,7 +210,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
 
     this.topicService.readDescription(id).pipe(take(1)).subscribe({
       next: (topic) => {
-        this.topicModel.update((t: any) => ({ ...t, description: topic.description }));
+        this.topicModel.update((t) => ({ ...t, description: topic.description }));
       }
     });
   }
@@ -220,7 +220,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     if (this.currentStep() === 'voting') {
       const v = this.voteModel();
       const options = Array.isArray(v.options) ? v.options : (v.options?.rows || []);
-      const validOptionsCount = options.filter((o: any) => !!o.value).length;
+      const validOptionsCount = options.filter((o: { value?: string }) => !!o.value).length;
       return !v.question || validOptionsCount < 2;
     }
     return false;
@@ -243,7 +243,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     const addOps = this.addedGroups().map(g => this.groupMemberTopicService.addTopic(g.id, topicId, g.level || 'read'));
     const removeOps = this.groupsToRemove().map(g => this.groupMemberTopicService.removeTopicFromGroup(g.id, topicId));
 
-    forkJoin([...addOps, ...removeOps, this.topicService.patch(this.topicModel() as any)]).pipe(
+    forkJoin([...addOps, ...removeOps, this.topicService.patch(this.topicModel() as Partial<Topic> & { id: string })]).pipe(
       catchError(() => of(null))
     ).subscribe(() => {
       this.isLoading.set(false);
@@ -259,7 +259,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   onTopicUpdate(updates: Partial<Topic>) {
-    this.topicModel.update((t: any) => ({ ...t, ...updates }));
+    this.topicModel.update((t) => ({ ...t, ...updates }));
     if (updates.id) {
       this.membersResource.reload();
       this.invitesResource.reload();
@@ -267,7 +267,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   onVoteUpdate(updates: Partial<VoteWithOptions>) {
-    this.voteModel.update((v: any) => ({ ...v, ...updates }));
+    this.voteModel.update((v) => ({ ...v, ...updates }));
   }
 
   onGroupsAdded(groups: TopicMemberGroup[]) {

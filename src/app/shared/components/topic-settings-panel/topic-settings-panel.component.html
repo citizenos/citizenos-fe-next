@@ -62,7 +62,7 @@
         <div selection translate="VIEWS.TOPIC_CREATE.SETTINGS_CATEGORY_SELECT"></div>
         <div options>
           @for (category of categoryKeys; track category) {
-            <div class="option" (click)="toggleCategory(category)" (keydown.enter)="toggleCategory(category)" tabindex="0" role="option">
+            <div class="option" (click)="toggleCategory(category)" (keydown.enter)="toggleCategory(category)" tabindex="0" role="option" [attr.aria-selected]="categories().includes(category)">
               {{ 'TXT_TOPIC_CATEGORY_' + category | uppercase | translate }}
             </div>
           }
@@ -94,7 +94,7 @@
             </div>
             <div options>
               @for (c of countries; track c.name) {
-                <div class="option" (click)="onCountryChange(c.name)" (keydown.enter)="onCountryChange(c.name)" tabindex="0" role="option">{{ c.name }}</div>
+                <div class="option" (click)="onCountryChange(c.name)" (keydown.enter)="onCountryChange(c.name)" tabindex="0" role="option" [attr.aria-selected]="country() === c.name">{{ c.name }}</div>
               }
             </div>
           </cos-dropdown>
@@ -107,7 +107,7 @@
             </div>
             <div options>
               @for (l of languages; track l.name) {
-                <div class="option" (click)="onLanguageChange(l.name)" (keydown.enter)="onLanguageChange(l.name)" tabindex="0" role="option">{{ l.name }}</div>
+                <div class="option" (click)="onLanguageChange(l.name)" (keydown.enter)="onLanguageChange(l.name)" tabindex="0" role="option" [attr.aria-selected]="language() === l.name">{{ l.name }}</div>
               }
             </div>
           </cos-dropdown>
@@ -134,7 +134,7 @@
           <div options>
             @for (group of availableGroups(); track group.id) {
               @if (!isGroupAdded(group)) {
-                <div class="option" (click)="addGroup(group)" (keydown.enter)="addGroup(group)" tabindex="0" role="option">{{ group.name }}</div>
+                <div class="option" (click)="addGroup(group)" (keydown.enter)="addGroup(group)" tabindex="0" role="option" [attr.aria-selected]="false">{{ group.name }}</div>
               }
             }
           </div>
@@ -179,7 +179,7 @@
                     </div>
                     <div options>
                       @for (level of LEVELS; track level) {
-                        <div class="option" (click)="setGroupLevel(group, level)" (keydown.enter)="setGroupLevel(group, level)" tabindex="0" role="option">
+                        <div class="option" (click)="setGroupLevel(group, level)" (keydown.enter)="setGroupLevel(group, level)" tabindex="0" role="option" [attr.aria-selected]="(group.level || 'read') === level">
                           {{ 'TXT_TOPIC_LEVELS_' + level | uppercase | translate }}
                         </div>
                       }

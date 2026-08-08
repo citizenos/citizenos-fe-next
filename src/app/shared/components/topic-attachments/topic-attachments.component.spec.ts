@@ -6,6 +6,7 @@ import { TopicService } from '../../../core/services/topic.service';
 import { UploadService } from '../../../core/services/upload.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { of } from 'rxjs';
+import { ElementRef } from '@angular/core';
 
 describe('TopicAttachmentsComponent (business logic)', () => {
   let component: TopicAttachmentsComponent;
@@ -53,7 +54,7 @@ describe('TopicAttachmentsComponent (business logic)', () => {
     };
     component.attachmentInput = {
       nativeElement: mockInputElement
-    } as any;
+    } as unknown as ElementRef<HTMLInputElement>;
 
     component.onUpload();
 
@@ -77,7 +78,7 @@ describe('TopicAttachmentsComponent (business logic)', () => {
         options.success([{ name: 'db.pdf', bytes: 100, link: 'https://db.link' }]);
       })
     };
-    (globalThis as any).Dropbox = mockDropbox;
+    (globalThis as unknown as { Dropbox: unknown }).Dropbox = mockDropbox;
 
     component.dropboxSelect();
     expect(mockDropbox.choose).toHaveBeenCalled();
@@ -102,7 +103,7 @@ describe('TopicAttachmentsComponent (business logic)', () => {
         });
       })
     };
-    (globalThis as any).OneDrive = mockOneDrive;
+    (globalThis as unknown as { OneDrive: unknown }).OneDrive = mockOneDrive;
 
     component.oneDriveSelect();
     expect(mockOneDrive.open).toHaveBeenCalled();

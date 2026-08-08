@@ -6,7 +6,7 @@ import { DownloadDirective } from './download.directive';
 @Component({
   standalone: true,
   imports: [DownloadDirective],
-  template: `<div download><a href="http://example.com/file.pdf">Download</a></div>`
+  template: `<div cosDownload><a href="http://example.com/file.pdf">Download</a></div>`
 })
 class HostComponent {}
 

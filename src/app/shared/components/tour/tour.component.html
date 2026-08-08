@@ -5,7 +5,7 @@
       
       <div class="tour_header">
         <div>{{ ('COMPONENTS.TOUR.HEADING_' + tourService.activeTour()) | uppercase | translate }}</div>
-        <a class="skip" (click)="closeTour($event)">{{ 'COMPONENTS.TOUR.LNK_SKIP' | translate }}</a>
+        <a class="skip" tabindex="0" (click)="closeTour($event)" (keydown.enter)="closeTour($event)">{{ 'COMPONENTS.TOUR.LNK_SKIP' | translate }}</a>
       </div>
 
       <div class="tour_content">
@@ -20,9 +20,9 @@
         </div>
         <div class="nav_links_wrap">
           @if (activeIndex() > 0) {
-            <a (click)="prevItem($event)">{{ 'COMPONENTS.TOUR.LNK_BACK' | translate }}</a>
+            <a tabindex="0" (click)="prevItem($event)" (keydown.enter)="prevItem($event)">{{ 'COMPONENTS.TOUR.LNK_BACK' | translate }}</a>
           }
-          <a (click)="nextItem($event)">
+          <a tabindex="0" (click)="nextItem($event)" (keydown.enter)="nextItem($event)">
             @if (activeIndex() === itemIndexes().length - 1) {
               <span>{{ 'COMPONENTS.TOUR.LNK_FINISH' | translate }}</span>
             } @else {

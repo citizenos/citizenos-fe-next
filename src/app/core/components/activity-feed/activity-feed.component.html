@@ -40,7 +40,7 @@
       <div options>
         @for (filter of activityService.filters; track filter) {
         <div class="option" (click)="filterActivities(filter)" (keydown.enter)="filterActivities(filter)" tabindex="0"
-          role="option">{{ 'COMPONENTS.ACTIVITY_FEED.FILTER_' + filter.toUpperCase() | translate }}
+          role="option" [attr.aria-selected]="activityService.filter() === filter">{{ 'COMPONENTS.ACTIVITY_FEED.FILTER_' + filter.toUpperCase() | translate }}
         </div>
         }
       </div>

@@ -92,7 +92,7 @@ describe('GroupAddTopicsDialogComponent', () => {
     const comp = makeComp();
     const topic = makeTopic({ id: 't1', title: 'T1' });
     comp.addTopic(topic);
-    comp.removeTopic({ ...topic, selectedLevel: 'read' } as any);
+    comp.removeTopic({ ...topic, selectedLevel: 'read' } as unknown as Parameters<typeof comp.removeTopic>[0]);
     expect(comp.topicsToAdd()).toEqual([]);
   });
 

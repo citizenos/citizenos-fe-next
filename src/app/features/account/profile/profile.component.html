@@ -22,9 +22,9 @@
       </div>
       <div options>
         <div class="option" (click)="selectTab('profile')" (keydown.enter)="selectTab('profile')" tabindex="0"
-          role="option">{{ 'VIEWS.ACCOUNT.TAB_PROFILE' | translate }}</div>
+          role="option" [attr.aria-selected]="activeTab() === 'profile'">{{ 'VIEWS.ACCOUNT.TAB_PROFILE' | translate }}</div>
         <div class="option" (click)="selectTab('notifications')" (keydown.enter)="selectTab('notifications')"
-          tabindex="0" role="option">{{ 'VIEWS.ACCOUNT.TAB_NOTIFICATIONS' | translate }}</div>
+          tabindex="0" role="option" [attr.aria-selected]="activeTab() === 'notifications'">{{ 'VIEWS.ACCOUNT.TAB_NOTIFICATIONS' | translate }}</div>
       </div>
     </cos-dropdown>
   </div>
@@ -140,7 +140,7 @@
             <ng-container options>
               @for (language of languages | keyvalue; track language.key) {
               <div class="option" (click)="setProfileLanguage(language.key)"
-                (keydown.enter)="setProfileLanguage(language.key)" tabindex="0" role="option">{{language.value}}</div>
+                (keydown.enter)="setProfileLanguage(language.key)" tabindex="0" role="option" [attr.aria-selected]="formModel().language === language.key">{{language.value}}</div>
               }
             </ng-container>
           </cos-dropdown>
@@ -190,11 +190,11 @@
             </div>
             <div options>
               <div class="option" (click)="topicNotificationService.setParam('limit', 5)"
-                (keydown.enter)="topicNotificationService.setParam('limit', 5)" tabindex="0" role="option">5</div>
+                (keydown.enter)="topicNotificationService.setParam('limit', 5)" tabindex="0" role="option" [attr.aria-selected]="notificationParams().limit === 5">5</div>
               <div class="option" (click)="topicNotificationService.setParam('limit', 10)"
-                (keydown.enter)="topicNotificationService.setParam('limit', 10)" tabindex="0" role="option">10</div>
+                (keydown.enter)="topicNotificationService.setParam('limit', 10)" tabindex="0" role="option" [attr.aria-selected]="notificationParams().limit === 10">10</div>
               <div class="option" (click)="topicNotificationService.setParam('limit', 15)"
-                (keydown.enter)="topicNotificationService.setParam('limit', 15)" tabindex="0" role="option">15</div>
+                (keydown.enter)="topicNotificationService.setParam('limit', 15)" tabindex="0" role="option" [attr.aria-selected]="notificationParams().limit === 15">15</div>
             </div>
           </cos-dropdown>
         </cos-input>

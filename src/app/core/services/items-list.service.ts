@@ -10,7 +10,7 @@ export interface ListParams {
   orderBy?: string | null;
   sourcePartnerId?: string | null;
   search?: string | null;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 @Service()
@@ -28,12 +28,12 @@ export abstract class ItemsListService<T extends ListParams = ListParams, U = un
   params = signal<T>({ ...this.defaultParams });
   page = signal<number>(1);
   
-  private resource = rxResource<{ rows: U[], countTotal?: number, count?: number | any }, { page: number, params: T }>({
+  private resource = rxResource<{ rows: U[], countTotal?: number, count?: unknown }, { page: number, params: T }>({
     params: () => ({ page: this.page(), params: this.params() }),
     stream: ({ params }) => {
       const { page, params: requestParams } = params;
       const offset = (page - 1) * requestParams.limit;
-      return this.getItems({ ...requestParams, offset, page } as T) as Observable<{ rows: U[], countTotal?: number, count?: number | any }>;
+      return this.getItems({ ...requestParams, offset, page } as T) as Observable<{ rows: U[], countTotal?: number, count?: unknown }>;
     }
   });
 

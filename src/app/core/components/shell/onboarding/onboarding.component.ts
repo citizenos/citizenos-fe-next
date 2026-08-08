@@ -418,11 +418,11 @@ export class OnboardingComponent {
 
   takeTour() {
     this.uiState.showOnboarding.set(false);
-    let tour = this.uiState.onboardingContext();
+    let tour: string = this.uiState.onboardingContext();
     if (window.innerWidth <= 1024 && window.innerWidth > 560) {
-      tour = `${tour}_tablet` as any;
+      tour = `${tour}_tablet`;
     } else if (window.innerWidth < 560) {
-      tour = `${tour}_mobile` as any;
+      tour = `${tour}_mobile`;
     }
     this.tourService.show(tour, 1);
   }

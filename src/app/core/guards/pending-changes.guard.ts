@@ -7,7 +7,7 @@ import { InterruptDialogComponent } from '../../shared/components/interrupt-dial
 
 export interface PendingChangesComponent {
   hasUnsavedChanges: () => boolean | Observable<boolean>;
-  removeChanges?: () => Observable<any> | Promise<any> | any;
+  removeChanges?: () => Observable<unknown> | Promise<unknown> | unknown;
 }
 
 export const pendingChangesGuard: CanDeactivateFn<PendingChangesComponent> = (component) => {

@@ -37,7 +37,7 @@ export interface FilterConfig {
                 </ng-container>
                 <ng-container options>
                   @for (option of filter.items; track option.value) {
-                    <div class="option" (click)="selectFilter(filter.key, option.value)" (keydown.enter)="selectFilter(filter.key, option.value)" tabindex="0" role="option">
+                    <div class="option" (click)="selectFilter(filter.key, option.value)" (keydown.enter)="selectFilter(filter.key, option.value)" tabindex="0" role="option" [attr.aria-selected]="filter.selectedValue === option.value">
                       {{ option.title | translate }}
                     </div>
                   }
@@ -67,7 +67,7 @@ export interface FilterConfig {
                     </ng-container>
                     <ng-container options>
                       @for (option of ($any(item).items); track option.value) {
-                        <div class="option" (click)="selectFilter($any(item).key, option.value)" (keydown.enter)="selectFilter($any(item).key, option.value)" tabindex="0" role="option">
+                        <div class="option" (click)="selectFilter($any(item).key, option.value)" (keydown.enter)="selectFilter($any(item).key, option.value)" tabindex="0" role="option" [attr.aria-selected]="$any(item).selectedValue === option.value">
                           {{ option.title | translate }}
                         </div>
                       }
@@ -94,7 +94,7 @@ export interface FilterConfig {
     <!-- Mobile specific filters styling matching citizenos-fe -->
     <div class="mobile_show tablet_show" id="mobile_filters">
       <div class="dropdown mobile_filters_selection" [ngClass]="{'dropdown_active': mobileFiltersOpen()}">
-        <div class="selection" (click)="mobileFiltersOpen.set(!mobileFiltersOpen())">
+        <div class="selection" tabindex="0" (click)="mobileFiltersOpen.set(!mobileFiltersOpen())" (keydown.enter)="mobileFiltersOpen.set(!mobileFiltersOpen())">
           <div class="selected_item">{{ 'COMPONENTS.PUBLIC_TOPICS.LBL_FILTER' | translate | titlecase }}</div>
           <button class="btn_medium_plain icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -105,7 +105,7 @@ export interface FilterConfig {
         
         <div class="options filter_options">
           @for (filter of allFilters(); track filter.key) {
-            <div class="filter_option" (click)="activeMobileFilter.set(filter.key)">
+            <div class="filter_option" tabindex="0" (click)="activeMobileFilter.set(filter.key)" (keydown.enter)="activeMobileFilter.set(filter.key)">
               <span>{{ filter.placeholder | translate }}</span>
               <a class="bold">
                 @if (filter.selectedValue === 'all' || filter.selectedValue === '') {
@@ -122,17 +122,17 @@ export interface FilterConfig {
       </div>
 
       @if (activeMobileFilter() !== null) {
-        <div class="overlay" (click)="activeMobileFilter.set(null)"></div>
+        <div class="overlay" tabindex="0" (click)="activeMobileFilter.set(null)" (keydown.enter)="activeMobileFilter.set(null)"></div>
         <div class="mobile_filters_wrap active">
           <div class="options button_options">
-            <label class="checkbox" (click)="selectFilter(activeMobileFilter()!, 'all')">
+            <label class="checkbox" tabindex="0" (click)="selectFilter(activeMobileFilter()!, 'all')" (keydown.enter)="selectFilter(activeMobileFilter()!, 'all')">
               <span>{{ 'TXT_TOPIC_STATUS_ALL' | translate | titlecase }}</span>
               <input type="radio" [name]="activeMobileFilter()" [checked]="getActiveFilter(activeMobileFilter()!)?.selectedValue === 'all' || getActiveFilter(activeMobileFilter()!)?.selectedValue === ''">
               <span class="checkmark"></span>
             </label>
             @if (getActiveFilter(activeMobileFilter()!); as activeF) {
               @for (option of activeF.items; track option.value) {
-                <label class="checkbox" (click)="selectFilter(activeF.key, option.value)">
+                <label class="checkbox" tabindex="0" (click)="selectFilter(activeF.key, option.value)" (keydown.enter)="selectFilter(activeF.key, option.value)">
                   <span>{{ option.title | translate }}</span>
                   <input type="radio" [name]="activeF.key" [checked]="activeF.selectedValue === option.value">
                   <span class="checkmark"></span>

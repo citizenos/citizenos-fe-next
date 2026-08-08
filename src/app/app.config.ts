@@ -42,7 +42,7 @@ export const appConfig: ApplicationConfig = {
       const configStore = inject(ConfigStore);
       const http = inject(HttpClient);
       try {
-        const config = await lastValueFrom(http.get<any>('assets/config/config.json'));
+        const config = await lastValueFrom(http.get<Record<string, unknown>>('assets/config/config.json'));
         configStore.loadConfig(config);
       } catch (err) {
         console.error('Failed to load config.json', err);

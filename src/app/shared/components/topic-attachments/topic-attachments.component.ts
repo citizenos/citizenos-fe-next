@@ -15,9 +15,13 @@ import { ButtonComponent } from '../button/button.component';
 import { TooltipComponent } from '../tooltip/tooltip.component';
 import { CosDropdownDirective } from '../../directives/cos-dropdown.directive';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let Dropbox: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let OneDrive: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let google: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let gapi: any;
 
 @Component({
@@ -153,7 +157,7 @@ export class TopicAttachmentsComponent implements OnInit {
     if (typeof Dropbox === 'undefined') return;
     Dropbox.appKey = this.config.dropbox.appKey;
     Dropbox.choose({
-      success: (files: any[]) => {
+      success: (files: { name: string, bytes: number, link: string }[]) => {
         if (files && files.length > 0) {
           const attachment = {
             name: files[0].name,
@@ -182,7 +186,7 @@ export class TopicAttachmentsComponent implements OnInit {
       advanced: {
         redirectUri: window.location.origin + '/onedrive'
       },
-      success: (res: any) => {
+      success: (res: { value?: { name: string, size: number, permissions: { link: { webUrl: string } }[] }[] }) => {
         if (res && res.value && res.value.length > 0) {
           const attachment = {
             name: res.value[0].name,
@@ -198,7 +202,7 @@ export class TopicAttachmentsComponent implements OnInit {
       cancel: () => {
         // No action needed on cancel
       },
-      error: (err: any) => {
+      error: (err: unknown) => {
         console.error(err);
       }
     });
@@ -207,18 +211,19 @@ export class TopicAttachmentsComponent implements OnInit {
   googleDriveSelect() {
     if (typeof gapi === 'undefined' || typeof google === 'undefined') return;
     let googlePickerApiLoaded = false;
-    let oauthToken: any;
+    let oauthToken: string;
 
     const createPicker = () => {
-      const pickerCallback = (data: any) => {
+      const pickerCallback = (data: Record<string, unknown>) => {
         if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
-          const doc = data[google.picker.Response.DOCUMENTS][0];
+          const docs = data[google.picker.Response.DOCUMENTS] as Record<string, unknown>[];
+          const doc = docs[0];
           const attachment = {
-            name: doc[google.picker.Document.NAME],
-            type: doc[google.picker.Document.TYPE] || doc[google.picker.Document.NAME].split('.').pop(),
+            name: doc[google.picker.Document.NAME] as string,
+            type: (doc[google.picker.Document.TYPE] as string) || (doc[google.picker.Document.NAME] as string).split('.').pop(),
             source: 'googledrive',
-            size: doc.sizeBytes || 0,
-            link: doc[google.picker.Document.URL]
+            size: (doc['sizeBytes'] as number) || 0,
+            link: doc[google.picker.Document.URL] as string
           };
           this.doSaveAttachment(attachment);
           this.blockAttachments.set(true);
@@ -243,7 +248,7 @@ export class TopicAttachmentsComponent implements OnInit {
           'scope': ['https://www.googleapis.com/auth/drive.file'],
           'immediate': false
         },
-        (authResult: any) => {
+        (authResult: { error?: unknown, access_token: string }) => {
           if (authResult && !authResult.error && googlePickerApiLoaded) {
             oauthToken = authResult.access_token;
             createPicker();
