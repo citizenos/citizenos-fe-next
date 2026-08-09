@@ -2,10 +2,7 @@ import { Routes, UrlSegment } from '@angular/router';
 import { ShellComponent } from './core/components/shell/shell.component';
 import { languageResolver } from './core/resolvers/language.resolver';
 import { authGuard } from './core/guards/auth.guard';
-import { HomeComponent } from './features/home/home.component';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
-import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
-import { PageUnauthorizedComponent } from './core/components/page-unauthorized/page-unauthorized.component';
+
 
 export const routes: Routes = [
   // The root path redirects to english home by default, or you can have a lang detection component
@@ -34,8 +31,8 @@ export const routes: Routes = [
         path: '',
         component: ShellComponent,
         children: [
-          { path: '', component: HomeComponent },
-          { path: 'dashboard', canActivate: [authGuard], component: DashboardComponent },
+          { path: '', loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent) },
+          { path: 'dashboard', canActivate: [authGuard], loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) },
           {
             path: 'my',
             canActivate: [authGuard],
@@ -87,9 +84,9 @@ export const routes: Routes = [
           },
 
           // Error pages
-          { path: '401', component: PageUnauthorizedComponent },
-          { path: '403', component: PageUnauthorizedComponent },
-          { path: '404', component: PageNotFoundComponent },
+          { path: '401', loadComponent: () => import('./core/components/page-unauthorized/page-unauthorized.component').then(m => m.PageUnauthorizedComponent) },
+          { path: '403', loadComponent: () => import('./core/components/page-unauthorized/page-unauthorized.component').then(m => m.PageUnauthorizedComponent) },
+          { path: '404', loadComponent: () => import('./core/components/page-not-found/page-not-found.component').then(m => m.PageNotFoundComponent) },
           { path: 'error/401', redirectTo: '401' },
           { path: 'error/403', redirectTo: '403' },
           { path: 'error/404', redirectTo: '404' }
@@ -108,5 +105,5 @@ export const routes: Routes = [
   { path: '401', redirectTo: '/en/401' },
   { path: '403', redirectTo: '/en/403' },
   { path: '404', redirectTo: '/en/404' },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', loadComponent: () => import('./core/components/page-not-found/page-not-found.component').then(m => m.PageNotFoundComponent) }
 ];

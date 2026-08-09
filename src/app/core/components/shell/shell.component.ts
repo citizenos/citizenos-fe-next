@@ -35,13 +35,27 @@ import { SiteNotificationComponent } from '../../../shared/components/site-notif
       <div id="main-content" tabindex="-1">
         <router-outlet></router-outlet>
       </div>
-      <cos-global-search-panel></cos-global-search-panel>
-      <cos-activity-feed></cos-activity-feed>
-      <cos-help></cos-help>
-      <cos-feedback></cos-feedback>
-      <cos-onboarding></cos-onboarding>
-      <cos-accessibility-menu></cos-accessibility-menu>
-      <cos-tour></cos-tour>
+      @defer (on idle) {
+        <cos-global-search-panel></cos-global-search-panel>
+      }
+      @defer (on idle) {
+        <cos-activity-feed></cos-activity-feed>
+      }
+      @defer (when uiState.showHelp()) {
+        <cos-help></cos-help>
+      }
+      @defer (when uiState.showFeedback()) {
+        <cos-feedback></cos-feedback>
+      }
+      @defer (when uiState.showOnboarding()) {
+        <cos-onboarding></cos-onboarding>
+      }
+      @defer (when uiState.showAccessibility()) {
+        <cos-accessibility-menu></cos-accessibility-menu>
+      }
+      @defer (on idle) {
+        <cos-tour></cos-tour>
+      }
     </div>
   `,
   styleUrl: './shell.component.scss'
