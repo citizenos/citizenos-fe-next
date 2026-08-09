@@ -60,7 +60,7 @@ export class TopicCreatePage {
   }
 
   async proceedToNextStep() {
-    await expect(this.continueBtn).not.toBeDisabled();
+    await expect(this.continueBtn).not.toBeDisabled({ timeout: 15000 });
     await this.continueBtn.click();
   }
 

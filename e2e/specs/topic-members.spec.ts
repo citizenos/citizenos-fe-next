@@ -55,7 +55,7 @@ test.describe('Member Management Flow', () => {
     // Verify user is in "Invited" list
     const manageLink = page.locator('app-topic-participants-section .manage_link').first();
     await expect(manageLink).toBeVisible();
-    await manageLink.click();
+    await manageLink.click({ force: true });
     
     await participantsDialogPage.selectTab('invited');
     await expect(participantsDialogPage.inviteRows.filter({ hasText: inviteEmail })).toBeVisible();

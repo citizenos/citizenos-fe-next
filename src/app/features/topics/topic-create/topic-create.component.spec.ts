@@ -148,7 +148,7 @@ describe('TopicCreateComponent (business logic)', () => {
             queryParams: of({ groupId: 'group-123' })
           }
         },
-        { provide: Router, useValue: { navigate: vi.fn().mockResolvedValue(true) } },
+        { provide: Router, useValue: { navigate: vi.fn().mockResolvedValue(true), createUrlTree: vi.fn() } },
         { provide: TopicService, useValue: mockTopicService },
         { provide: UploadService, useValue: mockUploadService },
         { provide: NotificationService, useValue: mockNotificationService },
