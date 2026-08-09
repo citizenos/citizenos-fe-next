@@ -189,9 +189,8 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
         this.isLoading.set(false);
         this.hasChanges.set(false);
         
-        const currentUrl = this.router.url;
-        const newUrl = `${currentUrl}/${this.topicModel().id}`;
-        this.location.replaceState(newUrl);
+        const url = this.router.createUrlTree([this.topicModel().id], { relativeTo: this.route }).toString();
+        this.location.replaceState(url);
         this.hasChanges.set(true);
       },
       error: () => {

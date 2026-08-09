@@ -54,10 +54,13 @@ setup('authenticate', async ({ page }) => {
   await page.waitForSelector('app-root', { state: 'attached', timeout: 10000 });
 
   await page.evaluate(() => {
-    window.localStorage.setItem('onboarding_topic', 'true');
-    window.localStorage.setItem('onboarding_ideation', 'true');
-    window.localStorage.setItem('onboarding_group', 'true');
-    window.localStorage.setItem('onboarding_dashboard', 'true');
+    localStorage.setItem('onboarding_topic', 'true');
+    localStorage.setItem('onboarding_ideation', 'true');
+    localStorage.setItem('onboarding_group', 'true');
+    localStorage.setItem('onboarding_dashboard', 'true');
+    localStorage.setItem('show-topic-tour', 'true');
+    localStorage.setItem('show-ideation-tour', 'true');
+    localStorage.setItem('show-dashboard-tour', 'true');
   });
 
   // Save the authenticated state

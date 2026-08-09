@@ -1,5 +1,6 @@
 import { Component, OnInit, signal, inject, ChangeDetectionStrategy, computed } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { Location } from '@angular/common';
 import { form, required } from '@angular/forms/signals';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -55,6 +56,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
   private inviteUserService = inject(TopicInviteUserService);
   private groupMemberTopicService = inject(GroupMemberTopicService);
   private dialog = inject(DialogService);
+  private location = inject(Location);
 
   readonly steps: StepConfig[] = [
     { key: 'info', label: 'VIEWS.IDEATION_CREATE.CREATE_TAB_1', icon: 'edit' },
@@ -130,18 +132,12 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
         this.membersResource.reload();
         this.invitesResource.reload();
         if (topic.ideationId && topic.ideationId !== 'undefined') {
-          console.log('BROWSER CONSOLE: loadExistingTopic fetching ideation:', topic.ideationId);
           this.ideationService.get({ topicId: topic.id, ideationId: topic.ideationId }).subscribe({
             next: (ideation) => {
-              console.log('BROWSER CONSOLE: loadExistingTopic got ideation:', ideation.id);
               this.ideationModel.set(ideation);
             },
-            error: (err) => { 
-              console.log('BROWSER CONSOLE: loadExistingTopic err:', err);
-            }
+            error: () => {}
           });
-        } else {
-          console.log('BROWSER CONSOLE: loadExistingTopic NO ideationId in topic:', topic);
         }
         this.isLoading.set(false);
       },
@@ -174,16 +170,12 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
       })
     ).subscribe({
       next: (savedIdeation) => {
-        console.log('BROWSER CONSOLE: CREATED IDEATION ID IS: ' + savedIdeation.id);
         this.ideationModel.set(savedIdeation);
         this.isLoading.set(false);
         this.hasChanges.set(false);
-        this.router.navigate([this.topicModel().id], {
-          relativeTo: this.route,
-          replaceUrl: true
-        }).then(() => {
-          this.hasChanges.set(true);
-        });
+        const url = this.router.createUrlTree([this.topicModel().id], { relativeTo: this.route }).toString();
+        this.location.replaceState(url);
+        this.hasChanges.set(true);
       },
       error: () => {
         this.isLoading.set(false);
@@ -221,8 +213,8 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
 
   isFooterNextDisabled(): boolean {
     if (this.isLoading()) return true;
-    if (this.currentStep() === 'info') return !this.topicModel().title;
-    if (this.currentStep() === 'ideation') return !this.ideationModel().question;
+    if (this.currentStep() === 'info' && !this.topicModel().title) return true;
+    if (this.currentStep() === 'ideation' && !this.ideationModel().question) return true;
     return false;
   }
 

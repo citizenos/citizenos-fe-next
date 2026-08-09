@@ -1,6 +1,7 @@
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { Component, signal, inject, ChangeDetectionStrategy, OnInit, computed } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { Location } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { form, required } from '@angular/forms/signals';
@@ -60,6 +61,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   private dialog = inject(DialogService);
   private groupDetailService = inject(GroupDetailService);
   private translate = inject(TranslateService);
+  private location = inject(Location);
 
   topicModel = signal<Partial<Topic>>({
     title: '',
@@ -168,8 +170,6 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
             title: current.title || savedTopic.title,
             intro: current.intro || savedTopic.intro
           };
-          console.log('EAGER CREATE FINISHED. savedTopic:', savedTopic);
-          console.log('MERGED topicModel:', merged);
           return merged;
         });
         this.membersResource.reload();
@@ -177,12 +177,9 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
         this.isLoading.set(false);
         // Update URL to include topicId without triggering navigation
         this.hasChanges.set(false);
-        this.router.navigate([savedTopic.id], {
-          relativeTo: this.route,
-          replaceUrl: true
-        }).then(() => {
-          this.hasChanges.set(true);
-        });
+        const url = this.router.createUrlTree([savedTopic.id], { relativeTo: this.route }).toString();
+        this.location.replaceState(url);
+        this.hasChanges.set(true);
       },
       error: () => {
         this.isLoading.set(false);
@@ -218,8 +215,8 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
 
   isFooterNextDisabled(): boolean {
     if (this.isLoading()) return true;
-    if (this.currentStep() === 'info') return !this.topicModel().title;
-    if (this.currentStep() === 'discussion') return !this.discussion().question;
+    if (this.currentStep() === 'info' && !this.topicModel().title) return true;
+    if (this.currentStep() === 'discussion' && !this.discussion().question) return true;
     return false;
   }
 
