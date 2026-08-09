@@ -280,6 +280,6 @@ describe('IdeaDialogComponent', () => {
     const fixture = createFixture();
     vi.clearAllMocks();
     fixture.componentInstance.onReplyAdded();
-    expect(ideationServiceMock.getIdeaFolders).toHaveBeenCalled();
+    expect(ideationServiceMock.getIdeaComments).toHaveBeenCalled();
   });
 });

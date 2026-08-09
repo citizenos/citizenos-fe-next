@@ -27,6 +27,11 @@ test.describe('Topic Arguments Flow', () => {
     await topicCreatePage.fillDiscussion('Arg Test Question');
     await topicCreatePage.proceedToNextStep(); // Preview
     await topicCreatePage.publish();
+
+    // Wait for the invite dialog and close it
+    const closeBtn = page.locator('app-topic-invite-dialog .btn_dialog_close');
+    await expect(closeBtn).toBeVisible({ timeout: 15000 });
+    await closeBtn.click();
     
     await expect(page).toHaveURL(/.*\/topics\/[a-f0-9-]+/);
     const urlParts = page.url().split('/');

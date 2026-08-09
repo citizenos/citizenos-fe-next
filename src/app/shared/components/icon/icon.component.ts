@@ -1,6 +1,7 @@
 import { Component, computed, inject, model, input, ChangeDetectionStrategy } from '@angular/core';
 import { IconName, IconRegistryService } from './icon.registry';
 import { DomSanitizer } from '@angular/platform-browser';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,24 +35,33 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class IconComponent {
   private registry = inject(IconRegistryService);
   private sanitizer = inject(DomSanitizer);
+  private isLoaded = toSignal(this.registry.isLoaded);
 
   name = model<IconName | ''>('');
   size = model<string | number>(24);
   color = input<string>();
 
-  widthAttr = computed(() => this.size() ? this.size() : null);
-  heightAttr = computed(() => this.size() ? this.size() : null);
+  widthAttr = computed(() => {
+    const s = this.size();
+    return typeof s === 'number' || !isNaN(Number(s)) ? s : null;
+  });
+  heightAttr = computed(() => {
+    const s = this.size();
+    return typeof s === 'number' || !isNaN(Number(s)) ? s : null;
+  });
 
   safeSvgContent = computed(() => {
     const name = this.name();
-    if (!name) return '';
+    const loaded = this.isLoaded();
+    if (!name || !loaded) return '';
     const data = this.registry.getIcon(name as IconName);
     return data ? this.sanitizer.bypassSecurityTrustHtml(data.content) : '';
   });
 
   viewBox = computed(() => {
     const name = this.name();
-    if (!name) return '0 0 24 24';
+    const loaded = this.isLoaded();
+    if (!name || !loaded) return '0 0 24 24';
     const data = this.registry.getIcon(name as IconName);
     return data?.viewBox || '0 0 24 24';
   });

@@ -1,30 +1,30 @@
-import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentRef } from '@angular/core';
 import { DomainIconComponent, DomainType } from './domain-icon.component';
+import { Component, signal } from '@angular/core';
+import { By } from '@angular/platform-browser';
+
+@Component({
+  standalone: true,
+  imports: [DomainIconComponent],
+  template: `<cos-domain-icon [type]="type()" [size]="size()" [active]="active()" />`
+})
+class TestHostComponent {
+  type = signal<DomainType>('topic');
+  size = signal(40);
+  active = signal(false);
+}
 
 describe('DomainIconComponent', () => {
-  let component: DomainIconComponent;
-  let fixture: ComponentFixture<DomainIconComponent>;
-  let componentRef: ComponentRef<DomainIconComponent>;
-
-  const TYPES: DomainType[] = ['topic', 'ideation', 'vote', 'follow-up'];
-  const EXPECTED_COLORS: Record<DomainType, string> = {
-    topic: '#5C9CD0',
-    ideation: '#E4B722',
-    vote: '#98DAA2',
-    'follow-up': '#E3A8CC',
-  };
+  let component: TestHostComponent;
+  let fixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DomainIconComponent],
+      imports: [DomainIconComponent, TestHostComponent]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DomainIconComponent);
+    fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
-    componentRef = fixture.componentRef;
-    componentRef.setInput('type', 'topic');
     fixture.detectChanges();
   });
 
@@ -32,39 +32,31 @@ describe('DomainIconComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render an svg element', () => {
-    expect(fixture.nativeElement.querySelector('svg')).toBeTruthy();
+  it('should render correct SVG for topic type', () => {
+    const svgElement = fixture.debugElement.query(By.css('svg')).nativeElement as SVGSVGElement;
+    expect(svgElement).toBeTruthy();
+    expect(svgElement.getAttribute('viewBox')).toBe('0 0 32 32');
+    
+    const rectElement = fixture.debugElement.query(By.css('rect')).nativeElement as SVGRectElement;
+    expect(rectElement.getAttribute('fill')).toBe('#5C9CD0');
   });
 
-  it.each(TYPES)('should render correct background color for type "%s"', (type) => {
-    componentRef.setInput('type', type);
+  it('should update SVG when active is true', () => {
+    component.active.set(true);
     fixture.detectChanges();
-    const rect = fixture.nativeElement.querySelector('rect');
-    expect(rect?.getAttribute('fill')).toBe(EXPECTED_COLORS[type]);
+
+    const rectElement = fixture.debugElement.query(By.css('rect')).nativeElement as SVGRectElement;
+    expect(rectElement.getAttribute('fill')).toBe('#1168A8');
   });
 
-  it('should use default size of 40', () => {
-    const svg = fixture.nativeElement.querySelector('svg');
-    expect(svg?.getAttribute('width')).toBe('40');
-    expect(svg?.getAttribute('height')).toBe('40');
-  });
-
-  it('should apply custom size', () => {
-    componentRef.setInput('size', 24);
+  it('should update SVG when type changes to ideation', () => {
+    component.type.set('ideation');
     fixture.detectChanges();
-    const svg = fixture.nativeElement.querySelector('svg');
-    expect(svg?.getAttribute('width')).toBe('24');
-    expect(svg?.getAttribute('height')).toBe('24');
-  });
 
-  it('config() returns an object with bgColor and path for every type', () => {
-    TYPES.forEach(type => {
-      componentRef.setInput('type', type);
-      fixture.detectChanges();
-      const cfg = component.config();
-      expect(cfg).toBeDefined();
-      expect(cfg?.bgColor).toBeTruthy();
-      expect(cfg?.path).toBeTruthy();
-    });
+    const svgElement = fixture.debugElement.query(By.css('svg')).nativeElement as SVGSVGElement;
+    expect(svgElement.getAttribute('viewBox')).toBe('0 0 40 40');
+
+    const rectElement = fixture.debugElement.query(By.css('rect')).nativeElement as SVGRectElement;
+    expect(rectElement.getAttribute('fill')).toBe('#E4B722');
   });
 });

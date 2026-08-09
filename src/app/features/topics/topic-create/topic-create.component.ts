@@ -162,7 +162,16 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
     };
     this.topicService.save(initialPayload).pipe(take(1)).subscribe({
       next: (savedTopic) => {
-        this.topicModel.set(savedTopic);
+        this.topicModel.update(current => {
+          const merged = {
+            ...savedTopic,
+            title: current.title || savedTopic.title,
+            intro: current.intro || savedTopic.intro
+          };
+          console.log('EAGER CREATE FINISHED. savedTopic:', savedTopic);
+          console.log('MERGED topicModel:', merged);
+          return merged;
+        });
         this.membersResource.reload();
         this.invitesResource.reload();
         this.isLoading.set(false);
@@ -208,6 +217,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   isFooterNextDisabled(): boolean {
+    if (this.isLoading()) return true;
     if (this.currentStep() === 'info') return !this.topicModel().title;
     if (this.currentStep() === 'discussion') return !this.discussion().question;
     return false;

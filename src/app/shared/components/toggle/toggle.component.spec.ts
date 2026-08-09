@@ -52,7 +52,7 @@ describe('ToggleComponent', () => {
 
   it('should display cosToggleTextOn when enabled', async () => {
     fixture.componentRef.setInput('model', true);
-    fixture.componentRef.setInput('cosToggleTextOn', 'Enabled');
+    fixture.componentRef.setInput('textOn', 'Enabled');
     fixture.detectChanges();
     await fixture.whenStable();
     const el: HTMLElement = fixture.nativeElement;

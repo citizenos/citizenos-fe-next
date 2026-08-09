@@ -36,7 +36,7 @@ export class GroupsPage {
     this.searchInput = page.locator('app-search-input, input[type="search"]').first();
     this.filterToolbar = page.locator('app-list-filter-toolbar').first();
     this.pagination = page.locator('cos-pagination').first();
-    this.emptyState = page.locator('[class*="empty"], [class*="no-results"]').first();
+    this.emptyState = page.locator('[class*="empty"], [class*="no-results"], .no_groups').first();
 
     // Detail view
     this.groupTitle = page.locator('h1, [class*="group-title"], [class*="group-header"] h1').first();

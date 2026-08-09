@@ -27,12 +27,12 @@ describe('TopicSettingsDisabledDialogComponent', () => {
   it('should create', () => expect(component).toBeTruthy());
 
   it('should render the heading', () => {
-    const heading = fixture.nativeElement.querySelector('[translate="MODALS.TOPIC_SETTINGS_DISABLED_HEADING"]');
+    const heading = fixture.nativeElement.querySelector('.small_heading');
     expect(heading).toBeTruthy();
   });
 
   it('should render the description', () => {
-    const desc = fixture.nativeElement.querySelector('[translate="MODALS.TOPIC_SETTINGS_DISABLED_DESCRIPTION"]');
+    const desc = fixture.nativeElement.querySelector('.delete_info_text');
     expect(desc).toBeTruthy();
   });
 

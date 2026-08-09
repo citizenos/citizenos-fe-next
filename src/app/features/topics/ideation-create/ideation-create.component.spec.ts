@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { TranslateModule } from '@ngx-translate/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, ActivatedRoute } from '@angular/router';
 import { IdeationCreateComponent } from './ideation-create.component';
@@ -10,7 +11,7 @@ import { of } from 'rxjs';
 
 const mockTopic = { id: 'topic-1', title: 'Test', visibility: 'private', status: 'draft', categories: [] };
 const mockIdeation = { id: 'ideation-1', question: '', allowAnonymous: false, disableReplies: false };
-const mockTopicService = { save: vi.fn(), patch: vi.fn(), loadTopic: vi.fn() };
+const mockTopicService = { save: vi.fn(), patch: vi.fn(), loadTopic: vi.fn(), LEVELS: { admin: 'admin', edit: 'edit', read: 'read' } };
 const mockIdeationService = { save: vi.fn(), update: vi.fn(), get: vi.fn() };
 const mockUploadService = { upload: vi.fn() };
 const mockNotificationService = { success: vi.fn(), showRaw: vi.fn() };
@@ -28,6 +29,7 @@ describe('IdeationCreateComponent (business logic)', () => {
     mockIdeationService.get.mockReturnValue(of(mockIdeation));
 
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       providers: [
         provideRouter([{ path: 'topics/:id', component: class { } }]),
         { provide: TopicService, useValue: mockTopicService },

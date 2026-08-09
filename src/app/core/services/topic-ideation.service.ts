@@ -124,7 +124,7 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
 
   get(params?: { topicId?: string; ideationId?: string; id?: string }): Observable<Ideation> {
     const ideationId = params?.ideationId || params?.id;
-    const path = this.getAbsoluteUrlApi(`/topics/${params?.topicId}/ideations/${ideationId}`);
+    const path = this.getAbsoluteUrlApi(`/topics/${params?.topicId}/ideations/${ideationId}`, true);
     return this.http.get<ApiResponse<Ideation>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }

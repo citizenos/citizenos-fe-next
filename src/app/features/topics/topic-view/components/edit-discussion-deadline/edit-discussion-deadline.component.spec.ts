@@ -31,7 +31,7 @@ describe('EditDiscussionDeadlineComponent', () => {
       imports: [TranslateModule.forRoot()],
       providers: [
         provideRouter([{ path: '**', component: EmptyComponent }]),
-        { provide: DialogRef, useValue: new DialogRef() },
+        { provide: DialogRef, useValue: { close: vi.fn() } },
         { provide: DIALOG_DATA, useValue: { discussion: mockDiscussion, topic: mockTopic } },
         { provide: TopicDiscussionService, useValue: mockDiscussionService },
         { provide: TopicService, useValue: mockTopicService },
@@ -56,7 +56,7 @@ describe('EditDiscussionDeadlineComponent', () => {
       imports: [TranslateModule.forRoot()],
       providers: [
         provideRouter([{ path: '**', component: EmptyComponent }]),
-        { provide: DialogRef, useValue: new DialogRef() },
+        { provide: DialogRef, useValue: { close: vi.fn() } },
         { provide: DIALOG_DATA, useValue: { discussion: discussionWithDeadline, topic: mockTopic } },
         { provide: TopicDiscussionService, useValue: mockDiscussionService },
         { provide: TopicService, useValue: mockTopicService },

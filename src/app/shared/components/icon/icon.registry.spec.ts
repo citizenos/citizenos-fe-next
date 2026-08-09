@@ -14,7 +14,12 @@ describe('IconRegistryService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return icon data for valid icon name', () => {
+  it('should return icon data for valid icon name', async () => {
+    await new Promise<void>(resolve => {
+      service.isLoaded.subscribe(loaded => {
+        if (loaded) resolve();
+      });
+    });
     const icon = service.getIcon('smart-id');
     expect(icon).toBeDefined();
     expect(icon?.viewBox).toBe('0 0 48 48');
@@ -26,7 +31,12 @@ describe('IconRegistryService', () => {
     expect(icon).toBeUndefined();
   });
 
-  it('should have official e-id icons registered', () => {
+  it('should have official e-id icons registered', async () => {
+    await new Promise<void>(resolve => {
+      service.isLoaded.subscribe(loaded => {
+        if (loaded) resolve();
+      });
+    });
     expect(service.getIcon('smart-id')).toBeDefined();
     expect(service.getIcon('mobile-id')).toBeDefined();
     expect(service.getIcon('id-card')).toBeDefined();

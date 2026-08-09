@@ -164,7 +164,11 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
     this.topicService.save(initialPayload).pipe(
       take(1),
       switchMap((savedTopic) => {
-        this.topicModel.set(savedTopic);
+        this.topicModel.update(current => ({
+          ...savedTopic,
+          title: current.title || savedTopic.title,
+          intro: current.intro || savedTopic.intro
+        }));
         this.membersResource.reload();
         this.invitesResource.reload();
         const voteData = {
@@ -216,6 +220,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   }
 
   isFooterNextDisabled(): boolean {
+    if (this.isLoading()) return true;
     if (this.currentStep() === 'info') return !this.topicModel().title;
     if (this.currentStep() === 'voting') {
       const v = this.voteModel();

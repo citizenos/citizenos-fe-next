@@ -66,7 +66,14 @@ test.describe('Home Page', () => {
     expect(featureCount).toBeGreaterThan(0);
   });
 
-  test('should navigate to public topics', async ({ page }) => {
+  test('should navigate to public topics', async ({ page, isMobile }) => {
+    if (isMobile) {
+      const menuBtn = page.locator('.nav_mobile_actions button').nth(1);
+      if (await menuBtn.isVisible()) {
+        await menuBtn.click();
+        await page.waitForTimeout(1000); // Wait for menu animation
+      }
+    }
     const link = page.locator('a[href*="public/topics"]').first();
     if (await link.isVisible()) {
       await link.click({ force: true });

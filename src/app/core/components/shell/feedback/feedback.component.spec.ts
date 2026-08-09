@@ -4,6 +4,7 @@ import { signal, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 import { UiStateService } from '../../../services/ui-state.service';
 import { ConfigStore } from '../../../state/config.store';
 import { NotificationService } from '../../../services/notification.service';
@@ -32,14 +33,6 @@ describe('FeedbackComponent', () => {
     post: vi.fn().mockReturnValue(of({}))
   };
 
-  const mockTranslate = {
-    instant: vi.fn((k: string) => k),
-    get: vi.fn((k: string) => of(k)),
-    currentLang: 'en',
-    onLangChange: new EventEmitter<LangChangeEvent>(),
-    use: vi.fn().mockReturnValue(of({}))
-  };
-
   beforeEach(async () => {
     vi.clearAllMocks();
     mockUiState.showFeedback.set(true);
@@ -50,8 +43,7 @@ describe('FeedbackComponent', () => {
         { provide: UiStateService, useValue: mockUiState },
         { provide: ConfigStore, useValue: mockConfigStore },
         { provide: NotificationService, useValue: mockNotification },
-        { provide: HttpClient, useValue: mockHttp },
-        { provide: TranslateService, useValue: mockTranslate }
+        { provide: HttpClient, useValue: mockHttp }
       ]
     }).compileComponents();
 
@@ -71,15 +63,15 @@ describe('FeedbackComponent', () => {
   });
 
   it('should close the feedback form when clicking cancel', () => {
-    const cancelBtn = fixture.nativeElement.querySelector('.btn_link') as HTMLButtonElement;
-    cancelBtn.click();
+    const cancelBtn = fixture.debugElement.query(By.css('cos-button[variant="ghost"]'));
+    cancelBtn.triggerEventHandler('clicked', null);
     expect(mockUiState.showFeedback()).toBe(false);
   });
 
   it('should set error when submitting without message', () => {
     component.message = '';
-    const submitBtn = fixture.nativeElement.querySelector('.btn_medium_submit') as HTMLButtonElement;
-    submitBtn.click();
+    const submitBtn = fixture.debugElement.query(By.css('cos-button[variant="primary"]'));
+    submitBtn.triggerEventHandler('clicked', null);
     fixture.detectChanges();
 
     expect(component.error()).toBe(true);
@@ -88,8 +80,8 @@ describe('FeedbackComponent', () => {
 
   it('should call API and show success message on submit', () => {
     component.message = 'Test feedback';
-    const submitBtn = fixture.nativeElement.querySelector('.btn_medium_submit') as HTMLButtonElement;
-    submitBtn.click();
+    const submitBtn = fixture.debugElement.query(By.css('cos-button[variant="primary"]'));
+    submitBtn.triggerEventHandler('clicked', null);
     fixture.detectChanges();
 
     expect(mockHttp.post).toHaveBeenCalled();
@@ -103,8 +95,8 @@ describe('FeedbackComponent', () => {
     component.isSubmitted.set(true);
     fixture.detectChanges();
 
-    const closeBtn = fixture.nativeElement.querySelector('.btn_medium_submit') as HTMLButtonElement;
-    closeBtn.click();
+    const closeBtn = fixture.debugElement.query(By.css('cos-button[variant="primary"]'));
+    closeBtn.triggerEventHandler('clicked', null);
     expect(mockUiState.showFeedback()).toBe(false);
   });
 

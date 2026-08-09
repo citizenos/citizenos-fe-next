@@ -27,13 +27,13 @@ describe('TopicEditDisabledDialogComponent', () => {
   it('should create', () => expect(component).toBeTruthy());
 
   it('should render the heading', () => {
-    const heading = fixture.nativeElement.querySelector('[translate="MODALS.TOPIC_EDIT_DISABLED_HEADING"]');
-    expect(heading).toBeTruthy();
+    const heading = fixture.nativeElement.querySelector('.small_heading');
+    expect(heading?.textContent).toContain('MODALS.TOPIC_EDIT_DISABLED_HEADING');
   });
 
   it('should render the description', () => {
-    const desc = fixture.nativeElement.querySelector('[translate="MODALS.TOPIC_EDIT_DISABLED_DESCRIPTION"]');
-    expect(desc).toBeTruthy();
+    const desc = fixture.nativeElement.querySelector('.delete_info_text');
+    expect(desc?.textContent).toContain('MODALS.TOPIC_EDIT_DISABLED_DESCRIPTION');
   });
 
   it('should have a close button with dialogClose attribute', () => {

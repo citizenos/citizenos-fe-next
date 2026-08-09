@@ -60,7 +60,7 @@ describe('IdeaReplyReportModerateComponent', () => {
   it('shows heading', () => {
     const heading = fixture.nativeElement.querySelector('.title');
     expect(heading).toBeTruthy();
-    expect(heading.getAttribute('translate')).toBe('COMPONENTS.IDEA_REPLY_REPORT_MODERATE.HEADING');
+    expect(heading.textContent).toContain('COMPONENTS.IDEA_REPLY_REPORT_MODERATE.HEADING');
   });
 
   it('shows argument subject when set', () => {

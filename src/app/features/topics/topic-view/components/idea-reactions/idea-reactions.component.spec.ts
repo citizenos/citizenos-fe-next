@@ -9,14 +9,14 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { EnvironmentInjector, runInInjectionContext } from '@angular/core';
 
 describe('IdeaReactionsComponent', () => {
-  let mockIdeationService: { getIdeaVotes: ReturnType<typeof vi.fn> };
+  let mockIdeationService: { getIdeaVoters: ReturnType<typeof vi.fn> };
   let mockDialogRef: { close: ReturnType<typeof vi.fn> };
   let injector: EnvironmentInjector;
 
   beforeEach(() => {
     vi.clearAllMocks();
     mockIdeationService = {
-      getIdeaVotes: vi.fn().mockReturnValue(of({ rows: [], countTotal: 0 }))
+      getIdeaVoters: vi.fn().mockReturnValue(of({ rows: [], count: 0 }))
     };
 
     mockDialogRef = {
@@ -59,14 +59,14 @@ describe('IdeaReactionsComponent', () => {
         { name: 'User 1', vote: 'up', imageUrl: 'img1.jpg' },
         { name: 'User 2', vote: 'down', imageUrl: null }
       ],
-      countTotal: 2
+      count: 2
     };
-    mockIdeationService.getIdeaVotes.mockReturnValue(of(mockData));
+    mockIdeationService.getIdeaVoters.mockReturnValue(of(mockData));
 
     const component = makeComp();
     component.ngOnInit();
 
-    expect(mockIdeationService.getIdeaVotes).toHaveBeenCalledWith(expect.objectContaining({
+    expect(mockIdeationService.getIdeaVoters).toHaveBeenCalledWith(expect.objectContaining({
       topicId: 'topic1',
       ideaId: 'idea1',
       limit: 10,
@@ -79,9 +79,9 @@ describe('IdeaReactionsComponent', () => {
   it('should handle pagination', () => {
     const mockData = {
       rows: new Array(10).fill({ name: 'User', vote: 'up' }),
-      countTotal: 25
+      count: 25
     };
-    mockIdeationService.getIdeaVotes.mockReturnValue(of(mockData));
+    mockIdeationService.getIdeaVoters.mockReturnValue(of(mockData));
 
     const component = makeComp();
     component.ngOnInit();
@@ -89,7 +89,7 @@ describe('IdeaReactionsComponent', () => {
 
     component.loadPage(2);
     expect(component.page()).toBe(2);
-    expect(mockIdeationService.getIdeaVotes).toHaveBeenCalledWith(expect.objectContaining({
+    expect(mockIdeationService.getIdeaVoters).toHaveBeenCalledWith(expect.objectContaining({
       offset: 10
     }));
   });

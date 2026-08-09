@@ -30,21 +30,21 @@ describe('GroupCreateHelpComponent', () => {
 
   it('should display info help when step is info', () => {
     const compiled = setup('info');
-    expect(compiled.querySelector('.small_heading')?.getAttribute('translate')).toBe('VIEWS.GROUP_CREATE.HELP_INFO_HEADING');
+    expect(compiled.querySelector('.small_heading')?.textContent).toContain('VIEWS.GROUP_CREATE.HELP_INFO_HEADING');
   });
 
   it('should display settings help when step is settings', () => {
     const compiled = setup('settings');
-    expect(compiled.querySelector('.small_heading')?.getAttribute('translate')).toBe('VIEWS.GROUP_CREATE.HELP_SETTINGS_HEADING');
+    expect(compiled.querySelector('.small_heading')?.textContent).toContain('VIEWS.GROUP_CREATE.HELP_SETTINGS_HEADING');
   });
 
   it('should display add_topics help when step is add_topics', () => {
     const compiled = setup('add_topics');
-    expect(compiled.querySelector('.small_heading')?.getAttribute('translate')).toBe('VIEWS.GROUP_CREATE.HELP_ADD_TOPICS_HEADING');
+    expect(compiled.querySelector('.small_heading')?.textContent).toContain('VIEWS.GROUP_CREATE.HELP_ADD_TOPICS_HEADING');
   });
 
   it('should display invite help when step is invite', () => {
     const compiled = setup('invite');
-    expect(compiled.querySelector('.small_heading')?.getAttribute('translate')).toBe('VIEWS.GROUP_CREATE.HELP_INVITE_HEADING');
+    expect(compiled.querySelector('.small_heading')?.textContent).toContain('VIEWS.GROUP_CREATE.HELP_INVITE_HEADING');
   });
 });

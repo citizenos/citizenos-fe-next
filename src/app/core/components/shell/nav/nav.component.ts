@@ -8,7 +8,6 @@ import { UserStore } from '../../../state/user.store';
 import { DialogService } from '../../../../shared/dialog';
 import { InitialsComponent } from '../../../../shared/components/initials/initials.component';
 import { LogoComponent } from '../../../../shared/components/logo/logo.component';
-import { LanguageSelectComponent } from '../language-select/language-select.component';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { SELECTED_LANGUAGES } from '../../../constants/languages';
 import { UiStateService } from '../../../services/ui-state.service';
@@ -111,7 +110,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
             <cos-icon name="groups"></cos-icon>
           </a>
         </div>
-        @if (showCreateMenu()) {
+        @defer (when showCreateMenu()) {
           <div class="mobile_create_menu">
             <cos-create-menu (closeMenu)="closeCreateMenu()" />
           </div>
@@ -144,7 +143,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
                 <cos-icon name="plus" [size]="16"></cos-icon>
                 <span>{{ 'DEFAULT.NAV.BTN_CREATE' | translate }}</span>
               </button>
-              @if (showCreateMenu()) {
+              @defer (when showCreateMenu()) {
                 <div class="nav_create_menu">
                   <cos-create-menu (closeMenu)="closeCreateMenu()" />
                 </div>
@@ -392,7 +391,8 @@ export class NavComponent implements OnInit {
     this.showProfileDropdown.update(v => !v);
   }
 
-  openLanguageSelect() {
+  async openLanguageSelect() {
+    const { LanguageSelectComponent } = await import('../language-select/language-select.component');
     this.dialog.open(LanguageSelectComponent);
     this.closeNav();
   }

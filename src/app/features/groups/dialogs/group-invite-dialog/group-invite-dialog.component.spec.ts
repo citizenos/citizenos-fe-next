@@ -69,6 +69,7 @@ describe('GroupInviteDialogComponent', () => {
 
   it('joinUrl is generated from group join token', () => {
     const comp = makeComp();
+    comp.ngOnInit();
     expect(comp.joinUrl()).toContain('tok123');
   });
 

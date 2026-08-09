@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { EstEidComponent } from './esteid.component';
 import { UserStore } from '../../../../core/state/user.store';
 import { of } from 'rxjs';
-import * as webeid from '@web-eid/web-eid-library/web-eid';
+import { authenticate } from '@web-eid/web-eid-library/web-eid';
 import { vi, describe, it, expect, beforeEach, afterEach, Mock } from 'vitest';
 import { MockButtonComponent, MockInputComponent, MockIconComponent } from '../../../../shared/testing/mocks';
 
@@ -87,17 +87,17 @@ describe('EstEidComponent', () => {
   });
 
   it('should call authIdCard', async () => {
-    (webeid.authenticate as Mock).mockResolvedValue({ response: 'test' });
+    (authenticate as Mock).mockResolvedValue({ response: 'test' });
     (mockUserStore as { loginIdCard: Mock }).loginIdCard.mockResolvedValue(undefined);
 
     await component.authIdCard();
 
-    expect(webeid.authenticate).toHaveBeenCalled();
+    expect(authenticate).toHaveBeenCalled();
     expect((mockUserStore as { loginIdCard: Mock }).loginIdCard).toHaveBeenCalledWith({ response: 'test' });
   });
 
   it('should handle ID-card authentication error', async () => {
-    (webeid.authenticate as Mock).mockRejectedValue(new Error('Auth failed'));
+    (authenticate as Mock).mockRejectedValue(new Error('Auth failed'));
 
     await component.authIdCard();
 

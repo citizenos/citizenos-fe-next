@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { PublicGroupService } from './public-group.service';
@@ -32,11 +32,14 @@ describe('PublicGroupService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch public groups', () => {
+  it('should fetch public groups', async () => {
     TestBed.flushEffects();
     const req = httpMock.expectOne((request) => request.url.endsWith('/api/groups'));
     req.flush({ data: { rows: [{ id: '1', name: 'Public Group' }], count: 1 } });
-    TestBed.flushEffects();
+    
+    // allow rxResource to process the emitted observable value
+    await new Promise(resolve => setTimeout(resolve, 0));
+    TestBed.flushEffects(); // trigger computed signals
     
     const groups = service.items();
     expect(groups.length).toBe(1);

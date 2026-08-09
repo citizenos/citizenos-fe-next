@@ -1,20 +1,31 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { StepTopicSettingsComponent } from './step-topic-settings.component';
 import { Topic } from '../../../../../core/interfaces/topic';
+import { UserGroupService } from '../../../../../core/services/user-group.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { signal } from '@angular/core';
 
 describe('StepTopicSettingsComponent (business logic)', () => {
   let component: StepTopicSettingsComponent;
+  let fixture: ComponentFixture<StepTopicSettingsComponent>;
+  let mockUserGroupService: any;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    component = TestBed.runInInjectionContext(() => new StepTopicSettingsComponent());
-    vi.spyOn(component, 'topic').mockReturnValue({
-      visibility: 'private',
-      categories: [],
-      country: null,
-      language: null
-    } as unknown as Topic);
+  beforeEach(async () => {
+    mockUserGroupService = {
+      items: signal([])
+    };
+
+    await TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), StepTopicSettingsComponent],
+      providers: [
+        { provide: UserGroupService, useValue: mockUserGroupService }
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(StepTopicSettingsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -22,8 +33,7 @@ describe('StepTopicSettingsComponent (business logic)', () => {
   });
 
   it('should have default visibility private', () => {
-    const defaultTopic = TestBed.runInInjectionContext(() => new StepTopicSettingsComponent()).topic();
-    expect(defaultTopic.visibility).toBe('private');
+    expect(component.topic().visibility).toBe('private');
   });
 
   it('should emit topicUpdate when onUpdate is called with visibility', () => {

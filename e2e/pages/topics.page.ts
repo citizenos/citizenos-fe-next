@@ -39,7 +39,7 @@ export class TopicsPage {
     this.searchInput = page.locator('app-search-input, input[type="search"]').first();
     this.filterToolbar = page.locator('app-list-filter-toolbar').first();
     this.pagination = page.locator('cos-pagination').first();
-    this.emptyState = page.locator('[class*="empty"], [class*="no-results"]').first();
+    this.emptyState = page.locator('[class*="empty"], [class*="no-results"], .no_topics').first();
 
     // Detail view
     this.topicTitle = page.locator('h1, [class*="topic-title"], [class*="topic-header"] h1').first();

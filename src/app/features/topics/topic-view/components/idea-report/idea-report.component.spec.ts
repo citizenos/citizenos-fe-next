@@ -120,10 +120,10 @@ describe('IdeaReportComponent', () => {
   });
 
   it('should handle error on doReport', () => {
-    (mockIdeaService.reportIdea as ReturnType<typeof vi.fn>).mockReturnValue(throwError(() => ({ error: { errors: { text: 'error' } } })));
+    (mockIdeaService.reportIdea as ReturnType<typeof vi.fn>).mockReturnValue(throwError(() => ({ errors: { text: ['error'] } })));
     component.report.get('text')?.setValue('Some text');
     component.doReport();
-    expect(component.errors()).toEqual({ text: 'error' });
+    expect(component.errors()).toEqual({ text: ['error'] });
     expect(mockDialogRef.close).not.toHaveBeenCalled();
   });
 });

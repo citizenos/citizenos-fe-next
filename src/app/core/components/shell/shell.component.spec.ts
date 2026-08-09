@@ -14,7 +14,13 @@ import { UiStateService } from '../../services/ui-state.service';
 class EmptyComponent {}
 
 const mockConfigStore = { isDarkTheme: signal(false) };
-const mockUiState = { accessibilityClasses: signal('') };
+const mockUiState = { 
+  accessibilityClasses: signal(''),
+  showHelp: signal(false),
+  showFeedback: signal(false),
+  showOnboarding: signal(false),
+  showAccessibility: signal(false)
+};
 
 describe('ShellComponent', () => {
   let component: ShellComponent;

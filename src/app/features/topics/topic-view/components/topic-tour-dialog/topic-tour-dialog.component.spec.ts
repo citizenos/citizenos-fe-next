@@ -27,24 +27,24 @@ describe('TopicTourDialogComponent', () => {
   it('should create', () => expect(component).toBeTruthy());
 
   it('should render the tour title', () => {
-    const title = fixture.nativeElement.querySelector('[translate="VIEWS.TOPICS_TOPICID.TUTORIAL_TITLE"]');
+    const title = fixture.nativeElement.querySelector('#title');
     expect(title).toBeTruthy();
   });
 
   it('should render the tour description', () => {
-    const desc = fixture.nativeElement.querySelector('[translate="VIEWS.TOPICS_TOPICID.TUTORIAL_DESC"]');
+    const desc = fixture.nativeElement.querySelector('.content');
     expect(desc).toBeTruthy();
   });
 
   it('should have a take-the-tour button that closes dialog with true', () => {
-    const btn = fixture.nativeElement.querySelector('.btn_big_submit[dialogClose]');
+    const btn = fixture.nativeElement.querySelector('.btn_big_submit');
     expect(btn).toBeTruthy();
     btn.click();
     expect(mockDialogRef.close).toHaveBeenCalledWith(true);
   });
 
   it('should have a skip link that closes the dialog', () => {
-    const skip = fixture.nativeElement.querySelector('.btn_link[dialogClose]');
+    const skip = fixture.nativeElement.querySelector('.btn_link');
     expect(skip).toBeTruthy();
     skip.click();
     expect(mockDialogRef.close).toHaveBeenCalled();

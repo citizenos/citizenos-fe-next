@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { TranslateModule } from '@ngx-translate/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, ActivatedRoute, Router } from '@angular/router';
 import { Component } from '@angular/core';
@@ -56,6 +57,7 @@ describe('TopicEditComponent', () => {
     mockDiscussionService.get.mockReturnValue(of({ id: 'disc-1', question: 'Q', deadline: null }));
     
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       providers: [
         provideRouter([
           { path: 'topics/edit/:topicId', component: EmptyComponent },

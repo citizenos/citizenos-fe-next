@@ -77,7 +77,7 @@ describe('TopicMemberInviteDeleteComponent', () => {
     fixtureWithImage.detectChanges();
     const img = fixtureWithImage.nativeElement.querySelector('img.profile_image');
     expect(img).toBeTruthy();
-    expect(img.src).toContain('img.png');
+    expect(img.src).toContain('img.jpg');
   });
 
   it('does not close dialog when no option selected', () => {

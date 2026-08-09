@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { TranslateModule } from '@ngx-translate/core';
 import { TestBed } from '@angular/core/testing';
 import { ArgumentComponent } from './argument.component';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
@@ -31,6 +32,7 @@ const mockSanitizer = { bypassSecurityTrustHtml: vi.fn(v => v) };
 
 describe('ArgumentComponent', () => {
   let component: ArgumentComponent;
+  let fixture: import('@angular/core/testing').ComponentFixture<ArgumentComponent>;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -40,6 +42,7 @@ describe('ArgumentComponent', () => {
     mockArgumentService.delete.mockReturnValue(of({}));
 
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: TopicArgumentService, useValue: mockArgumentService },
         { provide: UserStore, useValue: mockUserStore },
@@ -49,11 +52,13 @@ describe('ArgumentComponent', () => {
       ]
     });
 
-    component = TestBed.runInInjectionContext(() => new ArgumentComponent());
-    (component as unknown as { argument: unknown }).argument = signal({ ...mockArgument });
-    (component as unknown as { topicId: unknown }).topicId = signal('topic-1');
-    (component as unknown as { discussionId: unknown }).discussionId = signal('disc-1');
-    (component as unknown as { root: unknown }).root = signal(null);
+    fixture = TestBed.createComponent(ArgumentComponent);
+    component = fixture.componentInstance;
+    fixture.componentRef.setInput('argument', { ...mockArgument });
+    fixture.componentRef.setInput('topicId', 'topic-1');
+    fixture.componentRef.setInput('discussionId', 'disc-1');
+    fixture.componentRef.setInput('root', null);
+    fixture.detectChanges();
   });
 
   it('argumentId should combine id and version', () => {

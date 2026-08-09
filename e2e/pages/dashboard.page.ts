@@ -58,6 +58,6 @@ export class DashboardPage {
     // Wait for at least one topic card, or an empty state
     const topicCard = this.topicCards.first();
     const emptyState = this.page.locator('[class*="empty"], [class*="no-results"], .no_engagements').first();
-    await expect(topicCard.or(emptyState)).toBeVisible({ timeout: 10000 });
+    await expect(topicCard.or(emptyState).first()).toBeVisible({ timeout: 10000 });
   }
 }

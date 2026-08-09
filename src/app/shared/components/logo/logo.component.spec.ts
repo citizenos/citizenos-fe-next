@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LogoComponent } from './logo.component';
+import { By } from '@angular/platform-browser';
 
 describe('LogoComponent', () => {
   let component: LogoComponent;
@@ -8,7 +8,7 @@ describe('LogoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LogoComponent],
+      imports: [LogoComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(LogoComponent);
@@ -16,14 +16,16 @@ describe('LogoComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => expect(component).toBeTruthy());
-
-  it('should render an SVG element', () => {
-    expect(fixture.nativeElement.querySelector('svg')).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('should render the CitizenOS wordmark paths', () => {
-    const paths = fixture.nativeElement.querySelectorAll('path');
-    expect(paths.length).toBeGreaterThan(5);
+  it('should render SVG logo', () => {
+    const svgElement = fixture.debugElement.query(By.css('svg'));
+    expect(svgElement).toBeTruthy();
+    
+    const svgNative = svgElement.nativeElement as SVGSVGElement;
+    expect(svgNative.getAttribute('width')).toBe('152');
+    expect(svgNative.getAttribute('height')).toBe('28');
   });
 });

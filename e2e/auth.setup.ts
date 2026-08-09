@@ -35,8 +35,8 @@ setup('authenticate', async ({ page }) => {
   });
 
   // Fill in credentials and submit
-  await page.locator('input[formControlName="email"]').fill(email);
-  await page.locator('input[formControlName="password"]').fill(password);
+  await page.locator('input[type="email"]').fill(email);
+  await page.locator('input[type="password"]').fill(password);
 
   // Click the login/submit button (cos-button with type="submit")
   await page.locator('cos-button[type="submit"]').click();
@@ -52,6 +52,13 @@ setup('authenticate', async ({ page }) => {
 
   // Verify we are authenticated by checking for the main app root
   await page.waitForSelector('app-root', { state: 'attached', timeout: 10000 });
+
+  await page.evaluate(() => {
+    window.localStorage.setItem('onboarding_topic', 'true');
+    window.localStorage.setItem('onboarding_ideation', 'true');
+    window.localStorage.setItem('onboarding_group', 'true');
+    window.localStorage.setItem('onboarding_dashboard', 'true');
+  });
 
   // Save the authenticated state
   await page.context().storageState({ path: authFile });

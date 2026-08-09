@@ -1,6 +1,8 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { TranslateModule } from '@ngx-translate/core';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { TopicDiscussionComponent } from './topic-discussion.component';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicDiscussionService } from '../../../../../core/services/topic-discussion.service';
@@ -14,52 +16,55 @@ import { Argument } from '../../../../../core/interfaces/discussion';
 const mockTopic: Topic = { id: 'topic-1', discussionId: 'disc-1', status: 'inProgress' } as Topic;
 const mockDiscussion: Discussion = { id: 'disc-1', question: 'What do you think?', deadline: null } as Discussion;
 
-const itemsSubject = new BehaviorSubject<Argument[]>([]);
-const loadingSubject = new BehaviorSubject(false);
-const countSubject = new BehaviorSubject({ total: 0, pro: 0, con: 0, poi: 0, reply: 0 });
-
 const mockArgumentService = {
-  items$: itemsSubject.asObservable(),
-  isLoading$: loadingSubject.asObservable(),
-  count: countSubject.asObservable(),
+  items: signal([]),
+  isLoading: signal(false),
+  count: new BehaviorSubject({ total: 0, pro: 0, con: 0, poi: 0, reply: 0 }),
+  ARGUMENT_TYPES_MAXLENGTH: { pro: 200, con: 200, poi: 200 },
+  ARGUMENT_SUBJECT_MAXLENGTH: 50,
   setParam: vi.fn(),
   loadItems: vi.fn(() => of([])),
   loadPage: vi.fn(),
-  params: new BehaviorSubject({ page: 1, offset: 0, limit: 10 }),
-  page: new BehaviorSubject(1),
-  totalPages: new BehaviorSubject(1),
+  params: signal({ page: 1, offset: 0, limit: 10 }),
+  page: signal(1),
+  totalPages: signal(1),
+  reload: vi.fn()
 };
-const mockDiscussionService = { get: vi.fn() };
-const mockTopicService = { canUpdate: vi.fn() };
+const mockDiscussionService = { get: vi.fn(), hasDiscussionEndedExpired: vi.fn().mockReturnValue(false) };
+const mockTopicService = { 
+  canUpdate: vi.fn(),
+  STATUSES: { draft: 'draft', ideation: 'ideation', inProgress: 'inProgress' }
+};
 const mockUserStore = { isAuthenticated: vi.fn(), user: vi.fn() };
 
 describe('TopicDiscussionComponent', () => {
   let component: TopicDiscussionComponent;
+  let fixture: import('@angular/core/testing').ComponentFixture<TopicDiscussionComponent>;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    itemsSubject.next([]);
-    loadingSubject.next(false);
-    countSubject.next({ total: 0, pro: 0, con: 0, poi: 0, reply: 0 });
+    mockArgumentService.items.set([]);
+    mockArgumentService.isLoading.set(false);
+    mockArgumentService.count.next({ total: 0, pro: 0, con: 0, poi: 0, reply: 0 });
     mockDiscussionService.get.mockReturnValue(of(mockDiscussion));
     mockTopicService.canUpdate.mockReturnValue(true);
     mockUserStore.isAuthenticated.mockReturnValue(true);
 
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: TopicService, useValue: mockTopicService },
         { provide: TopicDiscussionService, useValue: mockDiscussionService },
         { provide: TopicArgumentService, useValue: mockArgumentService },
         { provide: UserStore, useValue: mockUserStore },
+        provideRouter([{ path: '**', component: TopicDiscussionComponent }])
       ]
     });
 
-    component = TestBed.runInInjectionContext(() => {
-      const c = new TopicDiscussionComponent();
-      // Override topic with a signal
-      (c as unknown as { topic: unknown }).topic = signal(mockTopic);
-      return c;
-    });
+    fixture = TestBed.createComponent(TopicDiscussionComponent);
+    component = fixture.componentInstance;
+    fixture.componentRef.setInput('topic', mockTopic);
+    fixture.detectChanges();
   });
 
   it('should have showPostForm initially false', () => {
@@ -101,6 +106,6 @@ describe('TopicDiscussionComponent', () => {
 
   it('reload calls loadPage', () => {
     component.reload();
-    expect(mockArgumentService.loadPage).toHaveBeenCalledWith(mockArgumentService.page.value);
+    expect(mockArgumentService.loadPage).toHaveBeenCalledWith(mockArgumentService.page());
   });
 });

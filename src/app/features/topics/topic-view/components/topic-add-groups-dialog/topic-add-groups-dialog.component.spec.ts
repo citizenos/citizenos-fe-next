@@ -41,7 +41,7 @@ describe('TopicAddGroupsDialogComponent', () => {
   let component: TopicAddGroupsDialogComponent;
   let fixture: ComponentFixture<TopicAddGroupsDialogComponent>;
   const mockDialogRef = { close: vi.fn() };
-  const mockTopicService = { get: vi.fn().mockReturnValue(of(MOCK_TOPIC)) };
+  const mockTopicService = { get: vi.fn().mockReturnValue(of(MOCK_TOPIC)), reloadTopic: vi.fn() };
   const mockTopicMemberGroupService = {
     LEVELS: { read: 1, admin: 2 },
     save: vi.fn().mockReturnValue(of({})),
@@ -108,5 +108,60 @@ describe('TopicAddGroupsDialogComponent', () => {
     component.searchResults.set(MOCK_GROUPS);
     component.onSearchChange('');
     expect(component.searchResults()).toEqual([]);
+  });
+
+  it('addGroup() should add group to selectedGroups and clear search', () => {
+    component.addGroup(MOCK_GROUPS[0]);
+    expect(component.selectedGroups()).toHaveLength(1);
+    expect(component.selectedGroups()[0].id).toBe('g1');
+    expect(component.selectedGroups()[0].permission.level).toBe('read'); // default
+    expect(component.searchString()).toBe('');
+    expect(component.searchResults()).toEqual([]);
+  });
+
+  it('addGroup() should not add duplicate groups', () => {
+    component.addGroup(MOCK_GROUPS[0]);
+    component.addGroup(MOCK_GROUPS[0]);
+    expect(component.selectedGroups()).toHaveLength(1);
+  });
+
+  it('removeGroup() should remove group from selectedGroups', () => {
+    component.addGroup(MOCK_GROUPS[0]);
+    component.removeGroup(MOCK_GROUPS[0]);
+    expect(component.selectedGroups()).toHaveLength(0);
+  });
+
+  it('updateGroupLevel() should update permission level for specific group', () => {
+    component.addGroup(MOCK_GROUPS[0]);
+    component.updateGroupLevel(MOCK_GROUPS[0], 'admin');
+    expect(component.selectedGroups()[0].permission.level).toBe('admin');
+  });
+
+  it('updateAllLevels() should update globalLevel and all selected groups levels', () => {
+    component.addGroup(MOCK_GROUPS[0]);
+    component.updateAllLevels('admin');
+    expect(component.globalLevel()).toBe('admin');
+    expect(component.selectedGroups()[0].permission.level).toBe('admin');
+  });
+
+  it('doSave() should not call service when no groups selected', () => {
+    component.doSave();
+    expect(mockTopicMemberGroupService.save).not.toHaveBeenCalled();
+  });
+
+  it('doSave() should call service and close on success', () => {
+    component.addGroup(MOCK_GROUPS[0]);
+    component.doSave();
+    expect(mockTopicMemberGroupService.save).toHaveBeenCalledWith({
+      topicId: 'topic-1',
+      groupId: 'g1',
+      level: 'read'
+    });
+    expect(mockTopicService.reloadTopic).toHaveBeenCalled();
+  });
+
+  it('close() should close dialog', () => {
+    component.close();
+    expect(mockDialogRef.close).toHaveBeenCalled();
   });
 });

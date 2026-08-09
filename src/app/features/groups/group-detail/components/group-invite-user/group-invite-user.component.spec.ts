@@ -57,7 +57,7 @@ describe('GroupInviteUserComponent', () => {
   });
 
   it('LEVELS comes from inviteUserService', () => {
-    expect(component.LEVELS).toEqual(['read', 'admin']);
+    expect(component.LEVELS).toEqual({ read: 'read', admin: 'admin' });
   });
 
   describe('doUpdateInviteUser', () => {

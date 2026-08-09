@@ -22,6 +22,7 @@ describe('MyTopicsComponent', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers();
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [
@@ -85,12 +86,16 @@ describe('MyTopicsComponent', () => {
     const comp = makeComp();
     comp.onSearch('angular');
     expect(comp.searchValue()).toBe('angular');
+    vi.advanceTimersByTime(300);
+    TestBed.flushEffects();
     expect(mockService.setParam).toHaveBeenCalledWith('search', 'angular');
   });
 
   it('onSearch with empty string passes null', () => {
     const comp = makeComp();
     comp.onSearch('');
+    vi.advanceTimersByTime(300);
+    TestBed.flushEffects();
     expect(mockService.setParam).toHaveBeenCalledWith('search', null);
   });
 

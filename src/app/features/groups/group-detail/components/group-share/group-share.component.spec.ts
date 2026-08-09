@@ -78,7 +78,7 @@ describe('GroupShareComponent', () => {
   });
 
   it('LEVELS comes from memberUserService', () => {
-    expect(component.LEVELS).toEqual(['read', 'admin']);
+    expect(component.LEVELS).toEqual({ read: 'read', admin: 'admin' });
   });
 
   describe('generateTokenJoin', () => {

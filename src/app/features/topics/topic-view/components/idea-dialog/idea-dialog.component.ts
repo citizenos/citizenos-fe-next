@@ -2,7 +2,7 @@ import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } 
 import { DatePipe, AsyncPipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule, Router } from '@angular/router';
-import { take, Observable, map, of, BehaviorSubject } from 'rxjs';
+import { take, Observable, map, of, BehaviorSubject, shareReplay } from 'rxjs';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -117,10 +117,22 @@ export class IdeaDialogComponent implements OnInit {
       ideaId: idea.id
     }).pipe(
       map(res => {
-        this.replyCount.set(res.count);
         return this.buildReplyTree(res.rows);
-      })
+      }),
+      shareReplay(1)
     );
+
+    // Eagerly fetch to get the replyCount for the toggle button
+    this.replies$.pipe(take(1)).subscribe();
+
+    this.ideationService.getIdeaComments({
+      topicId: this.topic().id,
+      ideationId: this.ideation().id,
+      ideaId: idea.id,
+      limit: 1 // only need count
+    }).pipe(take(1)).subscribe(res => {
+      this.replyCount.set(res.count);
+    });
   }
 
   private loadIdeationIdeas() {

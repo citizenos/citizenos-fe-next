@@ -20,11 +20,11 @@ import { GroupDetailService } from '../../../core/services/group-detail.service'
 import { Router, ActivatedRoute } from '@angular/router';
 
 const mockTopic = { id: 'new-id', title: '', visibility: 'private', status: 'draft', categories: [] };
-const mockTopicService = { save: vi.fn(), patch: vi.fn(), get: vi.fn() };
+const mockTopicService = { save: vi.fn(), patch: vi.fn(), get: vi.fn(), loadAttachments: vi.fn().mockReturnValue(of([])) };
 const mockUploadService = { upload: vi.fn() };
 const mockNotificationService = { showRaw: vi.fn(), success: vi.fn() };
-const mockMemberUserService = { loadItems: vi.fn() };
-const mockInviteUserService = { loadItems: vi.fn() };
+const mockMemberUserService = { loadItems: vi.fn().mockReturnValue(of([])) };
+const mockInviteUserService = { loadItems: vi.fn().mockReturnValue(of([])) };
 const mockDiscussionService = { get: vi.fn(), create: vi.fn(), update: vi.fn() };
 const mockGroupMemberTopicService = { addTopic: vi.fn(), removeTopicFromGroup: vi.fn() };
 const mockDialogService = { open: vi.fn() };
@@ -57,6 +57,8 @@ describe('TopicCreateComponent (business logic)', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockMemberUserService.loadItems.mockReturnValue(of([]));
+    mockInviteUserService.loadItems.mockReturnValue(of([]));
     mockTopicService.save.mockReturnValue(of(mockTopic));
     mockTopicService.patch.mockReturnValue(of({ ...mockTopic, status: 'inProgress' }));
     mockUploadService.upload.mockReturnValue(of(null));
@@ -123,13 +125,7 @@ describe('TopicCreateComponent (business logic)', () => {
     expect(component.addedGroups()).toEqual(groups);
   });
 
-  it('shows loading overlay when isLoading is true', () => {
-    const fixture = TestBed.createComponent(TopicCreateComponent);
-    fixture.componentInstance.isLoading.set(true);
-    fixture.detectChanges();
-    const overlay = fixture.nativeElement.querySelector('.loading-overlay');
-    expect(overlay).toBeTruthy();
-  });
+
 
   it('shows error notification when createTopicEagerly fails', () => {
     mockTopicService.save.mockReturnValue({

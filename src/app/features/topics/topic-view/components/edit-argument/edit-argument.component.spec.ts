@@ -25,8 +25,13 @@ const MOCK_ARG_SERVICE = {
   ARGUMENT_TYPES: { pro: 'pro', con: 'con', poi: 'poi', reply: 'reply' },
   ARGUMENT_SUBJECT_MAXLENGTH: 128,
   ARGUMENT_TYPES_MAXLENGTH: { pro: 2048, con: 2048, poi: 2048, reply: 2048 },
-  update: vi.fn().mockReturnValue(of({}))
+  update: vi.fn().mockReturnValue(of({})),
+  reload: vi.fn()
 };
+
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
 
 describe('EditArgumentComponent', () => {
   let component: EditArgumentComponent;
@@ -37,10 +42,6 @@ describe('EditArgumentComponent', () => {
     await TestBed.configureTestingModule({
       imports: [EditArgumentComponent, TranslateModule.forRoot()],
       providers: [{ provide: TopicArgumentService, useValue: MOCK_ARG_SERVICE }]
-    })
-    .overrideComponent(EditArgumentComponent, {
-      set: { imports: [FormsModule, UpperCasePipe, TranslateModule, MockInputComponent,
-          MockIconComponent] }
     })
     .compileComponents();
 
@@ -86,7 +87,7 @@ describe('EditArgumentComponent', () => {
     component.editSubject.set('New subject');
     component.updateArgument();
     expect(MOCK_ARG_SERVICE.update).toHaveBeenCalledWith(expect.objectContaining({
-      id: 'arg1',
+      commentId: 'arg1',
       topicId: 'topic1',
       discussionId: 'disc1',
       subject: 'New subject'
@@ -103,7 +104,7 @@ describe('EditArgumentComponent', () => {
     component.showEdit.subscribe(spy);
     component.editSubject.set('Changed');
     component.updateArgument();
-    expect(spy).toHaveBeenCalledWith(null);
+    expect(spy).toHaveBeenCalledWith(false);
   });
 
   it('should emit false and reset signals on argumentEditMode', () => {

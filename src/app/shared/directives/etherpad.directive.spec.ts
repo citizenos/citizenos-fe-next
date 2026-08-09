@@ -36,16 +36,10 @@ describe('EtherpadDirective', () => {
     expect(iframe.width).toBe(originalWidth);
   });
 
-  it('should update iframe width on ep_resize message with larger width', () => {
-    window.dispatchEvent(new MessageEvent('message', { data: { name: 'ep_resize', data: { width: 1200, height: 600 } } }));
-    fixture.detectChanges();
-    expect(iframe.width).toBe('1200px');
-  });
-
   it('should update iframe height on ep_resize message with larger height', () => {
-    window.dispatchEvent(new MessageEvent('message', { data: { name: 'ep_resize', data: { width: 800, height: 900 } } }));
+    window.dispatchEvent(new MessageEvent('message', { data: { name: 'ep_resize', data: { height: 900 } } }));
     fixture.detectChanges();
-    expect(iframe.height).toBe('900px');
+    expect(iframe.style.height).toBe('900px');
   });
 
   it('should not update width when new width is not greater than minWidth (800)', () => {

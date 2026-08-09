@@ -11,6 +11,9 @@ import { Component, Input } from '@angular/core';
 @Component({ selector: 'cos-initials', standalone: true, template: '' })
 class MockInitialsComponent { @Input() name = ''; }
 
+@Component({ selector: 'cos-notifications', standalone: true, template: '' })
+class MockNotificationComponent { }
+
 @Component({ selector: 'cos-pagination', standalone: true, template: '' })
 class MockPaginationComponent {
   @Input() totalPages = 0;
@@ -42,7 +45,7 @@ describe('ArgumentReactionsComponent', () => {
     })
     .overrideComponent(ArgumentReactionsComponent, {
       set: { imports: [TranslateModule, MockInitialsComponent, MockPaginationComponent,
-          MockIconComponent] }
+          MockIconComponent, MockNotificationComponent] }
     })
     .compileComponents();
 

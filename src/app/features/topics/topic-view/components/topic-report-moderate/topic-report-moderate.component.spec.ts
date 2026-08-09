@@ -64,7 +64,7 @@ describe('TopicReportModerateComponent', () => {
   it('should create', () => expect(component).toBeTruthy());
 
   it('should expose report types from service', () => {
-    expect(component.reportTypes).toEqual(['spam', 'inappropriate']);
+    expect(component.reportTypes).toEqual(Object.keys(mockTopicReportService.TYPES as Record<string, string>));
   });
 
   it('should have invalid form when text is empty', () => {

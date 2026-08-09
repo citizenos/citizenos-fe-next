@@ -294,7 +294,7 @@ export class MyTopicsComponent {
     if (f['category']) this.topicService.setParam('categories', [f['category']]);
     if (f['country']) this.topicService.setParam('country', f['country']);
     if (f['language']) this.topicService.setParam('language', f['language']);
-    if (this.debouncedSearch.value()) this.topicService.setParam('search', this.debouncedSearch.value());
+    this.topicService.setParam('search', this.debouncedSearch.value() || null);
   }
 
   onSearch(value: string) {

@@ -21,7 +21,12 @@ describe('IconComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render SVG content from registry', () => {
+  it('should render SVG content from registry', async () => {
+    await new Promise<void>(resolve => {
+      TestBed.inject(IconRegistryService).isLoaded.subscribe(loaded => {
+        if (loaded) resolve();
+      });
+    });
     component.name.set('smart-id');
     fixture.detectChanges();
     

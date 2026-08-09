@@ -65,7 +65,7 @@ describe('TopicFollowUpCreateDialogComponent', () => {
 
   it('has a cancel link', () => {
     const fixture = createFixture();
-    const link = fixture.nativeElement.querySelector('.dialog_footer a');
+    const link = fixture.nativeElement.querySelector('.dialog_footer .btn_link');
     expect(link).toBeTruthy();
   });
 

@@ -46,6 +46,7 @@ describe('PostArgumentFormComponent (class)', () => {
     mockArgumentService.save.mockReturnValue(of({}));
 
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: TopicArgumentService, useValue: mockArgumentService },
         { provide: NotificationService, useValue: mockNotification },

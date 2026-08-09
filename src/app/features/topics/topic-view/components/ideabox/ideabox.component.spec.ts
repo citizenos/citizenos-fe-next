@@ -35,7 +35,10 @@ const mockTopicService = {
   canEdit: vi.fn().mockReturnValue(true),
   STATUSES: { draft: 'draft', ideation: 'ideation', inProgress: 'inProgress' },
 };
-const mockUserStore = { user: vi.fn().mockReturnValue({ id: 'u1', name: 'Alice' }) };
+const mockUserStore = { 
+  user: vi.fn().mockReturnValue({ id: 'u1', name: 'Alice' }),
+  isAuthenticated: vi.fn().mockReturnValue(true)
+};
 const mockDialogService = { open: vi.fn().mockReturnValue({ afterClosed: () => of(true) }) };
 
 describe('IdeaboxComponent', () => {

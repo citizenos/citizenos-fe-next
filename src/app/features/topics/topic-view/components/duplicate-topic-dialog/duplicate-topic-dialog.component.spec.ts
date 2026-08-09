@@ -41,18 +41,18 @@ describe('DuplicateTopicDialogComponent', () => {
   });
 
   it('should render the heading', () => {
-    const heading = fixture.nativeElement.querySelector('[translate="COMPONENTS.DUPLICATE_TOPIC.HEADING"]');
+    const heading = fixture.nativeElement.querySelector('.title');
     expect(heading).toBeTruthy();
   });
 
   it('confirm button should close dialog with true', () => {
-    const btn = fixture.nativeElement.querySelector('button[translate="COMPONENTS.DUPLICATE_TOPIC.BTN_SUBMIT"]') as HTMLElement;
+    const btn = fixture.nativeElement.querySelector('.btn_big_submit') as HTMLElement;
     btn.click();
     expect(mockDialogRef.close).toHaveBeenCalledWith(true);
   });
 
   it('cancel link should close dialog', () => {
-    const cancel = fixture.nativeElement.querySelector('a[translate="COMPONENTS.DUPLICATE_TOPIC.BTN_CANCEL"]') as HTMLElement;
+    const cancel = fixture.nativeElement.querySelector('.btn_link') as HTMLElement;
     cancel.click();
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
