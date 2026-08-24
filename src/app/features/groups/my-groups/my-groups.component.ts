@@ -4,6 +4,7 @@ import {
   inject,
   signal,
   computed,
+  HostListener
 } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserGroupService } from '../../../core/services/user-group.service';
@@ -46,7 +47,6 @@ import { SeoService } from '../../../core/services/seo.service';
 
       <div id="create_menu_wrap" [class.hidden]="!showCreate()">
         <cos-create-menu (closeMenu)="showCreate.set(false)"></cos-create-menu>
-        <div id="close_create" (click)="showCreate.set(false)" (keydown.enter)="showCreate.set(false)" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
       </div>
 
       <app-list-filter-toolbar
@@ -80,7 +80,7 @@ import { SeoService } from '../../../core/services/seo.service';
             <div class="no_groups_heading">{{ 'VIEWS.MY_GROUPS.HAVENT_ENGAGED_GROUPS_HEADING' | translate }}</div>
             <div class="no_groups_desc">{{ 'VIEWS.MY_GROUPS.HAVENT_ENGAGED_GROUPS_DESCRIPTION' | translate }}</div>
             <div class="no_groups_actions">
-              <button type="button" class="btn_medium_submit" (click)="toggleCreate()">
+              <button type="button" id="my_groups_create_btn" class="btn_medium_submit" (click)="toggleCreate()">
                 <cos-icon name="plus"></cos-icon>
                 <span>{{ 'VIEWS.MY_GROUPS.HAVENT_ENGAGED_BTN_CREATE' | translate }}</span>
               </button>
@@ -307,5 +307,22 @@ export class MyGroupsComponent {
 
   toggleCreate() {
     this.showCreate.update(v => !v);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.showCreate()) {
+      const target = event.target as HTMLElement;
+      if (!target.closest('#create_menu_wrap') && !target.closest('#my_groups_create_btn')) {
+        this.showCreate.set(false);
+      }
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (this.showCreate()) {
+      this.showCreate.set(false);
+    }
   }
 }

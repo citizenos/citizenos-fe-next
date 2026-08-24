@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, PLATFORM_ID, HostListener } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -74,5 +74,22 @@ export class DashboardComponent implements OnInit {
 
   toggleCreate(): void {
     this.showCreate.update(v => !v);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.showCreate()) {
+      const target = event.target as HTMLElement;
+      if (!target.closest('#create_menu_wrap') && !target.closest('#dashboard_create_btn')) {
+        this.showCreate.set(false);
+      }
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (this.showCreate()) {
+      this.showCreate.set(false);
+    }
   }
 }

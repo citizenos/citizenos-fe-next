@@ -77,10 +77,10 @@ import { languages } from '../../../core/constants/all-languages';
             <div class="no_topics_heading" translate="VIEWS.MY_TOPICS.HAVENT_ENGAGED_TOPICS_HEADING"></div>
             <div class="no_topics_description" translate="VIEWS.MY_TOPICS.HAVENT_ENGAGED_TOPICS_DESCRIPTION"></div>
             <div class="no_topics_actions">
-              <div class="create_menu_wrapper" cosDropdown>
+              <div class="create_menu_wrapper" cosDropdown #createMenuDropdown="cosDropdown">
                 <cos-button>{{ 'VIEWS.MY_TOPICS.HAVENT_ENGAGED_BTN_CREATE' | translate }}</cos-button>
                 <div class="dropdown_menu">
-                  <cos-create-menu></cos-create-menu>
+                  <cos-create-menu (closeMenu)="createMenuDropdown.close()"></cos-create-menu>
                 </div>
               </div>
               <cos-button variant="light" [routerLink]="['/', translate.currentLang, 'topics']">

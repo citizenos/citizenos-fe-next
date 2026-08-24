@@ -52,10 +52,16 @@ test.describe('Member Management Flow', () => {
     // Wait for the invite dialog to close
     await expect(page.locator('app-topic-invite-dialog')).toBeHidden();
     
+    // Wait for the CDK overlay backdrop from the previous dialog to disappear
+    await page.locator('.cdk-overlay-backdrop').waitFor({ state: 'hidden' });
+    
     // Verify user is in "Invited" list
     const manageLink = page.locator('app-topic-participants-section .manage_link').first();
     await expect(manageLink).toBeVisible();
-    await manageLink.click({ force: true });
+    await manageLink.click();
+    
+    // Explicitly wait for the participants dialog to appear
+    await expect(page.locator('app-topic-participants')).toBeVisible();
     
     await participantsDialogPage.selectTab('invited');
     await expect(participantsDialogPage.inviteRows.filter({ hasText: inviteEmail })).toBeVisible();

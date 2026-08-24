@@ -77,6 +77,8 @@ export default defineConfig({
         'topic-voting.spec.ts',
         'topic-ideation.spec.ts',
         'topic-members.spec.ts',
+        'group-create.spec.ts',
+        'group-detail.spec.ts',
       ],
     },
 

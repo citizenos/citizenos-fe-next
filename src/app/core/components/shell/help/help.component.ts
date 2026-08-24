@@ -9,12 +9,13 @@ import { UiStateService } from '../../../services/ui-state.service';
 import { TourService } from '../../../services/tour.service';
 import { NotificationService } from '../../../services/notification.service';
 import { TermsLinksComponent } from '../../../../shared/components/terms-links/terms-links.component';
+import { InputComponent } from '../../../../shared/components/input/input.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cos-help',
   standalone: true,
-  imports: [TranslateModule, FormsModule, ReactiveFormsModule, TermsLinksComponent],
+  imports: [TranslateModule, FormsModule, ReactiveFormsModule, TermsLinksComponent, InputComponent],
   template: `
     @if (uiState.showHelp() || helptooltip()) {
       <div id="dark_overlay" class="help_overlay" (click)="toggleHelp()" (keydown.enter)="toggleHelp()" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
@@ -65,13 +66,21 @@ import { TermsLinksComponent } from '../../../../shared/components/terms-links/t
             </div>
             <div class="help_form_input_wrap">
               <label for="help_description" class="visually_hidden">{{ 'HELP_WIDGET.PLACEHOLDER_WRITE_YOUR_MESSAGE' | translate }}</label>
-              <textarea id="help_description" formControlName="description"
-                [placeholder]="'HELP_WIDGET.PLACEHOLDER_WRITE_YOUR_MESSAGE' | translate" [maxlength]="2048"
-                rows="5"></textarea>
+              <cos-input [placeholder]="'HELP_WIDGET.PLACEHOLDER_WRITE_YOUR_MESSAGE' | translate"
+                [hasError]="!!(helpForm.controls['description'].errors?.['required'] && helpForm.controls['description'].touched)"
+                [errorMessage]="'HELP_WIDGET.ERROR_INVALID_MESSAEG' | translate">
+                <textarea id="help_description" formControlName="description"
+                  [placeholder]="'HELP_WIDGET.PLACEHOLDER_WRITE_YOUR_MESSAGE' | translate" [maxlength]="2048"
+                  rows="5"></textarea>
+              </cos-input>
               
-              <label for="help_email" class="bold">{{ 'HELP_WIDGET.WANT_A_RESPONCE' | translate }}</label>
-              <input id="help_email" formControlName="email" type="email"
-                placeholder="{{'HELP_WIDGET.PLACEHOLDER_WRITE_YOUR_EMAIL' | translate}}" [maxlength]="254">
+              <div class="bold">{{ 'HELP_WIDGET.WANT_A_RESPONCE' | translate }}</div>
+              <cos-input [placeholder]="'HELP_WIDGET.PLACEHOLDER_WRITE_YOUR_EMAIL' | translate"
+                [hasError]="!!(helpForm.controls['email'].errors?.['email'] && helpForm.controls['email'].touched)"
+                [errorMessage]="'HELP_WIDGET.ERROR_INVALID_EMAIL' | translate">
+                <input id="help_email" formControlName="email" type="email"
+                  placeholder="{{'HELP_WIDGET.PLACEHOLDER_WRITE_YOUR_EMAIL' | translate}}" [maxlength]="254">
+              </cos-input>
               
               <button type="submit" [disabled]="helpForm.invalid"
                 class="btn_big_submit">{{ 'HELP_WIDGET.BTN_SEND' | translate }}</button>
@@ -262,18 +271,6 @@ import { TermsLinksComponent } from '../../../../shared/components/terms-links/t
         button {
           margin-top: 8px;
           width: 100%;
-          padding: 12px;
-          background: var(--color-primary);
-          color: white;
-          border: none;
-          border-radius: 4px;
-          font-weight: 600;
-          cursor: pointer;
-
-          &:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-          }
         }
       }
     }

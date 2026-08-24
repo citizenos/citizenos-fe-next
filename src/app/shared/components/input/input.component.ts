@@ -84,7 +84,7 @@ import { TranslateModule } from '@ngx-translate/core';
       }
     }
 
-    cos-input input, cos-input textarea {
+    cos-input input {
       width: 100%;
       padding: 16px;
       border: none !important;
@@ -96,6 +96,31 @@ import { TranslateModule } from '@ngx-translate/core';
       box-shadow: none !important;
       height: 48px;
       box-sizing: border-box;
+
+      &::placeholder {
+        color: var(--color-text-muted);
+        opacity: 0.7;
+      }
+
+      &.with_value {
+        padding-top: 22px;
+        padding-bottom: 10px;
+      }
+    }
+
+    cos-input textarea {
+      width: 100%;
+      padding: 16px;
+      border: none !important;
+      background: transparent !important;
+      color: var(--color-text);
+      font-family: 'Noto Sans', sans-serif !important;
+      font-size: 14px;
+      outline: none !important;
+      box-shadow: none !important;
+      box-sizing: border-box;
+      resize: vertical;
+      min-height: 48px;
 
       &::placeholder {
         color: var(--color-text-muted);

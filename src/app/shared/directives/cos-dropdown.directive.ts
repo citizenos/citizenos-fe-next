@@ -2,7 +2,8 @@ import { Directive, ElementRef, HostListener, inject, Renderer2, input } from '@
 
 @Directive({
   selector: '[cosDropdown]',
-  standalone: true
+  standalone: true,
+  exportAs: 'cosDropdown'
 })
 export class CosDropdownDirective {
   private el = inject(ElementRef);
@@ -60,5 +61,10 @@ export class CosDropdownDirective {
         }
       }
     }
+  }
+
+  close() {
+    this.renderer.removeClass(this.el.nativeElement, 'dropdown_active');
+    this.renderer.removeClass(this.el.nativeElement, 'active_recent');
   }
 }
