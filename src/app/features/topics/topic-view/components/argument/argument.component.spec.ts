@@ -8,7 +8,6 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { signal } from '@angular/core';
 import { Argument } from '../../../../../core/interfaces/discussion';
 
 const mockArgument: Argument = {

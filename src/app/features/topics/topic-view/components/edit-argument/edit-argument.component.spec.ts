@@ -1,4 +1,3 @@
-import { MockIconComponent } from '../../../../../shared/testing/mocks';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -7,8 +6,6 @@ import { TopicArgumentService } from '../../../../../core/services/topic-argumen
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { Component, Input } from '@angular/core';
-import { UpperCasePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 @Component({ selector: 'cos-input', standalone: true, template: '<ng-content></ng-content>' })
 class MockInputComponent { @Input() placeholder = ''; }
@@ -29,9 +26,6 @@ const MOCK_ARG_SERVICE = {
   reload: vi.fn()
 };
 
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { InputComponent } from '../../../../../shared/components/input/input.component';
-import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
 
 describe('EditArgumentComponent', () => {
   let component: EditArgumentComponent;

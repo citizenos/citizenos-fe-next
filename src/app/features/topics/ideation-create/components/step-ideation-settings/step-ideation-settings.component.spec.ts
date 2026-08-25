@@ -1,7 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { StepIdeationSettingsComponent } from './step-ideation-settings.component';
-import { Ideation } from '../../../../../core/interfaces/ideation';
 import { TranslateModule } from '@ngx-translate/core';
 
 describe('StepIdeationSettingsComponent (business logic)', () => {

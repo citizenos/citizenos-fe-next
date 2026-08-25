@@ -2,7 +2,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TranslateModule } from '@ngx-translate/core';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { TopicDiscussionComponent } from './topic-discussion.component';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicDiscussionService } from '../../../../../core/services/topic-discussion.service';
@@ -11,7 +11,6 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { BehaviorSubject, of } from 'rxjs';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Discussion } from '../../../../../core/interfaces/discussion';
-import { Argument } from '../../../../../core/interfaces/discussion';
 
 const mockTopic: Topic = { id: 'topic-1', discussionId: 'disc-1', status: 'inProgress' } as Topic;
 const mockDiscussion: Discussion = { id: 'disc-1', question: 'What do you think?', deadline: null } as Discussion;

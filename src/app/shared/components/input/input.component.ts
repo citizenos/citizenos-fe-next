@@ -54,15 +54,23 @@ import { TranslateModule } from '@ngx-translate/core';
       position: relative;
       background: var(--color-surfaces);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-md, 8px);
       transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
       display: flex;
-      align-items: center;
       min-height: 48px;
 
       &:focus-within {
         border-color: var(--color-border-active);
         box-shadow: 0 0 0 3px var(--color-focus-ring);
+      }
+
+      /* When the wrapper has an input, align center.
+         When it has a textarea, allow it to stretch. */
+      &:has(input) {
+        align-items: center;
+      }
+      &:has(textarea) {
+        align-items: stretch;
       }
     }
 

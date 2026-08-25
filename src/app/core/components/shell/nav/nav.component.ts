@@ -13,14 +13,14 @@ import { SELECTED_LANGUAGES } from '../../../constants/languages';
 import { UiStateService } from '../../../services/ui-state.service';
 import { ConfigStore } from '../../../state/config.store';
 import { TourItemDirective } from '../../../../shared/directives/tour-item.directive';
-
+import { ActivitiesButtonComponent } from '../../../../shared/components/activities-button/activities-button.component';
 
 @Component({
   selector: 'cos-nav',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [RouterLink, RouterLinkActive, TranslateModule, InitialsComponent, LogoComponent, IconComponent, CreateMenuComponent, TourItemDirective],
+  imports: [RouterLink, RouterLinkActive, TranslateModule, InitialsComponent, LogoComponent, IconComponent, CreateMenuComponent, TourItemDirective, ActivitiesButtonComponent],
   template: `
     <!-- Mobile top bar -->
     <div class="nav_mobile">
@@ -91,6 +91,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
             <cos-icon name="public-groups"></cos-icon>
           </a>
+          <cos-activities-button></cos-activities-button>
         </div>
         <div id="mobile_nav" [class.hidden]="showCreateMenu()">
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
@@ -109,6 +110,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_MY_GROUPS' | translate">
             <cos-icon name="groups"></cos-icon>
           </a>
+          <cos-activities-button></cos-activities-button>
         </div>
         @defer (when showCreateMenu()) {
           @if (showCreateMenu()) {
@@ -139,8 +141,8 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
         <div class="nav_scroll">
           <!-- Create menu -->
           @if (userStore.isAuthenticated()) {
-            <div class="nav_create_wrap">
-              <button type="button" class="nav_create_btn" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true"
+            <div class="big_button_wrap">
+              <button type="button" id="create_button" class="btn_big_submit" [class.active]="showCreateMenu()" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true"
                 [cosTourItem]="{tourid: 'dashboard', index: 1, position: 'right'}">
                 <cos-icon name="plus" [size]="24"></cos-icon>
                 <span>{{ 'DEFAULT.NAV.BTN_CREATE' | translate }}</span>
@@ -304,7 +306,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
             <div class="social_links">
               <a class="footer_icon_wrap" href="https://www.facebook.com/citizenos.web" target="_blank" rel="noopener" aria-label="Facebook">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="16" height="16" rx="8" fill="#2C3B47" />
+                  <rect width="16" height="16" rx="8" fill="#000000" />
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.65037 12V8.35076H9.93695L10.1297 6.92848H8.65037V6.0206C8.65037 5.60888 8.77061 5.32833 9.39072 5.32833L10.1818 5.32807V4.05596C10.0448 4.03876 9.5754 4 9.02917 4C7.88872 4 7.10793 4.66275 7.10793 5.87994V6.92848H5.81812V8.35076H7.10793V12"
                     fill="white" />
@@ -312,7 +314,7 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
               </a>
               <a class="footer_icon_wrap" href="https://www.instagram.com/citizen_os_foundation/" target="_blank" rel="noopener" aria-label="Instagram">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="16" height="16" rx="8" fill="#2C3B47" />
+                  <rect width="16" height="16" rx="8" fill="#000000" />
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M7.99873 5.94778C6.86465 5.94778 5.94531 6.86712 5.94531 8.0012C5.94531 9.13526 6.86465 10.0546 7.99873 10.0546C9.13279 10.0546 10.0521 9.13526 10.0521 8.0012C10.0521 6.86712 9.13279 5.94778 7.99873 5.94778ZM7.99873 9.3341C7.26257 9.3341 6.6658 8.73734 6.6658 8.0012C6.6658 7.26504 7.26257 6.66828 7.99873 6.66828C8.73487 6.66828 9.33163 7.26504 9.33163 8.0012C9.33163 8.73734 8.73487 9.3341 7.99873 9.3341Z"
                     fill="white" />
@@ -324,11 +326,11 @@ import { TourItemDirective } from '../../../../shared/directives/tour-item.direc
                     fill="white" />
                 </svg>
               </a>
-              <a class="footer_icon_wrap" href="https://twitter.com/Citizen_OS" target="_blank" rel="noopener" aria-label="X (Twitter)">
+              <a class="footer_icon_wrap" href="https://twitter.com/Citizen_OS" target="_blank" rel="noopener" aria-label="Twitter">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="16" height="16" rx="8" fill="#2C3B47" />
+                  <rect width="16" height="16" rx="8" fill="#000000" />
                   <path
-                    d="M10.3005 4.5H11.5272L8.84717 7.46513L12 11.5H9.53136L7.59783 9.05287L5.38544 11.5H4.15798L7.02452 8.32846L4 4.5H6.53131L8.27905 6.73677L10.3005 4.5ZM9.86993 10.7892H10.5497L6.16196 5.17344H5.43794L9.86993 10.7892Z"
+                    d="M10.3005 4.5H11.5272L8.84717 7.46513L12 11.5H9.53136L7.59783 9.05287L5.38544 11.5H4.15798L7.02452 8.32846L4 4.5H6.53131L8.27905 6.73677L10.3005 4.5ZM9.86993 10.7892H10.5497L6.16196 5.17344H5.43253L9.86993 10.7892Z"
                     fill="white" />
                 </svg>
               </a>

@@ -1,7 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { StepTopicSettingsComponent } from './step-topic-settings.component';
-import { Topic } from '../../../../../core/interfaces/topic';
 import { UserGroupService } from '../../../../../core/services/user-group.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { signal } from '@angular/core';
