@@ -24,7 +24,7 @@ export interface FilterConfig {
   standalone: true,
   imports: [DropdownComponent, SearchInputComponent, IconComponent, TranslateModule, NgClass, TitleCasePipe],
   template: `
-    <div class="list-filter-toolbar mobile_hidden tablet_hidden" role="toolbar" aria-label="List Filters">
+    <div class="list-filter-toolbar mobile_hidden" role="toolbar" aria-label="List Filters">
       <div class="options_area">
         @for (row of mainRows(); track $index) {
           <div class="options_row">
@@ -92,7 +92,7 @@ export interface FilterConfig {
     </div>
 
     <!-- Mobile specific filters styling matching citizenos-fe -->
-    <div class="mobile_show tablet_show" id="mobile_filters">
+    <div class="mobile_show" id="mobile_filters">
       <div class="dropdown mobile_filters_selection" [ngClass]="{'dropdown_active': mobileFiltersOpen()}">
         <div class="selection" tabindex="0" (click)="mobileFiltersOpen.set(!mobileFiltersOpen())" (keydown.enter)="mobileFiltersOpen.set(!mobileFiltersOpen())">
           <div class="selected_item">{{ 'COMPONENTS.PUBLIC_TOPICS.LBL_FILTER' | translate | titlecase }}</div>
@@ -241,7 +241,7 @@ export interface FilterConfig {
 
     @media (max-width: 1024px) {
       .toolbar-dropdown, .toolbar-search {
-        min-width: calc(50% - 12px);
+        min-width: 0;
       }
     }
 
@@ -250,7 +250,7 @@ export interface FilterConfig {
       display: none;
       margin-bottom: 24px;
     }
-    @media (max-width: 1023px) {
+    @media (max-width: 560px) {
       .mobile_hidden {
         display: none !important;
       }

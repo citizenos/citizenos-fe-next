@@ -17,21 +17,24 @@ $breakpoint-mobile: 576px;
 
 @media (max-width: $breakpoint-tablet) {
   button.btn_medium_activity {
-    /* Keep the default orange background */
+    /* Style as btn_medium_nav on mobile */
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    padding: 0;
+    padding: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: transparent;
+    color: var(--color-text-muted);
+    border: none;
 
     &:hover, &.active {
-      background: var(--color-info-background);
-      color: var(--color-link);
+      background: var(--color-surface-hover);
+      color: var(--color-primary);
 
       ::ng-deep path {
-        fill: var(--color-link);
+        fill: var(--color-primary);
       }
     }
 
