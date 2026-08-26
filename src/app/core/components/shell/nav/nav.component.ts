@@ -6,6 +6,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CreateMenuComponent } from '../../../../shared/components/create-menu/create-menu.component';
 import { UserStore } from '../../../state/user.store';
 import { DialogService } from '../../../../shared/dialog';
+import { GlobalSearchService } from '../../../services/global-search.service';
 import { InitialsComponent } from '../../../../shared/components/initials/initials.component';
 import { LogoComponent } from '../../../../shared/components/logo/logo.component';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
@@ -146,6 +147,9 @@ import { ActivitiesButtonComponent } from '../../../../shared/components/activit
                 [cosTourItem]="{tourid: 'dashboard', index: 1, position: 'right'}">
                 <cos-icon name="plus" [size]="24"></cos-icon>
                 <span>{{ 'DEFAULT.NAV.BTN_CREATE' | translate }}</span>
+              </button>
+              <button type="button" class="btn_big_submit tablet_show" [class.active]="globalSearch.showSearch()" (click)="toggleGlobalSearch()" [attr.aria-expanded]="globalSearch.showSearch()" aria-haspopup="true">
+                <cos-icon name="search" [size]="24"></cos-icon>
               </button>
               @defer (when showCreateMenu()) {
                 @if (showCreateMenu()) {
@@ -356,6 +360,7 @@ export class NavComponent implements OnInit {
   readonly translate = inject(TranslateService);
   readonly userStore = inject(UserStore);
   readonly uiState = inject(UiStateService);
+  readonly globalSearch = inject(GlobalSearchService);
   private readonly configStore = inject(ConfigStore);
   private readonly dialog = inject(DialogService);
   private readonly router = inject(Router);
@@ -403,6 +408,10 @@ export class NavComponent implements OnInit {
       this.showCreateMenu.set(false);
       this.showProfileDropdown.set(false);
     }
+  }
+
+  toggleGlobalSearch() {
+    this.globalSearch.showSearch.update(v => !v);
   }
 
   closeNav() {

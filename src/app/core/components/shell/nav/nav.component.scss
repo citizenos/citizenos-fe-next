@@ -374,6 +374,21 @@ $mobile-breakpoint: 560px;
     font-weight: 700;
     .icon_wrap { color: var(--color-primary); opacity: 1; }
   }
+
+  @media (max-width: $tablet-breakpoint) {
+    font-size: 16px;
+    gap: 16px;
+    min-height: 40px;
+
+    cos-icon {
+      width: 24px;
+      height: 24px;
+      ::ng-deep svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
 }
 
 .big_button_wrap {
@@ -386,6 +401,17 @@ $mobile-breakpoint: 560px;
   .btn_big_submit_ghost {
     width: 160px;
     justify-content: center;
+  }
+
+  @media (max-width: $tablet-breakpoint) {
+    flex-direction: row;
+    width: 100%;
+    
+    .btn_big_submit,
+    .btn_big_submit_ghost {
+      width: 100%;
+      min-width: auto;
+    }
   }
 }
 
@@ -418,6 +444,19 @@ $mobile-breakpoint: 560px;
       transition: opacity var(--transition-fast);
 
       &:hover { opacity: 0.8; }
+
+      @media (max-width: $tablet-breakpoint) {
+        width: 40px;
+        height: 40px;
+        cos-icon {
+          width: 40px;
+          height: 40px;
+          ::ng-deep svg {
+            width: 40px;
+            height: 40px;
+          }
+        }
+      }
     }
   }
 
@@ -425,6 +464,11 @@ $mobile-breakpoint: 560px;
     font-size: 13px;
     color: var(--color-text-muted);
     opacity: 0.7;
+
+    @media (max-width: $tablet-breakpoint) {
+      font-size: 16px;
+      padding-bottom: 56px;
+    }
   }
 }
 
