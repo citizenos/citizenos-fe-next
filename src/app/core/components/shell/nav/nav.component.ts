@@ -132,11 +132,14 @@ import { ActivitiesButtonComponent } from '../../../../shared/components/activit
     <div class="nav_wrap" [class.nav_is_open]="showNav()" [cosTourItem]="{tourid: 'dashboard', index: 2, position: 'right'}">
       <nav class="nav">
 
-        <!-- Desktop logo -->
-        <div class="logo_wrap desktop_logo">
+        <!-- Logo and Close Button (Tablet/Mobile) -->
+        <div class="logo_wrap sidebar_header">
           <a routerLink="/">
             <cos-logo />
           </a>
+          <button type="button" class="btn_medium_close icon tablet_show" (click)="closeNav()" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+            <cos-icon name="nav-close" [size]="24"></cos-icon>
+          </button>
         </div>
 
         <div class="nav_scroll">
