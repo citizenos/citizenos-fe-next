@@ -146,14 +146,16 @@ import { ActivitiesButtonComponent } from '../../../../shared/components/activit
           <!-- Create menu -->
           @if (userStore.isAuthenticated()) {
             <div class="big_button_wrap">
-              <button type="button" id="create_button" class="btn_big_submit" [class.active]="showCreateMenu()" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true"
-                [cosTourItem]="{tourid: 'dashboard', index: 1, position: 'right'}">
-                <cos-icon name="plus" [size]="24"></cos-icon>
-                <span>{{ 'DEFAULT.NAV.BTN_CREATE' | translate }}</span>
-              </button>
-              <button type="button" class="btn_big_submit tablet_show" [class.active]="globalSearch.showSearch()" (click)="toggleGlobalSearch()" [attr.aria-expanded]="globalSearch.showSearch()" aria-haspopup="true">
-                <cos-icon name="search" [size]="24"></cos-icon>
-              </button>
+              <div class="create_search_wrap">
+                <button type="button" id="create_button" class="btn_big_submit" [class.active]="showCreateMenu()" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true"
+                  [cosTourItem]="{tourid: 'dashboard', index: 1, position: 'right'}">
+                  <cos-icon name="plus" [size]="24"></cos-icon>
+                  <span>{{ 'DEFAULT.NAV.BTN_CREATE' | translate }}</span>
+                </button>
+                <button type="button" class="btn_big_submit tablet_show search_btn" [class.active]="globalSearch.showSearch()" (click)="toggleGlobalSearch()" [attr.aria-expanded]="globalSearch.showSearch()" aria-haspopup="true">
+                  <cos-icon name="search" [size]="24"></cos-icon>
+                </button>
+              </div>
               @defer (when showCreateMenu()) {
                 @if (showCreateMenu()) {
                   <div class="nav_create_menu">
