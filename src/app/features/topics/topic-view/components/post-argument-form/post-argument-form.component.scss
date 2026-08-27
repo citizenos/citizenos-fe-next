@@ -248,9 +248,15 @@
     }
   }
 
+  
+  .radio_box:hover input ~ .radio {
+    background-color: var(--input-checkbox-background-default);
+    border-color: var(--input-checkbox-border-default);
+  }
+
   .radio_box input:checked ~ .radio {
-    background-color: var(--color-primary);
-    border-color: var(--color-primary);
+    background-color: var(--input-checkbox-background-default);
+    border-color: var(--input-checkbox-border-default);
 
     &::after {
       display: block;
