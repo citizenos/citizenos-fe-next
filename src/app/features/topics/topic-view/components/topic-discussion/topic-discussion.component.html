@@ -133,13 +133,13 @@
           <a class="filter_option" (click)="activeMobileFilter.set('argumentType')" (keydown.enter)="activeMobileFilter.set('argumentType')" tabindex="0">
             <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE' | translate }}</span>
             <span class="bold">
-              {{ getActiveTypeFilterText() | translate | uppercase }}
+              {{ getActiveTypeFilterText() | uppercase }}
             </span>
           </a>
           <a class="filter_option" (click)="activeMobileFilter.set('sortOrder')" (keydown.enter)="activeMobileFilter.set('sortOrder')" tabindex="0">
             <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ORDER_BY' | translate }}</span>
             <span class="bold">
-              {{ getActiveOrderFilterText() | translate | uppercase }}
+              {{ getActiveOrderFilterText() | uppercase }}
             </span>
           </a>
         </div>
@@ -199,7 +199,7 @@
     <div class="arguments_filters mobile_hidden tablet_hidden">
       <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE' | translate" class="dropdown_input">
         <div selection>
-          <span>{{ getActiveTypeFilterText() | translate | uppercase }}</span>
+          <span>{{ getActiveTypeFilterText() | uppercase }}</span>
         </div>
         <div options>
           @for (type of argumentTypes; track type.value) {
@@ -216,7 +216,7 @@
 
       <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ORDER_BY' | translate" class="dropdown_input">
         <div selection>
-          <span>{{ getActiveOrderFilterText() | translate | uppercase }}</span>
+          <span>{{ getActiveOrderFilterText() | uppercase }}</span>
         </div>
         <div options>
           @for (option of orderByOptions; track option.value) {

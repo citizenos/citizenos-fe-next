@@ -162,17 +162,17 @@ export class TopicDiscussionComponent {
   }
 
   getActiveTypeFilterText() {
-    if (this.selectedTypes().length === 3 || this.selectedTypes().length === 0) return 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ALL';
-    return this.selectedTypes().map(t => this.argumentTypes.find(at => at.value === t)?.title).join(', ');
+    if (this.selectedTypes().length === 3 || this.selectedTypes().length === 0) return this.translate.instant('COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE_ALL');
+    return this.selectedTypes().map(t => this.translate.instant(this.argumentTypes.find(at => at.value === t)?.title || '')).join(', ');
+  }
+
+  getActiveOrderFilterText() {
+    return this.translate.instant(this.orderByOptions.find(o => o.value === this.selectedOrder())?.title || '');
   }
 
   hasActiveFilters = computed(() => {
     return this.selectedTypes().length !== 3 || this.selectedOrder() !== 'popularity';
   });
-
-  getActiveOrderFilterText() {
-    return this.orderByOptions.find(o => o.value === this.selectedOrder())?.title || '';
-  }
 
   toggleTypeFilter(type: string) {
     const current = this.selectedTypes();
