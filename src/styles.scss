@@ -855,3 +855,99 @@ label:has(input:focus-visible) .radio {
   box-shadow: 0px 8px 20px 0px rgba(220, 231, 240, 0.3),
     0px 12px 16px 0px rgba(50, 85, 112, 0.1);
 }
+.EasyMDEContainer {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  position: relative;
+
+  .editor-statusbar {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    font-size: 12px;
+    line-height: 16px;
+
+    .charCounter {
+      font-size: 12px;
+      line-height: 16px;
+      color: #727c84;
+    }
+  }
+  @include mixins.mobile {
+    .editor-statusbar {
+      display: none;
+    }
+
+    .CodeMirror-scroll {
+      max-height: 250px;
+    }
+  }
+  .editor-preview {
+    background: #fff;
+  }
+  .editor-toolbar {
+    align-items: center;
+    width: 100%;
+    border: none;
+    background: #f9fbfd;
+
+    &:before {
+      margin-bottom: 0;
+    }
+
+    &:after {
+      margin-top: 0;
+    }
+
+    .tab-action {
+      @include mixins.mobile {
+        width: 50% !important;
+      }
+    }
+    .md-right {
+      margin-top: 12px;
+      float: right;
+      @include mixins.mobile {
+        float: none;
+      }
+    }
+    .separator {
+      margin-top: 16px;
+      float: right;
+      @include mixins.mobile {
+        float: none;
+      }
+    }
+    .write,
+    .preview {
+      width: auto;
+      font-weight: bold;
+      padding: 16px;
+      height: 100%;
+      margin-bottom: -1px;
+      margin-top: -1px;
+    }
+
+    .no-disable {
+      border: none;
+    }
+    .write.tab-active {
+      border-right: 1px solid var(--color-border);
+      border-left: 1px solid var(--color-border);
+      border-radius: 8px 8px 0 0;
+      background-color: #fff;
+      border-bottom: 1px solid #fff;
+    }
+    .preview.active {
+      border-right: 1px solid var(--color-border);
+      border-left: 1px solid var(--color-border);
+      border-radius: 8px 8px 0 0;
+      background-color: #fff;
+    }
+  }
+  .CodeMirror {
+    height: 150px;
+    border: none;
+  }
+}
