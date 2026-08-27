@@ -238,8 +238,8 @@
             }
 
             @if (!ideas().length && !filtersSet() && !loading()) {
-                <div class="no_feature_yet">
-                    <cos-icon name="idea" [size]="96" />
+                <cos-no-feature-yet>
+                    
                     <div class="description_heading">{{ 'COMPONENTS.TOPIC_IDEATION.NO_IDEAS_HEADING' | translate }}</div>
                     <div class="button">
                         <button type="button" class="btn_medium_submit" (click)="addIdea()" [disabled]="hasIdeationEnded()">
@@ -247,7 +247,7 @@
                             <span>{{ 'COMPONENTS.TOPIC_IDEATION.NO_IDEAS_BTN_ADD' | translate }}</span>
                         </button>
                     </div>
-                </div>
+                </cos-no-feature-yet>
             }
 
             @for (idea of ideas(); track idea.id) {

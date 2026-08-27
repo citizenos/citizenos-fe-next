@@ -510,32 +510,7 @@
   }
 }
 
-.no_feature_yet {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  padding: 48px 0;
 
-  .description_heading {
-    width: 100%;
-    text-align: center;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 32px;
-
-    @include mixins.mobile {
-      font-size: 18px;
-      line-height: 24px;
-    }
-  }
-
-  .button {
-      margin-top: 8px;
-  }
-}
 
 .line_separator {
   height: 1px;

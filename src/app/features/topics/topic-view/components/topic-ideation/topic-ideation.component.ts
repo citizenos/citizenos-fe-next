@@ -1,3 +1,4 @@
+import { NoFeatureYetComponent } from '@shared/components/no-feature-yet/no-feature-yet.component';
 import { Component, input, inject, signal, computed, ChangeDetectionStrategy, PLATFORM_ID, HostListener, effect } from '@angular/core';
 import { DatePipe, isPlatformBrowser, AsyncPipe } from '@angular/common';
 import { toObservable, rxResource } from '@angular/core/rxjs-interop';
@@ -32,6 +33,7 @@ import { EditIdeationDeadlineComponent } from '../edit-ideation-deadline/edit-id
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    NoFeatureYetComponent,
     DatePipe,
     FormsModule,
     TranslateModule,

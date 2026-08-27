@@ -1,3 +1,4 @@
+import { NoFeatureYetComponent } from '@shared/components/no-feature-yet/no-feature-yet.component';
 import { Component, OnInit, inject, signal, HostListener, ChangeDetectionStrategy, PLATFORM_ID, DestroyRef, computed } from '@angular/core';
 import { rxResource, toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { NgClass, isPlatformBrowser } from '@angular/common';
@@ -39,6 +40,7 @@ import { TopicMemberUser } from '../../../core/services/topic-member-user.servic
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    NoFeatureYetComponent,
     NgClass,
     RouterModule,
     TranslateModule,

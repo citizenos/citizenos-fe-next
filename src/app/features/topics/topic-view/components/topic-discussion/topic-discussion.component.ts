@@ -1,3 +1,4 @@
+import { NoFeatureYetComponent } from '@shared/components/no-feature-yet/no-feature-yet.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import {
   Component, input, signal, inject, ChangeDetectionStrategy, computed, effect, PLATFORM_ID
@@ -32,6 +33,7 @@ import { PaginationComponent } from '../../../../../shared/components/pagination
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    NoFeatureYetComponent,
     DatePipe, UpperCasePipe, TitleCasePipe, TranslateModule,
     ArgumentComponent, PostArgumentFormComponent,
     PaginationComponent,
