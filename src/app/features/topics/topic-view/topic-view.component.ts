@@ -314,6 +314,11 @@ export class TopicViewComponent implements OnInit {
   }
 
   joinTopic(topic: Topic) {
+    if (!this.userStore.isAuthenticated()) {
+      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], { queryParams: { redirectSuccess: window.location.href } });
+      return;
+    }
+
     this.topicService.joinPublic(topic.id)
       .pipe(take(1))
       .subscribe({
