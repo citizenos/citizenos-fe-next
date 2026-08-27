@@ -38,15 +38,18 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
       this.placeholder() ??
       this.el.nativeElement.attributes.getNamedItem('placeholder')?.value;
 
-    const config: EasyMDE.Options = {
+    const config: any = {
       spellChecker: false,
       toolbar: [
         {
           name: 'write',
           className: 'no-disable tab-active tab-action',
-          action: (editor: EasyMDE) => {
+          text: this.translate.instant('MDEDITOR_TOOLTIP_WRITE'),
+          action: (editor: any) => {
             if (editor.isPreviewActive()) {
-              EasyMDE.togglePreview(editor)
+              EasyMDE.togglePreview(editor);
+              if (editor.toolbarElements?.write) editor.toolbarElements.write.classList.add('tab-active');
+              if (editor.toolbarElements?.preview) editor.toolbarElements.preview.classList.remove('active');
             }
           },
           title: this.translate.instant('MDEDITOR_TOOLTIP_WRITE'),
@@ -54,9 +57,12 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
         {
           name: 'preview',
           className: 'no-disable tab-action',
-          action: (editor: EasyMDE) => {
+          text: this.translate.instant('MDEDITOR_TOOLTIP_PREVIEW'),
+          action: (editor: any) => {
             if (!editor.isPreviewActive()) {
-              EasyMDE.togglePreview(editor)
+              EasyMDE.togglePreview(editor);
+              if (editor.toolbarElements?.write) editor.toolbarElements.write.classList.remove('tab-active');
+              if (editor.toolbarElements?.preview) editor.toolbarElements.preview.classList.add('active');
             }
           },
           title: this.translate.instant('MDEDITOR_TOOLTIP_PREVIEW'),
