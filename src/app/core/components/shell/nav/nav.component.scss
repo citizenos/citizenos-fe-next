@@ -113,6 +113,10 @@ $mobile-breakpoint: 560px;
     box-shadow: -4px 0 16px rgba(44, 59, 71, 0.15);
     pointer-events: auto;
   }
+
+  @media (max-width: $mobile-breakpoint) {
+    width: 100%;
+  }
 }
 
 .logo_wrap.sidebar_header {
@@ -166,6 +170,12 @@ $mobile-breakpoint: 560px;
   & > * {
     width: 160px;
     margin: 0 auto;
+
+    @media (max-width: $tablet-breakpoint) {
+      width: 100%;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
   }
 }
 
@@ -204,9 +214,11 @@ $mobile-breakpoint: 560px;
   
   .btn_big_submit,
   .btn_big_submit_ghost {
+    width: 160px;
     min-width: 160px;
     padding: 2px 8px;
     margin: 0 auto;
+    box-sizing: border-box;
 
     span {
       font-weight: 600;
@@ -443,10 +455,6 @@ $mobile-breakpoint: 560px;
     cos-icon {
       width: 24px;
       height: 24px;
-      ::ng-deep svg {
-        width: 24px;
-        height: 24px;
-      }
     }
   }
 }
@@ -480,6 +488,12 @@ $mobile-breakpoint: 560px;
   flex-shrink: 0;
   width: 160px;
   margin: 0 auto;
+
+  @media (max-width: $tablet-breakpoint) {
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
 }
 
 .nav_footer {
@@ -501,20 +515,17 @@ $mobile-breakpoint: 560px;
       align-items: center;
       justify-content: center;
       text-decoration: none;
-      transition: opacity var(--transition-fast);
+      transition: opacity var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
 
       &:hover { opacity: 0.8; }
 
       @media (max-width: $tablet-breakpoint) {
         width: 40px;
         height: 40px;
-        cos-icon {
-          width: 40px;
-          height: 40px;
-          ::ng-deep svg {
-            width: 40px;
-            height: 40px;
-          }
+
+        svg {
+          width: 40px !important;
+          height: 40px !important;
         }
       }
     }
@@ -566,6 +577,13 @@ $mobile-breakpoint: 560px;
   button, .nav_create_btn {
     font-weight: 600;
     width: 100%;
+  }
+
+  .btn_big_submit, .btn_big_submit_ghost {
+    height: 32px;
+    min-height: 32px;
+    max-height: 32px;
+    line-height: 32px;
   }
 }
 

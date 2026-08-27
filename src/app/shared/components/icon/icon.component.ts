@@ -8,11 +8,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
   selector: 'cos-icon',
   standalone: true,
   imports: [],
+  host: {
+    '[style.--icon-size.px]': 'widthAttr()'
+  },
   template: `
     <svg
       [innerHTML]="safeSvgContent()"
-      [attr.width]="widthAttr()"
-      [attr.height]="heightAttr()"
       [attr.viewBox]="viewBox()"
       [style.color]="color()"
       fill="none"
@@ -26,9 +27,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
       align-items: center;
       justify-content: center;
       line-height: 0;
+      width: var(--icon-size, 24px);
+      height: var(--icon-size, 24px);
+      position: relative;
     }
     svg {
       display: block;
+      width: 100%;
+      height: 100%;
     }
   `]
 })

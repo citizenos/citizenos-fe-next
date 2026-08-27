@@ -314,16 +314,16 @@ import { ActivitiesButtonComponent } from '../../../../shared/components/activit
           <div class="nav_footer">
             <div class="social_links">
               <a class="footer_icon_wrap" href="https://www.facebook.com/citizenos.web" target="_blank" rel="noopener" aria-label="Facebook">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="16" height="16" rx="8" fill="#000000" />
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="16" height="16" rx="8" fill="#2C3B47" />
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.65037 12V8.35076H9.93695L10.1297 6.92848H8.65037V6.0206C8.65037 5.60888 8.77061 5.32833 9.39072 5.32833L10.1818 5.32807V4.05596C10.0448 4.03876 9.5754 4 9.02917 4C7.88872 4 7.10793 4.66275 7.10793 5.87994V6.92848H5.81812V8.35076H7.10793V12"
                     fill="white" />
                 </svg>
               </a>
               <a class="footer_icon_wrap" href="https://www.instagram.com/citizen_os_foundation/" target="_blank" rel="noopener" aria-label="Instagram">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="16" height="16" rx="8" fill="#000000" />
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="16" height="16" rx="8" fill="#2C3B47" />
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M7.99873 5.94778C6.86465 5.94778 5.94531 6.86712 5.94531 8.0012C5.94531 9.13526 6.86465 10.0546 7.99873 10.0546C9.13279 10.0546 10.0521 9.13526 10.0521 8.0012C10.0521 6.86712 9.13279 5.94778 7.99873 5.94778ZM7.99873 9.3341C7.26257 9.3341 6.6658 8.73734 6.6658 8.0012C6.6658 7.26504 7.26257 6.66828 7.99873 6.66828C8.73487 6.66828 9.33163 7.26504 9.33163 8.0012C9.33163 8.73734 8.73487 9.3341 7.99873 9.3341Z"
                     fill="white" />
@@ -336,15 +336,15 @@ import { ActivitiesButtonComponent } from '../../../../shared/components/activit
                 </svg>
               </a>
               <a class="footer_icon_wrap" href="https://twitter.com/Citizen_OS" target="_blank" rel="noopener" aria-label="Twitter">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="16" height="16" rx="8" fill="#000000" />
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="16" height="16" rx="8" fill="#2C3B47" />
                   <path
                     d="M10.3005 4.5H11.5272L8.84717 7.46513L12 11.5H9.53136L7.59783 9.05287L5.38544 11.5H4.15798L7.02452 8.32846L4 4.5H6.53131L8.27905 6.73677L10.3005 4.5ZM9.86993 10.7892H10.5497L6.16196 5.17344H5.43253L9.86993 10.7892Z"
                     fill="white" />
                 </svg>
               </a>
               <a class="footer_icon_wrap" href="http://github.com/citizenos" target="_blank" rel="noopener" aria-label="GitHub">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect width="16" height="16" rx="8" fill="#2C3B47" />
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M7.98471 3C5.23242 3 3 5.29466 3 8.1237C3 10.3869 4.43731 12.3044 6.3945 12.9959C6.63914 13.0274 6.73089 12.8702 6.73089 12.7445C6.73089 12.6187 6.73089 12.3044 6.73089 11.8643C5.35474 12.1787 5.04893 11.1728 5.04893 11.1728C4.83486 10.5755 4.49847 10.4184 4.49847 10.4184C4.03976 10.104 4.52905 10.104 4.52905 10.104C5.01835 10.1355 5.29358 10.6384 5.29358 10.6384C5.75229 11.4242 6.45566 11.2042 6.73089 11.0785C6.76147 10.7327 6.91437 10.5127 7.0367 10.3869C5.93578 10.2612 4.7737 9.82112 4.7737 7.8408C4.7737 7.27499 4.95719 6.83492 5.29358 6.45771C5.263 6.36341 5.07951 5.82904 5.35474 5.1375C5.35474 5.1375 5.78287 5.01176 6.73089 5.67187C7.12844 5.54613 7.55657 5.5147 7.98471 5.5147C8.41284 5.5147 8.84098 5.57757 9.23853 5.67187C10.1865 5.01176 10.6147 5.1375 10.6147 5.1375C10.8899 5.82904 10.7064 6.36341 10.6758 6.48915C10.9817 6.83492 11.1957 7.30642 11.1957 7.87223C11.1957 9.85256 10.0336 10.2612 8.93272 10.3869C9.11621 10.5441 9.26911 10.8584 9.26911 11.3299C9.26911 12.0215 9.26911 12.5559 9.26911 12.7445C9.26911 12.8702 9.36086 13.0274 9.6055 12.9959C11.5933 12.3044 13 10.3869 13 8.1237C12.9694 5.29466 10.737 3 7.98471 3Z"

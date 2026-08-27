@@ -1,4 +1,4 @@
-import { NoFeatureYetComponent } from '@shared/components/no-feature-yet/no-feature-yet.component';
+import { NoFeatureYetComponent } from '../../../../../shared/components/no-feature-yet/no-feature-yet.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import {
   Component, input, signal, inject, ChangeDetectionStrategy, computed, effect, PLATFORM_ID

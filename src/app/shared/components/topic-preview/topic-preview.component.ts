@@ -1,4 +1,4 @@
-import { NoFeatureYetComponent } from '@shared/components/no-feature-yet/no-feature-yet.component';
+import { NoFeatureYetComponent } from '../no-feature-yet/no-feature-yet.component';
 import { Component, ChangeDetectionStrategy, input, model, inject, signal, viewChild, ElementRef, afterNextRender } from '@angular/core';
 import { DatePipe, NgClass } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
