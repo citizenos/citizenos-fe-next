@@ -133,13 +133,13 @@
           <a class="filter_option" (click)="activeMobileFilter.set('argumentType')" (keydown.enter)="activeMobileFilter.set('argumentType')" tabindex="0">
             <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE' | translate }}</span>
             <span class="bold">
-              {{ getActiveTypeFilterText() | uppercase }}
+              {{ getActiveTypeFilterText() }}
             </span>
           </a>
           <a class="filter_option" (click)="activeMobileFilter.set('sortOrder')" (keydown.enter)="activeMobileFilter.set('sortOrder')" tabindex="0">
             <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ORDER_BY' | translate }}</span>
             <span class="bold">
-              {{ getActiveOrderFilterText() | uppercase }}
+              {{ getActiveOrderFilterText() }}
             </span>
           </a>
         </div>
@@ -161,7 +161,7 @@
             <div class="options_wrapper">
               @for (option of argumentTypes; track option.value) {
                 <label class="checkbox">
-                  <span>{{ option.title | translate | uppercase }}</span>
+                  <span>{{ option.title | translate }}</span>
                   <input type="checkbox" [checked]="selectedTypes().includes(option.value)" (change)="toggleTypeFilter(option.value)">
                   <span class="checkmark"></span>
                 </label>
@@ -183,7 +183,7 @@
             <div class="options_wrapper">
               @for (option of orderByOptions; track option.value) {
                 <label class="checkbox">
-                  <span>{{ option.title | translate | uppercase }}</span>
+                  <span>{{ option.title | translate }}</span>
                   <input type="radio" name="sortOrder" [checked]="selectedOrder() === option.value" (change)="setOrder(option.value)">
                   <span class="checkmark"></span>
                 </label>
@@ -199,13 +199,13 @@
     <div class="arguments_filters mobile_hidden tablet_hidden">
       <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE' | translate" class="dropdown_input">
         <div selection>
-          <span>{{ getActiveTypeFilterText() | uppercase }}</span>
+          <span>{{ getActiveTypeFilterText() }}</span>
         </div>
         <div options>
           @for (type of argumentTypes; track type.value) {
             <div class="option check">
               <label class="checkbox" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" tabindex="-1">
-                <span>{{ type.title | translate | uppercase }}</span>
+                <span>{{ type.title | translate }}</span>
                 <input type="checkbox" [checked]="selectedTypes().includes(type.value)" (change)="toggleTypeFilter(type.value)">
                 <span class="checkmark"></span>
               </label>
@@ -216,12 +216,12 @@
 
       <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ORDER_BY' | translate" class="dropdown_input">
         <div selection>
-          <span>{{ getActiveOrderFilterText() | uppercase }}</span>
+          <span>{{ getActiveOrderFilterText() }}</span>
         </div>
         <div options>
           @for (option of orderByOptions; track option.value) {
             <div class="option" (click)="setOrder(option.value)" (keydown.enter)="setOrder(option.value)" tabindex="0" role="option" [attr.aria-selected]="selectedOrder() === option.value">
-              {{ option.title | translate | uppercase }}
+              {{ option.title | translate }}
             </div>
           }
         </div>

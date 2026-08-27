@@ -3,7 +3,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import {
   Component, input, signal, inject, ChangeDetectionStrategy, computed, effect, PLATFORM_ID
 } from '@angular/core';
-import { DatePipe, UpperCasePipe, TitleCasePipe, DOCUMENT } from '@angular/common';
+import { DatePipe, TitleCasePipe, DOCUMENT } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { switchMap, of, take, tap, timer } from 'rxjs';
 import { RouterLink, ActivatedRoute } from '@angular/router';
@@ -34,7 +34,7 @@ import { PaginationComponent } from '../../../../../shared/components/pagination
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NoFeatureYetComponent,
-    DatePipe, UpperCasePipe, TitleCasePipe, TranslateModule,
+    DatePipe, TitleCasePipe, TranslateModule,
     ArgumentComponent, PostArgumentFormComponent,
     PaginationComponent,
     DropdownComponent, RouterLink, IconComponent],

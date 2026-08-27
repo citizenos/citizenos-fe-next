@@ -87,7 +87,7 @@ import { IconComponent } from '../icon/icon.component';
       font-size: 14px;
       color: var(--color-text);
       line-height: 20px;
-      font-weight: 600;
+      font-weight: 400;
       padding: 14px 0px 5px;
     }
 
