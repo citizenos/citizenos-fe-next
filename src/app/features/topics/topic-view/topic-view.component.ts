@@ -315,6 +315,10 @@ export class TopicViewComponent implements OnInit {
 
   joinTopic(topic: Topic) {
     if (!this.userStore.isAuthenticated()) {
+      // TODO: (Migration Note)
+      // See ei ole päris vana loogika. Vanas rakenduses avanes nupule vajutades otse "login dialog" aken.
+      // Hetkel on ajutine lahendus suunata kasutaja login lehele redirectSuccess parameetriga.
+      // Tuleb hiljem taastada vana käitumine, kui login dialoog on uues rakenduses implementeeritud.
       this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], { queryParams: { redirectSuccess: window.location.href } });
       return;
     }
