@@ -195,6 +195,10 @@ export class IdeaDialogComponent implements OnInit {
     );
   }
 
+  canReply() {
+    return this.topic().status === this.topicService.STATUSES.ideation && !this.ideation().disableReplies && this.userStore.isAuthenticated();
+  }
+
   canVote() {
     return this.topic().status === this.topicService.STATUSES.ideation;
   }

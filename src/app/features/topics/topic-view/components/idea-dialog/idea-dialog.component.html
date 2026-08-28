@@ -239,7 +239,7 @@
                   </button>
                 }
               }
-              @if (!showReply() && !ideation().disableReplies && userStore.isAuthenticated()) {
+              @if (!showReply() && canReply()) {
                 <button type="button" class="btn_small_submit bold" [disabled]="!!idea().deletedAt" (click)="showReply.set(true)">
                   <span translate="COMPONENTS.IDEA_DIALOG.BTN_REPLY"></span>
                 </button>
@@ -249,7 +249,7 @@
         </div>
 
         <div class="idea_content_replies" [hidden]="showEdit()">
-          @if (showReply() && userStore.isAuthenticated()) {
+          @if (showReply() && canReply()) {
             <div class="replies_header">
               <div class="form_wrap">
                 <app-idea-reply-form
@@ -275,7 +275,9 @@
                       [argument]="reply"
                       [topicId]="topic().id"
                       [ideationId]="ideation().id"
-                      [ideaId]="idea().id" />
+                      [ideaId]="idea().id"
+                      [canReply]="canReply()">
+                    </app-idea-reply>
                   </div>
                 }
               </div>

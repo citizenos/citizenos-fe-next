@@ -132,13 +132,13 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
               </button>
             }
             
-            @if (userStore.isAuthenticated()) {
+            @if (canReply()) {
               <button type="button" class="btn_reply_argument" (click)="showReplyInput.set(!showReplyInput())">
                 {{ 'COMPONENTS.ARGUMENT.BTN_REPLY' | translate }}
               </button>
             }
           </div>
-        } @else if (userStore.isAuthenticated()) {
+        } @else if (canReply()) {
           <div class="footer_right">
             <button type="button" class="btn_reply_argument" (click)="showReplyInput.set(!showReplyInput())">
               {{ 'COMPONENTS.ARGUMENT.BTN_REPLY' | translate }}
@@ -169,7 +169,8 @@ import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropd
               [root]="root() || argument()"
               [topicId]="topicId()"
               [ideationId]="ideationId()"
-              [ideaId]="ideaId()">
+              [ideaId]="ideaId()"
+              [canReply]="canReply()">
             </app-idea-reply>
           </div>
         }
@@ -388,6 +389,7 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
   topicId = model.required<string>();
   ideationId = model.required<string>();
   ideaId = model.required<string>();
+  canReply = input<boolean>(false);
   showReplyInput = signal(false);
   showReplies = signal(false);
 
