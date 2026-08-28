@@ -1,5 +1,9 @@
 @use "mixins";
 
+:host {
+  display: contents;
+}
+
 argument-reply {
   display: contents;
 }

@@ -1,5 +1,9 @@
 @use "mixins";
 
+:host {
+  display: contents;
+}
+
 .reply_wrap {
   background-color: var(--color-surfaces);
   padding: 16px;
