@@ -216,6 +216,10 @@ export class TopicIdeationComponent {
     return this.topicService.canEdit(this.topic());
   }
 
+  canManageFolders() {
+    return this.topicService.canDelete(this.topic()); // admin only
+  }
+
   canEditDeadline() {
     return this.canEdit() && this.topic().status === this.topicService.STATUSES.ideation;
   }

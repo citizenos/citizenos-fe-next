@@ -37,6 +37,7 @@ argument-reply {
     flex-direction: column;
     gap: 16px;
     width: 100%;
+    max-width: 100%;
     border-radius: 8px;
     padding: 16px;
   }
@@ -96,6 +97,7 @@ argument-reply {
     align-self: center;
     width: 100%;
     max-width: 100%;
+    max-width: 100%;
     padding-bottom: 16px;
 
     @include mixins.mobile {
@@ -124,9 +126,11 @@ argument-reply {
 
   &.reply {
     width: 100%;
+    max-width: 100%;
     .argument_content_wrap {
       background-color: var(--color-surfaces);
       width: 100%;
+    max-width: 100%;
     }
     .btn_reply_argument {
       background-color: var(--color-argument-info-medium);
@@ -163,6 +167,7 @@ argument-reply {
 
         .profile_image_filler {
           width: 100%;
+    max-width: 100%;
           background-color: var(--color-surfaces);
           border-radius: 32px;
           display: flex;
@@ -181,6 +186,7 @@ argument-reply {
       .header_left,
       .header_right {
         width: 100%;
+    max-width: 100%;
         justify-content: space-between;
         .separator {
           display: none;
@@ -422,6 +428,7 @@ argument-reply {
 
   input, textarea {
     width: 100%;
+    max-width: 100%;
     padding: 12px;
     border: 1px solid #718DA2;
     border-radius: 8px;
@@ -486,6 +493,7 @@ argument-reply {
       gap: 12px;
       padding: 10px 16px;
       width: 100%;
+    max-width: 100%;
       border: none;
       background: transparent;
       cursor: pointer;

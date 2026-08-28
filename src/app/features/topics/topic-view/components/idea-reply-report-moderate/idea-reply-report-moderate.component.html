@@ -72,8 +72,15 @@
       </div>
     </div>
     <div class="dialog_content no_footer">
+      @if (isSelfModerationInLive) {
+        <div class="dialog_info_wrap">
+          <div class="dialog_info">
+            <div class="delete_info_text bold error_text">{{ 'COMPONENTS.IDEA_REPORT_MODERATE.ERROR_SELF_MODERATION' | translate }}</div>
+          </div>
+        </div>
+      }
       <div class="button_wrap">
-        <button class="btn_big_submit" [disabled]="report.invalid"
+        <button class="btn_big_submit" [disabled]="report.invalid || isSelfModerationInLive"
           (click)="doModerate()">{{ 'COMPONENTS.IDEA_REPLY_REPORT_MODERATE.BTN_SUBMIT' | translate }}</button>
         <button type="button" class="btn_big_plain" dialogClose>{{ 'COMPONENTS.IDEA_REPLY_REPORT_MODERATE.BTN_CANCEL' | translate }}</button>
       </div>

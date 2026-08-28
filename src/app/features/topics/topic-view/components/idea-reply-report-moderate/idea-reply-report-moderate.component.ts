@@ -13,6 +13,8 @@ import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/di
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 
+import { UserStore } from '../../../../../core/state/user.store';
+
 export interface IdeaReplyReportModerateData {
   argument: IdeaComment;
   report: IdeaReport;
@@ -36,6 +38,7 @@ export class IdeaReplyReportModerateComponent {
   private data = inject<IdeaReplyReportModerateData>(DIALOG_DATA);
   protected dialogRef = inject(DialogRef);
   private ideationService = inject(TopicIdeationService);
+  userStore = inject(UserStore);
 
   argument = this.data.argument || this.data.report?.comment;
   topicId = this.data.topicId;
@@ -44,6 +47,10 @@ export class IdeaReplyReportModerateComponent {
   commentId = this.data.commentId;
   reportId = this.data.report?.id ?? this.data.reportId;
   token = this.data.token;
+
+  get isSelfModerationInLive() {
+    return window.location.hostname === 'app.citizenos.com' && this.argument?.author?.id && this.argument.author.id === this.userStore.user()?.id;
+  }
 
   reportTypes = Object.keys(this.ideationService.COMMENT_REPORT_TYPES);
 

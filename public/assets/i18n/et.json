@@ -546,7 +546,8 @@
       "ARE_YOU_SURE": "Kas oled kindel, et soovid selle idee peita? Toimingut ei saa tagasi võtta.",
       "ERROR_TEXT": "@:MSG_ERROR_POST_API_TOPICS_COMMENTS_REPORTS_40000_TEXT",
       "BTN_SUBMIT": "Jah, peida see idee",
-      "BTN_CANCEL": "@:MODALS.TOPIC_ARGUMENT_REPORT_BTN_NO"
+      "BTN_CANCEL": "@:MODALS.TOPIC_ARGUMENT_REPORT_BTN_NO",
+      "ERROR_SELF_MODERATION": "Enda idee modereerimine live-keskkonnas on keelatud."
     },
     "TOPIC_JOIN": {
       "HEADING": "Liitu aruteluga",
@@ -2012,6 +2013,13 @@
     }
   },
   "VIEWS": {
+    "401": {
+      "HEADING_INSUFFICIENT_PERMISSIONS": "Vabandust, sul ei ole õiguseid siia sisenemiseks",
+      "DESCRIPTION_INSUFFICIENT_PERMISSIONS": "Kui sul on kutse gruppi või teemasse, millele ligi proovid pääseda, pead selle esmalt vastu võtma. Palun vaata oma tegevusvoogu või e-posti.",
+      "HEADING_YOU_MAY_RECOVER": "Selle lahendamiseks on kaks võimalust.",
+      "BTN_LOGIN": "Logi sisse",
+      "BTN_REQUEST_ACCESS": "Taotle juurdepääsu"
+    },
     "ACCOUNT": {
       "HEADING": "Profiil",
       "BTN_LOG_OUT": "@:DEFAULT.NAV.LNK_LOG_OUT",
@@ -3199,13 +3207,6 @@
     },
     "VOTE_EDIT": {
       "HEADING": "Muuda hääletuse teemat"
-    },
-    "401": {
-      "HEADING_INSUFFICIENT_PERMISSIONS": "Vabandust, sul ei ole õiguseid siia sisenemiseks",
-      "DESCRIPTION_INSUFFICIENT_PERMISSIONS": "Kui sul on kutse gruppi või teemasse, millele ligi proovid pääseda, pead selle esmalt vastu võtma. Palun vaata oma tegevusvoogu või e-posti.",
-      "HEADING_YOU_MAY_RECOVER": "Selle lahendamiseks on kaks võimalust.",
-      "BTN_LOGIN": "Logi sisse",
-      "BTN_REQUEST_ACCESS": "Taotle juurdepääsu"
     }
   },
   "ACTIVITY_FEED": {

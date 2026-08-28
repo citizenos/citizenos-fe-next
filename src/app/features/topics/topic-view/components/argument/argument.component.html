@@ -67,10 +67,10 @@
           (showDeletedArgument)="showDeletedArgument.set($event)"></app-argument-deleted>
         } @else {
         @if (argument().parent?.id) {
-          <a class="parent_author" (click)="goToParentArgument()" (keydown.enter)="goToParentArgument()" tabindex="0" role="button">
-            <cos-icon name="argument-icon-4-legacy" size="16"></cos-icon>
-            <span>{{ getParentAuthor() }}</span>
-          </a>
+        <a class="parent_author" (click)="goToParentArgument()" (keydown.enter)="goToParentArgument()" tabindex="0"
+          role="button">
+          <span>{{ getParentAuthor() }}</span>
+        </a>
         }
         @if (argument().subject) {
         <div class="argument_subject">{{ argument().subject }}</div>
@@ -78,10 +78,12 @@
         <div class="argument_body" #argumentBody [innerHTML]="argument().text | markdown"></div>
         }
         @if (showEdit()) {
-          <app-edit-argument [argument]="argument()" [topicId]="topicId()" (showEdit)="showEdit.set(!!$event)"></app-edit-argument>
+        <app-edit-argument [argument]="argument()" [topicId]="topicId()"
+          (showEdit)="showEdit.set(!!$event)"></app-edit-argument>
         }
         @if (showEdits() && isEdited()) {
-          <app-argument-edits [argument]="argument()" [topicId]="topicId()" [showEdits]="showEdits()" (showEditsChange)="showEdits.set($event)"></app-argument-edits>
+        <app-argument-edits [argument]="argument()" [topicId]="topicId()" [showEdits]="showEdits()"
+          (showEditsChange)="showEdits.set($event)"></app-argument-edits>
         }
       </div>
 
@@ -91,12 +93,13 @@
             <button type="button" class="btn_vote_argument" (click)="vote(1)"
               [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_UP' | translate">
               @if (votes()?.up?.selected) {
-                <cos-icon name="argument-icon-5-legacy" size="16"></cos-icon>
+              <cos-icon name="argument-icon-5-legacy" size="16"></cos-icon>
               } @else {
-                <cos-icon name="argument-icon-6-legacy" size="16"></cos-icon>
+              <cos-icon name="argument-icon-6-legacy" size="16"></cos-icon>
               }
             </button>
-            <button type="button" class="btn_small_plain count_pro" [class.bold]="votes()?.up?.selected" (click)="showVoters()">
+            <button type="button" class="btn_small_plain count_pro" [class.bold]="votes()?.up?.selected"
+              (click)="showVoters()">
               {{ votes()?.up?.count || 0 }}
             </button>
           </div>
@@ -104,12 +107,13 @@
             <button type="button" class="btn_vote_argument" (click)="vote(-1)"
               [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_DOWN' | translate">
               @if (votes()?.down?.selected) {
-                <cos-icon name="argument-icon-7-legacy" size="16"></cos-icon>
+              <cos-icon name="argument-icon-7-legacy" size="16"></cos-icon>
               } @else {
-                <cos-icon name="argument-icon-8-legacy" size="16"></cos-icon>
+              <cos-icon name="argument-icon-8-legacy" size="16"></cos-icon>
               }
             </button>
-            <button type="button" class="btn_small_plain count_con" [class.bold]="votes()?.down?.selected" (click)="showVoters()">
+            <button type="button" class="btn_small_plain count_con" [class.bold]="votes()?.down?.selected"
+              (click)="showVoters()">
               {{ votes()?.down?.count || 0 }}
             </button>
           </div>
@@ -127,19 +131,20 @@
         </div>
       </div>
     </div>
-  </div>
 
-  @if (showReplyForm()) {
-      <app-argument-reply [argument]="argument()" [topicId]="topicId()" (showReplyChange)="showReplyForm.set($event)"></app-argument-reply>
+    @if (showReplyForm()) {
+    <app-argument-reply [argument]="argument()" [topicId]="topicId()"
+      (showReplyChange)="showReplyForm.set($event)"></app-argument-reply>
     }
 
     @if (showReplies()) {
     <div class="replies_wrap" [class]="argument().type">
-      @for (reply of argument().replies?.rows; track reply.id; let last = $last) {
+      @let iterArray = argument().children || argument().replies?.rows || [];
+      @for (reply of iterArray; track reply.id; let last = $last) {
       <div class="reply_container">
         <div class="reply_referer"></div>
         @if (!last) {
-          <div class="reply_more"></div>
+        <div class="reply_more"></div>
         }
         <cos-argument [argument]="reply" [topicId]="topicId()" [discussionId]="discussionId()"
           [root]="root() || argument()" (deleted)="deleted.emit()"></cos-argument>
@@ -147,49 +152,50 @@
       }
     </div>
     }
+  </div>
 </div>
 
 @if (mobileActions()) {
-  <div class="overlay" (click)="mobileActions.set(false)" (keydown.escape)="mobileActions.set(false)" tabindex="-1"></div>
-  <div class="mobile_actions_wrap mobile_show" [class.show]="mobileActions()">
-    <div class="heading_wrap">
-      <span>{{ 'COMPONENTS.ARGUMENT.LBL_ARGUMENT_ACTIONS' | translate }}</span>
-      <div id="close_mobile" class="mobile_show">
-        <button type="button" class="btn_small_close icon" (click)="mobileActions.set(false)">
-          <cos-icon name="edit-argument-icon-legacy" size="24"></cos-icon>
-        </button>
-      </div>
-    </div>
-    <div class="options button_options">
-      @if (canEdit()) {
-        <button type="button" class="option" (click)="showEdit.set(true); mobileActions.set(false)">
-          <cos-icon name="topic-vote-cast-icon-2-legacy" size="16"></cos-icon>
-          <span>{{ 'COMPONENTS.ARGUMENT.OPTION_EDIT' | translate }}</span>
-        </button>
-        <div class="line_separator"></div>
-      }
-      <button type="button" class="option" (click)="copyLink($event); mobileActions.set(false)">
-        <cos-icon name="argument-icon-2-legacy" size="16"></cos-icon>
-        <span>{{ 'LNK_DIRECT_LINK' | translate }}</span>
+<div class="overlay" (click)="mobileActions.set(false)" (keydown.escape)="mobileActions.set(false)" tabindex="-1"></div>
+<div class="mobile_actions_wrap mobile_show" [class.show]="mobileActions()">
+  <div class="heading_wrap">
+    <span>{{ 'COMPONENTS.ARGUMENT.LBL_ARGUMENT_ACTIONS' | translate }}</span>
+    <div id="close_mobile" class="mobile_show">
+      <button type="button" class="btn_small_close icon" (click)="mobileActions.set(false)">
+        <cos-icon name="edit-argument-icon-legacy" size="24"></cos-icon>
       </button>
-      <div class="line_separator"></div>
-      <button type="button" class="option" (click)="doReport(); mobileActions.set(false)">
-        <cos-icon name="ideabox-icon-8-legacy" size="16"></cos-icon>
-        <span>{{ 'COMPONENTS.ARGUMENT.OPTION_REPORT' | translate }}</span>
-      </button>
-      @if (isEdited()) {
-        <div class="line_separator"></div>
-        <button type="button" class="option" (click)="showEdits.set(true); mobileActions.set(false)">
-          <span>{{ 'VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_VIEW_PREVIOUS_VERSIONS' | translate }}</span>
-        </button>
-      }
-      @if (canEdit()) {
-        <div class="line_separator"></div>
-        <button type="button" class="option error_text" (click)="doDelete(); mobileActions.set(false)">
-          <cos-icon name="ideabox-icon-9-legacy" size="16"></cos-icon>
-          <span>{{ 'COMPONENTS.ARGUMENT.OPTION_DELETE' | translate }}</span>
-        </button>
-      }
     </div>
   </div>
+  <div class="options button_options">
+    @if (canEdit()) {
+    <button type="button" class="option" (click)="showEdit.set(true); mobileActions.set(false)">
+      <cos-icon name="topic-vote-cast-icon-2-legacy" size="16"></cos-icon>
+      <span>{{ 'COMPONENTS.ARGUMENT.OPTION_EDIT' | translate }}</span>
+    </button>
+    <div class="line_separator"></div>
+    }
+    <button type="button" class="option" (click)="copyLink($event); mobileActions.set(false)">
+      <cos-icon name="argument-icon-2-legacy" size="16"></cos-icon>
+      <span>{{ 'LNK_DIRECT_LINK' | translate }}</span>
+    </button>
+    <div class="line_separator"></div>
+    <button type="button" class="option" (click)="doReport(); mobileActions.set(false)">
+      <cos-icon name="ideabox-icon-8-legacy" size="16"></cos-icon>
+      <span>{{ 'COMPONENTS.ARGUMENT.OPTION_REPORT' | translate }}</span>
+    </button>
+    @if (isEdited()) {
+    <div class="line_separator"></div>
+    <button type="button" class="option" (click)="showEdits.set(true); mobileActions.set(false)">
+      <span>{{ 'VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_VIEW_PREVIOUS_VERSIONS' | translate }}</span>
+    </button>
+    }
+    @if (canEdit()) {
+    <div class="line_separator"></div>
+    <button type="button" class="option error_text" (click)="doDelete(); mobileActions.set(false)">
+      <cos-icon name="ideabox-icon-9-legacy" size="16"></cos-icon>
+      <span>{{ 'COMPONENTS.ARGUMENT.OPTION_DELETE' | translate }}</span>
+    </button>
+    }
+  </div>
+</div>
 }

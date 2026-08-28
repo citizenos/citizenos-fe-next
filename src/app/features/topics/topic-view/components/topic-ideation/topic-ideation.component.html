@@ -287,7 +287,7 @@
                 <div class="folder_name cell">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_FOLDER' | translate }}</div>
                 <div class="cell ideas_cell">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_IDEAS' | translate }}</div>
                 <div class="cell date_cell">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_LAST_ACTIVITY' | translate }}</div>
-                @if (canEdit()) {
+                @if (canManageFolders()) {
                     <div class="cell actions_cell">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_ACTIONS' | translate }}</div>
                 }
             </div>
@@ -306,7 +306,7 @@
                     </div>
                     <div class="cell ideas_cell mobile_hidden">{{ folder.ideas?.count }}</div>
                     <div class="cell date_cell mobile_hidden">{{ folder.updatedAt | date:'y-MM-dd HH:mm' }}</div>
-                    @if (canEdit()) {
+                    @if (canManageFolders()) {
                         <div class="cell actions_cell" tabindex="-1" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()">
                             <div class="dropdown button_dropdown" cosDropdown>
                                 <button type="button" class="btn_small_plain icon" trigger>
@@ -328,7 +328,7 @@
                 </div>
             }
 
-            @if (canEdit()) {
+            @if (canManageFolders()) {
                 <div id="add_folder_btn">
                     <button type="button" class="btn_medium_submit" (click)="addFolder()">
                         <cos-icon name="plus" />

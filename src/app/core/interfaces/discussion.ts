@@ -57,6 +57,7 @@ export interface Argument {
   deletedReasonType?: string | null;
   deletedReasonText?: string | null;
   replies?: { count: number; rows: Argument[] };
+  children?: Argument[];
   votes?: { up: { count: number; selected: boolean }; down: { count: number; selected: boolean }; count: number };
   report?: ArgumentReport;
   createdAt?: string;

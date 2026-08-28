@@ -546,7 +546,8 @@
       "ARE_YOU_SURE": "Are you sure you want to hide this idea? You cannot undo this action.",
       "ERROR_TEXT": "@:MSG_ERROR_POST_API_TOPICS_COMMENTS_REPORTS_40000_TEXT",
       "BTN_SUBMIT": "Yes, hide this idea",
-      "BTN_CANCEL": "@:MODALS.TOPIC_ARGUMENT_REPORT_BTN_NO"
+      "BTN_CANCEL": "@:MODALS.TOPIC_ARGUMENT_REPORT_BTN_NO",
+      "ERROR_SELF_MODERATION": "You cannot moderate your own idea in the live environment."
     },
     "TOPIC_JOIN": {
       "HEADING": "Join topic",
@@ -2010,6 +2011,13 @@
     }
   },
   "VIEWS": {
+    "401": {
+      "HEADING_INSUFFICIENT_PERMISSIONS": "Sorry, insufficient permissions for access",
+      "DESCRIPTION_INSUFFICIENT_PERMISSIONS": "If you've received an invite to the topic or group you're trying to access, you need to accept it first. Please check your activity feed or email.",
+      "HEADING_YOU_MAY_RECOVER": "Here are two ways to resolve this:",
+      "BTN_LOGIN": "Log in",
+      "BTN_REQUEST_ACCESS": "Request access"
+    },
     "ACCOUNT": {
       "HEADING": "Profile",
       "BTN_LOG_OUT": "@:DEFAULT.NAV.LNK_LOG_OUT",
@@ -3199,13 +3207,6 @@
     },
     "VOTE_EDIT": {
       "HEADING": "Edit voting topic"
-    },
-    "401": {
-      "HEADING_INSUFFICIENT_PERMISSIONS": "Sorry, insufficient permissions for access",
-      "DESCRIPTION_INSUFFICIENT_PERMISSIONS": "If you've received an invite to the topic or group you're trying to access, you need to accept it first. Please check your activity feed or email.",
-      "HEADING_YOU_MAY_RECOVER": "Here are two ways to resolve this:",
-      "BTN_LOGIN": "Log in",
-      "BTN_REQUEST_ACCESS": "Request access"
     }
   },
   "ACTIVITY_FEED": {

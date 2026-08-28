@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IdeaReport } from '../../../../../core/interfaces/ideation';
 import { Idea } from '../../../../../core/interfaces/idea';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
+import { UserStore } from '../../../../../core/state/user.store';
 import { DIALOG_DATA, DialogCloseDirective, DialogService } from '../../../../../shared/dialog';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
@@ -35,6 +36,7 @@ export class IdeaReportModerateComponent {
   private ideationService = inject(TopicIdeationService);
   private dialog = inject(DialogService);
   private fb = inject(FormBuilder);
+  userStore = inject(UserStore);
 
   idea = this.data.idea || this.data.report?.idea;
   topicId = this.data.topicId;
@@ -42,6 +44,10 @@ export class IdeaReportModerateComponent {
   ideaId = this.data.ideaId;
   reportId = this.data.report?.id;
   token = this.data.token;
+
+  get isSelfModerationInLive() {
+    return window.location.hostname === 'app.citizenos.com' && this.idea?.author?.id && this.idea.author.id === this.userStore.user()?.id;
+  }
 
   reportTypes = Object.keys(this.ideationService.IDEA_REPORT_TYPES);
 
