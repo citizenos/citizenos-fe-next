@@ -127,23 +127,26 @@
         </div>
       </div>
     </div>
+  </div>
 
-    @if (showReplyForm()) {
+  @if (showReplyForm()) {
       <app-argument-reply [argument]="argument()" [topicId]="topicId()" (showReplyChange)="showReplyForm.set($event)"></app-argument-reply>
     }
 
     @if (showReplies()) {
     <div class="replies_wrap" [class]="argument().type">
-      @for (reply of argument().replies?.rows; track reply.id) {
+      @for (reply of argument().replies?.rows; track reply.id; let last = $last) {
       <div class="reply_container">
         <div class="reply_referer"></div>
+        @if (!last) {
+          <div class="reply_more"></div>
+        }
         <cos-argument [argument]="reply" [topicId]="topicId()" [discussionId]="discussionId()"
           [root]="root() || argument()" (deleted)="deleted.emit()"></cos-argument>
       </div>
       }
     </div>
     }
-  </div>
 </div>
 
 @if (mobileActions()) {
