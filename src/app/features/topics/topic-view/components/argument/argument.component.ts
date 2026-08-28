@@ -1,6 +1,6 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import {
-  Component, input, output, signal, inject, ChangeDetectionStrategy,
+  Component, input, model, output, signal, inject, ChangeDetectionStrategy,
   ViewChild, ElementRef, forwardRef, computed, PLATFORM_ID
 } from '@angular/core';
 import { DatePipe, isPlatformBrowser, DOCUMENT } from '@angular/common';
@@ -61,7 +61,7 @@ export class ArgumentComponent {
   userStore = inject(UserStore);
 
   showEdit = signal(false);
-  showReplies = signal(false);
+  showReplies = model(false);
   showReplyForm = signal(false);
   showDeletedArgument = signal(false);
   showEdits = signal(false);

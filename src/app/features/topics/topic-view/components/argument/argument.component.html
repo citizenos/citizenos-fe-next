@@ -119,7 +119,7 @@
           </div>
         </div>
         <div class="footer_right">
-          @if ((argument().replies?.count || 0) > 0) {
+          @if ((argument().replies?.count || 0) > 0 && argument().type !== 'reply') {
           <button type="button" class="btn_ghost_reply_argument" (click)="showReplies.update(v => !v)">
             {{ (showReplies() ? 'COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES' : 'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES') |
             translate:{ count: argument().replies?.count || 0 } }}
@@ -147,7 +147,7 @@
         <div class="reply_more"></div>
         }
         <cos-argument [argument]="reply" [topicId]="topicId()" [discussionId]="discussionId()"
-          [root]="root() || argument()" (deleted)="deleted.emit()"></cos-argument>
+          [root]="root() || argument()" [showReplies]="showReplies()" (deleted)="deleted.emit()"></cos-argument>
       </div>
       }
     </div>

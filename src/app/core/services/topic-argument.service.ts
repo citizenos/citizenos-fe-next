@@ -109,6 +109,9 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
           count++;
           if (parentNode.type !== this.ARGUMENT_TYPES.reply) {
             count += countTree(reply, reply);
+            if (reply.children) {
+              reply.children.sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+            }
           } else {
             count += countTree(parentNode, reply);
             const replyClone = { ...reply };
