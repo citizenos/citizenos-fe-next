@@ -19,7 +19,7 @@ import EasyMDE from 'easymde';
 })
 export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
   item = input<string>('');
-  initialValue = input<string>('');
+  initialValue = input<string | undefined>(undefined);
   itemChange = output<string>();
   limit = input<number>(100);
   placeholder = input<string | undefined>();
@@ -150,8 +150,8 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    if (this.easymde && this.item() === this.initialValue()) {
-      this.easymde.value(this.initialValue());
+    if (this.easymde && this.item() !== this.easymde.value()) {
+      this.easymde.value(this.item());
     }
   }
 
