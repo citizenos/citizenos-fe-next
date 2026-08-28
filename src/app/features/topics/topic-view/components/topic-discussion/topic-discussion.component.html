@@ -52,7 +52,7 @@
       <h3 class="title">{{ 'COMPONENTS.TOPIC_ARGUMENTS.LBL_DEADLINE' | translate }}</h3>
       <div class="deadline">
         @if (discussion()?.deadline) {
-        <span class="bold">{{ discussion()?.deadline | date:'y-MM-dd HH:mm' }}</span>
+        <span>{{ discussion()?.deadline | date:'y-MM-dd HH:mm' }}</span>
         } @else if (canEditDeadline()) {
         <button type="button" class="deadline-edit-link btn_link" (click)="openEditDeadline()" (keydown.enter)="openEditDeadline()">
           <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.OPT_ADD_DEADLINE' | translate }}</span>
@@ -131,15 +131,17 @@
         </div>
         <div class="options filter_options">
           <a class="filter_option" (click)="activeMobileFilter.set('argumentType')" (keydown.enter)="activeMobileFilter.set('argumentType')" tabindex="0">
-            <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE' | translate }}</span>
-            <span class="bold">
-              {{ getActiveTypeFilterText() }}
+            <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_TYPE' | translate }}</span>
+            <span>
+              @for (key of getActiveTypeFilters(); track key; let last = $last) {
+                {{ key | translate }}{{ !last ? ', ' : '' }}
+              }
             </span>
           </a>
           <a class="filter_option" (click)="activeMobileFilter.set('sortOrder')" (keydown.enter)="activeMobileFilter.set('sortOrder')" tabindex="0">
-            <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ORDER_BY' | translate }}</span>
-            <span class="bold">
-              {{ getActiveOrderFilterText() }}
+            <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER' | translate }}</span>
+            <span>
+              {{ getActiveOrderFilterText() | translate }}
             </span>
           </a>
         </div>
@@ -197,9 +199,13 @@
     </div>
 
     <div class="arguments_filters mobile_hidden tablet_hidden">
-      <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_TYPE' | translate" class="dropdown_input">
+      <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_TYPE' | translate" class="dropdown_input">
         <div selection>
-          <span>{{ getActiveTypeFilterText() }}</span>
+          <span>
+            @for (key of getActiveTypeFilters(); track key; let last = $last) {
+              {{ key | translate }}{{ !last ? ', ' : '' }}
+            }
+          </span>
         </div>
         <div options>
           @for (type of argumentTypes; track type.value) {
@@ -214,9 +220,9 @@
         </div>
       </cos-dropdown>
 
-      <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ORDER_BY' | translate" class="dropdown_input">
+      <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER' | translate" class="dropdown_input">
         <div selection>
-          <span>{{ getActiveOrderFilterText() }}</span>
+          <span>{{ getActiveOrderFilterText() | translate }}</span>
         </div>
         <div options>
           @for (option of orderByOptions; track option.value) {
