@@ -163,11 +163,13 @@ export class ArgumentComponent {
 
   getParentAuthor() {
     const arg = this.argument();
+    if ((arg.parent as any)?.creator?.name) {
+      return (arg.parent as any).creator.name;
+    }
     if (arg.parent?.id === this.root()?.id) {
       return this.root()?.creator?.name || '';
     }
-
-    const parentReply = this.root()?.replies?.rows.find((a: Argument) => a.id === arg.parent?.id);
+    const parentReply = this.root()?.replies?.rows?.find((a: Argument) => a.id === arg.parent?.id);
     if (parentReply) {
       return parentReply.creator?.name || '';
     }
