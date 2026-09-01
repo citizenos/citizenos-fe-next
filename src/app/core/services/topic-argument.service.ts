@@ -70,7 +70,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
   override getItems(params: TopicArgumentParams): Observable<{ rows: Argument[]; countTotal: number }> {
     return this.query(params).pipe(
       map(res => ({
-        rows: res.data?.rows ? this.processArguments(res.data.rows) : [],
+        rows: res.data?.rows || [],
         countTotal: res.data?.count?.total ?? 0
       }))
     );
@@ -96,50 +96,6 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
     return this.http.get<ApiResponse<{ rows: Argument[]; count: ArgumentCount }>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' });
   }
 
-  private processArguments(rows: Argument[]): Argument[] {
-    const results = [...rows];
-    const argArray: any[] = [];
-    
-    const countTree = (parentNode: any, currentNode: any): number => {
-      let count = 0;
-      argArray.push(currentNode);
-      
-      if (currentNode.replies && currentNode.replies.rows && currentNode.replies.rows.length > 0) {
-        currentNode.replies.rows.forEach((reply: any) => {
-          count++;
-          if (parentNode.type !== this.ARGUMENT_TYPES.reply) {
-            count += countTree(reply, reply);
-            if (reply.children) {
-              reply.children.sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-            }
-          } else {
-            count += countTree(parentNode, reply);
-            const replyClone = { ...reply };
-            replyClone.replies = { count: 0, rows: [] };
-            if (!parentNode.children) parentNode.children = [];
-            parentNode.children.push(replyClone);
-          }
-        });
-      }
-      
-      if (currentNode.type === this.ARGUMENT_TYPES.reply && currentNode.parent) {
-        const parent = argArray.find(arg => arg.id === currentNode.parent.id);
-        if (parent) {
-          currentNode.parent = Object.assign({}, currentNode.parent, parent);
-        }
-      }
-      
-      return count;
-    };
-
-    results.forEach((row: any) => {
-      if (!row.replies) row.replies = { count: 0, rows: [] };
-      row.replies.count = countTree(row, row);
-    });
-
-    return results;
-  }
-
   getArguments(params?: TopicArgumentParams): Observable<ArgumentListResponse> {
     return this.query(params ?? this.params()).pipe(
       map((res: ApiResponse<{ rows: Argument[]; count: ArgumentCount }>) => {
@@ -147,7 +103,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
           this.count.next(res.data.count);
         }
         return {
-          rows: res.data?.rows ? this.processArguments(res.data.rows) : [],
+          rows: res.data?.rows || [],
           count: res.data?.count ?? { total: 0, pro: 0, con: 0, poi: 0, reply: 0 },
           countTotal: res.data?.count?.total ?? 0
         };
