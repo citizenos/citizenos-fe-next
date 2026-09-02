@@ -237,6 +237,20 @@ label:has(input:focus-visible) .radio {
   }
 }
 
+.btn_big_plain {
+  @extend %btn-big-base;
+  background: transparent;
+  border: none;
+  color: var(--color-text-main);
+  padding: 8px 16px;
+  justify-content: flex-start;
+
+  &:hover {
+    background: var(--color-blue-100);
+  }
+}
+
+
 .btn_medium_discussion {
   @extend %btn-medium-base;
   background: var(--color-discussion);
@@ -452,7 +466,10 @@ label:has(input:focus-visible) .radio {
     &.warning { background-color: var(--color-warn-background); color: var(--color-warn); }
     &.info { background-color: var(--color-info-background); color: var(--color-info); }
     &.success { background-color: var(--color-success-background); color: var(--color-success); }
-    &.delete { background-color: var(--color-error-background); color: var(--color-danger); }
+        &.delete { background-color: var(--color-error-background); color: var(--color-danger); }
+    &.ideation { background-color: var(--color-dialog-ideation); color: var(--color-text-main); }
+    &.voting { background-color: var(--color-argument-pro-light); color: var(--color-success); }
+    &.follow_up { background-color: var(--color-dialog-follow-up); color: var(--color-dialog-follow-up-text); }
 
     .header_text {
       display: flex;
@@ -519,12 +536,15 @@ label:has(input:focus-visible) .radio {
     }
   }
 
-  .dialog_tabs_wrap {
+    .dialog_tabs_wrap {
     width: 100%;
     display: flex;
     padding: 0 16px;
     gap: 8px;
     background-color: var(--color-dialog);
+    
+    &.voting { background-color: var(--color-argument-pro-light); }
+    &.follow_up { background-color: var(--color-dialog-follow-up); }
 
     .dialog_tab {
       color: var(--color-text);
@@ -547,6 +567,7 @@ label:has(input:focus-visible) .radio {
     display: flex;
     flex-direction: column;
     background-color: var(--color-dialog-background);
+    padding: 16px;
 
     &.no_footer { border-radius: 0 0 16px 16px; }
 
@@ -562,9 +583,14 @@ label:has(input:focus-visible) .radio {
     }
   }
 
-  .dialog_footer {
+    .dialog_footer {
     display: flex;
     background-color: var(--color-dialog);
+    &.error { background-color: var(--color-error-background); }
+    &.warning { background-color: var(--color-warn-background); }
+    &.info { background-color: var(--color-info-background); }
+    &.voting { background-color: var(--color-argument-pro-light); }
+    &.follow_up { background-color: var(--color-dialog-follow-up); }
     flex-direction: column;
     width: 100%;
     border-radius: 0 0 16px 16px;

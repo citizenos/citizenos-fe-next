@@ -18,7 +18,8 @@ import { NotificationComponent } from '../../../../../shared/components/notifica
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, NotificationComponent, IconComponent],
-  templateUrl: './topic-vote-sign-smartid.component.html'
+  templateUrl: './topic-vote-sign-smartid.component.html',
+  styleUrls: ['./topic-vote-sign-smartid.component.scss']
 })
 export class TopicVoteSignSmartidComponent {
   data = inject<{ topic: Topic; options: TopicVoteCast['options'] }>(DIALOG_DATA);

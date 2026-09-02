@@ -29,7 +29,8 @@ declare let hwcrypto: {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, NotificationComponent, IconComponent],
-  templateUrl: './topic-vote-sign-esteid.component.html'
+  templateUrl: './topic-vote-sign-esteid.component.html',
+  styleUrls: ['./topic-vote-sign-esteid.component.scss']
 })
 export class TopicVoteSignEsteidComponent {
   data = inject<{ topic: Topic; options: TopicVoteCast['options'] }>(DIALOG_DATA);
