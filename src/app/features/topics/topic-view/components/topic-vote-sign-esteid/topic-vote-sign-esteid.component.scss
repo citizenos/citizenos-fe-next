@@ -10,7 +10,7 @@
       gap: 16px;
     }
 
-    .checkmark {
+    .checkbox .checkmark {
       background-color: var(--color-surfaces);
       border: 1px solid var(--color-voting-disabled);
 
@@ -22,10 +22,10 @@
     &.selected {
       background-color: var(--color-voting-disabled);
 
-      .checkmark {
+      .checkbox .checkmark {
         background-color: var(--color-voting);
       }
-      .checkmark::after {
+      .checkbox .checkmark::after {
         display: block;
       }
     }

@@ -1,5 +1,5 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { Component, ChangeDetectionStrategy, inject, HostListener, signal, PLATFORM_ID } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, HostListener, signal, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { isPlatformBrowser, UpperCasePipe } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -17,6 +17,7 @@ import { NotificationComponent } from '../../../../../shared/components/notifica
   selector: 'app-topic-vote-sign-smartid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, NotificationComponent, IconComponent],
   templateUrl: './topic-vote-sign-smartid.component.html',
   styleUrls: ['./topic-vote-sign-smartid.component.scss']

@@ -1,5 +1,5 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { Component, ChangeDetectionStrategy, inject, HostListener, signal, PLATFORM_ID } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, HostListener, signal, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { interval, switchMap, takeWhile, take, map, catchError, of } from 'rxjs';
@@ -28,6 +28,7 @@ declare let hwcrypto: {
   selector: 'app-topic-vote-sign-esteid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, NotificationComponent, IconComponent],
   templateUrl: './topic-vote-sign-esteid.component.html',
   styleUrls: ['./topic-vote-sign-esteid.component.scss']
