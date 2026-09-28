@@ -1,19 +1,20 @@
+@use "mixins";
+
+// Common variables for better maintainability
 $border-radius: 16px;
 $padding-standard: 24px;
 $gap-standard: 16px;
-$breakpoint-tablet: 1024px;
-$breakpoint-mobile: 576px;
 
 #page_header {
   padding: 16px $padding-standard;
   display: flex;
   justify-content: space-between;
 
-  @media (max-width: $breakpoint-tablet) {
+  @include mixins.tablet {
     margin-top: 56px;
   }
 
-  @media (max-width: $breakpoint-mobile) {
+  @include mixins.mobile {
     background-color: var(--color-surfaces);
     border-radius: 0 0 $border-radius $border-radius;
   }
@@ -26,68 +27,20 @@ $breakpoint-mobile: 576px;
   width: 100%;
   height: 100%;
 
-  @media (max-width: $breakpoint-tablet) {
+  @include mixins.tablet {
     margin-top: $padding-standard;
   }
 
-  @media (max-width: $breakpoint-mobile) {
+  @include mixins.mobile {
     gap: 40px;
     padding: 0;
   }
 
   .view_more_button {
     display: none;
-
-    @media (max-width: $breakpoint-mobile) {
+    @include mixins.mobile {
       display: flex;
       margin-top: $padding-standard;
-    }
-  }
-
-  .no_engagements {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $padding-standard;
-    padding: $padding-standard;
-
-    .illustration {
-      display: flex;
-      justify-content: center;
-    }
-
-    .text_wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      text-align: center;
-
-    }
-
-    .button_wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: $gap-standard;
-      justify-content: center;
-      position: relative;
-
-      #create_menu_wrap {
-        position: absolute;
-        bottom: calc(100% + 8px);
-        left: 0;
-        z-index: 100;
-
-        &.hidden {
-          display: none;
-        }
-
-        #close_create {
-          position: fixed;
-          inset: 0;
-          z-index: -1;
-        }
-      }
     }
   }
 
@@ -98,23 +51,25 @@ $breakpoint-mobile: 576px;
     &.news_section {
       .mobile {
         display: none;
-
-        @media (max-width: $breakpoint-mobile) {
+        @include mixins.mobile {
           display: flex;
         }
       }
 
-      @media (max-width: $breakpoint-tablet) {
+      @include mixins.tablet {
         flex-direction: column;
       }
     }
 
-    @media (max-width: $breakpoint-mobile) {
+    @include mixins.mobile {
       padding: 0 8px;
       flex-direction: column;
       width: 100%;
     }
 
+    // Common card styles
+    #achievements,
+    #engagements,
     #news,
     #help_us {
       display: flex;
@@ -124,16 +79,94 @@ $breakpoint-mobile: 576px;
       padding: $padding-standard $gap-standard;
     }
 
+    #achievements {
+      align-items: center;
+      justify-content: center;
+      width: 280px;
+      height: 280px;
+      gap: 8px;
+
+      @include mixins.tablet {
+        width: 50%;
+      }
+      @include mixins.mobile {
+        width: 100%;
+      }
+
+      .box_title {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 24px;
+      }
+      .badge_name {
+        font-weight: 600;
+      }
+      .badge_description {
+        text-align: center;
+      }
+    }
+
+    #engagements {
+      width: 100%;
+      height: 280px;
+
+      @include mixins.tablet {
+        width: 50%;
+      }
+
+      @include mixins.mobile {
+        width: 100%;
+      }
+
+      #chart_area {
+        #chart {
+          display: flex;
+          flex-wrap: wrap;
+          width: 160px;
+          height: 160px;
+          border-radius: 80px;
+          overflow: hidden;
+          position: relative;
+
+          .item {
+            display: flex;
+            width: 80px;
+            height: 80px;
+
+            &.discussion { background-color: var(--color-discussion); }
+            &.voting { background-color: var(--color-voting); }
+            &.follow_up { background-color: var(--color-follow-up); }
+            &.ideation { background-color: var(--color-ideation); }
+          }
+
+          #info_area {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            width: 144px;
+            height: 144px;
+            border-radius: 80px;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-surfaces);
+          }
+        }
+      }
+    }
+
     #news {
       width: 100%;
       gap: $gap-standard;
       min-height: 456px;
 
-      @media (max-width: $breakpoint-tablet) {
+      @include mixins.tablet {
         gap: $padding-standard;
       }
 
-      @media (max-width: $breakpoint-mobile) {
+      @include mixins.mobile {
         .section_header {
           display: none;
         }
@@ -144,17 +177,15 @@ $breakpoint-mobile: 576px;
         flex-direction: column;
         gap: $gap-standard;
 
-        @media (max-width: $breakpoint-tablet) {
+        @include mixins.tablet {
           gap: $padding-standard;
         }
 
         .news_item {
           display: flex;
           gap: $padding-standard;
-          text-decoration: none;
-          color: var(--color-text);
 
-          @media (max-width: $breakpoint-mobile) {
+          @include mixins.mobile {
             flex-direction: column;
             gap: $gap-standard;
           }
@@ -166,7 +197,6 @@ $breakpoint-mobile: 576px;
             border-radius: 8px;
             background-color: var(--color-surface-contrast);
             overflow: hidden;
-            flex-shrink: 0;
 
             img {
               width: inherit;
@@ -174,7 +204,7 @@ $breakpoint-mobile: 576px;
               object-fit: cover;
             }
 
-            @media (max-width: $breakpoint-mobile) {
+            @include mixins.mobile {
               width: 100%;
               height: 166px;
             }
@@ -188,15 +218,10 @@ $breakpoint-mobile: 576px;
             .date {
               font-size: 13px;
               line-height: 16px;
-              color: var(--color-text-muted);
             }
-
-            .bold {
+            a {
               font-size: 16px;
               line-height: 24px;
-              font-weight: 600;
-              text-decoration: none;
-              color: var(--color-text);
             }
           }
         }
@@ -210,10 +235,10 @@ $breakpoint-mobile: 576px;
       min-width: 280px;
       max-width: 280px;
       min-height: 456px;
-      background-color: var(--color-secondary);
+      background-color: var(--color-blue-100);
       gap: $padding-standard;
 
-      @media (max-width: $breakpoint-mobile) {
+      @include mixins.mobile {
         margin-top: $gap-standard;
       }
 
@@ -230,20 +255,18 @@ $breakpoint-mobile: 576px;
         gap: $padding-standard;
       }
 
-      @media (max-width: $breakpoint-tablet) {
+      @include mixins.tablet {
         width: 100%;
         max-width: 100%;
         min-height: auto;
-
         .help_items_wrap {
           flex-direction: row;
         }
       }
 
-      @media (max-width: $breakpoint-mobile) {
+      @include mixins.mobile {
         max-width: 100%;
         width: 100%;
-
         .help_items_wrap {
           flex-direction: column;
         }
@@ -264,9 +287,6 @@ $breakpoint-mobile: 576px;
         vertical-align: middle;
         font-size: 14px;
         line-height: 20px;
-        text-decoration: none;
-        color: var(--color-link);
-
         path {
           fill: var(--color-link);
         }
@@ -277,24 +297,19 @@ $breakpoint-mobile: 576px;
   .section_header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    align-items: center;
 
     a {
       align-items: center;
       display: flex;
       gap: 8px;
       vertical-align: middle;
-      text-decoration: none;
-      color: var(--color-link);
-
       path {
         fill: var(--color-link);
       }
     }
 
     .view_more_link {
-      @media (max-width: $breakpoint-mobile) {
+      @include mixins.mobile {
         display: none;
       }
     }
@@ -304,7 +319,7 @@ $breakpoint-mobile: 576px;
     display: flex;
     flex-direction: column;
 
-    @media (max-width: $breakpoint-mobile) {
+    @include mixins.mobile {
       padding: 0 8px;
 
       &.items_list_section {
@@ -321,17 +336,110 @@ $breakpoint-mobile: 576px;
       gap: $gap-standard;
       padding: $padding-standard 0;
 
-      @media (max-width: $breakpoint-mobile) {
+      @include mixins.mobile {
         padding: $gap-standard 0;
       }
     }
   }
 }
 
-.mobile_show {
-  display: none;
+#subscribe_box {
+  display: flex;
+  background-color: var(--color-blue-100);
+  justify-content: space-between;
+  padding: $padding-standard $padding-standard 0 $padding-standard;
 
-  @media (max-width: $breakpoint-mobile) {
-    display: flex;
+  @include mixins.tablet {
+    padding-bottom: 56px;
+    overflow: hidden;
   }
+
+  @include mixins.mobile {
+    margin-top: 40px;
+    margin-bottom: 56px;
+    flex-direction: column;
+    padding-bottom: 0;
+  }
+
+  #subscribe_form_wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    @include mixins.mobile {
+      padding: 0;
+    }
+
+    #subscribe_text_wrap {
+      display: flex;
+      flex-direction: column;
+
+      #subscribe_form_description {
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+
+    #subscribe_form_input_wrap {
+      display: flex;
+      flex-direction: row;
+      gap: $gap-standard;
+
+      @include mixins.mobile {
+        flex-direction: column;
+        width: 100%;
+      }
+      @include mixins.tablet {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      @include mixins.tablet {
+        padding-bottom: 20px;
+      }
+
+              input {
+          width: 400px;
+          @include mixins.tablet {
+            width: 100%;
+          }
+          @include mixins.mobile {
+            width: 100%;
+          }
+        }
+
+      button {
+        padding: 8px 62px;
+      }
+    }
+  }
+
+  #subscribe_illustration {
+    display: flex;
+    position: relative;
+
+    @include mixins.mobile {
+      width: calc(100% + 48px);
+      left: -24px;
+      overflow: hidden;
+      justify-content: center;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      @include mixins.tablet {
+        width: initial;
+        height: initial;
+      }
+    }
+  }
+}
+
+#create_menu_wrap {
+  position: absolute;
+}
+
+#create_menu {
+  top: 60px;
 }

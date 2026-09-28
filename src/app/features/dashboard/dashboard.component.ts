@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, PLATFORM_ID, HostListener } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DatePipe, isPlatformBrowser } from '@angular/common';
+import { DatePipe, isPlatformBrowser, NgClass } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -23,7 +23,7 @@ import { News } from '../../core/interfaces/news';
   selector: 'app-dashboard',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, DatePipe, TranslateModule, CreateMenuComponent, TopicCardComponent, GroupCardComponent, TourItemDirective, IconComponent, PageHeaderComponent],
+  imports: [RouterLink, DatePipe, NgClass, TranslateModule, CreateMenuComponent, TopicCardComponent, GroupCardComponent, TourItemDirective, IconComponent, PageHeaderComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
@@ -38,7 +38,20 @@ export class DashboardComponent implements OnInit {
   private uiState = inject(UiStateService);
   private seoService = inject(SeoService);
 
-  private platformId = inject(PLATFORM_ID);
+    private platformId = inject(PLATFORM_ID);
+  readonly wWidth = signal(1024);
+  
+  @HostListener('window:resize')
+  onResize() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.wWidth.set(window.innerWidth);
+    }
+  }
+
+  trackByTopic(index: number, element: any): number {
+    return typeof element.id === 'string' ? parseInt(element.id, 10) : element.id;
+  }
+
 
   readonly showCreate = signal(false);
 
@@ -47,6 +60,9 @@ export class DashboardComponent implements OnInit {
     if (isPlatformBrowser(this.platformId) && !localStorage.getItem('show-dashboard-tour')) {
       this.uiState.showOnboarding.set(true);
       localStorage.setItem('show-dashboard-tour', 'true');
+    }
+    if (isPlatformBrowser(this.platformId)) {
+      this.wWidth.set(window.innerWidth);
     }
   }
 
