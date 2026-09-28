@@ -1,4 +1,3 @@
-import { IconComponent } from '../../shared/components/icon/icon.component';
 import { Component, OnInit, inject, ChangeDetectionStrategy, PLATFORM_ID, computed } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -26,7 +25,7 @@ import { GroupCardComponent } from '../../shared/components/group-card/group-car
     TranslateModule,
     FeatureBoxComponent,
     TopicCardComponent,
-    GroupCardComponent, IconComponent]
+    GroupCardComponent]
 })
 export class HomeComponent implements OnInit {
   private router = inject(Router);
