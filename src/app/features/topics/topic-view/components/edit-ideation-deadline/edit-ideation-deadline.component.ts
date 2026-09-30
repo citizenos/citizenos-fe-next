@@ -6,7 +6,6 @@ import { TopicIdeationService } from '../../../../../core/services/topic-ideatio
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { DeadlinePickerComponent } from '../../../../../shared/components/deadline-picker/deadline-picker.component';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { take } from 'rxjs';
@@ -23,8 +22,7 @@ interface EditIdeationDeadlineDialogData {
   imports: [
     ReactiveFormsModule,
     TranslateModule,
-    DeadlinePickerComponent,
-    IconComponent
+    DeadlinePickerComponent
   ],
   template: `
     <div class="overlay" (click)="dialogRef.close()" (keydown.enter)="dialogRef.close()" tabindex="0" role="button"></div>
@@ -35,7 +33,11 @@ interface EditIdeationDeadlineDialogData {
             <h1 class="title">{{ (dialogData.ideation.deadline ? 'COMPONENTS.TOPIC_IDEATION.OPT_EDIT_DEADLINE' : 'COMPONENTS.TOPIC_IDEATION.OPT_ADD_DEADLINE') | translate }}</h1>
             <div class="dialog_close">
               <button type="button" class="btn_dialog_close icon" (click)="dialogRef.close()" [aria-label]="'CONTROL.CLOSE' | translate">
-                <cos-icon name="close"></cos-icon>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
+                    fill="#2C3B47" />
+                </svg>
               </button>
             </div>
           </div>
