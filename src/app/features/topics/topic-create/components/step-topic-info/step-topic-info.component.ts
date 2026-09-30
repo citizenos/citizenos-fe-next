@@ -6,7 +6,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { ImageUploadComponent } from '../../../../../shared/components/image-upload/image-upload.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { EtherpadDirective } from '../../../../../shared/directives/etherpad.directive';
 import { TopicAttachmentsComponent } from '../../../../../shared/components/topic-attachments/topic-attachments.component';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
@@ -19,7 +18,6 @@ import { TooltipComponent } from '../../../../../shared/components/tooltip/toolt
     TranslateModule,
     ImageUploadComponent,
     ButtonComponent,
-    IconComponent,
     EtherpadDirective,
     TopicAttachmentsComponent,
     TooltipComponent

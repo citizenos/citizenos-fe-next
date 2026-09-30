@@ -90,6 +90,13 @@ export default defineConfig({
       },
       testMatch: ['home.spec.ts', 'navigation.spec.ts'],
     },
+
+    // ---------- Visual Parity ----------
+    {
+      name: 'visual',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: ['migration-visual-parity.spec.ts'],
+    },
   ],
 
   // Do NOT auto-start the dev server — it requires SSL certs and

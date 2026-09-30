@@ -1,4 +1,3 @@
-import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { Component, signal, inject, ChangeDetectionStrategy, OnInit, computed } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Location } from '@angular/common';
@@ -42,7 +41,6 @@ export type TopicCreateStep = 'info' | 'settings' | 'discussion' | 'preview';
     StepTopicDiscussionComponent,
     StepTopicPreviewComponent,
     MemberEditorsPanelComponent,
-    IconComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './topic-create.component.html',
