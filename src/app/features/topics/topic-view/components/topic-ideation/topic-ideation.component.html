@@ -489,14 +489,16 @@
 </div>
             }
 
-            @for (idea of ideas(); track idea.id) {
-                <app-ideabox
-                    [idea]="idea"
-                    [topic]="topic()"
-                    [ideation]="ideation()"
-                    (ideaDeleted)="onIdeaDeleted($event)"
-                    (ideaUpdated)="onIdeaUpdated($event)" />
-            }
+            <div class="ideas_wrap">
+                @for (idea of ideas(); track idea.id) {
+                    <app-ideabox
+                        [idea]="idea"
+                        [topic]="topic()"
+                        [ideation]="ideation()"
+                        (ideaDeleted)="onIdeaDeleted($event)"
+                        (ideaUpdated)="onIdeaUpdated($event)" />
+                }
+            </div>
 
             <div class="pagination_wrap">
                 @if (ideasCount() > PAGE_SIZE) {

@@ -358,3 +358,13 @@
   flex: 1 1 auto;
   min-height: 0;
 }
+
+#create_idea_footer_menu, #create_idea_footer {
+  transition: transform 0.3s ease-in;
+  &.open {
+    transform: translateY(0);
+  }
+  &.closed {
+    transform: translateY(100%);
+  }
+}
