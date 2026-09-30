@@ -4,7 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
@@ -23,7 +22,6 @@ export interface IdeaReplyReportData {
   imports: [
     TranslateModule,
     ReactiveFormsModule,
-    IconComponent,
     InitialsComponent,
     InputComponent,
     DropdownComponent

@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
 
 @Component({
   selector: 'cos-anonymous-dialog',
   standalone: true,
-  imports: [TranslateModule, IconComponent, DialogCloseDirective],
+  imports: [TranslateModule, DialogCloseDirective],
   template: `
     <div id="anonymous_dialog" class="modals-base">
       <div class="modal-header">
@@ -18,7 +17,18 @@ import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
           }
         </div>
         <div dialogClose class="close-icon-container">
-          <cos-icon name="nav-close"></cos-icon>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
+              fill="#2C3B47"
+            />
+          </svg>
         </div>
       </div>
       <div class="modal-content">

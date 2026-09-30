@@ -3,7 +3,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { IdeaVoter } from '../../../../../core/interfaces/ideation';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
@@ -14,7 +13,6 @@ import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
   standalone: true,
   imports: [
     TranslateModule,
-    IconComponent,
     InitialsComponent,
     PaginationComponent
   ],

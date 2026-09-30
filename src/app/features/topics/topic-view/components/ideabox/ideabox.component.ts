@@ -10,7 +10,6 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { IdeaReactionsComponent } from '../idea-reactions/idea-reactions.component';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation, IdeaComment } from '../../../../../core/interfaces/ideation';
@@ -26,7 +25,7 @@ import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-ideabox',
   standalone: true,
-  imports: [DatePipe, TranslateModule, RouterModule, InitialsComponent, IconComponent, CosDropdownDirective, TooltipComponent],
+  imports: [DatePipe, TranslateModule, RouterModule, InitialsComponent, CosDropdownDirective, TooltipComponent],
   templateUrl: './ideabox.component.html',
   styleUrls: ['./ideabox.component.scss'],
 })

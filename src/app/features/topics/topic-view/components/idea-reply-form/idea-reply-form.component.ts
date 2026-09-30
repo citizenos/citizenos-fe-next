@@ -6,7 +6,6 @@ import { TopicIdeationService } from '../../../../../core/services/topic-ideatio
 import { UserStore } from '../../../../../core/state/user.store';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-idea-reply-form',
@@ -14,8 +13,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
   imports: [
     TranslateModule,
     FormRoot,
-    FormField,
-    IconComponent
+    FormField
   ],
   templateUrl: './idea-reply-form.component.html',
   styleUrls: ['./idea-reply-form.component.scss'],

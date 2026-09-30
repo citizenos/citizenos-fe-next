@@ -11,7 +11,6 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
@@ -36,8 +35,8 @@ import { Attachment } from '../../../../../core/interfaces/attachment';
     DatePipe,
     AsyncPipe,
     TranslateModule,
-    IconComponent,
     InitialsComponent,
+    
     TooltipComponent,
     DialogCloseDirective,
     CdkTrapFocus,

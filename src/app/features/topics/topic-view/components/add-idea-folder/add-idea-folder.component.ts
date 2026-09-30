@@ -4,7 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Idea } from '../../../../../core/interfaces/idea';
 import { IdeationFolder } from '../../../../../core/interfaces/ideation';
 import { take, forkJoin, Observable } from 'rxjs';
@@ -23,8 +22,7 @@ interface AddIdeaFolderDialogData {
     FormRoot,
     FormField,
     TranslateModule,
-    InputComponent,
-    IconComponent
+    InputComponent
   ],
   template: `
     <div class="overlay" (click)="dialogRef.close()" (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
@@ -35,7 +33,11 @@ interface AddIdeaFolderDialogData {
             <div class="title">{{ 'COMPONENTS.ADD_IDEA_FOLDER.HEADING' | translate }}</div>
             <div class="dialog_close">
               <button type="button" class="btn_dialog_close icon" (click)="dialogRef.close()" [aria-label]="'CONTROL.CLOSE' | translate">
-                <cos-icon name="close"></cos-icon>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
+                    fill="#2C3B47" />
+                </svg>
               </button>
             </div>
           </div>
@@ -47,7 +49,11 @@ interface AddIdeaFolderDialogData {
                 <div>{{ 'COMPONENTS.ADD_IDEA_FOLDER.LBL_IDEA_TO_ADD' | translate }}</div>
                 <div class="idea_wrap">
                   <div class="icon">
-                    <cos-icon name="idea" [size]="24" color="#E4B722"></cos-icon>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M21 11.95C20.4477 11.95 20 11.5023 20 10.95C20 10.3977 20.4477 9.95 21 9.95H22C22.5523 9.95 23 10.3977 23 10.95C23 11.5023 22.5523 11.95 22 11.95H21ZM19.747 3.20697C19.3568 2.81684 18.7241 2.81772 18.335 3.20893L17.9511 3.59501C17.5636 3.98468 17.5644 4.61445 17.953 5.00304C18.3432 5.39317 18.976 5.39228 19.365 5.00107L19.7489 4.61499C20.1364 4.22532 20.1356 3.59556 19.747 3.20697ZM11 1.95C11 2.50228 11.4477 2.95 12 2.95C12.5523 2.95 13 2.50228 13 1.95V1C13 0.447715 12.5523 0 12 0C11.4477 0 11 0.447716 11 1V1.95ZM3 9.95C3.55229 9.95 4 10.3977 4 10.95C4 11.5023 3.55229 11.95 3 11.95H2C1.44772 11.95 1 11.5023 1 10.95C1 10.3977 1.44772 9.95 2 9.95H3ZM5.67304 3.19696C5.28508 2.80684 4.65405 2.80596 4.265 3.195C3.87596 3.58404 3.87684 4.21508 4.26696 4.60303L4.65806 4.99195C5.04605 5.37779 5.67309 5.37691 6.06 4.99C6.44692 4.60309 6.44779 3.97604 6.06196 3.58805L5.67304 3.19696ZM5.76123 10.8918C5.76123 7.32287 8.83053 4.7998 12.0013 4.7998C15.1722 4.7998 18.2412 7.32311 18.2412 10.8918C18.2412 13.4124 17.2368 14.8479 16.3217 16.1557C15.6515 17.1135 15.0292 18.0028 14.8845 19.1998H9.12451C8.97974 18.0027 8.35615 17.1132 7.68452 16.1553C6.76764 14.8476 5.76123 13.4122 5.76123 10.8918ZM9.12313 21.1228H14.8831V20.1602H9.12313V21.1228ZM9.12313 22.0802H14.8831C14.8831 23.1405 14.0235 24.0002 12.9631 24.0002H11.0431C9.98275 24.0002 9.12313 23.1405 9.12313 22.0802Z"
+                        fill="#E4B722" />
+                    </svg>
                   </div>
                   <div class="bold" [innerHTML]="dialogData.idea.statement"></div>
                 </div>

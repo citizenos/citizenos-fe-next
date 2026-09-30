@@ -1,4 +1,3 @@
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { Component, input, output, inject, signal, computed, OnDestroy, OnInit, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -60,7 +59,7 @@ const municipalities: { name: string }[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-edit-idea',
   standalone: true,
-  imports: [FormsModule, TranslateModule, MarkdownDirective, CosDropdownDirective, InputComponent, IconComponent, UpperCasePipe],
+  imports: [FormsModule, TranslateModule, MarkdownDirective, CosDropdownDirective, InputComponent, UpperCasePipe],
   templateUrl: './edit-idea.component.html',
   styleUrls: ['./edit-idea.component.scss'],
 })

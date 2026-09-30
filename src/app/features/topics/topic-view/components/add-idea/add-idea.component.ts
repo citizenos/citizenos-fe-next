@@ -14,7 +14,6 @@ import { TooltipComponent } from '../../../../../shared/components/tooltip/toolt
 import { municipalities } from '../../../../../core/services/municipality.service';
 import { UpperCasePipe } from '@angular/common';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-add-idea',
@@ -28,8 +27,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
     CosDropdownDirective,
     TooltipComponent,
     UpperCasePipe,
-    InputComponent,
-    IconComponent
+    InputComponent
   ],
   templateUrl: './add-idea.component.html',
   styleUrls: ['./add-idea.component.scss'],

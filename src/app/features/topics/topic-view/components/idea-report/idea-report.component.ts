@@ -4,7 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
@@ -22,7 +21,6 @@ export interface IdeaReportData {
   imports: [
     ReactiveFormsModule,
     TranslateModule,
-    IconComponent,
     InitialsComponent,
     InputComponent,
     DropdownComponent,
@@ -50,7 +48,11 @@ export interface IdeaReportData {
           </div>
           <div class="dialog_close">
             <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
-              <cos-icon name="nav-close"></cos-icon>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
+                  fill="#2C3B47" />
+              </svg>
             </button>
           </div>
         </div>

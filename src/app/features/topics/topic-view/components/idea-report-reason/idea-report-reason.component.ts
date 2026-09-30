@@ -4,7 +4,6 @@ import { UpperCasePipe } from '@angular/common';
 
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 export interface IdeaReportReasonData {
   report: {
@@ -16,7 +15,7 @@ export interface IdeaReportReasonData {
 @Component({
   selector: 'app-idea-report-reason',
   standalone: true,
-  imports: [TranslateModule, IconComponent, DialogCloseDirective, UpperCasePipe],
+  imports: [TranslateModule, DialogCloseDirective, UpperCasePipe],
   templateUrl: './idea-report-reason.component.html',
   styleUrls: ['./idea-report-reason.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
