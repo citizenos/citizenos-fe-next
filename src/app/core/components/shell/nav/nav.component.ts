@@ -145,7 +145,7 @@ import { ActivitiesButtonComponent } from '../../../../shared/components/activit
         <div class="nav_scroll">
           <!-- Create menu -->
           @if (userStore.isAuthenticated()) {
-            <div class="big_button_wrap">
+            <div class="big_button_wrap nav_create_wrap">
               <div class="create_search_wrap">
                 <button type="button" id="create_button" class="btn_big_submit" [class.active]="showCreateMenu()" (click)="toggleCreateMenu()" [attr.aria-expanded]="showCreateMenu()" aria-haspopup="true"
                   [cosTourItem]="{tourid: 'dashboard', index: 1, position: 'right'}">
@@ -240,7 +240,7 @@ import { ActivitiesButtonComponent } from '../../../../shared/components/activit
           }
 
           @if (!userStore.isAuthenticated()) {
-            <div class="big_button_wrap">
+            <div class="big_button_wrap nav_create_wrap">
               <button type="button" class="btn_big_submit" [routerLink]="['/', translate.currentLang, 'account', 'login']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
               <button type="button" class="btn_big_submit_ghost" [routerLink]="['/', translate.currentLang, 'account', 'signup']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
             </div>
