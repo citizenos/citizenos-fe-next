@@ -94,7 +94,7 @@
       flex-direction: column;
       gap: 8px;
 
-      #navigate_create:first-child {
+      .buttons_left_group {
         order: 2;
 
         .btn_medium_wrapper {
@@ -105,7 +105,7 @@
         }
       }
 
-      #navigate_create:last-child {
+      .buttons_right_group {
         order: 1;
       }
 
@@ -120,7 +120,7 @@
       }
     }
 
-    #navigate_create {
+    .buttons_left_group, .buttons_right_group {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -359,7 +359,7 @@
   min-height: 0;
 }
 
-#create_idea_footer_menu, #create_idea_footer {
+#create_idea_footer_menu, #create_idea_footer, #create_idea_tablet_btn {
   transition: transform 0.3s ease-in;
   &.open {
     transform: translateY(0);
