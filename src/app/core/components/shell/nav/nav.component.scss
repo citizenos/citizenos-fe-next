@@ -249,10 +249,10 @@ $mobile-breakpoint: 560px;
 }
 
 .nav_create_menu {
-  position: absolute;
-  top: 0;
-  left: calc(100% + 12px);
-  z-index: 1000;
+  position: fixed;
+  top: 76px;
+  left: 216px;
+  z-index: 10000;
 }
 
 // Profile section
