@@ -1,4 +1,3 @@
-import { NoFeatureYetComponent } from '../../../../../shared/components/no-feature-yet/no-feature-yet.component';
 import { Component, input, inject, signal, computed, ChangeDetectionStrategy, PLATFORM_ID, HostListener, effect } from '@angular/core';
 import { DatePipe, isPlatformBrowser, AsyncPipe } from '@angular/common';
 import { toObservable, rxResource } from '@angular/core/rxjs-interop';
@@ -18,7 +17,6 @@ import { AddIdeaComponent } from '../add-idea/add-idea.component';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
@@ -33,7 +31,6 @@ import { EditIdeationDeadlineComponent } from '../edit-ideation-deadline/edit-id
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NoFeatureYetComponent,
     DatePipe,
     FormsModule,
     TranslateModule,
@@ -41,7 +38,6 @@ import { EditIdeationDeadlineComponent } from '../edit-ideation-deadline/edit-id
     IdeaboxComponent,
     AddIdeaComponent,
     PaginationComponent,
-    IconComponent,
     CosDropdownDirective,
     InitialsComponent,
     InputComponent,
