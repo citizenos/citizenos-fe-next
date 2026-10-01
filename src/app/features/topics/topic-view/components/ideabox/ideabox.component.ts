@@ -1,3 +1,4 @@
+
 import { Component, input, output, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
@@ -83,8 +84,10 @@ export class IdeaboxComponent {
 
   vote(value: number) {
     if (!this.userStore.isAuthenticated()) {
-        // Show login logic? Or just return?
-        return;
+      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
+        queryParams: { redirectSuccess: this.router.url }
+      });
+      return;
     }
     if (!this.canVote()) return;
 
@@ -109,6 +112,12 @@ export class IdeaboxComponent {
   }
 
   toggleFavourite() {
+    if (!this.userStore.isAuthenticated()) {
+      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
+        queryParams: { redirectSuccess: this.router.url }
+      });
+      return;
+    }
     const idea = this.idea();
     const params = { topicId: this.topic().id, ideationId: this.ideation().id, ideaId: idea.id };
     if (idea.favourite) {

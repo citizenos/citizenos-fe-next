@@ -1,3 +1,5 @@
+import { UserStore } from '../../../../../core/state/user.store';
+import { Router } from '@angular/router';
 import { Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild, computed, model } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -154,6 +156,19 @@ export class AddIdeaComponent implements OnInit {
 
   deleteDraftIdea(_idea: Idea) {
     // Implement delete draft logic
+  }
+
+  private userStore = inject(UserStore);
+  private router = inject(Router);
+
+  openAddIdea() {
+    if (!this.userStore.isAuthenticated()) {
+      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
+        queryParams: { redirectSuccess: this.router.url }
+      });
+    } else {
+      this.isOpen.set(true);
+    }
   }
 
   close() {
