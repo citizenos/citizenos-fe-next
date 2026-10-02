@@ -10,7 +10,6 @@ import { UserGroupService } from '../../core/services/user-group.service';
 import { PublicGroupService } from '../../core/services/public-group.service';
 import { NewsService } from '../../core/services/news.service';
 import { UiStateService } from '../../core/services/ui-state.service';
-import { CreateMenuComponent } from '../../shared/components/create-menu/create-menu.component';
 import { TopicCardComponent } from '../../shared/components/topic-card/topic-card.component';
 import { GroupCardComponent } from '../../shared/components/group-card/group-card.component';
 import { TourItemDirective } from '../../shared/directives/tour-item.directive';
@@ -23,7 +22,7 @@ import { News } from '../../core/interfaces/news';
   selector: 'app-dashboard',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, DatePipe, NgClass, TranslateModule, CreateMenuComponent, TopicCardComponent, GroupCardComponent, TourItemDirective, IconComponent, PageHeaderComponent],
+  imports: [RouterLink, DatePipe, NgClass, TranslateModule, TopicCardComponent, GroupCardComponent, TourItemDirective, IconComponent, PageHeaderComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
