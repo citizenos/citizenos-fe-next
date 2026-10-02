@@ -1,6 +1,7 @@
 import { Component, input, inject, signal, computed, ChangeDetectionStrategy, PLATFORM_ID, HostListener, effect } from '@angular/core';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
+import { NoFeatureYetComponent } from '../../../../../shared/components/no-feature-yet/no-feature-yet.component';
 
 import { DatePipe, isPlatformBrowser, AsyncPipe } from '@angular/common';
 import { toObservable, rxResource } from '@angular/core/rxjs-interop';
@@ -41,7 +42,7 @@ import { EditIdeationDeadlineComponent } from '../edit-ideation-deadline/edit-id
     IdeaboxComponent,
     AddIdeaComponent,
     PaginationComponent,
-    DropdownComponent,
+    DropdownComponent, NoFeatureYetComponent,
     CosDropdownDirective,
     InitialsComponent,
     InputComponent,
