@@ -173,10 +173,9 @@
                 <div class="options_row_main">
                     @if (!showSearch()) {
                         <div class="dropdown_input">
-                            <div class="dropdown" cosDropdown>
-                                <div selection class="selection">
+                            <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_TYPE' | translate">
+                                <div selection>
                                     <div class="selected_item">
-                                        <div class="label">{{ 'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_TYPE' | translate }}</div>
                                         @if (!selectedType()) {
                                             <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</span>
                                         } @else if (selectedType() === 'iCreated') {
@@ -187,9 +186,8 @@
                                             <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_MODERATED' | translate }}</span>
                                         }
                                     </div>
-                                    <cos-icon name="chevron-down"></cos-icon>
                                 </div>
-                                <div options class="options">
+                                <div options>
                                     <div class="option" role="button" tabindex="0" (click)="setType('')" (keydown.enter)="setType('')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
                                     @if (userStore.isAuthenticated()) {
                                         <div class="option" role="button" tabindex="0" (click)="setType('iCreated')" (keydown.enter)="setType('iCreated')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_YOUR_IDEAS' | translate }}</div>
@@ -197,14 +195,13 @@
                                     }
                                     <div class="option" role="button" tabindex="0" (click)="setType('showModerated')" (keydown.enter)="setType('showModerated')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_MODERATED' | translate }}</div>
                                 </div>
-                            </div>
+                            </cos-dropdown>
                         </div>
 
                         <div class="dropdown_input">
-                            <div class="dropdown" cosDropdown>
-                                <div selection class="selection">
+                            <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_ORDER' | translate">
+                                <div selection>
                                     <div class="selected_item">
-                                        <div class="label">{{ 'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_ORDER' | translate }}</div>
                                         @if (!selectedOrder()) {
                                             <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</span>
                                         } @else if (selectedOrder() === 'likes') {
@@ -215,31 +212,28 @@
                                             <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_REPLIES' | translate }}</span>
                                         }
                                     </div>
-                                    <cos-icon name="chevron-down"></cos-icon>
                                 </div>
-                                <div options class="options">
+                                <div options>
                                     <div class="option" role="button" tabindex="0" (click)="orderBy('')" (keydown.enter)="orderBy('')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
                                     <div class="option" role="button" tabindex="0" (click)="orderBy('likes')" (keydown.enter)="orderBy('likes')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_LIKED' | translate }}</div>
                                     <div class="option" role="button" tabindex="0" (click)="orderBy('recent')" (keydown.enter)="orderBy('recent')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_RECENT' | translate }}</div>
                                     <div class="option" role="button" tabindex="0" (click)="orderBy('replies')" (keydown.enter)="orderBy('replies')">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_REPLIES' | translate }}</div>
                                 </div>
-                            </div>
+                            </cos-dropdown>
                         </div>
 
                         <div class="dropdown_input">
-                            <div class="dropdown" cosDropdown>
-                                <div selection class="selection">
+                            <cos-dropdown [placeholder]="'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_PARTICIPANTS' | translate">
+                                <div selection>
                                     <div class="selected_item">
-                                        <div class="label">{{ 'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_PARTICIPANTS' | translate }}</div>
                                         @if (!selectedParticipants()) {
                                             <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</span>
                                         } @else {
                                             <span>{{ selectedParticipants()?.name }}</span>
                                         }
                                     </div>
-                                    <cos-icon name="chevron-down"></cos-icon>
                                 </div>
-                                <div options class="options">
+                                <div options>
                                     <div class="option" role="button" tabindex="0" (click)="setParticipant()" (keydown.enter)="setParticipant()">{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate }}</div>
                                     @for (user of participants$ | async; track user.id) {
                                         <div class="option" role="button" tabindex="0" (click)="setParticipant(user)" (keydown.enter)="setParticipant(user)">
@@ -258,7 +252,7 @@
                                         </div>
                                     }
                                 </div>
-                            </div>
+                            </cos-dropdown>
                         </div>
                     }
 
