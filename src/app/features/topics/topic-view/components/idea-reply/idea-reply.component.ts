@@ -544,7 +544,12 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
   }
 
   doArgumentVote(value: number) {
-    if (!this.userStore.isAuthenticated()) return;
+    if (!this.userStore.isAuthenticated()) {
+      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
+        queryParams: { redirectSuccess: this.router.url }
+      });
+      return;
+    }
 
     this.ideationService.voteIdeaComment({
       topicId: this.topicId(),

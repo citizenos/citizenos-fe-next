@@ -203,7 +203,12 @@ export class IdeaDialogComponent implements OnInit {
   }
 
   voteIdea(value: number) {
-    if (!this.userStore.isAuthenticated()) return;
+    if (!this.userStore.isAuthenticated()) {
+      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
+        queryParams: { redirectSuccess: this.router.url }
+      });
+      return;
+    }
     if (!this.canVote()) return;
 
     this.ideationService.voteIdea({
@@ -233,6 +238,12 @@ export class IdeaDialogComponent implements OnInit {
   }
 
   toggleFavourite() {
+    if (!this.userStore.isAuthenticated()) {
+      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
+        queryParams: { redirectSuccess: this.router.url }
+      });
+      return;
+    }
     const idea = this.idea();
     const params = { topicId: this.topic().id, ideationId: this.ideation().id, ideaId: idea.id };
     if (idea.favourite) {
