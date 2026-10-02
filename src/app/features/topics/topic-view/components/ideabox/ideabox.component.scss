@@ -76,7 +76,7 @@
           font-weight: 600;
           color: var(--color-argument-info);
         }
-        svg {
+        cos-icon, svg {
           fill: var(--color-argument-info);
         }
       }
@@ -139,7 +139,7 @@
         border-radius: 40px;
         position: relative;
 
-        svg {
+        cos-icon, svg {
           min-width: 16px;
           min-height: 16px;
         }

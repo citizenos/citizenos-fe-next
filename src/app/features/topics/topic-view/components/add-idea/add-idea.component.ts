@@ -1,4 +1,6 @@
 import { UserStore } from '../../../../../core/state/user.store';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+
 import { Router } from '@angular/router';
 import { Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild, computed, model } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -30,7 +32,7 @@ import { InputComponent } from '../../../../../shared/components/input/input.com
     TooltipComponent,
     UpperCasePipe,
     InputComponent
-  ],
+  , IconComponent],
   templateUrl: './add-idea.component.html',
   styleUrls: ['./add-idea.component.scss'],
 })

@@ -1,3 +1,4 @@
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 import { Component, input, output, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -26,7 +27,7 @@ import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-ideabox',
   standalone: true,
-  imports: [DatePipe, TranslateModule, RouterModule, InitialsComponent, CosDropdownDirective, TooltipComponent],
+  imports: [DatePipe, TranslateModule, RouterModule, InitialsComponent, CosDropdownDirective, TooltipComponent, IconComponent],
   templateUrl: './ideabox.component.html',
   styleUrls: ['./ideabox.component.scss'],
 })

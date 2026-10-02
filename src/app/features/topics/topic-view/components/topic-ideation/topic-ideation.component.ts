@@ -1,4 +1,6 @@
 import { Component, input, inject, signal, computed, ChangeDetectionStrategy, PLATFORM_ID, HostListener, effect } from '@angular/core';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+
 import { DatePipe, isPlatformBrowser, AsyncPipe } from '@angular/common';
 import { toObservable, rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -42,7 +44,7 @@ import { EditIdeationDeadlineComponent } from '../edit-ideation-deadline/edit-id
     InitialsComponent,
     InputComponent,
     AsyncPipe
-  ],
+  , IconComponent],
   templateUrl: './topic-ideation.component.html',
   styleUrls: ['./topic-ideation.component.scss'],
 })
