@@ -1,4 +1,3 @@
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { Component, input, inject, signal, computed, ChangeDetectionStrategy, PLATFORM_ID, HostListener, effect } from '@angular/core';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
@@ -43,7 +42,7 @@ import { EditIdeationDeadlineComponent } from '../edit-ideation-deadline/edit-id
     IdeaboxComponent,
     AddIdeaComponent,
     PaginationComponent,
-    DropdownComponent, NoFeatureYetComponent, ButtonComponent,
+    DropdownComponent, NoFeatureYetComponent,
     CosDropdownDirective,
     InitialsComponent,
     InputComponent,

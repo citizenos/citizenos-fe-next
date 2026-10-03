@@ -1,11 +1,31 @@
 <div class="ideation_wrap">
-  <div class="ideation_header">
-    <div class="header_section">
+    <div class="ideation_header">
+    <div class="header_left">
+      <cos-icon name="idea" size="24" color="var(--color-text-main)"></cos-icon>
       <div class="question">{{ ideation().question }}</div>
+    </div>
+
+    <div class="header_right">
+      @if (ideation().deadline) {
+        <div class="deadline_wrap">
+          <cos-icon name="calendar" size="20"></cos-icon>
+          <span class="bold">{{ ideation().deadline | date:'dd.MM.yyyy HH:mm' }}</span>
+        </div>
+      }
+
       @if (canUpdate() && (canEditDeadline() || !hasIdeationEndedExpired())) {
         <div class="setting_button dropdown button_dropdown" cosDropdown>
-          <cos-button trigger variant="light" icon="more-vertical" class="mobile_hidden">{{ 'COMPONENTS.TOPIC_IDEATION.BTN_IDEATION_ACTIONS' | translate }}</cos-button>
-          <cos-button trigger variant="light" [iconMode]="true" customIconSize="24" icon="more-vertical" class="mobile_show" id="mobile_actions"></cos-button>
+          <!-- Desktop Manage button -->
+          <button type="button" class="btn_manage_ideation mobile_hidden" trigger>
+            <cos-icon name="more-vertical"></cos-icon>
+            <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_IDEATION_ACTIONS' | translate }}</span>
+          </button>
+          
+          <!-- Mobile Manage button -->
+          <button type="button" id="mobile_actions" class="btn_manage_ideation icon mobile_show" trigger>
+             <cos-icon name="more-vertical"></cos-icon>
+          </button>
+
           <div class="options">
             @if (canEditDeadline()) {
               <a class="option" [routerLink]="['/', translate.currentLang, 'topics', 'ideation', 'edit', topic().id]" fragment="ideation_system">
@@ -42,15 +62,6 @@
         </div>
       }
     </div>
-
-    @if (ideation().deadline) {
-      <div class="data_section">
-        <div class="title">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_DEADLINE' | translate }}</div>
-        <div class="deadline">
-          <span class="bold">{{ ideation().deadline | date:'y-MM-dd HH:mm' }}</span>
-        </div>
-      </div>
-    }
   </div>
 
   <div class="ideation_content">
