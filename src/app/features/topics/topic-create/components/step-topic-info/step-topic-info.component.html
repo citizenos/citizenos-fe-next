@@ -1,6 +1,6 @@
 <div class="create_content">
   <!-- Header Image Block -->
-  <div [ngClass]="['create_content_block', topic().status || 'discussion']" [class.open]="block().headerImage">
+  <div class="create_content_block" [class.open]="block().headerImage">
     <div class="block_title_wrap" (click)="toggleBlock('headerImage')" (keydown.enter)="toggleBlock('headerImage')" role="button" tabindex="0">
       <div class="block_title">{{ 'VIEWS.TOPIC_CREATE.TITLE_HEADER_IMAGE' | translate }}</div>
       @if (!block().headerImage) {
@@ -34,7 +34,7 @@
   </div>
 
   <!-- Title Block -->
-  <div [ngClass]="['create_content_block', topic().status || 'discussion']" [class.active]="block().title" [class.open]="block().title">
+  <div class="create_content_block" [class.active]="block().title" [class.open]="block().title">
     <div class="block_title_wrap" (click)="toggleBlock('title')" (keydown.enter)="toggleBlock('title')" role="button" tabindex="0">
       <div class="block_title">{{ 'VIEWS.TOPIC_CREATE.TITLE_HEADING' | translate }}</div>
       <div class="counter_wrap">
@@ -67,7 +67,7 @@
   </div>
 
   <!-- Intro Block -->
-  <div [ngClass]="['create_content_block', topic().status || 'discussion']" [class.active]="block().intro" [class.open]="block().intro">
+  <div class="create_content_block" [class.active]="block().intro" [class.open]="block().intro">
     <div class="block_title_wrap" (click)="toggleBlock('intro')" (keydown.enter)="toggleBlock('intro')" role="button" tabindex="0">
       <div class="block_title">
         <span>{{ 'VIEWS.TOPIC_CREATE.TITLE_INTRO' | translate }}</span>
@@ -89,7 +89,7 @@
   </div>
 
   <!-- Description Block -->
-  <div [ngClass]="['create_content_block', topic().status || 'discussion']" [class.active]="block().description" [class.open]="block().description">
+  <div class="create_content_block" [class.active]="block().description" [class.open]="block().description">
     <div class="block_title_wrap" (click)="toggleBlock('description')" (keydown.enter)="toggleBlock('description')" role="button" tabindex="0">
       <div class="block_title">
         <span>{{ 'VIEWS.TOPIC_CREATE.TITLE_DESCRIPTION' | translate }}</span>
