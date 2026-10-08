@@ -622,18 +622,18 @@ label:has(input:focus-visible) .radio {
 
 /* Responsive utility classes */
 .tablet_show {
-  display: none !important;
+  display: none;
   @include mixins.tablet { display: flex !important; }
 }
 .mobile_show {
-  display: none !important;
+  display: none;
   @include mixins.mobile { display: flex !important; }
 }
 .tablet_hidden {
-  @include mixins.tablet { display: none !important; }
+  @include mixins.tablet { display: none; }
 }
 .mobile_hidden {
-  @include mixins.mobile { display: none !important; }
+  @include mixins.mobile { display: none; }
 }
 
 .mobile_actions_wrap {
@@ -976,4 +976,8 @@ label:has(input:focus-visible) .radio {
     height: 150px;
     border: none;
   }
+}
+
+.hidden {
+  display: none;
 }
