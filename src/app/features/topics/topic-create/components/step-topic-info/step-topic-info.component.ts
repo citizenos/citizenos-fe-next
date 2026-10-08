@@ -1,6 +1,8 @@
 import { Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
+import { IconComponent } from '../../../../../shared';
+import { NgClass } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Topic } from '../../../../../core/interfaces/topic';
@@ -17,7 +19,7 @@ import { TooltipComponent } from '../../../../../shared/components/tooltip/toolt
     FormsModule,
     TranslateModule,
     ImageUploadComponent,
-    ButtonComponent,
+    IconComponent, NgClass,
     EtherpadDirective,
     TopicAttachmentsComponent,
     TooltipComponent
