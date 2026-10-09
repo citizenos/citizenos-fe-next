@@ -1,20 +1,21 @@
 @use "mixins";
+@use "../../../../../../assets/styles/figma-tokens" as tokens;
 
 #create_idea_footer_menu {
   display: flex;
   justify-content: space-between;
-  background-color: var(--color-surfaces);
-  border-radius: 16px 16px 0 0;
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$border-radius-lg tokens.$border-radius-lg 0 0;
   width: inherit;
   z-index: 999;
-  padding: 16px;
+  padding: tokens.$spacing-m;
   position: fixed;
   bottom: 0;
   align-items: center;
   max-width: 872px;
   width: calc(100% - 567px);
-  box-shadow: 0px -8px 20px 0px rgba(220, 231, 240, 0.1),
-    0px -12px 16px 0px rgba(50, 85, 112, 0.04);
+  box-shadow: 0px calc(-1 * tokens.$spacing-sm) 20px 0px rgba(220, 231, 240, 0.1),
+    0px -12px tokens.$spacing-m 0px rgba(50, 85, 112, 0.04);
 
   @include mixins.tablet {
     max-width: 100%;
@@ -26,10 +27,10 @@
   }
 
   .footer_title {
-    font-size: 16px;
+    font-size: tokens.$font-size-base;
     font-style: normal;
-    font-weight: 600;
-    line-height: 24px; /* 150% */
+    font-weight: tokens.$font-weight-bold;
+    line-height: tokens.$spacing-l; /* 150% */
   }
 }
 
@@ -40,7 +41,7 @@
     display: flex;
     justify-content: flex-end;
     bottom: 64px;
-    right: 8px;
+    right: tokens.$spacing-sm;
 
     button {
       cos-icon, svg {
@@ -60,25 +61,25 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--color-surfaces);
-  border-radius: 16px 16px 0 0;
+  background-color: tokens.$color-bg-surface;
+  border-radius: tokens.$border-radius-lg tokens.$border-radius-lg 0 0;
   max-width: 872px;
   width: calc(100% - 567px);
-  padding: 16px;
+  padding: tokens.$spacing-m;
   z-index: 99999;
-  // padding: 12px 16px;
+  // padding: 12px tokens.$spacing-m;
   position: fixed;
   bottom: 0;
-  gap: 16px;
-  box-shadow: 0px -8px 20px 0px rgba(220, 231, 240, 0.1),
-    0px -12px 16px 0px rgba(50, 85, 112, 0.04);
+  gap: tokens.$spacing-m;
+  box-shadow: 0px calc(-1 * tokens.$spacing-sm) 20px 0px rgba(220, 231, 240, 0.1),
+    0px -12px tokens.$spacing-m 0px rgba(50, 85, 112, 0.04);
   overflow-y: auto;
 
   @include mixins.tablet {
     position: fixed;
     bottom: 0;
     left: 0;
-    gap: 8px;
+    gap: tokens.$spacing-sm;
     z-index: 9999999;
     max-width: 100%;
     width: 100%;
@@ -92,16 +93,16 @@
 
     @include mixins.mobile {
       flex-direction: column;
-      gap: 8px;
+      gap: tokens.$spacing-sm;
 
       .buttons_left_group {
         order: 2;
 
         .btn_medium_wrapper {
           width: 100%;
-          padding-top: 16px;
-          margin-top: 8px;
-          border-top: 1px solid var(--color-border);
+          padding-top: tokens.$spacing-m;
+          margin-top: tokens.$spacing-sm;
+          border-top: 1px solid tokens.$color-border;
         }
       }
 
@@ -123,8 +124,8 @@
     .buttons_left_group, .buttons_right_group {
       display: flex;
       align-items: center;
-      gap: 8px;
-      background-color: var(--color-surfaces);
+      gap: tokens.$spacing-sm;
+      background-color: tokens.$color-bg-surface;
 
       @include mixins.mobile {
         width: 100%;
@@ -142,15 +143,15 @@
 #post_idea_form_wrap {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: tokens.$spacing-m;
   width: 100%;
 
   .form_header {
     span {
-      font-size: 16px;
+      font-size: tokens.$font-size-base;
       font-style: normal;
-      font-weight: 600;
-      line-height: 24px; /* 150% */
+      font-weight: tokens.$font-weight-bold;
+      line-height: tokens.$spacing-l; /* 150% */
     }
     @include mixins.mobile {
       display: flex;
@@ -162,7 +163,7 @@
 
   .form_header_actions {
     display: flex;
-    gap: 8px;
+    gap: tokens.$spacing-sm;
 
     @include mixins.mobile {
       flex-direction: column;
@@ -170,9 +171,9 @@
   }
 
   .form_header_expand_button {
-    background-color: var(--color-surface-contrast);
-    border-radius: 8px;
-    padding: 8px 12px;
+    background-color: tokens.$color-bg-default;
+    border-radius: tokens.$border-radius-m;
+    padding: tokens.$spacing-sm 12px;
     gap: 5px;
     min-width: 120px;
   }
@@ -187,11 +188,11 @@
 
   .form_header_expand_icon {
     font-family: "Noto Sans";
-    font-size: 14px;
+    font-size: tokens.$font-size-sm;
     font-style: normal;
-    font-weight: 600;
-    line-height: 16px;
-    color: var(--color-text);
+    font-weight: tokens.$font-weight-bold;
+    line-height: tokens.$spacing-m;
+    color: tokens.$color-text-main;
   }
 
   #subject_counter {
@@ -201,7 +202,7 @@
   }
   #idea_form {
     display: flex;
-    gap: 16px;
+    gap: tokens.$spacing-m;
     flex-direction: column;
   }
 
@@ -237,27 +238,27 @@
 .idea_images_wrap {
   display: flex;
   flex-direction: column;
-  padding: 8px 12px 8px 8px;
+  padding: tokens.$spacing-sm 12px tokens.$spacing-sm tokens.$spacing-sm;
   align-items: center;
-  gap: 8px;
+  gap: tokens.$spacing-sm;
   align-self: stretch;
-  border-radius: 8px;
-  background-color: var(--color-surface-contrast);
+  border-radius: tokens.$border-radius-m;
+  background-color: tokens.$color-bg-default;
 
   .image {
-    font-size: 14px;
+    font-size: tokens.$font-size-sm;
     font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
+    font-weight: tokens.$font-weight-normal;
+    line-height: tokens.$spacing-m;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 4px;
+    gap: tokens.$spacing-xs;
     width: 100%;
     .image_data {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: tokens.$spacing-xs;
 
       @include mixins.mobile {
         flex-direction: column;
@@ -283,7 +284,7 @@
   .form_header_title {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: tokens.$spacing-m;
   }
 }
 #anonymous_info_wrap {
@@ -291,20 +292,20 @@
   flex-direction: row;
   width: max-content;
   justify-content: right;
-  padding: 8px 28px 8px 12px;
-  gap: 8px;
+  padding: tokens.$spacing-sm 28px tokens.$spacing-sm 12px;
+  gap: tokens.$spacing-sm;
   position: relative;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: tokens.$border-radius-m;
+  font-size: tokens.$font-size-sm;
   font-style: normal;
-  font-weight: 400;
+  font-weight: tokens.$font-weight-normal;
   line-height: 20px;
-  background-color: var(--color-info-background);
+  background-color: tokens.$color-bg-default;
 }
 
 .anonymous_info {
   display: flex;
-  gap: 16px;
+  gap: tokens.$spacing-m;
 
   cos-input,
   .dropdown_wrapper,
@@ -315,7 +316,7 @@
   }
 
   .selected_item_placeholder {
-    color: var(--color-argument-info);
+    color: tokens.$color-text-secondary;
   }
 
   .dropdown {
@@ -324,11 +325,11 @@
     }
 
     .selection {
-      padding: 12px 16px 10px 16px;
+      padding: 12px tokens.$spacing-m 10px tokens.$spacing-m;
     }
 
     .error_input {
-      border-color: var(--color-error);
+      border-color: tokens.$color-error;
     }
   }
 
@@ -340,7 +341,7 @@
 .gender_wrapper {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: tokens.$spacing-sm;
 
   .error_label {
     margin-top: 0;
@@ -376,24 +377,24 @@
     position: absolute;
     right: 0;
     top: 100%;
-    background: var(--color-surfaces);
+    background: tokens.$color-bg-surface;
     box-shadow: var(--shadow-lg);
-    border-radius: 8px;
+    border-radius: tokens.$border-radius-m;
     z-index: 10;
-    padding: 8px 0;
+    padding: tokens.$spacing-sm 0;
     min-width: 180px;
 
     .option {
       display: flex;
       align-items: center;
-      padding: 8px 16px;
+      padding: tokens.$spacing-sm tokens.$spacing-m;
       border: none;
       background: none;
       width: 100%;
       text-align: left;
       cursor: pointer;
-      font-size: 14px;
-      color: var(--color-text-main);
+      font-size: tokens.$font-size-sm;
+      color: tokens.$color-text-main;
       gap: 12px;
 
       &:hover {
@@ -401,7 +402,7 @@
       }
 
       &.error_text {
-        color: var(--color-error);
+        color: tokens.$color-error;
       }
     }
   }
