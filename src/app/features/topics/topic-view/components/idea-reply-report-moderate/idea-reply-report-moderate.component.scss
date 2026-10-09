@@ -1,10 +1,27 @@
+@import '../../../../../../assets/styles/figma-tokens';
 
 .dialog_content {
-  gap: 16px;
+  gap: $spacing-m;
 
   form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: $spacing-m;
   }
+}
+
+.icon-warning rect {
+  fill: $color-warning;
+}
+
+.icon-close path {
+  fill: $color-text-main;
+}
+
+.icon-chevron path {
+  stroke: $color-text-secondary;
+}
+
+.icon-error path {
+  fill: $color-error;
 }
