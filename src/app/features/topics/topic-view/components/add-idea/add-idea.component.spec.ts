@@ -1,3 +1,6 @@
+import { Router, ActivatedRoute } from "@angular/router";
+import { UploadService } from "../../../../../core/services/upload.service";
+import { UserStore } from "../../../../../core/state/user.store";
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { signal } from '@angular/core';
@@ -31,6 +34,10 @@ describe('AddIdeaComponent', () => {
       providers: [
         { provide: TopicIdeationService, useValue: mockIdeationService },
         { provide: NotificationService, useValue: mockNotification },
+        { provide: UploadService, useValue: { upload: vi.fn() } },
+        { provide: UserStore, useValue: { user: vi.fn(), isAuthenticated: vi.fn() } },
+        { provide: Router, useValue: { navigate: vi.fn() } },
+        { provide: ActivatedRoute, useValue: {} },
       ],
     });
     injector = TestBed.inject(EnvironmentInjector);
@@ -64,7 +71,7 @@ describe('AddIdeaComponent', () => {
     expect(mockIdeationService.createIdea).not.toHaveBeenCalled();
   });
 
-  it('publish with valid fields calls createIdea and emits ideaAdded', () => {
+  it('publish with valid fields calls createIdea and emits ideaAdded', async () => {
     const comp = makeComp();
     const emitSpy = vi.spyOn(comp.ideaAdded, 'emit');
     comp.ideaForm.patchValue({
@@ -79,6 +86,7 @@ describe('AddIdeaComponent', () => {
       description: 'My description',
       status: 'published',
     }));
+    await new Promise(resolve => setTimeout(resolve, 0));
     expect(emitSpy).toHaveBeenCalledWith(mockCreatedIdea);
   });
 

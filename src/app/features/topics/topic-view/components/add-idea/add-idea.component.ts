@@ -71,7 +71,7 @@ export class AddIdeaComponent implements OnInit {
   
   toggleExpand = signal(false);
   isAutosaving = signal(false);
-  images = signal<any[]>([]);
+  images = signal<{ link: string, name: string, file?: File }[]>([]);
   newImages = signal<{ link: string, name: string, file?: File }[]>([]);
   autosavedIdea = signal<Idea | null>(null);
 
@@ -243,7 +243,7 @@ export class AddIdeaComponent implements OnInit {
     const draft = this.autosavedIdea();
     if (draft) {
       ideaData.ideaId = draft.id;
-      this.ideationService.updateIdea(ideaData as any).subscribe({
+      this.ideationService.updateIdea(ideaData as never).subscribe({
         next: (idea) => {
           if (isAutosave) {
             this.autosavedIdea.set(idea);
@@ -258,7 +258,7 @@ export class AddIdeaComponent implements OnInit {
         }
       });
     } else {
-      this.ideationService.createIdea(ideaData as any).pipe(take(1)).subscribe({
+      this.ideationService.createIdea(ideaData as never).pipe(take(1)).subscribe({
         next: (idea) => {
           if (isAutosave) {
             this.autosavedIdea.set(idea);
@@ -285,7 +285,7 @@ export class AddIdeaComponent implements OnInit {
         const path = `/users/${this.userStore.user()?.id}/topics/${this.topic().id}/ideations/${this.ideation().id}/ideas/${ideaId}/image/upload`;
         try {
           await lastValueFrom(this.uploadService.upload(path, image.file, { name: image.name }));
-        } catch (error) {
+        } catch (_error) {
           errorsCounter++;
         }
       }
