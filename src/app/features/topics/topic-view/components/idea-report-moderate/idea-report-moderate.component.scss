@@ -1,10 +1,35 @@
+@import '../../../../../../assets/styles/figma-tokens';
 
 .dialog_content {
-  gap: 16px;
+  gap: $spacing-m;
 
   form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: $spacing-m;
+  }
+}
+
+.icon_notification {
+  svg rect {
+    fill: $color-warning;
+  }
+}
+
+.btn_dialog_close {
+  svg path {
+    fill: $color-text-main;
+  }
+}
+
+.selection {
+  svg path {
+    stroke: $color-text-secondary;
+  }
+}
+
+.error_label {
+  svg path {
+    fill: $color-error;
   }
 }
