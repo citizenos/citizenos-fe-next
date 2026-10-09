@@ -1,1 +1,44 @@
+@import '../../../../../../assets/styles/figma-tokens';
 
+app-idea-report-reason {
+  .icon_notification {
+    svg .icon-bg {
+      fill: $color-primary;
+    }
+    svg .icon-path {
+      fill: $color-bg-surface;
+    }
+  }
+
+  .btn_dialog_close {
+    svg .icon-path {
+      fill: $color-text-main;
+    }
+  }
+
+  .dialog_content {
+    gap: $spacing-m;
+  }
+
+  .content_text {
+    color: $color-text-main;
+    font-size: $font-size-base;
+  }
+
+  .dialog_info {
+    background-color: $color-bg-default;
+    border-radius: $border-radius-m;
+    padding: $spacing-m;
+    
+    .reason {
+      font-weight: $font-weight-bold;
+      color: $color-text-main;
+      margin-bottom: $spacing-xs;
+    }
+
+    .explanation {
+      color: $color-text-secondary;
+      font-size: $font-size-sm;
+    }
+  }
+}
