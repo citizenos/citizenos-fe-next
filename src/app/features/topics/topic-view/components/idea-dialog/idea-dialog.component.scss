@@ -1,3 +1,4 @@
+@use "../../../../../../assets/styles/figma-tokens" as figma;
 @use "mixins";
 
 @-webkit-keyframes load3 {
@@ -13,7 +14,7 @@
 
 .idea_images_loading {
   .dialog_info {
-    padding: 16px;
+    padding: figma.$spacing-m;
   }
   .loader {
     margin: initial;
@@ -29,13 +30,13 @@
 
   @include mixins.mobile {
     justify-content: flex-end;
-    padding: 8px;
-    gap: 16px;
-    background: var(--color-background);
+    padding: figma.$spacing-sm;
+    gap: figma.$spacing-m;
+    background: figma.$color-bg-default;
     margin-bottom: 0;
     #close_button {
       position: absolute;
-      right: 8px;
+      right: figma.$spacing-sm;
     }
   }
 }
@@ -52,7 +53,7 @@
   overflow-x: clip;
 
   @include mixins.mobile {
-    background-color: var(--color-background);
+    background-color: figma.$color-bg-default;
   }
 }
 
@@ -64,14 +65,14 @@
 
   .mobile_buttons_left {
     display: flex;
-    gap: 16px;
-    padding: 8px;
+    gap: figma.$spacing-m;
+    padding: figma.$spacing-sm;
   }
   .mobile_buttons_right {
     display: flex;
     align-items: center;
     height: 56px;
-    padding: 8px;
+    padding: figma.$spacing-sm;
   }
 }
 .buttons_left,
@@ -90,7 +91,7 @@
 
 .btn_small_submit {
   font-weight: bold;
-  padding: 8px 24px;
+  padding: figma.$spacing-sm figma.$spacing-l;
 }
 .btn_idea_select {
   position: fixed;
@@ -106,14 +107,14 @@
   }
 
   .btn_idea_like {
-    width: 32px;
-    height: 32px;
-    border-radius: 40px;
+    width: figma.$spacing-xl;
+    height: figma.$spacing-xl;
+    border-radius: figma.$border-radius-full;
     position: relative;
 
     svg {
-      min-width: 16px;
-      min-height: 16px;
+      min-width: figma.$spacing-m;
+      min-height: figma.$spacing-m;
     }
 
     &:hover {
@@ -122,8 +123,8 @@
   }
 
   .like_counter_wrap {
-    padding: 8px;
-    color: var(--color-text);
+    padding: figma.$spacing-sm;
+    color: figma.$color-text-main;
     position: relative;
   }
   &.selected {
@@ -135,7 +136,7 @@
 }
 .dialog_content {
   max-width: 680px;
-  border-radius: 16px;
+  border-radius: figma.$border-radius-lg;
   flex-direction: column;
   padding: 0;
 
@@ -146,42 +147,42 @@
 
   .idea_folders_wrap {
     display: flex;
-    padding: 8px 12px 8px 8px;
+    padding: figma.$spacing-sm 12px figma.$spacing-sm figma.$spacing-sm;
     align-items: center;
-    gap: 8px;
+    gap: figma.$spacing-sm;
     align-self: stretch;
-    border-radius: 8px;
-    background-color: var(--color-surface-contrast);
+    border-radius: figma.$border-radius-m;
+    background-color: figma.$color-bg-surface;
 
     .text {
-      font-size: 14px;
+      font-size: figma.$font-size-sm;
       font-style: normal;
       font-weight: 400;
-      line-height: 16px;
+      line-height: figma.$spacing-m;
       display: flex;
-      gap: 4px;
+      gap: figma.$spacing-xs;
     }
   }
 
   .idea_images_wrap {
     display: flex;
     flex-direction: column;
-    padding: 8px 12px 8px 8px;
+    padding: figma.$spacing-sm 12px figma.$spacing-sm figma.$spacing-sm;
     align-items: center;
-    gap: 8px;
+    gap: figma.$spacing-sm;
     align-self: stretch;
-    border-radius: 8px;
-    background-color: var(--color-surface-contrast);
+    border-radius: figma.$border-radius-m;
+    background-color: figma.$color-bg-surface;
     position: relative;
 
     .image {
-      font-size: 14px;
+      font-size: figma.$font-size-sm;
       font-style: normal;
       font-weight: 400;
-      line-height: 16px;
+      line-height: figma.$spacing-m;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: figma.$spacing-xs;
       width: 100%;
       position: relative;
 
@@ -203,8 +204,8 @@
           position: absolute;
           top: 0;
           right: 0;
-          padding: 8px;
-          gap: 8px;
+          padding: figma.$spacing-sm;
+          gap: figma.$spacing-sm;
         }
         .image_view_button {
           display: flex;
@@ -237,11 +238,11 @@
   width: 100%;
   flex-direction: column;
   height: 100%;
-  padding: 24px;
-  gap: 24px;
+  padding: figma.$spacing-l;
+  gap: figma.$spacing-l;
   @include mixins.mobile {
     max-width: 100%;
-    padding: 16px;
+    padding: figma.$spacing-m;
   }
 }
 .idea_content_replies {
@@ -249,8 +250,8 @@
   width: 100%;
   flex-direction: column;
   height: 100%;
-  gap: 24px;
-  padding: 0 16px;
+  gap: figma.$spacing-l;
+  padding: 0 figma.$spacing-m;
   overflow: hidden;
   &::-webkit-scrollbar {
     display: none;
@@ -264,7 +265,7 @@
   position: relative;
   justify-content: space-between;
   display: flex;
-  height: 32px;
+  height: figma.$spacing-xl;
   width: 100%;
   align-items: center;
 
@@ -280,55 +281,55 @@
       display: flex;
       flex-direction: column;
       .name {
-        font-size: 14px;
+        font-size: figma.$font-size-sm;
         font-weight: 600;
-        line-height: 16px;
+        line-height: figma.$spacing-m;
       }
       .date {
-        font-size: 13px;
-        line-height: 16px;
-        color: #727c84;
+        font-size: figma.$font-size-xs;
+        line-height: figma.$spacing-m;
+        color: figma.$color-text-secondary;
       }
     }
     .avatar {
       display: flex;
       justify-content: center;
       align-items: center;
-      border-radius: 32px;
-      width: 32px;
-      height: 32px;
+      border-radius: figma.$border-radius-full;
+      width: figma.$spacing-xl;
+      height: figma.$spacing-xl;
       margin-left: -10px;
       background-color: var(--color-secondary);
       font-size: 10px;
       font-style: normal;
       font-weight: 600;
-      line-height: 16px;
+      line-height: figma.$spacing-m;
 
       &:first-child {
         margin-left: 0;
       }
       img {
         width: inherit;
-        border-radius: 32px;
+        border-radius: figma.$border-radius-full;
         aspect-ratio: 1;
         object-fit: cover;
       }
       .profile_image_filler {
         width: 100%;
         height: 100%;
-        background-color: var(--color-surfaces);
-        border-radius: 32px;
+        background-color: figma.$color-bg-surface;
+        border-radius: figma.$border-radius-full;
         display: flex;
         align-items: center;
         justify-content: center;
         cos-initials {
-          font-size: 14px;
+          font-size: figma.$font-size-sm;
         }
       }
     }
     .vertical_line_separator {
-      background-color: var(--color-text);
-      margin: 4px 0;
+      background-color: figma.$color-text-main;
+      margin: figma.$spacing-xs 0;
     }
 
     .btn_small_plain {
@@ -338,7 +339,7 @@
   }
   .idea_header_right {
     display: flex;
-    gap: 8px;
+    gap: figma.$spacing-sm;
     align-items: center;
     .dropdown {
       background-color: unset;
@@ -350,14 +351,14 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: 16px;
+  gap: figma.$spacing-m;
 
   .statement {
-    color: var(--color-text);
-    font-size: 16px;
+    color: figma.$color-text-main;
+    font-size: figma.$font-size-base;
     font-style: normal;
     font-weight: 600;
-    line-height: 24px;
+    line-height: figma.$spacing-l;
   }
 
   ::ng-deep .description {
@@ -369,23 +370,23 @@
 
 .buttons_wrap {
   display: flex;
-  gap: 16px;
+  gap: figma.$spacing-m;
   position: relative;
 
   .btn_ghost_reply_idea {
     display: flex;
-    height: 32px;
-    padding: 8px 24px;
+    height: figma.$spacing-xl;
+    padding: figma.$spacing-sm figma.$spacing-l;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    border-radius: 40px;
+    gap: figma.$spacing-sm;
+    border-radius: figma.$border-radius-full;
     font-weight: 600;
-    border: 2px solid var(--color-text);
-    color: var(--color-text);
+    border: 2px solid figma.$color-text-main;
+    color: figma.$color-text-main;
 
     @include mixins.mobile {
-      padding: 8px;
+      padding: figma.$spacing-sm;
     }
   }
 }
@@ -398,10 +399,10 @@
   @include mixins.mobile {
     flex-direction: column;
     align-items: flex-start;
-    gap: 24px;
+    gap: figma.$spacing-l;
     .buttons_wrap {
       width: 100%;
-      gap: 8px;
+      gap: figma.$spacing-sm;
       button {
         width: 100%;
       }
@@ -411,8 +412,8 @@
   .btn_like_wrap {
     height: 44px;
     width: 88px;
-    gap: 8px;
-    border-radius: 24px;
+    gap: figma.$spacing-sm;
+    border-radius: figma.$spacing-l;
     align-items: center;
     display: flex;
     align-self: center;
@@ -430,14 +431,14 @@
       background-color: var(--color-ideation);
       border: 2px solid var(--color-ideation);
       .btn_like {
-        background-color: var(--color-surfaces);
+        background-color: figma.$color-bg-surface;
       }
       .like_counter_wrap {
         font-weight: 600;
       }
     }
     .like_counter_wrap {
-      padding: 8px 16px;
+      padding: figma.$spacing-sm figma.$spacing-m;
     }
 
     .btn_like {
@@ -447,15 +448,15 @@
     }
   }
   .date {
-    color: var(--color-text);
+    color: figma.$color-text-main;
   }
 }
 
 .replies_header {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 24px;
+  gap: figma.$spacing-m;
+  padding-top: figma.$spacing-l;
 
   .line_separator {
     background-color: var(--color-dialog-contrast);
@@ -465,7 +466,7 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: figma.$spacing-sm;
   }
   .form_wrap {
     display: flex;
@@ -499,8 +500,8 @@
 }
 
 .notification_inline {
-  border-radius: 8px;
-  margin-bottom: 16px;
+  border-radius: figma.$border-radius-m;
+  margin-bottom: figma.$spacing-m;
   align-items: center;
   width: 100%;
   flex-direction: row;
@@ -519,17 +520,17 @@
     position: relative;
 
     .reply_referer {
-      height: 48px;
-      width: 32px;
-      border-radius: 0 0 0 8px;
-      border-left: 1px solid var(--color-border);
-      border-bottom: 1px solid var(--color-border);
+      height: figma.$spacing-xxl;
+      width: figma.$spacing-xl;
+      border-radius: 0 0 0 figma.$border-radius-m;
+      border-left: 1px solid figma.$color-border;
+      border-bottom: 1px solid figma.$color-border;
     }
     .reply_more {
       position: absolute;
       height: 100%;
       width: 1px;
-      background-color: var(--color-border);
+      background-color: figma.$color-border;
     }
   }
 }
@@ -547,24 +548,24 @@
     position: absolute;
     right: 0;
     top: 100%;
-    background: var(--color-surfaces);
+    background: figma.$color-bg-surface;
     box-shadow: var(--shadow-lg);
-    border-radius: 8px;
+    border-radius: figma.$border-radius-m;
     z-index: 10;
-    padding: 8px 0;
+    padding: figma.$spacing-sm 0;
     min-width: 180px;
 
     .option {
       display: flex;
       align-items: center;
-      padding: 8px 16px;
+      padding: figma.$spacing-sm figma.$spacing-m;
       border: none;
       background: none;
       width: 100%;
       text-align: left;
       cursor: pointer;
-      font-size: 14px;
-      color: var(--color-text-main);
+      font-size: figma.$font-size-sm;
+      color: figma.$color-text-main;
       gap: 12px;
 
       &:hover {
@@ -572,7 +573,7 @@
       }
 
       &.error_text {
-        color: var(--color-error);
+        color: figma.$color-error;
       }
     }
   }
