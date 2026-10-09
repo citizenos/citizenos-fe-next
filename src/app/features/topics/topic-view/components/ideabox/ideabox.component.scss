@@ -1,13 +1,14 @@
 @use "mixins";
+@use "../../../../../../assets/styles/figma-tokens" as t;
 
 .idea {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: t.$spacing-m;
   position: relative;
-  border-radius: 16px;
-  padding: 16px;
-  background-color: var(--color-dialog-ideation-contrast);
+  border-radius: t.$border-radius-lg;
+  padding: t.$spacing-m;
+  background-color: t.$color-bg-surface;
   height: 280px;
   width: 264px;
   transition: all ease-in 200ms;
@@ -35,16 +36,16 @@
     padding: 0;
 
     .idea_header {
-      padding: 8px 16px 8px 16px;
+      padding: t.$spacing-sm t.$spacing-m t.$spacing-sm t.$spacing-m;
       background-color: var(--color-surface-contrast);
       height: 48px;
-      border-radius: 16px 16px 0 0;
+      border-radius: t.$border-radius-lg t.$border-radius-lg 0 0;
     }
     .idea_content {
-      padding: 0 16px;
+      padding: 0 t.$spacing-m;
     }
     .idea_footer {
-      padding: 0 16px 16px 16px;
+      padding: 0 t.$spacing-m t.$spacing-m t.$spacing-m;
     }
     .btn_like_wrap {
       background-color: var(--color-background);
@@ -71,9 +72,9 @@
       .draft_label {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: t.$spacing-sm;
         span {
-          font-weight: 600;
+          font-weight: t.$font-weight-bold;
           color: var(--color-argument-info);
         }
         cos-icon, svg {
@@ -85,23 +86,23 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 32px;
+        border-radius: t.$border-radius-full;
         position: relative;
         width: 32px;
         height: 32px;
         margin-left: -10px;
         background-color: var(--color-secondary);
-        font-size: 10px;
+        font-size: t.$font-size-xs;
         font-style: normal;
-        font-weight: 600;
-        line-height: 16px;
+        font-weight: t.$font-weight-bold;
+        line-height: t.$spacing-m;
 
         &:first-child {
           margin-left: 0;
         }
         img {
           width: inherit;
-          border-radius: 32px;
+          border-radius: t.$border-radius-full;
           aspect-ratio: 1;
           object-fit: cover;
         }
@@ -109,12 +110,12 @@
           width: 100%;
           height: 100%;
           background-color: var(--color-surfaces);
-          border-radius: 32px;
+          border-radius: t.$border-radius-full;
           display: flex;
           align-items: center;
           justify-content: center;
           cos-initials {
-            font-size: 14px;
+            font-size: t.$font-size-sm;
           }
         }
       }
@@ -136,7 +137,7 @@
       .btn_idea_like {
         width: 32px;
         height: 32px;
-        border-radius: 40px;
+        border-radius: t.$border-radius-full;
         position: relative;
 
         cos-icon, svg {
@@ -150,12 +151,12 @@
       }
 
       .like_counter_wrap {
-        padding: 8px;
+        padding: t.$spacing-sm;
         position: relative;;
         color: var(--color-text);
       }
       &.selected {
-        font-weight: 600;
+        font-weight: t.$font-weight-bold;
         .btn_idea_like {
           background-color: var(--color-ideation);
         }
@@ -164,7 +165,7 @@
     }
     .idea_header_right {
       display: flex;
-      gap: 8px;
+      gap: t.$spacing-sm;
 
       .dropdown {
         background-color: unset;
@@ -187,10 +188,10 @@
 
     .statement {
       color: var(--color-text);
-      font-size: 16px;
+      font-size: t.$font-size-base;
       font-style: normal;
-      font-weight: 600;
-      line-height: 24px;
+      font-weight: t.$font-weight-bold;
+      line-height: t.$spacing-l;
       max-height: 116px;
       overflow: hidden;
 
@@ -210,8 +211,8 @@
     .btn_like_wrap {
       height: 44px;
       width: 88px;
-      gap: 8px;
-      border-radius: 24px;
+      gap: t.$spacing-sm;
+      border-radius: t.$border-radius-full;
       align-items: center;
       display: flex;
       align-self: center;
@@ -229,11 +230,11 @@
           background-color: var(--color-surfaces);
         }
         .like_counter_wrap {
-          font-weight: 600;
+          font-weight: t.$font-weight-bold;
         }
       }
       .like_counter_wrap {
-        padding: 8px 16px;
+        padding: t.$spacing-sm t.$spacing-m;
       }
 
       .btn_like {
@@ -247,7 +248,7 @@
     display: flex;
     justify-content: space-between;
     border-top: 1px solid var(--color-dialog-ideation);
-    padding-top: 16px;
+    padding-top: t.$spacing-m;
     .date {
       color: var(--color-text);
     }
@@ -264,17 +265,17 @@
   height: 100%;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(8px);
-  border-radius: 16px;
+  border-radius: t.$border-radius-lg;
   z-index: 1;
 
   .deleted_idea_content_wrap {
     display: flex;
     background-color: var(--color-surfaces);
     flex-direction: column;
-    border-radius: 8px;
-    padding: 24px;
+    border-radius: t.$border-radius-m;
+    padding: t.$spacing-l;
     align-items: center;
-    gap: 16px;
+    gap: t.$spacing-m;
     z-index: 2;
     text-align: center;
 
@@ -282,9 +283,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 24px;
+      gap: t.$spacing-l;
       a {
-        font-weight: 600;
+        font-weight: t.$font-weight-bold;
       }
     }
   }
@@ -305,22 +306,22 @@
     top: 100%;
     background: var(--color-surfaces);
     box-shadow: var(--shadow-lg);
-    border-radius: 8px;
+    border-radius: t.$border-radius-m;
     z-index: 10;
-    padding: 8px 0;
+    padding: t.$spacing-sm 0;
     min-width: 180px;
 
     .option {
       display: flex;
       align-items: center;
-      padding: 8px 16px;
+      padding: t.$spacing-sm t.$spacing-m;
       border: none;
       background: none;
       width: 100%;
       text-align: left;
       cursor: pointer;
-      font-size: 14px;
-      color: var(--color-text-main);
+      font-size: t.$font-size-sm;
+      color: t.$color-text-main;
       gap: 12px;
 
       &:hover {
