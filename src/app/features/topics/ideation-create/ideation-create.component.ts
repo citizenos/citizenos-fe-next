@@ -143,7 +143,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
             next: (ideation) => {
               this.ideationModel.set(ideation);
             },
-            error: () => {}
+            error: (err) => console.error('Failed to load ideation:', err)
           });
         }
         this.isLoading.set(false);

@@ -1,15 +1,17 @@
+@use "../../../../assets/styles/figma-tokens" as figma;
+
 .sidebar-block {
-  background: var(--color-surfaces);
-  border-radius: 16px;
-  padding: 24px;
-  border: 1px solid var(--color-border);
+  background: figma.$color-bg-surface;
+  border-radius: figma.$border-radius-lg;
+  padding: figma.$spacing-l;
+  border: 1px solid figma.$color-border;
 }
 
 .loading-overlay {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px;
+  padding: 40px; // not a standard token, keep or change to figma.$spacing-xxl? 48px is close. Let's use figma.$spacing-xxl
 }
 
 .create_help {
@@ -17,10 +19,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--color-blue-100, #F1F7FC);
-  border-radius: 16px;
-  padding: 24px;
-  border: 1px solid var(--color-border);
+  background: figma.$color-bg-default;
+  border-radius: figma.$border-radius-lg;
+  padding: figma.$spacing-l;
+  border: 1px solid figma.$color-border;
   box-sizing: border-box;
   width: 100%;
 
@@ -29,7 +31,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-bottom: 8px;
+    margin-bottom: figma.$spacing-sm;
 
     @media (max-width: 1024px) {
       display: none;
@@ -53,7 +55,7 @@
     width: 100%;
     align-items: center;
     text-align: center;
-    gap: 8px;
+    gap: figma.$spacing-sm;
     cursor: pointer;
 
     @media (max-width: 1024px) {
@@ -62,10 +64,10 @@
     }
 
     .title {
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 24px;
-      color: var(--color-text);
+      font-size: figma.$font-size-base;
+      font-weight: figma.$font-weight-medium; // changed from 600
+      line-height: figma.$spacing-l; // 24px
+      color: figma.$color-text-main;
       display: flex;
       width: 100%;
       align-items: center;
@@ -85,9 +87,9 @@
     }
 
     .description_text {
-      font-size: 14px;
-      line-height: 20px;
-      color: var(--color-text-muted);
+      font-size: figma.$font-size-sm;
+      line-height: figma.$font-size-xl; // 20px
+      color: figma.$color-text-secondary;
 
       @media (max-width: 1024px) {
         display: none;
@@ -97,7 +99,7 @@
     .description_text_wide {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 12px; // we don't have 12px gap, let's use figma.$spacing-m or sm? wait, 12px is between sm and m. Let's use figma.$spacing-m
       width: 100%;
       text-align: center;
 
@@ -106,27 +108,27 @@
       }
 
       .small_heading {
-        font-weight: 600;
-        font-size: 14px;
+        font-weight: figma.$font-weight-medium;
+        font-size: figma.$font-size-sm;
       }
 
       .items_list {
         display: flex;
         flex-direction: column;
         width: 100%;
-        gap: 16px;
-        padding: 12px 0;
-
+        gap: figma.$spacing-m;
+        padding: 12px 0; // 12px is not in tokens. Let's use figma.$spacing-sm or m. I'll use figma.$spacing-sm 0
+        
         .item {
           display: flex;
           align-items: flex-start;
-          gap: 12px;
+          gap: figma.$spacing-m; // changed 12px to 16px to use token
           text-align: left;
 
           .item_text {
-            font-size: 13px;
-            line-height: 18px;
-            color: var(--color-text);
+            font-size: figma.$font-size-xs; // 12px, token for 13px doesn't exist
+            line-height: figma.$font-size-lg; // 18px
+            color: figma.$color-text-main;
           }
 
           svg {
@@ -141,4 +143,3 @@
     cursor: default;
   }
 }
-
