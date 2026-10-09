@@ -1,12 +1,133 @@
+@import '../../../../../../assets/styles/figma-tokens';
 
-.profile_image_filler  {
-  height: 40px;
+.dialog_report {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-m;
+  padding: $spacing-l;
+  background-color: $color-bg-surface;
+  border-radius: $border-radius-lg;
+  color: $color-text-main;
 }
+
+.dialog_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .header_title h2 {
+    margin: 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+  }
+
+  .header_close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: $spacing-xs;
+
+    svg {
+      fill: $color-text-main;
+      width: $spacing-l;
+      height: $spacing-l;
+    }
+  }
+}
+
 .dialog_content {
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-m;
+
+  .report_argument {
+    background-color: $color-bg-default;
+    border-radius: $border-radius-m;
+    padding: $spacing-m;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    .argument_header {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+
+      .author_info .name {
+        font-weight: $font-weight-medium;
+        font-size: $font-size-sm;
+      }
+    }
+
+    .argument_body {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+    }
+  }
+
   form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: $spacing-m;
+
+    .form_group {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xs;
+
+      label {
+        font-weight: $font-weight-medium;
+        font-size: $font-size-sm;
+      }
+      
+      .error {
+        color: $color-error;
+        font-size: $font-size-xs;
+      }
+    }
+
+    .dialog_footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: $spacing-m;
+      margin-top: $spacing-sm;
+
+      button {
+        padding: $spacing-sm $spacing-m;
+        border-radius: $border-radius-full;
+        font-size: $font-size-base;
+        font-weight: $font-weight-medium;
+        cursor: pointer;
+        
+        &.btn_secondary {
+          background-color: transparent;
+          border: 1px solid $color-border;
+          color: $color-text-main;
+
+          &:hover {
+            background-color: $color-bg-default;
+          }
+        }
+
+        &.btn_primary {
+          background-color: $color-primary;
+          border: none;
+          color: $color-bg-surface;
+
+          &:hover {
+            background-color: $color-primary-hover;
+          }
+
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
   }
+}
+
+.profile_image_filler {
+  height: $spacing-xl;
 }
