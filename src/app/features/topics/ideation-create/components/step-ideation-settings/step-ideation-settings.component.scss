@@ -1,0 +1,174 @@
+@use '../../../../../../assets/styles/figma-tokens' as figma;
+
+.step-container { display: flex; flex-direction: column; gap: figma.$spacing-xl; }
+
+.create_content_section {
+  background: figma.$color-bg-surface;
+  border-radius: figma.$border-radius-m;
+  padding: figma.$spacing-l;
+  display: flex;
+  flex-direction: row;
+  gap: figma.$spacing-m;
+
+  .number_wrap {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: figma.$color-bg-default;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: figma.$font-weight-medium;
+    position: relative;
+
+    svg {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+    }
+  }
+  
+  .section_content_wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: figma.$spacing-m;
+
+    .mobile_show {
+      color: figma.$color-text-secondary;
+      font-size: figma.$font-size-sm;
+    }
+
+    .header_wrap {
+      display: flex;
+      gap: 0;
+      flex-direction: column;
+      
+      @media (max-width: 767px) {
+        flex-direction: row;
+        align-items: center;
+        gap: figma.$spacing-sm;
+      }
+
+      .small_heading {
+        font-size: figma.$font-size-lg;
+        font-weight: figma.$font-weight-bold;
+        color: figma.$color-text-main;
+      }
+      
+      .mobile_hidden {
+        color: figma.$color-text-secondary;
+        font-size: figma.$font-size-sm;
+      }
+    }
+  }
+}
+
+.radio_wrap {
+  border: 1px solid figma.$color-border;
+  border-radius: figma.$border-radius-m;
+  padding: figma.$spacing-m;
+  
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.radio_text_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: figma.$spacing-sm;
+}
+
+.setting_toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .bold {
+    font-weight: figma.$font-weight-bold;
+    font-size: figma.$font-size-lg;
+    color: figma.$color-text-main;
+  }
+}
+
+.radio_description {
+  font-size: figma.$font-size-sm;
+  color: figma.$color-text-secondary;
+}
+
+.anonymous_area_wrap, .template_area_wrap {
+  margin-top: figma.$spacing-l;
+  border-top: 1px solid figma.$color-border;
+  padding-top: figma.$spacing-l;
+  display: flex;
+  flex-direction: column;
+  gap: figma.$spacing-sm;
+
+  &.hidden { display: none; }
+}
+
+.anonymous_area_options {
+  display: flex;
+  gap: figma.$spacing-m;
+  flex-wrap: wrap;
+  margin-top: figma.$spacing-sm;
+
+  .checkbox {
+    display: flex;
+    align-items: center;
+    gap: figma.$spacing-sm;
+    cursor: pointer;
+    position: relative;
+    padding-left: 28px;
+
+    input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background-color: figma.$color-bg-surface;
+      border: 1px solid figma.$color-border;
+      border-radius: figma.$border-radius-sm;
+    }
+
+    &:hover input ~ .checkmark {
+      background-color: figma.$color-bg-default;
+    }
+
+    input:checked ~ .checkmark {
+      background-color: figma.$color-primary;
+      border-color: figma.$color-primary;
+    }
+
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    input:checked ~ .checkmark:after {
+      display: block;
+    }
+
+    .checkmark:after {
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+}
