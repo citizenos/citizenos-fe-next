@@ -1,53 +1,178 @@
+@import '../../../../../../assets/styles/figma-tokens';
 
+.dialog_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+.dialog {
+  background: $color-bg-surface;
+  border-radius: $border-radius-m;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  overflow: hidden;
+}
+.dialog_header {
+  padding: $spacing-l;
+  background: var(--color-ideation);
+  color: $color-bg-surface;
+  .header_text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+    }
+  }
+}
+.dialog_content {
+  padding: $spacing-l;
+  overflow-y: auto;
+  flex: 1;
+}
+.bold {
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-sm;
+}
 .idea_selection_wrap {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--color-border);
-  padding: 16px;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  margin-top: $spacing-m;
+  padding: $spacing-m;
   max-height: 240px;
   overflow: auto;
-  gap: 16px;
-
-  .line_separator {
-    background: var(--color-border);
-  }
-  .idea_selection_header {
+  gap: $spacing-m;
+}
+.idea_selection_header {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  background: $color-bg-default;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  .checkbox_wrap {
     display: flex;
-    width: 100%;
-    flex-direction: row;
+    gap: $spacing-m;
     align-items: center;
-    justify-content: space-between;
-    .checkbox_wrap {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-    .likes_wrap {
-      display: flex;
-      gap: 0;
-      align-items: center;
-    }
   }
-
-  .ideas_wrap {
+  .likes_wrap {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .idea_row {
-    display: flex;
+    gap: 0;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
-
-    .checkbox_wrap {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-    .votes {
-      width: 40px;
-    }
+  }
+}
+.line_separator {
+  background: $color-border;
+  height: 1px;
+}
+.ideas_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+.checkbox_wrap {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: $spacing-sm;
+}
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  position: relative;
+  background: $color-bg-surface;
+  .checkmark {
+    display: none;
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid $color-bg-surface;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  &.selected {
+    background: var(--color-ideation);
+    border-color: var(--color-ideation);
+    .checkmark { display: block; }
+  }
+}
+.idea_row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-top: 1px solid $color-border;
+  align-items: flex-start;
+  width: 100%;
+  .checkbox_wrap {
+    display: flex;
+    gap: $spacing-m;
+    align-items: center;
+  }
+  .statement {
+    flex: 1;
+    margin-right: $spacing-m;
+    font-size: $font-size-sm;
+  }
+  .votes {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+    width: 40px;
+    text-align: right;
+  }
+}
+.dialog_footer {
+  padding: $spacing-l;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: $spacing-l;
+  border-top: 1px solid $color-border;
+  a, .btn_link {
+    cursor: pointer;
+    color: var(--color-ideation);
+    background: transparent;
+    border: none;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-base;
+  }
+}
+.btn_big_submit {
+  background: var(--color-ideation);
+  color: $color-bg-surface;
+  border: none;
+  padding: 12px $spacing-l;
+  border-radius: $border-radius-sm;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-base;
+  cursor: pointer;
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
