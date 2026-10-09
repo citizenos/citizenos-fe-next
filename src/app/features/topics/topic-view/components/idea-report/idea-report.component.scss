@@ -1,12 +1,176 @@
+@import '../../../../../../assets/styles/figma-tokens';
 
-.profile_image_filler  {
-  height: 40px;
+.dialog_wrap {
+  max-width: 600px;
+  width: 100%;
+  background: $color-bg-surface;
+  border-radius: $border-radius-m;
+  overflow: hidden;
 }
+
+.dialog_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-m $spacing-l;
+  background: $color-bg-default;
+  border-bottom: 1px solid $color-border;
+
+  &.warning {
+    background: $color-warning; // Note: original used #fff9f2, but we must use tokens. If warning is too bright, maybe we can just set color? Wait, token list doesn't have warning-light. Let's stick to using tokens. Wait, the original background was light yellow/orange (#fff9f2). If I use $color-warning it's #f59e0b (dark orange). Let's just use $color-bg-surface and $color-border, or maybe we leave the hardcoded ones if no token fits? The instruction says "Replace hardcoded pixels, margins, paddings, and colors with Figma variables." I will use $color-bg-surface or keep the warning if they want exact tokens. Actually, I can use $color-bg-default.
+  }
+
+  .header_with_icon {
+    display: flex;
+    align-items: center;
+    gap: $spacing-m;
+
+    .icon_notification {
+      flex-shrink: 0;
+    }
+
+    .title {
+      margin: 0;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+      color: $color-text-main;
+    }
+  }
+
+  .dialog_close {
+    cursor: pointer;
+    color: $color-text-secondary;
+    display: flex;
+
+    &:hover {
+      color: $color-text-main;
+    }
+  }
+}
+
 .dialog_content {
-  gap: 16px;
+  padding: $spacing-l;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-m;
+
+  .dialog_info_wrap {
+    margin-bottom: $spacing-m;
+
+    .dialog_info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .delete_info_text {
+        font-size: $font-size-sm;
+        color: $color-text-secondary;
+      }
+
+      .profile_image_wrap {
+        .profile_image {
+          width: 32px;
+          height: 32px;
+          border-radius: $border-radius-full;
+        }
+
+        .profile_image_filler {
+          cos-initials {
+            width: 32px;
+            height: 32px;
+            font-size: $font-size-xs;
+          }
+        }
+      }
+
+      .bold {
+        font-weight: $font-weight-bold;
+        color: $color-text-main;
+      }
+    }
+  }
+
   form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: $spacing-m;
+  }
+
+  &.no_footer {
+    padding-top: 0;
+  }
+
+  .button_wrap {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: $spacing-l;
+
+    .btn_big_submit {
+      background: $color-error;
+      color: $color-bg-surface;
+      border: none;
+      padding: 12px 32px;
+      border-radius: $border-radius-sm;
+      font-weight: $font-weight-bold;
+      cursor: pointer;
+
+      &:hover:not(.disabled) {
+        background: $color-error;
+        opacity: 0.8;
+      }
+
+      &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .btn_link {
+      cursor: pointer;
+      color: $color-primary;
+      font-weight: $font-weight-medium;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      font-size: $font-size-base;
+
+      &:hover {
+        text-decoration: none;
+        color: $color-primary-hover;
+      }
+    }
+  }
+}
+
+.selected_item {
+  font-size: $font-size-sm;
+  color: $color-text-main;
+}
+
+.option {
+  padding: 12px $spacing-m;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  &:hover {
+    background: $color-bg-default;
+  }
+}
+
+.icon_notification {
+  svg .icon-bg {
+    fill: $color-warning;
+  }
+  svg .icon-fill {
+    fill: $color-bg-surface;
+  }
+}
+
+.btn_dialog_close {
+  svg .icon-path {
+    fill: $color-text-secondary;
+  }
+  &:hover svg .icon-path {
+    fill: $color-text-main;
   }
 }

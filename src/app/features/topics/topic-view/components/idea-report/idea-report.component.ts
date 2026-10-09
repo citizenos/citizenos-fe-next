@@ -33,14 +33,14 @@ export interface IdeaReportData {
           <div class="header_with_icon">
             <div class="icon_notification">
               <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="40" height="40" rx="20" fill="#F39129" />
+                <rect width="40" height="40" rx="20" class="icon-bg" />
                 <path
                   d="M19.0645 8C18.4876 8 18.0304 8.48668 18.0664 9.06238L18.9414 23.0624C18.9743 23.5894 19.4114 24 19.9395 24H20.0605C20.5886 24 21.0257 23.5894 21.0586 23.0624L21.9336 9.06238C21.9696 8.48668 21.5124 8 20.9355 8H19.0645Z"
-                  fill="white"
+                  class="icon-fill"
                 />
                 <path
                   d="M20 31C21.1046 31 22 30.1046 22 29C22 27.8954 21.1046 27 20 27C18.8954 27 18 27.8954 18 29C18 30.1046 18.8954 31 20 31Z"
-                  fill="white"
+                  class="icon-fill"
                 />
               </svg>
             </div>
@@ -51,7 +51,7 @@ export interface IdeaReportData {
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
-                  fill="#2C3B47" />
+                  class="icon-path" />
               </svg>
             </button>
           </div>
@@ -110,160 +110,7 @@ export interface IdeaReportData {
       </div>
     </div>
   `,
-  styles: [`
-    .dialog_wrap {
-      max-width: 600px;
-      width: 100%;
-      background: white;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .dialog_header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 24px;
-      background: #fdf2f2;
-      border-bottom: 1px solid #f9dcdc;
-
-      &.warning {
-        background: #fff9f2;
-        border-bottom: 1px solid #ffe8cc;
-      }
-
-      .header_with_icon {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-
-        .icon_notification {
-          flex-shrink: 0;
-        }
-
-        .title {
-          margin: 0;
-          font-size: 18px;
-          font-weight: 700;
-          color: #2c3b47;
-        }
-      }
-
-      .dialog_close {
-        cursor: pointer;
-        color: #727c84;
-        display: flex;
-
-        &:hover {
-          color: #2c3b47;
-        }
-      }
-    }
-
-    .dialog_content {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-
-      .dialog_info_wrap {
-        margin-bottom: 16px;
-
-        .dialog_info {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-
-          .delete_info_text {
-            font-size: 14px;
-            color: #727c84;
-          }
-
-          .profile_image_wrap {
-            .profile_image {
-              width: 32px;
-              height: 32px;
-              border-radius: 50%;
-            }
-
-            .profile_image_filler {
-              cos-initials {
-                width: 32px;
-                height: 32px;
-                font-size: 12px;
-              }
-            }
-          }
-
-          .bold {
-            font-weight: 700;
-            color: #2c3b47;
-          }
-        }
-      }
-
-      form {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      &.no_footer {
-        padding-top: 0;
-      }
-
-      .button_wrap {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 24px;
-
-        .btn_big_submit {
-          background: #ef4025;
-          color: white;
-          border: none;
-          padding: 12px 32px;
-          border-radius: 4px;
-          font-weight: 700;
-          cursor: pointer;
-
-          &:hover:not(.disabled) {
-            background: #d33019;
-          }
-
-          &.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-          }
-        }
-
-        a {
-          cursor: pointer;
-          color: #1168a8;
-          font-weight: 600;
-          text-decoration: underline;
-
-          &:hover {
-            text-decoration: none;
-          }
-        }
-      }
-    }
-
-    .selected_item {
-      font-size: 14px;
-      color: #2c3b47;
-    }
-
-    .option {
-      padding: 12px 16px;
-      cursor: pointer;
-      font-size: 14px;
-      &:hover {
-        background: #f4f6f8;
-      }
-    }
-  `],
+  styleUrls: ['./idea-report.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
