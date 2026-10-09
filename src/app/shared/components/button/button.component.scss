@@ -1,3 +1,5 @@
+@import '../../../../assets/styles/figma-tokens';
+
 :host {
   display: flex;
 }
@@ -14,13 +16,13 @@ button {
   transition: all 0.2s ease-in-out;
   position: relative;
   width: 100%;
-  gap: 8px;
+  gap: $spacing-sm;
 
   .btn-content {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: $spacing-sm;
     height: 100%;
   }
 
@@ -38,47 +40,47 @@ button {
 
 /* Variants */
 .btn-primary {
-  background-color: var(--color-primary);
+  background-color: $color-primary;
   color: white;
   border: none;
   &:hover:not(:disabled) {
-    background-color: var(--color-primary-hover);
+    background-color: $color-primary-hover;
   }
 }
 
 .btn-secondary {
-  background-color: var(--color-secondary);
-  color: var(--color-link);
+  background-color: $color-bg-default;
+  color: $color-text-main;
   border: none;
   &:hover:not(:disabled) {
-    background-color: var(--color-primary);
+    background-color: $color-primary;
     color: white;
   }
 }
 
 .btn-ghost {
   background: none;
-  border: 2px solid var(--color-primary);
-  color: var(--color-primary);
+  border: 2px solid $color-primary;
+  color: $color-primary;
   &:hover:not(:disabled) {
     background-color: none;
-    border-color: var(--color-primary-hover);
-    color: var(--color-primary-hover);
+    border-color: $color-primary-hover;
+    color: $color-primary-hover;
   }
 }
 
 .btn-light {
-  background-color: var(--color-surfaces);
-  color: var(--color-text);
+  background-color: $color-bg-surface;
+  color: $color-text-secondary;
   border: none;
   &:hover:not(:disabled) {
-    color: var(--color-link);
-    background-color: var(--color-dialog-contrast);
+    color: $color-primary;
+    background-color: $color-bg-default;
   }
 }
 
 .btn-danger {
-  background-color: var(--color-danger);
+  background-color: $color-error;
   color: white;
   border: none;
   &:hover:not(:disabled) {
@@ -87,7 +89,7 @@ button {
 }
 
 .btn-success {
-  background-color: var(--color-success);
+  background-color: $color-success;
   color: white;
   border: none;
   &:hover:not(:disabled) {
@@ -97,30 +99,30 @@ button {
 
 /* Sizes (Matching Legacy CitizensOS) */
 .btn-sm {
-  padding: 0 8px;
+  padding: 0 $spacing-sm;
   min-height: 32px;
   height: 32px;
-  font-size: 14px;
+  font-size: $font-size-sm;
   line-height: 16px;
-  border-radius: 32px;
+  border-radius: $border-radius-full;
 }
 
 .btn-md {
-  padding: 0 16px;
+  padding: 0 $spacing-m;
   min-height: 40px;
   height: 40px;
-  font-size: 14px;
+  font-size: $font-size-sm;
   line-height: 16px;
-  border-radius: 40px;
+  border-radius: $border-radius-full;
 }
 
 .btn-lg {
-  padding: 8px 24px;
+  padding: $spacing-sm $spacing-l;
   min-height: 48px;
   height: 48px;
-  font-size: 16px;
+  font-size: $font-size-base;
   line-height: 32px;
-  border-radius: 48px;
+  border-radius: $border-radius-full;
 }
 
 /* Loading Spinner */
@@ -132,7 +134,7 @@ button {
   border-radius: 50%;
   display: inline-block;
   animation: rotation 1s linear infinite;
-  margin-right: 8px;
+  margin-right: $spacing-sm;
 }
 
 @keyframes rotation {
