@@ -1,26 +1,80 @@
+@import '../../../../../../assets/styles/figma-tokens';
 
+.dialog_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+.dialog {
+  background: $color-bg-surface;
+  border-radius: $border-radius-m;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  overflow: hidden;
+}
+.dialog_header {
+  padding: $spacing-l;
+  background: var(--color-ideation);
+  color: $color-bg-surface;
+  .header_text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title { font-size: $font-size-2xl; font-weight: $font-weight-bold; }
+  }
+}
+.dialog_content {
+  padding: $spacing-l;
+  overflow-y: auto;
+  flex: 1;
+}
+.bold { font-weight: $font-weight-bold; margin-bottom: $spacing-sm; }
 .idea_selection_wrap {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--color-border);
-  padding: 16px;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  padding: $spacing-m;
+  margin-top: $spacing-m;
   max-height: 240px;
   overflow: auto;
-  gap: 16px;
+  gap: $spacing-m;
 
   .line_separator {
-    background: var(--color-border);
+    background: $color-border;
+    height: 1px;
+    width: 100%;
   }
   .idea_selection_header {
     display: flex;
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    padding: $spacing-sm $spacing-xs; // Added back padding that was in inline style?
+    background: $color-bg-default;
+    width: 100%;
     .checkbox_wrap {
       display: flex;
-      gap: 16px;
+      gap: $spacing-m;
       align-items: center;
+      cursor: pointer;
     }
     .likes_wrap {
       display: flex;
@@ -32,7 +86,7 @@
   .ideas_wrap {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: $spacing-sm;
   }
 
   .idea_row {
@@ -40,14 +94,62 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    padding: $spacing-sm $spacing-xs;
 
     .checkbox_wrap {
       display: flex;
-      gap: 16px;
+      gap: $spacing-m;
       align-items: center;
+      cursor: pointer;
+      flex: 1;
     }
     .votes {
       width: 40px;
+      color: $color-text-secondary;
+      font-size: $font-size-sm;
     }
+    .statement { flex: 1; margin-right: $spacing-m; font-size: $font-size-sm; }
   }
 }
+
+.checkbox_wrap {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 10px; // wait, gap is handled above or I should just use $spacing-sm
+}
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  position: relative;
+  background: $color-bg-surface;
+  .checkmark { display: none; position: absolute; left: 6px; top: 2px; width: 6px; height: 10px; border: solid $color-bg-surface; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  &.selected {
+    background: var(--color-ideation);
+    border-color: var(--color-ideation);
+    .checkmark { display: block; }
+  }
+}
+
+.dialog_footer {
+  padding: $spacing-l;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: $spacing-l;
+  border-top: 1px solid $color-border;
+  a { cursor: pointer; color: var(--color-ideation); }
+}
+.btn_big_submit {
+  background: var(--color-ideation);
+  color: $color-bg-surface;
+  border: none;
+  padding: 12px $spacing-l; // Wait, 12px doesn't exist, we have $spacing-m 16px, padding was 12px 24px
+  border-radius: $border-radius-sm;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+

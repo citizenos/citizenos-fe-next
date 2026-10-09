@@ -37,7 +37,7 @@ interface IdeationFolderDialogData {
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
-                    fill="#2C3B47" />
+                    fill="currentColor" />
                 </svg>
               </button>
             </div>
@@ -73,7 +73,7 @@ interface IdeationFolderDialogData {
                     <div class="likes_wrap">
                       <span>{{ 'COMPONENTS.EDIT_IDEA_FOLDER.LBL_LIKES' | translate }}</span>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="#4D5C6A" />
+                        <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="currentColor" />
                       </svg>
                     </div>
                   </div>
@@ -106,114 +106,7 @@ interface IdeationFolderDialogData {
       </div>
     </div>
   `,
-  styles: [`
-    .dialog_wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1000;
-    }
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-    }
-    .dialog {
-      background: white;
-      border-radius: 8px;
-      width: 100%;
-      max-width: 600px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      z-index: 1001;
-      overflow: hidden;
-    }
-    .dialog_header {
-      padding: 24px;
-      background: var(--color-ideation);
-      color: white;
-      .header_text {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .title { font-size: 24px; font-weight: bold; }
-      }
-    }
-    .dialog_content {
-      padding: 24px;
-      overflow-y: auto;
-      flex: 1;
-    }
-    .bold { font-weight: bold; margin-bottom: 8px; }
-    .idea_selection_wrap {
-      border: 1px solid var(--color-border);
-      border-radius: 4px;
-      margin-top: 16px;
-    }
-    .idea_selection_header {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px;
-      background: #F4F6F8;
-    }
-    .checkbox_wrap {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      gap: 10px;
-    }
-    .checkbox {
-      width: 20px;
-      height: 20px;
-      border: 1px solid #C8D1D9;
-      border-radius: 4px;
-      position: relative;
-      background: white;
-      .checkmark { display: none; position: absolute; left: 6px; top: 2px; width: 6px; height: 10px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); }
-      &.selected {
-        background: var(--color-ideation);
-        border-color: var(--color-ideation);
-        .checkmark { display: block; }
-      }
-    }
-    .idea_row {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px;
-      border-top: 1px solid var(--color-border);
-      align-items: flex-start;
-      .statement { flex: 1; margin-right: 16px; font-size: 14px; }
-      .votes { color: #727C84; font-size: 14px; }
-    }
-    .dialog_footer {
-      padding: 24px;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 24px;
-      border-top: 1px solid var(--color-border);
-      a { cursor: pointer; color: var(--color-ideation); }
-    }
-    .btn_big_submit {
-      background: var(--color-ideation);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
-      &:disabled { opacity: 0.5; cursor: not-allowed; }
-    }
-  `]
+  styleUrl: './edit-idea-folder.component.scss'
 })
 export class EditIdeaFolderComponent {
   private ideationService = inject(TopicIdeationService);
