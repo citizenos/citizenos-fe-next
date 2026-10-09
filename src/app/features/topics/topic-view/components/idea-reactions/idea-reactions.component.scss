@@ -1,3 +1,4 @@
+@use "../../../../../../assets/styles/figma-tokens" as tokens;
 @use "mixins";
 
 @include mixins.mobile {
@@ -8,7 +9,7 @@
     .row_cell {
       flex-direction: row;
       align-items: center;
-      gap: 16px;
+      gap: tokens.$spacing-m;
       &:last-child {
         border-top:none;
       }
@@ -22,6 +23,10 @@
 
 .dialog_content {
   &:last-child {
-    border-radius: 0 0 16px 16px;
+    border-radius: 0 0 tokens.$border-radius-lg tokens.$border-radius-lg;
   }
+}
+
+svg path {
+  fill: tokens.$color-text-main;
 }
