@@ -1,5 +1,71 @@
 @use "mixins";
 @use "../add-idea/add-idea.component.scss" as add-idea;
+@use "../../../../../../assets/styles/figma-tokens" as figma;
+
+.edit_idea_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: figma.$spacing-m;
+  background-color: figma.$color-bg-surface;
+  padding: figma.$spacing-m;
+  border-radius: figma.$border-radius-m;
+  
+  .add_idea_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-size: figma.$font-size-lg;
+      font-weight: figma.$font-weight-bold;
+      margin: 0;
+      color: figma.$color-text-main;
+    }
+
+    .header_actions {
+      display: flex;
+      gap: figma.$spacing-sm;
+      align-items: center;
+
+      .autosave_indicator {
+        display: flex;
+        align-items: center;
+        gap: figma.$spacing-xs;
+        color: figma.$color-text-secondary;
+        font-size: figma.$font-size-sm;
+      }
+    }
+  }
+
+  #idea_form {
+    display: flex;
+    flex-direction: column;
+    gap: figma.$spacing-m;
+
+    .demographics_section {
+      display: flex;
+      flex-direction: column;
+      gap: figma.$spacing-sm;
+      background-color: figma.$color-bg-default;
+      padding: figma.$spacing-sm;
+      border-radius: figma.$border-radius-sm;
+    }
+  }
+
+  #buttons_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: figma.$spacing-m;
+
+    .btn_row_left, .btn_row_right {
+      display: flex;
+      gap: figma.$spacing-sm;
+      align-items: center;
+    }
+  }
+}
+
 #create_idea_footer {
   position: fixed;
   left: max(224px, calc(200px + ((100% - 1392px)/2)));
