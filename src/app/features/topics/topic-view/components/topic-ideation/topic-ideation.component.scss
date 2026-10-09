@@ -1,8 +1,9 @@
 @use "mixins";
+@use "../../../../../../assets/styles/figma-tokens" as figma;
 :host {
 
   background-color: var(--color-ideation-light);
-  border-radius: 16px;
+  border-radius: figma.$border-radius-lg;
 
   display: block;
   width: 100%;
@@ -11,8 +12,8 @@
 
 .ideas_wrap {
   display: flex;
-  gap: 16px;
-  grid-row-gap: 24px;
+  gap: figma.$spacing-m;
+  grid-row-gap: figma.$spacing-l;
   flex-wrap: wrap;
 
   @include mixins.mobile {
@@ -24,9 +25,9 @@
 
 
 .ideation_wrap {
-  padding: 0 32px 32px 32px;
+  padding: 0 figma.$spacing-xl figma.$spacing-xl figma.$spacing-xl;
   @include mixins.mobile {
-    padding: 0 16px 16px 16px;
+    padding: 0 figma.$spacing-m figma.$spacing-m figma.$spacing-m;
   }
 }
 
@@ -35,20 +36,20 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 32px;
-  margin: 0 -32px 32px -32px;
+  padding: figma.$spacing-l figma.$spacing-xl;
+  margin: 0 -#{figma.$spacing-xl} figma.$spacing-xl -#{figma.$spacing-xl};
   @include mixins.mobile {
-    padding: 16px;
-    margin: 0 -16px 24px -16px;
+    padding: figma.$spacing-m;
+    margin: 0 -#{figma.$spacing-m} figma.$spacing-l -#{figma.$spacing-m};
   }
   background-color: var(--color-dialog-ideation-contrast);
-  border-radius: 16px 16px 0 0;
-  gap: 16px;
+  border-radius: figma.$border-radius-lg figma.$border-radius-lg 0 0;
+  gap: figma.$spacing-m;
 
   @include mixins.mobile {
     flex-direction: column;
     align-items: flex-start;
-    padding: 16px;
+    padding: figma.$spacing-m;
   }
 
   .header_left {
@@ -57,9 +58,9 @@
     gap: 12px;
 
     .question {
-      font-size: 20px;
+      font-size: figma.$font-size-xl;
       font-style: normal;
-      font-weight: 600;
+      font-weight: figma.$font-weight-bold;
       line-height: 28px;
     }
   }
@@ -67,7 +68,7 @@
   .header_right {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: figma.$spacing-l;
 
     @include mixins.mobile {
       width: 100%;
@@ -77,17 +78,17 @@
     .deadline_wrap {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--color-text-main);
+      gap: figma.$spacing-sm;
+      font-size: figma.$font-size-sm;
+      font-weight: figma.$font-weight-bold;
+      color: figma.$color-text-main;
     }
   }
 }
 
 .ideation_question {
   @include mixins.mobile {
-    font-size: 16px;
+    font-size: figma.$font-size-base;
   }
 }
 .ideation_deadline {
@@ -103,9 +104,9 @@
 .ideation_info_wrap {
   display: flex;
   flex-direction: column;
-  padding: 24px;
-  border-radius: 8px;
-  gap: 16px;
+  padding: figma.$spacing-l;
+  border-radius: figma.$border-radius-m;
+  gap: figma.$spacing-m;
 
   .line_separator {
     background-color: var(--color-ideation-disabled);
@@ -113,47 +114,47 @@
   .ideation_info_text_wrap {
     display: flex;
     justify-content: space-between;
-    gap: 32px;
-    padding: 16px;
+    gap: figma.$spacing-xl;
+    padding: figma.$spacing-m;
     background-color: var(--color-dialog-ideation-contrast);
-    border-radius: 8px;
+    border-radius: figma.$border-radius-m;
 
     .ideation_text_left,
     .ideation_text_right {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: figma.$spacing-sm;
     }
 
     .text_area {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: figma.$spacing-sm;
     }
     .ideation_text_left {
       .text_area {
         display: flex;
         flex-direction: column;
         max-width: 440px;
-        gap: 8px;
+        gap: figma.$spacing-sm;
 
         div {
-          font-size: 14px;
-          line-height: 16px;
+          font-size: figma.$font-size-sm;
+          line-height: #{figma.$spacing-m};
           span,
           a {
-            font-size: 14px;
-            line-height: 16px;
+            font-size: figma.$font-size-sm;
+            line-height: #{figma.$spacing-m};
           }
-          font-size: 14px;
+          font-size: figma.$font-size-sm;
           display: flex;
-          gap: 8px;
+          gap: figma.$spacing-sm;
         }
         .links_wrap {
-          margin-top: 16px;
+          margin-top: figma.$spacing-m;
           flex-direction: column;
           a {
-            gap: 8px;
+            gap: figma.$spacing-sm;
             display: flex;
             align-items: center;
           }
@@ -165,7 +166,7 @@
 
 .tabs_wrap {
   display: flex;
-  gap: 24px;
+  gap: figma.$spacing-l;
   width: 100%;
   justify-content: space-between;
 
@@ -181,19 +182,19 @@
     }
 
     .tab_item {
-      font-size: 18px;
+      font-size: figma.$font-size-lg;
       font-style: normal;
-      font-weight: 400;
+      font-weight: figma.$font-weight-normal;
       line-height: 24px; /* 133.333% */
-      padding: 8px 0;
+      padding: figma.$spacing-sm 0;
       @include mixins.mobile {
         width: 100%;
-        font-size: 16px;
+        font-size: figma.$font-size-base;
         text-align: center;
       }
       &.active {
         color: var(--color-text);
-        font-weight: 600;
+        font-weight: figma.$font-weight-bold;
         border-bottom: 2px solid var(--color-ideation);
       }
     }
@@ -202,7 +203,7 @@
 .folder_data_wrap {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: figma.$spacing-m;
   justify-content: space-between;
   width: 100%;
 
@@ -212,7 +213,7 @@
   }
   .left {
     display: flex;
-    gap: 16px;
+    gap: figma.$spacing-m;
     align-items: center;
     @include mixins.mobile {
       width: 100%;
@@ -230,26 +231,26 @@
   }
   .folder_name {
     display: flex;
-    gap: 4px;
+    gap: figma.$spacing-xs;
   }
 }
 .idea_filters_wrap {
   display: flex;
-  gap: 16px;
+  gap: figma.$spacing-m;
   flex-direction: column;
-  padding: 24px 0;
+  padding: figma.$spacing-l 0;
   width: 100%;
 
   .options_row {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: figma.$spacing-l;
     width: 100%;
 
     .options_row_main {
       width: 100%;
       display: flex;
-      gap: 16px;
+      gap: figma.$spacing-m;
 
       .dropdown_input {
         width: 100%;
@@ -257,12 +258,12 @@
     }
 
     .dropdown_input {
-      width: calc(100% / 3 - 16px);
+      width: calc(100% / 3 - #{figma.$spacing-m});
     }
 
     .search_input {
       flex-grow: 1;
-      padding: 0 16px 0 16px;
+      padding: 0 figma.$spacing-m 0 figma.$spacing-m;
 
       cos-input {
         flex-grow: 1;
@@ -287,11 +288,11 @@
 .folders_wrap {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 8px 0 24px 0;
+  gap: figma.$spacing-sm;
+  padding: figma.$spacing-sm 0 figma.$spacing-l 0;
 
   .folders_desc {
-    margin-bottom: 24px;
+    margin-bottom: figma.$spacing-l;
   }
   .folder_row {
     display: flex;
@@ -302,7 +303,7 @@
       align-items: flex-start;
 
       &:first-child {
-        padding-bottom: 24px;
+        padding-bottom: figma.$spacing-l;
       }
     }
 
@@ -324,7 +325,7 @@
     }
     .folder_name {
       display: flex;
-      gap: 16px;
+      gap: figma.$spacing-m;
       align-items: center;
       text-decoration: none;
       color: var(--color-text);
@@ -334,7 +335,7 @@
       .name_wrap {
         display: flex;
         width: 100%;
-        gap: 4px;
+        gap: figma.$spacing-xs;
         flex-direction: column;
         .name {
           display: flex;
@@ -348,7 +349,7 @@
       @include mixins.mobile {
         align-items: flex-start;
         padding-top: 6px;
-        padding-right: 16px;
+        padding-right: figma.$spacing-m;
         max-width: 100%;
       }
       .icon {
@@ -360,7 +361,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
+      gap: figma.$spacing-m;
       flex-grow: 1;
       width: 100%;
       max-width: 10%;
@@ -371,10 +372,10 @@
   background-color: initial;
 
   .line_separator {
-    background-color: var(--color-border);
+    background-color: figma.$color-border;
   }
   .option {
-    gap: 8px;
+    gap: figma.$spacing-sm;
   }
 }
 
@@ -385,8 +386,8 @@
 #add_folder_btn {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px 24px;
+  gap: figma.$spacing-m;
+  padding: figma.$spacing-m figma.$spacing-l;
   button {
     max-width: max-content;
     background-color: var(--color-dialog-ideation-contrast);
@@ -404,7 +405,7 @@
 
 .author_wrap {
   display: flex;
-  gap: 8px;
+  gap: figma.$spacing-sm;
   align-items: center;
 
   .image_wrap {
@@ -423,13 +424,13 @@
 
     .profile_image_filler {
       width: 100%;
-      background-color: var(--color-surfaces);
+      background-color: figma.$color-bg-surface;
       border-radius: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
       cos-initials {
-        font-size: 14px;
+        font-size: figma.$font-size-sm;
       }
     }
   }
@@ -437,18 +438,18 @@
 
 .selected_participant_wrap {
   display: flex;
-  border-radius: 8px;
+  border-radius: figma.$border-radius-m;
   flex-direction: column;
   justify-content: space-between;
   z-index: 2;
   width: 100%;
-  margin-top: -32px;
+  margin-top: -#{figma.$spacing-xl};
 
   .author_wrap {
     display: flex;
     flex-direction: row;
     width: 100%;
-    gap: 16px;
+    gap: figma.$spacing-m;
     .author_name {
       display: flex;
       width: 100%;
@@ -466,18 +467,18 @@
     width: 100%;
     align-items: center;
     background-color: var(--color-ideation-light);
-    border-radius: 8px;
+    border-radius: figma.$border-radius-m;
     justify-content: space-between;
     border: 1px solid var(--Yellow-50, #fdf0c3);
-    gap: 16px;
-    padding: 8px 16px;
+    gap: figma.$spacing-m;
+    padding: figma.$spacing-sm figma.$spacing-m;
   }
 
   .info_wrap {
     display: flex;
     width: 100%;
     justify-content: flex-end;
-    gap: 16px;
+    gap: figma.$spacing-m;
     align-items: center;
     .buttons_wrap {
       align-items: center;
@@ -485,15 +486,15 @@
     }
   }
   .line_separator {
-    background: var(--color-border);
+    background: figma.$color-border;
   }
 }
 .notification_inline {
-  border-radius: 8px;
+  border-radius: figma.$border-radius-m;
   align-items: center;
 
   /* Shadow/Heavy */
-  box-shadow: 0px 12px 16px 0px rgba(50, 85, 112, 0.1),
+  box-shadow: 0px 12px #{figma.$spacing-m} 0px rgba(50, 85, 112, 0.1),
     0px 8px 20px 0px rgba(220, 231, 240, 0.3);
   width: 100%;
   flex-direction: row;
@@ -524,28 +525,28 @@
     position: absolute;
     right: 0;
     top: 100%;
-    background: var(--color-surfaces);
+    background: figma.$color-bg-surface;
     box-shadow: var(--shadow-lg);
-    border-radius: 8px;
+    border-radius: figma.$border-radius-m;
     z-index: 10;
-    padding: 8px 0;
+    padding: figma.$spacing-sm 0;
     min-width: 180px;
 
     .option {
       display: flex;
       align-items: center;
-      padding: 8px 16px;
+      padding: figma.$spacing-sm figma.$spacing-m;
       border: none;
       background: none;
       width: 100%;
       text-align: left;
       cursor: pointer;
-      font-size: 14px;
-      color: var(--color-text-main);
+      font-size: figma.$font-size-sm;
+      color: figma.$color-text-main;
       gap: 12px;
 
       &:hover {
-        background: var(--color-background-hover);
+        background: figma.$color-bg-default;
       }
 
       &.error_text {
@@ -564,23 +565,23 @@
 .btn_manage_ideation {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background-color: var(--color-surfaces);
-  border: 1px solid var(--color-surfaces);
+  gap: figma.$spacing-sm;
+  padding: figma.$spacing-sm figma.$spacing-m;
+  background-color: figma.$color-bg-surface;
+  border: 1px solid figma.$color-bg-surface;
   border-radius: 24px;
-  color: var(--color-text-main);
-  font-size: 14px;
-  font-weight: 600;
+  color: figma.$color-text-main;
+  font-size: figma.$font-size-sm;
+  font-weight: figma.$font-weight-bold;
   cursor: pointer;
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: var(--color-background-hover);
+    background-color: figma.$color-bg-default;
   }
 
   &.icon {
-    padding: 8px;
+    padding: figma.$spacing-sm;
     border-radius: 50%;
   }
 }
