@@ -113,7 +113,7 @@ export class TopicDiscussionComponent {
   });
 
 flattenedArguments = computed(() => {
-    let results = this.arguments().concat([]);
+    const results = this.arguments().concat([]);
     const argArray: any[] = [];
     const countTree = (parentNode: any, currentNode: any) => {
       argArray.push(currentNode);

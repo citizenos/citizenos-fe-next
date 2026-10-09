@@ -1,5 +1,9 @@
 @use "mixins";
 :host {
+
+  background-color: var(--color-ideation-light);
+  border-radius: 16px;
+
   display: block;
   width: 100%;
   margin-bottom: 90px;
@@ -19,12 +23,24 @@
 }
 
 
+.ideation_wrap {
+  padding: 0 32px 32px 32px;
+  @include mixins.mobile {
+    padding: 0 16px 16px 16px;
+  }
+}
+
 .ideation_header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
+  padding: 24px 32px;
+  margin: 0 -32px 32px -32px;
+  @include mixins.mobile {
+    padding: 16px;
+    margin: 0 -16px 24px -16px;
+  }
   background-color: var(--color-dialog-ideation-contrast);
   border-radius: 16px 16px 0 0;
   gap: 16px;
@@ -181,11 +197,6 @@
         border-bottom: 2px solid var(--color-ideation);
       }
     }
-  }
-
-  button {
-    min-width: max-content;
-    padding: 8px 24px;
   }
 }
 .folder_data_wrap {
@@ -573,3 +584,4 @@
     border-radius: 50%;
   }
 }
+

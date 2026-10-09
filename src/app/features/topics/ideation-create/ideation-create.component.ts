@@ -16,6 +16,7 @@ import { StepTopicInfoComponent } from '../topic-create/components/step-topic-in
 import { StepTopicSettingsComponent } from '../topic-create/components/step-topic-settings/step-topic-settings.component';
 import { StepIdeationSettingsComponent } from './components/step-ideation-settings/step-ideation-settings.component';
 import { StepTopicPreviewComponent } from '../topic-create/components/step-topic-preview/step-topic-preview.component';
+import { TopicIdeationComponent } from '../topic-view/components/topic-ideation/topic-ideation.component';
 import { take, of, forkJoin, catchError, switchMap } from 'rxjs';
 import { TopicMemberUser, TopicMemberUserService } from '../../../core/services/topic-member-user.service';
 import { TopicInvite, TopicInviteUserService } from '../../../core/services/topic-invite-user.service';
@@ -39,6 +40,7 @@ export type IdeationCreateStep = 'info' | 'settings' | 'ideation' | 'preview';
     StepTopicSettingsComponent,
     StepIdeationSettingsComponent,
     StepTopicPreviewComponent,
+    TopicIdeationComponent,
     MemberEditorsPanelComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,6 +48,11 @@ export type IdeationCreateStep = 'info' | 'settings' | 'ideation' | 'preview';
   styleUrl: './ideation-create.component.scss'
 })
 export class IdeationCreateComponent implements OnInit, PendingChangesComponent {
+  showHelp = signal(true);
+
+  toggleHelp() {
+    this.showHelp.set(!this.showHelp());
+  }
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private topicService = inject(TopicService);

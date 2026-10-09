@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild, computed, model } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { take, takeWhile, lastValueFrom } from 'rxjs';
+import { take, lastValueFrom } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
@@ -20,6 +20,7 @@ import { TooltipComponent } from '../../../../../shared/components/tooltip/toolt
 import { municipalities } from '../../../../../core/services/municipality.service';
 import { UpperCasePipe, CommonModule } from '@angular/common';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-add-idea',
@@ -35,6 +36,7 @@ import { InputComponent } from '../../../../../shared/components/input/input.com
     TooltipComponent,
     UpperCasePipe,
     InputComponent,
+    ButtonComponent,
     IconComponent
   ],
   templateUrl: './add-idea.component.html',

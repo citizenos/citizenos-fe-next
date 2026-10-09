@@ -1,9 +1,12 @@
-with open('src/app/features/dashboard/dashboard.component.ts', 'r') as f:
-    text = f.read()
+import re
 
-if 'NgClass' not in text:
-    text = text.replace("import { DatePipe, isPlatformBrowser } from '@angular/common';", "import { DatePipe, isPlatformBrowser, NgClass } from '@angular/common';")
-    text = text.replace("imports: [RouterLink, DatePipe,", "imports: [RouterLink, DatePipe, NgClass,")
+with open("src/app/features/topics/topic-view/components/topic-ideation/topic-ideation.component.ts", "r") as f:
+    content = f.read()
 
-with open('src/app/features/dashboard/dashboard.component.ts', 'w') as f:
-    f.write(text)
+content = re.sub(r'  canEditDeadline\(\) \{.*?\n  \}', '', content, flags=re.DOTALL)
+content = re.sub(r'  closeIdeation\(\) \{.*?\n  \}', '', content, flags=re.DOTALL)
+content = re.sub(r'  exportIdeas\(\) \{.*?\n  \}', '', content, flags=re.DOTALL)
+content = re.sub(r'  editDeadline\(\) \{.*?\n  \}', '', content, flags=re.DOTALL)
+
+with open("src/app/features/topics/topic-view/components/topic-ideation/topic-ideation.component.ts", "w") as f:
+    f.write(content)

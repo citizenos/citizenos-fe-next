@@ -1,0 +1,23 @@
+
+    <div class="input-container" [class.has-error]="hasError()">
+      @if (label()) {
+        <label [for]="inputId" class="input-label">{{ label() }}</label>
+      }
+      <div class="input-wrapper">
+        <label class="cos_input_placeholder" [for]="inputId" [class.show]="showPlaceholder()" [innerHTML]="placeholder() || label()"></label>
+        @if (!label() && !placeholder()) {
+           <label [for]="inputId" class="sr-only">{{ 'COMPONENTS.ACCESSIBILITY.INPUT_FALLBACK_LABEL' | translate }}</label>
+        }
+        <ng-content></ng-content>
+      </div>
+      @if (limit()) {
+        <div class="limit">{{ limit() }}</div>
+      }
+      @if (hasError() && errorMessage()) {
+        <span [id]="errorId" class="error-message" role="alert">
+          <cos-icon name="warning" [size]="14" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.WARNING' | translate"></cos-icon>
+          {{ errorMessage() }}
+        </span>
+      }
+    </div>
+  

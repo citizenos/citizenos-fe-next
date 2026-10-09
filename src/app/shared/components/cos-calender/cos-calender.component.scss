@@ -99,6 +99,14 @@
   }
 }
 
+.ideation {
+  .selected {
+    background-color: var(--color-dialog-ideation-contrast, #d7d0ea);
+    border-radius: 50%;
+    font-weight: 600;
+  }
+}
+
 .discussion {
   .selected {
     background-color: var(--color-blue-200, #c1d8eb);

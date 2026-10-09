@@ -31,7 +31,7 @@ setup('authenticate', async ({ page }) => {
 
   // Navigate to login page
   await page.goto(`${BASE_URL}/${DEFAULT_LANG}/account/login`, {
-    waitUntil: 'networkidle',
+    waitUntil: 'domcontentloaded',
   });
 
   // Fill in credentials and submit

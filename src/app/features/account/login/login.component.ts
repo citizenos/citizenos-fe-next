@@ -84,11 +84,12 @@ import { UserService } from '../../../core/services/user.service';
 
           <div class="form-actions">
             <cos-button
-              type="submit"
+              [type]="'submit'"
               variant="primary"
               size="lg"
               [isLoading]="userStore.isLoading()"
               [isDisabled]="loginForm().invalid()"
+              (clicked)="save(loginModel())"
             >
               {{ 'COMPONENTS.LOGIN_FORM.LOGIN_BTN_LOGIN' | translate }}
             </cos-button>

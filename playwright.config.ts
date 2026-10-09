@@ -95,7 +95,7 @@ export default defineConfig({
     {
       name: 'visual',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: ['migration-visual-parity.spec.ts'],
+      testMatch: ['migration-visual-parity.spec.ts', 'ideation-visual.spec.ts'],
     },
   ],
 

@@ -1,0 +1,134 @@
+@import '../../../../assets/styles/figma-tokens';
+
+cos-input {
+  display: block;
+  width: 100%;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+.input-label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: $color-text-main;
+  margin-bottom: $spacing-sm;
+}
+
+.input-wrapper {
+  position: relative;
+  background: $color-bg-surface;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-m;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  min-height: 48px;
+
+  &:focus-within {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  }
+
+  &:has(input) {
+    align-items: center;
+  }
+  &:has(textarea) {
+    align-items: stretch;
+  }
+}
+
+.cos_input_placeholder {
+  display: none;
+  position: absolute;
+  font-size: $font-size-xs;
+  line-height: 16px;
+  top: 4px;
+  left: $spacing-m;
+  color: $color-text-secondary;
+  z-index: 2;
+  pointer-events: none;
+  font-family: 'Noto Sans', sans-serif;
+  cursor: text;
+
+  &.show {
+    display: flex;
+  }
+}
+
+cos-input input {
+  width: 100%;
+  padding: $spacing-m;
+  border: none !important;
+  background: transparent !important;
+  color: $color-text-main;
+  font-family: 'Noto Sans', sans-serif !important;
+  font-size: $font-size-sm;
+  outline: none !important;
+  box-shadow: none !important;
+  height: 48px;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: $color-text-secondary;
+    opacity: 0.7;
+  }
+
+  &.with_value {
+    padding-top: 22px;
+    padding-bottom: 10px;
+  }
+}
+
+cos-input textarea {
+  width: 100%;
+  padding: $spacing-m;
+  border: none !important;
+  background: transparent !important;
+  color: $color-text-main;
+  font-family: 'Noto Sans', sans-serif !important;
+  font-size: $font-size-sm;
+  outline: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 48px;
+
+  &::placeholder {
+    color: $color-text-secondary;
+    opacity: 0.7;
+  }
+
+  &.with_value {
+    padding-top: 22px;
+    padding-bottom: 10px;
+  }
+}
+
+.has-error {
+  .input-wrapper {
+    border-color: $color-error;
+  }
+}
+
+.error-message {
+  font-size: $font-size-xs;
+  color: $color-error;
+  margin-top: $spacing-xs;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+
+  cos-icon { flex-shrink: 0; }
+}
+
+.limit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+}

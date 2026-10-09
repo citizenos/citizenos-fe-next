@@ -1,0 +1,42 @@
+// Platform 2.0 Figma Design Tokens (Offline Cache)
+// See TASKS.md for Figma nodes. 
+// Do not hardcode colors in components. Use these variables.
+
+// Colors
+$color-primary: #3b82f6; // TBD from exact Figma
+$color-primary-hover: #2563eb;
+$color-bg-default: #f3f4f6;
+$color-bg-surface: #ffffff;
+$color-text-main: #1f2937;
+$color-text-secondary: #4b5563;
+$color-border: #e5e7eb;
+
+$color-success: #10b981;
+$color-warning: #f59e0b;
+$color-error: #ef4444;
+
+// Spacing (Gap & Padding)
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-m: 16px;
+$spacing-l: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 48px;
+
+// Border Radius
+$border-radius-sm: 4px;
+$border-radius-m: 8px;
+$border-radius-lg: 12px;
+$border-radius-full: 9999px;
+
+// Typography
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-base: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 20px;
+$font-size-2xl: 24px;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;

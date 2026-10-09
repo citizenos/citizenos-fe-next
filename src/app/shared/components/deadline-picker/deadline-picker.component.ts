@@ -78,7 +78,7 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
               [minDate]="datePickerMin()"
               [date]="dateValue() || undefined"
               (dateChange)="onCalenderDateChange($event)"
-              class="discussion"
+              [ngClass]="theme()"
             ></cos-calender>
 
             @if (showReminder()) {
@@ -137,6 +137,10 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
             display: block;
           }
         }
+      }
+
+      &.ideation.selected {
+        background-color: var(--color-dialog-ideation, #f9f6fc);
       }
 
       &.voting.selected {
@@ -221,6 +225,7 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
 
 
       .checkbox_text_wrap {
+        .bold { font-size: 18px; color: var(--color-text-main, #2c3b47); }
         font-weight: 500;
         display: flex;
         justify-content: space-between;
@@ -232,6 +237,11 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
           color: var(--color-text-main, #2c3b47);
         }
       }
+    }
+
+    cos-calender {
+      max-width: 320px;
+      display: block;
     }
 
     .deadline_wrap {
@@ -372,7 +382,7 @@ export class DeadlinePickerComponent {
   deadline = input<Date | null>(null);
   showReminder = input<boolean>(false);
   toggleLabel = input<string>('COMPONENTS.EDIT_IDEATION_DEADLINE.LBL_OPTION_DEADLINE');
-  theme = input<'discussion' | 'voting'>('discussion');
+  theme = input<'discussion' | 'voting' | 'ideation'>('discussion');
 
   deadlineChange = output<Date | null>();
   reminderChange = output<Date | null>();

@@ -42,7 +42,15 @@ test.describe('Visual Parity: Legacy vs Next', () => {
       test(`Compare page: ${pageInfo.name}`, async ({ page }) => {
         console.log(`[${TARGET.toUpperCase()}] Navigating to: ${BASE_URL}${pageInfo.path}`);
         await page.goto(`${BASE_URL}${pageInfo.path}`, { waitUntil: 'networkidle' });
-        await page.waitForTimeout(1500); 
+        
+        // Ootame, et võimalikud loading spinnerid kaoksid
+        const spinner = page.locator('.loading-spinner, cos-loading, .spinner').first();
+        if (await spinner.isVisible()) {
+          await spinner.waitFor({ state: 'hidden', timeout: 5000 });
+        }
+        
+        // Piltide ja ikoonide laadimise kindlustamine
+        await page.evaluate(() => Promise.all(Array.from(document.images).filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))));
 
         await expect(page).toHaveScreenshot(`${pageInfo.name}-baseline.png`, {
           fullPage: true,
@@ -100,7 +108,15 @@ test.describe('Visual Parity: Legacy vs Next', () => {
 
         console.log(`[${TARGET.toUpperCase()}] Navigating to auth page: ${BASE_URL}${finalPath}`);
         await page.goto(`${BASE_URL}${finalPath}`, { waitUntil: 'networkidle' });
-        await page.waitForTimeout(1500);
+        
+        // Ootame, et võimalikud loading spinnerid kaoksid
+        const spinner = page.locator('.loading-spinner, cos-loading, .spinner').first();
+        if (await spinner.isVisible()) {
+          await spinner.waitFor({ state: 'hidden', timeout: 5000 });
+        }
+        
+        // Piltide laadimise ootamine
+        await page.evaluate(() => Promise.all(Array.from(document.images).filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))));
 
         await expect(page).toHaveScreenshot(`auth-${pageInfo.name}-baseline.png`, {
           fullPage: true,
