@@ -1,21 +1,15 @@
 @use "mixins";
+@use "../../../../../../assets/styles/figma-tokens" as tokens;
 
 .reply_wrap {
   background-color: unset;
-  gap: 16px;
+  gap: tokens.$spacing-m;
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 680px;
   position: relative;
   bottom: -16px;
-
-  .heading {
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 24px; /* 150% */
-  }
 
   &.reply {
     bottom: 0;
@@ -27,10 +21,22 @@
   align-items: center;
   width: 100%;
   justify-content: space-between;
+
+  .close_button {
+    svg path {
+      fill: tokens.$color-text-secondary;
+    }
+  }
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: tokens.$spacing-m;
+}
+
+.error_label {
+  svg path {
+    fill: tokens.$color-error;
+  }
 }
