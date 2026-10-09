@@ -1,94 +1,111 @@
-@use "mixins";
+@use "../../../../../../assets/styles/figma-tokens" as tokens;
 
-.dialog {
-  width: 560px;
-
-  .header_text {
-    color: var(--color-text);
-  }
-}
-
-.date_selector {
+.dialog_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-
-  &:hover,
-  &.selected {
-    background-color: var(--color-dialog-ideation);
-  }
-
-  .checkbox {
-    width: 100%;
-    flex-direction: row;
-    justify-content: flex-start;
-    .checkbox_text_wrap {
-      display: flex;
-      justify-content: space-between;
-      width: calc(100% - 40px);
-
-      @include mixins.mobile {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  }
+  height: 100%;
+  z-index: 1000;
 }
-.dialog_description {
-  padding: 8px 0 24px 0;
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
 }
-
-.deadline_wrap {
+.dialog {
+  background: tokens.$color-bg-surface;
+  border-radius: tokens.$border-radius-m;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  padding: 16px;
-  gap: 16px;
-  background-color: var(--color-dialog-ideation);
-  .date_row {
+  z-index: 1001;
+  overflow: hidden;
+}
+.dialog_header {
+  padding: tokens.$spacing-l;
+  background: var(--color-ideation, tokens.$color-primary);
+  color: tokens.$color-bg-surface;
+  
+  .header_text {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    vertical-align: middle;
-    gap: 24px;
-
-    @include mixins.mobile {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .date_row_title {
-      min-width: 25%;
-    }
-
-    .input_wrap {
-      flex-grow: 2;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      justify-content: flex-end;
-
-      @include mixins.mobile {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-      }
-
-      .time_wrap {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-        @include mixins.mobile {
-          width: 100%;
-        }
-      }
-      .time_input {
-        min-width: max-content;
-        max-width: max-content;
-      }
-
-      .dropdown {
-        width: 100%;
-      }
+    
+    .title { 
+      font-size: tokens.$font-size-2xl; 
+      font-weight: tokens.$font-weight-bold; 
+      margin: 0;
     }
   }
 }
 
+.btn_dialog_close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: tokens.$spacing-xs;
+  color: tokens.$color-bg-surface;
+  
+  svg {
+    fill: currentColor;
+    path {
+      fill: currentColor;
+    }
+  }
+}
+
+.dialog_content {
+  padding: tokens.$spacing-l;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.dialog_footer {
+  padding: tokens.$spacing-l;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: tokens.$spacing-l;
+  border-top: 1px solid tokens.$color-border;
+}
+
+.btn_link {
+  background: transparent;
+  border: none;
+  color: tokens.$color-text-main;
+  font-size: tokens.$font-size-base;
+  cursor: pointer;
+  font-weight: tokens.$font-weight-medium;
+  
+  &:hover {
+    color: tokens.$color-primary-hover;
+  }
+}
+
+.btn_big_submit {
+  background: var(--color-ideation, tokens.$color-primary);
+  color: tokens.$color-bg-surface;
+  border: none;
+  padding: 12px tokens.$spacing-l;
+  border-radius: tokens.$border-radius-sm;
+  font-weight: tokens.$font-weight-bold;
+  font-size: tokens.$font-size-base;
+  cursor: pointer;
+  
+  &:disabled { 
+    opacity: 0.5; 
+    cursor: not-allowed; 
+  }
+}
