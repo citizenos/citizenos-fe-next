@@ -1,0 +1,35 @@
+@import '../../../../../../assets/styles/figma-tokens';
+
+.dialog_content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-m;
+  padding: $spacing-l;
+}
+
+cos-button {
+  width: 100%;
+  
+  ::ng-deep button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: $spacing-m;
+    padding: $spacing-m;
+    background: $color-bg-surface;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-m;
+    color: $color-text-main;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    
+    &:hover {
+      background: $color-bg-default;
+    }
+  }
+
+  svg {
+    border-radius: $border-radius-full;
+  }
+}
