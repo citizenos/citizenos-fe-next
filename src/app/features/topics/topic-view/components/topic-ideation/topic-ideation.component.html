@@ -116,15 +116,15 @@
 
             <div class="header_actions">
                 @if (tabSelected() === 'folder' && selectedFolder() && canUpdate()) {
-                    <button type="button" class="btn_medium_submit" (click)="addIdeasToFolder(selectedFolder()!)">
+                    <cos-button variant="primary" (click)="addIdeasToFolder(selectedFolder()!)">
                         <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_IDEAS_TO_FOLDER' | translate }}</span>
-                    </button>
+                    </cos-button>
                 }
                 @if (tabSelected() === 'ideas' && topic().status === TopicService.STATUSES.ideation) {
                     @if (topic().visibility === TopicService.VISIBILITY.public || (topic().visibility === TopicService.VISIBILITY.private && canUpdate())) {
-                        <button type="button" class="btn_medium_submit" (click)="addIdea()" [disabled]="hasIdeationEnded()">
+                        <cos-button variant="primary" (click)="addIdea()" [isDisabled]="hasIdeationEnded()">
                             <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_YOUR_IDEA' | translate }}</span>
-                        </button>
+                        </cos-button>
                     }
                 }
             </div>
@@ -293,9 +293,9 @@
 
         @if (tabSelected() === 'ideas' && topic().status === TopicService.STATUSES.ideation) {
             <div class="bottom_actions mobile_hidden">
-                <button type="button" class="btn_medium_submit" (click)="addIdea()" [disabled]="hasIdeationEnded()">
+                <cos-button variant="primary" (click)="addIdea()" [isDisabled]="hasIdeationEnded()">
                     <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_YOUR_IDEA' | translate }}</span>
-                </button>
+                </cos-button>
             </div>
         }
     }
@@ -401,10 +401,9 @@
 
             @if (canManageFolders()) {
                 <div id="add_folder_btn">
-                    <button type="button" class="btn_medium_submit" (click)="addFolder()">
-                        <cos-icon name="plus"></cos-icon>
+                    <cos-button variant="primary" (click)="addFolder()" icon="plus">
                         <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_FOLDER' | translate }}</span>
-                    </button>
+                    </cos-button>
                 </div>
             }
         </div>

@@ -29,12 +29,14 @@ import { AddIdeasToFolderComponent } from '../add-ideas-to-folder/add-ideas-to-f
 import { CreateIdeaFolderComponent } from '../create-idea-folder/create-idea-folder.component';
 import { EditIdeaFolderComponent } from '../edit-idea-folder/edit-idea-folder.component';
 import { EditIdeationDeadlineComponent } from '../edit-ideation-deadline/edit-ideation-deadline.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-topic-ideation',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ButtonComponent,
     DatePipe,
     FormsModule,
     TranslateModule,
@@ -330,6 +332,14 @@ export class TopicIdeationComponent {
 
   addIdea() {
     if (this.hasIdeationEnded()) return;
+    
+    if (!this.userStore.isAuthenticated()) {
+      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
+        queryParams: { redirectSuccess: this.router.url }
+      });
+      return;
+    }
+    
     this.showAddIdea.set(true);
   }
 
