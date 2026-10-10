@@ -146,6 +146,16 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
                 {{ i.question }}
               </div>
             </div>
+            @if (i.deadline) {
+              <div class="data_section">
+                <div class="title">{{ 'COMPONENTS.TOPIC_IDEATION.DEADLINE' | translate }}</div>
+                <div class="deadline">
+                  <span class="bold">{{ i.deadline | date: 'dd.MM.yyyy' }}</span>
+                  -
+                  <span class="bold">{{ i.deadline | date: 'HH:mm' }}</span>
+                </div>
+              </div>
+            }
           </div>
           <div class="ideation_content">
             <cos-no-feature-yet>
@@ -362,12 +372,19 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
       border-radius: 16px;
       overflow: hidden;
 
-      .arguments_header, .ideation_header {
+      .arguments_header {
         display: flex;
         flex-direction: column;
         padding: 24px 32px;
         gap: 16px;
         background-color: #c9dff1;
+      }
+      .ideation_header {
+        display: flex;
+        flex-direction: column;
+        padding: 24px 32px;
+        gap: 16px;
+        background-color: var(--color-dialog-ideation-contrast);
 
         .header_section {
           display: flex;
