@@ -197,9 +197,10 @@
             <div id="idea-statement" class="statement" [innerHTML]="idea().statement || ('COMPONENTS.IDEABOX.UNTITLED_IDEA' | translate)"></div>
             <div class="description" [innerHTML]="idea().description"></div>
 
-            @if ((images$ | async)?.length) {
-              <div class="idea_images_wrap">
-                @for (image of images$ | async; track image.id) {
+            @if (images$ | async; as images) {
+              @if (images.length) {
+                <div class="idea_images_wrap">
+                @for (image of images; track image.id) {
                   <div class="image" [class.view]="isImageViewed(image.id)">
                     <div class="image_view_buttons_wrap">
                       <a [href]="image.link" [download]="image.name" [title]="image.name" target="_blank" class="image_view_button btn_medium_close icon">
@@ -223,10 +224,12 @@
                   </div>
                 }
               </div>
+              }
             }
 
-            @if ((folders$ | async)?.length) {
-              <div class="idea_folders_wrap">
+            @if (folders$ | async; as folders) {
+              @if (folders.length) {
+                <div class="idea_folders_wrap">
                 <div class="icon">
                   <svg width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_13361_96404)">
@@ -256,31 +259,26 @@
                 </div>
                 <div class="text">
                   <span translate="COMPONENTS.IDEA_DIALOG.FOLDERS"></span>
-                  @for (folder of folders$ | async; track folder.id) {
+                  @for (folder of folders; track folder.id) {
                     <a class="folder" role="button" tabindex="0" (click)="viewFolder(folder)" (keydown.enter)="viewFolder(folder)">{{ folder.name }}</a>
                   }
-                  @if ((folders$ | async)!.length > 3) {
-                    <span translate="COMPONENTS.IDEA_DIALOG.FOLDERS_MORE" [translateParams]="{ count: ((folders$ | async)!.length - 3) }"></span>
+                  @if (folders.length > 3) {
+                    <span translate="COMPONENTS.IDEA_DIALOG.FOLDERS_MORE" [translateParams]="{ count: (folders.length - 3) }"></span>
                   }
                 </div>
               </div>
+              }
             }
           </div>
 
           <div class="idea_footer">
-            <div class="like_wrap" [class.selected]="idea().votes.up.selected">
-              <button type="button" class="btn_idea_like" [disabled]="!canVote()" (click)="voteIdea(1)" [attr.aria-label]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate">
+            <div class="btn_like_wrap" [class.selected]="idea().votes.up.selected">
+              <button type="button" class="btn_like" [disabled]="!canVote()" (click)="voteIdea(1)" [attr.aria-label]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate">
                 @if (!idea().votes.up.selected) {
-                  @if (!idea().votes?.up?.selected) {
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M8.12835 1.9685L4.5 6V13.5H11.3561C11.7482 13.5 12.1042 13.2708 12.2665 12.9138L14.4104 8.19719C14.4694 8.06724 14.5 7.92614 14.5 7.78339V7C14.5 6.44772 14.0523 6 13.5 6H9V2.30298C9 1.84474 8.4349 1.62789 8.12835 1.9685Z"
-                  stroke="#2C3B47" stroke-width="1.5" />
-                <path d="M4.5 6H2C1.44772 6 1 6.44772 1 7V12.5C1 13.0523 1.44772 13.5 2 13.5H4.5" stroke="#2C3B47"
-                  stroke-width="1.5" />
-              </svg>
-}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8.12835 1.9685L4.5 6V13.5H11.3561C11.7482 13.5 12.1042 13.2708 12.2665 12.9138L14.4104 8.19719C14.4694 8.06724 14.5 7.92614 14.5 7.78339V7C14.5 6.44772 14.0523 6 13.5 6H9V2.30298C9 1.84474 8.4349 1.62789 8.12835 1.9685Z" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M4.5 6H2C1.44772 6 1 6.44772 1 7V12.5C1 13.0523 1.44772 13.5 2 13.5H4.5" stroke="currentColor" stroke-width="1.5" />
+                  </svg>
                 } @else {
                   <svg viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 0.5C8.27614 0.5 8.5 0.723858 8.5 1V2C8.5 2.27614 8.27614 2.5 8 2.5C7.72386 2.5 7.5 2.27614 7.5 2V1C7.5 0.723858 7.72386 0.5 8 0.5ZM13.6567 3.54984C13.852 3.35458 13.852 3.038 13.6567 2.84274C13.4614 2.64747 13.1449 2.64747 12.9496 2.84274L12.2425 3.54984C12.0472 3.7451 12.0472 4.06169 12.2425 4.25695C12.4377 4.45221 12.7543 4.45221 12.9496 4.25695L13.6567 3.54984ZM8.00006 4C5.9675 4 4 5.75213 4 8.23052C4 9.9808 4.64514 10.9776 5.23288 11.8858C5.66341 12.551 6.06314 13.1686 6.15595 14H9.84826C9.941 13.1688 10.3399 12.5512 10.7695 11.886C11.3561 10.9778 12 9.98094 12 8.23052C12 5.7523 10.0327 4 8.00006 4ZM10 15C10 16.1046 9.10457 17 8 17C6.89543 17 6 16.1046 6 15H10ZM3.05033 2.84281C2.85507 2.64755 2.53849 2.64755 2.34322 2.84281C2.14796 3.03807 2.14796 3.35466 2.34322 3.54992L3.05033 4.25702C3.24559 4.45229 3.56218 4.45229 3.75744 4.25702C3.9527 4.06176 3.9527 3.74518 3.75744 3.54992L3.05033 2.84281ZM0 8.5C0 8.22386 0.223858 8 0.5 8H1.5C1.77614 8 2 8.22386 2 8.5C2 8.77614 1.77614 9 1.5 9H0.5C0.223858 9 0 8.77614 0 8.5ZM14.5 8C14.2239 8 14 8.22386 14 8.5C14 8.77614 14.2239 9 14.5 9H15.5C15.7761 9 16 8.77614 16 8.5C16 8.22386 15.7761 8 15.5 8H14.5Z" fill="currentColor" /></svg>
                 }
@@ -298,22 +296,19 @@
               }
               @if (replyCount() > 0) {
                 @if (!showReplies()) {
-                  <button type="button" class="btn_ghost_reply_idea"
-                    [translate]="'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES'"
-                    [translateParams]="{ count: replyCount() }"
-                    (click)="showReplies.set(true)">
-                  </button>
+                  <cos-button variant="ghost" (click)="showReplies.set(true)">
+                    <span [translate]="'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES'" [translateParams]="{ count: replyCount() }"></span>
+                  </cos-button>
                 } @else {
-                  <button type="button" class="btn_ghost_reply_idea"
-                    translate="COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES"
-                    (click)="showReplies.set(false)">
-                  </button>
+                  <cos-button variant="ghost" (click)="showReplies.set(false)">
+                    <span translate="COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES"></span>
+                  </cos-button>
                 }
               }
               @if (!showReply() && canReply()) {
-                <button type="button" class="btn_small_submit bold" [disabled]="!!idea().deletedAt" (click)="showReply.set(true)">
+                <cos-button variant="primary" [isDisabled]="!!idea().deletedAt" (click)="showReply.set(true)">
                   <span translate="COMPONENTS.IDEA_DIALOG.BTN_REPLY"></span>
-                </button>
+                </cos-button>
               }
             </div>
           </div>

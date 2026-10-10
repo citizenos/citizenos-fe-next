@@ -4,6 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { IdeaDialogComponent } from './idea-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -78,12 +79,14 @@ function createFixture(
       { provide: IdeaAttachmentService, useValue: attachmentServiceMock },
       { provide: DialogService, useValue: dialogServiceMock },
       { provide: UserStore, useValue: overrides.userStore ?? unauthUserStore },
+      provideRouter([{ path: '**', component: EmptyComponent }]),
     ],
     schemas: [NO_ERRORS_SCHEMA],
   }).compileComponents();
 
   const fixture = TestBed.createComponent(IdeaDialogComponent);
   fixture.detectChanges();
+  Object.defineProperty(TestBed.inject(TranslateService), 'currentLang', { value: 'en' });
   return fixture;
 }
 

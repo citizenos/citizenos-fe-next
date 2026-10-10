@@ -13,6 +13,7 @@ import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
@@ -36,6 +37,7 @@ import { Attachment } from '../../../../../core/interfaces/attachment';
     AsyncPipe,
     TranslateModule,
     InitialsComponent,
+    ButtonComponent,
     
     TooltipComponent,
     DialogCloseDirective,

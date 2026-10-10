@@ -89,51 +89,13 @@
   left: 696px;
 }
 
-.btn_small_submit {
-  font-weight: bold;
-  padding: figma.$spacing-sm figma.$spacing-l;
-}
+
 .btn_idea_select {
   position: fixed;
   top: 50%;
 }
 
-.like_wrap {
-  display: flex;
-  align-items: center;
 
-  @include mixins.mobile {
-    align-items: initial;
-  }
-
-  .btn_idea_like {
-    width: figma.$spacing-xl;
-    height: figma.$spacing-xl;
-    border-radius: figma.$border-radius-full;
-    position: relative;
-
-    svg {
-      min-width: figma.$spacing-m;
-      min-height: figma.$spacing-m;
-    }
-
-    &:hover {
-      background-color: var(--color-dialog-ideation-contrast);
-    }
-  }
-
-  .like_counter_wrap {
-    padding: figma.$spacing-sm;
-    color: figma.$color-text-main;
-    position: relative;
-  }
-  &.selected {
-    font-weight: 600;
-    .btn_idea_like {
-      background-color: var(--color-ideation);
-    }
-  }
-}
 .dialog_content {
   max-width: 680px;
   border-radius: figma.$border-radius-lg;
@@ -373,22 +335,7 @@
   gap: figma.$spacing-m;
   position: relative;
 
-  .btn_ghost_reply_idea {
-    display: flex;
-    height: figma.$spacing-xl;
-    padding: figma.$spacing-sm figma.$spacing-l;
-    justify-content: center;
-    align-items: center;
-    gap: figma.$spacing-sm;
-    border-radius: figma.$border-radius-full;
-    font-weight: 600;
-    border: 2px solid figma.$color-text-main;
-    color: figma.$color-text-main;
-
-    @include mixins.mobile {
-      padding: figma.$spacing-sm;
-    }
-  }
+  
 }
 
 .idea_footer {
