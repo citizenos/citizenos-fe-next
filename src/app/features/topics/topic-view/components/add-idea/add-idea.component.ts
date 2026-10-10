@@ -88,7 +88,8 @@ export class AddIdeaComponent implements OnInit {
     const config = this.ideation().demographicsConfig;
     if (config) {
         Object.keys(config).forEach(key => {
-            (this.ideaForm as FormGroup).addControl(('demographics_' + key), new FormControl(config[key].value || '', config[key].required ? [Validators.required] : []));
+            const isRequired = this.ideation().allowAnonymous && config[key].required;
+            (this.ideaForm as FormGroup).addControl(('demographics_' + key), new FormControl(config[key].value || '', isRequired ? [Validators.required] : []));
         });
     }
 

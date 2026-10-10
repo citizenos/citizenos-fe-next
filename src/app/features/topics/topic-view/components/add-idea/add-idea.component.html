@@ -178,26 +178,23 @@
 
   <div id="buttons_row">
     <div class="buttons_left_group">
-      <button type="button" class="btn_medium_submit_ghost icon close_button" (click)="close()">
-        <cos-icon name="close"></cos-icon>
-      </button>
+      <cos-button variant="ghost" class="close_button" (clicked)="close()" icon="close" [iconMode]="true">
+      </cos-button>
       @if (autosavedIdea()) {
         <div class="btn_medium_wrapper">
-          <button type="button" class="option error_text btn_medium_error" (click)="deleteDraftIdea(autosavedIdea()!)">
-            <cos-icon name="trash"></cos-icon>
+          <cos-button variant="danger" (clicked)="deleteDraftIdea(autosavedIdea()!)" icon="trash">
             <span class="btn_text" translate="COMPONENTS.ADD_IDEA.BTN_DELETE_DRAFT"></span>
-          </button>
+          </cos-button>
         </div>
       }
     </div>
     <div class="buttons_right_group">
-      <button type="button" class="btn_medium_submit_ghost" (click)="uploadImage()">
-        <cos-icon name="no-image"></cos-icon>
+      <cos-button variant="ghost" (clicked)="uploadImage()" icon="no-image">
         <span translate="COMPONENTS.POST_ARGUMENT.BTN_ADD_IMAGE"></span>
-      </button>
-      <button type="button" class="btn_medium_submit" (click)="publishIdea()">
+      </cos-button>
+      <cos-button variant="primary" (clicked)="publishIdea()">
         <span class="btn_text" translate="COMPONENTS.ADD_IDEA.BTN_IDEA_POST"></span>
-      </button>
+      </cos-button>
     </div>
   </div>
 </div>
