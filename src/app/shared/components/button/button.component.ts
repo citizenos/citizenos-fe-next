@@ -2,7 +2,7 @@ import { Component, output, model, ChangeDetectionStrategy } from '@angular/core
 import { IconComponent } from '../icon/icon.component';
 import { IconName } from '../icon/icon.registry';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'success' | 'light';
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'success' | 'light' | 'plain';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 @Component({

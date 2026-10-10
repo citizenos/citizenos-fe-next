@@ -69,6 +69,15 @@ button {
   }
 }
 
+.btn-plain {
+  background-color: transparent;
+  color: $color-text-main;
+  border: none;
+  &:hover:not(:disabled) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
 .btn-light {
   background-color: $color-bg-surface;
   color: $color-text-secondary;
