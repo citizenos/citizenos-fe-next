@@ -981,3 +981,23 @@ label:has(input:focus-visible) .radio {
 .hidden {
   display: none;
 }
+
+/* Global button styles for legacy compatibility */
+.btn-light {
+  background-color: var(--color-surfaces);
+  color: var(--color-text-secondary);
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  &:hover:not(:disabled) {
+    color: var(--color-primary);
+    background-color: var(--color-bg-default);
+  }
+}
+.btn-md {
+  min-height: 40px;
+  height: 40px;
+  font-size: 14px;
+  line-height: 16px;
+}
