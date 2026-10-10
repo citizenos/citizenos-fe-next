@@ -7,7 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { ImageUploadComponent } from '../../../../../shared/components/image-upload/image-upload.component';
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { EtherpadDirective } from '../../../../../shared/directives/etherpad.directive';
 import { TopicAttachmentsComponent } from '../../../../../shared/components/topic-attachments/topic-attachments.component';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
