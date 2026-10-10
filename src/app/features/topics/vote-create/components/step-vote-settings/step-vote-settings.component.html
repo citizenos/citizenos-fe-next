@@ -151,17 +151,17 @@
                       >
                     </cos-input>
                     <div class="actions_wrap">
-                      <button class="btn_medium_plain animate" (click)="removeOption($index); $event.stopPropagation();">
+                      <cos-button variant="ghost" (clicked)="removeOption($index); $event.stopPropagation();">
                         <cos-icon name="close" size="16"></cos-icon>
-                      </button>
+                      </cos-button>
                     </div>
                   </div>
                 }
               }
-              <button class="btn_medium_plain animate" (click)="addOption(); $event.stopPropagation();">
+              <cos-button variant="ghost" (clicked)="addOption(); $event.stopPropagation();">
                 <cos-icon name="plus" size="16"></cos-icon>
                 <span translate="COMPONENTS.TOPIC_VOTE_CREATE.BTN_ADD_OPTION"></span>
-              </button>
+              </cos-button>
 
               <div class="description_text" translate="COMPONENTS.TOPIC_VOTE_CREATE.LBL_CAN_ADD_EXTRA_OPTIONS"></div>
               <div class="radio_wrap" [class.selected]="isPredefinedSelected('Neutral')" (click)="toggleOption('Neutral'); $event.stopPropagation();" (keydown.enter)="toggleOption('Neutral'); $event.stopPropagation();" tabindex="0">
@@ -315,25 +315,25 @@
           <div class="input_area min_max_options">
             <div class="bold" translate="VIEWS.TOPICS_TOPICID.VOTE_LBL_MIN_CHOICES"></div>
             <div class="options_count_input_wrap">
-              <button class="btn_medium_voting_light icon" (click)="adjustCount('min', -1)">
+              <cos-button variant="light" size="sm" (clicked)="adjustCount('min', -1)">
                 <cos-icon name="minus" size="12"></cos-icon>
-              </button>
+              </cos-button>
               <input class="options_count_input" type="number" [min]="1" [max]="getOptionsLimit()" [ngModel]="vote().minChoices || 1" readonly />
-              <button class="btn_medium_voting_light icon" (click)="adjustCount('min', 1)">
+              <cos-button variant="light" size="sm" (clicked)="adjustCount('min', 1)">
                 <cos-icon name="plus" size="16"></cos-icon>
-              </button>
+              </cos-button>
             </div>
           </div>
           <div class="input_area min_max_options">
             <div class="bold" translate="VIEWS.TOPICS_TOPICID.VOTE_LBL_MAX_CHOICES"></div>
             <div class="options_count_input_wrap">
-              <button class="btn_medium_voting_light icon" (click)="adjustCount('max', -1)">
+              <cos-button variant="light" size="sm" (clicked)="adjustCount('max', -1)">
                 <cos-icon name="minus" size="12"></cos-icon>
-              </button>
+              </cos-button>
               <input class="options_count_input" type="number" [min]="1" [max]="getOptionsLimit()" [ngModel]="vote().maxChoices || getOptionsLimit()" readonly />
-              <button class="btn_medium_voting_light icon" (click)="adjustCount('max', 1)">
+              <cos-button variant="light" size="sm" (clicked)="adjustCount('max', 1)">
                 <cos-icon name="plus" size="16"></cos-icon>
-              </button>
+              </cos-button>
             </div>
           </div>
         </div>

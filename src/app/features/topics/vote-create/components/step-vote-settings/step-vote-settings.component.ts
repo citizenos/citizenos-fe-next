@@ -10,12 +10,13 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { DeadlinePickerComponent } from '../../../../../shared/components/deadline-picker/deadline-picker.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'cos-step-vote-settings',
   standalone: true,
-  imports: [FormsModule, TranslateModule, DeadlinePickerComponent, InputComponent, IconComponent],
+  imports: [FormsModule, TranslateModule, DeadlinePickerComponent, InputComponent, IconComponent, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './step-vote-settings.component.html',
   styleUrl: './step-vote-settings.component.scss'
