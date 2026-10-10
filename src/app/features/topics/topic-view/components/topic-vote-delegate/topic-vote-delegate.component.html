@@ -11,9 +11,7 @@
         <h4 class="title">{{ 'MODALS.TOPIC_VOTE_DELEGATE_HEADING' | translate }}</h4>
       </div>
       <div class="dialog_close">
-        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
-          <cos-icon name="close" [size]="24"></cos-icon>
-        </button>
+        <cos-button variant="ghost" [iconMode]="true" icon="close" customIconSize="24" dialogClose [aria-label]="'CONTROL.CLOSE' | translate"></cos-button>
       </div>
     </div>
 
@@ -58,9 +56,7 @@
               <span>{{ delegateUser()?.name }}</span>
             </div>
             <div class="row_cell_dialog">
-              <button type="button" (click)="removeDelegate()" [aria-label]="'CONTROL.DELETE' | translate">
-                <cos-icon name="trash" [size]="24"></cos-icon>
-              </button>
+              <cos-button variant="ghost" [iconMode]="true" icon="trash" customIconSize="24" (clicked)="removeDelegate()" [aria-label]="'CONTROL.DELETE' | translate"></cos-button>
             </div>
           </div>
         }
@@ -69,9 +65,9 @@
     <div class="dialog_content button_content no_footer">
       <div class="button_wrap">
         @if (delegateUser()) {
-          <button type="button" class="btn_medium_submit" (click)="save()">{{ 'MODALS.TOPIC_VOTE_DELEGATE_BTN_DELEGATE' | translate }}</button>
+          <cos-button (clicked)="save()">{{ 'MODALS.TOPIC_VOTE_DELEGATE_BTN_DELEGATE' | translate }}</cos-button>
         }
-        <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LNK_CANCEL' | translate }}</button>
+        <cos-button variant="ghost" dialogClose>{{ 'COMPONENTS.TOPIC_VOTE_CREATE.LNK_CANCEL' | translate }}</cos-button>
       </div>
     </div>
   </div>
