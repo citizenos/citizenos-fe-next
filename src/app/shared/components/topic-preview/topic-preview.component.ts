@@ -10,13 +10,14 @@ import { DiscussionData } from '../../../core/interfaces/discussion';
 import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 import { IconComponent } from '../icon/icon.component';
 import { TopicService } from '../../../core/services/topic.service';
+import { ButtonComponent } from '../button/button.component';
 import { VoteOptionsComponent } from '../vote-options/vote-options.component';
 
 @Component({
   selector: 'cos-topic-preview',
   standalone: true,
   imports: [
-    NoFeatureYetComponent,TranslateModule, SafeHtmlPipe, DatePipe, NgClass, IconComponent, VoteOptionsComponent],
+    NoFeatureYetComponent,TranslateModule, SafeHtmlPipe, DatePipe, NgClass, IconComponent, VoteOptionsComponent, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="topic_content_wrap">
@@ -57,7 +58,7 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
 
           @if (readMoreButton()) {
             <div class="button_wrap" [ngClass]="{open: readMore()}">
-              <button class="btn_medium_secondary" (click)="toggleReadMore()">
+              <cos-button variant="secondary" (clicked)="toggleReadMore()">
                 @if (!readMore()) {
                   <cos-icon name="chevron-down"></cos-icon>
                   <span>{{ 'VIEWS.TOPIC_CREATE.BTN_READ_MORE' | translate }}</span>
@@ -65,7 +66,7 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
                   <cos-icon name="chevron-up"></cos-icon>
                   <span>{{ 'VIEWS.TOPIC_CREATE.BTN_READ_LESS' | translate }}</span>
                 }
-              </button>
+              </cos-button>
             </div>
           }
         </div>
@@ -81,13 +82,15 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
                 {{ d.question }}
               </div>
               <div class="setting_button dropdown button_dropdown">
-                <button class="btn_medium_close mobile_hidden">
-                  <cos-icon name="more-vertical-legacy"></cos-icon>
-                  <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.BTN_DISCUSSION_ACTIONS' | translate }}</span>
-                </button>
-                <button id="mobile_actions" class="btn_medium_close icon mobile_show">
-                  <cos-icon name="more-vertical-legacy"></cos-icon>
-                </button>
+                <div class="mobile_hidden">
+                  <cos-button variant="plain" icon="more-vertical-legacy">
+                    {{ 'COMPONENTS.TOPIC_ARGUMENTS.BTN_DISCUSSION_ACTIONS' | translate }}
+                  </cos-button>
+                </div>
+                <div class="mobile_show">
+                  <cos-button id="mobile_actions" variant="plain" icon="more-vertical-legacy" [iconMode]="true">
+                  </cos-button>
+                </div>
               </div>
             </div>
             @if (d.deadline) {
@@ -104,11 +107,9 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
               
               <div class="description_heading">{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_HEADING' | translate }}</div>
               <div class="button">
-                <button class="btn_medium_submit"
-                  [ngClass]="{disabled: (topic().status === topicService.STATUSES.inProgress && !topicService.canDelete(topic()))}">
-                  <cos-icon name="plus-legacy"></cos-icon>
+                <cos-button variant="primary" icon="plus-legacy" [isDisabled]="topic().status === topicService.STATUSES.inProgress && !topicService.canDelete(topic())">
                   <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.NO_ARGUMENTS_BTN_ADD' | translate }}</span>
-                </button>
+                </cos-button>
               </div>
               <div class="no_feature_description">
                 <div class="description_text">
@@ -173,13 +174,15 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
             <div class="header_section">
               <div class="question">{{ v.question || v.description }}</div>
               <div class="setting_button dropdown button_dropdown">
-                <button class="btn_medium_close mobile_hidden">
-                  <cos-icon name="more-vertical-legacy"></cos-icon>
-                  <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate }}</span>
-                </button>
-                <button id="mobile_actions" class="btn_medium_close icon mobile_show">
-                  <cos-icon name="more-vertical-legacy"></cos-icon>
-                </button>
+                <div class="mobile_hidden">
+                  <cos-button variant="plain" icon="more-vertical-legacy">
+                    <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate }}</span>
+                  </cos-button>
+                </div>
+                <div class="mobile_show">
+                  <cos-button id="mobile_actions" variant="plain" icon="more-vertical-legacy" [iconMode]="true">
+                  </cos-button>
+                </div>
               </div>
             </div>
             <div class="data_section">
@@ -239,7 +242,7 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
             <div class="line_separator vote"></div>
             <div class="vote_buttons_wrap">
               @if (v.delegationIsAllowed) {
-                <button class="btn_medium_close">
+                <cos-button variant="plain">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M18.3432 7.92286L19.0634 2L13.1505 2.72143L15.1001 4.67429L7.72208 12.0647L9.12918 13.4742L16.5072 6.08375L18.3432 7.92286Z"
@@ -249,7 +252,7 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
                       fill="#2C3B47" />
                   </svg>
                   <span class="bold">{{ 'VIEWS.VOTE_CREATE.VOTE_HEADING_DELEGATE' | translate }}</span>
-                </button>
+                </cos-button>
               }
             </div>
           </div>

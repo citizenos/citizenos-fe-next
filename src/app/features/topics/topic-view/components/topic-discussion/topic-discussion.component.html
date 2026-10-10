@@ -8,11 +8,15 @@
 
       @if (canUpdate() && (canEditDeadline() || !hasDiscussionEndedExpired())) {
       <div class="dropdown button_dropdown setting_button" cosDropdown>
-        <cos-button class="mobile_hidden" variant="ghost" icon="more-vertical" trigger>
-          {{ 'COMPONENTS.TOPIC_ARGUMENTS.BTN_DISCUSSION_ACTIONS' | translate }}
-        </cos-button>
-        <cos-button id="mobile_actions" class="mobile_show" variant="ghost" icon="more-vertical" [iconMode]="true" trigger>
-        </cos-button>
+        <div class="mobile_hidden">
+          <cos-button variant="plain" icon="more-vertical" trigger>
+            {{ 'COMPONENTS.TOPIC_ARGUMENTS.BTN_DISCUSSION_ACTIONS' | translate }}
+          </cos-button>
+        </div>
+        <div class="mobile_show">
+          <cos-button id="mobile_actions" variant="plain" icon="more-vertical" [iconMode]="true" trigger>
+          </cos-button>
+        </div>
         <div class="options">
           @if (canEditDeadline()) {
           <a class="option" [routerLink]="['/', translate.currentLang, 'topics', topic().id, 'edit']"

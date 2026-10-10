@@ -16,13 +16,17 @@
       @if (canUpdate() && (canEditDeadline() || !hasIdeationEndedExpired())) {
         <div class="setting_button dropdown button_dropdown" cosDropdown>
           <!-- Desktop Manage button -->
-          <cos-button class="mobile_hidden" variant="ghost" icon="more-vertical" trigger>
-            {{ 'COMPONENTS.TOPIC_IDEATION.BTN_IDEATION_ACTIONS' | translate }}
-          </cos-button>
+          <div class="mobile_hidden">
+            <cos-button variant="plain" icon="more-vertical" trigger>
+              {{ 'COMPONENTS.TOPIC_IDEATION.BTN_IDEATION_ACTIONS' | translate }}
+            </cos-button>
+          </div>
           
           <!-- Mobile Manage button -->
-          <cos-button id="mobile_actions" class="mobile_show" variant="ghost" icon="more-vertical" [iconMode]="true" trigger>
-          </cos-button>
+          <div class="mobile_show">
+            <cos-button id="mobile_actions" variant="plain" icon="more-vertical" [iconMode]="true" trigger>
+            </cos-button>
+          </div>
 
           <div class="options">
             @if (canEditDeadline()) {
@@ -250,10 +254,9 @@
             <cos-no-feature-yet background="discussion">
                 <div class="description_heading">{{ 'COMPONENTS.TOPIC_IDEATION.NO_IDEAS_HEADING' | translate }}</div>
                 <div class="button">
-                    <button type="button" class="btn_medium_submit" (click)="addIdea()" [disabled]="hasIdeationEnded()">
-                        <cos-icon name="plus"></cos-icon>
+                    <cos-button variant="primary" (clicked)="addIdea()" icon="plus" [isDisabled]="hasIdeationEnded()">
                         <span>{{ 'COMPONENTS.TOPIC_IDEATION.NO_IDEAS_BTN_ADD' | translate }}</span>
-                    </button>
+                    </cos-button>
                 </div>
             </cos-no-feature-yet>
         }
