@@ -1,3 +1,6 @@
+import { provideRouter } from '@angular/router';
+import { Component } from '@angular/core';
+@Component({ template: '' }) class EmptyComponent {}
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
