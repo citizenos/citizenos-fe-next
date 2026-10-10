@@ -10,7 +10,7 @@
 
 <div id="create_idea_footer_menu" [class.open]="!isOpen()" [class.closed]="isOpen()">
   <h2 class="footer_title">{{ 'COMPONENTS.ADD_IDEA.FOOTER_MENU_TITLE' | translate }}</h2>
-  <cos-button (click)="openAddIdea()" size="lg">
+  <cos-button (clicked)="openAddIdea()" size="lg">
     {{ 'COMPONENTS.ADD_IDEA.FOOTER_MENU_BTN_ADD_IDEA' | translate }}
   </cos-button>
 </div>

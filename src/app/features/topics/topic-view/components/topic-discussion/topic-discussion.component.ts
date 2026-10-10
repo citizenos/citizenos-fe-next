@@ -22,6 +22,8 @@ import { DialogService } from '../../../../../shared/dialog';
 import { EditDiscussionDeadlineComponent } from '../edit-discussion-deadline/edit-discussion-deadline.component';
 import { MissingDiscussionComponent } from '../missing-discussion/missing-discussion.component';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { ArgumentComponent } from '../argument/argument.component';
 import { TopicDiscussionCreateDialogComponent } from '../topic-discussion-create-dialog/topic-discussion-create-dialog.component';
 import { PostArgumentFormComponent } from '../post-argument-form/post-argument-form.component';
@@ -33,6 +35,8 @@ import { PaginationComponent } from '../../../../../shared/components/pagination
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    CosDropdownDirective,
+    ButtonComponent,
     NoFeatureYetComponent,
     DatePipe, TitleCasePipe, TranslateModule,
     ArgumentComponent, PostArgumentFormComponent,

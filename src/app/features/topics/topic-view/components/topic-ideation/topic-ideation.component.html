@@ -16,15 +16,13 @@
       @if (canUpdate() && (canEditDeadline() || !hasIdeationEndedExpired())) {
         <div class="setting_button dropdown button_dropdown" cosDropdown>
           <!-- Desktop Manage button -->
-          <button type="button" class="btn_manage_ideation mobile_hidden" trigger>
-            <cos-icon name="more-vertical"></cos-icon>
-            <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_IDEATION_ACTIONS' | translate }}</span>
-          </button>
+          <cos-button class="mobile_hidden" variant="ghost" icon="more-vertical" trigger>
+            {{ 'COMPONENTS.TOPIC_IDEATION.BTN_IDEATION_ACTIONS' | translate }}
+          </cos-button>
           
           <!-- Mobile Manage button -->
-          <button type="button" id="mobile_actions" class="btn_manage_ideation icon mobile_show" trigger>
-             <cos-icon name="more-vertical"></cos-icon>
-          </button>
+          <cos-button id="mobile_actions" class="mobile_show" variant="ghost" icon="more-vertical" [iconMode]="true" trigger>
+          </cos-button>
 
           <div class="options">
             @if (canEditDeadline()) {
@@ -116,13 +114,13 @@
 
             <div class="header_actions">
                 @if (tabSelected() === 'folder' && selectedFolder() && canUpdate()) {
-                    <cos-button variant="primary" (click)="addIdeasToFolder(selectedFolder()!)">
+                    <cos-button variant="primary" (clicked)="addIdeasToFolder(selectedFolder()!)">
                         <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_IDEAS_TO_FOLDER' | translate }}</span>
                     </cos-button>
                 }
                 @if (tabSelected() === 'ideas' && topic().status === TopicService.STATUSES.ideation) {
                     @if (topic().visibility === TopicService.VISIBILITY.public || (topic().visibility === TopicService.VISIBILITY.private && canUpdate())) {
-                        <cos-button variant="primary" (click)="addIdea()" [isDisabled]="hasIdeationEnded()">
+                        <cos-button variant="primary" (clicked)="addIdea()" [isDisabled]="hasIdeationEnded()">
                             <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_YOUR_IDEA' | translate }}</span>
                         </cos-button>
                     }
@@ -293,7 +291,7 @@
 
         @if (tabSelected() === 'ideas' && topic().status === TopicService.STATUSES.ideation) {
             <div class="bottom_actions mobile_hidden">
-                <cos-button variant="primary" (click)="addIdea()" [isDisabled]="hasIdeationEnded()">
+                <cos-button variant="primary" (clicked)="addIdea()" [isDisabled]="hasIdeationEnded()">
                     <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_YOUR_IDEA' | translate }}</span>
                 </cos-button>
             </div>
@@ -401,7 +399,7 @@
 
             @if (canManageFolders()) {
                 <div id="add_folder_btn">
-                    <cos-button variant="primary" (click)="addFolder()" icon="plus">
+                    <cos-button variant="primary" (clicked)="addFolder()" icon="plus">
                         <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_FOLDER' | translate }}</span>
                     </cos-button>
                 </div>

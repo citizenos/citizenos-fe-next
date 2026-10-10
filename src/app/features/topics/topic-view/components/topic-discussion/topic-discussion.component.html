@@ -7,27 +7,25 @@
       </div>
 
       @if (canUpdate() && (canEditDeadline() || !hasDiscussionEndedExpired())) {
-      <cos-dropdown class="setting_button">
-        <button type="button" class="btn_medium_close mobile_hidden" selection>
-          <cos-icon name="topic-discussion-icon-legacy" size="24"></cos-icon>
-          <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.BTN_DISCUSSION_ACTIONS' | translate }}</span>
-        </button>
-        <button type="button" id="mobile_actions" class="btn_medium_close icon mobile_show" selection>
-          <cos-icon name="topic-discussion-icon-legacy" size="24"></cos-icon>
-        </button>
-        <div options>
+      <div class="dropdown button_dropdown setting_button" cosDropdown>
+        <cos-button class="mobile_hidden" variant="ghost" icon="more-vertical" trigger>
+          {{ 'COMPONENTS.TOPIC_ARGUMENTS.BTN_DISCUSSION_ACTIONS' | translate }}
+        </cos-button>
+        <cos-button id="mobile_actions" class="mobile_show" variant="ghost" icon="more-vertical" [iconMode]="true" trigger>
+        </cos-button>
+        <div class="options">
           @if (canEditDeadline()) {
           <a class="option" [routerLink]="['/', translate.currentLang, 'topics', topic().id, 'edit']"
             fragment="discussion">
             <div class="icon_wrap">
-              <cos-icon name="topic-vote-cast-icon-2-legacy" size="16"></cos-icon>
+              <cos-icon name="edit" size="16"></cos-icon>
             </div>
             <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.OPT_EDIT_DISCUSSION' | translate }}</span>
           </a>
 
           <button type="button" class="option" (click)="openEditDeadline()" (keydown.enter)="openEditDeadline()">
             <div class="icon_wrap">
-              <cos-icon name="topic-discussion-icon-2-legacy" size="16"></cos-icon>
+              <cos-icon name="calendar" size="16"></cos-icon>
             </div>
             <span>{{ (discussion()?.deadline ? 'COMPONENTS.TOPIC_ARGUMENTS.OPT_EDIT_DEADLINE' :
               'COMPONENTS.TOPIC_ARGUMENTS.OPT_ADD_DEADLINE') | translate }}</span>
@@ -35,15 +33,15 @@
           }
           @if (!hasDiscussionEndedExpired()) {
           <div class="line_separator"></div>
-          <button type="button" class="option" (click)="closeDiscussion()" (keydown.enter)="closeDiscussion()">
+          <button type="button" class="option error_text" (click)="closeDiscussion()" (keydown.enter)="closeDiscussion()">
             <div class="icon_wrap">
-              <cos-icon name="topic-vote-cast-icon-3-legacy" size="16"></cos-icon>
+              <cos-icon name="close" size="16"></cos-icon>
             </div>
             <span>{{ 'COMPONENTS.TOPIC_ARGUMENTS.OPT_CLOSE_DISCUSSION' | translate }}</span>
           </button>
           }
         </div>
-      </cos-dropdown>
+      </div>
       }
     </div>
 
