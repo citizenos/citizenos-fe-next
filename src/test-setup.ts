@@ -32,3 +32,18 @@ beforeEach(() => {
   unobserve() { return; }
   disconnect() { return; }
 };
+
+// Mock Range.getBoundingClientRect for CodeMirror in JSDOM
+if (typeof document !== 'undefined' && document.createRange) {
+  const OriginalRange = document.createRange;
+  document.createRange = function () {
+    const range = OriginalRange.apply(document, arguments as any);
+    range.getBoundingClientRect = function () {
+      return { width: 0, height: 0, top: 0, left: 0, right: 0, bottom: 0 } as DOMRect;
+    };
+    range.getClientRects = function () {
+      return { length: 0, item: () => null } as any;
+    };
+    return range;
+  };
+}

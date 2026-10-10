@@ -41,8 +41,8 @@ describe('IconComponent', () => {
     fixture.detectChanges();
     
     const svgElement = fixture.nativeElement.querySelector('svg');
-    expect(svgElement.getAttribute('width')).toBe('32');
-    expect(svgElement.getAttribute('height')).toBe('32');
+    expect(fixture.nativeElement.style.getPropertyValue('--icon-size')).toBe('32px');
+    
   });
 
   it('should remove width and height attributes when size is "auto" or other string', () => {
@@ -51,8 +51,8 @@ describe('IconComponent', () => {
     fixture.detectChanges();
     
     const svgElement = fixture.nativeElement.querySelector('svg');
-    expect(svgElement.getAttribute('width')).toBeNull();
-    expect(svgElement.getAttribute('height')).toBeNull();
+    expect(fixture.nativeElement.style.getPropertyValue('--icon-size')).toBe('');
+    
   });
 
   it('should render empty content for invalid icon name', () => {

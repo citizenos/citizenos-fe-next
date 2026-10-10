@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 globalThis.ResizeObserver = class {
@@ -272,6 +273,7 @@ describe('TopicViewComponent', () => {
   });
 
   it('should call joinTopic service method', () => {
+    Object.defineProperty(TestBed.inject(TranslateService), 'currentLang', { value: 'en' });
     component.joinTopic(mockTopic as unknown as Topic);
     expect(mockTopicService.joinPublic).toHaveBeenCalledWith('123');
   });
