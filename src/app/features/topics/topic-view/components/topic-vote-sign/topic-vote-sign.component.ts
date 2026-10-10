@@ -1,4 +1,4 @@
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
@@ -9,13 +9,15 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicVoteSignEsteidComponent } from '../topic-vote-sign-esteid/topic-vote-sign-esteid.component';
 import { TopicVoteSignSmartidComponent } from '../topic-vote-sign-smartid/topic-vote-sign-smartid.component';
 import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-topic-vote-sign',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DialogCloseDirective, NotificationComponent, IconComponent],
-  templateUrl: './topic-vote-sign.component.html'
+  imports: [TranslateModule, DialogCloseDirective, NotificationComponent, ButtonComponent],
+  templateUrl: './topic-vote-sign.component.html',
+  styleUrls: ['./topic-vote-sign.component.scss']
 })
 export class TopicVoteSignComponent {
   data = inject<{ topic: Topic; options: { id: string; optionId?: string; selected?: boolean }[] }>(DIALOG_DATA);

@@ -11,14 +11,12 @@
       <div class="header_text">
         <h4 class="title">{{ 'MODALS.TOPIC_VOTE_SIGN_HEADING' | translate }}</h4>
         <div class="dialog_close">
-          <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
-            <cos-icon name="topic-tour-icon-legacy" size="24"></cos-icon>
-          </button>
+          <cos-button [iconMode]="true" variant="ghost" size="md" icon="topic-tour-icon-legacy" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate"></cos-button>
         </div>
       </div>
     </div>
     <div class="dialog_content no_footer">
-      <button type="button" class="btn_big_plain" (click)="doSignEsteId()">
+      <cos-button class="btn-sign" variant="light" (click)="doSignEsteId()">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="20" fill="#F9FBFD" />
           <path fill-rule="evenodd" clip-rule="evenodd"
@@ -29,9 +27,9 @@
             fill="#F5762D" />
         </svg>
         <span>{{ 'MODALS.TOPIC_VOTE_SIGN_BTN_SIGN_ESTEID' | translate }}</span>
-      </button>
+      </cos-button>
 
-      <button type="button" class="btn_big_plain" (click)="doSignSmartId()">
+      <cos-button class="btn-sign" variant="light" (click)="doSignSmartId()">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="20" fill="#F9FBFD" />
           <path
@@ -45,7 +43,7 @@
             fill="#00AFAA" />
         </svg>
         <span>{{ 'MODALS.TOPIC_VOTE_SIGN_BTN_SIGN_SMARTID' | translate }}</span>
-      </button>
+      </cos-button>
     </div>
     <div class="dialog_footer"></div>
   </div>

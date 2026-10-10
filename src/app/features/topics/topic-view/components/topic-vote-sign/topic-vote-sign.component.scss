@@ -4,10 +4,10 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-m;
-  padding: $spacing-l;
+  padding: $spacing-xl;
 }
 
-cos-button {
+.btn-sign {
   width: 100%;
   
   ::ng-deep button {
@@ -16,20 +16,28 @@ cos-button {
     justify-content: flex-start;
     align-items: center;
     gap: $spacing-m;
-    padding: $spacing-m;
-    background: $color-bg-surface;
-    border: 1px solid $color-border;
+    padding: $spacing-sm $spacing-m;
+    background: transparent;
+    border: none;
     border-radius: $border-radius-m;
     color: $color-text-main;
     font-size: $font-size-base;
-    font-weight: $font-weight-medium;
+    font-weight: $font-weight-normal;
+    box-shadow: none;
     
     &:hover {
       background: $color-bg-default;
     }
+    
+    .btn-content {
+      display: flex;
+      align-items: center;
+      gap: $spacing-m;
+      width: 100%;
+    }
   }
 
   svg {
-    border-radius: $border-radius-full;
+    flex-shrink: 0;
   }
 }
