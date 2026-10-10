@@ -1,3 +1,4 @@
+import { UserStore } from "../../../core/state/user.store";
 import { TranslateService } from '@ngx-translate/core';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
@@ -273,7 +274,7 @@ describe('TopicViewComponent', () => {
   });
 
   it('should call joinTopic service method', () => {
-    Object.defineProperty(TestBed.inject(TranslateService), 'currentLang', { value: 'en' });
+    TestBed.inject(UserStore).isAuthenticated = Object.assign(() => true, { [Symbol("SIGNAL")]: {} }) as any;
     component.joinTopic(mockTopic as unknown as Topic);
     expect(mockTopicService.joinPublic).toHaveBeenCalledWith('123');
   });
