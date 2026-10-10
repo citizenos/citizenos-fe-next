@@ -1,4 +1,5 @@
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { Component, input, signal, inject, ChangeDetectionStrategy, OnInit, computed, PLATFORM_ID } from '@angular/core';
 import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -29,7 +30,7 @@ import { VoteOptionsComponent } from '../../../../../shared/components/vote-opti
   selector: 'app-topic-vote-cast',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DatePipe, BigGraphComponent, InitialsComponent, CosDropdownDirective, TooltipComponent, IconComponent, VoteOptionsComponent],
+  imports: [TranslateModule, DatePipe, BigGraphComponent, InitialsComponent, CosDropdownDirective, TooltipComponent, IconComponent, VoteOptionsComponent, ButtonComponent],
   templateUrl: './topic-vote-cast.component.html',
   styleUrls: ['./topic-vote-cast.component.scss']
 })

@@ -4,13 +4,13 @@
       <div class="question">{{normalizedVote().description}}</div>
       @if (canUpdate() && (canEditDeadline() || !hasVoteEndedExpired())) {
         <div class="setting_button dropdown button_dropdown" cosDropdown>
-          <button type="button" class="btn_medium_close mobile_hidden">
+          <cos-button type="button" class="btn_medium_close mobile_hidden" variant="secondary" size="md">
             <cos-icon name="topic-vote-cast-icon-legacy" size="24"></cos-icon>
             <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate }}</span>
-          </button>
-          <button type="button" id="mobile_actions" class="btn_medium_close icon mobile_show" [attr.aria-label]="'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate">
+          </cos-button>
+          <cos-button type="button" id="mobile_actions" class="btn_medium_close icon mobile_show" [attr.aria-label]="'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate" variant="secondary" size="md" [iconMode]="true">
             <cos-icon name="topic-vote-cast-icon-legacy" size="24"></cos-icon>
-          </button>
+          </cos-button>
           <div class="options">
             @if (canEditDeadline()) {
               <div class="option" (click)="editDeadline()" (keydown.enter)="editDeadline()" tabindex="0" role="button">
@@ -53,7 +53,7 @@
           <div class="data_item">
             <span class="bold">{{normalizedVote().endsAt | date:'y-MM-dd HH:mm'}}</span>
             @if (canUpdate() && !hasVoteEndedExpired() && (topic().members.users.count || 0) > 1 && !normalizedVote().reminderSent) {
-            <button type="button" class="btn_link" (click)="sendVoteReminder()" (keydown.enter)="sendVoteReminder()">{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</button>
+            <cos-button type="button" class="btn_link" (clicked)="sendVoteReminder()" variant="ghost">{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</cos-button>
             }
           </div>
         </div>
@@ -95,10 +95,10 @@
               <div class="heading bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.HEADING_VOTE_REGISTERED' | translate }}</div>
               <div>{{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_TXT_VOTE_REGISTERED' | translate }}</div>
               <div class="links_wrap">
-                <button type="button" class="btn_link" (click)="editVote.set(true)" (keydown.enter)="editVote.set(true)">
+                <cos-button type="button" class="btn_link" (clicked)="editVote.set(true)" variant="ghost">
                   <cos-icon name="topic-vote-cast-icon-5-legacy" size="16"></cos-icon>
                   <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.LNK_EDIT_VOTE' | translate }}</span>
-                </button>
+                </cos-button>
                 @if (normalizedVote().authType === VOTE_AUTH_TYPES.hard && normalizedVote().downloads?.bdocVote) {
                   <a [href]="normalizedVote().downloads?.bdocVote" download [aria-label]="'COMPONENTS.TOPIC_VOTE_CAST.BTN_DOWNLOAD_USER_BDOC' | translate">
                     <cos-icon name="topic-vote-cast-icon-6-legacy" size="16"></cos-icon>
@@ -131,20 +131,20 @@
                     </a>
                   }
                   @if (normalizedVote().authType === VOTE_AUTH_TYPES.hard) {
-                    <button type="button" class="btn_link" (click)="triggerFinalDownload('bdoc', false)" (keydown.enter)="triggerFinalDownload('bdoc', false)">
+                    <cos-button type="button" class="btn_link" (clicked)="triggerFinalDownload('bdoc', false)" variant="ghost">
                       <cos-icon name="topic-vote-cast-icon-6-legacy" size="16"></cos-icon>
                       <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.FINAL_OPTION_WITHOUT_CSV' | translate }}</span>
-                    </button>
-                    <button type="button" class="btn_link" (click)="triggerFinalDownload('bdoc', true)" (keydown.enter)="triggerFinalDownload('bdoc', true)">
+                    </cos-button>
+                    <cos-button type="button" class="btn_link" (clicked)="triggerFinalDownload('bdoc', true)" variant="ghost">
                       <cos-icon name="topic-vote-cast-icon-6-legacy" size="16"></cos-icon>
                       <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.FINAL_OPTION_WITH_CSV' | translate }}</span>
-                    </button>
+                    </cos-button>
                   }
                   @if (normalizedVote().authType === VOTE_AUTH_TYPES.soft) {
-                    <button type="button" class="btn_link" (click)="triggerFinalDownload('zip'); $event.stopPropagation()" (keydown.enter)="triggerFinalDownload('zip'); $event.stopPropagation()">
+                    <cos-button type="button" class="btn_link" (clicked)="triggerFinalDownload('zip'); $event.stopPropagation()" variant="ghost">
                       <cos-icon name="topic-vote-cast-icon-6-legacy" size="16"></cos-icon>
                       <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.BTN_DOWNLOAD_FINAL_ZIP' | translate }}</span>
-                    </button>
+                    </cos-button>
                   }
                 </div>
               }
@@ -203,7 +203,7 @@
             <div class="text_area">
               <div><span translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES"></span> <span class="bold">{{normalizedVote().votersCount || 0}}</span></div>
               @if (canUpdate() && !hasVoteEndedExpired() && (topic().members.users.count || 0) > 1 && !normalizedVote().reminderSent) {
-                <button type="button" class="btn_link" (click)="sendVoteReminder()" (keydown.enter)="sendVoteReminder()">{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</button>
+                <cos-button type="button" class="btn_link" (clicked)="sendVoteReminder()" variant="ghost">{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</cos-button>
               }
             </div>
           </div>
@@ -220,17 +220,17 @@
 
         <div class="vote_buttons_wrap">
           @if (canDelegate() && normalizedVote().authType !== VOTE_AUTH_TYPES.hard) {
-            <button type="button" class="btn_medium_close" [class.active]="normalizedVote().delegation" (click)="delegate()">
+            <cos-button type="button" class="btn_medium_close" [class.active]="normalizedVote().delegation" (clicked)="delegate()" variant="secondary" size="md">
               <cos-icon name="topic-vote-cast-icon-10-legacy" size="24"></cos-icon>
               <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_HEADING_DELEGATE' | translate }}</span>
-            </button>
+            </cos-button>
           } @else {
             <div></div>
           }
           @if (!normalizedVote().delegation || canSubmit()) {
-            <button type="button" class="btn_medium_submit bold" [class.disabled]="!canSubmit()" (click)="doVote()">
+            <cos-button type="button" class="btn_medium_submit bold" [class.disabled]="!canSubmit()" (clicked)="doVote()" variant="primary" size="md">
               {{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_SUBMIT' | translate }}
-            </button>
+            </cos-button>
           }
         </div>
       }
@@ -272,8 +272,8 @@
                   <div>{{ 'COMPONENTS.TOPIC_VOTE_CAST.INFO_DELEGATION_DESCRIPTION' | translate }}</div>
                 </div>
               </div>
-              <button type="button" class="btn_medium_close bold" (click)="doRevokeDelegation()">
-                {{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_REVOKE_DELEGATION' | translate }}</button>
+              <cos-button type="button" class="btn_medium_close bold" (clicked)="doRevokeDelegation()" variant="secondary" size="md">
+                {{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_REVOKE_DELEGATION' | translate }}</cos-button>
             </div>
           }
           

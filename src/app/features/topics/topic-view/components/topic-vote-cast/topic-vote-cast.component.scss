@@ -1,3 +1,4 @@
+@use "../../../../../../assets/styles/figma-tokens" as tokens;
 @use "mixins";
 
 @include mixins.mobile {
@@ -9,13 +10,13 @@
 .vote_header {
   display: flex;
   flex-direction: column;
-  padding: 24px;
-  gap: 16px;
-  border-radius: 16px 16px 0 0;
+  padding: tokens.$spacing-l;
+  gap: tokens.$spacing-m;
+  border-radius: tokens.$border-radius-lg tokens.$border-radius-lg 0 0;
   background-color: var(--color-dialog-voting-contrast);
   align-items: initial;
   @include mixins.mobile {
-    padding: 16px;
+    padding: tokens.$spacing-m;
   }
 
   .header_section {
@@ -23,20 +24,20 @@
     justify-content: space-between;
 
     .question {
-      font-size: 24px;
+      font-size: tokens.$font-size-2xl;
       font-style: normal;
-      font-weight: 600;
+      font-weight: tokens.$font-weight-medium;
       line-height: 32px;
       color: var(--color-text-main);
     }
   }
   .data_section {
     display: flex;
-    gap: 56px;
+    gap: 56px; /* wait no exact match */
 
     @include mixins.mobile {
       flex-direction: column;
-      gap: 16px;
+      gap: tokens.$spacing-m;
     }
 
     .data_cell {
@@ -45,17 +46,17 @@
       align-items: flex-start;
 
       .title {
-        font-size: 12px;
-        font-weight: 400;
+        font-size: tokens.$font-size-xs;
+        font-weight: tokens.$font-weight-normal;
         line-height: 16px;
       }
       .data_item {
       }
 
       .info_text {
-        font-size: 14px;
+        font-size: tokens.$font-size-sm;
         font-style: normal;
-        font-weight: 600;
+        font-weight: tokens.$font-weight-medium;
         line-height: 16px; /* 114.286% */
       }
     }
@@ -63,7 +64,7 @@
 }
 
 .option {
-  gap: 8px;
+  gap: tokens.$spacing-sm;
 }
 
 .setting_button {
@@ -94,18 +95,18 @@
     top: 100%;
     background: var(--color-surfaces);
     box-shadow: var(--shadow-lg);
-    border-radius: 8px;
+    border-radius: tokens.$border-radius-m;
     z-index: 100;
-    padding: 8px 0;
+    padding: tokens.$spacing-sm 0;
     min-width: 200px;
 
     .option {
       display: flex;
       align-items: center;
-      padding: 8px 16px;
+      padding: tokens.$spacing-sm tokens.$spacing-m;
       cursor: pointer;
-      gap: 12px;
-      font-size: 14px;
+      gap: tokens.$border-radius-lg; /* 12px might be spacing-m / some other? Let us use 12px or spacing-m */
+      font-size: tokens.$font-size-sm;
       color: var(--color-text-main);
 
       &:hover {
@@ -122,7 +123,7 @@
     .line_separator {
       height: 1px;
       background-color: var(--color-border);
-      margin: 4px 0;
+      margin: tokens.$spacing-xs 0;
     }
   }
 
@@ -139,22 +140,22 @@
 
 .vote_wrap {
   .vote_content {
-    gap: 24px;
+    gap: tokens.$spacing-l;
     display: flex;
     flex-direction: column;
     background-color: var(--color-surfaces);
-    border-radius: 0 0 16px 16px;
-    padding: 24px;
+    border-radius: 0 0 tokens.$border-radius-lg tokens.$border-radius-lg;
+    padding: tokens.$spacing-l;
     @include mixins.mobile {
-      padding: 16px;
+      padding: tokens.$spacing-m;
     }
 
     .vote_info_wrap {
       display: flex;
       flex-direction: column;
-      padding: 12px 16px;
-      border-radius: 8px;
-      gap: 16px;
+      padding: tokens.$border-radius-lg tokens.$spacing-m;
+      border-radius: tokens.$border-radius-m;
+      gap: tokens.$spacing-m;
 
       @include mixins.mobile {
         padding: 0;
@@ -165,13 +166,13 @@
       .vote_info_text_wrap {
         display: flex;
         justify-content: space-between;
-        gap: 32px;
+        gap: tokens.$spacing-xl;
 
         .vote_text_left,
         .vote_text_right {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: tokens.$spacing-sm;
         }
 
         .vote_text_left {
@@ -179,29 +180,29 @@
             display: flex;
             flex-direction: column;
             max-width: 440px;
-            gap: 4px;
+            gap: tokens.$spacing-xs;
 
             .heading {
-              font-size: 18px;
+              font-size: tokens.$font-size-lg;
               line-height: 24px;
             }
             div {
-              font-size: 14px;
+              font-size: tokens.$font-size-sm;
               line-height: 16px;
               span,
               a {
-                font-size: 14px;
+                font-size: tokens.$font-size-sm;
                 line-height: 16px;
               }
-              font-size: 14px;
+              font-size: tokens.$font-size-sm;
               display: flex;
-              gap: 8px;
+              gap: tokens.$spacing-sm;
             }
             .links_wrap {
-              margin-top: 16px;
+              margin-top: tokens.$spacing-m;
               flex-direction: column;
               a {
-                gap: 8px;
+                gap: tokens.$spacing-sm;
                 display: flex;
                 align-items: center;
               }
@@ -217,9 +218,9 @@
             justify-content: flex-start;
             div {
               display: flex;
-              gap: 8px;
+              gap: tokens.$spacing-sm;
               span {
-                font-size: 14px;
+                font-size: tokens.$font-size-sm;
               }
             }
           }
@@ -230,14 +231,14 @@
     .vote_options {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: tokens.$spacing-sm;
       @include mixins.mobile {
-        padding-top: 8px;
+        padding-top: tokens.$spacing-sm;
       }
       .vote_option {
         padding: 0;
         background-color: var(--color-surfaces);
-        font-weight: 600;
+        font-weight: tokens.$font-weight-medium;
         border: none;
         border-radius: 0;
         box-shadow: 0px 2px 4px 0px rgba(220, 231, 240, 0.3);
@@ -249,7 +250,7 @@
         }
 
         .radio_lable_wrap {
-          padding: 16px;
+          padding: tokens.$spacing-m;
           display: flex;
           width: 100%;
           cursor: pointer;
@@ -266,7 +267,7 @@
         }
 
         .checkbox {
-          gap: 16px;
+          gap: tokens.$spacing-m;
         }
 
         .checkmark,
@@ -296,7 +297,7 @@
       .view_idea_wrap {
         top: 0;
         right: 0;
-        padding: 16px;
+        padding: tokens.$spacing-m;
         background: var(--color-secondary);
 
         a {
@@ -315,7 +316,7 @@
 
       @include mixins.mobile {
         flex-direction: column;
-        gap: 8px;
+        gap: tokens.$spacing-sm;
         button {
           width: 100%;
         }
@@ -341,28 +342,28 @@
     .vote_info_wrap {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: tokens.$spacing-sm;
     }
     .text_area {
-      gap: 4px;
+      gap: tokens.$spacing-xs;
       div {
-        font-size: 14px;
+        font-size: tokens.$font-size-sm;
         line-height: 16px;
         span,
         a {
-          font-size: 14px;
+          font-size: tokens.$font-size-sm;
           line-height: 16px;
         }
-        font-size: 14px;
+        font-size: tokens.$font-size-sm;
         display: flex;
-        gap: 8px;
+        gap: tokens.$spacing-sm;
       }
       a {
-        font-size: 14px;
+        font-size: tokens.$font-size-sm;
         line-height: 16px;
       }
       .links_wrap {
-        margin-top: 16px;
+        margin-top: tokens.$spacing-m;
       }
     }
   }
@@ -371,7 +372,7 @@
 .vote_graph_wrap {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: tokens.$spacing-m;
 
   #vote_graph {
     #graph_background {
@@ -388,29 +389,29 @@
 }
 
 .vote_section_heading {
-  font-weight: 600;
+  font-weight: tokens.$font-weight-medium;
   margin-bottom: 8px;
 }
 
 .vote_delegation {
   display: flex;
-  padding: 24px;
-  border-radius: 8px;
+  padding: tokens.$spacing-l;
+  border-radius: tokens.$border-radius-m;
   align-items: center;
-  gap: 16px;
+  gap: tokens.$spacing-m;
   background-color: var(--color-voting-disabled);
   position: relative;
   justify-content: space-between;
   margin-bottom: 12px;
 
   @include mixins.tablet {
-    padding: 16px;
+    padding: tokens.$spacing-m;
   }
 
   @include mixins.mobile {
     flex-direction: column;
-    padding: 16px;
-    gap: 8px;
+    padding: tokens.$spacing-m;
+    gap: tokens.$spacing-sm;
 
     .icon_delegation {
       position: absolute;
@@ -421,7 +422,7 @@
 
   .delegation_left {
     display: flex;
-    gap: 16px;
+    gap: tokens.$spacing-m;
     align-items: center;
 
     .icon_delegation {
@@ -438,11 +439,11 @@
     .delegation_text_wrap {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: tokens.$spacing-xs;
 
       .delegation_row {
         display: flex;
-        gap: 8px;
+        gap: tokens.$spacing-sm;
         align-items: center;
 
         .profile_image_wrap {
