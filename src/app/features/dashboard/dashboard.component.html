@@ -318,26 +318,24 @@
                   </div>
                 </div>
               </div>
-              <div id="close_create" (click)="showCreate.set(false)"></div>
+              <div id="close_create" (click)="showCreate.set(false)" tabindex="0" (keydown.enter)="showCreate.set(false)"></div>
             </div>
-            <button
-              class="btn_medium_submit"
-              (click)="toggleCreate()"
+            <cos-button size="md"
+              
+              (clicked)="toggleCreate()"
               [ngClass]="{ active: showCreate() }"
-            >
-              <cos-icon name="plus"></cos-icon>
-              <span translate="VIEWS.DASHBOARD.HAVENT_ENGAGED_BTN_CREATE"></span>
-            </button>
-            <button
-              class="btn_medium_submit"
-              translate="VIEWS.DASHBOARD.HAVENT_ENGAGED_BTN_VIEW_PUBLIC_TOPICS"
+            ><cos-icon name="plus"></cos-icon>
+              <span translate="VIEWS.DASHBOARD.HAVENT_ENGAGED_BTN_CREATE"></span></cos-button>
+            <cos-button size="md"
+              
+              
               [routerLink]="['/', translate.currentLang, 'public', 'topics']"
-            ></button>
-            <button
-              class="btn_medium_submit"
-              translate="VIEWS.DASHBOARD.HAVENT_ENGAGED_BTN_VIEW_PUBLIC_GROUPS"
+            >{{ 'VIEWS.DASHBOARD.HAVENT_ENGAGED_BTN_VIEW_PUBLIC_TOPICS' | translate }}</cos-button>
+            <cos-button size="md"
+              
+              
               [routerLink]="['/', translate.currentLang, 'public', 'groups']"
-            ></button>
+            >{{ 'VIEWS.DASHBOARD.HAVENT_ENGAGED_BTN_VIEW_PUBLIC_GROUPS' | translate }}</cos-button>
           </div>
         </div>
       }
@@ -359,11 +357,11 @@
             }
           }
         </div>
-        <button
-          class="view_more_button btn_big_submit"
+        <cos-button size="lg"
+          class="view_more_button "
           [routerLink]="['/', translate.currentLang, 'public', 'topics']"
-          translate="VIEWS.DASHBOARD.PUBLIC_TOPICS_LNK_VIEW_ALL"
-        ></button>
+          
+        >{{ 'VIEWS.DASHBOARD.PUBLIC_TOPICS_LNK_VIEW_ALL' | translate }}</cos-button>
       </div>
     }
     @if (topics.length > 0) {
@@ -383,11 +381,11 @@
             <cos-topic-card [topic]="topic"> </cos-topic-card>
           }
         </div>
-        <button
-          class="view_more_button btn_big_submit"
+        <cos-button size="lg"
+          class="view_more_button "
           [routerLink]="['/', translate.currentLang, 'my', 'topics']"
-          translate="VIEWS.DASHBOARD.MY_TOPICS_LNK_VIEW_ALL"
-        ></button>
+          
+        >{{ 'VIEWS.DASHBOARD.MY_TOPICS_LNK_VIEW_ALL' | translate }}</cos-button>
       </div>
     }
   }
@@ -413,11 +411,11 @@
                 <cos-group-card mode="public" [group]="group"></cos-group-card>
               }
             </div>
-            <button
-              class="view_more_button btn_medium_submit"
+            <cos-button size="md"
+              class="view_more_button "
               [routerLink]="['/public/groups']"
-              translate="VIEWS.HOME.BTN_VIEW_ALL_GROUPS"
-            ></button>
+              
+            >{{ 'VIEWS.HOME.BTN_VIEW_ALL_GROUPS' | translate }}</cos-button>
           </div>
         </ng-container>
       }
@@ -441,11 +439,11 @@
             }
           }
         </div>
-        <button
-          class="view_more_button btn_big_submit"
+        <cos-button size="lg"
+          class="view_more_button "
           [routerLink]="['/', translate.currentLang, 'my', 'groups']"
-          translate="VIEWS.DASHBOARD.MY_GROUPS_LNK_VIEW_ALL"
-        ></button>
+          
+        >{{ 'VIEWS.DASHBOARD.MY_GROUPS_LNK_VIEW_ALL' | translate }}</cos-button>
       </div>
     }
   }
@@ -490,8 +488,7 @@
         class="btn_medium_submit mobile_show"
         href="https://citizenos.com/news"
         target="_blank"
-        translate="VIEWS.DASHBOARD.NEWS_LNK_VIEW_ALL"
-      ></a>
+      >{{ 'VIEWS.DASHBOARD.NEWS_LNK_VIEW_ALL' | translate }}</a>
       @if (true) {
         <div id="help_us">
           <div id="title" translate="VIEWS.DASHBOARD.HELP_US_HEADER"></div>
@@ -649,11 +646,11 @@
               }
             }
           </div>
-          <button
-            class="view_more_button btn_big_submit"
+          <cos-button size="lg"
+            class="view_more_button "
             [routerLink]="['/', translate.currentLang, 'public', 'topics']"
-            translate="VIEWS.DASHBOARD.PUBLIC_TOPICS_LNK_VIEW_ALL"
-          ></button>
+            
+          >{{ 'VIEWS.DASHBOARD.PUBLIC_TOPICS_LNK_VIEW_ALL' | translate }}</cos-button>
         </div>
       }
     </ng-container>
@@ -676,11 +673,11 @@
             <cos-group-card mode="public" [group]="group"></cos-group-card>
           }
         </div>
-        <button
-          class="view_more_button btn_medium_submit"
+        <cos-button size="md"
+          class="view_more_button "
           [routerLink]="['/public/groups']"
-          translate="VIEWS.HOME.BTN_VIEW_ALL_GROUPS"
-        ></button>
+          
+        >{{ 'VIEWS.HOME.BTN_VIEW_ALL_GROUPS' | translate }}</cos-button>
       </div>
     }
   }
@@ -695,7 +692,7 @@
     <cos-input placeholder="{{'VIEWS.DASHBOARD.SUBSCRIBE_FORM_INPUT_PLACEHOLDER' | translate}}">
       <input type="email" [placeholder]="'VIEWS.DASHBOARD.SUBSCRIBE_FORM_INPUT_PLACEHOLDER' | translate" />
     </cos-input>
-    <button class="btn_big_submit" translate="VIEWS.DASHBOARD.SUBSCRIBE_FORM_BTN"></button>
+    <cos-button size="lg"  >{{ 'VIEWS.DASHBOARD.SUBSCRIBE_FORM_BTN' | translate }}</cos-button>
   </div>
 </div>
 <div id="subscribe_illustration">

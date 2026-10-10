@@ -1,9 +1,10 @@
 @use "mixins";
+@use "../../../assets/styles/figma-tokens" as figma;
 
 // Common variables for better maintainability
-$border-radius: 16px;
-$padding-standard: 24px;
-$gap-standard: 16px;
+$border-radius: figma.$border-radius-lg;
+$padding-standard: figma.$spacing-l;
+$gap-standard: figma.$spacing-m;
 
 #page_header {
   padding: 16px $padding-standard;
@@ -15,7 +16,7 @@ $gap-standard: 16px;
   }
 
   @include mixins.mobile {
-    background-color: var(--color-surfaces);
+    background-color: figma.$color-bg-surface;
     border-radius: 0 0 $border-radius $border-radius;
   }
 }
@@ -74,7 +75,7 @@ $gap-standard: 16px;
     #help_us {
       display: flex;
       flex-direction: column;
-      background-color: var(--color-surfaces);
+      background-color: figma.$color-bg-surface;
       border-radius: $border-radius;
       padding: $padding-standard $gap-standard;
     }
@@ -151,7 +152,7 @@ $gap-standard: 16px;
             border-radius: 80px;
             align-items: center;
             justify-content: center;
-            background-color: var(--color-surfaces);
+            background-color: figma.$color-bg-surface;
           }
         }
       }
@@ -235,7 +236,7 @@ $gap-standard: 16px;
       min-width: 280px;
       max-width: 280px;
       min-height: 456px;
-      background-color: var(--color-blue-100);
+      background-color: figma.$color-bg-default;
       gap: $padding-standard;
 
       @include mixins.mobile {
@@ -345,7 +346,7 @@ $gap-standard: 16px;
 
 #subscribe_box {
   display: flex;
-  background-color: var(--color-blue-100);
+  background-color: figma.$color-bg-default;
   justify-content: space-between;
   padding: $padding-standard $padding-standard 0 $padding-standard;
 

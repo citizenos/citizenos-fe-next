@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  trackByTopic(index: number, element: any): number {
+  trackByTopic(index: number, element: { id: string | number }): number {
     return typeof element.id === 'string' ? parseInt(element.id, 10) : element.id;
   }
 
