@@ -11,11 +11,13 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { VoteWithOptions } from '../../../../../core/interfaces/vote';
 
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+
 @Component({
   selector: 'app-topic-vote-deadline',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DialogCloseDirective, DeadlinePickerComponent, IconComponent],
+  imports: [TranslateModule, DialogCloseDirective, DeadlinePickerComponent, ButtonComponent],
   templateUrl: './topic-vote-deadline.component.html'
 })
 export class TopicVoteDeadlineComponent {

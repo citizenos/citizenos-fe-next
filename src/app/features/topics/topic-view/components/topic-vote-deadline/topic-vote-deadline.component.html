@@ -9,9 +9,7 @@
           <h1 class="small_heading">{{ 'COMPONENTS.TOPIC_VOTE_DEADLINE.DIALOG_HEADING' | translate }}</h1>
         }
         <div class="dialog_close">
-          <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
-            <cos-icon name="close" [size]="24"></cos-icon>
-          </button>
+          <cos-button variant="ghost" [iconMode]="true" icon="close" customIconSize="24" dialogClose [aria-label]="'CONTROL.CLOSE' | translate"></cos-button>
         </div>
       </div>
     </div>
@@ -26,9 +24,9 @@
       </div>
     </div>
     <div class="dialog_footer with_buttons">
-      <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.TOPIC_VOTE_DEADLINE.LNK_CANCEL' | translate }}</button>
+      <cos-button variant="ghost" dialogClose>{{ 'COMPONENTS.TOPIC_VOTE_DEADLINE.LNK_CANCEL' | translate }}</cos-button>
       <div class="button_row">
-        <button type="button" class="btn_medium_submit" (click)="save()">{{ "COMPONENTS.TOPIC_VOTE_DEADLINE.BTN_SAVE" | translate }}</button>
+        <cos-button variant="primary" (clicked)="save()">{{ "COMPONENTS.TOPIC_VOTE_DEADLINE.BTN_SAVE" | translate }}</cos-button>
       </div>
     </div>
   </div>

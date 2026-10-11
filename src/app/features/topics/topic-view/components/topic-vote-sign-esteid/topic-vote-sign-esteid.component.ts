@@ -24,12 +24,14 @@ declare let hwcrypto: {
   TECHNICAL_ERROR: string;
 };
 
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+
 @Component({
   selector: 'app-topic-vote-sign-esteid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, NotificationComponent, IconComponent],
+  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, NotificationComponent, IconComponent, ButtonComponent],
   templateUrl: './topic-vote-sign-esteid.component.html',
   styleUrls: ['./topic-vote-sign-esteid.component.scss']
 })

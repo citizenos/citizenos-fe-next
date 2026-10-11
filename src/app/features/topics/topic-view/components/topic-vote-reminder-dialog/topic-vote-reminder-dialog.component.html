@@ -5,9 +5,7 @@
       <div class="header_text">
         <div class="small_heading">{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.DIALOG_HEADING' | translate }}</div>
         <div class="dialog_close">
-          <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
-            <cos-icon name="close" [size]="24"></cos-icon>
-          </button>
+          <cos-button variant="ghost" [iconMode]="true" icon="close" customIconSize="24" dialogClose [aria-label]="'CONTROL.CLOSE' | translate"></cos-button>
         </div>
       </div>
     </div>
@@ -63,9 +61,9 @@
       </div>
 
       <div class="button_wrap">
-        <button type="button" class="btn_medium_secondary" [dialogClose]="true">
-          {{ 'COMPONENTS.TOPIC_VOTE_REMINDER.BTN_SEND_REMINDER' | translate }}</button>
-        <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.LNK_CANCEL' | translate }}</button>
+        <cos-button variant="primary" [dialogClose]="true">
+          {{ 'COMPONENTS.TOPIC_VOTE_REMINDER.BTN_SEND_REMINDER' | translate }}</cos-button>
+        <cos-button variant="ghost" dialogClose>{{ 'COMPONENTS.TOPIC_VOTE_REMINDER.LNK_CANCEL' | translate }}</cos-button>
       </div>
     </div>
   </div>

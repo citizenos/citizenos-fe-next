@@ -10,12 +10,13 @@ import { TopicVoteSignEsteidComponent } from '../topic-vote-sign-esteid/topic-vo
 import { TopicVoteSignSmartidComponent } from '../topic-vote-sign-smartid/topic-vote-sign-smartid.component';
 import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-topic-vote-sign',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DialogCloseDirective, NotificationComponent, ButtonComponent],
+  imports: [TranslateModule, DialogCloseDirective, NotificationComponent, ButtonComponent, IconComponent],
   templateUrl: './topic-vote-sign.component.html',
   styleUrls: ['./topic-vote-sign.component.scss']
 })

@@ -6,12 +6,13 @@ import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/di
 import { UserStore } from '../../../../../core/state/user.store';
 import { Topic, TopicVote } from '../../../../../core/interfaces/topic';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-topic-vote-reminder-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, DatePipe, DialogCloseDirective, IconComponent],
+  imports: [TranslateModule, DatePipe, DialogCloseDirective, IconComponent, ButtonComponent],
   templateUrl: './topic-vote-reminder-dialog.component.html'
 })
 export class TopicVoteReminderDialogComponent {

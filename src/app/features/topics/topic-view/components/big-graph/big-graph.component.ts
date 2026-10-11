@@ -1,12 +1,14 @@
 import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-big-graph',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule],
-  templateUrl: './big-graph.component.html'
+  imports: [TranslateModule, UpperCasePipe],
+  templateUrl: './big-graph.component.html',
+  styleUrls: ['./big-graph.component.scss']
 })
 export class BigGraphComponent {
   options = input.required<{ rows: { id?: string; value?: string; voteCount?: number; winner?: boolean; selected?: boolean; [key: string]: unknown }[] }>();

@@ -1,46 +1,52 @@
+@use "../../../../assets/styles/figma-tokens" as tokens;
+
 .vote_options {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: tokens.$spacing-sm;
 
   @media (max-width: 600px) {
-    padding-top: 8px;
+    padding-top: tokens.$spacing-sm;
   }
 
   .vote_option {
     padding: 0;
     background-color: var(--color-surfaces);
-    font-weight: 600;
-    border: none;
-    border-radius: 0;
-    box-shadow: 0px 2px 4px 0px rgba(220, 231, 240, 0.3);
+    font-weight: tokens.$font-weight-medium;
+    border: 1px solid var(--color-border);
+    border-radius: tokens.$border-radius-m;
     cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     .radio_text_wrap {
       display: flex;
       align-items: center;
+      width: 100%;
     }
 
     .radio_lable_wrap {
-      padding: 16px;
+      padding: tokens.$spacing-m;
       display: flex;
       width: 100%;
       cursor: pointer;
     }
 
-    &.voting {
-      &:hover {
-        background-color: var(--color-voting-disabled);
+    &.voting:hover {
+      background-color: var(--color-dialog-voting);
+      border-color: var(--color-voting-disabled);
 
-        .checkmark,
-        .radio {
-          border-color: initial;
-        }
+      .checkmark,
+      .radio {
+        border-color: var(--color-voting);
       }
     }
 
     .checkbox {
-      gap: 16px;
+      gap: tokens.$spacing-m;
+      width: 100%;
     }
 
     .checkmark,
@@ -52,19 +58,58 @@
       }
     }
 
+    // Active selection
     &.selected {
-      background-color: var(--color-voting-disabled);
-      border: none;
+      background-color: var(--color-dialog-voting);
+      border-color: var(--color-voting);
 
       .checkmark,
       .radio {
         background-color: var(--color-voting);
-        border-color: var(--input-checkbox-border-voting);
+        border-color: var(--color-voting);
       }
       
       .checkmark::after,
       .radio::after {
         display: block;
+      }
+    }
+
+    // Chosen options in registered / voted state
+    &.disabled.selected {
+      background-color: #96deab;
+      border-color: #96deab;
+      cursor: default;
+
+      .option_text {
+        font-weight: tokens.$font-weight-bold;
+        color: var(--color-text-main);
+      }
+
+      .checkmark {
+        background-color: #5ab467;
+        border-color: #5ab467;
+
+        &::after {
+          display: block;
+          border-color: white;
+        }
+      }
+    }
+
+    // Unchosen options in registered / ended state
+    &.unchosen {
+      background-color: var(--color-surfaces);
+      border: 1px solid var(--color-border);
+      cursor: default;
+
+      .option_text {
+        font-weight: tokens.$font-weight-normal;
+        color: var(--color-text-muted);
+      }
+
+      .unchosen_icon {
+        color: var(--color-text-muted);
       }
     }
 
@@ -77,14 +122,7 @@
     }
 
     .view_idea_wrap {
-      top: 0;
-      right: 0;
-      padding: 16px;
-      background: var(--color-secondary);
-
-      button {
-        line-height: 24px;
-      }
+      padding-right: tokens.$spacing-m;
     }
   }
 }

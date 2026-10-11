@@ -50,3 +50,4 @@ e2e/.env
 # System files
 .DS_Store
 Thumbs.db
+src/assets/config/local.json

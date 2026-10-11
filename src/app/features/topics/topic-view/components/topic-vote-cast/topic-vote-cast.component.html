@@ -1,7 +1,18 @@
 <div class="vote_wrap">
   <div class="vote_header">
-    <div class="header_section">
+    <div class="header_left">
+      <cos-icon name="topic-tab-voting-active" size="24"></cos-icon>
       <div class="question">{{normalizedVote().description}}</div>
+    </div>
+
+    <div class="header_right">
+      @if (normalizedVote().endsAt) {
+        <div class="deadline_wrap">
+          <cos-icon name="calendar" size="20"></cos-icon>
+          <span class="bold">{{ normalizedVote().endsAt | date:'dd.MM.yyyy HH:mm' }}</span>
+        </div>
+      }
+
       @if (canUpdate() && (canEditDeadline() || !hasVoteEndedExpired())) {
         <div class="setting_button dropdown button_dropdown" cosDropdown>
           <!-- Desktop Manage button -->
@@ -50,51 +61,18 @@
         </div>
       }
     </div>
-    <div class="data_section">
-      @if (normalizedVote().endsAt) {
-        <div class="data_cell">
-          <div class="title">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_DEADLINE' | translate }}</div>
-          <div class="data_item">
-            <span class="bold">{{normalizedVote().endsAt | date:'y-MM-dd HH:mm'}}</span>
-            @if (canUpdate() && !hasVoteEndedExpired() && (topic().members.users.count || 0) > 1 && !normalizedVote().reminderSent) {
-            <cos-button type="button" class="btn_link" (clicked)="sendVoteReminder()" variant="ghost">{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</cos-button>
-            }
-          </div>
-        </div>
-      }
-      <div class="data_cell">
-        <div class="title">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES' | translate }}</div>
-        <div class="data_item">
-          <span class="bold">{{normalizedVote().votersCount || 0}}</span>
-        </div>
-      </div>
-    </div>
-    <div class="data_cell">
-      <div class="title">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES' | translate }}</div>
-      <div class="data_item">
-      </div>
-    </div>
   </div>
 
   <div class="vote_content">
     <div class="vote_info_wrap">
-      <div class="vote_info_text_wrap">
-        <div class="vote_text_left">
-          <!-- Vote still on, not yet voted or editing -->
-          @if (!hasVoteEndedExpired() && (!userHasVoted() || editVote())) {
-            <div class="text_area">
-              <div class="heading bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.CAST_YOUR_VOTE' | translate }}</div>
-              @if (normalizedVote().type === 'regular' || (normalizedVote().type === 'multiple' && normalizedVote().maxChoices === 1)) {
-                <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.PREVIEW_VOTE_TYPE_REGULAR' | translate }}</span>
-              }
-              @if (normalizedVote().type === 'multiple' && (normalizedVote().maxChoices || 0) > 1) {
-                <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.TXT_YOU_CAN_CHOOSE_OPTIONS' | translate:{range: (normalizedVote().maxChoices !== normalizedVote().minChoices) ? (normalizedVote().minChoices + '-' + normalizedVote().maxChoices) : normalizedVote().maxChoices} }}</span>
-              }
-            </div>
-          }
+      @if (!hasVoteEndedExpired() && (!userHasVoted() || editVote())) {
+        <div class="heading bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.CAST_YOUR_VOTE' | translate }}</div>
+      }
 
-          <!-- Already voted, still open -->
-          @if (userHasVoted() && !editVote() && !hasVoteEndedExpired()) {
+      <!-- Already voted, still open -->
+      @if (userHasVoted() && !editVote() && !hasVoteEndedExpired()) {
+        <div class="vote_info_text_wrap">
+          <div class="vote_text_left">
             <div class="text_area">
               <div class="heading bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.HEADING_VOTE_REGISTERED' | translate }}</div>
               <div>{{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_TXT_VOTE_REGISTERED' | translate }}</div>
@@ -111,10 +89,35 @@
                 }
               </div>
             </div>
-          }
+          </div>
+          <div class="vote_text_right">
+            <div class="vote_graph_wrap">
+              <div id="vote_graph">
+                <svg width="48" height="48" viewBox="0 0 48 48" style="transform: rotate(-90deg)">
+                  <circle id="graph_background" r="20" cx="24" cy="24" fill="transparent" stroke="#e0e0e0"
+                    stroke-width="5px">
+                  </circle>
+                  <circle id="graph_bar" r="20" cx="24" cy="24" fill="transparent" stroke="#60e6a8" stroke-width="5px"
+                    [attr.stroke-dasharray]="voteGraphDasharray()"
+                    [attr.stroke-dashoffset]="voteGraphDashOffset(((normalizedVote().votersCount || 0) / (topic().members.users.count || 1)) * 100)">
+                  </circle>
+                </svg>
+              </div>
+              <div class="text_area">
+                <div><span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES' | translate }}</span> <span class="bold">{{normalizedVote().votersCount || 0}}</span></div>
+                @if (canUpdate() && !hasVoteEndedExpired() && (topic().members.users.count || 0) > 1 && !normalizedVote().reminderSent) {
+                  <cos-button type="button" class="btn_link" (clicked)="sendVoteReminder()" variant="ghost">{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</cos-button>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
 
-          <!-- Vote ended -->
-          @if (hasVoteEndedExpired() && (!userHasVoted() || !editVote())) {
+      <!-- Vote ended -->
+      @if (hasVoteEndedExpired() && (!userHasVoted() || !editVote())) {
+        <div class="vote_info_text_wrap">
+          <div class="vote_text_left">
             <div class="text_area">
               <div class="heading bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.HEADING_VOTE_ENDED' | translate }}</div>
               @if (canUpdate()) {
@@ -153,180 +156,179 @@
                 </div>
               }
             </div>
+          </div>
+          <div class="vote_text_right">
+            <div class="vote_graph_wrap">
+              <div id="vote_graph">
+                <svg width="48" height="48" viewBox="0 0 48 48" style="transform: rotate(-90deg)">
+                  <circle id="graph_background" r="20" cx="24" cy="24" fill="transparent" stroke="#e0e0e0"
+                    stroke-width="5px">
+                  </circle>
+                  <circle id="graph_bar" r="20" cx="24" cy="24" fill="transparent" stroke="#60e6a8" stroke-width="5px"
+                    [attr.stroke-dasharray]="voteGraphDasharray()"
+                    [attr.stroke-dashoffset]="voteGraphDashOffset(((normalizedVote().votersCount || 0) / (topic().members.users.count || 1)) * 100)">
+                  </circle>
+                </svg>
+              </div>
+              <div class="text_area">
+                <div><span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES' | translate }}</span> <span class="bold">{{normalizedVote().votersCount || 0}}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Active voting: option selection -->
+    @if ((!userHasVoted() || editVote()) && !hasVoteEndedExpired()) {
+      <div class="vote_result_info">
+        <div class="vote_info_text_wrap">
+          @if (normalizedVote().type === 'regular' || (normalizedVote().type === 'multiple' && normalizedVote().maxChoices === 1)) {
+            <div>
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="24" fill="#98DAA2" />
+                <rect x="12" y="12" width="24" height="24" rx="12" fill="white" />
+                <rect x="18" y="18" width="12" height="12" rx="6" fill="#5AB467" />
+              </svg>
+            </div>
+            <div class="text_area">
+              <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.PREVIEW_VOTE_TYPE_REGULAR' | translate }}</span>
+            </div>
           }
+          @if (normalizedVote().type === 'multiple' && (normalizedVote().maxChoices || 0) > 1) {
+            <div>
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="24" fill="#98DAA2" />
+                <rect x="18" y="26" width="12" height="12" rx="1" fill="#F1FAF3" />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M19.1992 32.1455L22.6278 35.6004L28.7992 29.3816L27.8324 28.4004L22.6278 33.6449L20.1661 31.1712L19.1992 32.1455Z"
+                  fill="#5AB467" />
+                <rect x="18" y="10" width="12" height="12" rx="1" fill="#F1FAF3" />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M20 16.1209L22.8571 19L28 13.8177L27.1943 13L22.8571 17.3704L20.8057 15.309L20 16.1209Z"
+                  fill="#5AB467" />
+              </svg>
+            </div>
+            <div class="text_area">
+              <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.TXT_YOU_CAN_CHOOSE_OPTIONS' | translate:{range: (normalizedVote().maxChoices !== normalizedVote().minChoices) ? (normalizedVote().minChoices + '-' + normalizedVote().maxChoices) : normalizedVote().maxChoices} }}</span>
+            </div>
+          }
+        </div>
+        <div class="vote_graph_wrap">
+          <div id="vote_graph">
+            <svg width="48" height="48" viewBox="0 0 48 48" style="transform: rotate(-90deg)">
+              <circle id="graph_background" r="20" cx="24" cy="24" fill="transparent" stroke="#e0e0e0"
+                stroke-width="5px">
+              </circle>
+              <circle id="graph_bar" r="20" cx="24" cy="24" fill="transparent" stroke="#60e6a8" stroke-width="5px"
+                [attr.stroke-dasharray]="voteGraphDasharray()"
+                [attr.stroke-dashoffset]="voteGraphDashOffset(((normalizedVote().votersCount || 0) / (topic().members.users.count || 1)) * 100)">
+              </circle>
+            </svg>
+          </div>
+          <div class="text_area">
+            <div><span translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES"></span> <span class="bold">{{normalizedVote().votersCount || 0}}</span></div>
+            @if (canUpdate() && !hasVoteEndedExpired() && (topic().members.users.count || 0) > 1 && !normalizedVote().reminderSent) {
+              <cos-button type="button" class="btn_link" (clicked)="sendVoteReminder()" variant="ghost">{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</cos-button>
+            }
+          </div>
         </div>
       </div>
 
-      <!-- Active voting: option selection -->
-      @if ((!userHasVoted() || editVote()) && !hasVoteEndedExpired()) {
-        <div class="vote_result_info mobile_show">
-          <div class="vote_info_text_wrap">
-            @if (normalizedVote().type === 'regular' || (normalizedVote().type === 'multiple' && normalizedVote().maxChoices === 1)) {
-              <div>
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="24" cy="24" r="24" fill="#98DAA2" />
-                  <rect x="12" y="12" width="24" height="24" rx="12" fill="white" />
-                  <rect x="18" y="18" width="12" height="12" rx="6" fill="#5AB467" />
+      <cos-vote-options 
+        [options]="normalizedVote().options"
+        [maxChoices]="normalizedVote().maxChoices || 1"
+        [disabled]="!canVote()"
+        [canVote]="canVote()"
+        (selectionChange)="selectOption($event)"
+        (viewIdea)="viewIdea($event)">
+      </cos-vote-options>
+
+      <div class="vote_buttons_wrap">
+        @if (canDelegate() && normalizedVote().authType !== VOTE_AUTH_TYPES.hard) {
+          <cos-button type="button" class="btn_medium_close" [class.active]="normalizedVote().delegation" (clicked)="delegate()" variant="secondary" size="md">
+            <cos-icon name="topic-vote-cast-icon-10-legacy" size="24"></cos-icon>
+            <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_HEADING_DELEGATE' | translate }}</span>
+          </cos-button>
+        } @else {
+          <div></div>
+        }
+        @if (!normalizedVote().delegation || canSubmit()) {
+          <cos-button type="button" class="btn_medium_submit bold" [isDisabled]="!canSubmit()" (clicked)="doVote()" variant="primary" size="md">
+            {{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_SUBMIT' | translate }}
+          </cos-button>
+        }
+      </div>
+    }
+
+    <!-- Already voted, still open: show chosen and unchosen options -->
+    @if (userHasVoted() && !editVote() && !hasVoteEndedExpired()) {
+      <div class="vote_options">
+        <div class="vote_section_heading">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_YOUR_CHOSE_OPTIONS' | translate }}</div>
+        @if (normalizedVote().delegation) {
+          <div class="vote_delegation">
+            <div class="delegation_left">
+              <div class="icon_delegation">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="40" height="40" rx="20" fill="#5AB467" />
+                  <path
+                    d="M26.3432 15.9229L27.0634 10L21.1505 10.7214L23.1001 12.6743L15.7221 20.0647L17.1292 21.4742L24.5072 14.0838L26.3432 15.9229Z"
+                    fill="white" />
+                  <path
+                    d="M17.9282 29L28 18.9113L26.5929 17.5018L17.9352 26.174L13.4071 21.6524L12 23.0618L17.9282 29Z"
+                    fill="white" />
                 </svg>
               </div>
-              <div class="text_area">
-                <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.PREVIEW_VOTE_TYPE_REGULAR' | translate }}</span>
-              </div>
-            }
-            @if (normalizedVote().type === 'multiple' && (normalizedVote().maxChoices || 0) > 1) {
-              <div>
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="24" cy="24" r="24" fill="#98DAA2" />
-                  <rect x="18" y="26" width="12" height="12" rx="1" fill="#F1FAF3" />
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M19.1992 32.1455L22.6278 35.6004L28.7992 29.3816L27.8324 28.4004L22.6278 33.6449L20.1661 31.1712L19.1992 32.1455Z"
-                    fill="#5AB467" />
-                  <rect x="18" y="10" width="12" height="12" rx="1" fill="#F1FAF3" />
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M20 16.1209L22.8571 19L28 13.8177L27.1943 13L22.8571 17.3704L20.8057 15.309L20 16.1209Z"
-                    fill="#5AB467" />
-                </svg>
-              </div>
-              <div class="text_area">
-                <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.TXT_YOU_CAN_CHOOSE_OPTIONS' | translate:{range: (normalizedVote().maxChoices !== normalizedVote().minChoices) ? (normalizedVote().minChoices + '-' + normalizedVote().maxChoices) : normalizedVote().maxChoices} }}</span>
-              </div>
-            }
-          </div>
-          <div class="vote_graph_wrap">
-            <div id="vote_graph">
-              <svg width="48" height="48" viewBox="0 0 48 48" style="transform: rotate(-90deg)">
-                <circle id="graph_background" r="20" cx="24" cy="24" fill="transparent" stroke="#e0e0e0"
-                  stroke-width="5px">
-                </circle>
-                <circle id="graph_bar" r="20" cx="24" cy="24" fill="transparent" stroke="#60e6a8" stroke-width="5px"
-                  [attr.stroke-dasharray]="voteGraphDasharray()"
-                  [attr.stroke-dashoffset]="voteGraphDashOffset(((normalizedVote().votersCount || 0) / (topic().members.users.count || 1)) * 100)">
-                </circle>
-              </svg>
-            </div>
-            <div class="text_area">
-              <div><span translate="COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES"></span> <span class="bold">{{normalizedVote().votersCount || 0}}</span></div>
-              @if (canUpdate() && !hasVoteEndedExpired() && (topic().members.users.count || 0) > 1 && !normalizedVote().reminderSent) {
-                <cos-button type="button" class="btn_link" (clicked)="sendVoteReminder()" variant="ghost">{{ 'COMPONENTS.TOPIC_VOTE_CAST.OPT_SEND_VOTE_REMINDER' | translate }}</cos-button>
-              }
-            </div>
-          </div>
-        </div>
-
-        <cos-vote-options 
-          [options]="normalizedVote().options"
-          [maxChoices]="normalizedVote().maxChoices || 1"
-          [disabled]="!canVote()"
-          [canVote]="canVote()"
-          (selectionChange)="selectOption($event)"
-          (viewIdea)="viewIdea($event)">
-        </cos-vote-options>
-
-        <div class="vote_buttons_wrap">
-          @if (canDelegate() && normalizedVote().authType !== VOTE_AUTH_TYPES.hard) {
-            <cos-button type="button" class="btn_medium_close" [class.active]="normalizedVote().delegation" (clicked)="delegate()" variant="secondary" size="md">
-              <cos-icon name="topic-vote-cast-icon-10-legacy" size="24"></cos-icon>
-              <span class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_HEADING_DELEGATE' | translate }}</span>
-            </cos-button>
-          } @else {
-            <div></div>
-          }
-          @if (!normalizedVote().delegation || canSubmit()) {
-            <cos-button type="button" class="btn_medium_submit bold" [class.disabled]="!canSubmit()" (clicked)="doVote()" variant="primary" size="md">
-              {{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_SUBMIT' | translate }}
-            </cos-button>
-          }
-        </div>
-      }
-
-      <!-- Already voted, still open: show chosen and unchosen options -->
-      @if (userHasVoted() && !editVote() && !hasVoteEndedExpired()) {
-        <div class="vote_options">
-          <div class="vote_section_heading">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_YOUR_CHOSE_OPTIONS' | translate }}</div>
-          @if (normalizedVote().delegation) {
-            <div class="vote_delegation">
-              <div class="delegation_left">
-                <div class="icon_delegation">
-                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="40" height="40" rx="20" fill="#5AB467" />
-                    <path
-                      d="M26.3432 15.9229L27.0634 10L21.1505 10.7214L23.1001 12.6743L15.7221 20.0647L17.1292 21.4742L24.5072 14.0838L26.3432 15.9229Z"
-                      fill="white" />
-                    <path
-                      d="M17.9282 29L28 18.9113L26.5929 17.5018L17.9352 26.174L13.4071 21.6524L12 23.0618L17.9282 29Z"
-                      fill="white" />
-                  </svg>
-                </div>
-                <div class="delegation_text_wrap">
-                  <div class="delegation_row">
-                    <div class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_DELEGATED_TO' | translate }}</div>
-                    <div class="profile_image_wrap">
-                      @if (normalizedVote().delegation?.imageUrl) {
-                        <img class="profile_image" [src]="normalizedVote().delegation?.imageUrl" [alt]="normalizedVote().delegation?.name">
-                      } @else {
-                        <div class="profile_image_filler">
-                          @if (normalizedVote().delegation?.name) {
-                            <cos-initials class="table_cell" [name]="normalizedVote().delegation?.name || ''"></cos-initials>
-                          }
-                        </div>
-                      }
-                      <div class="bold">{{normalizedVote().delegation?.name}}</div>
-                    </div>
+              <div class="delegation_text_wrap">
+                <div class="delegation_row">
+                  <div class="bold">{{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_DELEGATED_TO' | translate }}</div>
+                  <div class="profile_image_wrap">
+                    @if (normalizedVote().delegation?.imageUrl) {
+                      <img class="profile_image" [src]="normalizedVote().delegation?.imageUrl" [alt]="normalizedVote().delegation?.name">
+                    } @else {
+                      <div class="profile_image_filler">
+                        @if (normalizedVote().delegation?.name) {
+                          <cos-initials class="table_cell" [name]="normalizedVote().delegation?.name || ''"></cos-initials>
+                        }
+                      </div>
+                    }
+                    <div class="bold">{{normalizedVote().delegation?.name}}</div>
                   </div>
-                  <div>{{ 'COMPONENTS.TOPIC_VOTE_CAST.INFO_DELEGATION_DESCRIPTION' | translate }}</div>
                 </div>
+                <div>{{ 'COMPONENTS.TOPIC_VOTE_CAST.INFO_DELEGATION_DESCRIPTION' | translate }}</div>
               </div>
-              <cos-button type="button" class="btn_medium_close bold" (clicked)="doRevokeDelegation()" variant="secondary" size="md">
-                {{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_REVOKE_DELEGATION' | translate }}</cos-button>
             </div>
-          }
-          
-          <cos-vote-options 
-            [options]="selectedOptions()"
-            [maxChoices]="normalizedVote().maxChoices || 1"
-            [disabled]="true"
-            [canVote]="false">
-          </cos-vote-options>
-        </div>
-
-        <div class="line_separator vote mobile_show"></div>
-
-        <div class="vote_options">
-          <div class="vote_section_heading">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_OPTIONS_YOU_DIDNT_CHOOSE' | translate }}</div>
-          <cos-vote-options 
-            [options]="unselectedOptions()"
-            [maxChoices]="normalizedVote().maxChoices || 1"
-            [disabled]="true"
-            [canVote]="false"
-            [showLockIcon]="true">
-          </cos-vote-options>
-        </div>
-      }
-
-      <!-- Vote ended: show results graph -->
-      @if (hasVoteEndedExpired() && (!userHasVoted() || !editVote())) {
-        <div class="vote_result_info mobile_show">
-          <div class="vote_graph_wrap">
-            <div id="vote_graph">
-              <svg width="48" height="48" viewBox="0 0 48 48" style="transform: rotate(-90deg)">
-                <circle id="graph_background" r="20" cx="24" cy="24" fill="transparent" stroke="#e0e0e0"
-                  stroke-width="5px">
-                </circle>
-                <circle id="graph_bar" r="20" cx="24" cy="24" fill="transparent" stroke="#60e6a8" stroke-width="5px"
-                  [attr.stroke-dasharray]="voteGraphDasharray()"
-                  [attr.stroke-dashoffset]="voteGraphDashOffset(((normalizedVote().votersCount || 0) / (topic().members.users.count || 1)) * 100)">
-                </circle>
-              </svg>
-            </div>
-            <div class="text_area">
-              <div><span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_VOTES' | translate }}</span> <span class="bold">{{normalizedVote().votersCount || 0}}</span></div>
-            </div>
+            <cos-button type="button" class="btn_medium_close bold" (clicked)="doRevokeDelegation()" variant="secondary" size="md">
+              {{ 'COMPONENTS.TOPIC_VOTE_CAST.VOTE_REVOKE_DELEGATION' | translate }}</cos-button>
           </div>
-        </div>
+        }
+        
+        <cos-vote-options 
+          [options]="selectedOptions()"
+          [maxChoices]="normalizedVote().maxChoices || 1"
+          [disabled]="true"
+          [canVote]="false">
+        </cos-vote-options>
+      </div>
 
-        <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.LBL_VOTE_RESULTS' | translate }}</div>
-        <app-big-graph [options]="{ rows: normalizedVote().options }"></app-big-graph>
-      }
-    </div>
+      <div class="line_separator vote mobile_show"></div>
+
+      <div class="vote_options">
+        <div class="vote_section_heading">{{ 'COMPONENTS.TOPIC_VOTE_CAST.LBL_OPTIONS_YOU_DIDNT_CHOOSE' | translate }}</div>
+        <cos-vote-options 
+          [options]="unselectedOptions()"
+          [maxChoices]="normalizedVote().maxChoices || 1"
+          [disabled]="true"
+          [canVote]="false"
+          [showLockIcon]="true">
+        </cos-vote-options>
+      </div>
+    }
+
+    <!-- Vote ended: show results graph -->
+    @if (hasVoteEndedExpired() && (!userHasVoted() || !editVote())) {
+      <div class="bold">{{ 'VIEWS.TOPICS_TOPICID.LBL_VOTE_RESULTS' | translate }}</div>
+      <app-big-graph [options]="{ rows: normalizedVote().options }"></app-big-graph>
+    }
   </div>
 </div>

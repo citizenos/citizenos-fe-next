@@ -9,56 +9,55 @@
 
 .vote_header {
   display: flex;
-  flex-direction: column;
-  padding: tokens.$spacing-l;
-  gap: tokens.$spacing-m;
-  border-radius: tokens.$border-radius-lg tokens.$border-radius-lg 0 0;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: tokens.$spacing-l tokens.$spacing-xl;
   background-color: var(--color-dialog-voting-contrast);
-  align-items: initial;
+  border-radius: tokens.$border-radius-lg tokens.$border-radius-lg 0 0;
+  gap: tokens.$spacing-m;
+
   @include mixins.mobile {
+    flex-direction: column;
+    align-items: flex-start;
     padding: tokens.$spacing-m;
   }
 
-  .header_section {
+  .header_left {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
 
     .question {
-      font-size: tokens.$font-size-2xl;
+      font-size: tokens.$font-size-xl;
       font-style: normal;
-      font-weight: tokens.$font-weight-medium;
-      line-height: 32px;
+      font-weight: tokens.$font-weight-bold;
+      line-height: 28px;
       color: var(--color-text-main);
+
+      @include mixins.mobile {
+        font-size: tokens.$font-size-base;
+      }
     }
   }
-  .data_section {
+
+  .header_right {
     display: flex;
-    gap: 56px; /* wait no exact match */
+    align-items: center;
+    gap: tokens.$spacing-l;
 
     @include mixins.mobile {
-      flex-direction: column;
-      gap: tokens.$spacing-m;
+      width: 100%;
+      justify-content: space-between;
     }
 
-    .data_cell {
+    .deadline_wrap {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-
-      .title {
-        font-size: tokens.$font-size-xs;
-        font-weight: tokens.$font-weight-normal;
-        line-height: 16px;
-      }
-      .data_item {
-      }
-
-      .info_text {
-        font-size: tokens.$font-size-sm;
-        font-style: normal;
-        font-weight: tokens.$font-weight-medium;
-        line-height: 16px; /* 114.286% */
-      }
+      align-items: center;
+      gap: tokens.$spacing-sm;
+      font-size: tokens.$font-size-sm;
+      font-weight: tokens.$font-weight-bold;
+      color: var(--color-text-main);
     }
   }
 }
@@ -153,29 +152,36 @@
     .vote_info_wrap {
       display: flex;
       flex-direction: column;
-      padding: tokens.$border-radius-lg tokens.$spacing-m;
-      border-radius: tokens.$border-radius-m;
       gap: tokens.$spacing-m;
 
-      @include mixins.mobile {
-        padding: 0;
+      .heading {
+        font-size: tokens.$font-size-lg;
+        font-weight: tokens.$font-weight-bold;
+        line-height: 24px;
+        color: var(--color-text-main);
       }
-      .line_separator {
-        background-color: var(--color-voting-disabled);
-      }
+
       .vote_info_text_wrap {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         gap: tokens.$spacing-xl;
+        padding: tokens.$spacing-m tokens.$spacing-l;
+        background-color: var(--color-dialog-voting-contrast);
+        border-radius: tokens.$border-radius-m;
 
-        .vote_text_left,
-        .vote_text_right {
-          display: flex;
-          align-items: center;
-          gap: tokens.$spacing-sm;
+        @include mixins.mobile {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: tokens.$spacing-m;
+          gap: tokens.$spacing-m;
         }
 
         .vote_text_left {
+          display: flex;
+          align-items: center;
+          gap: tokens.$spacing-sm;
+
           .text_area {
             display: flex;
             flex-direction: column;
@@ -184,46 +190,34 @@
 
             .heading {
               font-size: tokens.$font-size-lg;
+              font-weight: tokens.$font-weight-bold;
               line-height: 24px;
             }
             div {
               font-size: tokens.$font-size-sm;
               line-height: 16px;
-              span,
-              a {
-                font-size: tokens.$font-size-sm;
-                line-height: 16px;
-              }
-              font-size: tokens.$font-size-sm;
-              display: flex;
-              gap: tokens.$spacing-sm;
             }
             .links_wrap {
               margin-top: tokens.$spacing-m;
-              flex-direction: column;
+              display: flex;
+              flex-direction: row;
+              gap: tokens.$spacing-m;
+              align-items: center;
+
               a {
                 gap: tokens.$spacing-sm;
                 display: flex;
                 align-items: center;
+                font-size: tokens.$font-size-sm;
+                color: var(--color-link);
               }
             }
           }
         }
-        .vote_text_right {
-          min-width: max-content;
 
-          .text_area {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            div {
-              display: flex;
-              gap: tokens.$spacing-sm;
-              span {
-                font-size: tokens.$font-size-sm;
-              }
-            }
-          }
+        .vote_text_right {
+          display: flex;
+          align-items: center;
         }
       }
     }
@@ -333,37 +327,28 @@
   }
 
   .vote_result_info {
-    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: tokens.$spacing-m tokens.$spacing-l;
+    background-color: var(--color-dialog-voting-contrast);
+    border-radius: tokens.$border-radius-m;
+    gap: tokens.$spacing-m;
+
     @include mixins.mobile {
-      padding: 0;
+      flex-direction: column;
       align-items: flex-start;
+      padding: tokens.$spacing-m;
     }
 
-    .vote_info_wrap {
+    .vote_info_text_wrap {
       display: flex;
       align-items: center;
-      gap: tokens.$spacing-sm;
-    }
-    .text_area {
-      gap: tokens.$spacing-xs;
-      div {
+      gap: tokens.$spacing-m;
+
+      .text_area {
         font-size: tokens.$font-size-sm;
-        line-height: 16px;
-        span,
-        a {
-          font-size: tokens.$font-size-sm;
-          line-height: 16px;
-        }
-        font-size: tokens.$font-size-sm;
-        display: flex;
-        gap: tokens.$spacing-sm;
-      }
-      a {
-        font-size: tokens.$font-size-sm;
-        line-height: 16px;
-      }
-      .links_wrap {
-        margin-top: tokens.$spacing-m;
+        color: var(--color-text-main);
       }
     }
   }

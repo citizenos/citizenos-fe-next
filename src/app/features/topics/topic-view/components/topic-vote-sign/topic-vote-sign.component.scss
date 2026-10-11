@@ -1,10 +1,10 @@
-@import '../../../../../../assets/styles/figma-tokens';
+@use "../../../../../../assets/styles/figma-tokens" as tokens;
 
 .dialog_content {
   display: flex;
   flex-direction: column;
-  gap: $spacing-m;
-  padding: $spacing-xl;
+  gap: tokens.$spacing-m;
+  padding: tokens.$spacing-xl;
 }
 
 .btn-sign {
@@ -15,29 +15,29 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: $spacing-m;
-    padding: $spacing-sm $spacing-m;
+    gap: tokens.$spacing-m;
+    padding: tokens.$spacing-sm tokens.$spacing-m;
     background: transparent;
     border: none;
-    border-radius: $border-radius-m;
-    color: $color-text-main;
-    font-size: $font-size-base;
-    font-weight: $font-weight-normal;
+    border-radius: tokens.$border-radius-m;
+    color: var(--color-text-main);
+    font-size: tokens.$font-size-base;
+    font-weight: tokens.$font-weight-normal;
     box-shadow: none;
     
     &:hover {
-      background: $color-bg-default;
+      background: var(--color-background-hover);
     }
     
     .btn-content {
       display: flex;
       align-items: center;
-      gap: $spacing-m;
+      gap: tokens.$spacing-m;
       width: 100%;
     }
   }
 
-  svg {
+  cos-icon, svg {
     flex-shrink: 0;
   }
 }

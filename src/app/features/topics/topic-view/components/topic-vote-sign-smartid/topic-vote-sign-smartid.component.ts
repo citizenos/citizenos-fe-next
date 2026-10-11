@@ -13,12 +13,14 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { Topic, TopicVoteCast } from '../../../../../core/interfaces/topic';
 import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
 
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+
 @Component({
   selector: 'app-topic-vote-sign-smartid',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, NotificationComponent, IconComponent],
+  imports: [TranslateModule, ReactiveFormsModule, InputComponent, DialogCloseDirective, UpperCasePipe, NotificationComponent, IconComponent, ButtonComponent],
   templateUrl: './topic-vote-sign-smartid.component.html',
   styleUrls: ['./topic-vote-sign-smartid.component.scss']
 })

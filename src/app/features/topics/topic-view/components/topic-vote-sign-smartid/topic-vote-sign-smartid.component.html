@@ -11,9 +11,7 @@
       <div class="header_text">
         <h4 class="title">{{ 'MODALS.TOPIC_VOTE_SIGN_SMARTID_HEADING' | translate }}</h4>
         <div class="dialog_close">
-          <button type="button" class="btn_dialog_close icon" dialogClose>
-            <cos-icon name="topic-tour-icon-legacy" size="24"></cos-icon>
-          </button>
+          <cos-button [iconMode]="true" variant="ghost" size="md" icon="close" dialogClose [aria-label]="'CONTROL.CLOSE' | translate"></cos-button>
         </div>
       </div>
     </div>
@@ -110,10 +108,10 @@
               </div>
             </div>
           }
-          <button id="submit_button" type="submit" (click)="doSignWithSmartId()"
-            [disabled]="isLoading() || signForm.invalid" class="btn_big_submit">
+          <cos-button id="submit_button" type="submit" (clicked)="doSignWithSmartId()"
+            [isDisabled]="isLoading() || signForm.invalid" [isLoading]="isLoading()" size="lg" variant="primary">
             <span>{{ 'MODALS.TOPIC_VOTE_SIGN_SMARTID_BTN_SIGN' | translate }}</span>
-          </button>
+          </cos-button>
 
         </form>
       </div>

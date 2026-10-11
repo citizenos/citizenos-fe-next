@@ -9,9 +9,7 @@
         <h4 class="title">{{ 'COMPONENTS.DOWNLOAD_VOTING_RESULTS.HEADING' | translate }}</h4>
       </div>
       <div class="dialog_close">
-        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
-            <cos-icon name="close" [size]="24"></cos-icon>
-        </button>
+        <cos-button variant="ghost" [iconMode]="true" icon="close" customIconSize="24" dialogClose [aria-label]="'CONTROL.CLOSE' | translate"></cos-button>
       </div>
     </div>
     <div class="dialog_content">
@@ -54,9 +52,9 @@
     </div>
     <div class="dialog_content no_footer">
       <div class="button_wrap">
-        <button type="button" class="btn_big_submit" [dialogClose]="'deadline'">{{ 'COMPONENTS.DOWNLOAD_VOTING_RESULTS.BTN_EDIT_DEADLINE' | translate }}</button>
-        <button type="button" class="btn_big_submit" [dialogClose]="true">{{ 'COMPONENTS.DOWNLOAD_VOTING_RESULTS.BTN_SUBMIT' | translate }}</button>
-        <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.DOWNLOAD_VOTING_RESULTS.BTN_CANCEL' | translate }}</button>
+        <cos-button variant="secondary" [dialogClose]="'deadline'">{{ 'COMPONENTS.DOWNLOAD_VOTING_RESULTS.BTN_EDIT_DEADLINE' | translate }}</cos-button>
+        <cos-button variant="primary" [dialogClose]="true">{{ 'COMPONENTS.DOWNLOAD_VOTING_RESULTS.BTN_SUBMIT' | translate }}</cos-button>
+        <cos-button variant="ghost" dialogClose>{{ 'COMPONENTS.DOWNLOAD_VOTING_RESULTS.BTN_CANCEL' | translate }}</cos-button>
       </div>
     </div>
     <div class="dialog_footer"></div>

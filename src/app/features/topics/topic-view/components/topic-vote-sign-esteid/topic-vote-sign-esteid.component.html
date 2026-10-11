@@ -11,9 +11,7 @@
       <div class="header_text">
         <h4 class="title">{{ 'MODALS.TOPIC_VOTE_SIGN_ESTEID_HEADING' | translate }}</h4>
         <div class="dialog_close">
-          <button type="button" class="btn_dialog_close icon" dialogClose>
-            <cos-icon name="topic-tour-icon-legacy" size="24"></cos-icon>
-          </button>
+          <cos-button [iconMode]="true" variant="ghost" size="md" icon="close" dialogClose [aria-label]="'CONTROL.CLOSE' | translate"></cos-button>
         </div>
       </div>
     </div>
@@ -93,10 +91,10 @@
                 </div>
               </div>
             }
-            <button type="submit" (click)="doSignWithMobile()"
-              [disabled]="isLoading() || isLoadingIdCard() || mobiilIdForm.invalid" class="btn_big_submit">
+            <cos-button type="submit" (clicked)="doSignWithMobile()"
+              [isDisabled]="isLoading() || isLoadingIdCard() || mobiilIdForm.invalid" [isLoading]="isLoading()" size="lg" variant="primary">
               <span>{{ 'MODALS.TOPIC_VOTE_SIGN_ESTEID_BTN_SIGN_MID' | translate }}</span>
-            </button>
+            </cos-button>
           </div>
 
           <div class="sign_in_section">
@@ -120,10 +118,10 @@
               </div>
             }
             @if (!isLoadingIdCard()) {
-              <button type="button" (click)="doSignWithCard()" [disabled]="isLoading() || isLoadingIdCard()"
-                class="btn_big_submit">
+              <cos-button type="button" (clicked)="doSignWithCard()" [isDisabled]="isLoading() || isLoadingIdCard()"
+                [isLoading]="isLoadingIdCard()" size="lg" variant="primary">
                 <span>{{ 'MODALS.TOPIC_VOTE_SIGN_ESTEID_BTN_SIGN_CARD' | translate }}</span>
-              </button>
+              </cos-button>
             }
           </div>
         </form>

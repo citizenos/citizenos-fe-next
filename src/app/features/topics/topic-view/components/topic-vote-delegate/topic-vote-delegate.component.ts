@@ -6,6 +6,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { TopicMemberUserService, TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
 import { VoteDelegationService } from '../../../../../core/services/vote-delegation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -17,8 +18,9 @@ import { NotificationService } from '../../../../../core/services/notification.s
   selector: 'app-topic-vote-delegate',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, FormsModule, DialogCloseDirective, ButtonComponent],
-  templateUrl: './topic-vote-delegate.component.html'
+  imports: [TranslateModule, FormsModule, DialogCloseDirective, ButtonComponent, IconComponent],
+  templateUrl: './topic-vote-delegate.component.html',
+  styleUrls: ['./topic-vote-delegate.component.scss']
 })
 export class TopicVoteDelegateComponent {
   data = inject<{ topic: Topic }>(DIALOG_DATA);
