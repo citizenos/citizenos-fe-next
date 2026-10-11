@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, output, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +23,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
   template: `
     <div id="login_wrap">
       <nav class="nav-back">
-        <cos-button variant="light" size="md" [routerLink]="['../']" icon="arrow-left" (click)="cancel()">
+        <cos-button variant="light" size="md" [routerLink]="['../']" icon="arrow-left" (click)="cancelMethod()">
           <span translate="VIEWS.LOGIN.BTN_BACK_LOGIN"></span>
         </cos-button>
       </nav>
@@ -71,7 +71,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
                <cos-icon name="spinner" [size]="32" class="spin"></cos-icon>
             </div>
             
-            <cos-button variant="light" (click)="cancel()">
+            <cos-button variant="light" (click)="cancelMethod()">
               {{ 'COMPONENTS.SMART_ID_LOGIN_FORM.BTN_CANCEL' | translate }}
             </cos-button>
           </div>
@@ -241,8 +241,11 @@ export class SmartIdComponent implements OnDestroy {
     this.pollSubscription?.unsubscribe();
   }
 
-  cancel() {
+  cancelled = output<void>();
+
+  cancelMethod() {
     this.stopPolling();
     this.challengeID.set(null);
+    this.cancelled.emit();
   }
 }

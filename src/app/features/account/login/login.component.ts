@@ -37,13 +37,13 @@ import { UserService } from '../../../core/services/user.service';
             <cos-icon name="facebook" [size]="20"></cos-icon>
           </button>
           <button type="button" class="login_icon" (click)="doLoginPartner('google')" aria-label="Google Login">
-            <cos-icon name="google" [size]="32"></cos-icon>
+            <cos-icon name="google" [size]="28"></cos-icon>
           </button>
           <button type="button" class="login_icon" [routerLink]="['smartid']" aria-label="Smart-ID Login">
-            <cos-icon name="smart-id" [size]="32"></cos-icon>
+            <cos-icon name="smart-id" [size]="28"></cos-icon>
           </button>
           <button type="button" class="login_icon" [routerLink]="['estid']" aria-label="Estonian ID Login">
-            <cos-icon name="est-id" [size]="32"></cos-icon>
+            <cos-icon name="est-id" [size]="28"></cos-icon>
           </button>
         </div>
 
@@ -51,32 +51,36 @@ import { UserService } from '../../../core/services/user.service';
            <span>{{ 'COMPONENTS.LOGIN_FORM.LOGIN_OR' | translate }}</span>
         </div>
 
-        <form [formRoot]="loginForm">
+        <form [formRoot]="loginForm" (submit)="$event.preventDefault(); save(loginModel())">
           @if (error()) {
             <div class="error-banner" role="alert">
-              <cos-icon name="close" [size]="16"></cos-icon>
+              <cos-icon name="warning" [size]="16"></cos-icon>
               <span>{{ error() }}</span>
             </div>
           }
 
-          <cos-input
-            [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate"
-            [hasError]="loginForm.email().invalid() && loginForm.email().touched()"
-            [errorMessage]="'Invalid email address'"
-          >
-            <input type="email" [formField]="loginForm.email" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate">
-          </cos-input>
+          <div class="input-group">
+            <cos-input
+              [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate"
+              [hasError]="loginForm.email().invalid() && loginForm.email().touched()"
+              [errorMessage]="'Invalid email address'"
+            >
+              <input type="email" [formField]="loginForm.email" [placeholder]="('COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_EMAIL' | translate) + ' *'">
+            </cos-input>
+          </div>
 
-          <cos-input
-            [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate"
-            [hasError]="loginForm.password().invalid() && loginForm.password().touched()"
-            [errorMessage]="'Password is required'"
-          >
-            <input [type]="showPassword() ? 'text' : 'password'" [formField]="loginForm.password" [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate">
-            <button type="button" class="view_password" (click)="togglePassword()" [attr.aria-label]="(showPassword() ? 'CONTROL.HIDE' : 'CONTROL.SHOW') | translate">
-               <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
-            </button>
-          </cos-input>
+          <div class="input-group">
+            <cos-input
+              [placeholder]="'COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate"
+              [hasError]="loginForm.password().invalid() && loginForm.password().touched()"
+              [errorMessage]="'Password is required'"
+            >
+              <input [type]="showPassword() ? 'text' : 'password'" [formField]="loginForm.password" [placeholder]="('COMPONENTS.LOGIN_FORM.LOGIN_PLACEHOLDER_PASSWORD' | translate) + ' *'">
+              <button type="button" class="view_password" (click)="togglePassword()" [attr.aria-label]="(showPassword() ? 'CONTROL.HIDE' : 'CONTROL.SHOW') | translate">
+                 <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
+              </button>
+            </cos-input>
+          </div>
 
           <div class="forgot-password">
             <a [routerLink]="['..', 'password', 'forgot']">{{ 'COMPONENTS.LOGIN_FORM.LOGIN_LNK_FORGOT_PASSWORD' | translate }}</a>
@@ -84,7 +88,7 @@ import { UserService } from '../../../core/services/user.service';
 
           <div class="form-actions">
             <cos-button
-              [type]="'submit'"
+              type="submit"
               variant="primary"
               size="lg"
               [isLoading]="userStore.isLoading()"
@@ -97,18 +101,16 @@ import { UserService } from '../../../core/services/user.service';
         </form>
 
         <footer class="login-footer">
-          <a [routerLink]="['..', 'signup']">{{ 'COMPONENTS.LOGIN_FORM.LOGIN_LNK_NO_ACCOUNT_REGISTER' | translate }}</a>
+          <span>{{ 'COMPONENTS.LOGIN_FORM.LOGIN_NO_ACCOUNT' | translate: { default: "Don't have an account?" } }} </span>
+          <a [routerLink]="['..', 'signup']">{{ 'COMPONENTS.LOGIN_FORM.LOGIN_SIGN_UP_HERE' | translate: { default: 'Sign up here' } }}</a>
         </footer>
       </div>
-
     </div>
   `,
   styles: [`
     #login_wrap {
       display: flex;
       flex-direction: column;
-      gap: 40px;
-      padding: 0;
       width: 100%;
     }
 
@@ -116,46 +118,51 @@ import { UserService } from '../../../core/services/user.service';
       display: flex;
       flex-direction: column;
       gap: 16px;
+      width: 100%;
     }
 
     .nav-back {
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
+      margin-bottom: 24px;
     }
 
     .main_heading {
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 700;
-      line-height: 1.25;
-      text-align: left;
-      margin: 0;
-      color: var(--cos-color-text);
+      line-height: 36px;
+      text-align: center;
+      margin: 0 0 8px;
+      color: var(--color-text, #2c3b47);
     }
 
     .icons_wrap {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       gap: 16px;
-      margin-bottom: 24px;
+      margin: 16px 0 24px;
     }
 
     .login_icon {
       cursor: pointer;
-      width: 64px;
-      height: 64px;
-      background-color: var(--color-surface-contrast);
+      width: 56px;
+      height: 56px;
+      background-color: var(--color-surface-contrast, #f9fbfd);
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: var(--radius-pill);
-      border: none;
-      transition: background-color 0.2s;
+      border-radius: 50%;
+      border: 1px solid var(--color-border, #e1e7ee);
+      transition: all 0.2s ease-in-out;
+      padding: 0;
 
       &:hover {
-        background-color: var(--color-secondary);
+        background-color: var(--color-background-hover, #e8f2fa);
+        border-color: var(--color-link, #1168a8);
+        transform: translateY(-2px);
       }
     }
 
@@ -164,66 +171,96 @@ import { UserService } from '../../../core/services/user.service';
       align-items: center;
       text-align: center;
       margin-bottom: 24px;
-      color: var(--color-text-muted);
+      color: var(--color-text-muted, #4d5c6a);
       font-size: 14px;
 
       &::before, &::after {
         content: '';
         flex: 1;
-        border-bottom: 1px solid var(--color-border);
+        border-bottom: 1px solid var(--color-border, #e1e7ee);
       }
 
       span {
         padding: 0 16px;
+        color: var(--color-text-muted, #4d5c6a);
       }
     }
 
+    .input-group {
+      position: relative;
+      width: 100%;
+    }
+
     .error-banner {
-      background: #ffdfd9;
-      color: var(--color-danger);
-      padding: var(--spacing-sm);
-      border-radius: var(--radius-sm);
-      margin-bottom: var(--spacing-md);
+      background: var(--color-error-background, #fff0ef);
+      color: var(--color-danger, #ef4025);
+      border: 1px solid var(--color-danger, #ef4025);
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
-      gap: var(--spacing-sm);
+      gap: 8px;
       font-size: 13px;
     }
 
     .forgot-password {
-      text-align: right;
-      margin-top: -8px;
-      margin-bottom: 24px;
-      font-size: 13px;
-      a { color: var(--color-link); text-decoration: none; }
+      text-align: left;
+      margin: 4px 0 16px;
+      font-size: 14px;
+      a {
+        color: var(--color-link, #1168a8);
+        text-decoration: none;
+        font-weight: 500;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
 
     .view_password {
       position: absolute;
       right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
       background: none;
       border: none;
       padding: 4px;
       cursor: pointer;
-      color: var(--color-text-muted);
+      color: var(--color-text-muted, #4d5c6a);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 3;
+      border-radius: 4px;
+      &:hover {
+        color: var(--color-text, #2c3b47);
+      }
     }
 
     .login-footer {
-      margin-top: 32px;
+      margin-top: 24px;
       text-align: center;
       font-size: 14px;
-      a { color: var(--color-link); text-decoration: none; font-weight: 600; }
+      color: var(--color-text, #2c3b47);
+      a {
+        color: var(--color-link, #1168a8);
+        text-decoration: none;
+        font-weight: 600;
+        margin-left: 4px;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
 
     .form-actions {
       width: 100%;
+      margin-top: 8px;
 
       cos-button {
-        width:100%;
+        width: 100%;
+        display: block;
       }
     }
   `]
@@ -263,6 +300,7 @@ export class LoginComponent {
 
   async save(data: ReturnType<typeof this.loginModel>) {
     try {
+      this.error.set(null);
       await this.userStore.login(data.email, data.password);
       const redirectSuccess = this.route.snapshot.queryParamMap.get('redirectSuccess');
       if (redirectSuccess) {

@@ -101,8 +101,8 @@ import { RouterOutlet, RouterLink } from '@angular/router';
 
     .form-wrapper {
       width: 100%;
-      max-width: 344px;
-      margin: 0 24px;
+      max-width: 440px;
+      margin: 0 auto;
     }
   `]
 })

@@ -36,93 +36,93 @@ import { EstEidComponent } from '../login/esteid/esteid.component';
         </cos-button>
       </nav>
 
-      <h1 class="main_heading">{{ 'VIEWS.REGISTER.REGISTER_TITLE' | translate }}</h1>
-      <p class="description" translate="VIEWS.REGISTER.REGISTER_DESCRIPTION"></p>
+      <div class="header-section">
+        <h1 class="main_heading">{{ 'COMPONENTS.REGISTER_FORM.HEADING' | translate }}</h1>
+        <p class="description">{{ 'COMPONENTS.REGISTER_FORM.HEADING_DESCRIPTION' | translate }}</p>
+      </div>
 
       @if (selectedMethod() === 'default') {
         <div class="auth-methods">
           <div class="icons_wrap">
-            <button class="login_icon" (click)="doLoginPartner('facebook')" aria-label="Facebook Registration">
+            <button type="button" class="login_icon" (click)="doLoginPartner('facebook')" aria-label="Facebook Registration">
               <cos-icon name="facebook" [size]="20"></cos-icon>
             </button>
-            <button class="login_icon" (click)="doLoginPartner('google')" aria-label="Google Registration">
-              <cos-icon name="google" [size]="32"></cos-icon>
+            <button type="button" class="login_icon" (click)="doLoginPartner('google')" aria-label="Google Registration">
+              <cos-icon name="google" [size]="28"></cos-icon>
             </button>
-            <button class="login_icon" (click)="selectedMethod.set('smartid')" aria-label="Smart-ID Registration">
-              <cos-icon name="smart-id" [size]="32"></cos-icon>
+            <button type="button" class="login_icon" (click)="selectedMethod.set('smartid')" aria-label="Smart-ID Registration">
+              <cos-icon name="smart-id" [size]="28"></cos-icon>
             </button>
-            <button class="login_icon" (click)="selectedMethod.set('esteid')" aria-label="Estonian ID Registration">
-              <cos-icon name="est-id" [size]="32"></cos-icon>
+            <button type="button" class="login_icon" (click)="selectedMethod.set('esteid')" aria-label="Estonian ID Registration">
+              <cos-icon name="est-id" [size]="28"></cos-icon>
             </button>
           </div>
 
           <div class="separator">
-             <span translate="VIEWS.REGISTER.REGISTER_OR"></span>
+             <span>{{ 'COMPONENTS.LOGIN_FORM.LOGIN_OR' | translate }}</span>
           </div>
 
-          <form [formRoot]="registerForm">
+          <form [formRoot]="registerForm" (submit)="$event.preventDefault(); save(registerModel())">
             @if (error()) {
               <div class="error-banner" role="alert">
-                <cos-icon name="close" [size]="16"></cos-icon>
+                <cos-icon name="warning" [size]="16"></cos-icon>
                 <span>{{ error() }}</span>
               </div>
             }
 
-            <cos-input 
-              [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_NAME' | translate"
-              [hasError]="registerForm.name().invalid() && registerForm.name().touched()"
-              [errorMessage]="'COMPONENTS.REGISTER_FORM.ERROR_NAME' | translate"
-            >
-              <input type="text" [formField]="registerForm.name" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_NAME' | translate">
-            </cos-input>
+            <div class="input-group">
+              <cos-input 
+                [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_NAME' | translate"
+                [hasError]="registerForm.name().invalid() && registerForm.name().touched()"
+                [errorMessage]="'COMPONENTS.REGISTER_FORM.ERROR_NAME' | translate"
+              >
+                <input type="text" [formField]="registerForm.name" [placeholder]="('COMPONENTS.REGISTER_FORM.PLACEHOLDER_NAME' | translate) + ' *'">
+              </cos-input>
+            </div>
 
-            <cos-input 
-              [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_EMAIL' | translate"
-              [hasError]="registerForm.email().invalid() && registerForm.email().touched()"
-              [errorMessage]="'COMPONENTS.REGISTER_FORM.ERROR_EMAIL' | translate"
-            >
-              <input type="email" [formField]="registerForm.email" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_EMAIL' | translate">
-            </cos-input>
+            <div class="input-group">
+              <cos-input 
+                [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_EMAIL' | translate"
+                [hasError]="registerForm.email().invalid() && registerForm.email().touched()"
+                [errorMessage]="'COMPONENTS.REGISTER_FORM.ERROR_EMAIL' | translate"
+              >
+                <input type="email" [formField]="registerForm.email" [placeholder]="('COMPONENTS.REGISTER_FORM.PLACEHOLDER_EMAIL' | translate) + ' *'">
+              </cos-input>
+            </div>
 
-            <cos-input 
-              [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_COMPANY' | translate"
-              [hasError]="registerForm.company().invalid() && registerForm.company().touched()"
-            >
-              <input type="text" [formField]="registerForm.company" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_COMPANY' | translate">
-            </cos-input>
+            <div class="input-group">
+              <cos-input 
+                [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_COMPANY' | translate"
+                [hasError]="registerForm.company().invalid() && registerForm.company().touched()"
+              >
+                <input type="text" [formField]="registerForm.company" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_COMPANY' | translate">
+              </cos-input>
+            </div>
 
-            <cos-input 
-              [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD' | translate"
-              [hasError]="registerForm.password().invalid() && registerForm.password().touched()"
-              [errorMessage]="'Password must be at least 8 characters'"
-            >
-              <input [type]="showPassword() ? 'text' : 'password'" [formField]="registerForm.password" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD' | translate">
-              <button type="button" class="view_password" (click)="togglePassword()">
-                 <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
-              </button>
-            </cos-input>
+            <div class="input-group">
+              <cos-input 
+                [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD' | translate"
+                [hasError]="registerForm.password().invalid() && registerForm.password().touched()"
+                [errorMessage]="'Password must be at least 8 characters'"
+              >
+                <input [type]="showPassword() ? 'text' : 'password'" [formField]="registerForm.password" [placeholder]="('COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD' | translate) + ' *'">
+                <button type="button" class="view_password" (click)="togglePassword()" [attr.aria-label]="(showPassword() ? 'CONTROL.HIDE' : 'CONTROL.SHOW') | translate">
+                   <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
+                </button>
+              </cos-input>
+            </div>
 
-            <cos-input 
-              [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate"
-              [hasError]="(registerForm.passwordConfirm().invalid() && registerForm.passwordConfirm().touched()) || hasPasswordMismatch()"
-              [errorMessage]="hasPasswordMismatch() ? 'Passwords do not match' : ''"
-            >
-              <input [type]="showPasswordConfirm() ? 'text' : 'password'" [formField]="registerForm.passwordConfirm" [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate">
-              <button type="button" class="view_password" (click)="togglePasswordConfirm()">
-                 <cos-icon [name]="showPasswordConfirm() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
-              </button>
-            </cos-input>
-
-            <div class="checkbox_wrap" [class.error]="registerForm.agreeToTerms().invalid() && registerForm.agreeToTerms().touched()">
-              <label class="checkbox">
-                <input type="checkbox" [formField]="registerForm.agreeToTerms">
-                <span class="checkmark"></span>
-              </label>
-              <div class="checkbox_description">
-                <span translate="COMPONENTS.REGISTER_FORM.LBL_TERMS_AND_CONDITIONS_DESCRIPTION"></span>
-                <a class="bold" href="#" target="_blank">{{ 'COMPONENTS.REGISTER_FORM.PRIVACY_POLICY_LNK_TERMS_OF_USE' | translate }}</a>
-                <a class="bold" href="#" target="_blank">{{ 'COMPONENTS.REGISTER_FORM.PRIVACY_POLICY_LNK_PRIVACY_POLICY' | translate }}</a>
-              </div>
+            <div class="input-group">
+              <cos-input 
+                [placeholder]="'COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate"
+                [hasError]="(registerForm.passwordConfirm().invalid() && registerForm.passwordConfirm().touched()) || hasPasswordMismatch()"
+                [errorMessage]="hasPasswordMismatch() ? 'Passwords do not match' : ''"
+              >
+                <input [type]="showPasswordConfirm() ? 'text' : 'password'" [formField]="registerForm.passwordConfirm" [placeholder]="('COMPONENTS.REGISTER_FORM.PLACEHOLDER_PASSWORD_CONFIRM' | translate) + ' *'">
+                <button type="button" class="view_password" (click)="togglePasswordConfirm()" [attr.aria-label]="(showPasswordConfirm() ? 'CONTROL.HIDE' : 'CONTROL.SHOW') | translate">
+                   <cos-icon [name]="showPasswordConfirm() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
+                </button>
+              </cos-input>
             </div>
 
             <div class="checkbox_wrap">
@@ -131,7 +131,17 @@ import { EstEidComponent } from '../login/esteid/esteid.component';
                 <span class="checkmark"></span>
               </label>
               <div class="checkbox_description">
-                 <span translate="COMPONENTS.REGISTER_FORM.LBL_SHOW_IN_SEARCH_DESCRIPTION"></span>
+                 <span>{{ 'COMPONENTS.REGISTER_FORM.LBL_SHOW_IN_SEARCH_DESCRIPTION' | translate }}</span>
+              </div>
+            </div>
+
+            <div class="checkbox_wrap terms_wrap" [class.error]="registerForm.agreeToTerms().invalid() && registerForm.agreeToTerms().touched()">
+              <label class="checkbox">
+                <input type="checkbox" [formField]="registerForm.agreeToTerms">
+                <span class="checkmark"></span>
+              </label>
+              <div class="checkbox_description">
+                <span>{{ 'COMPONENTS.REGISTER_FORM.LBL_TERMS_AND_CONDITIONS_DESCRIPTION' | translate }}</span>
               </div>
             </div>
 
@@ -142,6 +152,7 @@ import { EstEidComponent } from '../login/esteid/esteid.component';
                 size="lg"
                 [isLoading]="userStore.isLoading()" 
                 [isDisabled]="registerForm().invalid()"
+                (clicked)="save(registerModel())"
               >
                 {{ 'COMPONENTS.REGISTER_FORM.BTN_SAVE' | translate }}
               </cos-button>
@@ -153,9 +164,9 @@ import { EstEidComponent } from '../login/esteid/esteid.component';
           </footer>
         </div>
       } @else if (selectedMethod() === 'smartid') {
-        <app-smart-id></app-smart-id>
+        <app-smart-id (cancelled)="selectedMethod.set('default')"></app-smart-id>
       } @else if (selectedMethod() === 'esteid') {
-        <app-esteid></app-esteid>
+        <app-esteid (cancelled)="selectedMethod.set('default')"></app-esteid>
       }
     </div>
   `,
@@ -163,8 +174,13 @@ import { EstEidComponent } from '../login/esteid/esteid.component';
     #register_wrap {
       display: flex;
       flex-direction: column;
-      gap: 40px;
-      padding: 0;
+      width: 100%;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
       width: 100%;
     }
 
@@ -172,48 +188,55 @@ import { EstEidComponent } from '../login/esteid/esteid.component';
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
+      margin-bottom: 24px;
+    }
+
+    .header-section {
+      text-align: center;
+      margin-bottom: 8px;
     }
 
     .main_heading {
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 700;
-      line-height: 1.25;
-      text-align: left;
-      margin: 8px 0 0 0;
-      color: var(--cos-color-text);
+      line-height: 36px;
+      margin: 0 0 8px;
+      color: var(--color-text, #2c3b47);
     }
 
     .description {
-      text-align: left;
-      color: var(--cos-color-text-muted);
+      color: var(--color-text-muted, #4d5c6a);
       font-size: 14px;
-      margin-top: -12px;
-      margin-bottom: 24px;
+      line-height: 20px;
+      margin: 0;
     }
 
     .icons_wrap {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       gap: 16px;
-      margin-bottom: 24px;
+      margin: 16px 0 24px;
     }
 
     .login_icon {
       cursor: pointer;
-      width: 64px;
-      height: 64px;
-      background-color: var(--color-surface-contrast);
+      width: 56px;
+      height: 56px;
+      background-color: var(--color-surface-contrast, #f9fbfd);
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: var(--radius-pill);
-      border: none;
-      transition: background-color 0.2s;
+      border-radius: 50%;
+      border: 1px solid var(--color-border, #e1e7ee);
+      transition: all 0.2s ease-in-out;
+      padding: 0;
       
       &:hover {
-        background-color: var(--color-secondary);
+        background-color: var(--color-background-hover, #e8f2fa);
+        border-color: var(--color-link, #1168a8);
+        transform: translateY(-2px);
       }
     }
 
@@ -222,42 +245,54 @@ import { EstEidComponent } from '../login/esteid/esteid.component';
       align-items: center;
       text-align: center;
       margin-bottom: 24px;
-      color: var(--color-text-muted);
+      color: var(--color-text-muted, #4d5c6a);
       font-size: 14px;
       
       &::before, &::after {
         content: '';
         flex: 1;
-        border-bottom: 1px solid var(--color-border);
+        border-bottom: 1px solid var(--color-border, #e1e7ee);
       }
       
       span {
         padding: 0 16px;
+        color: var(--color-text-muted, #4d5c6a);
       }
+    }
+
+    .input-group {
+      position: relative;
+      width: 100%;
     }
 
     .view_password {
       position: absolute;
       right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
       background: none;
       border: none;
       padding: 4px;
       cursor: pointer;
-      color: var(--color-text-muted);
+      color: var(--color-text-muted, #4d5c6a);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 3;
+      border-radius: 4px;
+      &:hover {
+        color: var(--color-text, #2c3b47);
+      }
     }
 
     .checkbox_wrap {
       display: flex;
       gap: 12px;
-      margin-bottom: 24px;
       align-items: flex-start;
+      margin-top: 4px;
 
       &.error .checkmark {
-        border-color: var(--color-danger);
+        border-color: var(--color-danger, #ef4025);
       }
     }
 
@@ -266,8 +301,9 @@ import { EstEidComponent } from '../login/esteid/esteid.component';
       position: relative;
       cursor: pointer;
       user-select: none;
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
 
       input {
         position: absolute;
@@ -281,34 +317,34 @@ import { EstEidComponent } from '../login/esteid/esteid.component';
         position: absolute;
         top: 0;
         left: 0;
-        height: 24px;
-        width: 24px;
-        background-color: white;
-        border: 1px solid var(--color-border);
-        border-radius: 8px;
-        transition: all 0.2s;
+        height: 20px;
+        width: 20px;
+        background-color: #ffffff;
+        border: 1px solid var(--color-border, #e1e7ee);
+        border-radius: 4px;
+        transition: all 0.2s ease-in-out;
 
         &:after {
           content: "";
           position: absolute;
           display: none;
-          left: 7.5px;
-          top: 3.5px;
+          left: 6px;
+          top: 2px;
           width: 5px;
           height: 10px;
           border: solid white;
-          border-width: 0 3px 3px 0;
+          border-width: 0 2px 2px 0;
           transform: rotate(45deg);
         }
       }
 
       &:hover input ~ .checkmark {
-        background-color: var(--color-background);
+        border-color: var(--color-link, #1168a8);
       }
 
       input:checked ~ .checkmark {
-        background-color: var(--color-link);
-        border-color: var(--color-link);
+        background-color: var(--color-link, #1168a8);
+        border-color: var(--color-link, #1168a8);
         
         &:after {
           display: block;
@@ -317,47 +353,56 @@ import { EstEidComponent } from '../login/esteid/esteid.component';
     }
 
     .checkbox_description {
-      font-size: 14px;
-      line-height: 20px;
-      color: var(--color-text-muted);
-      margin-top: 2px;
-      padding-left: 16px;
+      font-size: 13px;
+      line-height: 18px;
+      color: var(--color-text, #2c3b47);
+      user-select: none;
       
-      .bold {
+      a {
         font-weight: 600;
-        color: var(--color-link);
+        color: var(--color-link, #1168a8);
         text-decoration: none;
-        margin-left: 0;
-        display: inline;
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
     .error-banner {
-      background: #ffdfd9;
-      color: var(--color-danger);
-      padding: var(--spacing-sm);
-      border-radius: var(--radius-sm);
-      margin-bottom: var(--spacing-md);
+      background: var(--color-error-background, #fff0ef);
+      color: var(--color-danger, #ef4025);
+      border: 1px solid var(--color-danger, #ef4025);
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
-      gap: var(--spacing-sm);
+      gap: 8px;
       font-size: 13px;
     }
 
     .form-actions {
-       margin-top: 24px;
-       width: 100%;
+      width: 100%;
+      margin-top: 8px;
 
-       cos-button {
-        width:100%;
+      cos-button {
+        width: 100%;
+        display: block;
       }
     }
 
     .register-footer {
-      margin-top: 32px;
+      margin-top: 24px;
       text-align: center;
       font-size: 14px;
-      a { color: var(--color-link); text-decoration: none; font-weight: 600; }
+      a {
+        color: var(--color-link, #1168a8);
+        text-decoration: none;
+        font-weight: 600;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   `]
 })
