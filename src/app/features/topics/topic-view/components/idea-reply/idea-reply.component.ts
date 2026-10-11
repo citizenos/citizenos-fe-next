@@ -296,11 +296,11 @@ import { ButtonComponent } from '../../../../../shared';
   padding: 4px;
 
   &:hover {
-    color: #3B82F6;
+    color: var(--color-link, #1168a8);
   }
 
   &.selected {
-    color: #3B82F6;
+    color: var(--color-link, #1168a8);
   }
 }
 

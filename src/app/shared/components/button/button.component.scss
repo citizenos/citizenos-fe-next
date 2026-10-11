@@ -40,38 +40,38 @@ button {
 
 /* Variants */
 .btn-primary {
-  background-color: $color-primary;
+  background-color: var(--color-primary, #{$color-primary});
   color: white;
   border: none;
   &:hover:not(:disabled) {
-    background-color: $color-primary-hover;
+    background-color: var(--color-primary-hover, #{$color-primary-hover});
   }
 }
 
 .btn-secondary {
-  background-color: $color-bg-default;
-  color: $color-text-main;
+  background-color: var(--color-background, #{$color-bg-default});
+  color: var(--color-text-main, #{$color-text-main});
   border: none;
   &:hover:not(:disabled) {
-    background-color: $color-primary;
+    background-color: var(--color-primary, #{$color-primary});
     color: white;
   }
 }
 
 .btn-ghost {
   background: none;
-  border: 2px solid $color-primary;
-  color: $color-primary;
+  border: 2px solid var(--color-primary, #{$color-primary});
+  color: var(--color-primary, #{$color-primary});
   &:hover:not(:disabled) {
     background-color: none;
-    border-color: $color-primary-hover;
-    color: $color-primary-hover;
+    border-color: var(--color-primary-hover, #{$color-primary-hover});
+    color: var(--color-primary-hover, #{$color-primary-hover});
   }
 }
 
 .btn-plain {
   background-color: transparent;
-  color: $color-text-main;
+  color: var(--color-text-main, #{$color-text-main});
   border: none;
   &:hover:not(:disabled) {
     background-color: rgba(0, 0, 0, 0.05);
@@ -79,17 +79,17 @@ button {
 }
 
 .btn-light {
-  background-color: $color-bg-surface;
-  color: $color-text-secondary;
+  background-color: var(--color-surfaces, #{$color-bg-surface});
+  color: var(--color-text-muted, #{$color-text-secondary});
   border: none;
   &:hover:not(:disabled) {
-    color: $color-primary;
-    background-color: $color-bg-default;
+    color: var(--color-primary, #{$color-primary});
+    background-color: var(--color-background, #{$color-bg-default});
   }
 }
 
 .btn-danger {
-  background-color: $color-error;
+  background-color: var(--color-danger, #{$color-error});
   color: white;
   border: none;
   &:hover:not(:disabled) {
@@ -98,7 +98,7 @@ button {
 }
 
 .btn-success {
-  background-color: $color-success;
+  background-color: var(--color-success, #{$color-success});
   color: white;
   border: none;
   &:hover:not(:disabled) {

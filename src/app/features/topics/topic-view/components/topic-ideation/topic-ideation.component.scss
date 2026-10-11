@@ -199,6 +199,19 @@
       }
     }
   }
+
+  .header_actions {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+
+    @include mixins.mobile {
+      width: 100%;
+      cos-button {
+        width: 100%;
+      }
+    }
+  }
 }
 .folder_data_wrap {
   display: flex;
@@ -388,19 +401,20 @@
   flex-direction: column;
   gap: figma.$spacing-m;
   padding: figma.$spacing-m figma.$spacing-l;
-  button {
+  cos-button {
     max-width: max-content;
-    background-color: var(--color-dialog-ideation-contrast);
-    color: var(--color-text);
-    path,
-    span {
-      color: var(--color-text);
-      fill: var(--color-text);
-    }
     @include mixins.mobile {
       max-width: 100%;
+      width: 100%;
     }
   }
+}
+
+.bottom_actions {
+  display: flex;
+  justify-content: center;
+  margin-top: figma.$spacing-xl;
+  padding-bottom: figma.$spacing-m;
 }
 
 .author_wrap {
