@@ -7,13 +7,16 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+
 @Component({
   selector: 'app-idea-reply-form',
   standalone: true,
   imports: [
     TranslateModule,
     FormRoot,
-    FormField
+    FormField,
+    ButtonComponent
   ],
   templateUrl: './idea-reply-form.component.html',
   styleUrls: ['./idea-reply-form.component.scss'],

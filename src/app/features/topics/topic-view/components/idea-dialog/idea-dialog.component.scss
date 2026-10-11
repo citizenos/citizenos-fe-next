@@ -47,12 +47,18 @@
   }
 }
 .dialog {
-  width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  overflow-x: clip;
+  position: relative;
+  width: auto;
+  max-width: 100%;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
 
   @include mixins.mobile {
+    width: 100%;
     background-color: figma.$color-bg-default;
   }
 }
@@ -75,36 +81,86 @@
     padding: figma.$spacing-sm;
   }
 }
-.buttons_left,
-.buttons_right {
-  display: flex;
-  height: 0;
-  position: relative;
-}
 
 .buttons_left {
+  position: absolute;
   left: -56px;
-}
-.buttons_right {
-  left: 696px;
-}
-
-
-.btn_idea_select {
-  position: fixed;
   top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+}
+
+.buttons_right {
+  position: absolute;
+  right: -56px;
+  top: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+
+  .btn_idea_select {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+  }
+}
+
+.btn_medium_close {
+  width: 40px;
+  height: 40px;
+  border-radius: figma.$border-radius-full;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surfaces);
+  color: figma.$color-text-main;
+  border: 1px solid figma.$color-border;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    background: var(--color-surface-contrast);
+    color: var(--color-ideation);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    path {
+      fill: currentColor;
+    }
+  }
 }
 
 
 .dialog_content {
+  width: 680px;
   max-width: 680px;
   border-radius: figma.$border-radius-lg;
   flex-direction: column;
   padding: 0;
+  background-color: var(--color-surfaces);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
 
   @include mixins.mobile {
+    width: 100%;
+    max-width: 100%;
     flex-direction: column;
     height: 100%;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .idea_folders_wrap {
@@ -114,7 +170,7 @@
     gap: figma.$spacing-sm;
     align-self: stretch;
     border-radius: figma.$border-radius-m;
-    background-color: figma.$color-bg-surface;
+    background-color: var(--color-surface-contrast);
 
     .text {
       font-size: figma.$font-size-sm;
@@ -123,6 +179,18 @@
       line-height: figma.$spacing-m;
       display: flex;
       gap: figma.$spacing-xs;
+      flex-wrap: wrap;
+      align-items: center;
+
+      .folder {
+        color: var(--color-ideation);
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 
@@ -358,40 +426,78 @@
 
   .btn_like_wrap {
     height: 44px;
-    width: 88px;
+    min-width: 88px;
     gap: figma.$spacing-sm;
-    border-radius: figma.$spacing-l;
+    border-radius: figma.$border-radius-full;
     align-items: center;
-    display: flex;
-    align-self: center;
+    display: inline-flex;
     flex-direction: row;
     border: 2px solid var(--color-dialog-ideation);
     transition: all 200ms ease-in;
     justify-content: space-between;
-    padding: 0;
+    padding: 0 4px 0 0;
+    background-color: var(--color-surfaces);
+
     @include mixins.mobile {
       align-self: flex-start;
-      align-items: initial;
+      align-items: center;
     }
+
     &.selected {
       flex-direction: row-reverse;
       background-color: var(--color-ideation);
       border: 2px solid var(--color-ideation);
+      padding: 0 0 0 4px;
+
       .btn_like {
         background-color: figma.$color-bg-surface;
+        color: var(--color-ideation);
       }
       .like_counter_wrap {
         font-weight: 600;
+        color: figma.$color-bg-surface;
       }
     }
+
     .like_counter_wrap {
-      padding: figma.$spacing-sm figma.$spacing-m;
+      padding: 0 figma.$spacing-m;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: figma.$color-text-main;
+      font-size: figma.$font-size-base;
+      font-weight: 600;
+
+      &:hover {
+        opacity: 0.8;
+      }
     }
 
     .btn_like {
       width: 40px;
       height: 40px;
+      border-radius: figma.$border-radius-full;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
       background-color: var(--color-dialog-ideation);
+      color: figma.$color-text-main;
+      transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+      padding: 0;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
   .date {

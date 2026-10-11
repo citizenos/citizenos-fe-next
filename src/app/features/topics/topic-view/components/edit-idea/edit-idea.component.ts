@@ -19,6 +19,7 @@ import { Attachment } from '../../../../../core/interfaces/attachment';
 import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { AnonymousDialogComponent } from '../anonymous-dialog/anonymous-dialog.component';
 import { CloseWithoutSavingDialogComponent } from '../close-without-saving-dialog/close-without-saving-dialog.component';
 
@@ -59,7 +60,7 @@ const municipalities: { name: string }[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-edit-idea',
   standalone: true,
-  imports: [FormsModule, TranslateModule, MarkdownDirective, CosDropdownDirective, InputComponent, UpperCasePipe],
+  imports: [FormsModule, TranslateModule, MarkdownDirective, CosDropdownDirective, InputComponent, UpperCasePipe, ButtonComponent],
   templateUrl: './edit-idea.component.html',
   styleUrls: ['./edit-idea.component.scss'],
 })

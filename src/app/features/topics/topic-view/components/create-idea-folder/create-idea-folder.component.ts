@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { Idea } from '../../../../../core/interfaces/idea';
 import { take } from 'rxjs';
 
@@ -20,7 +21,8 @@ interface IdeationFolderDialogData {
     FormRoot,
     FormField,
     TranslateModule,
-    InputComponent
+    InputComponent,
+    ButtonComponent
   ],
   template: `
     <div class="overlay" (click)="dialogRef.close()" (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
@@ -94,10 +96,12 @@ interface IdeationFolderDialogData {
         </div>
 
         <div class="dialog_footer with_buttons">
-          <button type="button" class="btn_link" (click)="dialogRef.close()">{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LNK_CANCEL' | translate }}</button>
-          <button type="button" class="btn_big_submit" (click)="createFolder()" [disabled]="form().invalid() || loading()">
+          <cos-button variant="ghost" (click)="dialogRef.close()">
+            {{ 'COMPONENTS.CREATE_IDEA_FOLDER.LNK_CANCEL' | translate }}
+          </cos-button>
+          <cos-button variant="primary" (click)="createFolder()" [isDisabled]="form().invalid() || loading()">
             {{ 'COMPONENTS.CREATE_IDEA_FOLDER.BTN_CREATE' | translate }}
-          </button>
+          </cos-button>
         </div>
       </div>
     </div>

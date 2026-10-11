@@ -1,4 +1,4 @@
-@import '../../../../../../assets/styles/figma-tokens';
+@use '../../../../../../assets/styles/figma-tokens' as *;
 
 .dialog_report {
   display: flex;
