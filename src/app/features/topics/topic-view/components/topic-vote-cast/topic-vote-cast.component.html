@@ -4,13 +4,17 @@
       <div class="question">{{normalizedVote().description}}</div>
       @if (canUpdate() && (canEditDeadline() || !hasVoteEndedExpired())) {
         <div class="setting_button dropdown button_dropdown" cosDropdown>
-          <cos-button type="button" class="btn_medium_close mobile_hidden" variant="secondary" size="md">
-            <cos-icon name="topic-vote-cast-icon-legacy" size="24"></cos-icon>
-            <span>{{ 'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate }}</span>
-          </cos-button>
-          <cos-button type="button" id="mobile_actions" class="btn_medium_close icon mobile_show" [attr.aria-label]="'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate" variant="secondary" size="md" [iconMode]="true">
-            <cos-icon name="topic-vote-cast-icon-legacy" size="24"></cos-icon>
-          </cos-button>
+          <!-- Desktop Manage button -->
+          <div class="mobile_hidden">
+            <cos-button variant="plain" icon="more-vertical" trigger>
+              {{ 'COMPONENTS.TOPIC_VOTE_CAST.BTN_VOTE_ACTIONS' | translate }}
+            </cos-button>
+          </div>
+          <!-- Mobile Manage button -->
+          <div class="mobile_show">
+            <cos-button id="mobile_actions" variant="plain" icon="more-vertical" [iconMode]="true" trigger>
+            </cos-button>
+          </div>
           <div class="options">
             @if (canEditDeadline()) {
               <div class="option" (click)="editDeadline()" (keydown.enter)="editDeadline()" tabindex="0" role="button">
