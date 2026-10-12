@@ -21,9 +21,7 @@ interface IdeationFolderDialogData {
     TranslateModule
   ],
   template: `
-    <div class="overlay" (click)="dialogRef.close()" (keydown.enter)="dialogRef.close()" role="button" tabindex="0"></div>
-    <div class="dialog_wrap">
-      <div class="dialog">
+    <div class="dialog">
         <div class="dialog_header ideation">
           <div class="header_text">
             <div class="title">{{ 'COMPONENTS.ADD_IDEAS_TO_FOLDER.HEADING' | translate }}</div>
@@ -89,27 +87,12 @@ interface IdeationFolderDialogData {
             {{ 'COMPONENTS.ADD_IDEAS_TO_FOLDER.BTN_ADD' | translate }}</button>
         </div>
       </div>
-    </div>
   `,
   styles: [`
-    .dialog_wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: fixed;
-      top: 0;
-      left: 0;
+    :host {
+      display: block;
       width: 100%;
-      height: 100%;
-      z-index: 1000;
-    }
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      max-width: 600px;
     }
     .dialog {
       background: white;
@@ -119,8 +102,10 @@ interface IdeationFolderDialogData {
       max-height: 90vh;
       display: flex;
       flex-direction: column;
-      z-index: 1001;
       overflow: hidden;
+      box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.15);
+      position: relative;
+      z-index: 1;
     }
     .dialog_header {
       padding: 24px;

@@ -2,7 +2,7 @@
 @use "../../../../../../assets/styles/figma-tokens" as tokens;
 
 #create_idea_footer_menu {
-  display: none;
+  display: flex;
   justify-content: space-between;
   background-color: tokens.$color-bg-surface;
   border-radius: tokens.$border-radius-lg tokens.$border-radius-lg 0 0;
@@ -23,7 +23,7 @@
   }
 
   @include mixins.mobile {
-    overflow-y: scroll;
+    display: none;
   }
 
   .footer_title {
@@ -54,25 +54,6 @@
     margin-top: -30px;
     margin-bottom: 0;
     margin-right: 0;
-  }
-}
-
-#create_idea_footer_menu {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: tokens.$spacing-m tokens.$spacing-xl;
-  background-color: tokens.$color-bg-surface;
-  border-radius: tokens.$border-radius-lg tokens.$border-radius-lg 0 0;
-  box-shadow: 0px calc(-1 * tokens.$spacing-sm) 20px 0px rgba(220, 231, 240, 0.1), 0px -12px tokens.$spacing-m 0px rgba(50, 85, 112, 0.04);
-  z-index: 99999;
-  
-  @include mixins.mobile {
-    display: none;
   }
 }
 

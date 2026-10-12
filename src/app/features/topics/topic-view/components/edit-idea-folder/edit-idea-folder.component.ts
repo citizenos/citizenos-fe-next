@@ -28,85 +28,82 @@ interface IdeationFolderDialogData {
     ButtonComponent
   ],
   template: `
-    <div class="overlay" (click)="dialogRef.close()" (keydown.enter)="dialogRef.close()" tabindex="0" role="button"></div>
-    <div class="dialog_wrap">
-      <div class="dialog">
-        <div class="dialog_header ideation">
-          <div class="header_text">
-            <h1 class="title">{{ 'COMPONENTS.EDIT_IDEA_FOLDER.HEADING' | translate }}</h1>
-            <div class="dialog_close">
-              <button type="button" class="btn_dialog_close icon" (click)="dialogRef.close()" [aria-label]="'CONTROL.CLOSE' | translate">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
-                    fill="currentColor" />
-                </svg>
-              </button>
-            </div>
+    <div class="dialog">
+      <div class="dialog_header ideation">
+        <div class="header_text">
+          <h1 class="title">{{ 'COMPONENTS.EDIT_IDEA_FOLDER.HEADING' | translate }}</h1>
+          <div class="dialog_close">
+            <button type="button" class="btn_dialog_close icon" (click)="dialogRef.close()" [aria-label]="'CONTROL.CLOSE' | translate">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M7.72152 6.29537C7.3277 5.90154 6.68919 5.90154 6.29537 6.29537C5.90154 6.68919 5.90154 7.3277 6.29537 7.72153L10.5738 12L6.29541 16.2785C5.90159 16.6723 5.90159 17.3108 6.29541 17.7046C6.68923 18.0985 7.32774 18.0985 7.72156 17.7046L12 13.4262L16.2784 17.7046C16.6723 18.0985 17.3108 18.0985 17.7046 17.7046C18.0984 17.3108 18.0984 16.6723 17.7046 16.2785L13.4262 12L17.7046 7.72153C18.0985 7.3277 18.0985 6.68919 17.7046 6.29537C17.3108 5.90154 16.6723 5.90154 16.2785 6.29537L12 10.5739L7.72152 6.29537Z"
+                  fill="currentColor" />
+              </svg>
+            </button>
           </div>
         </div>
-        <div class="dialog_content">
-          <div class="content_section">
-            <div class="section_content_wrap">
-              <label class="bold" for="name">{{ 'COMPONENTS.EDIT_IDEA_FOLDER.LBL_NAME' | translate }}</label>
-              <form [formRoot]="form">
-                <cos-input
-                  [placeholder]="'COMPONENTS.EDIT_IDEA_FOLDER.PLACEHOLDER_NAME' | translate"
-                  [hasError]="form.name().invalid() && form.name().touched()"
-                  [errorMessage]="'COMPONENTS.EDIT_IDEA_FOLDER.ADD_NAME_ERROR_MSG_INVALID' | translate"
-                >
-                  <input id="name" [formField]="form.name" type="text"
-                    [placeholder]="'COMPONENTS.EDIT_IDEA_FOLDER.PLACEHOLDER_NAME' | translate">
-                </cos-input>
-              </form>
+      </div>
+      <div class="dialog_content">
+        <div class="content_section">
+          <div class="section_content_wrap">
+            <label class="bold" for="name">{{ 'COMPONENTS.EDIT_IDEA_FOLDER.LBL_NAME' | translate }}</label>
+            <form [formRoot]="form">
+              <cos-input
+                [placeholder]="'COMPONENTS.EDIT_IDEA_FOLDER.PLACEHOLDER_NAME' | translate"
+                [hasError]="form.name().invalid() && form.name().touched()"
+                [errorMessage]="'COMPONENTS.EDIT_IDEA_FOLDER.ADD_NAME_ERROR_MSG_INVALID' | translate"
+              >
+                <input id="name" [formField]="form.name" type="text"
+                  [placeholder]="'COMPONENTS.EDIT_IDEA_FOLDER.PLACEHOLDER_NAME' | translate">
+              </cos-input>
+            </form>
 
-              @if (ideas().length > 0) {
-                <h2 class="bold">{{ 'COMPONENTS.EDIT_IDEA_FOLDER.LBL_IDEAS_SELECTION' | translate }}</h2>
-                <div class="idea_selection_wrap">
-                  <div class="idea_selection_header">
-                    <div class="checkbox_wrap" (click)="toggleAllIdeas()" (keydown.enter)="toggleAllIdeas()" tabindex="0" role="button" [attr.aria-label]="'COMPONENTS.EDIT_IDEA_FOLDER.LBL_IDEAS' | translate:{count: ideas().length}">
-                      <div class="checkbox" [class.selected]="allChecked()">
-                        <span class="checkmark"></span>
-                      </div>
-                      <div>
-                        {{ 'COMPONENTS.EDIT_IDEA_FOLDER.LBL_IDEAS' | translate:{count: ideas().length} }}
-                      </div>
+            @if (ideas().length > 0) {
+              <h2 class="bold">{{ 'COMPONENTS.EDIT_IDEA_FOLDER.LBL_IDEAS_SELECTION' | translate }}</h2>
+              <div class="idea_selection_wrap">
+                <div class="idea_selection_header">
+                  <div class="checkbox_wrap" (click)="toggleAllIdeas()" (keydown.enter)="toggleAllIdeas()" tabindex="0" role="button" [attr.aria-label]="'COMPONENTS.EDIT_IDEA_FOLDER.LBL_IDEAS' | translate:{count: ideas().length}">
+                    <div class="checkbox" [class.selected]="allChecked()">
+                      <span class="checkmark"></span>
                     </div>
-                    <div class="likes_wrap">
-                      <span>{{ 'COMPONENTS.EDIT_IDEA_FOLDER.LBL_LIKES' | translate }}</span>
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="currentColor" />
-                      </svg>
+                    <div>
+                      {{ 'COMPONENTS.EDIT_IDEA_FOLDER.LBL_IDEAS' | translate:{count: ideas().length} }}
                     </div>
                   </div>
-                  <div class="line_separator"></div>
-                  <div class="ideas_wrap">
-                    @for (idea of ideas(); track idea.id) {
-                      <div class="idea_row">
-                        <div class="checkbox_wrap" (click)="toggleIdea(idea)" (keydown.enter)="toggleIdea(idea)" tabindex="0" role="button" [attr.aria-label]="idea.statement">
-                          <div class="checkbox" [class.selected]="isIdeaSelected(idea)">
-                            <span class="checkmark"></span>
-                          </div>
-                          <div class="statement" [innerHTML]="idea.statement"></div>
-                        </div>
-                        <div class="votes">{{ idea.votes.up.count || 0 }}</div>
-                      </div>
-                    }
+                  <div class="likes_wrap">
+                    <span>{{ 'COMPONENTS.EDIT_IDEA_FOLDER.LBL_LIKES' | translate }}</span>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 14L10 14L12.5 18L15 14L13 14L13 5L12 5L12 14Z" fill="currentColor" />
+                    </svg>
                   </div>
                 </div>
-              }
-            </div>
+                <div class="line_separator"></div>
+                <div class="ideas_wrap">
+                  @for (idea of ideas(); track idea.id) {
+                    <div class="idea_row">
+                      <div class="checkbox_wrap" (click)="toggleIdea(idea)" (keydown.enter)="toggleIdea(idea)" tabindex="0" role="button" [attr.aria-label]="idea.statement">
+                        <div class="checkbox" [class.selected]="isIdeaSelected(idea)">
+                          <span class="checkmark"></span>
+                        </div>
+                        <div class="statement" [innerHTML]="idea.statement"></div>
+                      </div>
+                      <div class="votes">{{ idea.votes.up.count || 0 }}</div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
           </div>
         </div>
+      </div>
 
-        <div class="dialog_footer with_buttons">
-          <cos-button variant="ghost" (click)="dialogRef.close()">
-            {{ 'COMPONENTS.EDIT_IDEA_FOLDER.LNK_CANCEL' | translate }}
-          </cos-button>
-          <cos-button variant="primary" (click)="editFolder()" [isDisabled]="form().invalid() || loading()">
-            {{ 'COMPONENTS.EDIT_IDEA_FOLDER.BTN_CREATE' | translate }}
-          </cos-button>
-        </div>
+      <div class="dialog_footer with_buttons">
+        <cos-button variant="ghost" (click)="dialogRef.close()">
+          {{ 'COMPONENTS.EDIT_IDEA_FOLDER.LNK_CANCEL' | translate }}
+        </cos-button>
+        <cos-button variant="primary" (click)="editFolder()" [isDisabled]="form().invalid() || loading()">
+          {{ 'COMPONENTS.EDIT_IDEA_FOLDER.BTN_CREATE' | translate }}
+        </cos-button>
       </div>
     </div>
   `,

@@ -412,7 +412,7 @@
   </div>
 </div>
 
-@if (topic().status === TopicService.STATUSES.ideation) {
+@if (topic().status === TopicService.STATUSES.ideation && tabSelected() === 'ideas') {
     <app-add-idea
       [topic]="topic()"
       [ideation]="ideation()"
