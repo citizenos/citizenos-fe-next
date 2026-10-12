@@ -63,13 +63,7 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
   }
 
   private getAbsoluteUrlApi(path: string, forceAuthorized = false): string {
-    const isPublicPath = !forceAuthorized && (
-      path.includes('/ideations') ||
-      path.includes('/ideas') ||
-      path.includes('/folders') ||
-      path.includes('/comments')
-    );
-    const prefix = (this.userStore.isAuthenticated() && !isPublicPath) ? '/api/users/self' : '/api';
+    const prefix = (this.userStore.isAuthenticated() || forceAuthorized) ? '/api/users/self' : '/api';
     return `${this.apiUrl}${prefix}${path}`;
   }
 

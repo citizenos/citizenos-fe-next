@@ -361,12 +361,18 @@
 }
 
 #create_idea_footer_menu, #create_idea_footer, #create_idea_tablet_btn {
-  transition: transform 0.3s ease-in;
+  transition: transform 0.3s ease-in, max-height 0.2s ease-in-out, padding 0.2s ease-in-out;
   &.open {
     transform: translateY(0);
+    max-height: 100vh;
   }
   &.closed {
     transform: translateY(100%);
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
   }
 }
 

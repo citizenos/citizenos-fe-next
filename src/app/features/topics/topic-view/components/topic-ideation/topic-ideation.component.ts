@@ -8,7 +8,7 @@ import { toObservable, rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { of, switchMap, take, map } from 'rxjs';
+import { of, switchMap, take, map, catchError } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -108,7 +108,9 @@ export class TopicIdeationComponent {
   mobileAges = signal<string[]>([]);
 
   participants$ = toObservable(computed(() => ({ topicId: this.topic().id, ideationId: this.ideation().id }))).pipe(
-    switchMap(({ topicId, ideationId }) => this.ideationService.participants({ topicId, ideationId })),
+    switchMap(({ topicId, ideationId }) => this.ideationService.participants({ topicId, ideationId }).pipe(
+      catchError(() => of({ rows: [] as IdeaVoter[], count: 0 }))
+    )),
     map(res => res.rows)
   );
 
@@ -149,26 +151,44 @@ export class TopicIdeationComponent {
       if (residence) req['residence'] = residence;
       if (folderId) req['folderId'] = folderId;
 
-      return this.ideationService.getIdeas({ topicId: topic.id, ideationId: ideation.id, ...req });
+      return this.ideationService.getIdeas({ topicId: topic.id, ideationId: ideation.id, ...req }).pipe(
+        catchError((err) => {
+          console.error('Error loading ideas', err);
+          return of({ rows: [] as Idea[], count: 0 });
+        })
+      );
     }
   });
 
   ideas = computed(() => {
-    const res = this.ideasResource.value();
-    if (!res) return [];
-    return [...res.rows].sort(a => a.status === IdeaStatus.draft ? -1 : 1);
+    try {
+      const res = this.ideasResource.hasValue() ? this.ideasResource.value() : null;
+      if (!res?.rows) return [];
+      return [...res.rows].sort(a => a.status === IdeaStatus.draft ? -1 : 1);
+    } catch {
+      return [];
+    }
   });
 
   ideasCount = computed(() => {
-    const res = this.ideasResource.value();
-    if (!res) return 0;
-    return res.count;
+    try {
+      const res = this.ideasResource.hasValue() ? this.ideasResource.value() : null;
+      if (!res) return 0;
+      return res.count;
+    } catch {
+      return 0;
+    }
   });
 
   folders$ = toObservable(computed(() => ({ topicId: this.topic().id, ideationId: this.ideation().id, _v: this.refreshFoldersTrigger() }))).pipe(
     switchMap(({ topicId, ideationId }) => {
         if (!topicId || !ideationId) return of({ rows: [] as IdeationFolder[], count: 0 });
-        return this.ideationService.getFolders({ topicId, ideationId });
+        return this.ideationService.getFolders({ topicId, ideationId }).pipe(
+          catchError((err) => {
+            console.error('Error loading folders', err);
+            return of({ rows: [] as IdeationFolder[], count: 0 });
+          })
+        );
     }),
     map((res: { rows: IdeationFolder[] }) => res.rows)
   );

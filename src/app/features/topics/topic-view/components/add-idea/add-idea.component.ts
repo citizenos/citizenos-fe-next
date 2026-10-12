@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild, computed, model } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { take, lastValueFrom } from 'rxjs';
+import { take, lastValueFrom, of, catchError } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
@@ -94,7 +94,10 @@ export class AddIdeaComponent implements OnInit {
     }
 
     // Load draft if exists
-    this.ideationService.getIdeas({ topicId: this.topic().id, ideationId: this.ideation().id, statuses: IdeaStatus.draft }).pipe(take(1)).subscribe(res => {
+    this.ideationService.getIdeas({ topicId: this.topic().id, ideationId: this.ideation().id, statuses: IdeaStatus.draft }).pipe(
+      take(1),
+      catchError(() => of({ rows: [] as Idea[], count: 0 }))
+    ).subscribe(res => {
       if (res.rows && res.rows.length) {
         const draft = res.rows[0];
         this.autosavedIdea.set(draft);
