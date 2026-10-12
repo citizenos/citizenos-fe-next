@@ -27,7 +27,7 @@
   <!-- Desktop prev button -->
   <div class="buttons_left mobile_hidden">
     @if (hasMoreIdeas()) {
-      <button type="button" class="btn_medium_close btn_idea_select" (click)="prevIdea()" [disabled]="!hasPrev()" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.PAGINATION_PREV' | translate">
+      <button type="button" class="btn_medium_close btn_idea_select icon" (click)="prevIdea()" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.PAGINATION_PREV' | translate">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.4533 6.31262C10.8529 5.89579 11.5009 5.89579 11.9006 6.31262C12.3003 6.72945 12.3003 7.40527 11.9006 7.8221L8.91837 11L19 11C19.5652 11 20 11.4108 20 12.0003C20 12.5897 19.5652 12.9824 19 12.9824L8.91837 12.9824L11.9006 16.1779C12.3003 16.5947 12.3003 17.2705 11.9006 17.6874C11.5009 18.1042 10.8529 18.1042 10.4533 17.6874L5 12L10.4533 6.31262Z" fill="currentColor" /></svg>
       </button>
     }
@@ -35,11 +35,11 @@
 
   <!-- Desktop right buttons (close + next) -->
   <div class="buttons_right mobile_hidden">
-    <button type="button" class="btn_medium_close mobile_hidden icon" [dialogClose]="true" [attr.aria-label]="'BTN_CLOSE' | translate">
+    <button type="button" class="btn_medium_close btn_close_desktop icon" [dialogClose]="true" [attr.aria-label]="'BTN_CLOSE' | translate">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.29311 17.2929C4.90258 17.6834 4.90258 18.3166 5.29311 18.7071C5.68363 19.0976 6.3168 19.0976 6.70732 18.7071L12.0002 13.4142L17.2931 18.7071C17.6836 19.0976 18.3168 19.0976 18.7073 18.7071C19.0978 18.3166 19.0978 17.6834 18.7073 17.2929L13.4144 12L18.7073 6.70711C19.0978 6.31658 19.0978 5.68342 18.7073 5.29289C18.3168 4.90237 17.6836 4.90237 17.2931 5.29289L12.0002 10.5858L6.70732 5.29289C6.3168 4.90237 5.68363 4.90237 5.29311 5.29289C4.90258 5.68342 4.90258 6.31658 5.29311 6.70711L10.586 12L5.29311 17.2929Z" fill="currentColor"/></svg>
     </button>
     @if (hasMoreIdeas()) {
-      <button type="button" class="btn_medium_close btn_idea_select" (click)="nextIdea()" [disabled]="!hasNext()" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.PAGINATION_NEXT' | translate">
+      <button type="button" class="btn_medium_close btn_idea_select icon" (click)="nextIdea()" [attr.aria-label]="'COMPONENTS.ACCESSIBILITY.PAGINATION_NEXT' | translate">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M14.5467 6.31262C14.1471 5.89579 13.4991 5.89579 13.0994 6.31262C12.6997 6.72945 12.6997 7.40527 13.0994 7.8221L16.0816 11L6 11C5.43478 11 5 11.4108 5 12.0003C5 12.5897 5.43478 12.9824 6 12.9824L16.0816 12.9824L13.0994 16.1779C12.6997 16.5947 12.6997 17.2705 13.0994 17.6874C13.4991 18.1042 14.1471 18.1042 14.5467 17.6874L20 12L14.5467 6.31262Z" fill="currentColor" />
         </svg>
@@ -75,17 +75,13 @@
             <div class="idea_header_left">
               @if (idea().author) {
                 <div class="avatar">
-                  <cos-tooltip [noIcon]="true" [title]="idea().author?.name || ''">
-                    <div trigger class="avatar_inner">
-                      @if (idea().author?.imageUrl) {
-                        <img [src]="idea().author!.imageUrl" [alt]="idea().author!.name" />
-                      } @else {
-                        <div class="profile_image_filler">
-                          <cos-initials [name]="idea().author!.name || ''" />
-                        </div>
-                      }
+                  @if (idea().author?.imageUrl) {
+                    <img [src]="idea().author!.imageUrl" [alt]="idea().author!.name" />
+                  } @else {
+                    <div class="profile_image_filler">
+                      <cos-initials [name]="idea().author!.name || ''" />
                     </div>
-                  </cos-tooltip>
+                  }
                 </div>
                 <div class="name_wrap">
                   <div class="name" [innerHTML]="idea().author!.name"></div>
@@ -119,13 +115,12 @@
               }
             </div>
 
-            @if (userStore.isAuthenticated() || isEdited()) {
-              <div class="idea_header_right">
-                <div class="dropdown button_dropdown" cosDropdown>
-                  <button type="button" class="btn_small_plain icon" trigger aria-label="Idea actions">
-                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd"                         d="M17.334 11.9993C17.334 11.266 16.734 10.666 16.0007 10.666C15.2673 10.666 14.6673 11.266 14.6673 11.9993C14.6673 12.7327 15.2673 13.3327 16.0007 13.3327C16.734 13.3327 17.334 12.7327 17.334 11.9993ZM17.334 19.9993C17.334 19.266 16.734 18.666 16.0007 18.666C15.2673 18.666 14.6673 19.266 14.6673 19.9993C14.6673 20.7327 15.2673 21.3327 16.0007 21.3327C16.734 21.3327 17.334 20.7327 17.334 19.9993ZM16.0007 14.666C16.734 14.666 17.334 15.266 17.334 15.9993C17.334 16.7327 16.734 17.3327 16.0007 17.3327C15.2673 17.3327 14.6673 16.7327 14.6673 15.9993C14.6673 15.266 15.2673 14.666 16.0007 14.666Z"                         fill="currentColor" /></svg>
-                  </button>
-                  <div class="options button_options">
+            <div class="idea_header_right">
+              <div class="dropdown button_dropdown" cosDropdown>
+                <button type="button" class="btn_small_plain icon" trigger aria-label="Idea actions">
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.334 11.9993C17.334 11.266 16.734 10.666 16.0007 10.666C15.2673 10.666 14.6673 11.266 14.6673 11.9993C14.6673 12.7327 15.2673 13.3327 16.0007 13.3327C16.734 13.3327 17.334 12.7327 17.334 11.9993ZM17.334 19.9993C17.334 19.266 16.734 18.666 16.0007 18.666C15.2673 18.666 14.6673 19.266 14.6673 19.9993C14.6673 20.7327 15.2673 21.3327 16.0007 21.3327C16.734 21.3327 17.334 20.7327 17.334 19.9993ZM16.0007 14.666C16.734 14.666 17.334 15.266 17.334 15.9993C17.334 16.7327 16.734 17.3327 16.0007 17.3327C15.2673 17.3327 14.6673 16.7327 14.6673 15.9993C14.6673 15.266 15.2673 14.666 16.0007 14.666Z" fill="#2C3B47" /></svg>
+                </button>
+                <div class="options button_options">
                     @if (userStore.isAuthenticated()) {
                       <button type="button" class="option" (click)="toggleFavourite()">
                         <div class="icon_wrap">
@@ -186,8 +181,7 @@
                   </div>
                 </div>
               </div>
-            }
-          </div>
+            </div>
 
           <div class="idea_content">
             <div id="idea-statement" class="statement" [innerHTML]="idea().statement || ('COMPONENTS.IDEABOX.UNTITLED_IDEA' | translate)"></div>
@@ -268,15 +262,17 @@
           </div>
 
           <div class="idea_footer">
-            <div class="btn_like_wrap" [class.selected]="idea().votes.up.selected">
-              <button type="button" class="btn_like" [disabled]="!canVote()" (click)="voteIdea(1)" [attr.aria-label]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate">
+            <div class="like_wrap" [class.selected]="idea().votes.up.selected">
+              <button type="button" class="btn_idea_like" [disabled]="!canVote()" (click)="voteIdea(1)" [attr.aria-label]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate">
                 @if (!idea().votes.up.selected) {
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M8.12835 1.9685L4.5 6V13.5H11.3561C11.7482 13.5 12.1042 13.2708 12.2665 12.9138L14.4104 8.19719C14.4694 8.06724 14.5 7.92614 14.5 7.78339V7C14.5 6.44772 14.0523 6 13.5 6H9V2.30298C9 1.84474 8.4349 1.62789 8.12835 1.9685Z" stroke="currentColor" stroke-width="1.5" />
-                    <path d="M4.5 6H2C1.44772 6 1 6.44772 1 7V12.5C1 13.0523 1.44772 13.5 2 13.5H4.5" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M8.12835 1.9685L4.5 6V13.5H11.3561C11.7482 13.5 12.1042 13.2708 12.2665 12.9138L14.4104 8.19719C14.4694 8.06724 14.5 7.92614 14.5 7.78339V7C14.5 6.44772 14.0523 6 13.5 6H9V2.30298C9 1.84474 8.4349 1.62789 8.12835 1.9685Z" stroke="#2C3B47" stroke-width="1.5" />
+                    <path d="M4.5 6H2C1.44772 6 1 6.44772 1 7V12.5C1 13.0523 1.44772 13.5 2 13.5H4.5" stroke="#2C3B47" stroke-width="1.5" />
                   </svg>
                 } @else {
-                  <svg viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 0.5C8.27614 0.5 8.5 0.723858 8.5 1V2C8.5 2.27614 8.27614 2.5 8 2.5C7.72386 2.5 7.5 2.27614 7.5 2V1C7.5 0.723858 7.72386 0.5 8 0.5ZM13.6567 3.54984C13.852 3.35458 13.852 3.038 13.6567 2.84274C13.4614 2.64747 13.1449 2.64747 12.9496 2.84274L12.2425 3.54984C12.0472 3.7451 12.0472 4.06169 12.2425 4.25695C12.4377 4.45221 12.7543 4.45221 12.9496 4.25695L13.6567 3.54984ZM8.00006 4C5.9675 4 4 5.75213 4 8.23052C4 9.9808 4.64514 10.9776 5.23288 11.8858C5.66341 12.551 6.06314 13.1686 6.15595 14H9.84826C9.941 13.1688 10.3399 12.5512 10.7695 11.886C11.3561 10.9778 12 9.98094 12 8.23052C12 5.7523 10.0327 4 8.00006 4ZM10 15C10 16.1046 9.10457 17 8 17C6.89543 17 6 16.1046 6 15H10ZM3.05033 2.84281C2.85507 2.64755 2.53849 2.64755 2.34322 2.84281C2.14796 3.03807 2.14796 3.35466 2.34322 3.54992L3.05033 4.25702C3.24559 4.45229 3.56218 4.45229 3.75744 4.25702C3.9527 4.06176 3.9527 3.74518 3.75744 3.54992L3.05033 2.84281ZM0 8.5C0 8.22386 0.223858 8 0.5 8H1.5C1.77614 8 2 8.22386 2 8.5C2 8.77614 1.77614 9 1.5 9H0.5C0.223858 9 0 8.77614 0 8.5ZM14.5 8C14.2239 8 14 8.22386 14 8.5C14 8.77614 14.2239 9 14.5 9H15.5C15.7761 9 16 8.77614 16 8.5C16 8.22386 15.7761 8 15.5 8H14.5Z" fill="currentColor" /></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.57088 1.46709C8.33725 0.61557 9.75 1.15769 9.75 2.30329V5.25032H13.5C14.4665 5.25032 15.25 6.03382 15.25 7.00032V7.78371C15.25 8.03352 15.1965 8.28044 15.0931 8.50787L12.9492 13.2245C12.6653 13.8492 12.0423 14.2503 11.3561 14.2503L4.25 14.2501V5.15696L7.57088 1.46709ZM2.75 5.25H2C1.0335 5.25 0.25 6.0335 0.25 7V12.5C0.25 13.4665 1.0335 14.25 2 14.25L2.75 14.25V5.25Z" fill="#2C3B47" />
+                  </svg>
                 }
               </button>
               <a class="like_counter_wrap" role="button" tabindex="0" (click)="showReactions()" (keydown.enter)="showReactions()">

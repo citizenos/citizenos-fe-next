@@ -21,7 +21,6 @@ import { TooltipComponent } from '../../../../../shared/components/tooltip/toolt
 import { IdeaReportComponent } from '../idea-report/idea-report.component';
 import { AddIdeaFolderComponent } from '../add-idea-folder/add-idea-folder.component';
 import { EditIdeaComponent } from '../edit-idea/edit-idea.component';
-import { IdeaDialogComponent } from '../idea-dialog/idea-dialog.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -187,13 +186,8 @@ export class IdeaboxComponent {
   }
 
   goToView(showReplies = false) {
-    this.dialogService.open(IdeaDialogComponent, {
-        data: {
-            idea: this.idea(),
-            topic: this.topic(),
-            ideation: this.ideation(),
-            showReplies: showReplies
-        }
+    this.router.navigate(['/', this.translate.currentLang, 'topics', this.topic().id, 'ideation', this.ideation().id, 'ideas', this.idea().id], {
+      queryParams: showReplies ? { reply: true } : undefined
     });
   }
 

@@ -2,7 +2,7 @@ import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } 
 import { DatePipe, AsyncPipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule, Router } from '@angular/router';
-import { take, Observable, map, of, BehaviorSubject, shareReplay, catchError } from 'rxjs';
+import { take, Observable, map, of, shareReplay, catchError } from 'rxjs';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -77,8 +77,11 @@ export class IdeaDialogComponent implements OnInit {
   replyCount = signal(0);
 
   private viewedImageIds = signal(new Set<string>());
-  private ideas$ = new BehaviorSubject<Idea[]>([]);
-  private currentIndex = signal(-1);
+  ideas = signal<Idea[]>([]);
+  currentIndex = signal(-1);
+  hasMoreIdeas = computed(() => this.ideas().length > 1);
+  hasPrev = computed(() => this.ideas().length > 1);
+  hasNext = computed(() => this.ideas().length > 1);
 
   constructor() {
     this.loadIdeaData(this.data.idea);
@@ -155,8 +158,13 @@ export class IdeaDialogComponent implements OnInit {
       take(1),
       catchError(() => of({ rows: [], count: 0 }))
     ).subscribe(res => {
-      this.ideas$.next(res.rows);
-      this.updateCurrentIndex(res.rows);
+      const rows = [...res.rows];
+      const curIdea = this.idea();
+      if (curIdea && !rows.find(i => i.id === curIdea.id)) {
+        rows.unshift(curIdea);
+      }
+      this.ideas.set(rows);
+      this.updateCurrentIndex(rows);
     });
   }
 
@@ -341,8 +349,8 @@ export class IdeaDialogComponent implements OnInit {
   }
 
   loadIdea(next: number) {
-    const ideas = this.ideas$.value;
-    if (ideas.length === 0) return;
+    const ideas = this.ideas();
+    if (ideas.length <= 1) return;
 
     let index = this.currentIndex();
     index += next;
@@ -353,14 +361,11 @@ export class IdeaDialogComponent implements OnInit {
     const newIdea = ideas[index];
     this.loadIdeaData(newIdea);
     this.currentIndex.set(index);
+    this.router.navigate(['/', this.translate.currentLang, 'topics', this.topic().id, 'ideation', this.ideation().id, 'ideas', newIdea.id]);
   }
 
   prevIdea() { this.loadIdea(-1); }
   nextIdea() { this.loadIdea(1); }
-
-  hasMoreIdeas() { return this.ideas$.value.length > 1; }
-  hasPrev() { return this.currentIndex() > 0 || this.ideas$.value.length > 1; }
-  hasNext() { return this.currentIndex() < this.ideas$.value.length - 1 || this.ideas$.value.length > 1; }
 
   viewFolder(folder: IdeationFolder) {
     this.dialogRef.close();

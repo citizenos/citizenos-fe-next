@@ -1,7 +1,7 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection, provideAppInitializer, inject } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
-import { provideRouter, withExperimentalAutoCleanupInjectors } from '@angular/router';
+import { provideRouter, withExperimentalAutoCleanupInjectors, withRouterConfig } from '@angular/router';
 import { provideTranslateService, provideTranslateCompiler, MissingTranslationHandler } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideSignalFormsConfig } from '@angular/forms/signals';
@@ -20,7 +20,11 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideZonelessChangeDetection(),
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes, withExperimentalAutoCleanupInjectors()),
+    provideRouter(
+      routes,
+      withExperimentalAutoCleanupInjectors(),
+      withRouterConfig({ paramsInheritanceStrategy: 'always' })
+    ),
     provideHttpClient(),
     provideSignalFormsConfig({
       classes: {

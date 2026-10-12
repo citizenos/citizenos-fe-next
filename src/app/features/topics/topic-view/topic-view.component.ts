@@ -14,6 +14,8 @@ import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
 import { UserStore } from '../../../core/state/user.store';
 import { DialogService } from '../../../shared/dialog/dialog.service';
+import { DialogRef } from '../../../shared/dialog/dialog-ref';
+import { IdeaDialogComponent } from './components/idea-dialog/idea-dialog.component';
 import { UiStateService } from '../../../core/services/ui-state.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
@@ -195,7 +197,7 @@ export class TopicViewComponent implements OnInit {
       toObservable(this.userStore.isAuthenticated)
     ]).pipe(
       switchMap(([params, _queryParams, _langChange, _isAuthenticated]: [Params, Params, LangChangeEvent | null, boolean]) => {
-        const topicId = params['topicId'];
+        const topicId = params['topicId'] || this.route.parent?.snapshot.params['topicId'] || this.route.snapshot.paramMap.get('topicId') || this.route.parent?.snapshot.paramMap.get('topicId');
         if (topicId) {
           this.topicId = topicId;
           this.loading.set(true);
@@ -237,7 +239,10 @@ export class TopicViewComponent implements OnInit {
               }
 
               const fragment = this.route.snapshot.fragment;
-              if (_queryParams['argumentId']) {
+              if (params['ideaId']) {
+                this.selectTab('ideation');
+                this.openIdeaDialog(topicId, params['ideationId'] || topic.ideationId, params['ideaId'], _queryParams['reply'] === 'true');
+              } else if (_queryParams['argumentId']) {
                 this.selectTab('discussion');
               } else if (fragment) {
                 this.selectTab(fragment);
@@ -279,6 +284,45 @@ export class TopicViewComponent implements OnInit {
 
   ngOnInit() {
     this.topicService.reloadTopic();
+  }
+
+  private ideaDialogRef?: DialogRef<IdeaDialogComponent>;
+
+  private openIdeaDialog(topicId: string, ideationId: string, ideaId: string, showReplies = false) {
+    if (this.ideaDialogRef) {
+      return;
+    }
+
+    this.topicIdeationService.get({ topicId, ideationId }).pipe(
+      take(1),
+      catchError(() => of(null)),
+      switchMap(ideation => {
+        return this.topicIdeationService.getIdea({ topicId, ideationId, ideaId }).pipe(
+          take(1),
+          catchError(() => of(null)),
+          map(idea => ({ ideation, idea }))
+        );
+      })
+    ).subscribe(({ ideation, idea }) => {
+      const currentTopic = this.topic();
+      if (!currentTopic || !idea || !ideation) return;
+
+      this.ideaDialogRef = this.dialogService.open(IdeaDialogComponent, {
+        data: {
+          idea,
+          topic: currentTopic,
+          ideation,
+          showReplies
+        }
+      });
+
+      this.ideaDialogRef.afterClosed().pipe(take(1)).subscribe(() => {
+        this.ideaDialogRef = undefined;
+        if (this.router.url.includes(`/ideas/${ideaId}`)) {
+          this.router.navigate(['/', this.translate.currentLang, 'topics', topicId], { fragment: 'ideation' });
+        }
+      });
+    });
   }
 
 

@@ -1,6 +1,6 @@
 import { Service, inject  } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, Subject, map, exhaustMap, shareReplay } from 'rxjs';
+import { Observable, Subject, map, exhaustMap, shareReplay, of } from 'rxjs';
 
 import { ItemsListService, ListParams } from './items-list.service';
 import { TopicService } from './topic.service';
@@ -79,6 +79,9 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
   }
 
   override getItems(params: TopicIdeationParams): Observable<{ rows: Ideation[]; countTotal: number }> {
+    if (!params?.topicId) {
+      return of({ rows: [], countTotal: 0 });
+    }
     let httpParams = new HttpParams()
       .set('limit', String(params.limit))
       .set('offset', String(params.offset ?? 0));
@@ -118,7 +121,7 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
 
   get(params?: { topicId?: string; ideationId?: string; id?: string }): Observable<Ideation> {
     const ideationId = params?.ideationId || params?.id;
-    const path = this.getAbsoluteUrlApi(`/topics/${params?.topicId}/ideations/${ideationId}`, true);
+    const path = this.getAbsoluteUrlApi(`/topics/${params?.topicId}/ideations/${ideationId}`);
     return this.http.get<ApiResponse<Ideation>>(path, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }

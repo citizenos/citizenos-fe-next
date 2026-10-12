@@ -7,6 +7,7 @@ import { DIALOG_DATA } from './dialog-tokens';
 
 export interface DialogConfig<D = unknown> {
   data?: D;
+  panelClass?: string | string[];
 }
 
 @Service()
@@ -26,11 +27,15 @@ export class DialogService {
       .centerHorizontally()
       .centerVertically();
 
+    const panelClass = config?.panelClass
+      ? (Array.isArray(config.panelClass) ? config.panelClass : [config.panelClass])
+      : 'cos-dialog-panel';
+
     const overlayRef = this.overlay.create({
       positionStrategy,
       hasBackdrop: true,
       backdropClass: 'cos-dialog-backdrop',
-      panelClass: 'cos-dialog-panel',
+      panelClass,
       scrollStrategy: this.overlay.scrollStrategies.block(),
     });
 

@@ -61,6 +61,7 @@ export const TOPICS_ROUTES: Routes = [
     path: ':topicId',
     children: [
       { path: '', loadComponent: () => import('./topic-view/topic-view.component').then(m => m.TopicViewComponent) },
+      { path: 'ideation/:ideationId/ideas/:ideaId', loadComponent: () => import('./topic-view/topic-view.component').then(m => m.TopicViewComponent) },
       {
         path: 'invites/users/:inviteId',
         loadComponent: () => import('./topic-invitation/topic-invitation.component').then(m => m.TopicInvitationComponent)
