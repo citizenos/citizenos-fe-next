@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild, computed, model } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { take, lastValueFrom, of, catchError } from 'rxjs';
+import { take, lastValueFrom } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
@@ -87,38 +87,11 @@ export class AddIdeaComponent implements OnInit {
   ngOnInit() {
     const config = this.ideation().demographicsConfig;
     if (config) {
-        Object.keys(config).forEach(key => {
-            const isRequired = this.ideation().allowAnonymous && config[key].required;
-            (this.ideaForm as FormGroup).addControl(('demographics_' + key), new FormControl(config[key].value || '', isRequired ? [Validators.required] : []));
-        });
+      Object.keys(config).forEach(key => {
+        const isRequired = this.ideation().allowAnonymous && config[key].required;
+        (this.ideaForm as FormGroup).addControl(('demographics_' + key), new FormControl(config[key].value || '', isRequired ? [Validators.required] : []));
+      });
     }
-
-    // Load draft if exists
-    this.ideationService.getIdeas({ topicId: this.topic().id, ideationId: this.ideation().id, statuses: IdeaStatus.draft }).pipe(
-      take(1),
-      catchError(() => of({ rows: [] as Idea[], count: 0 }))
-    ).subscribe(res => {
-      if (res.rows && res.rows.length) {
-        const draft = res.rows[0];
-        this.autosavedIdea.set(draft);
-        this.ideaForm.patchValue({
-          statement: draft.statement,
-          description: draft.description
-        });
-        this.description.set(draft.description);
-        // Load demographics from draft
-        if (draft.demographics && config) {
-          Object.keys(config).forEach(key => {
-            if (draft.demographics![key]) {
-              let val = draft.demographics![key];
-              if (val.startsWith('other: ')) val = val.substring(7);
-              this.ideaForm.get('demographics_' + key)?.setValue(val);
-              this.setFilterValue(key, val);
-            }
-          });
-        }
-      }
-    });
   }
 
   getDemographicKeys() {
@@ -139,12 +112,7 @@ export class AddIdeaComponent implements OnInit {
 
   updateText(text: string) {
     this.description.set(text);
-    this.ideaForm.patchValue({ description: text });
-    
-    // Auto-save logic
-    if (this.ideaForm.valid && this.userStore.isAuthenticated()) {
-      this.saveIdea(IdeaStatus.draft, true);
-    }
+    this.ideaForm.patchValue({ description: text }, { emitEvent: false });
   }
 
   uploadImage() {
@@ -346,6 +314,12 @@ export class AddIdeaComponent implements OnInit {
         queryParams: { redirectSuccess: this.router.url }
       });
     } else {
+      if (!this.autosavedIdea()) {
+        this.ideaForm.reset();
+        const template = this.ideation().template || '';
+        this.description.set(template);
+        this.ideaForm.patchValue({ description: template });
+      }
       this.isOpen.set(true);
     }
   }

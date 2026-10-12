@@ -242,6 +242,9 @@ export class TopicViewComponent implements OnInit {
               if (params['ideaId']) {
                 this.selectTab('ideation');
                 this.openIdeaDialog(topicId, params['ideationId'] || topic.ideationId, params['ideaId'], _queryParams['reply'] === 'true');
+              } else if (_queryParams['ideaId']) {
+                this.selectTab('ideation');
+                this.openIdeaDialog(topicId, params['ideationId'] || topic.ideationId, _queryParams['ideaId'], _queryParams['reply'] === 'true');
               } else if (_queryParams['argumentId']) {
                 this.selectTab('discussion');
               } else if (fragment) {
