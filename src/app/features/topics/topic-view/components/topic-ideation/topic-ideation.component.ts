@@ -223,9 +223,14 @@ export class TopicIdeationComponent {
                 topicId: this.topic().id,
                 ideationId: this.ideation().id,
                 folderId: routeParams['folderId']
-            }).pipe(take(1)).subscribe(folder => {
-                this.selectedFolder.set(folder);
-                this.tabSelected.set('folder');
+            }).pipe(
+              take(1),
+              catchError(() => of(null))
+            ).subscribe(folder => {
+                if (folder) {
+                  this.selectedFolder.set(folder);
+                  this.tabSelected.set('folder');
+                }
             });
         }
     });
