@@ -2,7 +2,7 @@ import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } 
 import { DatePipe, AsyncPipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule, Router } from '@angular/router';
-import { take, Observable, map, of, BehaviorSubject, shareReplay } from 'rxjs';
+import { take, Observable, map, of, BehaviorSubject, shareReplay, catchError } from 'rxjs';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
@@ -101,7 +101,10 @@ export class IdeaDialogComponent implements OnInit {
       topicId: this.topic().id,
       ideationId: this.ideation().id,
       ideaId: idea.id
-    }).pipe(map(res => res.rows));
+    }).pipe(
+      map(res => res.rows),
+      catchError(() => of([]))
+    );
 
     this.images$ = this.attachmentService.getItems({
       topicId: this.topic().id,
@@ -110,7 +113,10 @@ export class IdeaDialogComponent implements OnInit {
       limit: 100,
       offset: 0,
       page: 1
-    }).pipe(map(res => res.rows.filter(a => a.type === 'image')));
+    }).pipe(
+      map(res => res.rows.filter(a => a.type === 'image')),
+      catchError(() => of([]))
+    );
 
     this.replies$ = this.ideationService.getIdeaComments({
       topicId: this.topic().id,
@@ -120,6 +126,7 @@ export class IdeaDialogComponent implements OnInit {
       map(res => {
         return this.buildReplyTree(res.rows);
       }),
+      catchError(() => of([])),
       shareReplay(1)
     );
 
@@ -131,7 +138,10 @@ export class IdeaDialogComponent implements OnInit {
       ideationId: this.ideation().id,
       ideaId: idea.id,
       limit: 1 // only need count
-    }).pipe(take(1)).subscribe(res => {
+    }).pipe(
+      take(1),
+      catchError(() => of({ count: 0, rows: [] }))
+    ).subscribe(res => {
       this.replyCount.set(res.count);
     });
   }
@@ -141,7 +151,10 @@ export class IdeaDialogComponent implements OnInit {
       topicId: this.topic().id,
       ideationId: this.ideation().id,
       limit: 1000
-    }).pipe(take(1)).subscribe(res => {
+    }).pipe(
+      take(1),
+      catchError(() => of({ rows: [], count: 0 }))
+    ).subscribe(res => {
       this.ideas$.next(res.rows);
       this.updateCurrentIndex(res.rows);
     });
@@ -180,7 +193,9 @@ export class IdeaDialogComponent implements OnInit {
 
   isEdited() {
     const edits = this.idea().edits;
-    return Array.isArray(edits) && edits.length > 1;
+    if (!edits) return false;
+    if (Array.isArray(edits)) return edits.length > 1;
+    return Object.keys(edits).length > 1;
   }
 
   canEditTopic() {
@@ -367,7 +382,8 @@ export class IdeaDialogComponent implements OnInit {
       map(res => {
         this.replyCount.set(res.count);
         return this.buildReplyTree(res.rows);
-      })
+      }),
+      catchError(() => of([]))
     );
   }
 }
