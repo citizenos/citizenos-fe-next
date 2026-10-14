@@ -178,8 +178,9 @@
 
   <div id="buttons_row">
     <div class="buttons_left_group">
-      <cos-button variant="ghost" class="close_button" (clicked)="close()" icon="close" [iconMode]="true">
-      </cos-button>
+      <button type="button" class="btn_close_circle" (click)="close()" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+        <cos-icon name="close"></cos-icon>
+      </button>
       @if (autosavedIdea()) {
         <div class="btn_medium_wrapper">
           <cos-button variant="danger" (clicked)="deleteDraftIdea(autosavedIdea()!)" icon="trash">

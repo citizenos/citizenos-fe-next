@@ -6,11 +6,13 @@
   flex-direction: column;
   gap: t.$spacing-m;
   position: relative;
-  border-radius: t.$border-radius-lg;
-  padding: t.$spacing-m;
-  background-color: t.$color-bg-surface;
+  border-radius: 16px;
+  padding: 20px;
+  background-color: #FEF3CA;
+  border: 1px solid rgba(229, 169, 60, 0.2);
   height: 280px;
   width: 264px;
+  box-shadow: 0px 4px 16px rgba(44, 59, 71, 0.06);
   transition: all ease-in 200ms;
 
   @include mixins.tablet {
@@ -25,10 +27,6 @@
 
   &.new {
     background-color: var(--color-success-background);
-
-    .btn_like_wrap {
-      background-color: var(--color-success-background);
-    }
   }
 
   &.draft {
@@ -36,10 +34,10 @@
     padding: 0;
 
     .idea_header {
-      padding: t.$spacing-sm t.$spacing-m t.$spacing-sm t.$spacing-m;
+      padding: t.$spacing-sm t.$spacing-m;
       background-color: var(--color-surface-contrast);
       height: 48px;
-      border-radius: t.$border-radius-lg t.$border-radius-lg 0 0;
+      border-radius: 16px 16px 0 0;
     }
     .idea_content {
       padding: 0 t.$spacing-m;
@@ -47,15 +45,13 @@
     .idea_footer {
       padding: 0 t.$spacing-m t.$spacing-m t.$spacing-m;
     }
-    .btn_like_wrap {
-      background-color: var(--color-background);
-    }
   }
 
   &:hover {
     text-decoration: none;
-    box-shadow: 0px 12px 16px 0px rgba(50, 85, 112, 0.10), 0px 8px 20px 0px rgba(220, 231, 240, 0.30);
+    box-shadow: 0px 8px 24px rgba(44, 59, 71, 0.12);
   }
+
   .idea_header {
     position: relative;
     justify-content: space-between;
@@ -90,18 +86,15 @@
         position: relative;
         width: 32px;
         height: 32px;
-        margin-left: -10px;
         background-color: var(--color-secondary);
         font-size: t.$font-size-xs;
         font-style: normal;
         font-weight: t.$font-weight-bold;
         line-height: t.$spacing-m;
 
-        &:first-child {
-          margin-left: 0;
-        }
         img {
-          width: inherit;
+          width: 100%;
+          height: 100%;
           border-radius: t.$border-radius-full;
           aspect-ratio: 1;
           object-fit: cover;
@@ -119,50 +112,30 @@
           }
         }
       }
+
       .vertical_line_separator {
-        background-color: var(--color-text);
-        height: 24px;
+        background-color: rgba(44, 59, 71, 0.2);
+        width: 1px;
+        height: 18px;
       }
 
-      .btn_small_plain {
-        position: relative;
+      .bookmark {
+        background: transparent;
+        border: none;
+        cursor: pointer;
         padding: 0;
-      }
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2C3B47;
 
-
-    .like_wrap {
-      display: flex;
-      align-items: center;
-
-      .btn_idea_like {
-        width: 32px;
-        height: 32px;
-        border-radius: t.$border-radius-full;
-        position: relative;
-
-        cos-icon, svg {
-          min-width: 16px;
-          min-height: 16px;
-        }
-
-        &:hover {
-          background-color: var(--color-surfaces);
-        }
-      }
-
-      .like_counter_wrap {
-        padding: t.$spacing-sm;
-        position: relative;;
-        color: var(--color-text);
-      }
-      &.selected {
-        font-weight: t.$font-weight-bold;
-        .btn_idea_like {
-          background-color: var(--color-ideation);
+        cos-icon {
+          width: 18px;
+          height: 18px;
         }
       }
     }
-    }
+
     .idea_header_right {
       display: flex;
       gap: t.$spacing-sm;
@@ -172,9 +145,21 @@
       }
     }
 
-    .btn_small_plain  {
+    .btn_small_plain {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      color: #2C3B47;
+      border-radius: t.$border-radius-full;
+
       &:hover {
-        background-color: var(--color-surfaces);
+        background-color: rgba(44, 59, 71, 0.08);
       }
     }
   }
@@ -187,12 +172,11 @@
     text-decoration: none;
 
     .statement {
-      color: var(--color-text);
-      font-size: t.$font-size-base;
-      font-style: normal;
-      font-weight: t.$font-weight-bold;
-      line-height: t.$spacing-l;
-      max-height: 116px;
+      color: #2C3B47;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 22px;
+      max-height: 96px;
       overflow: hidden;
 
       &:hover {
@@ -208,49 +192,98 @@
       }
     }
 
-    .btn_like_wrap {
-      height: 44px;
-      width: 88px;
-      gap: t.$spacing-sm;
-      border-radius: t.$border-radius-full;
-      align-items: center;
+    .like_pill_wrap {
       display: flex;
-      align-self: center;
-      flex-direction: row;
-      border: 2px solid var(--color-dialog-ideation);
-      transition: all 200ms ease-in;
-      justify-content: space-between;
-      padding: 0;
+      justify-content: center;
+      width: 100%;
+      margin: auto 0 8px 0;
 
-      &.selected {
-        flex-direction: row-reverse;
-        background-color: var(--color-ideation);
-        border: 2px solid var(--color-ideation);
-        .btn_like {
-          background-color: var(--color-surfaces);
+      .like_wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #FFFDF5;
+        border: 1px solid #FFEAA1;
+        border-radius: t.$border-radius-full;
+        padding: 4px 14px 4px 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        .btn_idea_like {
+          width: 20px;
+          height: 20px;
+          background: transparent;
+          border: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          padding: 0;
+          color: #2C3B47;
+
+          svg {
+            width: 14px;
+            height: 14px;
+          }
+
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
         }
+
         .like_counter_wrap {
-          font-weight: t.$font-weight-bold;
+          color: #2C3B47;
+          font-size: 13px;
+          font-weight: 600;
+          line-height: 1;
+          text-decoration: none;
         }
-      }
-      .like_counter_wrap {
-        padding: t.$spacing-sm t.$spacing-m;
-      }
 
-      .btn_like {
-        width: 40px;
-        height: 40px;
-        background-color: var(--color-dialog-ideation);
+        &.selected {
+          background: #FFEAA1;
+          border-color: #E5A93C;
+          .btn_idea_like {
+            color: #E5A93C;
+            svg path {
+              fill: #E5A93C;
+            }
+          }
+        }
+
+        &:hover {
+          box-shadow: 0 2px 8px rgba(44, 59, 71, 0.08);
+        }
       }
     }
   }
+
   .idea_footer {
     display: flex;
     justify-content: space-between;
-    border-top: 1px solid var(--color-dialog-ideation);
-    padding-top: t.$spacing-m;
+    align-items: center;
+    border-top: none;
+    padding-top: 0;
+    margin-top: auto;
+
     .date {
-      color: var(--color-text);
+      color: #727C84;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .replies_count {
+      a {
+        color: #1383C5;
+        font-size: 12px;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 }

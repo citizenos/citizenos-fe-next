@@ -137,6 +137,24 @@
         }
       }
     }
+
+    .btn_close_circle {
+      width: 36px;
+      height: 36px;
+      border-radius: tokens.$border-radius-full;
+      border: 1px solid tokens.$color-border;
+      background: tokens.$color-bg-surface;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: tokens.$color-text-main;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: tokens.$color-bg-default;
+      }
+    }
   }
 }
 

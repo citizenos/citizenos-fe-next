@@ -177,25 +177,35 @@
   .tabs_row {
     width: 100%;
     border-bottom: 1px solid var(--color-dialog-ideation-contrast);
+    display: flex;
+    gap: figma.$spacing-xl;
+    align-items: center;
+
     @include mixins.mobile {
       justify-content: center;
+      gap: figma.$spacing-m;
     }
 
     .tab_item {
       font-size: figma.$font-size-lg;
       font-style: normal;
-      font-weight: figma.$font-weight-normal;
+      font-weight: 500;
       line-height: 24px; /* 133.333% */
       padding: figma.$spacing-sm 0;
+      color: figma.$color-text-secondary;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+
       @include mixins.mobile {
-        width: 100%;
         font-size: figma.$font-size-base;
         text-align: center;
       }
       &.active {
-        color: var(--color-text);
+        color: figma.$color-text-main;
         font-weight: figma.$font-weight-bold;
-        border-bottom: 2px solid var(--color-ideation);
+        border-bottom: 3px solid var(--color-ideation, #E5A93C);
       }
     }
   }

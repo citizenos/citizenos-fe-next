@@ -257,7 +257,7 @@ export class AddIdeaComponent implements OnInit {
         const path = `/users/${this.userStore.user()?.id}/topics/${this.topic().id}/ideations/${this.ideation().id}/ideas/${ideaId}/image/upload`;
         try {
           await lastValueFrom(this.uploadService.upload(path, image.file, { name: image.name }));
-        } catch (_error) {
+        } catch {
           errorsCounter++;
         }
       }

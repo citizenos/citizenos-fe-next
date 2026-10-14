@@ -37,43 +37,14 @@
               </div>
             </cos-tooltip>
           </div>
-          <div class="vertical_line_separator"></div>
+          @if (userStore.isAuthenticated()) {
+            <div class="vertical_line_separator"></div>
+          }
         }
 
-        <div class="like_wrap" [class.selected]="idea().votes.up.selected">
-            <button type="button" class="btn_idea_like" [disabled]="!canVote()" (click)="$event.stopPropagation(); vote(1)" [aria-label]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate">
-              @if (!idea().votes.up.selected) {
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-              viewBox="0 0 16 16" fill="none">
-              <path
-                d="M8.12835 1.9685L4.5 6V13.5H11.3561C11.7482 13.5 12.1042 13.2708 12.2665 12.9138L14.4104 8.19719C14.4694 8.06724 14.5 7.92614 14.5 7.78339V7C14.5 6.44772 14.0523 6 13.5 6H9V2.30298C9 1.84474 8.4349 1.62789 8.12835 1.9685Z"
-                stroke="#2C3B47" stroke-width="1.5" />
-              <path d="M4.5 6H2C1.44772 6 1 6.44772 1 7V12.5C1 13.0523 1.44772 13.5 2 13.5H4.5" stroke="#2C3B47"
-                stroke-width="1.5" />
-            </svg>
-              } @else {
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-              viewBox="0 0 16 16" fill="none">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M7.57088 1.46709C8.33725 0.61557 9.75 1.15769 9.75 2.30329V5.25032H13.5C14.4665 5.25032 15.25 6.03382 15.25 7.00032V7.78371C15.25 8.03352 15.1965 8.28044 15.0931 8.50787L12.9492 13.2245C12.6653 13.8492 12.0423 14.2503 11.3561 14.2503L4.25 14.2501V5.15696L7.57088 1.46709ZM2.75 5.25H2C1.0335 5.25 0.25 6.0335 0.25 7V12.5C0.25 13.4665 1.0335 14.25 2 14.25L2.75 14.25V5.25Z"
-                fill="#2C3B47" />
-            </svg>
-              }
-            </button>
-            <a class="like_counter_wrap" role="button" tabindex="0" (click)="$event.stopPropagation(); showReactions()" (keydown.enter)="$event.stopPropagation(); showReactions()">
-                <span>{{ idea().votes.up.count }}</span>
-            </a>
-        </div>
-
         @if (userStore.isAuthenticated()) {
-          <div class="vertical_line_separator"></div>
-
-          <button type="button" class="btn_small_plain bookmark" (click)="$event.stopPropagation(); toggleFavourite()">
-            @if (!idea().favourite) {
-                <cos-icon name="favourite"></cos-icon>
-            } @else {
-                <cos-icon name="favourite"></cos-icon>
-            }
+          <button type="button" class="btn_small_plain bookmark" (click)="$event.stopPropagation(); toggleFavourite()" [attr.aria-label]="(idea().favourite ? 'COMPONENTS.IDEABOX.OPTION_UNFAVOURITE' : 'COMPONENTS.IDEABOX.OPTION_FAVOURITE') | translate">
+            <cos-icon name="favourite" [class.active]="idea().favourite"></cos-icon>
           </button>
         }
       } @else {
@@ -146,6 +117,28 @@
 
   <div class="idea_content">
     <div class="statement" [innerHTML]="idea().statement || ('COMPONENTS.IDEABOX.UNTITLED_IDEA' | translate)"></div>
+
+    @if (!isDraft()) {
+      <div class="like_pill_wrap">
+        <div class="like_wrap" [class.selected]="idea().votes.up.selected">
+          <button type="button" class="btn_idea_like" [disabled]="!canVote()" (click)="$event.stopPropagation(); vote(1)" [aria-label]="'COMPONENTS.IDEABOX.TOOLTIP_LIKE' | translate">
+            @if (!idea().votes.up.selected) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8.12835 1.9685L4.5 6V13.5H11.3561C11.7482 13.5 12.1042 13.2708 12.2665 12.9138L14.4104 8.19719C14.4694 8.06724 14.5 7.92614 14.5 7.78339V7C14.5 6.44772 14.0523 6 13.5 6H9V2.30298C9 1.84474 8.4349 1.62789 8.12835 1.9685Z" stroke="#2C3B47" stroke-width="1.5" />
+                <path d="M4.5 6H2C1.44772 6 1 6.44772 1 7V12.5C1 13.0523 1.44772 13.5 2 13.5H4.5" stroke="#2C3B47" stroke-width="1.5" />
+              </svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M7.57088 1.46709C8.33725 0.61557 9.75 1.15769 9.75 2.30329V5.25032H13.5C14.4665 5.25032 15.25 6.03382 15.25 7.00032V7.78371C15.25 8.03352 15.1965 8.28044 15.0931 8.50787L12.9492 13.2245C12.6653 13.8492 12.0423 14.2503 11.3561 14.2503L4.25 14.2501V5.15696L7.57088 1.46709ZM2.75 5.25H2C1.0335 5.25 0.25 6.0335 0.25 7V12.5C0.25 13.4665 1.0335 14.25 2 14.25L2.75 14.25V5.25Z" fill="#2C3B47" />
+              </svg>
+            }
+          </button>
+          <a class="like_counter_wrap" role="button" tabindex="0" (click)="$event.stopPropagation(); showReactions()" (keydown.enter)="$event.stopPropagation(); showReactions()">
+            <span>{{ idea().votes.up.count }}</span>
+          </a>
+        </div>
+      </div>
+    }
   </div>
 
   <div class="idea_footer">
