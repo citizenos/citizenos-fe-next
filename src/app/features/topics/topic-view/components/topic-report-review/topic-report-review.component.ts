@@ -45,7 +45,7 @@ export class TopicReportReviewComponent {
   isLoading = signal(false);
 
   reviewForm = this.fb.group({
-    text: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(2024)]]
+    text: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(4000)]]
   });
 
   doReview() {
@@ -67,7 +67,7 @@ export class TopicReportReviewComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.notificationService.success('COMPONENTS.TOPIC_REPORT_REVIEW.MSG_REVIEW_SENT');
+          this.notificationService.success('MODALS.TOPIC_REPORT_REVIEW_SUCCESS');
           this.dialogRef.close(true);
         },
         error: (err) => {

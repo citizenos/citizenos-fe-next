@@ -40,10 +40,12 @@
                 <cos-icon name="argument-icon-2-legacy" size="16"></cos-icon>
                 <span>{{ 'LNK_DIRECT_LINK' | translate }}</span>
               </button>
+              @if (!argument().deletedAt) {
               <button type="button" class="option" (click)="doReport()">
                 <cos-icon name="ideabox-icon-8-legacy" size="16"></cos-icon>
                 <span>{{ 'COMPONENTS.ARGUMENT.OPTION_REPORT' | translate }}</span>
               </button>
+              }
               @if (isEdited()) {
               <button type="button" class="option" (click)="showEdits.set(!showEdits())">
                 <cos-icon name="argument-icon-3-legacy" size="16"></cos-icon>
@@ -90,7 +92,7 @@
       <div class="argument_footer">
         <div class="footer_left">
           <div class="button_group">
-            <button type="button" class="btn_vote_argument" (click)="vote(1)"
+            <button type="button" class="btn_vote_argument" (click)="vote(1)" [disabled]="!!argument().deletedAt"
               [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_UP' | translate">
               @if (votes()?.up?.selected) {
               <cos-icon name="argument-icon-5-legacy" size="16"></cos-icon>
@@ -104,7 +106,7 @@
             </button>
           </div>
           <div class="button_group">
-            <button type="button" class="btn_vote_argument" (click)="vote(-1)"
+            <button type="button" class="btn_vote_argument" (click)="vote(-1)" [disabled]="!!argument().deletedAt"
               [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_DOWN' | translate">
               @if (votes()?.down?.selected) {
               <cos-icon name="argument-icon-7-legacy" size="16"></cos-icon>
@@ -125,7 +127,7 @@
             translate:{ count: argument().replies?.count || 0 } }}
           </button>
           }
-          <button type="button" class="btn_reply_argument" (click)="handleShowReply()">
+          <button type="button" class="btn_reply_argument" (click)="handleShowReply()" [disabled]="!!argument().deletedAt">
             {{ 'COMPONENTS.ARGUMENT.BTN_REPLY' | translate }}
           </button>
         </div>
@@ -178,11 +180,13 @@
       <cos-icon name="argument-icon-2-legacy" size="16"></cos-icon>
       <span>{{ 'LNK_DIRECT_LINK' | translate }}</span>
     </button>
+    @if (!argument().deletedAt) {
     <div class="line_separator"></div>
     <button type="button" class="option" (click)="doReport(); mobileActions.set(false)">
       <cos-icon name="ideabox-icon-8-legacy" size="16"></cos-icon>
       <span>{{ 'COMPONENTS.ARGUMENT.OPTION_REPORT' | translate }}</span>
     </button>
+    }
     @if (isEdited()) {
     <div class="line_separator"></div>
     <button type="button" class="option" (click)="showEdits.set(true); mobileActions.set(false)">

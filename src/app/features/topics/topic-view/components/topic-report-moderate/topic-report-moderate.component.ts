@@ -51,7 +51,7 @@ export class TopicReportModerateComponent {
 
   moderateForm = this.fb.group({
     type: [this.reportTypes[0], Validators.required],
-    text: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(2024)]]
+    text: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(2048)]]
   });
 
   changeType(type: string) {
@@ -78,7 +78,7 @@ export class TopicReportModerateComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.notificationService.success('COMPONENTS.TOPIC_REPORT_MODERATE.MSG_MODERATION_SENT');
+          this.notificationService.success('MODALS.TOPIC_REPORT_MODERATE_SUCCESS');
           this.dialogRef.close(true);
         },
         error: (err) => {

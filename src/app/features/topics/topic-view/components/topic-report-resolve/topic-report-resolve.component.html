@@ -5,7 +5,7 @@
         <div class="icon_notification">
           <cos-icon name="info-filled" [size]="40"></cos-icon>
         </div>
-        <h3 class="title">{{ 'MODALS.TOPIC_REPORT_RESOLVE_HEADING' | translate }}</h3>
+        <h3 class="title">{{ 'MODALS.TOPIC_REPORT_REPORTID_RESOLVE_HEADING' | translate }}</h3>
       </div>
       <div class="dialog_close">
         <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
@@ -15,13 +15,13 @@
     </div>
 
     <div class="dialog_content">
-      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_RESOLVE_DESCRIPTION' | translate }}</div>
+      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_REPORTID_RESOLVE_HEADING_2' | translate }}</div>
     </div>
 
     <div class="dialog_footer with_buttons">
       <div class="button_row">
-        <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_REPORT_RESOLVE.BTN_CANCEL"></cos-button>
-        <cos-button variant="primary" (clicked)="doResolve()" [isDisabled]="isLoading()" translate="COMPONENTS.TOPIC_REPORT_RESOLVE.BTN_RESOLVE"></cos-button>
+        <cos-button variant="secondary" (clicked)="close()" translate="MODALS.TOPIC_REPORT_REPORTID_RESOLVE_BTN_NO"></cos-button>
+        <cos-button variant="primary" (clicked)="doResolve()" [isDisabled]="isLoading()" translate="MODALS.TOPIC_REPORT_REPORTID_RESOLVE_BTN_YES"></cos-button>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { MockIconComponent } from '../../../../../shared/testing/mocks';
+import { MockIconComponent, MockButtonComponent } from '../../../../../shared/testing/mocks';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ArgumentReportModerateComponent } from './argument-report-moderate.component';
@@ -34,6 +34,7 @@ describe('ArgumentReportModerateComponent', () => {
     moderate: vi.fn().mockReturnValue(of({}))
   };
   const mockDialogService = { closeAll: vi.fn() };
+  const mockDialogRef = { close: vi.fn() };
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -41,14 +42,14 @@ describe('ArgumentReportModerateComponent', () => {
       imports: [ArgumentReportModerateComponent, TranslateModule.forRoot()],
       providers: [
         { provide: DIALOG_DATA, useValue: { ...MOCK_DATA } },
-        { provide: DialogRef, useValue: { close: vi.fn() } },
+        { provide: DialogRef, useValue: mockDialogRef },
         { provide: DialogService, useValue: mockDialogService },
         { provide: TopicArgumentService, useValue: mockArgumentService }
       ]
     })
     .overrideComponent(ArgumentReportModerateComponent, {
       set: { imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, MockInputComponent,
-          MockIconComponent] }
+          MockIconComponent, MockButtonComponent] }
     })
     .compileComponents();
 
@@ -102,10 +103,10 @@ describe('ArgumentReportModerateComponent', () => {
     }));
   });
 
-  it('should close all dialogs on successful moderation', () => {
+  it('should close dialog with true on successful moderation', () => {
     component.report.patchValue({ type: 'abuse', text: 'violation' });
     component.doModerate();
-    expect(mockDialogService.closeAll).toHaveBeenCalled();
+    expect(mockDialogRef.close).toHaveBeenCalledWith(true);
   });
 
   it('should have a cancel link with dialogClose', () => {

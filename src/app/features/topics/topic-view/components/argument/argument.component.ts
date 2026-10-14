@@ -92,7 +92,7 @@ export class ArgumentComponent {
   }
 
   vote(value: number) {
-    if (!this.userStore.isAuthenticated()) return;
+    if (!this.userStore.isAuthenticated() || this.argument().deletedAt) return;
     this.argumentService.vote({
       commentId: this.argument().id,
       topicId: this.topicId(),
@@ -127,6 +127,7 @@ export class ArgumentComponent {
   }
 
   doReport() {
+    if (this.argument().deletedAt) return;
     this.dialog.open(ArgumentReportComponent, {
       data: { argument: this.argument(), topicId: this.topicId() }
     });
@@ -152,6 +153,7 @@ export class ArgumentComponent {
   }
 
   handleShowReply() {
+    if (this.argument().deletedAt) return;
     if (!this.userStore.isAuthenticated()) {
       if (isPlatformBrowser(this.platformId)) {
         this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], { queryParams: { redirectSuccess: window.location.href } });

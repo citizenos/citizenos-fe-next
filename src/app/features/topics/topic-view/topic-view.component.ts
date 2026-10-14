@@ -477,8 +477,11 @@ export class TopicViewComponent implements OnInit {
 
   reportTopic(topic: Topic) {
     import('./components/topic-report-form/topic-report-form.component').then(m => {
-      this.dialogService.open(m.TopicReportFormComponent, {
+      const dialogRef = this.dialogService.open(m.TopicReportFormComponent, {
         data: { topic }
+      });
+      dialogRef.afterClosed().pipe(take(1)).subscribe((result) => {
+        if (result) this.topicService.reloadTopic();
       });
     });
   }
@@ -531,24 +534,33 @@ export class TopicViewComponent implements OnInit {
 
   moderateTopic(topic: Topic) {
     import('./components/topic-report-moderate/topic-report-moderate.component').then(m => {
-      this.dialogService.open(m.TopicReportModerateComponent, {
+      const dialogRef = this.dialogService.open(m.TopicReportModerateComponent, {
         data: { topic }
+      });
+      dialogRef.afterClosed().pipe(take(1)).subscribe((result) => {
+        if (result) this.topicService.reloadTopic();
       });
     });
   }
 
   reviewTopic(topic: Topic) {
     import('./components/topic-report-review/topic-report-review.component').then(m => {
-      this.dialogService.open(m.TopicReportReviewComponent, {
+      const dialogRef = this.dialogService.open(m.TopicReportReviewComponent, {
         data: { topic }
+      });
+      dialogRef.afterClosed().pipe(take(1)).subscribe((result) => {
+        if (result) this.topicService.reloadTopic();
       });
     });
   }
 
   resolveTopic(topic: Topic) {
     import('./components/topic-report-resolve/topic-report-resolve.component').then(m => {
-      this.dialogService.open(m.TopicReportResolveComponent, {
+      const dialogRef = this.dialogService.open(m.TopicReportResolveComponent, {
         data: { topic }
+      });
+      dialogRef.afterClosed().pipe(take(1)).subscribe((result) => {
+        if (result) this.topicService.reloadTopic();
       });
     });
   }

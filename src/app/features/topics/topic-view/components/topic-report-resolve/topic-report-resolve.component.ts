@@ -55,7 +55,7 @@ export class TopicReportResolveComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.notificationService.success('COMPONENTS.TOPIC_REPORT_RESOLVE.MSG_RESOLVE_SENT');
+          this.notificationService.success('MODALS.TOPIC_REPORT_RESOLVE_SUCCESS');
           this.dialogRef.close(true);
         },
         error: (err) => {

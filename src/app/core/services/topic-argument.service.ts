@@ -156,9 +156,15 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
       .pipe(map(res => res.data));
   }
 
-  moderate(data: { topicId: string; discussionId: string; commentId: string; [key: string]: unknown }): Observable<unknown> {
-    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}/moderate`, true);
-    return this.http.post<ApiResponse<unknown>>(path, data, { withCredentials: true, observe: 'body', responseType: 'json' })
+  moderate(data: { topicId: string; discussionId?: string; commentId: string; reportId: string; token?: string; report?: { type: string; text?: string }; type?: string; text?: string }): Observable<unknown> {
+    const headers: Record<string, string> = {};
+    if (data.token) {
+      headers['Authorization'] = `Bearer ${data.token}`;
+    }
+    const discussionId = data.discussionId || data.topicId;
+    const path = `${this.apiUrl}/api/topics/${data.topicId}/discussions/${discussionId}/comments/${data.commentId}/reports/${data.reportId}/moderate`;
+    const payload = data.report || { type: data.type, text: data.text };
+    return this.http.post<ApiResponse<unknown>>(path, payload, { headers, withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
@@ -169,11 +175,16 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
       .pipe(map(res => res.data));
   }
 
-  getReport(params: { topicId: string; commentId: string; reportId: string; token?: string }): Observable<ArgumentReport> {
+  getReport(params: { topicId: string; discussionId?: string; commentId: string; reportId: string; token?: string }): Observable<ArgumentReport> {
+    const headers: Record<string, string> = {};
     let httpParams = new HttpParams();
-    if (params.token) httpParams = httpParams.set('token', params.token);
-    const path = this.getAbsoluteUrlApi(`/topics/${params.topicId}/comments/${params.commentId}/reports/${params.reportId}`, true);
-    return this.http.get<ApiResponse<ArgumentReport>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
+    if (params.token) {
+      headers['Authorization'] = `Bearer ${params.token}`;
+      httpParams = httpParams.set('token', params.token);
+    }
+    const discussionId = params.discussionId || params.topicId;
+    const path = `${this.apiUrl}/api/topics/${params.topicId}/discussions/${discussionId}/comments/${params.commentId}/reports/${params.reportId}`;
+    return this.http.get<ApiResponse<ArgumentReport>>(path, { headers, withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
 

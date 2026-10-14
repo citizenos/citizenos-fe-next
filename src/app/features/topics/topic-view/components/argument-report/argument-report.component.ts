@@ -6,6 +6,7 @@ import { take } from 'rxjs';
 
 import { Argument } from '../../../../../core/interfaces/discussion';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
+import { NotificationService } from '../../../../../core/services/notification.service';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
@@ -39,6 +40,7 @@ export class ArgumentReportComponent {
   private data = inject<ArgumentReportData>(DIALOG_DATA);
   private dialogRef = inject(DialogRef<ArgumentReportComponent>);
   private argumentService = inject(TopicArgumentService);
+  private notificationService = inject(NotificationService);
   private fb = inject(FormBuilder);
 
   argument = this.data.argument;
@@ -71,8 +73,14 @@ export class ArgumentReportComponent {
     this.argumentService.report(reportData)
       .pipe(take(1))
       .subscribe({
-        next: () => this.dialogRef.close(true),
-        error: () => this.isLoading.set(false)
+        next: () => {
+          this.notificationService.success('COMPONENTS.ARGUMENT_REPORT.MSG_REPORT_SENT');
+          this.dialogRef.close(true);
+        },
+        error: () => {
+          this.notificationService.error('MSG_ERROR_REPORT_SEND_FAILED');
+          this.isLoading.set(false);
+        }
       });
   }
 

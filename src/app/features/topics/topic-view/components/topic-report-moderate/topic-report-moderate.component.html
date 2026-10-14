@@ -15,11 +15,11 @@
     </div>
 
     <div class="dialog_content">
-      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_MODERATE_DESCRIPTION' | translate }}</div>
+      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_MODERATE_TXT_ARE_YOU_SURE' | translate }}</div>
 
       <form [formGroup]="moderateForm" (ngSubmit)="doModerate()">
         <div class="form_group">
-          <label for="moderate_type">{{ 'COMPONENTS.TOPIC_REPORT_MODERATE.LBL_MODERATE_TYPE' | translate }}</label>
+          <label for="moderate_type">{{ 'MODALS.TOPIC_REPORT_MODERATE_LABEL_REASON' | translate }}</label>
           <cos-dropdown id="moderate_type">
             <div selection class="selected_item">
               {{ 'TXT_REPORT_TYPES_' + (moderateForm.value.type | uppercase) | translate }}
@@ -35,19 +35,19 @@
         </div>
 
         <div class="form_group">
-          <label for="moderate_text">{{ 'COMPONENTS.TOPIC_REPORT_MODERATE.LBL_MODERATE_TEXT' | translate }}</label>
+          <label for="moderate_text">{{ 'MODALS.TOPIC_REPORT_MODERATE_LABEL_REASON' | translate }}</label>
           <textarea id="moderate_text" formControlName="text"
-                    [placeholder]="'COMPONENTS.TOPIC_REPORT_MODERATE.PLACEHOLDER_MODERATE_TEXT' | translate"
-                    maxlength="2024"></textarea>
-          <div class="char_count">{{ moderateForm.get('text')?.value?.length || 0 }}/2024</div>
+                    [placeholder]="'MODALS.TOPIC_REPORT_MODERATE_PLACEHOLDER_REPORT_TEXT' | translate"
+                    maxlength="2048"></textarea>
+          <div class="char_count">{{ moderateForm.get('text')?.value?.length || 0 }}/2048</div>
         </div>
       </form>
     </div>
 
     <div class="dialog_footer with_buttons">
       <div class="button_row">
-        <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_REPORT_MODERATE.BTN_CANCEL"></cos-button>
-        <cos-button variant="primary" (clicked)="doModerate()" [isDisabled]="moderateForm.invalid || isLoading()" translate="COMPONENTS.TOPIC_REPORT_MODERATE.BTN_MODERATE"></cos-button>
+        <cos-button variant="secondary" (clicked)="close()" translate="MODALS.TOPIC_REPORT_MODERATE_BTN_NO"></cos-button>
+        <cos-button variant="primary" (clicked)="doModerate()" [isDisabled]="moderateForm.invalid || isLoading()" translate="MODALS.TOPIC_REPORT_MODERATE_BTN_YES"></cos-button>
       </div>
     </div>
   </div>

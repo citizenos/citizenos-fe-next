@@ -58,7 +58,7 @@ export class TopicReportFormComponent {
     required(path.type);
     required(path.text);
     minLength(path.text, 1);
-    maxLength(path.text, 2024);
+    maxLength(path.text, 2048);
   });
 
   changeType(type: string) {
@@ -79,12 +79,16 @@ export class TopicReportFormComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.notificationService.success('COMPONENTS.TOPIC_REPORT_FORM.MSG_REPORT_SENT');
+          this.notificationService.success('MODALS.TOPIC_REPORT_SUCCESS');
           this.dialogRef.close(true);
         },
         error: (err) => {
           console.error('Failed to send report', err);
-          this.notificationService.error('MSG_ERROR_REPORT_SEND_FAILED');
+          if (err?.error?.status?.code === 1 || err?.status?.code === 1) {
+            this.notificationService.warning('MSG_ERROR_POST_API_TOPICS_REPORTS_ALREADY_REPORTED');
+          } else {
+            this.notificationService.error('MSG_ERROR_REPORT_SEND_FAILED');
+          }
           this.isLoading.set(false);
         }
       });

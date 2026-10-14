@@ -40,10 +40,10 @@ describe('ArgumentDeletedComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the orange warning SVG', () => {
+  it('should render the orange warning icon', () => {
     const el: HTMLElement = fixture.nativeElement;
-    const svg = el.querySelector('svg rect[fill="#F39129"]');
-    expect(svg).toBeTruthy();
+    const icon = el.querySelector('cos-icon[name="warning-filled"]');
+    expect(icon).toBeTruthy();
   });
 
   it('should show moderator deleted block when deletedReasonType and deletedReasonText are set', () => {

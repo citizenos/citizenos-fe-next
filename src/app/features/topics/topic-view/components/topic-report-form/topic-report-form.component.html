@@ -15,13 +15,13 @@
     </div>
 
     <div class="dialog_content">
-      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_DESCRIPTION' | translate }}</div>
+      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_TXT_ARE_YOU_SURE' | translate }}</div>
 
       <form [formRoot]="reportForm" (submit)="doReport(); $event.preventDefault()">
         <div class="form_group">
-          <label for="report_type">{{ 'COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TYPE' | translate }}</label>
+          <label for="report_type">{{ 'MODALS.TOPIC_REPORT_LABEL_REASON' | translate }}</label>
           <cos-dropdown id="report_type">
-            <div selection class="selected_item" [attr.aria-label]="'COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TYPE' | translate">
+            <div selection class="selected_item" [attr.aria-label]="'MODALS.TOPIC_REPORT_LABEL_REASON' | translate">
               {{ 'TXT_REPORT_TYPES_' + (reportForm().value().type | uppercase) | translate }}
             </div>
             <div options>
@@ -35,18 +35,18 @@
         </div>
 
         <div class="form_group">
-          <label for="report_text">{{ 'COMPONENTS.TOPIC_REPORT_FORM.LBL_REPORT_TEXT' | translate }}</label>
+          <label for="report_text">{{ 'MODALS.TOPIC_REPORT_LABEL_REASON' | translate }}</label>
           <textarea id="report_text" [formField]="reportForm.text"
-                    [placeholder]="'COMPONENTS.TOPIC_REPORT_FORM.PLACEHOLDER_REPORT_TEXT' | translate"></textarea>
-          <div class="char_count">{{ reportForm().value().text.length || 0 }}/2024</div>
+                    [placeholder]="'MODALS.TOPIC_REPORT_PLACEHOLDER_REPORT_TEXT' | translate"></textarea>
+          <div class="char_count">{{ reportForm().value().text.length || 0 }}/2048</div>
         </div>
       </form>
     </div>
 
     <div class="dialog_footer with_buttons">
       <div class="button_row">
-        <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_REPORT_FORM.BTN_CANCEL"></cos-button>
-        <cos-button variant="primary" (clicked)="doReport()" [isDisabled]="reportForm().invalid() || isLoading()" translate="COMPONENTS.TOPIC_REPORT_FORM.BTN_REPORT"></cos-button>
+        <cos-button variant="secondary" (clicked)="close()" translate="MODALS.TOPIC_REPORT_BTN_NO"></cos-button>
+        <cos-button variant="primary" (clicked)="doReport()" [isDisabled]="reportForm().invalid() || isLoading()" translate="MODALS.TOPIC_REPORT_BTN_YES"></cos-button>
       </div>
     </div>
   </div>

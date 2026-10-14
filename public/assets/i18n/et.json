@@ -190,7 +190,8 @@
       "PLACEHOLDER_REPORT_TEXT": "Selgita, miks see argument ei sobi...",
       "ERROR_TEXT": "@:MSG_ERROR_POST_API_TOPICS_COMMENTS_REPORTS_40000_TEXT",
       "BTN_SUBMIT": "Raporteeri administraatorile",
-      "BTN_CANCEL": "@:LNK_CANCEL"
+      "BTN_CANCEL": "@:LNK_CANCEL",
+      "MSG_REPORT_SENT": "Teavitus on administraatoritele saadetud."
     },
     "ARGUMENT_REPORT_MODERATE": {
       "HEADING": "Modereeri argumenti",
@@ -200,7 +201,8 @@
       "ARE_YOU_SURE": "Kas oled kindel, et soovid argumendi peita? Toimingut ei saa tagasi võtta.",
       "ERROR_TEXT": "@:MSG_ERROR_POST_API_TOPICS_COMMENTS_REPORTS_40000_TEXT",
       "BTN_SUBMIT": "Jah, peida see argument",
-      "BTN_CANCEL": "@:MODALS.TOPIC_ARGUMENT_REPORT_BTN_NO"
+      "BTN_CANCEL": "@:MODALS.TOPIC_ARGUMENT_REPORT_BTN_NO",
+      "MSG_MODERATION_SUCCESS": "Argument on modereeritud."
     },
     "ARGUMENT_REPLY": {
       "HEADING": "Vasta",
@@ -1529,6 +1531,10 @@
     "TOPIC_REPORT_REPORTID_RESOLVE_TXT_FIND_MORE_DETAILS": "@:MODALS.TOPIC_REPORT_REPORTID_TXT_FIND_MORE_DETAILS",
     "TOPIC_REPORT_REPORTID_RESOLVE_BTN_NO": "@:MODALS.TOPIC_REPORT_REPORTID_REVIEW_BTN_NO",
     "TOPIC_REPORT_REPORTID_RESOLVE_BTN_YES": "Jah, märgi lahendatuks",
+    "TOPIC_REPORT_SUCCESS": "Teavitus on moderaatoritele saadetud.",
+    "TOPIC_REPORT_MODERATE_SUCCESS": "Teema on modereeritud.",
+    "TOPIC_REPORT_REVIEW_SUCCESS": "Teema on esitatud ülevaatamisele.",
+    "TOPIC_REPORT_RESOLVE_SUCCESS": "Teavitus on märgitud lahendatuks.",
     "TOPIC_REPORT_REASON_HEADING": "Miks see teema peidetud on?",
     "TOPIC_REPORT_REASON_DESCRIPTION": "Moderaator otsustas selle sisu peita. Põhjust näed allpool.",
     "TOPIC_ARGUMENT_REPORT_HEADING": "Teata sobimatust argumendist",
@@ -3527,6 +3533,12 @@
   "MSG_ERROR_POST_API_TOPICS_REPORTS_MODERATE_40000_MODERATEDREASONTEXT": "@:MSG_ERROR_POST_API_TOPICS_REPORTS_40000_TEXT",
   "MSG_ERROR_POST_API_TOPICS_REPORTS_REVIEW_40001_TEXT": "Selgitus võib olla 10 kuni 4000 tähemärki pikk.",
   "MSG_ERROR_POST_API_TOPICS_COMMENTS_REPORTS_MODERATE_40010": "Selle argumendi kohta tehtud kaebus ei ole enam kehtiv, kuna argumenti on pärast selle esitamist värskendatud.",
+  "MSG_ERROR_POST_API_TOPICS_REPORTS_ALREADY_REPORTED": "Teemast on juba teatatud. Moderaatorite ülekoormuse vältimiseks on korraga lubatud vaid üks aktiivne teavitus.",
+  "MSG_ERROR_REPORT_SEND_FAILED": "Teavituse saatmine ebaõnnestus. Palun proovi uuesti.",
+  "MSG_ERROR_MODERATION_FAILED": "Modereerimine ebaõnnestus. Palun proovi uuesti.",
+  "MSG_ERROR_REVIEW_FAILED": "Ülevaatusele saatmine ebaõnnestus. Palun proovi uuesti.",
+  "MSG_ERROR_RESOLVE_FAILED": "Teavituse lahendamine ebaõnnestus. Palun proovi uuesti.",
+  "MSG_ERROR_REPORT_ID_MISSING": "Teavituse ID puudub.",
   "MSG_ERROR_POST_API_USERS_TOPICS_ATTACHMENTS_40002": "Teema külge ei mahu rohkem manuseid",
   "MSG_ERROR_POST_API_USERS_TOPICS_VOTES_DELEGATIONS_40001": "Sa ei saa häält iseendale delegeerida.",
   "MSG_ERROR_POST_API_USERS_TOPICS_VOTES_DELEGATIONS_40002": "Vabandust, sa ei saa delegeerida oma häält kasutajale, kellel puudub juurdepääs sellele teemale. Palun kontrolli, kas sisestasid nime õigesti ja kas valitud kasutaja osaleb selles teemas.",

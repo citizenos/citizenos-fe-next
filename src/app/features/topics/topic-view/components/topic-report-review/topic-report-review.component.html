@@ -5,7 +5,7 @@
         <div class="icon_notification">
           <cos-icon name="info-filled" [size]="40"></cos-icon>
         </div>
-        <h3 class="title">{{ 'MODALS.TOPIC_REPORT_REVIEW_HEADING' | translate }}</h3>
+        <h3 class="title">{{ 'MODALS.TOPIC_REPORT_REPORTID_REVIEW_HEADING' | translate }}</h3>
       </div>
       <div class="dialog_close">
         <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
@@ -15,23 +15,23 @@
     </div>
 
     <div class="dialog_content">
-      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_REVIEW_DESCRIPTION' | translate }}</div>
+      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_REPORTID_REVIEW_TXT_ARE_YOU_SURE' | translate }}</div>
 
       <form [formGroup]="reviewForm" (ngSubmit)="doReview()">
         <div class="form_group">
-          <label for="review_text">{{ 'COMPONENTS.TOPIC_REPORT_REVIEW.LBL_REVIEW_TEXT' | translate }}</label>
+          <label for="review_text">{{ 'MODALS.TOPIC_REPORT_REPORTID_REVIEW_HEADING' | translate }}</label>
           <textarea id="review_text" formControlName="text"
-                    [placeholder]="'COMPONENTS.TOPIC_REPORT_REVIEW.PLACEHOLDER_REVIEW_TEXT' | translate"
-                    maxlength="2024"></textarea>
-          <div class="char_count">{{ reviewForm.get('text')?.value?.length || 0 }}/2024</div>
+                    [placeholder]="'MODALS.TOPIC_REPORT_REPORTID_REVIEW_PLACEHOLDER_REPORT_TEXT' | translate"
+                    maxlength="4000"></textarea>
+          <div class="char_count">{{ reviewForm.get('text')?.value?.length || 0 }}/4000</div>
         </div>
       </form>
     </div>
 
     <div class="dialog_footer with_buttons">
       <div class="button_row">
-        <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_REPORT_REVIEW.BTN_CANCEL"></cos-button>
-        <cos-button variant="primary" (clicked)="doReview()" [isDisabled]="reviewForm.invalid || isLoading()" translate="COMPONENTS.TOPIC_REPORT_REVIEW.BTN_REVIEW"></cos-button>
+        <cos-button variant="secondary" (clicked)="close()" translate="MODALS.TOPIC_REPORT_REPORTID_REVIEW_BTN_NO"></cos-button>
+        <cos-button variant="primary" (clicked)="doReview()" [isDisabled]="reviewForm.invalid || isLoading()" translate="MODALS.TOPIC_REPORT_REPORTID_REVIEW_BTN_YES"></cos-button>
       </div>
     </div>
   </div>
