@@ -204,13 +204,19 @@
   max-height: 85vh;
   min-height: 520px;
 
+  @include mixins.tablet {
+    max-width: 95vw;
+    max-height: 88vh;
+  }
+
   @include mixins.mobile {
     width: 100%;
     max-width: 100%;
     flex-direction: column;
     min-height: unset;
-    max-height: unset;
-    border-radius: 0;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 16px;
     box-shadow: none;
   }
 
@@ -324,6 +330,12 @@
   gap: figma.$spacing-l;
   overflow-y: auto;
 
+  @include mixins.tablet {
+    width: 55%;
+    min-width: 300px;
+    padding: 20px 16px;
+  }
+
   @include mixins.mobile {
     width: 100%;
     min-width: unset;
@@ -346,11 +358,18 @@
     display: none;
   }
 
+  @include mixins.tablet {
+    width: 45%;
+    min-width: 280px;
+    padding: 20px 16px;
+  }
+
   @include mixins.mobile {
     width: 100%;
     min-width: unset;
     background-color: transparent;
     border-left: none;
+    border-top: 1px solid #E5ECF2;
     padding: figma.$spacing-m;
 
     &.mobile_hidden {

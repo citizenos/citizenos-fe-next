@@ -1,3 +1,12 @@
+@use "mixins";
+@use "../../../../../../assets/styles/figma-tokens" as tokens;
+
+.dialog_content {
+  @include mixins.mobile {
+    padding: tokens.$spacing-m;
+  }
+}
+
 .vote_options {
   display: flex;
   flex-direction: column;
@@ -6,8 +15,18 @@
   .vote_option {
     background-color: var(--color-surfaces);
     font-weight: 600;
+    min-height: 48px;
+    border-radius: tokens.$border-radius-m;
+    padding: 0 tokens.$spacing-m;
+    display: flex;
+    align-items: center;
+
     .checkbox {
       gap: 16px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      width: 100%;
     }
 
     .checkbox .checkmark {
@@ -35,8 +54,14 @@
 .form_wrap {
   padding: 24px 0px;
 
+  @include mixins.mobile {
+    padding: 16px 0px;
+  }
+
   form {
     gap: 24px;
+    display: flex;
+    flex-direction: column;
 
     .sign_in_section {
       width: 100%;
@@ -48,6 +73,13 @@
 }
 
 #submit_button {
+  width: 100%;
+  ::ng-deep button {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
   path {
     fill: initial;
   }

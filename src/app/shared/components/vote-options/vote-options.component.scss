@@ -20,11 +20,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-height: 48px;
 
     .radio_text_wrap {
       display: flex;
       align-items: center;
       width: 100%;
+      min-height: 48px;
     }
 
     .radio_lable_wrap {
@@ -32,6 +34,12 @@
       display: flex;
       width: 100%;
       cursor: pointer;
+      min-height: 48px;
+      align-items: center;
+
+      @media (max-width: 600px) {
+        padding: 12px 14px;
+      }
     }
 
     &.voting:hover {
@@ -44,9 +52,13 @@
       }
     }
 
-    .checkbox {
+    .checkbox,
+    .radio_box {
       gap: tokens.$spacing-m;
       width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .checkmark,
@@ -123,6 +135,7 @@
 
     .view_idea_wrap {
       padding-right: tokens.$spacing-m;
+      flex-shrink: 0;
     }
   }
 }

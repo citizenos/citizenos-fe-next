@@ -17,6 +17,10 @@
   border-radius: tokens.$border-radius-lg tokens.$border-radius-lg 0 0;
   gap: tokens.$spacing-m;
 
+  @include mixins.tablet {
+    padding: tokens.$spacing-l tokens.$spacing-l;
+  }
+
   @include mixins.mobile {
     flex-direction: column;
     align-items: flex-start;
@@ -35,8 +39,14 @@
       line-height: 28px;
       color: var(--color-text-main);
 
+      @include mixins.tablet {
+        font-size: tokens.$font-size-lg;
+        line-height: 24px;
+      }
+
       @include mixins.mobile {
         font-size: tokens.$font-size-base;
+        line-height: 20px;
       }
     }
   }
@@ -46,9 +56,15 @@
     align-items: center;
     gap: tokens.$spacing-l;
 
+    @include mixins.tablet {
+      gap: tokens.$spacing-m;
+      flex-shrink: 0;
+    }
+
     @include mixins.mobile {
       width: 100%;
       justify-content: space-between;
+      gap: tokens.$spacing-m;
     }
 
     .deadline_wrap {
@@ -58,6 +74,7 @@
       font-size: tokens.$font-size-sm;
       font-weight: tokens.$font-weight-bold;
       color: var(--color-text-main);
+      white-space: nowrap;
     }
   }
 }
@@ -170,6 +187,11 @@
         background-color: var(--color-dialog-voting-contrast);
         border-radius: tokens.$border-radius-m;
 
+        @include mixins.tablet {
+          gap: tokens.$spacing-m;
+          padding: tokens.$spacing-m;
+        }
+
         @include mixins.mobile {
           flex-direction: column;
           align-items: flex-start;
@@ -188,6 +210,10 @@
             max-width: 440px;
             gap: tokens.$spacing-xs;
 
+            @include mixins.tablet {
+              max-width: 100%;
+            }
+
             .heading {
               font-size: tokens.$font-size-lg;
               font-weight: tokens.$font-weight-bold;
@@ -203,6 +229,11 @@
               flex-direction: row;
               gap: tokens.$spacing-m;
               align-items: center;
+
+              @include mixins.mobile {
+                flex-wrap: wrap;
+                gap: tokens.$spacing-sm;
+              }
 
               a {
                 gap: tokens.$spacing-sm;
@@ -306,13 +337,22 @@
       align-items: center;
       justify-content: space-between;
       position: relative;
-      min-height: 40px;
+      min-height: 44px;
+
+      @include mixins.tablet {
+        gap: tokens.$spacing-m;
+      }
 
       @include mixins.mobile {
         flex-direction: column;
         gap: tokens.$spacing-sm;
-        button {
+        cos-button {
           width: 100%;
+          ::ng-deep button {
+            width: 100%;
+            justify-content: center;
+            min-height: 44px;
+          }
         }
       }
 
@@ -334,6 +374,10 @@
     background-color: var(--color-dialog-voting-contrast);
     border-radius: tokens.$border-radius-m;
     gap: tokens.$spacing-m;
+
+    @include mixins.tablet {
+      padding: tokens.$spacing-m;
+    }
 
     @include mixins.mobile {
       flex-direction: column;
@@ -391,17 +435,26 @@
 
   @include mixins.tablet {
     padding: tokens.$spacing-m;
+    gap: tokens.$spacing-m;
   }
 
   @include mixins.mobile {
     flex-direction: column;
+    align-items: stretch;
     padding: tokens.$spacing-m;
-    gap: tokens.$spacing-sm;
+    gap: tokens.$spacing-m;
 
     .icon_delegation {
-      position: absolute;
-      right: 8px;
-      top: 8px;
+      position: static;
+    }
+
+    cos-button {
+      width: 100%;
+      ::ng-deep button {
+        width: 100%;
+        justify-content: center;
+        min-height: 44px;
+      }
     }
   }
 

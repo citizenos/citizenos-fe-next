@@ -55,12 +55,15 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 12px;
 
         .title_wrap {
           display: flex;
           gap: 16px;
           align-items: center;
           justify-content: flex-start;
+          flex: 1;
+          min-width: 0;
 
           .circle {
             display: flex;
@@ -76,11 +79,14 @@
             font-style: normal;
             font-weight: 600;
             line-height: 24px;
+            flex-shrink: 0;
           }
 
           .title_text_area {
             display: flex;
             flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
 
             .title_description {
               font-size: 13px;
@@ -94,6 +100,7 @@
               font-style: normal;
               font-weight: 600;
               line-height: 24px;
+              word-break: break-word;
             }
           }
         }
@@ -102,7 +109,12 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 24px;
+          gap: 16px;
+          flex-shrink: 0;
+
+          @include mixins.mobile {
+            gap: 8px;
+          }
 
           .milestone_date {
             display: flex;
@@ -198,6 +210,7 @@
           line-height: 1.5;
           color: var(--color-text-main);
           white-space: pre-wrap;
+          word-break: break-word;
         }
 
         .error_label {
@@ -217,6 +230,17 @@
         gap: 16px;
         margin-top: 16px;
 
+        @include mixins.mobile {
+          flex-direction: column-reverse;
+          gap: 12px;
+
+          button {
+            width: 100%;
+            justify-content: center;
+            min-height: 44px;
+          }
+        }
+
         a {
           cursor: pointer;
           color: var(--color-text-muted);
@@ -230,11 +254,14 @@
       justify-content: flex-end;
       align-items: center;
       width: 100%;
-      height: 56px;
+      min-height: 56px;
 
       .btn_medium_submit {
+        min-height: 44px;
+
         @include mixins.mobile {
           width: 100%;
+          justify-content: center;
         }
       }
     }

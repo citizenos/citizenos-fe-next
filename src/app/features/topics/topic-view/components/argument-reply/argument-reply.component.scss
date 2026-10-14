@@ -56,10 +56,22 @@
     bottom: 0;
     left: 0;
   }
+
+  @include mixins.mobile {
+    padding: 12px;
+    width: 100%;
+  }
 }
 .buttons_wrap {
   margin-top: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @include mixins.mobile {
+    gap: 8px;
+    .btn_medium_submit {
+      width: 100%;
+    }
+  }
 }

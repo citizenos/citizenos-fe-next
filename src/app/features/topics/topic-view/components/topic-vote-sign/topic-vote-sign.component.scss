@@ -1,3 +1,4 @@
+@use "mixins";
 @use "../../../../../../assets/styles/figma-tokens" as tokens;
 
 .dialog_content {
@@ -5,6 +6,10 @@
   flex-direction: column;
   gap: tokens.$spacing-m;
   padding: tokens.$spacing-xl;
+
+  @include mixins.mobile {
+    padding: tokens.$spacing-m;
+  }
 }
 
 .btn-sign {
@@ -16,7 +21,8 @@
     justify-content: flex-start;
     align-items: center;
     gap: tokens.$spacing-m;
-    padding: tokens.$spacing-sm tokens.$spacing-m;
+    padding: tokens.$spacing-m tokens.$spacing-m;
+    min-height: 52px;
     background: transparent;
     border: none;
     border-radius: tokens.$border-radius-m;

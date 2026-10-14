@@ -18,6 +18,7 @@
       align-items: center;
       font-size: tokens.$font-size-sm;
       color: var(--color-text-main);
+      flex-wrap: wrap;
 
       .bold {
         font-weight: tokens.$font-weight-bold;

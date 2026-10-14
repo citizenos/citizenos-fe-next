@@ -49,7 +49,7 @@
     display: flex;
     justify-content: flex-end;
     bottom: 64px;
-    right: 8px;
+    right: 16px;
     z-index: 999;
 
     button {
@@ -60,7 +60,9 @@
   }
 
   @include mixins.mobile {
-    margin-top: -30px;
+    bottom: 64px;
+    right: 16px;
+    margin-top: 0;
     margin-bottom: 0;
     margin-right: 0;
   }
@@ -96,10 +98,18 @@
     position: fixed;
     bottom: 0;
     left: 0;
+    right: 0;
     gap: 8px;
     z-index: 9999999;
     max-width: 100%;
     width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  @include mixins.mobile {
+    max-height: 85vh;
+    overflow-y: auto;
   }
 
   #buttons_row {
@@ -170,6 +180,11 @@
     #type_select_wrap {
       display: flex;
       gap: 16px;
+
+      @include mixins.tablet {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
 
       @include mixins.mobile {
         flex-direction: column;

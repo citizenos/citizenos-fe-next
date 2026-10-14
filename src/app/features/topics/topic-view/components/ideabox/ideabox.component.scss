@@ -1,6 +1,11 @@
 @use "mixins";
 @use "../../../../../../assets/styles/figma-tokens" as t;
 
+:host {
+  display: flex;
+  width: 100%;
+}
+
 .idea {
   display: flex;
   flex-direction: column;
@@ -11,18 +16,18 @@
   background-color: #FEF3CA;
   border: 1px solid rgba(229, 169, 60, 0.2);
   height: 280px;
-  width: 264px;
+  width: 100%;
   box-shadow: 0px 4px 16px rgba(44, 59, 71, 0.06);
   transition: all ease-in 200ms;
 
   @include mixins.tablet {
     width: 100%;
-    max-width: 224px;
+    max-width: 100%;
   }
 
   @include mixins.mobile {
     width: 100%;
-    max-width: 288px;
+    max-width: 100%;
   }
 
   &.new {

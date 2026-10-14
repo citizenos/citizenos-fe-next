@@ -107,9 +107,11 @@
     padding: 12px 38px;
     width: 100%;
     justify-content: center;
+    min-height: 52px;
   }
   @media (max-width: 768px) {
     padding: 12px 0;
+    min-height: 52px;
   }
 
   &.active {

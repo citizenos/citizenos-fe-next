@@ -41,17 +41,20 @@
     display: flex;
     justify-content: flex-end;
     bottom: 64px;
-    right: tokens.$spacing-sm;
+    right: 16px;
+    z-index: 999;
 
     button {
       cos-icon, svg {
-        position: absolute;
+        position: static;
       }
     }
   }
 
   @include mixins.mobile {
-    margin-top: -30px;
+    bottom: 64px;
+    right: 16px;
+    margin-top: 0;
     margin-bottom: 0;
     margin-right: 0;
   }
@@ -67,7 +70,6 @@
   width: calc(100% - 567px);
   padding: tokens.$spacing-m;
   z-index: 99999;
-  // padding: 12px tokens.$spacing-m;
   position: fixed;
   bottom: 0;
   gap: tokens.$spacing-m;
@@ -79,10 +81,16 @@
     position: fixed;
     bottom: 0;
     left: 0;
+    right: 0;
     gap: tokens.$spacing-sm;
     z-index: 9999999;
     max-width: 100%;
     width: 100%;
+    max-height: 85vh;
+  }
+
+  @include mixins.mobile {
+    max-height: 85vh;
   }
 
   #buttons_row {

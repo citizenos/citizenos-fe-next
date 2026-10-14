@@ -11,23 +11,31 @@
 }
 
 .ideas_wrap {
-  display: flex;
-  gap: figma.$spacing-m;
-  grid-row-gap: figma.$spacing-l;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: figma.$spacing-l figma.$spacing-m;
+  width: 100%;
+
+  @include mixins.tablet {
+    grid-template-columns: repeat(2, 1fr);
+    gap: figma.$spacing-m;
+  }
 
   @include mixins.mobile {
-    flex-direction: column;
-    flex-wrap: unset;
-    align-items: center;
+    grid-template-columns: 1fr;
+    gap: figma.$spacing-m;
   }
 }
 
-
 .ideation_wrap {
   padding: 0 figma.$spacing-xl figma.$spacing-xl figma.$spacing-xl;
+
+  @include mixins.tablet {
+    padding: 0 16px 16px 16px;
+  }
+
   @include mixins.mobile {
-    padding: 0 figma.$spacing-m figma.$spacing-m figma.$spacing-m;
+    padding: 0 12px 12px 12px;
   }
 }
 
@@ -38,18 +46,20 @@
   align-items: center;
   padding: figma.$spacing-l figma.$spacing-xl;
   margin: 0 -#{figma.$spacing-xl} figma.$spacing-xl -#{figma.$spacing-xl};
-  @include mixins.mobile {
-    padding: figma.$spacing-m;
-    margin: 0 -#{figma.$spacing-m} figma.$spacing-l -#{figma.$spacing-m};
-  }
   background-color: var(--color-dialog-ideation-contrast);
   border-radius: figma.$border-radius-lg figma.$border-radius-lg 0 0;
   gap: figma.$spacing-m;
 
+  @include mixins.tablet {
+    padding: 16px;
+    margin: 0 -16px 16px -16px;
+  }
+
   @include mixins.mobile {
     flex-direction: column;
     align-items: flex-start;
-    padding: figma.$spacing-m;
+    padding: 16px 12px;
+    margin: 0 -12px 16px -12px;
   }
 
   .header_left {
@@ -274,6 +284,14 @@
       width: 100%;
       display: flex;
       gap: figma.$spacing-m;
+
+      @include mixins.tablet {
+        flex-wrap: wrap;
+      }
+
+      @include mixins.mobile {
+        flex-direction: column;
+      }
 
       .dropdown_input {
         width: 100%;

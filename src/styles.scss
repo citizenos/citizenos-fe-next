@@ -567,6 +567,29 @@ label:has(input:focus-visible) .radio {
 
     &.no_footer { border-radius: 0 0 16px 16px; }
 
+    .button_wrap {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 16px;
+      flex-wrap: wrap;
+
+      @include mixins.mobile {
+        width: 100%;
+        flex-direction: column-reverse;
+        gap: 12px;
+
+        cos-button, button {
+          width: 100%;
+          ::ng-deep button {
+            width: 100%;
+            justify-content: center;
+            min-height: 44px;
+          }
+        }
+      }
+    }
+
     .content_section {
       .section_content_wrap {
         display: flex;
@@ -640,6 +663,8 @@ label:has(input:focus-visible) .radio {
 .mobile_actions_wrap {
   position: fixed;
   bottom: -100%;
+  left: 0;
+  right: 0;
   width: 100%;
   background-color: var(--color-surfaces);
   flex-direction: column;
