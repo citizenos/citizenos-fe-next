@@ -20,8 +20,17 @@ import { MarkdownDirective } from '../../../../../shared/directives/markdown.dir
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { AnonymousDialogComponent } from '../anonymous-dialog/anonymous-dialog.component';
 import { CloseWithoutSavingDialogComponent } from '../close-without-saving-dialog/close-without-saving-dialog.component';
+
+export interface EditIdeaDialogData {
+  idea: Idea;
+  topic?: Topic;
+  ideation?: Ideation;
+  topicId?: string;
+  topicCountry?: string;
+}
 
 const AUTOSAVE_INTERVAL = 15000;
 const AUTOSAVE_HIDE_DELAY = 2000;
@@ -65,9 +74,22 @@ const municipalities: { name: string }[] = [
   styleUrls: ['./edit-idea.component.scss'],
 })
 export class EditIdeaComponent implements OnInit, OnDestroy {
-  topic = input.required<Topic>();
-  ideation = input.required<Ideation>();
-  idea = input.required<Idea>();
+  private dialogData = inject<EditIdeaDialogData>(DIALOG_DATA, { optional: true });
+  private dialogRef = inject(DialogRef, { optional: true });
+
+  topic = input<Topic>(this.dialogData?.topic || ({
+    id: this.dialogData?.topicId || '',
+    country: this.dialogData?.topicCountry || null,
+  } as Topic));
+
+  ideation = input<Ideation>(this.dialogData?.ideation || ({
+    id: this.dialogData?.idea?.ideationId || '',
+    allowAnonymous: false,
+    demographicsConfig: null,
+    template: '',
+  } as Ideation));
+
+  idea = input<Idea>(this.dialogData?.idea as Idea);
 
   ideaUpdated = output<Idea>();
   closed = output<void>();
@@ -273,6 +295,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       ideaId: this.idea().id,
     }).pipe(take(1)).subscribe(() => {
       this.closed.emit();
+      this.dialogRef?.close();
     });
   }
 
@@ -284,11 +307,13 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
           this.saveIdea(IdeaStatus.draft);
           this.autosaveSubscription?.unsubscribe();
           this.closed.emit();
+          this.dialogRef?.close();
         }
       });
     } else {
       this.autosaveSubscription?.unsubscribe();
       this.closed.emit();
+      this.dialogRef?.close();
     }
   }
 
@@ -380,6 +405,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
           this.autosaveSubscription?.unsubscribe();
           this.ideaUpdated.emit(idea);
           this.doSaveAttachments(idea.id);
+          this.dialogRef?.close(idea);
         }
       },
       error: (err: { errors?: Record<string, string> }) => {

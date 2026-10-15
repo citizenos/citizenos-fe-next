@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { runInInjectionContext, EnvironmentInjector } from '@angular/core';
+import { runInInjectionContext, EnvironmentInjector, createEnvironmentInjector } from '@angular/core';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -12,7 +12,7 @@ import { NotificationService } from '../../../../../core/services/notification.s
 import { UploadService } from '../../../../../core/services/upload.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { ConfigStore } from '../../../../../core/state/config.store';
-import { DialogService } from '../../../../../shared/dialog/dialog.service';
+import { DialogService, DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { Idea } from '../../../../../core/interfaces/idea';
@@ -231,5 +231,40 @@ describe('EditIdeaComponent', () => {
     const comp = makeComp();
     const letterEvent = { which: 65, keyCode: 65 } as KeyboardEvent; // 'a'
     expect(comp.numberOnly(letterEvent)).toBe(false);
+  });
+
+  it('instantiates correctly via DIALOG_DATA and closes dialogRef on close', () => {
+    const mockDialogRef = { close: vi.fn() };
+    const customInjector = createEnvironmentInjector([
+      { provide: TopicIdeationService, useValue: mockIdeationService },
+      { provide: IdeaAttachmentService, useValue: mockAttachmentService },
+      { provide: NotificationService, useValue: mockNotification },
+      { provide: UploadService, useValue: mockUpload },
+      { provide: UserStore, useValue: mockUserStore },
+      { provide: ConfigStore, useValue: mockConfigStore },
+      { provide: DialogService, useValue: mockDialog },
+      {
+        provide: DIALOG_DATA,
+        useValue: {
+          idea: { ...mockIdea, statement: 'Data statement', description: 'Data description' },
+          topic: mockTopic,
+          ideation: mockIdeation,
+        },
+      },
+      { provide: DialogRef, useValue: mockDialogRef },
+    ], injector);
+
+    const comp = runInInjectionContext(customInjector, () => {
+      const c = new EditIdeaComponent();
+      c.ngOnInit();
+      return c;
+    });
+
+    expect(comp.statement()).toBe('Data statement');
+    expect(comp.description()).toBe('Data description');
+    expect(comp.topic().id).toBe('t1');
+
+    comp.close();
+    expect(mockDialogRef.close).toHaveBeenCalled();
   });
 });

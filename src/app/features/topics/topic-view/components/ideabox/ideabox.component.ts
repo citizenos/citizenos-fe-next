@@ -175,12 +175,18 @@ export class IdeaboxComponent {
   }
 
   editIdea() {
-    this.dialogService.open(EditIdeaComponent, {
+    const dialogRef = this.dialogService.open(EditIdeaComponent, {
       data: {
         idea: this.idea(),
         topicId: this.topic().id,
+        topic: this.topic(),
         ideation: this.ideation(),
         topicCountry: this.topic().country
+      }
+    });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((updated: unknown) => {
+      if (updated) {
+        this.ideaUpdated.emit(updated as Idea);
       }
     });
   }
