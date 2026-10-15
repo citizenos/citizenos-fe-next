@@ -7,6 +7,7 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
+import { NotificationService } from '../../../../../core/services/notification.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
@@ -61,6 +62,7 @@ export class IdeaDialogComponent implements OnInit {
   private translate = inject(TranslateService);
   private router = inject(Router);
   private location = inject(Location);
+  private notificationService = inject(NotificationService);
   userStore = inject(UserStore);
 
   idea = signal<Idea>(this.data.idea);
@@ -295,6 +297,14 @@ export class IdeaDialogComponent implements OnInit {
         ideationId: this.ideation().id
       }
     });
+  }
+
+  copyIdeaLink() {
+    const url = window.location.origin + this.router.serializeUrl(
+      this.router.createUrlTree(['/', this.translate.currentLang, 'topics', this.topic().id, 'ideation', this.ideation().id, 'ideas', this.idea().id])
+    );
+    navigator.clipboard?.writeText(url);
+    this.notificationService.show('info', 'COMPONENTS.ARGUMENT.MSG_LINK_COPIED');
   }
 
   addToFolder() {

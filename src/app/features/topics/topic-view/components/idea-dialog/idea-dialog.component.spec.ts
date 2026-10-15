@@ -68,6 +68,9 @@ const dialogServiceMock = { open: vi.fn().mockReturnValue({ afterClosed: () => o
 
 const unauthUserStore = { isAuthenticated: () => false, user: () => null };
 const authUserStore = { isAuthenticated: () => true, user: () => ({ id: 'user-1', name: 'Alice' }) };
+import { NotificationService } from '../../../../../core/services/notification.service';
+
+const notificationServiceMock = { show: vi.fn() };
 
 function createFixture(
   overrides: { idea?: Partial<Idea>; userStore?: object; showReplies?: boolean } = {}
@@ -82,6 +85,7 @@ function createFixture(
       { provide: TopicService, useValue: topicServiceMock },
       { provide: IdeaAttachmentService, useValue: attachmentServiceMock },
       { provide: DialogService, useValue: dialogServiceMock },
+      { provide: NotificationService, useValue: notificationServiceMock },
       { provide: UserStore, useValue: overrides.userStore ?? unauthUserStore },
       provideRouter([{ path: '**', component: EmptyComponent }]),
     ],
@@ -316,5 +320,17 @@ describe('IdeaDialogComponent', () => {
     vi.clearAllMocks();
     fixture.componentInstance.onReplyAdded();
     expect(ideationServiceMock.getIdeaComments).toHaveBeenCalled();
+  });
+
+  it('copyIdeaLink writes url to clipboard and shows notification', () => {
+    const fixture = createFixture();
+    const writeTextSpy = vi.fn();
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText: writeTextSpy },
+      configurable: true,
+    });
+    fixture.componentInstance.copyIdeaLink();
+    expect(writeTextSpy).toHaveBeenCalled();
+    expect(notificationServiceMock.show).toHaveBeenCalledWith('info', 'COMPONENTS.ARGUMENT.MSG_LINK_COPIED');
   });
 });

@@ -40,3 +40,21 @@ form {
     fill: tokens.$color-error;
   }
 }
+
+textarea.gray_borders {
+  width: 100%;
+  border-radius: tokens.$border-radius-m;
+  border: 1px solid tokens.$color-border;
+  background-color: tokens.$color-bg-surface;
+  padding: 12px;
+  font-family: inherit;
+  font-size: tokens.$font-size-sm;
+  color: tokens.$color-text-main;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: var(--color-primary, #{tokens.$color-primary});
+  }
+}

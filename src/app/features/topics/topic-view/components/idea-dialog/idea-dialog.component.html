@@ -106,15 +106,15 @@
                 <cos-tooltip [noIcon]="true"
                   [title]="(idea().favourite ? 'COMPONENTS.IDEABOX.TOOLTIP_SAVED_TO_FAVOURITE' : 'COMPONENTS.IDEABOX.TOOLTIP_FAVOURITE') | translate"
                   pos="top">
-                  <button type="button" trigger class="btn_small_plain" (click)="toggleFavourite()">
+                  <button type="button" trigger class="btn_small_plain btn_favourite" (click)="toggleFavourite()" [attr.aria-label]="(idea().favourite ? 'COMPONENTS.IDEABOX.OPTION_UNFAVOURITE' : 'COMPONENTS.IDEABOX.OPTION_FAVOURITE') | translate">
                     @if (!idea().favourite) {
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path
-                          d="M8.33541 12.3292L8 12.1615L7.66459 12.3292L3.1118 14.6056C2.94558 14.6887 2.75 14.5678 2.75 14.382V2C2.75 1.86193 2.86193 1.75 3 1.75H13C13.1381 1.75 13.25 1.86193 13.25 2V14.382C13.25 14.5678 13.0544 14.6887 12.8882 14.6056L8.33541 12.3292Z"
-                          stroke="currentColor" stroke-width="1.5" />
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 3L14.645 8.35942L20.5595 9.21885L16.2798 13.3906L17.2901 19.2812L12 16.5L6.70993 19.2812L7.72025 13.3906L3.44049 9.21885L9.35497 8.35942L12 3Z" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                     } @else {
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5812 15.1863L12 14.7711L11.4188 15.1863L6 19.0568V6C6 5.44772 6.44772 5 7 5H17C17.5523 5 18 5.44772 18 6V19.0568L12.5812 15.1863Z" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 3L14.645 8.35942L20.5595 9.21885L16.2798 13.3906L17.2901 19.2812L12 16.5L6.70993 19.2812L7.72025 13.3906L3.44049 9.21885L9.35497 8.35942L12 3Z" fill="#2C3B47" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
                     }
                   </button>
                 </cos-tooltip>
@@ -130,11 +130,9 @@
                     @if (userStore.isAuthenticated()) {
                       <button type="button" class="option" (click)="toggleFavourite()">
                         <div class="icon_wrap">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path
-                          d="M8.33541 12.3292L8 12.1615L7.66459 12.3292L3.1118 14.6056C2.94558 14.6887 2.75 14.5678 2.75 14.382V2C2.75 1.86193 2.86193 1.75 3 1.75H13C13.1381 1.75 13.25 1.86193 13.25 2V14.382C13.25 14.5678 13.0544 14.6887 12.8882 14.6056L8.33541 12.3292Z"
-                          fill="#2C3B47" stroke="#2C3B47" stroke-width="1.5" />
-                      </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 3L14.645 8.35942L20.5595 9.21885L16.2798 13.3906L17.2901 19.2812L12 16.5L6.70993 19.2812L7.72025 13.3906L3.44049 9.21885L9.35497 8.35942L12 3Z" [attr.fill]="idea().favourite ? '#2C3B47' : 'none'" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
                         </div>
                         <span>{{ (idea().favourite ? 'COMPONENTS.IDEABOX.OPTION_UNFAVOURITE' : 'COMPONENTS.IDEABOX.OPTION_FAVOURITE') | translate }}</span>
                       </button>
@@ -150,6 +148,13 @@
                         <span translate="COMPONENTS.IDEABOX.OPTION_ADD_TO_FOLDER"></span>
                       </button>
                     }
+                    <div class="line_separator"></div>
+                    <button type="button" class="option" (click)="copyIdeaLink()">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.99965 11.8837L5.30885 9.8302C4.95457 10.1889 4.50411 10.4327 4.01425 10.5306C3.52439 10.6286 3.01706 10.5764 2.55623 10.3807C2.0954 10.1849 1.70169 9.85438 1.42474 9.43072C1.14779 9.00705 1 8.50922 1 8C1 7.49078 1.14779 6.99295 1.42474 6.56929C1.70169 6.14562 2.0954 5.81508 2.55623 5.61934C3.01706 5.4236 3.52439 5.37142 4.01425 5.46938C4.50411 5.56734 4.95457 5.81106 5.30885 6.1698L8.99965 4.11635C8.87306 3.51051 8.96449 2.87843 9.2572 2.3357C9.54992 1.79297 10.0244 1.37586 10.5938 1.16065C11.1632 0.945429 11.7895 0.946489 12.3582 1.16363C12.9269 1.38077 13.4 1.79949 13.6909 2.34321C13.9819 2.88692 14.0712 3.51931 13.9427 4.12472C13.8141 4.73012 13.4763 5.2681 12.9908 5.64027C12.5054 6.01243 11.9049 6.19391 11.2991 6.15153C10.6933 6.10914 10.1226 5.84572 9.69158 5.40943L6.00078 7.46288C6.07441 7.81702 6.07441 8.18298 6.00078 8.53712L9.69158 10.5906C10.1226 10.1543 10.6933 9.89086 11.2991 9.84848C11.9049 9.80609 12.5054 9.98757 12.9908 10.3597C13.4763 10.7319 13.8141 11.2699 13.9427 11.8753C14.0712 12.4807 13.9819 13.1131 13.6909 13.6568C13.4 14.2005 12.9269 14.6192 12.3582 14.8364C11.7895 15.0535 11.1632 15.0546 10.5938 14.8394C10.0244 14.6241 9.54992 14.207 9.2572 13.6643C8.96449 13.1216 8.87306 12.4895 8.99965 11.8837Z" fill="#2C3B47" />
+                      </svg>
+                      <span>{{ 'LNK_DIRECT_LINK' | translate }}</span>
+                    </button>
                     @if (canEditIdea()) {
                       <div class="line_separator"></div>
                       <button type="button" class="option" (click)="editIdea()">

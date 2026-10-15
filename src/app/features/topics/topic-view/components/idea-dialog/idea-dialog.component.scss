@@ -445,8 +445,11 @@ app-edit-idea {
       }
     }
     .vertical_line_separator {
-      background-color: figma.$color-text-main;
-      margin: figma.$spacing-xs 0;
+      width: 1px;
+      height: 16px;
+      background-color: #CBD5E1;
+      margin: 0 4px;
+      flex-shrink: 0;
     }
 
     .btn_small_plain {
@@ -455,6 +458,9 @@ app-edit-idea {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
 
       svg {
         width: 16px;
@@ -498,15 +504,22 @@ app-edit-idea {
 
   .statement {
     color: figma.$color-text-main;
-    font-size: figma.$font-size-base;
+    font-size: figma.$font-size-lg;
     font-style: normal;
     font-weight: 600;
-    line-height: figma.$spacing-l;
+    line-height: 24px;
   }
 
   ::ng-deep .description {
-    P {
+    font-size: figma.$font-size-sm;
+    line-height: 1.6;
+    color: #475569;
+    p, P {
       white-space: pre-line;
+      margin-bottom: 12px;
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 }

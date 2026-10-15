@@ -58,7 +58,7 @@ import { ButtonComponent } from '../../../../../shared';
           <div class="created_at">{{ argument().createdAt | date : 'y-MM-dd HH:mm' }}</div>
           
           <div class="dropdown button_dropdown mobile_hidden" cosDropdown>
-            <cos-button variant="ghost" size="sm" [iconMode]="true" class="btn_argument_actions" [aria-label]="'COMPONENTS.ARGUMENT.LBL_ARGUMENT_ACTIONS' | translate">
+            <cos-button variant="plain" size="sm" [iconMode]="true" class="btn_argument_actions" [aria-label]="'COMPONENTS.ARGUMENT.LBL_ARGUMENT_ACTIONS' | translate">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M9.33325 4.00033C9.33325 3.26699 8.73325 2.66699 7.99992 2.66699C7.26659 2.66699 6.66659 3.26699 6.66659 4.00033C6.66659 4.73366 7.26659 5.33366 7.99992 5.33366C8.73325 5.33366 9.33325 4.73366 9.33325 4.00033ZM9.33325 12.0003C9.33325 11.267 8.73325 10.667 7.99992 10.667C7.26659 10.667 6.66659 11.267 6.66659 12.0003C6.66659 12.7337 7.26659 13.3337 7.99992 13.3337C8.73325 13.3337 9.33325 12.7337 9.33325 12.0003ZM7.99992 6.66699C8.73325 6.66699 9.33325 7.26699 9.33325 8.00033C9.33325 8.73366 8.73325 9.33366 7.99992 9.33366C7.26659 9.33366 6.66659 8.73366 6.66659 8.00033C6.66659 7.26699 7.26659 6.66699 7.99992 6.66699Z" fill="#2C3B47" />
               </svg>
@@ -118,7 +118,7 @@ import { ButtonComponent } from '../../../../../shared';
       <div class="argument_footer">
         <div class="footer_left">
           <div class="button_group">
-            <cos-button variant="ghost" size="sm" [iconMode]="true" class="btn_vote_argument" (click)="doArgumentVote(1)" [class.selected]="argument().votes?.up?.selected" [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_UP' | translate">
+            <cos-button variant="plain" size="sm" [iconMode]="true" class="btn_vote_argument" (click)="doArgumentVote(1)" [class.selected]="argument().votes?.up?.selected" [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_UP' | translate">
               @if (!argument().votes?.up?.selected) {
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M13.9746 4.99965C14.2413 4.99965 14.4748 5.10135 14.6749 5.30474C14.8749 5.50813 15 5.74542 15 6.0166L15 7.5C15.0275 8.00035 15 8 15 8C15 8 14.9725 8.1409 14.9391 8.21999L12.8383 13.1352C12.7382 13.3725 12.5743 13.5759 12.3464 13.7454C12.1185 13.9149 11.8768 13.9997 11.6211 13.9997L3.99432 14V4.99965L7.96957 1.28779C8.12519 1.1296 8.30582 1.03638 8.51147 1.00813C8.71711 0.979879 8.91441 1.02225 9.10338 1.13525C9.29235 1.24824 9.43407 1.40361 9.52856 1.60135C9.62304 1.79909 9.64805 2.0053 9.60359 2.21999L9.2202 5L13.9746 4.99965ZM4.99235 5.5V12.9831L11.8379 12.9827L14 8V5.99965H7.98636L8.60317 2.1183L4.99235 5.5ZM2.00041 13.9997C1.72252 13.9997 1.48631 13.9008 1.29179 13.703C1.09726 13.5053 0.999997 13.2652 0.999997 12.9827L1.00021 6C1.00021 5.71751 1.09726 5.50248 1.29179 5.30474C1.48631 5.107 1.72035 5 1.99825 5L3.99432 4.99965V5.99965L2.00041 6.0166V12.9827L3.99432 12.9831V14L2.00041 13.9997Z" fill="#2C3B47" />
@@ -135,7 +135,7 @@ import { ButtonComponent } from '../../../../../shared';
             </button>
           </div>
           <div class="button_group">
-            <cos-button variant="ghost" size="sm" [iconMode]="true" class="btn_vote_argument" (click)="doArgumentVote(-1)" [class.selected]="argument().votes?.down?.selected" [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_DOWN' | translate">
+            <cos-button variant="plain" size="sm" [iconMode]="true" class="btn_vote_argument" (click)="doArgumentVote(-1)" [class.selected]="argument().votes?.down?.selected" [aria-label]="'COMPONENTS.ARGUMENT.LBL_VOTE_DOWN' | translate">
               @if (!argument().votes?.down?.selected) {
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M2.02543 11.0003C1.75865 11.0003 1.52522 10.8987 1.32514 10.6953C1.12505 10.4919 1 10.2546 1 9.9834L0.999961 8.5C0.999961 8 1 8 1 8C1 8 0.999968 7.85876 1.03332 7.77966L3.16173 2.86475C3.26177 2.62747 3.42572 2.42408 3.6536 2.25458C3.88147 2.08509 4.12324 2.00035 4.3789 2.00035L12.0057 2L12.0057 11.0003L8.03042 14.7122C7.8748 14.8704 7.69417 14.9636 7.48853 14.9919C7.28289 15.0201 7.08559 14.9777 6.89662 14.8648C6.70765 14.7518 6.56592 14.5964 6.47144 14.3987C6.37696 14.2009 6.35195 13.9947 6.39641 13.78L6.77979 11L2.02543 11.0003ZM11.0076 10.5L11.0076 3.01695L4.16214 3.0173L2.02533 8L2.02543 10.0003L8.01364 10.0003L7.39683 13.8817L11.0076 10.5ZM13.9996 2.00035C14.2775 2.00035 14.5137 2.09922 14.7082 2.29696C14.9027 2.4947 15 2.73481 15 3.0173L14.9998 10C14.9998 10.2825 14.9027 10.4975 14.7082 10.6953C14.5137 10.893 14.2796 11 14.0018 11L12.0057 11.0003V10.0003L13.9996 9.9834L13.9996 3.0173L12.0057 3.01695V2L13.9996 2.00035Z" fill="#2C3B47" />
@@ -214,13 +214,13 @@ import { ButtonComponent } from '../../../../../shared';
 }
 
 .idea_reply {
-  padding: 16px 16px 16px 0;
+  padding: 16px 0;
   width: 100%;
+  border-bottom: 1px solid #E5ECF2;
 
   .argument_content_wrap {
-    background-color: #F9FAFB;
-    border-radius: 8px;
-    padding: 16px;
+    background-color: transparent;
+    padding: 0;
   }
 }
 
@@ -228,25 +228,37 @@ import { ButtonComponent } from '../../../../../shared';
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   cursor: pointer;
 }
 
 .author_wrap {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+}
+
+.image_wrap {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .profile_image {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .author_name {
+  font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: #2C3B47;
 }
 
 .header_right {
@@ -257,12 +269,13 @@ import { ButtonComponent } from '../../../../../shared';
 
 .created_at {
   font-size: 12px;
-  color: #9CA3AF;
+  color: #64748B;
 }
 
 .argument_content {
-  margin-bottom: 16px;
-  color: #4B5563;
+  margin-bottom: 10px;
+  color: #334155;
+  font-size: 13px;
   line-height: 1.5;
 }
 
@@ -270,14 +283,13 @@ import { ButtonComponent } from '../../../../../shared';
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 1px solid #E5E7EB;
+  margin-top: 8px;
 }
 
 .footer_left {
   display: flex;
   gap: 16px;
+  align-items: center;
 }
 
 .button_group {
@@ -290,17 +302,21 @@ import { ButtonComponent } from '../../../../../shared';
   background: none;
   border: none;
   cursor: pointer;
-  color: #9CA3AF;
+  color: #64748B;
   display: flex;
   align-items: center;
   padding: 4px;
 
+  svg path {
+    fill: currentColor;
+  }
+
   &:hover {
-    color: var(--color-link, #1168a8);
+    color: #2C3B47;
   }
 
   &.selected {
-    color: var(--color-link, #1168a8);
+    color: #2C3B47;
   }
 }
 
@@ -308,8 +324,9 @@ import { ButtonComponent } from '../../../../../shared';
   background: none;
   border: none;
   cursor: pointer;
-  color: #6B7280;
-  font-size: 14px;
+  color: #2C3B47;
+  font-size: 13px;
+  padding: 0;
 
   &.bold {
     font-weight: 700;
@@ -319,6 +336,7 @@ import { ButtonComponent } from '../../../../../shared';
 .footer_right {
   display: flex;
   gap: 12px;
+  align-items: center;
 }
 
 
