@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Location } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { IdeaDialogComponent } from './idea-dialog.component';
@@ -208,24 +209,52 @@ describe('IdeaDialogComponent', () => {
     expect(fixture.componentInstance.hasNext()).toBe(true);
   });
 
-  it('prevIdea decrements currentIndex and loads new idea data', () => {
+  it('prevIdea decrements currentIndex and loads new idea data using location.replaceState', () => {
     ideationServiceMock.getIdeas.mockReturnValue(of({
       rows: [{ ...mockIdea, id: 'idea-0' }, mockIdea]
     }));
     const fixture = createFixture();
+    const location = TestBed.inject(Location);
+    const replaceStateSpy = vi.spyOn(location, 'replaceState');
     fixture.detectChanges();
     fixture.componentInstance.prevIdea();
     expect(fixture.componentInstance.idea().id).toBe('idea-0');
+    expect(replaceStateSpy).toHaveBeenCalledWith(expect.stringContaining('idea-0'));
   });
 
-  it('nextIdea increments currentIndex and loads new idea data', () => {
+  it('nextIdea increments currentIndex and loads new idea data using location.replaceState', () => {
     ideationServiceMock.getIdeas.mockReturnValue(of({
       rows: [mockIdea, { ...mockIdea, id: 'idea-2' }]
     }));
     const fixture = createFixture();
+    const location = TestBed.inject(Location);
+    const replaceStateSpy = vi.spyOn(location, 'replaceState');
     fixture.detectChanges();
     fixture.componentInstance.nextIdea();
     expect(fixture.componentInstance.idea().id).toBe('idea-2');
+    expect(replaceStateSpy).toHaveBeenCalledWith(expect.stringContaining('idea-2'));
+  });
+
+  it('filters out draft and deleted ideas from ideas list', () => {
+    const draftIdea = { ...mockIdea, id: 'draft-1', status: IdeaStatus.draft };
+    const deletedIdea = { ...mockIdea, id: 'deleted-1', deletedAt: '2024-01-02' };
+    const validIdea = { ...mockIdea, id: 'valid-1' };
+    ideationServiceMock.getIdeas.mockReturnValue(of({
+      rows: [mockIdea, draftIdea, deletedIdea, validIdea]
+    }));
+    const fixture = createFixture();
+    fixture.detectChanges();
+    const ids = fixture.componentInstance.ideas().map(i => i.id);
+    expect(ids).toContain('idea-1');
+    expect(ids).toContain('valid-1');
+    expect(ids).not.toContain('draft-1');
+    expect(ids).not.toContain('deleted-1');
+  });
+
+  it('closes dialog immediately if opened with draft idea', () => {
+    const draftIdea = { ...mockIdea, id: 'draft-1', status: IdeaStatus.draft };
+    createFixture({ idea: draftIdea });
+    expect(dialogRefMock.close).toHaveBeenCalled();
   });
 
   it('toggleFavourite calls removeIdeaFromFavourites when idea is already favourite', () => {

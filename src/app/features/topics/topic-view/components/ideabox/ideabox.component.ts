@@ -192,7 +192,12 @@ export class IdeaboxComponent {
   }
 
   goToView(showReplies = false) {
-    this.router.navigate(['/', this.translate.currentLang, 'topics', this.topic().id, 'ideation', this.ideation().id, 'ideas', this.idea().id], {
+    if (this.isDraft()) {
+      this.editIdea();
+      return;
+    }
+    const lang = this.translate.currentLang || 'en';
+    this.router.navigate(['/', lang, 'topics', this.topic().id, 'ideation', this.ideation().id, 'ideas', this.idea().id], {
       queryParams: showReplies ? { reply: true } : undefined
     });
   }

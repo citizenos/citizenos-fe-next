@@ -1,5 +1,5 @@
 import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { DatePipe, AsyncPipe } from '@angular/common';
+import { DatePipe, AsyncPipe, Location } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule, Router } from '@angular/router';
 import { take, Observable, map, of, shareReplay, catchError } from 'rxjs';
@@ -60,6 +60,7 @@ export class IdeaDialogComponent implements OnInit {
   private attachmentService = inject(IdeaAttachmentService);
   private translate = inject(TranslateService);
   private router = inject(Router);
+  private location = inject(Location);
   userStore = inject(UserStore);
 
   idea = signal<Idea>(this.data.idea);
@@ -84,6 +85,10 @@ export class IdeaDialogComponent implements OnInit {
   hasNext = computed(() => this.ideas().length > 1);
 
   constructor() {
+    if (this.data.idea?.status === IdeaStatus.draft) {
+      this.dialogRef.close();
+      return;
+    }
     this.loadIdeaData(this.data.idea);
     this.loadIdeationIdeas();
   }
@@ -158,9 +163,9 @@ export class IdeaDialogComponent implements OnInit {
       take(1),
       catchError(() => of({ rows: [], count: 0 }))
     ).subscribe(res => {
-      const rows = [...res.rows];
+      const rows = (res.rows || []).filter(i => i.status !== IdeaStatus.draft && !i.deletedAt);
       const curIdea = this.idea();
-      if (curIdea && !rows.find(i => i.id === curIdea.id)) {
+      if (curIdea && curIdea.status !== IdeaStatus.draft && !rows.find(i => i.id === curIdea.id)) {
         rows.unshift(curIdea);
       }
       this.ideas.set(rows);
@@ -359,9 +364,13 @@ export class IdeaDialogComponent implements OnInit {
     if (index >= ideas.length) index = 0;
 
     const newIdea = ideas[index];
+    if (!newIdea || newIdea.status === IdeaStatus.draft) return;
     this.loadIdeaData(newIdea);
     this.currentIndex.set(index);
-    this.router.navigate(['/', this.translate.currentLang, 'topics', this.topic().id, 'ideation', this.ideation().id, 'ideas', newIdea.id]);
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/', this.translate.currentLang, 'topics', this.topic().id, 'ideation', this.ideation().id, 'ideas', newIdea.id])
+    );
+    this.location.replaceState(url);
   }
 
   prevIdea() { this.loadIdea(-1); }

@@ -1,3 +1,4 @@
+import { provideRouter, Router } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { runInInjectionContext, EnvironmentInjector } from '@angular/core';
@@ -7,16 +8,16 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { of } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Topic } from '../../../../../core/interfaces/topic';
-import { Idea } from '../../../../../core/interfaces/idea';
+import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 
 const mockTopic = { id: 't1', status: 'ideation' } as unknown as Topic;
 const mockIdeation = { id: 'i1' } as unknown as Ideation;
 const mockIdea = {
   id: 'idea1', ideationId: 'i1', statement: 'Test idea', description: 'Desc',
-  status: 'published', createdAt: '2024-01-01', updatedAt: '2024-01-01',
+  status: IdeaStatus.published, createdAt: '2024-01-01', updatedAt: '2024-01-01',
   authorId: 'u1', imageUrl: null, demographics: null,
   deletedAt: null, deletedReasonText: null, deletedReasonType: null,
   author: { id: 'u1', name: 'Alice', company: null, email: null, imageUrl: null },
@@ -53,16 +54,18 @@ describe('IdeaboxComponent', () => {
         { provide: TopicService, useValue: mockTopicService },
         { provide: UserStore, useValue: mockUserStore },
         { provide: DialogService, useValue: mockDialogService },
+        provideRouter([]),
       ],
     });
     injector = TestBed.inject(EnvironmentInjector);
+    Object.defineProperty(TestBed.inject(TranslateService), 'currentLang', { value: 'en' });
   });
 
-  function makeComp() {
+  function makeComp(ideaOverride?: Partial<Idea>) {
     return runInInjectionContext(injector, () => {
       const comp = new IdeaboxComponent();
       TestBed.runInInjectionContext(() => {
-        (comp as unknown as { idea: unknown }).idea = vi.fn().mockReturnValue(mockIdea);
+        (comp as unknown as { idea: unknown }).idea = vi.fn().mockReturnValue(ideaOverride ? { ...mockIdea, ...ideaOverride } : mockIdea);
         (comp as unknown as { topic: unknown }).topic = vi.fn().mockReturnValue(mockTopic);
         (comp as unknown as { ideation: unknown }).ideation = vi.fn().mockReturnValue(mockIdeation);
       });
@@ -74,9 +77,30 @@ describe('IdeaboxComponent', () => {
     expect(makeComp()).toBeTruthy();
   });
 
-  it('isDraft returns false for published idea', () => {
+  it('isDraft returns false for published idea and true for draft idea', () => {
+    const compPublished = makeComp();
+    expect(compPublished.isDraft()).toBe(false);
+
+    const compDraft = makeComp({ status: IdeaStatus.draft });
+    expect(compDraft.isDraft()).toBe(true);
+  });
+
+  it('goToView calls editIdea when idea is draft', () => {
+    const comp = makeComp({ status: IdeaStatus.draft });
+    const editIdeaSpy = vi.spyOn(comp, 'editIdea');
+    comp.goToView();
+    expect(editIdeaSpy).toHaveBeenCalled();
+  });
+
+  it('goToView navigates to idea route when idea is published', () => {
     const comp = makeComp();
-    expect(comp.isDraft()).toBe(false);
+    const router = TestBed.inject(Router);
+    const navSpy = vi.spyOn(router, 'navigate');
+    comp.goToView();
+    expect(navSpy).toHaveBeenCalledWith(
+      expect.arrayContaining(['topics', 't1', 'ideation', 'i1', 'ideas', 'idea1']),
+      expect.anything()
+    );
   });
 
   it('canVote returns true when topic status is ideation', () => {

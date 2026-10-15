@@ -16,6 +16,8 @@ import { UserStore } from '../../../core/state/user.store';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 import { DialogRef } from '../../../shared/dialog/dialog-ref';
 import { IdeaDialogComponent } from './components/idea-dialog/idea-dialog.component';
+import { EditIdeaComponent } from './components/edit-idea/edit-idea.component';
+import { IdeaStatus } from '../../../core/interfaces/idea';
 import { UiStateService } from '../../../core/services/ui-state.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
@@ -290,11 +292,13 @@ export class TopicViewComponent implements OnInit {
   }
 
   private ideaDialogRef?: DialogRef<IdeaDialogComponent>;
+  private isOpeningIdeaDialog = false;
 
   private openIdeaDialog(topicId: string, ideationId: string, ideaId: string, showReplies = false) {
-    if (this.ideaDialogRef) {
+    if (this.ideaDialogRef || this.isOpeningIdeaDialog) {
       return;
     }
+    this.isOpeningIdeaDialog = true;
 
     this.topicIdeationService.get({ topicId, ideationId }).pipe(
       take(1),
@@ -306,25 +310,50 @@ export class TopicViewComponent implements OnInit {
           map(idea => ({ ideation, idea }))
         );
       })
-    ).subscribe(({ ideation, idea }) => {
-      const currentTopic = this.topic();
-      if (!currentTopic || !idea || !ideation) return;
+    ).subscribe({
+      next: ({ ideation, idea }) => {
+        this.isOpeningIdeaDialog = false;
+        const currentTopic = this.topic();
+        if (!currentTopic || !idea || !ideation) return;
 
-      this.ideaDialogRef = this.dialogService.open(IdeaDialogComponent, {
-        data: {
-          idea,
-          topic: currentTopic,
-          ideation,
-          showReplies
+        if (idea.status === IdeaStatus.draft) {
+          const user = this.userStore.user();
+          if (idea.author?.id === user?.id) {
+            this.dialogService.open(EditIdeaComponent, {
+              data: {
+                idea,
+                topicId: currentTopic.id,
+                topic: currentTopic,
+                ideation,
+                topicCountry: currentTopic.country
+              }
+            });
+          }
+          if (isPlatformBrowser(this.platformId) && (this.router.url.includes(`/ideas/`) || window.location.pathname.includes('/ideas/'))) {
+            this.router.navigate(['/', this.translate.currentLang, 'topics', topicId], { fragment: 'ideation', replaceUrl: true });
+          }
+          return;
         }
-      });
 
-      this.ideaDialogRef.afterClosed().pipe(take(1)).subscribe(() => {
-        this.ideaDialogRef = undefined;
-        if (this.router.url.includes(`/ideas/${ideaId}`)) {
-          this.router.navigate(['/', this.translate.currentLang, 'topics', topicId], { fragment: 'ideation' });
-        }
-      });
+        this.ideaDialogRef = this.dialogService.open(IdeaDialogComponent, {
+          data: {
+            idea,
+            topic: currentTopic,
+            ideation,
+            showReplies
+          }
+        });
+
+        this.ideaDialogRef.afterClosed().pipe(take(1)).subscribe(() => {
+          this.ideaDialogRef = undefined;
+          if (this.router.url.includes(`/ideas/`) || (isPlatformBrowser(this.platformId) && window.location.pathname.includes('/ideas/'))) {
+            this.router.navigate(['/', this.translate.currentLang, 'topics', topicId], { fragment: 'ideation' });
+          }
+        });
+      },
+      error: () => {
+        this.isOpeningIdeaDialog = false;
+      }
     });
   }
 

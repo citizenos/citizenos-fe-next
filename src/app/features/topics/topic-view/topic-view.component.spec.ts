@@ -11,7 +11,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TopicViewComponent } from './topic-view.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideRouter, ActivatedRoute } from '@angular/router';
-import { of, BehaviorSubject } from 'rxjs';
+import { of, BehaviorSubject, Subject } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { NO_ERRORS_SCHEMA, Component, Input, output } from '@angular/core';
@@ -22,6 +22,11 @@ import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { TopicEventService } from '../../../core/services/topic-event.service';
 import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
 import { Topic } from '../../../core/interfaces/topic';
+import { Idea, IdeaStatus } from '../../../core/interfaces/idea';
+import { Ideation } from '../../../core/interfaces/ideation';
+import { DialogService } from '../../../shared/dialog/dialog.service';
+import { DialogRef } from '../../../shared/dialog/dialog-ref';
+import { IdeaDialogComponent } from './components/idea-dialog/idea-dialog.component';
 
 
 @Component({ selector: 'cos-icon', standalone: true, template: '' })
@@ -169,7 +174,8 @@ describe('TopicViewComponent', () => {
 
   const mockTopicIdeationService = {
     get: vi.fn().mockReturnValue(of(null)),
-    loadIdeation: vi.fn().mockReturnValue(of(null))
+    loadIdeation: vi.fn().mockReturnValue(of(null)),
+    getIdea: vi.fn().mockReturnValue(of(null))
   };
 
   const mockTopicVoteService = {
@@ -301,5 +307,35 @@ describe('TopicViewComponent', () => {
   it('should update wWidth signal on resize', () => {
     const initial = component.wWidth();
     expect(typeof initial).toBe('number');
+  });
+
+  it('does not open IdeaDialogComponent if idea is a draft', () => {
+    const dialogService = TestBed.inject(DialogService);
+    const openSpy = vi.spyOn(dialogService, 'open');
+    mockTopicIdeationService.get.mockReturnValue(of({ id: 'ideation-1' } as unknown as Ideation));
+    mockTopicIdeationService.getIdea.mockReturnValue(of({ id: 'idea-draft', status: IdeaStatus.draft } as unknown as Idea));
+
+    interface ComponentWithPrivate {
+      openIdeaDialog(topicId: string, ideationId: string, ideaId: string): void;
+    }
+    (component as unknown as ComponentWithPrivate).openIdeaDialog('123', 'ideation-1', 'idea-draft');
+
+    expect(openSpy).not.toHaveBeenCalledWith(IdeaDialogComponent, expect.anything());
+  });
+
+  it('does not open duplicate IdeaDialogComponent if dialog is already opening or open', () => {
+    const dialogService = TestBed.inject(DialogService);
+    const dialogClose$ = new Subject();
+    const openSpy = vi.spyOn(dialogService, 'open').mockReturnValue({ afterClosed: () => dialogClose$ } as unknown as DialogRef<IdeaDialogComponent>);
+    mockTopicIdeationService.get.mockReturnValue(of({ id: 'ideation-1' } as unknown as Ideation));
+    mockTopicIdeationService.getIdea.mockReturnValue(of({ id: 'idea-1', status: IdeaStatus.published } as unknown as Idea));
+
+    interface ComponentWithPrivate {
+      openIdeaDialog(topicId: string, ideationId: string, ideaId: string): void;
+    }
+    (component as unknown as ComponentWithPrivate).openIdeaDialog('123', 'ideation-1', 'idea-1');
+    (component as unknown as ComponentWithPrivate).openIdeaDialog('123', 'ideation-1', 'idea-1');
+
+    expect(openSpy).toHaveBeenCalledTimes(1);
   });
 });
