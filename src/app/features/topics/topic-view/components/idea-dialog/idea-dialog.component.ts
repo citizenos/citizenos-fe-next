@@ -71,7 +71,7 @@ export class IdeaDialogComponent implements OnInit {
   isLoading = signal(false);
   hasError = signal(false);
   showReply = signal(false);
-  showReplies = signal(false);
+  showReplies = signal(this.data.showReplies ?? true);
   showEdit = signal(false);
 
   folders$: Observable<IdeationFolder[]> = of([]);
