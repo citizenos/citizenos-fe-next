@@ -28,13 +28,19 @@ class MockMarkdownDirective {
   cosMarkdownTranslateCharacterStatusKey = input<string | undefined>(undefined);
 }
 
+import { Router } from '@angular/router';
+import { UserStore } from '../../../../../core/state/user.store';
+
 const mockArgumentService = {
   save: vi.fn(),
   setParam: vi.fn(),
+  getArgumentIdWithVersion: vi.fn((id, v) => `${id}_v${v}`),
   ARGUMENT_SUBJECT_MAXLENGTH: 200,
   ARGUMENT_TYPES_MAXLENGTH: { pro: 500, con: 500, poi: 500, reply: 250 },
 };
-const mockNotification = { success: vi.fn(), showRaw: vi.fn() };
+const mockNotification = { success: vi.fn(), showRaw: vi.fn(), error: vi.fn() };
+const mockUserStore = { isAuthenticated: vi.fn(() => true), user: vi.fn(() => ({ id: 'u1' })) };
+const mockRouter = { navigate: vi.fn(), url: '/en/topics/topic-1' };
 
 // ── Class-level tests (no DOM) ─────────────────────────────────────────────
 
@@ -43,13 +49,16 @@ describe('PostArgumentFormComponent (class)', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockArgumentService.save.mockReturnValue(of({}));
+    mockUserStore.isAuthenticated.mockReturnValue(true);
+    mockArgumentService.save.mockReturnValue(of({ id: 'arg-123' }));
 
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [
         { provide: TopicArgumentService, useValue: mockArgumentService },
         { provide: NotificationService, useValue: mockNotification },
+        { provide: UserStore, useValue: mockUserStore },
+        { provide: Router, useValue: mockRouter },
       ],
     });
 
@@ -72,25 +81,56 @@ describe('PostArgumentFormComponent (class)', () => {
     expect(mockArgumentService.setParam).toHaveBeenCalledWith('discussionId', 'disc-1');
   });
 
+  it('openAddArgument sets isOpen to true when authenticated', () => {
+    component.isOpen.set(false);
+    component.openAddArgument();
+    expect(component.isOpen()).toBe(true);
+  });
+
+  it('openAddArgument redirects to login when not authenticated', () => {
+    mockUserStore.isAuthenticated.mockReturnValue(false);
+    component.openAddArgument();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(
+      expect.arrayContaining(['account', 'login']),
+      { queryParams: { redirectSuccess: '/en/topics/topic-1' } }
+    );
+    expect(component.isOpen()).toBe(false);
+  });
+
   it('close() sets isOpen to false', () => {
     component.isOpen.set(true);
     component.close();
     expect(component.isOpen()).toBe(false);
   });
 
-  it('clear() resets subject, text, and errors', () => {
+  it('clear() resets subject, text, errors, and isLoading', () => {
     component.subject.set('hello');
     component.text.set('world');
     component.errors.set('oops');
+    component.isLoading.set(true);
     component.clear();
     expect(component.subject()).toBe('');
     expect(component.text()).toBe('');
     expect(component.errors()).toBeNull();
+    expect(component.isLoading()).toBe(false);
   });
 
   it('argumentMaxLength() returns type-specific limit', () => {
     component.argumentType.set('con');
     expect(component.argumentMaxLength()).toBe(500);
+  });
+
+  it('submit should redirect to login when unauthenticated', () => {
+    mockUserStore.isAuthenticated.mockReturnValue(false);
+    component.subject.set('My subject');
+    component.text.set('My text');
+    component.submit();
+
+    expect(mockRouter.navigate).toHaveBeenCalledWith(
+      expect.arrayContaining(['account', 'login']),
+      { queryParams: { redirectSuccess: '/en/topics/topic-1' } }
+    );
+    expect(mockArgumentService.save).not.toHaveBeenCalled();
   });
 
   it('submit should call save with correct payload', () => {
@@ -108,7 +148,7 @@ describe('PostArgumentFormComponent (class)', () => {
     }));
   });
 
-  it('submit should clear form and emit posted on success', () => {
+  it('submit should clear form, navigate with versioned id, and emit posted on success', () => {
     const postedSpy = vi.spyOn(component.posted, 'emit');
     component.subject.set('Test');
     component.text.set('Body');
@@ -116,7 +156,15 @@ describe('PostArgumentFormComponent (class)', () => {
 
     expect(component.subject()).toBe('');
     expect(component.text()).toBe('');
+    expect(component.isLoading()).toBe(false);
     expect(postedSpy).toHaveBeenCalled();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(
+      expect.arrayContaining(['topics', 'topic-1']),
+      expect.objectContaining({
+        queryParams: { argumentId: 'arg-123_v0' },
+        fragment: 'discussion'
+      })
+    );
   });
 
   it('submit should set isOpen to false on success', () => {
@@ -127,20 +175,31 @@ describe('PostArgumentFormComponent (class)', () => {
     expect(component.isOpen()).toBe(false);
   });
 
-  it('submit should set error on failure', () => {
+  it('submit should set error and call notification on failure', () => {
     mockArgumentService.save.mockReturnValue(throwError(() => ({ message: 'Server error' })));
     component.subject.set('Test');
     component.text.set('Body');
     component.submit();
 
     expect(component.errors()).toBe('Server error');
+    expect(component.isLoading()).toBe(false);
+    expect(mockNotification.showRaw).toHaveBeenCalledWith('error', 'Server error');
   });
 
-  it('submit with empty subject trims to empty string', () => {
+  it('submit with empty subject does not call save and marks subjectTouched', () => {
     component.subject.set('   ');
     component.text.set('Some text');
     component.submit();
-    expect(mockArgumentService.save).toHaveBeenCalledWith(expect.objectContaining({ subject: '' }));
+    expect(component.subjectTouched()).toBe(true);
+    expect(mockArgumentService.save).not.toHaveBeenCalled();
+  });
+
+  it('submit with empty text does not call save and marks textTouched', () => {
+    component.subject.set('Valid subject');
+    component.text.set('   ');
+    component.submit();
+    expect(component.textTouched()).toBe(true);
+    expect(mockArgumentService.save).not.toHaveBeenCalled();
   });
 });
 
@@ -153,13 +212,16 @@ describe('PostArgumentFormComponent (template)', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    mockArgumentService.save.mockReturnValue(of({}));
+    mockUserStore.isAuthenticated.mockReturnValue(true);
+    mockArgumentService.save.mockReturnValue(of({ id: 'arg-123' }));
 
     await TestBed.configureTestingModule({
       imports: [PostArgumentFormComponent, TranslateModule.forRoot()],
       providers: [
         { provide: TopicArgumentService, useValue: mockArgumentService },
         { provide: NotificationService, useValue: mockNotification },
+        { provide: UserStore, useValue: mockUserStore },
+        { provide: Router, useValue: mockRouter },
       ],
     })
     .overrideComponent(PostArgumentFormComponent, {

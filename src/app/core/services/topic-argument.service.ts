@@ -69,10 +69,15 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
 
   override getItems(params: TopicArgumentParams): Observable<{ rows: Argument[]; countTotal: number }> {
     return this.query(params).pipe(
-      map(res => ({
-        rows: res.data?.rows || [],
-        countTotal: res.data?.count?.total ?? 0
-      }))
+      map(res => {
+        if (res.data?.count) {
+          this.count.next(res.data.count);
+        }
+        return {
+          rows: res.data?.rows || [],
+          countTotal: res.data?.count?.total ?? 0
+        };
+      })
     );
   }
 
@@ -196,7 +201,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
     const isPublicPath = !forceAuthorized && (
       path.includes('/comments')
     );
-    const prefix = (this.userStore.isAuthenticated() && !isPublicPath) ? '/api/users/self' : '/api';
+    const prefix = (this.userStore.isAuthenticated() || forceAuthorized) && !isPublicPath ? '/api/users/self' : '/api';
     return `${this.apiUrl}${prefix}${path}`;
   }
 }

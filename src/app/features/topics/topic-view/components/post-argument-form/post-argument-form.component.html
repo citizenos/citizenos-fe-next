@@ -1,12 +1,12 @@
 <div id="create_argument_tablet_btn">
-  <button type="button" class="btn_big_submit icon" (click)="isOpen.set(true)" [aria-label]="'COMPONENTS.POST_ARGUMENT.FOOTER_MENU_BTN_ADD_ARGUMENT' | translate">
+  <button type="button" class="btn_big_submit icon" (click)="openAddArgument()" [aria-label]="'COMPONENTS.POST_ARGUMENT.FOOTER_MENU_BTN_ADD_ARGUMENT' | translate">
     <cos-icon name="edit" [size]="24"></cos-icon>
   </button>
 </div>
 
 <div id="create_argument_footer_menu" [class.open]="!isOpen()" [class.closed]="isOpen()">
   <h2 class="footer_title">{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_MENU_TITLE' | translate }}</h2>
-  <button type="button" class="btn_medium_submit" (click)="isOpen.set(true)">
+  <button type="button" class="btn_medium_submit" (click)="openAddArgument()">
     <span class="btn_text">{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_MENU_BTN_ADD_ARGUMENT' | translate }}</span>
   </button>
 </div>
@@ -22,7 +22,7 @@
       </div>
     </div>
     
-    <form id="argument_form">
+    <form id="argument_form" (ngSubmit)="submit()">
       <div id="type_select_wrap">
         <div class="type_item">{{ 'COMPONENTS.POST_ARGUMENT.FOOTER_FORM_ARGUMENT_TYPE_TITLE' | translate }}</div>
         @for (atype of types; track atype) {
@@ -77,6 +77,15 @@
         </label>
       }
 
+      @if (errors()) {
+        <div class="error_label">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.89438 1.78863C8.52586 1.05158 7.47405 1.05158 7.10553 1.78863L0.723562 14.5526C0.391112 15.2175 0.874608 15.9998 1.61799 15.9998H14.3819C15.1253 15.9998 15.6088 15.2175 15.2763 14.5526L8.89438 1.78863ZM6.99996 6.99977C6.99996 6.44749 7.44767 5.99977 7.99996 5.99977C8.55224 5.99977 8.99996 6.44749 8.99996 6.99977V9.99977C8.99996 10.5521 8.55224 10.9998 7.99996 10.9998C7.44767 10.9998 6.99996 10.5521 6.99996 9.99977V6.99977ZM6.99996 12.9998C6.99996 12.4475 7.44767 11.9998 7.99996 11.9998C8.55224 11.9998 8.99996 12.4475 8.99996 12.9998C8.99996 13.5521 8.55224 13.9998 7.99996 13.9998C7.44767 13.9998 6.99996 13.5521 6.99996 12.9998Z" fill="#EF4025" />
+          </svg>
+          <span class="error_text">{{ errors() }}</span>
+        </div>
+      }
+
     </form>
   </div>
 
@@ -87,7 +96,7 @@
       </button>
     </div>
     <div id="navigate_create">
-      <button type="button" class="btn_medium_submit icon" (click)="submit()" [disabled]="!subject().trim() || !text().trim()">
+      <button type="button" class="btn_medium_submit icon" (click)="submit()" [disabled]="isLoading() || !subject().trim() || !text().trim()">
         <span class="btn_text">{{ 'COMPONENTS.POST_ARGUMENT.BTN_ARGUMENT_POST' | translate }}</span>
       </button>
     </div>

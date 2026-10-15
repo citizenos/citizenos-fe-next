@@ -8,6 +8,7 @@ import { Argument } from '../../../../../core/interfaces/discussion';
 import { Router } from '@angular/router';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
+import { UserStore } from '../../../../../core/state/user.store';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
@@ -30,6 +31,7 @@ export class PostArgumentFormComponent implements OnInit {
   private notification = inject(NotificationService);
   private router = inject(Router);
   private translate = inject(TranslateService);
+  userStore = inject(UserStore);
 
   types = ['pro', 'con', 'poi'];
   argumentType = signal<string>('pro');
@@ -39,6 +41,7 @@ export class PostArgumentFormComponent implements OnInit {
   textTouched = signal(false);
   errors = signal<string | null>(null);
   focusArgumentSubject = signal<boolean>(false);
+  isLoading = signal(false);
 
   ARGUMENT_SUBJECT_MAXLENGTH = this.argumentService.ARGUMENT_SUBJECT_MAXLENGTH;
 
@@ -51,6 +54,17 @@ export class PostArgumentFormComponent implements OnInit {
     return (this.argumentService.ARGUMENT_TYPES_MAXLENGTH as Record<string, number>)[this.argumentType()] || this.argumentService.ARGUMENT_TYPES_MAXLENGTH.pro;
   }
 
+  openAddArgument() {
+    if (!this.userStore.isAuthenticated()) {
+      const lang = this.translate.currentLang || this.translate.defaultLang || 'en';
+      this.router.navigate(['/', lang, 'account', 'login'], {
+        queryParams: { redirectSuccess: this.router.url }
+      });
+      return;
+    }
+    this.isOpen.set(true);
+  }
+
   close() {
     this.isOpen.set(false);
   }
@@ -61,13 +75,35 @@ export class PostArgumentFormComponent implements OnInit {
     this.subjectTouched.set(false);
     this.textTouched.set(false);
     this.errors.set(null);
+    this.isLoading.set(false);
   }
 
   submit() {
+    if (!this.userStore.isAuthenticated()) {
+      const lang = this.translate.currentLang || this.translate.defaultLang || 'en';
+      this.router.navigate(['/', lang, 'account', 'login'], {
+        queryParams: { redirectSuccess: this.router.url }
+      });
+      return;
+    }
+
+    this.subjectTouched.set(true);
+    this.textTouched.set(true);
+
+    const subject = this.subject().trim();
+    const text = this.text().trim();
+
+    if (!subject || !text) {
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.errors.set(null);
+
     const argument = {
       type: this.argumentType(),
-      subject: this.subject().trim(),
-      text: this.text().trim(),
+      subject,
+      text,
       topicId: this.topicId(),
       discussionId: this.discussionId(),
       parentVersion: 0,
@@ -75,20 +111,30 @@ export class PostArgumentFormComponent implements OnInit {
 
     this.argumentService.save(argument as unknown as Parameters<typeof this.argumentService.save>[0]).pipe(take(1)).subscribe({
       next: (res: Argument) => {
+        this.isLoading.set(false);
         this.clear();
         this.isOpen.set(false);
         this.posted.emit();
-        
-        const argId = res.id;
+
+        const argId = res?.id;
         if (argId && typeof argId === 'string' && typeof window !== 'undefined') {
-          this.router.navigate(['/', this.translate.currentLang, 'topics', this.topicId()], {
-            queryParams: { argumentId: argId },
+          const argumentIdWithVersion = this.argumentService.getArgumentIdWithVersion(argId, 0);
+          const lang = this.translate.currentLang || this.translate.defaultLang || 'en';
+          this.router.navigate(['/', lang, 'topics', this.topicId()], {
+            queryParams: { argumentId: argumentIdWithVersion },
             fragment: 'discussion'
           });
         }
       },
       error: (err) => {
-        this.errors.set(err?.message || 'Error posting argument');
+        this.isLoading.set(false);
+        const errorMsg =
+          err?.error?.status?.message ||
+          err?.error?.message ||
+          err?.message ||
+          'Error posting argument';
+        this.errors.set(errorMsg);
+        this.notification.showRaw('error', errorMsg);
       }
     });
   }
