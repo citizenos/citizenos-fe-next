@@ -9,6 +9,7 @@ import { take } from 'rxjs';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
@@ -43,6 +44,7 @@ export class IdeaboxComponent {
   private dialogService = inject(DialogService);
   private router = inject(Router);
   private translate = inject(TranslateService);
+  private authDialog = inject(AuthDialogService);
   userStore = inject(UserStore);
 
   IdeaStatus = IdeaStatus;
@@ -84,11 +86,18 @@ export class IdeaboxComponent {
 
   vote(value: number) {
     if (!this.userStore.isAuthenticated()) {
-      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
-        queryParams: { redirectSuccess: this.router.url }
+      const dialogRef = this.authDialog.openLogin(this.router.url);
+      dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+        if (success || this.userStore.isAuthenticated()) {
+          this.executeVote(value);
+        }
       });
       return;
     }
+    this.executeVote(value);
+  }
+
+  private executeVote(value: number) {
     if (!this.canVote()) return;
 
     this.ideationService.voteIdea({
@@ -113,11 +122,18 @@ export class IdeaboxComponent {
 
   toggleFavourite() {
     if (!this.userStore.isAuthenticated()) {
-      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
-        queryParams: { redirectSuccess: this.router.url }
+      const dialogRef = this.authDialog.openLogin(this.router.url);
+      dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+        if (success || this.userStore.isAuthenticated()) {
+          this.executeToggleFavourite();
+        }
       });
       return;
     }
+    this.executeToggleFavourite();
+  }
+
+  private executeToggleFavourite() {
     const idea = this.idea();
     const params = { topicId: this.topic().id, ideationId: this.ideation().id, ideaId: idea.id };
     if (idea.favourite) {

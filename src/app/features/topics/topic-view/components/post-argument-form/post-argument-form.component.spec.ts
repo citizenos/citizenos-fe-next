@@ -30,6 +30,7 @@ class MockMarkdownDirective {
 
 import { Router } from '@angular/router';
 import { UserStore } from '../../../../../core/state/user.store';
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 
 const mockArgumentService = {
   save: vi.fn(),
@@ -41,6 +42,12 @@ const mockArgumentService = {
 const mockNotification = { success: vi.fn(), showRaw: vi.fn(), error: vi.fn() };
 const mockUserStore = { isAuthenticated: vi.fn(() => true), user: vi.fn(() => ({ id: 'u1' })) };
 const mockRouter = { navigate: vi.fn(), url: '/en/topics/topic-1' };
+const mockAuthDialog = {
+  openLogin: vi.fn().mockReturnValue({
+    afterClosed: () => of(true),
+    close: vi.fn(),
+  }),
+};
 
 // ── Class-level tests (no DOM) ─────────────────────────────────────────────
 
@@ -59,6 +66,7 @@ describe('PostArgumentFormComponent (class)', () => {
         { provide: NotificationService, useValue: mockNotification },
         { provide: UserStore, useValue: mockUserStore },
         { provide: Router, useValue: mockRouter },
+        { provide: AuthDialogService, useValue: mockAuthDialog },
       ],
     });
 
@@ -87,14 +95,11 @@ describe('PostArgumentFormComponent (class)', () => {
     expect(component.isOpen()).toBe(true);
   });
 
-  it('openAddArgument redirects to login when not authenticated', () => {
+  it('openAddArgument opens login dialog when not authenticated', () => {
     mockUserStore.isAuthenticated.mockReturnValue(false);
     component.openAddArgument();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(
-      expect.arrayContaining(['account', 'login']),
-      { queryParams: { redirectSuccess: '/en/topics/topic-1' } }
-    );
-    expect(component.isOpen()).toBe(false);
+    expect(mockAuthDialog.openLogin).toHaveBeenCalledWith('/en/topics/topic-1');
+    expect(component.isOpen()).toBe(true);
   });
 
   it('close() sets isOpen to false', () => {
@@ -120,16 +125,13 @@ describe('PostArgumentFormComponent (class)', () => {
     expect(component.argumentMaxLength()).toBe(500);
   });
 
-  it('submit should redirect to login when unauthenticated', () => {
+  it('submit should open login dialog when unauthenticated', () => {
     mockUserStore.isAuthenticated.mockReturnValue(false);
     component.subject.set('My subject');
     component.text.set('My text');
     component.submit();
 
-    expect(mockRouter.navigate).toHaveBeenCalledWith(
-      expect.arrayContaining(['account', 'login']),
-      { queryParams: { redirectSuccess: '/en/topics/topic-1' } }
-    );
+    expect(mockAuthDialog.openLogin).toHaveBeenCalledWith('/en/topics/topic-1');
     expect(mockArgumentService.save).not.toHaveBeenCalled();
   });
 
@@ -222,6 +224,7 @@ describe('PostArgumentFormComponent (template)', () => {
         { provide: NotificationService, useValue: mockNotification },
         { provide: UserStore, useValue: mockUserStore },
         { provide: Router, useValue: mockRouter },
+        { provide: AuthDialogService, useValue: mockAuthDialog },
       ],
     })
     .overrideComponent(PostArgumentFormComponent, {

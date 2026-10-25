@@ -9,6 +9,7 @@ import { TopicIdeationService } from '../../../../../core/services/topic-ideatio
 import { TopicService } from '../../../../../core/services/topic.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { UserStore } from '../../../../../core/state/user.store';
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
@@ -63,6 +64,7 @@ export class IdeaDialogComponent implements OnInit {
   private router = inject(Router);
   private location = inject(Location);
   private notificationService = inject(NotificationService);
+  private authDialog = inject(AuthDialogService);
   userStore = inject(UserStore);
 
   idea = signal<Idea>(this.data.idea);
@@ -236,11 +238,18 @@ export class IdeaDialogComponent implements OnInit {
 
   voteIdea(value: number) {
     if (!this.userStore.isAuthenticated()) {
-      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
-        queryParams: { redirectSuccess: this.router.url }
+      const dialogRef = this.authDialog.openLogin(this.router.url);
+      dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+        if (success || this.userStore.isAuthenticated()) {
+          this.executeVoteIdea(value);
+        }
       });
       return;
     }
+    this.executeVoteIdea(value);
+  }
+
+  private executeVoteIdea(value: number) {
     if (!this.canVote()) return;
 
     this.ideationService.voteIdea({
@@ -271,11 +280,18 @@ export class IdeaDialogComponent implements OnInit {
 
   toggleFavourite() {
     if (!this.userStore.isAuthenticated()) {
-      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
-        queryParams: { redirectSuccess: this.router.url }
+      const dialogRef = this.authDialog.openLogin(this.router.url);
+      dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+        if (success || this.userStore.isAuthenticated()) {
+          this.executeToggleFavourite();
+        }
       });
       return;
     }
+    this.executeToggleFavourite();
+  }
+
+  private executeToggleFavourite() {
     const idea = this.idea();
     const params = { topicId: this.topic().id, ideationId: this.ideation().id, ideaId: idea.id };
     if (idea.favourite) {

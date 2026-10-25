@@ -8,6 +8,7 @@ import { take } from 'rxjs';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { IdeaComment } from '../../../../../core/interfaces/ideation';
 import { UserStore } from '../../../../../core/state/user.store';
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -434,6 +435,7 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
   public userStore = inject(UserStore);
   private notification = inject(NotificationService);
   private translate = inject(TranslateService);
+  private authDialog = inject(AuthDialogService);
   private dialog = inject(DialogService);
   private sanitizer = inject(DomSanitizer);
   private router = inject(Router);
@@ -553,12 +555,18 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
 
   doArgumentVote(value: number) {
     if (!this.userStore.isAuthenticated()) {
-      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
-        queryParams: { redirectSuccess: this.router.url }
+      const dialogRef = this.authDialog.openLogin(this.router.url);
+      dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+        if (success || this.userStore.isAuthenticated()) {
+          this.executeArgumentVote(value);
+        }
       });
       return;
     }
+    this.executeArgumentVote(value);
+  }
 
+  private executeArgumentVote(value: number) {
     this.ideationService.voteIdeaComment({
       topicId: this.topicId(),
       ideationId: this.ideationId(),

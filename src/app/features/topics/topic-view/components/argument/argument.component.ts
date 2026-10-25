@@ -13,6 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Argument } from '../../../../../core/interfaces/discussion';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { UserStore } from '../../../../../core/state/user.store';
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -58,6 +59,7 @@ export class ArgumentComponent {
   private platformId = inject(PLATFORM_ID);
   private doc = inject(DOCUMENT);
   private translate = inject(TranslateService);
+  private authDialog = inject(AuthDialogService);
   userStore = inject(UserStore);
 
   showEdit = signal(false);
@@ -156,7 +158,12 @@ export class ArgumentComponent {
     if (this.argument().deletedAt) return;
     if (!this.userStore.isAuthenticated()) {
       if (isPlatformBrowser(this.platformId)) {
-        this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], { queryParams: { redirectSuccess: window.location.href } });
+        const dialogRef = this.authDialog.openLogin(window.location.href);
+        dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+          if (success || this.userStore.isAuthenticated()) {
+            this.showReplyForm.set(true);
+          }
+        });
       }
       return;
     }

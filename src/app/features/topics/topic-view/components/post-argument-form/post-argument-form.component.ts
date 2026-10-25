@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { UserStore } from '../../../../../core/state/user.store';
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
@@ -31,6 +32,7 @@ export class PostArgumentFormComponent implements OnInit {
   private notification = inject(NotificationService);
   private router = inject(Router);
   private translate = inject(TranslateService);
+  private authDialog = inject(AuthDialogService);
   userStore = inject(UserStore);
 
   types = ['pro', 'con', 'poi'];
@@ -56,9 +58,11 @@ export class PostArgumentFormComponent implements OnInit {
 
   openAddArgument() {
     if (!this.userStore.isAuthenticated()) {
-      const lang = this.translate.currentLang || this.translate.defaultLang || 'en';
-      this.router.navigate(['/', lang, 'account', 'login'], {
-        queryParams: { redirectSuccess: this.router.url }
+      const dialogRef = this.authDialog.openLogin(this.router.url);
+      dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+        if (success || this.userStore.isAuthenticated()) {
+          this.isOpen.set(true);
+        }
       });
       return;
     }
@@ -80,10 +84,7 @@ export class PostArgumentFormComponent implements OnInit {
 
   submit() {
     if (!this.userStore.isAuthenticated()) {
-      const lang = this.translate.currentLang || this.translate.defaultLang || 'en';
-      this.router.navigate(['/', lang, 'account', 'login'], {
-        queryParams: { redirectSuccess: this.router.url }
-      });
+      this.authDialog.openLogin(this.router.url);
       return;
     }
 

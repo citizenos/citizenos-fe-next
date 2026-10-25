@@ -1,4 +1,5 @@
 import { UserStore } from '../../../../../core/state/user.store';
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 import { Router, ActivatedRoute } from '@angular/router';
@@ -55,6 +56,7 @@ export class AddIdeaComponent implements OnInit {
   private uploadService = inject(UploadService);
   
   private userStore = inject(UserStore);
+  private authDialog = inject(AuthDialogService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
@@ -310,18 +312,25 @@ export class AddIdeaComponent implements OnInit {
 
   openAddIdea() {
     if (!this.userStore.isAuthenticated()) {
-      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
-        queryParams: { redirectSuccess: this.router.url }
+      const dialogRef = this.authDialog.openLogin(this.router.url);
+      dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+        if (success || this.userStore.isAuthenticated()) {
+          this.initAddIdeaForm();
+        }
       });
-    } else {
-      if (!this.autosavedIdea()) {
-        this.ideaForm.reset();
-        const template = this.ideation().template || '';
-        this.description.set(template);
-        this.ideaForm.patchValue({ description: template });
-      }
-      this.isOpen.set(true);
+      return;
     }
+    this.initAddIdeaForm();
+  }
+
+  private initAddIdeaForm() {
+    if (!this.autosavedIdea()) {
+      this.ideaForm.reset();
+      const template = this.ideation().template || '';
+      this.description.set(template);
+      this.ideaForm.patchValue({ description: template });
+    }
+    this.isOpen.set(true);
   }
 
   close() {

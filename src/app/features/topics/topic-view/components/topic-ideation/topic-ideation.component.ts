@@ -13,6 +13,7 @@ import { of, switchMap, take, map, catchError } from 'rxjs';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation, IdeationFolder, IdeaVoter } from '../../../../../core/interfaces/ideation';
 import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
@@ -64,6 +65,7 @@ export class TopicIdeationComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   public translate = inject(TranslateService);
+  private authDialog = inject(AuthDialogService);
   userStore = inject(UserStore);
 
   PAGE_SIZE = 15;
@@ -359,8 +361,11 @@ export class TopicIdeationComponent {
     if (this.hasIdeationEnded()) return;
     
     if (!this.userStore.isAuthenticated()) {
-      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], {
-        queryParams: { redirectSuccess: this.router.url }
+      const dialogRef = this.authDialog.openLogin(this.router.url);
+      dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+        if (success || this.userStore.isAuthenticated()) {
+          this.showAddIdea.set(true);
+        }
       });
       return;
     }

@@ -9,6 +9,7 @@ import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { Argument } from '../../../../../core/interfaces/discussion';
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 
 const mockArgument: Argument = {
   id: 'arg-1',
@@ -28,6 +29,7 @@ const mockUserStore = { isAuthenticated: vi.fn(() => true), user: vi.fn(() => ({
 const mockNotification = { success: vi.fn(), showRaw: vi.fn() };
 const mockDialog = { open: vi.fn(() => ({ afterClosed: () => of(true) })) };
 const mockSanitizer = { bypassSecurityTrustHtml: vi.fn(v => v) };
+const mockAuthDialog = { openLogin: vi.fn(() => ({ afterClosed: () => of(true) })) };
 
 describe('ArgumentComponent', () => {
   let component: ArgumentComponent;
@@ -48,6 +50,7 @@ describe('ArgumentComponent', () => {
         { provide: NotificationService, useValue: mockNotification },
         { provide: DialogService, useValue: mockDialog },
         { provide: DomSanitizer, useValue: mockSanitizer },
+        { provide: AuthDialogService, useValue: mockAuthDialog },
       ]
     });
 
@@ -94,5 +97,12 @@ describe('ArgumentComponent', () => {
     expect(mockDialog.open).toHaveBeenCalled();
     expect(mockArgumentService.delete).toHaveBeenCalled();
     expect(deletedEmit).toHaveBeenCalled();
+  });
+
+  it('handleShowReply should open login dialog when unauthenticated and show reply form on login', () => {
+    mockUserStore.isAuthenticated.mockReturnValue(false);
+    component.handleShowReply();
+    expect(mockAuthDialog.openLogin).toHaveBeenCalled();
+    expect(component.showReplyForm()).toBe(true);
   });
 });

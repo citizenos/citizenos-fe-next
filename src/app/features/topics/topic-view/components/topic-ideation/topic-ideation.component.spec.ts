@@ -6,6 +6,7 @@ import { TopicIdeationService } from '../../../../../core/services/topic-ideatio
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
@@ -35,6 +36,7 @@ const mockTopicService = {
 };
 const mockUserStore = { user: vi.fn().mockReturnValue({ id: 'u1' }) };
 const mockDialogService = { open: vi.fn().mockReturnValue({ afterClosed: () => of(true) }) };
+const mockAuthDialogService = { openLogin: vi.fn().mockReturnValue({ afterClosed: () => of(true) }) };
 
 describe('TopicIdeationComponent', () => {
   let injector: EnvironmentInjector;
@@ -48,6 +50,7 @@ describe('TopicIdeationComponent', () => {
         { provide: TopicService, useValue: mockTopicService },
         { provide: UserStore, useValue: mockUserStore },
         { provide: DialogService, useValue: mockDialogService },
+        { provide: AuthDialogService, useValue: mockAuthDialogService },
       ],
     });
     injector = TestBed.inject(EnvironmentInjector);
@@ -133,5 +136,14 @@ describe('TopicIdeationComponent', () => {
     comp.exportIdeas();
     expect(mockIdeationService.downloadIdeas).toHaveBeenCalledWith('t1', 'i1');
     expect(openSpy).toHaveBeenCalledWith('https://example.com/download');
+  });
+
+  it('addIdea opens login dialog when unauthenticated and opens form on login', () => {
+    const userStore = TestBed.inject(UserStore);
+    userStore.isAuthenticated = Object.assign(() => false, { [Symbol("SIGNAL")]: {} }) as any;
+    const comp = makeComp();
+    comp.addIdea();
+    expect(mockAuthDialogService.openLogin).toHaveBeenCalled();
+    expect(comp.showAddIdea()).toBe(true);
   });
 });

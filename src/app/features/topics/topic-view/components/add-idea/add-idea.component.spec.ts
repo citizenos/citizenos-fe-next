@@ -1,6 +1,7 @@
 import { Router, ActivatedRoute } from "@angular/router";
 import { UploadService } from "../../../../../core/services/upload.service";
 import { UserStore } from "../../../../../core/state/user.store";
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { signal } from '@angular/core';
@@ -23,6 +24,12 @@ const mockIdeationService = {
   updateIdea: vi.fn().mockReturnValue(of(mockCreatedIdea)),
 };
 const mockNotification = { addError: vi.fn(), success: vi.fn() };
+const mockAuthDialog = {
+  openLogin: vi.fn().mockReturnValue({
+    afterClosed: () => of(true),
+    close: vi.fn(),
+  }),
+};
 
 describe('AddIdeaComponent', () => {
   let injector: EnvironmentInjector;
@@ -36,8 +43,9 @@ describe('AddIdeaComponent', () => {
         { provide: NotificationService, useValue: mockNotification },
         { provide: UploadService, useValue: { upload: vi.fn() } },
         { provide: UserStore, useValue: { user: vi.fn(), isAuthenticated: vi.fn() } },
-        { provide: Router, useValue: { navigate: vi.fn() } },
+        { provide: Router, useValue: { navigate: vi.fn(), url: '/topics/t1' } },
         { provide: ActivatedRoute, useValue: {} },
+        { provide: AuthDialogService, useValue: mockAuthDialog },
       ],
     });
     injector = TestBed.inject(EnvironmentInjector);
@@ -101,5 +109,12 @@ describe('AddIdeaComponent', () => {
     comp.isOpen.set(true);
     comp.close();
     expect(comp.isOpen()).toBe(false);
+  });
+
+  it('openAddIdea opens login dialog when unauthenticated and opens form on login', () => {
+    const comp = makeComp();
+    comp.openAddIdea();
+    expect(mockAuthDialog.openLogin).toHaveBeenCalledWith('/topics/t1');
+    expect(comp.isOpen()).toBe(true);
   });
 });
