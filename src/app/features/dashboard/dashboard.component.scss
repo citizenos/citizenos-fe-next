@@ -233,11 +233,13 @@ $gap-standard: figma.$spacing-m;
       justify-content: flex-start;
       align-items: center;
       text-align: center;
+      width: 280px;
       min-width: 280px;
       max-width: 280px;
       min-height: 456px;
-      background-color: figma.$color-bg-default;
-      gap: $padding-standard;
+      border-radius: 16px;
+      background-color: var(--color-info-background, #d7e9f8);
+      gap: 24px;
 
       @include mixins.mobile {
         margin-top: $gap-standard;

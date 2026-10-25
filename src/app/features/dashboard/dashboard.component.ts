@@ -15,6 +15,7 @@ import { GroupCardComponent } from '../../shared/components/group-card/group-car
 import { TourItemDirective } from '../../shared/directives/tour-item.directive';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { PageHeaderComponent } from '../../core/components/shell/page-header/page-header.component';
+import { CreateMenuComponent } from '../../shared/components/create-menu/create-menu.component';
 import { SeoService } from '../../core/services/seo.service';
 import { News } from '../../core/interfaces/news';
 
@@ -22,7 +23,7 @@ import { News } from '../../core/interfaces/news';
   selector: 'app-dashboard',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, DatePipe, NgClass, TranslateModule, TopicCardComponent, GroupCardComponent, TourItemDirective, IconComponent, PageHeaderComponent],
+  imports: [RouterLink, DatePipe, NgClass, TranslateModule, TopicCardComponent, GroupCardComponent, TourItemDirective, IconComponent, PageHeaderComponent, CreateMenuComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })

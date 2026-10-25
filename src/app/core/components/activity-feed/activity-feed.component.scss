@@ -10,11 +10,11 @@ $breakpoint-mobile: 576px;
   position: fixed;
   top: 0;
   right: -320px;
-  width: 300px;
+  width: 320px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-background);
+  background-color: var(--color-activity-feed-bg, #ebf4fb);
   z-index: 9999;
   padding: 16px;
   overflow-y: scroll;
@@ -46,7 +46,7 @@ $breakpoint-mobile: 576px;
 #results_area {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
 }
 
 .empty_state {
