@@ -9,6 +9,7 @@ import { UserStore } from '../../core/state/user.store';
 import { PublicTopicService } from '../../core/services/public-topic.service';
 import { PublicGroupService } from '../../core/services/public-group.service';
 import { HomeService } from './services/home.service';
+import { AuthDialogService } from '../../core/services/auth-dialog.service';
 import { signal, NO_ERRORS_SCHEMA, PLATFORM_ID } from '@angular/core';
 import { of } from 'rxjs';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
@@ -20,8 +21,12 @@ describe('HomeComponent', () => {
   let mockTopicService: { getPreview: ReturnType<typeof vi.fn> };
   let mockGroupService: { getPreview: ReturnType<typeof vi.fn> };
   let mockHomeService: Partial<HomeService>;
+  let mockAuthDialog: { openLogin: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
+    mockAuthDialog = {
+      openLogin: vi.fn()
+    };
     mockUserStore = {
       isAuthenticated: signal(false)
     };
@@ -48,6 +53,7 @@ describe('HomeComponent', () => {
         { provide: PublicTopicService, useValue: mockTopicService },
         { provide: PublicGroupService, useValue: mockGroupService },
         { provide: HomeService, useValue: mockHomeService },
+        { provide: AuthDialogService, useValue: mockAuthDialog },
         { provide: PLATFORM_ID, useValue: 'browser' }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -95,13 +101,11 @@ describe('HomeComponent', () => {
 
   it('should navigate to login when creating group and not authenticated', () => {
     createComponent();
-    const router = TestBed.inject(Router);
-    const navigateSpy = vi.spyOn(router, 'navigate');
     mockUserStore.isAuthenticated.set(false);
 
     component.createGroup();
 
-    expect(navigateSpy).toHaveBeenCalledWith(['/account/login'], expect.any(Object));
+    expect(mockAuthDialog.openLogin).toHaveBeenCalledWith('/en/my/groups/create');
   });
 
   it('should navigate to group create when authenticated', () => {

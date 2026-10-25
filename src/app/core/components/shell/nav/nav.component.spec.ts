@@ -6,6 +6,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { NavComponent } from './nav.component';
 import { UserStore } from '../../../state/user.store';
 import { DialogService } from '../../../../shared/dialog';
+import { AuthDialogService } from '../../../services/auth-dialog.service';
 
 @Component({ template: '', standalone: true })
 class EmptyComponent {}
@@ -15,8 +16,13 @@ describe('NavComponent', () => {
   let component: NavComponent;
   let userStoreMock: unknown;
   let dialogServiceMock: unknown;
+  let authDialogMock: { openLogin: ReturnType<typeof vi.fn>; openRegister: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
+    authDialogMock = {
+      openLogin: vi.fn(),
+      openRegister: vi.fn(),
+    };
     userStoreMock = {
       isAuthenticated: vi.fn().mockReturnValue(false),
       user: vi.fn().mockReturnValue(null),
@@ -31,7 +37,8 @@ describe('NavComponent', () => {
       providers: [
         provideRouter([{ path: '**', component: EmptyComponent }]),
         { provide: UserStore, useValue: userStoreMock },
-        { provide: DialogService, useValue: dialogServiceMock }
+        { provide: DialogService, useValue: dialogServiceMock },
+        { provide: AuthDialogService, useValue: authDialogMock },
       ]
     }).compileComponents();
 
@@ -81,5 +88,19 @@ describe('NavComponent', () => {
     await component.logout();
     expect((userStoreMock as { logout: () => void }).logout).toHaveBeenCalled();
     expect(component.showNav()).toBe(false);
+  });
+
+  it('doShowLogin() should close nav and open login dialog', () => {
+    component.showNav.set(true);
+    component.doShowLogin();
+    expect(component.showNav()).toBe(false);
+    expect(authDialogMock.openLogin).toHaveBeenCalled();
+  });
+
+  it('doShowRegister() should close nav and open register dialog', () => {
+    component.showNav.set(true);
+    component.doShowRegister();
+    expect(component.showNav()).toBe(false);
+    expect(authDialogMock.openRegister).toHaveBeenCalled();
   });
 });

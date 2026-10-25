@@ -4,6 +4,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgClass, UpperCasePipe } from '@angular/common';
 
 import { UserStore } from '../../../../core/state/user.store';
+import { AuthDialogService } from '../../../../core/services/auth-dialog.service';
 
 @Component({
   selector: 'cos-feature-box',
@@ -70,6 +71,7 @@ export class FeatureBoxComponent {
   private router = inject(Router);
   private translate = inject(TranslateService);
   private userStore = inject(UserStore);
+  private authDialog = inject(AuthDialogService);
 
   itemsList() {
     return Array.from({ length: this.items() }, (_, i) => i);
@@ -90,7 +92,7 @@ export class FeatureBoxComponent {
     }
 
     if (!this.userStore.isAuthenticated()) {
-      this.router.navigate(['/account/login'], { queryParams: { redirectSuccess: urlPath.join('/') } });
+      this.authDialog.openLogin(urlPath.join('/').replace('//', '/'));
       return;
     }
     

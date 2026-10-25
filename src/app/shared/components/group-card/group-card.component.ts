@@ -6,6 +6,8 @@ import { Group } from '../../../core/interfaces/group';
 import { InitialsComponent } from '../initials/initials.component';
 import { UserStore } from '../../../core/state/user.store';
 import { GroupDetailService } from '../../../core/services/group-detail.service';
+import { AuthDialogService } from '../../../core/services/auth-dialog.service';
+import { take } from 'rxjs';
 
 import { IconComponent } from '../icon/icon.component';
 import { ButtonComponent } from '../button/button.component';
@@ -266,6 +268,7 @@ export class GroupCardComponent {
   translate = inject(TranslateService);
   private userStore = inject(UserStore);
   private groupDetailService = inject(GroupDetailService);
+  private authDialog = inject(AuthDialogService);
 
   latestTopic = computed(() => {
     return this.group().members?.topics?.latest || null;
@@ -280,14 +283,23 @@ export class GroupCardComponent {
       const urlPath = [this.translate.currentLang, 'groups', this.group().id];
       const tree = this.router.createUrlTree(urlPath);
       const redirectSuccess = window.location.origin + this.router.serializeUrl(tree);
-      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], { queryParams: { redirectSuccess } });
+      const dialogRef = this.authDialog.openLogin(redirectSuccess);
+      dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+        if (success || this.userStore.isAuthenticated()) {
+          this.executeJoinGroup();
+        }
+      });
+      return;
+    }
+    this.executeJoinGroup();
+  }
+
+  private executeJoinGroup() {
+    const group = this.group();
+    if (group.join?.token && this.groupDetailService.canShare(group)) {
+      this.router.navigate(['/', this.translate.currentLang, 'groups', 'join', group.join.token]);
     } else {
-      const group = this.group();
-      if (group.join?.token && this.groupDetailService.canShare(group)) {
-        this.router.navigate(['/', this.translate.currentLang, 'groups', 'join', group.join.token]);
-      } else {
-        this.router.navigate(['/', this.translate.currentLang, 'groups', group.id, 'join']);
-      }
+      this.router.navigate(['/', this.translate.currentLang, 'groups', group.id, 'join']);
     }
   }
 }

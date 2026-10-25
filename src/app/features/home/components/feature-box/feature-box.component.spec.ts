@@ -4,6 +4,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { provideRouter, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserStore } from '../../../../core/state/user.store';
+import { AuthDialogService } from '../../../../core/services/auth-dialog.service';
 import { signal, NO_ERRORS_SCHEMA, ComponentRef } from '@angular/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
@@ -12,8 +13,12 @@ describe('FeatureBoxComponent', () => {
   let fixture: ComponentFixture<FeatureBoxComponent>;
   let componentRef: ComponentRef<FeatureBoxComponent>;
   let mockUserStore: { isAuthenticated: ReturnType<typeof signal<boolean>> };
+  let mockAuthDialog: { openLogin: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
+    mockAuthDialog = {
+      openLogin: vi.fn()
+    };
     mockUserStore = {
       isAuthenticated: signal(false)
     };
@@ -22,7 +27,8 @@ describe('FeatureBoxComponent', () => {
       imports: [FeatureBoxComponent, HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [
         provideRouter([]),
-        { provide: UserStore, useValue: mockUserStore }
+        { provide: UserStore, useValue: mockUserStore },
+        { provide: AuthDialogService, useValue: mockAuthDialog }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -67,17 +73,15 @@ describe('FeatureBoxComponent', () => {
     expect(items.length).toBe(5);
   });
 
-  it('should navigate to login when clicking button and not authenticated', async () => {
+  it('should open login dialog when clicking button and not authenticated', async () => {
     await setup('voting', 2);
 
-    const router = TestBed.inject(Router);
-    const navigateSpy = vi.spyOn(router, 'navigate');
     mockUserStore.isAuthenticated.set(false);
 
     const button = fixture.nativeElement.querySelector('button');
     button.click();
 
-    expect(navigateSpy).toHaveBeenCalledWith(['/account/login'], expect.any(Object));
+    expect(mockAuthDialog.openLogin).toHaveBeenCalledWith('/en/topics/vote/create');
   });
 
   it('should navigate to create topic when authenticated', async () => {

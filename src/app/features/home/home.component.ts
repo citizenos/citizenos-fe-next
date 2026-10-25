@@ -5,6 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 
 import { UserStore } from '../../core/state/user.store';
+import { AuthDialogService } from '../../core/services/auth-dialog.service';
 import { PublicTopicService } from '../../core/services/public-topic.service';
 import { PublicGroupService } from '../../core/services/public-group.service';
 import { HomeService } from './services/home.service';
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit {
   private router = inject(Router);
   public translate = inject(TranslateService);
   private userStore = inject(UserStore);
+  private authDialog = inject(AuthDialogService);
   private topicService = inject(PublicTopicService);
   private groupService = inject(PublicGroupService);
   private homeService = inject(HomeService);
@@ -77,7 +79,7 @@ export class HomeComponent implements OnInit {
     const urlPath = ['/', this.translate.currentLang, 'my', 'groups', 'create'];
 
     if (!this.userStore.isAuthenticated()) {
-      this.router.navigate(['/account/login'], { queryParams: { redirectSuccess: urlPath.join('/') } });
+      this.authDialog.openLogin(urlPath.join('/').replace('//', '/'));
     } else {
       this.router.navigate(urlPath);
     }

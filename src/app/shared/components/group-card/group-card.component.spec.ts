@@ -8,6 +8,8 @@ import { GroupCardComponent } from './group-card.component';
 import { Group } from '../../../core/interfaces/group';
 import { UserStore } from '../../../core/state/user.store';
 import { GroupDetailService } from '../../../core/services/group-detail.service';
+import { AuthDialogService } from '../../../core/services/auth-dialog.service';
+import { of } from 'rxjs';
 
 @Component({ selector: 'cos-initials', standalone: true, template: '' })
 class MockInitialsComponent { @Input() name = ''; @Input() limit = 2; }
@@ -51,6 +53,12 @@ describe('GroupCardComponent', () => {
 
   const mockUserStore = { isAuthenticated: vi.fn().mockReturnValue(true) };
   const mockGroupDetailService = { canShare: vi.fn().mockReturnValue(false) };
+  const mockAuthDialog = {
+    openLogin: vi.fn().mockReturnValue({
+      afterClosed: () => of(true),
+      close: vi.fn(),
+    }),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -59,6 +67,7 @@ describe('GroupCardComponent', () => {
         provideRouter([]),
         { provide: UserStore, useValue: mockUserStore },
         { provide: GroupDetailService, useValue: mockGroupDetailService },
+        { provide: AuthDialogService, useValue: mockAuthDialog },
       ],
     })
       .overrideComponent(GroupCardComponent, {
@@ -144,14 +153,12 @@ describe('GroupCardComponent', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['/', component.translate.currentLang, 'groups', 'group-1']);
   });
 
-  it('should navigate to login when unauthenticated user clicks join', () => {
+  it('should open login dialog when unauthenticated user clicks join and navigate to join on login', () => {
     mockUserStore.isAuthenticated.mockReturnValue(false);
     const navigateSpy = vi.spyOn(router, 'navigate');
     component.joinGroup();
-    expect(navigateSpy).toHaveBeenCalledWith(
-      expect.arrayContaining(['account', 'login']),
-      expect.objectContaining({ queryParams: expect.objectContaining({ redirectSuccess: expect.any(String) }) })
-    );
+    expect(mockAuthDialog.openLogin).toHaveBeenCalled();
+    expect(navigateSpy).toHaveBeenCalledWith(['/', component.translate.currentLang, 'groups', 'group-1', 'join']);
     mockUserStore.isAuthenticated.mockReturnValue(true);
   });
 

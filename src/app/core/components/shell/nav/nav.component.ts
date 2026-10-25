@@ -15,6 +15,7 @@ import { UiStateService } from '../../../services/ui-state.service';
 import { ConfigStore } from '../../../state/config.store';
 import { TourItemDirective } from '../../../../shared/directives/tour-item.directive';
 import { ActivitiesButtonComponent } from '../../../../shared/components/activities-button/activities-button.component';
+import { AuthDialogService } from '../../../services/auth-dialog.service';
 
 @Component({
   selector: 'cos-nav',
@@ -123,8 +124,8 @@ import { ActivitiesButtonComponent } from '../../../../shared/components/activit
       </div>
     } @else {
       <div id="mobile_login">
-        <button type="button" class="btn_big_submit" [routerLink]="['/', translate.currentLang, 'account', 'login']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
-        <button type="button" class="btn_big_submit_ghost" [routerLink]="['/', translate.currentLang, 'account', 'signup']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
+        <button type="button" class="btn_big_submit" (click)="doShowLogin()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
+        <button type="button" class="btn_big_submit_ghost" (click)="doShowRegister()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
       </div>
     }
 
@@ -241,8 +242,8 @@ import { ActivitiesButtonComponent } from '../../../../shared/components/activit
 
           @if (!userStore.isAuthenticated()) {
             <div class="big_button_wrap nav_create_wrap">
-              <button type="button" class="btn_big_submit" [routerLink]="['/', translate.currentLang, 'account', 'login']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
-              <button type="button" class="btn_big_submit_ghost" [routerLink]="['/', translate.currentLang, 'account', 'signup']" (click)="closeNav()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
+              <button type="button" class="btn_big_submit" (click)="doShowLogin()">{{ 'DEFAULT.NAV.BTN_LOGIN' | translate }}</button>
+              <button type="button" class="btn_big_submit_ghost" (click)="doShowRegister()">{{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}</button>
             </div>
             <div class="line_separator"></div>
           }
@@ -370,6 +371,7 @@ export class NavComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly authDialog = inject(AuthDialogService);
 
   lnkDonate = computed(() => {
     const links = this.configStore.links.donate();
@@ -423,6 +425,16 @@ export class NavComponent implements OnInit {
     this.showNav.set(false);
     this.showCreateMenu.set(false);
     this.showProfileDropdown.set(false);
+  }
+
+  doShowLogin() {
+    this.closeNav();
+    this.authDialog.openLogin(this.router.url);
+  }
+
+  doShowRegister() {
+    this.closeNav();
+    this.authDialog.openRegister(this.router.url);
   }
 
   toggleCreateMenu() {
