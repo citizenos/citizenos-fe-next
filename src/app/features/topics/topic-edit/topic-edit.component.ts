@@ -2,7 +2,7 @@ import { Component, signal, computed, inject, ChangeDetectionStrategy, OnInit } 
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { switchMap, of, catchError, forkJoin, take } from 'rxjs';
+import { switchMap, of, catchError, forkJoin, take, Observable } from 'rxjs';
 
 import { TopicService } from '../../../core/services/topic.service';
 import { UploadService } from '../../../core/services/upload.service';
@@ -20,6 +20,7 @@ import { DiscussionData } from '../../../core/interfaces/discussion';
 import { Ideation } from '../../../core/interfaces/ideation';
 import { VoteWithOptions } from '../../../core/interfaces/vote';
 import { StepConfig } from '../../../shared/components/step-navigator/step-navigator.component';
+import { DomainType } from '../../../shared/components/domain-icon/domain-icon.component';
 import { IconName } from '../../../shared/components/icon/icon.registry';
 import { CreateWizardShellComponent } from '../../../shared/components/create-wizard-shell/create-wizard-shell.component';
 import { StepTopicInfoComponent } from '../topic-create/components/step-topic-info/step-topic-info.component';
@@ -29,6 +30,7 @@ import { StepIdeationSettingsComponent } from '../ideation-create/components/ste
 import { StepVoteSettingsComponent } from '../vote-create/components/step-vote-settings/step-vote-settings.component';
 import { StepTopicPreviewComponent } from '../topic-create/components/step-topic-preview/step-topic-preview.component';
 import { MemberEditorsPanelComponent } from '../../../shared/components/member-editors-panel/member-editors-panel.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { AnyPipe } from '../../../shared/pipes/any.pipe';
 import { DialogService } from '../../../shared/dialog';
 import { TopicSettingsDisabledDialogComponent } from '../topic-view/components/topic-settings-disabled-dialog/topic-settings-disabled-dialog.component';
@@ -79,7 +81,21 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
     hashtag: null
   });
 
-  hasChanges = signal(true);
+  domainType = computed<DomainType>(() => {
+    const s = this.topic().status;
+    if (s === this.topicService.STATUSES.voting) return 'vote';
+    if (s === this.topicService.STATUSES.ideation) return 'ideation';
+    return 'topic';
+  });
+
+  headingKey = computed<string>(() => {
+    const s = this.topic().status;
+    if (s === this.topicService.STATUSES.voting) return 'VIEWS.VOTE_EDIT.HEADING';
+    if (s === this.topicService.STATUSES.ideation) return 'VIEWS.IDEATION_EDIT.HEADING';
+    return 'VIEWS.TOPIC_EDIT.HEADING';
+  });
+
+  hasChanges = signal(false);
   discussion = signal<DiscussionData>({ question: '', deadline: null });
   ideation = signal<Partial<Ideation>>({});
   vote = signal<Partial<VoteWithOptions>>({});
@@ -136,7 +152,14 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
     this.topicService.get(topicId).subscribe({
       next: (topic) => {
         if (topic.status === this.topicService.STATUSES.draft) {
-          this.router.navigate(['/topics', 'create', topic.id], { replaceUrl: true });
+          this.hasChanges.set(false);
+          let redirectUrl = ['/topics', 'create', topic.id];
+          if (topic.voteId) {
+            redirectUrl = ['/topics', 'vote', 'create', topic.id];
+          } else if (topic.ideationId) {
+            redirectUrl = ['/topics', 'ideation', 'create', topic.id];
+          }
+          this.router.navigate(redirectUrl, { replaceUrl: true });
           return;
         }
         this.topic.set(topic);
@@ -156,11 +179,19 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
         }
         if (topic.voteId) {
           this.voteService.get({ topicId, voteId: topic.voteId }).subscribe({
-            next: (v) => this.vote.set({ ...v, question: v.description || '' } as VoteWithOptions),
+            next: (v) => {
+              const options = Array.isArray((v as VoteWithOptions).options)
+                ? (v as VoteWithOptions).options
+                : ((v as VoteWithOptions).options as { rows?: unknown[] } | undefined)?.rows || [];
+              this.vote.set({ ...v, question: v.description || '', options } as VoteWithOptions);
+            },
             error: () => { /* intentionally empty */ }
           });
         }
         this.isLoading.set(false);
+        if (!this.topicService.canEditDescription(topic) && this.currentStep() === 'info') {
+          this.onStepChange('info');
+        }
       },
       error: () => {
         this.isLoading.set(false);
@@ -248,11 +279,13 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
 
   onGroupsAdded(groups: TopicMemberGroup[]) {
     this.addedGroups.set(groups);
+    this.hasChanges.set(true);
   }
 
   onGroupRemoved(group: TopicMemberGroup) {
     this.addedGroups.update(gs => gs.filter(g => g.id !== group.id));
     this.groupsToRemove.update(gs => [...gs, group]);
+    this.hasChanges.set(true);
   }
 
   private updateSteps(status?: string) {
@@ -286,11 +319,12 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
   handleFooterBack() {
     const order = this.steps().map(s => s.key);
     const idx = order.indexOf(this.currentStep());
-    if (idx > 0) this.currentStep.set(order[idx - 1]);
+    if (idx > 0) this.onStepChange(order[idx - 1]);
   }
 
   onTopicUpdate(updates: Partial<Topic>) {
     this.topic.update(t => ({ ...t, ...updates }));
+    this.hasChanges.set(true);
     if (updates.id) {
       this.reloadMembers();
     }
@@ -298,6 +332,22 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
 
   onImageFileUpdate(file: File | null) {
     this.imageFile.set(file);
+    this.hasChanges.set(true);
+  }
+
+  onDiscussionChange(d: DiscussionData) {
+    this.discussion.set(d);
+    this.hasChanges.set(true);
+  }
+
+  onIdeationChange(i: Partial<Ideation>) {
+    this.ideation.set(i);
+    this.hasChanges.set(true);
+  }
+
+  onVoteChange(v: Partial<VoteWithOptions>) {
+    this.vote.set(v);
+    this.hasChanges.set(true);
   }
 
   saveToSettings() {
@@ -370,16 +420,38 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
   publishTopic() {
     this.isLoading.set(true);
     const t = this.topic();
+    const wasDraft = t.status === this.topicService.STATUSES.draft;
     const disc = this.discussion();
+    const v = this.vote();
+    const idea = this.ideation();
 
     this.topicService.patch({ ...t }).pipe(
       switchMap((savedTopic) => {
         this.topic.set(savedTopic);
-        if (!disc.question) return of(savedTopic);
-        const discSave$ = savedTopic.discussionId
-          ? this.discussionService.update(savedTopic.id, savedTopic.discussionId, disc)
-          : this.discussionService.create(savedTopic.id, disc);
-        return forkJoin({ topic: of(savedTopic), discussion: discSave$.pipe(catchError(() => of(null))) });
+        const sideOps: Record<string, Observable<unknown>> = { topic: of(savedTopic) };
+
+        if (savedTopic.id) {
+          this.addedGroups().forEach((g, idx) => {
+            sideOps[`addGroup_${idx}`] = this.groupMemberTopicService.addTopic(g.id, savedTopic.id, g.level || 'read').pipe(catchError(() => of(null)));
+          });
+          this.groupsToRemove().forEach((g, idx) => {
+            sideOps[`removeGroup_${idx}`] = this.groupMemberTopicService.removeTopicFromGroup(g.id, savedTopic.id).pipe(catchError(() => of(null)));
+          });
+        }
+
+        if (savedTopic.voteId && v && Object.keys(v).length > 0) {
+          const voteData = { ...v, id: v.id || savedTopic.voteId, topicId: savedTopic.id, description: v.question };
+          sideOps['vote'] = this.voteService.update(voteData).pipe(catchError(() => of(null)));
+        } else if (savedTopic.ideationId && idea && Object.keys(idea).length > 0) {
+          sideOps['ideation'] = this.ideationService.update({ ...idea, topicId: savedTopic.id }).pipe(catchError(() => of(null)));
+        } else if (disc.question && (!savedTopic.status || [this.topicService.STATUSES.draft, this.topicService.STATUSES.inProgress].includes(savedTopic.status))) {
+          const discSave$ = savedTopic.discussionId
+            ? this.discussionService.update(savedTopic.id, savedTopic.discussionId, disc)
+            : this.discussionService.create(savedTopic.id, disc);
+          sideOps['discussion'] = discSave$.pipe(catchError(() => of(null)));
+        }
+
+        return forkJoin(sideOps);
       }),
       catchError(() => {
         this.isLoading.set(false);
@@ -388,15 +460,20 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
       })
     ).subscribe((result) => {
       if (!result) return;
-      const savedTopic = (result as { topic?: Topic }).topic ?? result as Topic;
+      const savedTopic = (result as { topic?: Topic }).topic ?? result as unknown as Topic;
+      this.groupsToRemove.set([]);
       this.isLoading.set(false);
       this.notification.showRaw('success', 'VIEWS.TOPIC_EDIT.NOTIFICATION_SUCCESS_MESSAGE');
       this.hasChanges.set(false);
-      this.dialog.open(TopicInviteDialogComponent, {
-        data: { topic: savedTopic }
-      }).afterClosed().subscribe(() => {
+      if (wasDraft) {
+        this.dialog.open(TopicInviteDialogComponent, {
+          data: { topic: savedTopic }
+        }).afterClosed().subscribe(() => {
+          this.router.navigate(['/topics', savedTopic.id]);
+        });
+      } else {
         this.router.navigate(['/topics', savedTopic.id]);
-      });
+      }
     });
   }
 
@@ -437,6 +514,53 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
       error: () => {
         this.isLoading.set(false);
         this.currentStep.set('preview');
+      }
+    });
+  }
+
+  cancelEdit() {
+    const id = this.topic().id;
+    if (id) {
+      this.router.navigate(['/topics', id]);
+    } else {
+      this.router.navigate(['/my/topics']);
+    }
+  }
+
+  doDeleteTopic() {
+    const topicId = this.topic().id;
+    if (!topicId) return;
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        level: 'delete',
+        heading: 'MODALS.TOPIC_DELETE_CONFIRM_HEADING',
+        title: 'MODALS.TOPIC_DELETE_CONFIRM_TXT_ARE_YOU_SURE',
+        description: 'MODALS.TOPIC_DELETE_CONFIRM_TXT_NO_UNDO',
+        points: [
+          'MODALS.TOPIC_DELETE_CONFIRM_TXT_TOPIC_DELETED',
+          'MODALS.TOPIC_DELETE_CONFIRM_TXT_DISCUSSION_DELETED',
+          'MODALS.TOPIC_DELETE_CONFIRM_TXT_TOPIC_REMOVED_FROM_GROUPS'
+        ],
+        confirmBtn: 'MODALS.TOPIC_DELETE_CONFIRM_YES',
+        closeBtn: 'MODALS.TOPIC_DELETE_CONFIRM_NO'
+      }
+    });
+
+    dialogRef.afterClosed().pipe(take(1)).subscribe(result => {
+      if (result === true) {
+        this.isLoading.set(true);
+        this.topicService.delete({ id: topicId }).pipe(take(1)).subscribe({
+          next: () => {
+            this.isLoading.set(false);
+            this.hasChanges.set(false);
+            this.router.navigate(['/my/topics']);
+          },
+          error: () => {
+            this.isLoading.set(false);
+            this.notification.showRaw('error', 'VIEWS.TOPIC_CREATE.ERROR_SAVE_FAILED');
+          }
+        });
       }
     });
   }

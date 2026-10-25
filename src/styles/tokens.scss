@@ -31,7 +31,7 @@ $breakpoint-xl: 1200px;
   --color-danger: #ef4025;
   --color-error-background: #fff0ef;
   --color-success: #5ab467;
-  --color-success-background: #f1faf3;
+  --color-success-background: #e0f5e3;
   --color-warning: #f39129;
   --color-warn: #f39129;
   --color-warn-background: #fff1e1;
@@ -75,6 +75,11 @@ $breakpoint-xl: 1200px;
   /* Checkbox Specifics */
   --input-checkbox-background-default: #5c9cd0;
   --input-checkbox-border-default: #1168a8;
+  --input-checkbox-background-voting: #5ab467;
+  --input-checkbox-border-voting: #346933;
+  --btn-submit: #2c3b47;
+  --btn-submit-text: #ffffff;
+  --btn-submit-hover: #1168a8;
 
   /* Spacing */
   --spacing-xs: 4px;

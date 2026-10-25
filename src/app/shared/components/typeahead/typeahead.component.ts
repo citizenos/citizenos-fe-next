@@ -234,11 +234,12 @@ export class TypeaheadComponent {
   }
 
   selectActive() {
+    this.showEnterHint.set(false);
     if (!this.active() && this.itemList().length) {
       this.active.set(this.itemList()[0]);
     }
     const currentActive = this.active();
-    if (currentActive) this.doSelect(currentActive);
+    this.doSelect(currentActive as TypeaheadItemData);
   }
 
   doSelect(item: TypeaheadItemData) {

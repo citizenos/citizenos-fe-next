@@ -81,8 +81,13 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
   isLoading = signal(false);
   currentStep = signal<TopicCreateStep>('info');
   isCreatedFromGroup = signal(false);
-  showHelp = signal(true);
-  hasChanges = signal(true);
+  showHelp = signal(false);
+  hasChanges = signal(false);
+  isEagerlyCreated = signal(false);
+
+  toggleHelp() {
+    this.showHelp.update(v => !v);
+  }
 
   addedGroups = signal<TopicMemberGroup[]>([]);
   groupsToRemove = signal<TopicMemberGroup[]>([]);
@@ -125,6 +130,9 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
     });
 
     if (topicId) {
+      const isEager = history.state?.eagerlyCreated === true;
+      this.isEagerlyCreated.set(isEager);
+      this.hasChanges.set(isEager);
       this.loadExistingTopic(topicId);
     } else {
       this.createTopicEagerly();
@@ -162,22 +170,17 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
     };
     this.topicService.save(initialPayload).pipe(take(1)).subscribe({
       next: (savedTopic) => {
-        this.topicModel.update(current => {
-          const merged = {
-            ...savedTopic,
-            title: current.title || savedTopic.title,
-            intro: current.intro || savedTopic.intro
-          };
-          return merged;
-        });
+        this.topicModel.update(current => ({
+          ...savedTopic,
+          title: current.title || savedTopic.title,
+          intro: current.intro || savedTopic.intro
+        }));
         this.membersResource.reload();
         this.invitesResource.reload();
         this.isLoading.set(false);
-        // Update URL to include topicId without triggering navigation
-        this.hasChanges.set(false);
-        const url = this.router.createUrlTree([savedTopic.id], { relativeTo: this.route }).toString();
-        this.location.replaceState(url);
+        this.isEagerlyCreated.set(true);
         this.hasChanges.set(true);
+        this.router.navigate([savedTopic.id], { relativeTo: this.route, replaceUrl: true, state: { eagerlyCreated: true } });
       },
       error: () => {
         this.isLoading.set(false);
@@ -252,6 +255,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
 
   onTopicUpdate(updates: Partial<Topic>) {
     this.topicModel.update(t => ({ ...t, ...updates }));
+    this.hasChanges.set(true);
     if (updates.id) {
       this.membersResource.reload();
       this.invitesResource.reload();
@@ -260,15 +264,23 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
 
   onImageFileUpdate(file: File | null) {
     this.imageFile.set(file);
+    this.hasChanges.set(true);
+  }
+
+  onDiscussionChange(d: DiscussionData) {
+    this.discussion.set(d);
+    this.hasChanges.set(true);
   }
 
   onGroupsAdded(groups: TopicMemberGroup[]) {
     this.addedGroups.set(groups);
+    this.hasChanges.set(true);
   }
 
   onGroupRemoved(group: TopicMemberGroup) {
     this.addedGroups.update(gs => gs.filter(g => g.id !== group.id));
     this.groupsToRemove.update(gs => [...gs, group]);
+    this.hasChanges.set(true);
   }
 
   saveToSettings() {
@@ -480,7 +492,7 @@ export class TopicCreateComponent implements OnInit, PendingChangesComponent {
 
   removeChanges() {
     const topicId = this.topicModel().id;
-    if (topicId) {
+    if (topicId && this.isEagerlyCreated()) {
       this.topicService.delete({ id: topicId }).pipe(take(1)).subscribe();
     }
   }

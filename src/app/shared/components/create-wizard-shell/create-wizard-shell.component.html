@@ -40,28 +40,56 @@
   <div id="create_footer">
     <div class="items_row">
       <div class="footer-left">
-        @if (!isFirstStep()) {
+        @if (isEditMode()) {
+          <button class="btn_medium_submit_ghost icon" (click)="footerClose.emit()">
+            <cos-icon name="close" [size]="24"></cos-icon>
+          </button>
+        } @else if (!isFirstStep()) {
           <button class="btn_medium_submit_ghost icon" (click)="footerBack.emit()">
             <cos-icon name="arrow-left" [size]="24"></cos-icon>
           </button>
         }
       </div>
       <div class="footer-right">
-        <button class="btn_medium_secondary" (click)="saveDraft.emit()">
-          {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_SAVE_AS_DRAFT' | translate }}
-        </button>
-        <button
-          class="btn_medium_submit"
-          [class.disabled]="isNextDisabled()"
-          [disabled]="isNextDisabled()"
-          (click)="footerContinue.emit()"
-        >
-          @if (isLastStep()) {
-            {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CREATE' | translate }}
-          } @else {
-            {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE' | translate }}
+        @if (isEditMode()) {
+          @if (!isFirstStep()) {
+            <button class="btn_medium_submit_ghost icon" (click)="footerBack.emit()">
+              <cos-icon name="arrow-left" [size]="24"></cos-icon>
+            </button>
           }
-        </button>
+          <button
+            class="btn_medium_submit icon"
+            [class.disabled]="isNextDisabled() || isLastStep()"
+            [disabled]="isNextDisabled() || isLastStep()"
+            (click)="footerContinue.emit()"
+          >
+            <cos-icon name="arrow-right" [size]="24"></cos-icon>
+          </button>
+          <button
+            class="btn_medium_submit icon"
+            [class.disabled]="isNextDisabled()"
+            [disabled]="isNextDisabled()"
+            (click)="footerPublish.emit()"
+          >
+            {{ (domainType() === 'vote' ? 'VIEWS.VOTE_CREATE.FOOTER_BTN_SAVE_CHANGES_AND_PUBLISH' : 'VIEWS.TOPIC_CREATE.FOOTER_BTN_SAVE_CHANGES_AND_PUBLISH') | translate }}
+          </button>
+        } @else {
+          <button class="btn_medium_secondary" (click)="saveDraft.emit()">
+            {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_SAVE_AS_DRAFT' | translate }}
+          </button>
+          <button
+            class="btn_medium_submit"
+            [class.disabled]="isNextDisabled()"
+            [disabled]="isNextDisabled()"
+            (click)="footerContinue.emit()"
+          >
+            @if (isLastStep()) {
+              {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CREATE' | translate }}
+            } @else {
+              {{ 'VIEWS.TOPIC_CREATE.FOOTER_BTN_CONTINUE' | translate }}
+            }
+          </button>
+        }
       </div>
     </div>
   </div>

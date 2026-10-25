@@ -15,12 +15,13 @@ import { TopicDiscussionService } from '../../../core/services/topic-discussion.
 import { GroupMemberTopicService } from '../../../core/services/group-member-topic.service';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 import { TopicCreateComponent } from './topic-create.component';
+import { Topic } from '../../../core/interfaces/topic';
 import { of } from 'rxjs';
 import { GroupDetailService } from '../../../core/services/group-detail.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 const mockTopic = { id: 'new-id', title: '', visibility: 'private', status: 'draft', categories: [] };
-const mockTopicService = { save: vi.fn(), patch: vi.fn(), get: vi.fn(), loadAttachments: vi.fn().mockReturnValue(of([])) };
+const mockTopicService = { save: vi.fn(), patch: vi.fn(), get: vi.fn(), delete: vi.fn().mockReturnValue(of({})), loadAttachments: vi.fn().mockReturnValue(of([])) };
 const mockUploadService = { upload: vi.fn() };
 const mockNotificationService = { showRaw: vi.fn(), success: vi.fn() };
 const mockMemberUserService = { loadItems: vi.fn().mockReturnValue(of([])) };
@@ -169,6 +170,18 @@ describe('TopicCreateComponent (business logic)', () => {
     expect(comp.addedGroups().length).toBe(1);
     expect(comp.addedGroups()[0].id).toBe('g1');
     expect(comp.topicModel().visibility).toBe('private');
+  });
+
+  it('removeChanges deletes topic only if isEagerlyCreated is true', () => {
+    component.topicModel.set({ id: 'topic-eager' } as Topic);
+    component.isEagerlyCreated.set(true);
+    component.removeChanges();
+    expect(mockTopicService.delete).toHaveBeenCalledWith({ id: 'topic-eager' });
+
+    vi.clearAllMocks();
+    component.isEagerlyCreated.set(false);
+    component.removeChanges();
+    expect(mockTopicService.delete).not.toHaveBeenCalled();
   });
 });
 

@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { Topic } from '../../../core/interfaces/topic';
 import { Group } from '../../../core/interfaces/group';
 import { TopicService } from '../../../core/services/topic.service';
+import { TopicMemberGroupService } from '../../../core/services/topic-member-group.service';
 import { CountryService } from '../../../core/services/country.service';
 import { LanguageService } from '../../../core/services/language.service';
 import { DropdownComponent } from '../dropdown/dropdown.component';
@@ -38,9 +39,11 @@ export interface TopicMemberGroup {
 })
 export class TopicSettingsPanelComponent implements OnInit {
   private topicService = inject(TopicService);
+  private topicMemberGroupService = inject(TopicMemberGroupService);
   private countryService = inject(CountryService);
   private languageService = inject(LanguageService);
   public translate = inject(TranslateService);
+  private loadedGroupsTopicId: string | null = null;
 
   topic = model<Topic>({} as Topic);
   groups = model<Group[]>([]);
@@ -78,6 +81,22 @@ export class TopicSettingsPanelComponent implements OnInit {
         this.categories.set([...(t.categories || [])]);
         this.country.set(t.country || null);
         this.language.set(t.language || null);
+        if (this.loadedGroupsTopicId !== t.id) {
+          this.loadedGroupsTopicId = t.id;
+          const groupRows = (t.members?.groups as { rows?: TopicMemberGroup[]; count?: number } | undefined)?.rows;
+          const groupCount = (t.members?.groups as { count?: number } | undefined)?.count ?? 0;
+          if (Array.isArray(groupRows) && groupRows.length > 0) {
+            this.addedGroups.set([...groupRows]);
+          } else if (groupCount > 0) {
+            this.topicMemberGroupService.loadItems(t.id).subscribe({
+              next: (res) => {
+                const rows = Array.isArray(res) ? res : ((res as { rows?: TopicMemberGroup[] })?.rows || []);
+                this.addedGroups.set(rows as unknown as TopicMemberGroup[]);
+              },
+              error: () => { /* ignore */ }
+            });
+          }
+        }
       }
     }, { allowSignalWrites: true });
 

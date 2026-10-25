@@ -10,7 +10,7 @@ export const TOPICS_ROUTES: Routes = [
   {
     path: 'create',
     children: [
-      { path: '', loadComponent: () => import('./topic-create/topic-create.component').then(m => m.TopicCreateComponent), canDeactivate: [pendingChangesGuard] },
+      { path: '', loadComponent: () => import('./topic-create/topic-create.component').then(m => m.TopicCreateComponent) },
       { path: ':topicId', loadComponent: () => import('./topic-create/topic-create.component').then(m => m.TopicCreateComponent), canDeactivate: [pendingChangesGuard] }
     ]
   },
@@ -25,7 +25,7 @@ export const TOPICS_ROUTES: Routes = [
       {
         path: 'create',
         children: [
-          { path: '', loadComponent: () => import('./ideation-create/ideation-create.component').then(m => m.IdeationCreateComponent), canDeactivate: [pendingChangesGuard] },
+          { path: '', loadComponent: () => import('./ideation-create/ideation-create.component').then(m => m.IdeationCreateComponent) },
           { path: ':topicId', loadComponent: () => import('./ideation-create/ideation-create.component').then(m => m.IdeationCreateComponent), canDeactivate: [pendingChangesGuard] }
         ]
       },
@@ -42,7 +42,7 @@ export const TOPICS_ROUTES: Routes = [
       {
         path: 'create',
         children: [
-          { path: '', loadComponent: () => import('./vote-create/vote-create.component').then(m => m.VoteCreateComponent), canDeactivate: [pendingChangesGuard] },
+          { path: '', loadComponent: () => import('./vote-create/vote-create.component').then(m => m.VoteCreateComponent) },
           { path: ':topicId', loadComponent: () => import('./vote-create/vote-create.component').then(m => m.VoteCreateComponent), canDeactivate: [pendingChangesGuard] }
         ]
       },

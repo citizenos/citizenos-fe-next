@@ -1,131 +1,63 @@
-@use '../../../../assets/styles/figma-tokens' as *;
-
 @use "../../../../styles/mixins";
-
-:host {
-  display: contents;
-}
-
-.dialog-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: var(--color-background-overlay, rgba(44, 59, 71, 0.8));
-  z-index: 9999;
-  overflow-y: auto;
-  cursor: pointer;
-
-  &::-webkit-scrollbar {
-    width: $spacing-sm;
-    height: $spacing-sm;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--color-primary);
-    border-radius: $spacing-xs;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-}
-
-.dialog_wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: $spacing-xl 0 40px 0;
-  min-height: 100%;
-  width: 100%;
-  cursor: default;
-}
-
-#notification_wrap_dialog {
-  z-index: -9;
-  top: 0;
-  width: 100%;
-  display: flex;
-  height: max-content;
-  left: 0;
-  position: relative;
-}
 
 .dialog {
   max-width: 560px;
-  width: 100%;
-  background: var(--color-background);
-  border-radius: var(--radius-lg);
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
 
   .dialog_header {
-    padding: $spacing-l $spacing-l 0;
-    display: flex;
-    justify-content: space-between;
-    &.voting {
-      background-color: var(--color-argument-pro-light);
-      color: var(--color-success);
-    }
-    .header_text {
-      display: flex;
-      align-items: center;
-      gap: $font-size-xs;
-    }
     .title {
       color: var(--color-text);
-      margin: 0;
-    }
-    .dialog_close {
-      cursor: pointer;
     }
   }
   .dialog_tabs_wrap {
-    display: flex;
-    gap: 0;
-    padding: $spacing-m $spacing-l 0;
-    border-bottom: 1px solid $color-border;
-    &.voting {
-      background-color: var(--color-dialog-voting);
-    }
     @include mixins.mobile {
       background-color: var(--color-argument-pro-light);
-      padding: $spacing-m;
+      padding: 16px;
     }
-  }
-  .dialog_tab {
-    background: none; border: none; border-bottom: 2px solid transparent;
-    padding: $spacing-sm $spacing-m; cursor: pointer; font-size: $font-size-sm; font-weight: 500;
-    color: var(--color-text-muted); transition: color .2s, border-color .2s;
-    text-decoration: none;
-    &.success {
-      background-color: var(--color-success-background);
-    }
-    &.active { 
-      color: var(--color-primary); 
-      border-bottom-color: var(--color-primary); 
-      background-color: $color-bg-surface;
-      box-shadow: 0px $spacing-sm 20px 0px rgba(220, 231, 240, 0.3),
-        0px $font-size-xs $spacing-m 0px rgba(50, 85, 112, 0.1);
-      font-weight: 600;
-    }
-    &:disabled { opacity: .5; cursor: not-allowed; }
   }
   .dialog_content {
-    gap: $spacing-m;
-    padding: $spacing-l 0;
+    gap: 16px;
+    padding: 24px;
 
     @include mixins.mobile {
-      padding: $spacing-m 0;
+      padding: 16px;
+    }
+
+    #form_area {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 872px;
+      gap: 32px;
+      position: relative;
+      justify-content: space-between;
+
+      .content_section {
+        display: flex;
+        flex-direction: row;
+        background-color: var(--color-surfaces);
+        border-radius: 16px;
+        width: 100%;
+
+        .section_content_wrap {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          width: 100%;
+          padding: 0;
+
+          cos-input,
+          input,
+          textarea {
+            width: 100%;
+          }
+        }
+      }
     }
 
     .introduction_wrap {
       display: flex;
       flex-direction: column;
-      gap: $spacing-l;
-      padding: 0 $spacing-l;
-
-      @include mixins.mobile {
-        padding: 0 $spacing-m;
-      }
+      gap: 24px;
 
       .intro_heading {
         display: flex;
@@ -133,13 +65,13 @@
         width: 100%;
         flex-direction: column;
         justify-content: center;
-        font-size: $spacing-m;
-        line-height: $spacing-l;
+        font-size: 16px;
+        line-height: 24px;
         span {
-          font-size: $spacing-m;
+          font-size: 16px;
           font-style: normal;
           font-weight: 400;
-          line-height: $spacing-l;
+          line-height: 24px;
         }
       }
     }
@@ -147,12 +79,9 @@
     .dialog_info {
       display: flex;
       flex-direction: column;
-      gap: $spacing-sm;
+      gap: 8px;
 
       .row {
-        display: flex;
-        align-items: flex-start;
-        gap: $font-size-xs;
         span {
           line-height: 20px;
         }
@@ -160,21 +89,145 @@
     }
   }
   .dialog_footer {
-    display: flex;
-    justify-content: space-between;
-    padding: $spacing-l;
-    align-items: center;
     @include mixins.mobile {
-      gap: $spacing-m;
+      gap: 16px;
       flex-direction: column-reverse;
 
       button {
         width: 100%;
       }
     }
-    .button_row {
+  }
+}
+
+.row {
+  gap: 8px;
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.line_separator {
+  height: 1px;
+  width: 100%;
+  background: var(--color-border);
+  display: flex;
+}
+
+.error_label {
+  margin-top: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error_text {
+  color: var(--color-error);
+
+  path {
+    fill: var(--color-error);
+  }
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+.dropdown,
+textarea {
+  padding: 16px;
+  background: var(--color-surfaces);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+
+  &:focus {
+    outline: none;
+    border: 1px solid var(--color-border-active);
+  }
+
+  &.error_input,
+  &.error {
+    border: 1px solid var(--color-error);
+  }
+}
+
+input:not([type="checkbox"]):not([type="radio"]) {
+  height: 48px;
+}
+
+.dropdown {
+  border: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+
+  @include mixins.mobile {
+    width: 100%;
+  }
+
+  .selection {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 8px;
+    background: var(--color-surfaces);
+  }
+
+  .options {
+    display: none;
+    flex-direction: column;
+    background: var(--color-surfaces);
+    border-radius: 8px;
+    z-index: 9;
+    margin-top: 47px;
+    min-width: max-content;
+    position: absolute;
+    width: 100%;
+    gap: 16px;
+    overflow-y: auto;
+    max-height: 350px;
+    padding: 16px;
+    box-shadow: 0px 8px 20px 0px rgba(220, 231, 240, 0.3),
+      0px 12px 16px 0px rgba(50, 85, 112, 0.1);
+
+    .option {
       display: flex;
-      gap: $spacing-m;
+      align-items: center;
+      justify-content: flex-start;
+      cursor: pointer;
+      padding: 0;
+      position: relative;
+      max-width: 300px;
+
+      @include mixins.mobile {
+        max-width: initial;
+      }
+
+      &:hover {
+        color: var(--color-link);
+      }
+    }
+  }
+
+  &.dropdown_active {
+    .options {
+      display: flex;
+      min-width: max-content;
+      max-width: 100%;
+      @include mixins.mobile {
+        min-width: min-content;
+      }
+    }
+
+    .option {
+      @include mixins.mobile {
+        max-width: 100%;
+      }
     }
   }
 }
@@ -182,17 +235,9 @@
 .vote_options_wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: $spacing-sm;
-  
-  .vote_options_list {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-sm;
-    width: 100%;
-  }
-
+  gap: 8px;
   .radio_wrap {
-    width: calc(50% - $spacing-sm);
+    width: calc(50% - 8px);
   }
 
   .description_text,
@@ -207,58 +252,56 @@
 
 .input_area {
   display: flex;
+  gap: 8px;
   align-items: center;
+  background-color: var(--color-surfaces);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
   justify-content: space-between;
-  gap: $spacing-sm;
-  
-  cos-input {
-    flex-grow: 1;
-    width: 100%;
-    
-    .input_inner_wrap {
-      display: flex;
-      width: 100%;
-      align-items: center;
-      justify-content: space-between;
-      
-      input {
-        flex-grow: 1;
-      }
-      
-      .actions_wrap {
-        display: flex;
-        align-items: center;
-        gap: $spacing-sm;
-        margin-right: $spacing-sm;
-      }
-    }
+
+  ::ng-deep .input-wrapper {
+    border: none;
+    box-shadow: none;
+  }
+
+  .actions_wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .icon_drag {
     cursor: move;
-    width: $spacing-xl;
-    height: $spacing-xl;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-items: center;
   }
-  input {
-    background-color: $color-bg-surface;
+  input,
+  cos-input {
+    border: none;
+    background-color: var(--color-surfaces);
+    &:focus,
+    &:active,
+    &:hover {
+      border: none;
+      outline: none;
+    }
   }
   button {
     width: max-content;
-    padding: $spacing-sm $spacing-m;
+    padding: 8px 16px;
+    cursor: pointer;
   }
   &.min_max_options {
     justify-content: space-between;
-    padding: $spacing-sm $spacing-sm $spacing-sm $spacing-m;
-    display: flex;
-    align-items: center;
+    padding: 8px 8px 8px 16px;
   }
 
   .options_count_input_wrap {
     display: flex;
-    gap: $spacing-sm;
+    gap: 8px;
     justify-self: flex-end;
     align-self: flex-end;
     vertical-align: middle;
@@ -267,13 +310,13 @@
     .options_count_input {
       display: flex;
       max-width: 64px;
-      padding: $spacing-m;
+      padding: 16px;
       justify-content: center;
       align-items: center;
       flex-shrink: 0;
       text-align: center;
-      border-radius: $spacing-sm;
-      border: 1px solid $color-border;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
       -moz-appearance: textfield;
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
@@ -288,14 +331,62 @@
   width: 100%;
 
   .selection {
-    padding: $spacing-sm $spacing-m;
+    padding: 8px 16px;
   }
 }
 
 .radio_wrap {
-  padding: $spacing-m;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: space-between;
+  padding: 16px;
+  gap: 8px;
+  background-origin: padding-box;
   border: 2px solid var(--color-argument-pro-light);
-  border-radius: $spacing-sm;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:focus,
+  &:hover,
+  &.active {
+    background: var(--color-background);
+  }
+
+  .radio_text_wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+
+    .radio_lable_wrap {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+
+      .checkbox {
+        width: 100%;
+      }
+    }
+
+    .radio_description {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+
+  &.voting {
+    &:focus,
+    &:hover {
+      background-color: var(--color-argument-pro-light);
+
+      .checkmark,
+      .radio {
+        border-color: initial;
+      }
+    }
+  }
 
   &.selected {
     background-color: var(--color-argument-pro-light);
@@ -303,10 +394,10 @@
 }
 
 .btn_medium_plain {
-  background-color: $color-bg-default;
+  background-color: var(--color-surface-contrast);
 }
 #voting_question_wrap {
-  border-radius: $spacing-sm;
+  border-radius: 8px;
 }
 
 .date_selector {
@@ -333,14 +424,14 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: $spacing-m;
+  gap: 16px;
 
   .date_row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     vertical-align: middle;
-    gap: $spacing-l;
+    gap: 24px;
 
     @include mixins.mobile {
       flex-direction: column;
@@ -354,7 +445,7 @@
     .input_wrap {
       flex-grow: 2;
       display: flex;
-      gap: $spacing-sm;
+      gap: 8px;
       align-items: center;
       justify-content: flex-end;
 
@@ -367,7 +458,7 @@
       .time_wrap {
         display: flex;
         align-items: center;
-        gap: $spacing-sm;
+        gap: 8px;
 
         @include mixins.mobile {
           width: 100%;
@@ -390,8 +481,8 @@
   display: flex;
   flex-direction: column;
   background-color: var(--color-argument-pro-medium);
-  padding: $spacing-m;
-  gap: $spacing-sm;
+  padding: 16px;
+  gap: 8px;
 
   .dropdown {
     width: 100%;
@@ -399,65 +490,34 @@
 
   .checkbox {
     .checkmark {
-      background-color: $color-bg-surface;
+      background-color: var(--color-surfaces);
     }
 
     &.selected {
       .checkmark {
-        background-color: $color-primary;
+        background-color: var(--input-checkbox-background-default);
       }
     }
   }
 }
 
 .dialog_info_wrap {
-  padding: 0 $spacing-l;
-  @include mixins.mobile {
-    padding: 0 $spacing-m;
-  }
   .dialog_info {
-    padding: $spacing-m;
-    background-color: $color-bg-default;
-    border-radius: $spacing-sm;
-
-    &.no_padding {
-      padding: 0;
-    }
-
-    &.voting {
-      background-color: var(--color-argument-pro-light);
-    }
-
     .dialog_info_header {
       display: flex;
-      align-items: center;
-      gap: $font-size-xs;
       background-color: var(--color-argument-pro-medium);
-      padding: $spacing-m;
-      border-radius: $spacing-sm $spacing-sm 0 0;
-      span {
-        font-weight: 600;
-      }
     }
 
     .dialog_info_content {
       display: flex;
       flex-direction: column;
-      gap: $spacing-sm;
+      gap: 8px;
       align-items: flex-start;
       width: 100%;
-      padding: $spacing-m;
 
       .radio_wrap {
         width: 100%;
-        background-color: $color-bg-surface;
-        border: none;
-        padding: 0;
-        cursor: default;
-
-        &:hover {
-          background-color: $color-bg-surface;
-        }
+        background-color: var(--color-surfaces);
       }
     }
   }
@@ -466,33 +526,30 @@
 .id_icons_wrap {
   display: flex;
   justify-content: space-around;
-  margin-top: $spacing-sm;
 }
 
 .vote_info_reminder {
-  font-size: $font-size-sm;
-  line-height: $spacing-m;
-  margin-bottom: $spacing-m;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 16px;
 }
 
 .vote_option_ideas_wrap {
   display: flex;
   flex-direction: column;
-  gap: $spacing-m;
+  gap: 16px;
 }
 .idea_selection_wrap {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--color-dialog-voting-contrast);
-  padding: $spacing-m;
+  padding: 16px;
   max-height: 240px;
   overflow: auto;
-  gap: $spacing-m;
+  gap: 16px;
 
   .line_separator {
     background: var(--color-dialog-voting-contrast);
-    height: 1px;
-    width: 100%;
   }
   .idea_selection_header {
     display: flex;
@@ -502,64 +559,58 @@
     justify-content: space-between;
     .checkbox_wrap {
       display: flex;
-      gap: $spacing-m;
+      gap: 16px;
       align-items: center;
-      cursor: pointer;
     }
     .likes_wrap {
       display: flex;
       gap: 0;
       align-items: center;
-      cursor: pointer;
-      color: var(--color-link);
     }
   }
 
   .ideas_wrap {
     display: flex;
     flex-direction: column;
-    gap: $spacing-sm;
+    gap: 8px;
   }
 
   .folder_row_wrap {
-    padding: $spacing-xs;
+    padding: 4px;
     &.open {
-      background-color: $color-bg-default;
-      margin-top: -$spacing-xs;
-      margin-bottom: -$spacing-sm;
+      background-color: var(--color-surface-contrast);
+      margin-top: -4px;
+      margin-bottom: -8px;
     }
     .folder_ideas_wrap {
-      padding-top: $spacing-sm;
+      padding-top: 8px;
       display: flex;
       flex-direction: column;
-      gap: $spacing-sm;
+      gap: 8px;
     }
   }
   .folder_row {
     display: flex;
     align-items: center;
-    gap: $spacing-m;
+    gap: 16px;
     width: 100%;
     justify-content: space-between;
-    height: $spacing-l;
+    height: 24px;
 
     .checkbox_wrap {
       display: flex;
-      gap: $spacing-m;
+      gap: 16px;
       align-items: center;
-      cursor: pointer;
     }
     .votes {
       width: 40px;
-      text-align: right;
     }
 
     .folder {
       color: var(--color-link);
       display: flex;
-      gap: $spacing-sm;
+      gap: 8px;
       align-items: center;
-      cursor: pointer;
     }
     .icon {
       display: flex;
@@ -571,7 +622,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: $spacing-l;
+    height: 24px;
 
     .icon {
       display: flex;
@@ -579,80 +630,16 @@
     }
     .checkbox_wrap {
       display: flex;
-      gap: $spacing-m;
+      gap: 16px;
       align-items: center;
-      cursor: pointer;
     }
     .votes {
       width: 40px;
-      text-align: right;
     }
     .statement {
       width: 100%;
-      max-height: $spacing-m;
+      max-height: 16px;
       overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-  }
-}
-
-.content_section {
-  margin-bottom: $spacing-l;
-}
-.section_content_wrap {
-  padding: 0 $spacing-l;
-  @include mixins.mobile {
-    padding: 0 $spacing-m;
-  }
-}
-.small_heading {
-  font-weight: 600;
-  margin-bottom: $spacing-sm;
-}
-.section_content_description {
-  margin-bottom: $spacing-m;
-}
-.error_text {
-  color: $color-error;
-}
-.bold {
-  font-weight: bold;
-}
-.btn_medium_voting_light {
-  background: var(--color-argument-pro-light);
-  border: none;
-  border-radius: $spacing-xs;
-  cursor: pointer;
-  padding: $spacing-sm;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn_medium_plain {
-  display: flex;
-  align-items: center;
-  gap: $spacing-sm;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: $spacing-sm 0;
-  color: var(--color-text);
-  font-family: 'Noto Sans', sans-serif;
-  font-size: $font-size-sm;
-  font-weight: 500;
-  
-  cos-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 150ms ease;
-  }
-  
-  &.animate:hover {
-    cos-icon {
-      transform: rotate(-180deg);
     }
   }
 }

@@ -1,14 +1,18 @@
 <cos-create-wizard-shell
-  domainType="topic"
-  headingKey="VIEWS.TOPIC_EDIT.HEADING"
+  [domainType]="domainType()"
+  [headingKey]="headingKey()"
   [steps]="steps()"
   [currentStep]="currentStep()"
   [hasSidebar]="currentStep() !== 'preview'"
   [isNextDisabled]="isFooterNextDisabled()"
+  [topic]="topic()"
   (stepChange)="onStepChange($event)"
   (saveDraft)="saveAsDraft()"
   (footerContinue)="handleFooterContinue()"
   (footerBack)="handleFooterBack()"
+  (footerClose)="cancelEdit()"
+  (footerPublish)="publishTopic()"
+  (deleteTopic)="doDeleteTopic()"
 >
   @if (isLoading()) {
     <div class="loading-overlay">
@@ -34,25 +38,30 @@
     }
     @case ('discussion') {
       <cos-step-topic-discussion
+        [topic]="topic() | any"
         [discussion]="discussion()"
-        (discussionChange)="discussion.set($event)"
+        (discussionChange)="onDiscussionChange($event)"
       ></cos-step-topic-discussion>
     }
     @case ('ideation') {
       <cos-step-ideation-settings
         [ideation]="ideation()"
-        (ideationUpdate)="ideation.set($event)"
+        (ideationUpdate)="onIdeationChange($event)"
       ></cos-step-ideation-settings>
     }
     @case ('voting') {
       <cos-step-vote-settings
+        [topic]="topic() | any"
         [vote]="vote()"
-        (voteUpdate)="vote.set($event)"
+        (voteUpdate)="onVoteChange($event)"
       ></cos-step-vote-settings>
     }
     @case ('preview') {
       <cos-step-topic-preview
         [topic]="topic() | any"
+        [ideation]="ideation()"
+        [vote]="vote()"
+        [discussion]="discussion()"
       ></cos-step-topic-preview>
     }
   }

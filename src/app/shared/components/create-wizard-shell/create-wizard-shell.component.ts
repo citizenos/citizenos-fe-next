@@ -31,7 +31,14 @@ export class CreateWizardShellComponent {
   saveDraft = output<void>();
   footerContinue = output<void>();
   footerBack = output<void>();
+  footerClose = output<void>();
+  footerPublish = output<void>();
   deleteTopic = output<void>();
+
+  isEditMode = computed(() => {
+    const s = this.topic()?.status;
+    return !!s && s !== 'draft';
+  });
 
   isFirstStep = computed(() => {
     const s = this.steps();
@@ -49,4 +56,3 @@ export class CreateWizardShellComponent {
     return this.topicService.getDownloadUrl(t.id);
   }
 }
-

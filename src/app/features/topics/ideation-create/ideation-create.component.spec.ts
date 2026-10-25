@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, ActivatedRoute } from '@angular/router';
 import { IdeationCreateComponent } from './ideation-create.component';
 import { TopicService } from '../../../core/services/topic.service';
+import { Topic } from '../../../core/interfaces/topic';
 import { TopicIdeationService } from '../../../core/services/topic-ideation.service';
 import { UploadService } from '../../../core/services/upload.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -11,7 +12,7 @@ import { of } from 'rxjs';
 
 const mockTopic = { id: 'topic-1', title: 'Test', visibility: 'private', status: 'draft', categories: [] };
 const mockIdeation = { id: 'ideation-1', question: '', allowAnonymous: false, disableReplies: false };
-const mockTopicService = { save: vi.fn(), patch: vi.fn(), loadTopic: vi.fn(), LEVELS: { admin: 'admin', edit: 'edit', read: 'read' } };
+const mockTopicService = { save: vi.fn(), patch: vi.fn(), loadTopic: vi.fn(), delete: vi.fn().mockReturnValue(of({})), LEVELS: { admin: 'admin', edit: 'edit', read: 'read' } };
 const mockIdeationService = { save: vi.fn(), update: vi.fn(), get: vi.fn() };
 const mockUploadService = { upload: vi.fn() };
 const mockNotificationService = { success: vi.fn(), showRaw: vi.fn() };
@@ -73,5 +74,17 @@ describe('IdeationCreateComponent (business logic)', () => {
     component.ideationModel.set({ id: 'ideation-1', question: 'A question' });
     component.onPublish();
     expect(mockTopicService.patch).toHaveBeenCalledWith(expect.objectContaining({ status: 'ideation' }));
+  });
+
+  it('removeChanges deletes topic only if isEagerlyCreated is true', () => {
+    component.topicModel.set({ id: 'topic-eager' } as unknown as Topic);
+    component.isEagerlyCreated.set(true);
+    component.removeChanges();
+    expect(mockTopicService.delete).toHaveBeenCalledWith({ id: 'topic-eager' });
+
+    vi.clearAllMocks();
+    component.isEagerlyCreated.set(false);
+    component.removeChanges();
+    expect(mockTopicService.delete).not.toHaveBeenCalled();
   });
 });

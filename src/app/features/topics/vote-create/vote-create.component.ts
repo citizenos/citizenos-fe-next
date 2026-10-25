@@ -66,7 +66,14 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
 
   currentStep = signal<VoteCreateStep>('info');
   isLoading = signal(false);
-  hasChanges = signal(true);
+  hasChanges = signal(false);
+  isEagerlyCreated = signal(false);
+  showHelp = signal(false);
+  isNew = computed(() => !this.topicModel().status || this.topicModel().status === 'draft');
+
+  toggleHelp() {
+    this.showHelp.update(v => !v);
+  }
 
   topicModel = signal<Partial<Topic>>({
     title: '',
@@ -119,6 +126,9 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
   ngOnInit() {
     const topicId = this.route.snapshot.params['topicId'];
     if (topicId) {
+      const isEager = history.state?.eagerlyCreated === true;
+      this.isEagerlyCreated.set(isEager);
+      this.hasChanges.set(isEager);
       this.loadExistingTopic(topicId);
     } else {
       this.createEagerly();
@@ -187,11 +197,9 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
           options
         });
         this.isLoading.set(false);
-        this.hasChanges.set(false);
-        
-        const url = this.router.createUrlTree([this.topicModel().id], { relativeTo: this.route }).toString();
-        this.location.replaceState(url);
+        this.isEagerlyCreated.set(true);
         this.hasChanges.set(true);
+        this.router.navigate([savedVote.topicId || this.topicModel().id], { relativeTo: this.route, replaceUrl: true, state: { eagerlyCreated: true } });
       },
       error: () => {
         this.isLoading.set(false);
@@ -264,6 +272,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
 
   onTopicUpdate(updates: Partial<Topic>) {
     this.topicModel.update((t) => ({ ...t, ...updates }));
+    this.hasChanges.set(true);
     if (updates.id) {
       this.membersResource.reload();
       this.invitesResource.reload();
@@ -272,15 +281,18 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
 
   onVoteUpdate(updates: Partial<VoteWithOptions>) {
     this.voteModel.update((v) => ({ ...v, ...updates }));
+    this.hasChanges.set(true);
   }
 
   onGroupsAdded(groups: TopicMemberGroup[]) {
     this.addedGroups.set(groups);
+    this.hasChanges.set(true);
   }
 
   onGroupRemoved(group: TopicMemberGroup) {
     this.addedGroups.update(gs => gs.filter(g => g.id !== group.id));
     this.groupsToRemove.update(gs => [...gs, group]);
+    this.hasChanges.set(true);
   }
 
   inviteEditors() {
@@ -423,7 +435,7 @@ export class VoteCreateComponent implements OnInit, PendingChangesComponent {
 
   removeChanges() {
     const topicId = this.topicModel().id;
-    if (topicId) {
+    if (topicId && this.isEagerlyCreated()) {
       this.topicService.delete({ id: topicId }).pipe(take(1)).subscribe();
     }
   }

@@ -147,4 +147,24 @@ describe('TopicEditComponent', () => {
     component.onStepChange('settings');
     expect(mockDialogService.open).toHaveBeenCalledWith(TopicSettingsDisabledDialogComponent);
   });
+
+  it('should not have unsaved changes initially, but set them when updated', () => {
+    component.ngOnInit();
+    expect(component.hasUnsavedChanges()).toBe(false);
+
+    component.onTopicUpdate({ title: 'New Title' });
+    expect(component.hasUnsavedChanges()).toBe(true);
+
+    component.saveAsDraft();
+    expect(component.hasUnsavedChanges()).toBe(false);
+  });
+
+  it('cancelEdit should navigate back to topic view', () => {
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate');
+
+    component.topic.set({ id: 'topic-123' } as unknown as Topic);
+    component.cancelEdit();
+    expect(navigateSpy).toHaveBeenCalledWith(['/topics', 'topic-123']);
+  });
 });

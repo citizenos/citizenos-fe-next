@@ -10,13 +10,12 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { DeadlinePickerComponent } from '../../../../../shared/components/deadline-picker/deadline-picker.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'cos-step-vote-settings',
   standalone: true,
-  imports: [FormsModule, TranslateModule, DeadlinePickerComponent, InputComponent, IconComponent, ButtonComponent],
+  imports: [FormsModule, TranslateModule, DeadlinePickerComponent, InputComponent, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './step-vote-settings.component.html',
   styleUrl: './step-vote-settings.component.scss'
@@ -48,12 +47,33 @@ export class StepVoteSettingsComponent implements OnInit {
     }
   }
 
+  canEditDescription(): boolean {
+    const t = this.topic();
+    if (!t || !t.id) return true;
+    return this.topicService.canEditDescription(t as Topic);
+  }
+
+  onQuestionChange(question: string) {
+    if (!this.canEditDescription()) return;
+    this.onUpdate({ question });
+  }
+
+  setAuthType(authType: 'soft' | 'hard') {
+    if (!this.canEditDescription()) return;
+    if (authType === 'hard') {
+      this.onUpdate({ authType: 'hard', delegationIsAllowed: false });
+    } else {
+      this.onUpdate({ authType: 'soft' });
+    }
+  }
+
   isIdeaChecked(idea: Idea): boolean {
     return this.getOptions().some(o => o.ideaId === idea.id);
   }
 
   toggleIdea(idea: Idea, event: Event) {
     event.stopPropagation();
+    if (!this.canEditDescription()) return;
     const options = [...this.getOptions()];
     const index = options.findIndex(o => o.ideaId === idea.id);
     if (index > -1) {
@@ -71,6 +91,7 @@ export class StepVoteSettingsComponent implements OnInit {
 
   toggleFolder(folder: IdeationFolder, event: Event) {
     event.stopPropagation();
+    if (!this.canEditDescription()) return;
     const isChecked = this.isFolderChecked(folder);
     let options = [...this.getOptions()];
     
@@ -101,6 +122,7 @@ export class StepVoteSettingsComponent implements OnInit {
   }
 
   toggleAllIdeas() {
+    if (!this.canEditDescription()) return;
     const isChecked = this.allIdeasChecked();
     const options = [...this.getOptions().filter(o => !o.ideaId)]; // keep non-idea options (e.g. neutral)
     
@@ -131,6 +153,7 @@ export class StepVoteSettingsComponent implements OnInit {
   }
 
   setType(type: 'regular' | 'multiple' | 'ideation') {
+    if (!this.canEditDescription()) return;
     const updates: Partial<VoteWithOptions> = { type };
     let options = [...this.getOptions()];
     
@@ -150,6 +173,7 @@ export class StepVoteSettingsComponent implements OnInit {
   }
 
   toggleOption(val: string) {
+    if (!this.canEditDescription()) return;
     const options = [...this.getOptions()];
     const index = options.findIndex(o => o.value === val && !o.ideaId);
     if (index > -1) {
@@ -161,12 +185,13 @@ export class StepVoteSettingsComponent implements OnInit {
   }
 
   isPredefinedSelected(val: string): boolean {
-    return this.getOptions().some(o => o.value === val && !o.ideaId);
+    return this.getOptions().some(o => o.value?.toLowerCase() === val.toLowerCase() && !o.ideaId);
   }
 
   togglePredefined(val: string) {
+    if (!this.canEditDescription()) return;
     const options = [...this.getOptions()];
-    const index = options.findIndex(o => o.value === val);
+    const index = options.findIndex(o => o.value?.toLowerCase() === val.toLowerCase());
     if (index > -1) {
       options.splice(index, 1);
     } else {
@@ -176,41 +201,53 @@ export class StepVoteSettingsComponent implements OnInit {
   }
 
   addOption() {
+    if (!this.canEditDescription()) return;
     const options = [...this.getOptions(), { value: '' }];
     this.onUpdate({ options });
   }
 
   updateOption(index: number, value: string) {
+    if (!this.canEditDescription()) return;
     const options = [...this.getOptions()];
     options[index] = { ...options[index], value };
     this.onUpdate({ options });
   }
 
   removeOption(index: number) {
+    if (!this.canEditDescription()) return;
     const options = [...this.getOptions()];
     options.splice(index, 1);
     this.onUpdate({ options });
   }
 
   getOptionsLimit(): number {
-    return this.getOptions().filter(o => !!o.value).length;
+    return this.getOptions().filter(o => !!o.value && o.value.toLowerCase() !== 'neutral' && o.value.toLowerCase() !== 'veto').length;
   }
 
   adjustCount(field: 'min' | 'max', delta: number) {
-    const limit = this.getOptionsLimit();
+    if (!this.canEditDescription()) return;
+    const limit = Math.max(1, this.getOptionsLimit());
     if (field === 'min') {
       const current = this.vote().minChoices || 1;
       const next = Math.max(1, Math.min(current + delta, limit));
-      this.onUpdate({ minChoices: next });
+      const updates: Partial<VoteWithOptions> = { minChoices: next };
+      if (next > (this.vote().maxChoices || 1)) {
+        updates.maxChoices = next;
+      }
+      this.onUpdate(updates);
     } else {
       const current = this.vote().maxChoices || limit;
       const next = Math.max(1, Math.min(current + delta, limit));
-      this.onUpdate({ maxChoices: next });
+      const updates: Partial<VoteWithOptions> = { maxChoices: next };
+      if ((this.vote().minChoices || 1) > next) {
+        updates.minChoices = next;
+      }
+      this.onUpdate(updates);
     }
   }
 
   toggleDelegation() {
-    if (this.vote().authType === 'hard') return;
+    if (!this.canEditDescription() || this.vote().authType === 'hard') return;
     this.onUpdate({ delegationIsAllowed: !this.vote().delegationIsAllowed });
   }
 
@@ -218,8 +255,16 @@ export class StepVoteSettingsComponent implements OnInit {
     return this.vote().endsAt ? new Date(this.vote().endsAt!) : null;
   }
 
+  getVoteReminderDate(): Date | null {
+    return this.vote().reminderTime ? new Date(this.vote().reminderTime!) : null;
+  }
+
   onDeadlineChange(date: Date | null) {
     this.onUpdate({ endsAt: date ? date.toISOString() : null });
+  }
+
+  onReminderChange(date: Date | null) {
+    this.onUpdate({ reminderTime: date ? date.toISOString() : null });
   }
 
   onUpdate(updates: Partial<VoteWithOptions>) {

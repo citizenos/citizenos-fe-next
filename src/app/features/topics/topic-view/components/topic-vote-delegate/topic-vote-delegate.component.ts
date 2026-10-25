@@ -5,8 +5,9 @@ import { of, take, map } from 'rxjs';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogCloseDirective, DialogRef } from '../../../../../shared/dialog/dialog-ref';
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
+import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
+import { TypeaheadComponent, TypeaheadItemDirective, TypeaheadItemData } from '../../../../../shared/components/typeahead/typeahead.component';
 import { TopicMemberUserService, TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
 import { VoteDelegationService } from '../../../../../core/services/vote-delegation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -18,7 +19,15 @@ import { NotificationService } from '../../../../../core/services/notification.s
   selector: 'app-topic-vote-delegate',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, FormsModule, DialogCloseDirective, ButtonComponent, IconComponent],
+  imports: [
+    TranslateModule,
+    FormsModule,
+    DialogCloseDirective,
+    InitialsComponent,
+    NotificationComponent,
+    TypeaheadComponent,
+    TypeaheadItemDirective
+  ],
   templateUrl: './topic-vote-delegate.component.html',
   styleUrls: ['./topic-vote-delegate.component.scss']
 })
@@ -52,16 +61,40 @@ export class TopicVoteDelegateComponent {
 
   onSearch(event: Event) {
     const val = (event.target as HTMLInputElement).value;
-    this.searchStr.set(val);
+    this.onSearchTerm(val);
+  }
+
+  onSearchTerm(str: string) {
+    this.notification.clear();
+    this.searchStr.set(str || '');
+  }
+
+  addUser(member?: TopicMemberUser | TypeaheadItemData | null) {
+    this.notification.clear();
+
+    if (!member || !member.id) {
+      this.notification.error('MSG_ERROR_POST_API_USERS_TOPICS_VOTES_DELEGATIONS_40002');
+      this.searchStr.set('');
+      return;
+    }
+
+    const user = member as TopicMemberUser;
+    if (user.id && user !== this.delegateUser()) {
+      this.delegateUser.set(user);
+    }
+    this.searchStr.set('');
   }
 
   selectUser(user: TopicMemberUser) {
-    this.delegateUser.set(user);
-    this.searchStr.set('');
+    this.addUser(user);
   }
 
   removeDelegate() {
     this.delegateUser.set(null);
+  }
+
+  doRemoveDelegateUser() {
+    this.removeDelegate();
   }
 
   save() {
@@ -79,5 +112,9 @@ export class TopicVoteDelegateComponent {
       },
       error: () => this.notification.error('MSG_ERROR_POST_API_USERS_TOPICS_VOTES_DELEGATIONS_40002')
     });
+  }
+
+  doSaveDelegate() {
+    this.save();
   }
 }

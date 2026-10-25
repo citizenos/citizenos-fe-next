@@ -46,10 +46,10 @@ export type IdeationCreateStep = 'info' | 'settings' | 'ideation' | 'preview';
   styleUrl: './ideation-create.component.scss'
 })
 export class IdeationCreateComponent implements OnInit, PendingChangesComponent {
-  showHelp = signal(true);
+  showHelp = signal(false);
 
   toggleHelp() {
-    this.showHelp.set(!this.showHelp());
+    this.showHelp.update(v => !v);
   }
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -72,7 +72,8 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
 
   currentStep = signal<IdeationCreateStep>('info');
   isLoading = signal(false);
-  hasChanges = signal(true);
+  hasChanges = signal(false);
+  isEagerlyCreated = signal(false);
 
   topicModel = signal<Partial<Topic>>({
     title: '',
@@ -123,6 +124,9 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
   ngOnInit() {
     const topicId = this.route.snapshot.params['topicId'];
     if (topicId) {
+      const isEager = history.state?.eagerlyCreated === true;
+      this.isEagerlyCreated.set(isEager);
+      this.hasChanges.set(isEager);
       this.loadExistingTopic(topicId);
     } else {
       this.createEagerly();
@@ -177,10 +181,9 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
       next: (savedIdeation) => {
         this.ideationModel.set(savedIdeation);
         this.isLoading.set(false);
-        this.hasChanges.set(false);
-        const url = this.router.createUrlTree([this.topicModel().id], { relativeTo: this.route }).toString();
-        this.location.replaceState(url);
+        this.isEagerlyCreated.set(true);
         this.hasChanges.set(true);
+        this.router.navigate([this.topicModel().id], { relativeTo: this.route, replaceUrl: true, state: { eagerlyCreated: true } });
       },
       error: () => {
         this.isLoading.set(false);
@@ -257,6 +260,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
 
   onTopicUpdate(updates: Partial<Topic>) {
     this.topicModel.update((t: Partial<Topic>) => ({ ...t, ...updates }));
+    this.hasChanges.set(true);
     if (updates.id) {
       this.membersResource.reload();
       this.invitesResource.reload();
@@ -265,15 +269,18 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
 
   onIdeationUpdate(updates: Partial<Ideation>) {
     this.ideationModel.update((i: Partial<Ideation>) => ({ ...i, ...updates }));
+    this.hasChanges.set(true);
   }
 
   onGroupsAdded(groups: TopicMemberGroup[]) {
     this.addedGroups.set(groups);
+    this.hasChanges.set(true);
   }
 
   onGroupRemoved(group: TopicMemberGroup) {
     this.addedGroups.update(gs => gs.filter(g => g.id !== group.id));
     this.groupsToRemove.update(gs => [...gs, group]);
+    this.hasChanges.set(true);
   }
 
   inviteEditors() {
@@ -411,7 +418,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
 
   removeChanges() {
     const topicId = this.topicModel().id;
-    if (topicId) {
+    if (topicId && this.isEagerlyCreated()) {
       this.topicService.delete({ id: topicId }).pipe(take(1)).subscribe();
     }
   }

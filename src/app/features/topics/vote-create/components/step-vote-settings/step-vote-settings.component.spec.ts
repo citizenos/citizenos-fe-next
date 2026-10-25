@@ -55,4 +55,26 @@ describe('StepVoteSettingsComponent (business logic)', () => {
     } as unknown as Vote);
     expect(component.isValid()).toBe(true);
   });
+
+  it('should lock non-deadline settings when topicService.canEditDescription is false', () => {
+    vi.spyOn(component, 'topic').mockReturnValue({ id: 't1', status: 'voting' } as unknown as import('../../../../../core/interfaces/topic').Topic);
+    vi.spyOn(component.topicService, 'canEditDescription').mockReturnValue(false);
+    const spy = vi.spyOn(component.voteUpdate, 'emit');
+
+    component.onQuestionChange('Blocked');
+    component.setType('multiple');
+    component.toggleOption('Neutral');
+    component.togglePredefined('Yes');
+    component.addOption();
+    component.updateOption(0, 'X');
+    component.removeOption(0);
+    component.adjustCount('min', 1);
+    component.setAuthType('hard');
+    component.toggleDelegation();
+    expect(spy).not.toHaveBeenCalled();
+
+    const dl = new Date('2026-12-01T12:00:00Z');
+    component.onDeadlineChange(dl);
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining({ endsAt: dl.toISOString() }));
+  });
 });

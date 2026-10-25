@@ -58,8 +58,25 @@
     gap: 8px;
     padding: 8px;
 
+    input,
+    textarea {
+      border: none;
+      outline: none;
+      box-shadow: none;
+
+      &:focus,
+      &:focus-visible,
+      &:active {
+        border: none;
+        outline: none;
+        box-shadow: none;
+      }
+    }
+
     #title_input {
       border: none;
+      outline: none;
+      box-shadow: none;
       padding: 0;
       width: 100%;
       font-size: 24px;
@@ -67,7 +84,14 @@
       font-weight: 600;
       background: transparent;
       color: var(--color-text);
-      outline: none;
+
+      &:focus,
+      &:focus-visible,
+      &:active {
+        border: none;
+        outline: none;
+        box-shadow: none;
+      }
 
       &::placeholder {
         color: var(--color-text-muted);
@@ -76,6 +100,8 @@
 
     #intro_input {
       border: none;
+      outline: none;
+      box-shadow: none;
       padding: 0;
       width: 100%;
       font-size: 16px;
@@ -83,8 +109,15 @@
       line-height: 24px;
       background: transparent;
       color: var(--color-text);
-      outline: none;
       resize: vertical;
+
+      &:focus,
+      &:focus-visible,
+      &:active {
+        border: none;
+        outline: none;
+        box-shadow: none;
+      }
 
       &::placeholder {
         color: var(--color-text-muted);

@@ -1,207 +1,90 @@
 @use "mixins";
-@use "../../../../../../assets/styles/figma-tokens" as tokens;
 
 .dialog {
   max-width: 560px;
-  width: 100%;
-  border-radius: tokens.$border-radius-lg;
-  background-color: var(--color-surfaces);
-  overflow: hidden;
-
-  @include mixins.mobile {
-    max-width: 100%;
-    border-radius: 0;
-    min-height: 100%;
-  }
-
-  .dialog_header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: tokens.$spacing-l;
-    background-color: var(--color-dialog-voting-contrast);
-
-    @include mixins.mobile {
-      padding: tokens.$spacing-m;
-    }
-
-    .header_with_icon {
-      display: flex;
-      align-items: center;
-      gap: tokens.$spacing-m;
-
-      .icon_delegation {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--color-voting);
-        border-radius: 50%;
-        color: white;
-      }
-
-      .title {
-        font-size: tokens.$font-size-xl;
-        font-weight: tokens.$font-weight-bold;
-        color: var(--color-text-main);
-        margin: 0;
-
-        @include mixins.mobile {
-          font-size: tokens.$font-size-lg;
-        }
-      }
-    }
-  }
 
   .dialog_content {
-    padding: tokens.$spacing-l;
-    display: flex;
-    flex-direction: column;
-    gap: tokens.$spacing-m;
-
-    @include mixins.mobile {
-      padding: tokens.$spacing-m;
-    }
+    padding: 24px;
+    gap: 32px;
   }
-
   .dialog_info {
-    font-size: tokens.$font-size-sm;
-    color: var(--color-text-main);
+    text-align: center;
 
-    &.bold {
-      font-weight: tokens.$font-weight-bold;
+    #input_area {
+      width: 100%;
     }
 
-    #search_wrap {
-      position: relative;
+    .search_area_wrap {
+      position: absolute;
+      width: calc(100% - 48px);
+    }
+    .search_dropdown_item {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      padding: 8px;
+      justify-content: space-between;
+      border-radius: 5px;
       width: 100%;
-      margin-top: tokens.$spacing-xs;
-
-      .input_area {
-        width: 100%;
-        height: 44px;
-        padding: tokens.$spacing-sm tokens.$spacing-m;
-        border: 1px solid var(--color-border);
-        border-radius: tokens.$border-radius-m;
-        font-size: tokens.$font-size-sm;
-        color: var(--color-text-main);
-        background: var(--color-surfaces);
-        outline: none;
-
-        &:focus {
-          border-color: var(--color-voting);
-        }
+      &.active {
+        background-color: var(--color-surface-contrast);
       }
 
-      .search_area_wrap {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: var(--color-surfaces);
-        border: 1px solid var(--color-border);
-        border-radius: tokens.$border-radius-m;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        z-index: 10;
-        max-height: 200px;
-        overflow-y: auto;
-        margin-top: 4px;
+      .item_text_wrap {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        vertical-align: middle;
+      }
 
-        .search_dropdown_item {
-          display: flex;
-          align-items: center;
-          padding: tokens.$spacing-sm tokens.$spacing-m;
-          cursor: pointer;
-          font-size: tokens.$font-size-sm;
-          min-height: 44px;
-
-          &:hover {
-            background-color: var(--color-background-hover);
-          }
-        }
+      @include mixins.mobile {
+        flex-direction: column;
       }
     }
   }
-
   .row_list {
     display: flex;
     width: 100%;
-    margin-top: tokens.$spacing-sm;
-    background-color: var(--color-dialog-voting);
+    margin-top: 8px;
+    background-color: var(--color-argument-pro-light);
     justify-content: space-between;
-    align-items: center;
-    padding: tokens.$spacing-sm tokens.$spacing-m;
-    border-radius: tokens.$border-radius-m;
-    border: 1px solid var(--color-voting-disabled);
-    min-height: 48px;
-
+    padding: 8px;
+    border-radius: 8px;
+    .row_cell {
+      a {
+        min-width: 200px;
+      }
+    }
     .row_cell_dialog {
       display: flex;
-      gap: tokens.$spacing-sm;
+      gap: 8px;
       align-items: center;
 
-      &.image_cell {
-        font-weight: tokens.$font-weight-medium;
-        font-size: tokens.$font-size-sm;
+      .cell_title {
+        display: flex;
+        width: 100%;
+        padding: 8px;
       }
 
-      .profile_image_wrap {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        overflow: hidden;
-        background-color: var(--color-surface-contrast);
+      .action_items {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        gap: 8px;
+        padding: 8px 0;
+        justify-content: space-between;
+        width: 100%;
 
-        .profile_image {
+        .dropdown {
           width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .profile_image_filler {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: tokens.$font-weight-bold;
-          color: var(--color-text-main);
         }
       }
     }
   }
 
   .button_content {
-    display: flex;
-    justify-content: flex-end;
-    gap: tokens.$spacing-m;
-    padding: tokens.$spacing-m tokens.$spacing-l tokens.$spacing-l;
+    padding-top: 8px;
+  }
 
-    @include mixins.mobile {
-      padding: tokens.$spacing-m;
-
-      .button_wrap {
-        width: 100%;
-        flex-direction: column-reverse;
-        gap: tokens.$spacing-sm;
-
-        cos-button {
-          width: 100%;
-          ::ng-deep button {
-            width: 100%;
-            justify-content: center;
-            min-height: 44px;
-          }
-        }
-      }
-    }
-
-    .button_wrap {
-      display: flex;
-      align-items: center;
-      gap: tokens.$spacing-m;
-    }
+  .profile_image_filler {
+    width: 40px;
   }
 }

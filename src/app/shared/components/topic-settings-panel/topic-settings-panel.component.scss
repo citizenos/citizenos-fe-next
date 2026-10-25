@@ -12,6 +12,10 @@
   width: 100%;
   padding: 24px;
   gap: 16px;
+
+  @media (max-width: 767px) {
+    padding: 16px;
+  }
 }
 
 .number_wrap {
@@ -25,6 +29,25 @@
   border-radius: 20px;
   background-color: var(--color-secondary, #e1e7ee);
   font-weight: 600;
+
+  svg {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+  }
+}
+
+.mobile_hidden {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.mobile_show {
+  display: none;
+  @media (max-width: 767px) {
+    display: flex !important;
+  }
 }
 
 .section_content_wrap {
@@ -41,21 +64,33 @@
 
 .header_wrap {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 0;
   width: 100%;
+
+  @media (max-width: 767px) {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
 
   .small_heading {
     font-size: 16px;
     font-weight: 600;
     line-height: 24px;
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 
   .description {
-    font-size: 13px;
-    color: var(--color-text-muted);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 }
 
@@ -311,12 +346,35 @@
   }
 }
 
-.no-groups {
-  padding: 24px;
-  text-align: center;
-  color: var(--color-text-muted);
-  background: var(--color-background);
-  border-radius: 8px;
+.no_engagements {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: var(--color-blue-100, #f1f7fc);
+  align-items: center;
+  gap: 24px;
+  box-sizing: border-box;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .illustration {
+    display: flex;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .text_wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
 // Responsive layout for mobile (table elements stacked)
@@ -360,4 +418,3 @@
     background-color: var(--color-background);
   }
 }
-

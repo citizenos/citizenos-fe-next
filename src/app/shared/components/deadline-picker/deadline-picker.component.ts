@@ -10,11 +10,11 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
   imports: [TranslateModule, FormsModule, DatePipe, NgClass, UpperCasePipe, CosCalenderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="radio_wrap date_selector" [ngClass]="theme()" [class.selected]="enabled()">
+    <div class="radio_wrap date_selector" [ngClass]="theme()" [class.selected]="enabled()" [class.disabled]="disabled()">
       <div class="radio_text_wrap date_selector">
         <div class="radio_lable_wrap">
           <label class="checkbox" [class.selected]="enabled()">
-            <input type="checkbox" [checked]="enabled()" (change)="toggleDeadline()" (click)="$event.stopPropagation()">
+            <input type="checkbox" [checked]="enabled()" [disabled]="disabled()" (change)="toggleDeadline()" (click)="$event.stopPropagation()">
             <span class="checkmark"></span>
             <div class="checkbox_text_wrap">
               <span class="bold" [translate]="toggleLabel()"></span>
@@ -144,14 +144,19 @@ import { CosCalenderComponent } from '../cos-calender/cos-calender.component';
       }
 
       &.voting.selected {
-        background-color: var(--color-argument-pro-light, #fef4f3);
-        border-color: var(--color-argument-pro, #ef4025);
+        background-color: var(--color-argument-pro-light, #f1fbf3);
+        border-color: var(--color-argument-pro, #5ab467);
+      }
+
+      &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
       }
 
       &.voting.selected > .radio_text_wrap > .radio_lable_wrap > .checkbox {
         .checkmark {
-          background-color: var(--color-argument-pro, #ef4025);
-          border-color: var(--color-argument-pro, #ef4025);
+          background-color: var(--color-argument-pro, #5ab467);
+          border-color: var(--color-argument-pro, #5ab467);
           &:after {
             display: block;
           }
@@ -380,6 +385,8 @@ export class DeadlinePickerComponent {
   private translate = inject(TranslateService);
 
   deadline = input<Date | null>(null);
+  reminderTime = input<Date | null>(null);
+  disabled = input<boolean>(false);
   showReminder = input<boolean>(false);
   toggleLabel = input<string>('COMPONENTS.EDIT_IDEATION_DEADLINE.LBL_OPTION_DEADLINE');
   theme = input<'discussion' | 'voting' | 'ideation'>('discussion');
@@ -468,9 +475,15 @@ export class DeadlinePickerComponent {
         this.enabled.set(false);
       }
     }, { allowSignalWrites: true });
+
+    effect(() => {
+      const rt = this.reminderTime();
+      this.reminderEnabled.set(!!rt);
+    }, { allowSignalWrites: true });
   }
 
   toggleDeadline() {
+    if (this.disabled()) return;
     this.enabled.update(v => !v);
     if (this.enabled()) {
       const now = new Date();

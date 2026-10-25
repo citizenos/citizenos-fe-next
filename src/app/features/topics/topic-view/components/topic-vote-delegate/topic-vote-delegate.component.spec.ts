@@ -5,12 +5,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { TopicVoteDelegateComponent } from './topic-vote-delegate.component';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
-import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
+import { TopicMemberUserService, TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
 import { VoteDelegationService } from '../../../../../core/services/vote-delegation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { NotificationService } from '../../../../../core/services/notification.service';
-import { TopicMemberUser } from '../../../../../core/services/topic-member-user.service';
 
 const mockTopic = { id: 't1', voteId: 'v1' };
 const mockUser = { id: 'me', name: 'Me' };
@@ -20,7 +19,7 @@ const mockMemberUserService = { query: vi.fn(() => of({ rows: [mockDelegate] }))
 const mockVoteDelegationService = { save: vi.fn(() => of({})) };
 const mockTopicService = { reloadTopic: vi.fn() };
 const mockUserStore = { user: vi.fn(() => mockUser) };
-const mockNotification = { success: vi.fn(), error: vi.fn() };
+const mockNotification = { success: vi.fn(), error: vi.fn(), clear: vi.fn(), dismissAll: vi.fn() };
 const mockTranslate = { instant: vi.fn((key: string) => key) };
 
 describe('TopicVoteDelegateComponent', () => {
@@ -47,9 +46,15 @@ describe('TopicVoteDelegateComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('selectUser should set delegateUser', () => {
+  it('selectUser / addUser should set delegateUser', () => {
     component.selectUser(mockDelegate);
     expect(component.delegateUser()).toEqual(mockDelegate);
+  });
+
+  it('addUser without valid member should show error notification', () => {
+    component.addUser();
+    expect(mockNotification.error).toHaveBeenCalledWith('MSG_ERROR_POST_API_USERS_TOPICS_VOTES_DELEGATIONS_40002');
+    expect(component.delegateUser()).toBeNull();
   });
 
   it('selectUser should clear search string', () => {

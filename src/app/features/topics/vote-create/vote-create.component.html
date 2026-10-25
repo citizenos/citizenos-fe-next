@@ -1,6 +1,6 @@
 <cos-create-wizard-shell
   domainType="vote"
-  headingKey="VIEWS.VOTE_CREATE.HEADING"
+  [headingKey]="topicModel().status && topicModel().status !== 'draft' ? 'VIEWS.VOTE_EDIT.HEADING' : 'VIEWS.VOTE_CREATE.HEADING'"
   [steps]="steps"
   [currentStep]="currentStep()"
   [hasSidebar]="true"
@@ -10,6 +10,7 @@
   (saveDraft)="saveAsDraft()"
   (footerContinue)="handleFooterContinue()"
   (footerBack)="handleFooterBack()"
+  (footerPublish)="onPublish()"
   (deleteTopic)="doDeleteTopic()"
 >
   @if (isLoading()) {
@@ -36,6 +37,7 @@
     @case ('voting') {
       <cos-step-vote-settings
         [vote]="voteModel()"
+        [topic]="topicModel()"
         (voteUpdate)="onVoteUpdate($event)"
       ></cos-step-vote-settings>
     }
@@ -57,4 +59,100 @@
       (inviteEditors)="inviteEditors()"
     ></cos-member-editors-panel>
   </div>
+
+  @if (isNew()) {
+    <div sidebar class="create_help" [class.show]="showHelp()">
+      <div class="help_illustration_wide">
+        <svg width="160" height="86" viewBox="0 0 160 86" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_7537_35289_vote)">
+            <rect x="40" y="6" width="80" height="80" rx="16" fill="#F1F7FC" />
+            <path
+              d="M67.6129 44.6133C67.6129 37.7004 72.4425 32.1133 78.4084 32.1133C84.3743 32.1133 89.2039 37.7004 89.2039 44.6133C89.2039 49.6323 86.6471 53.9883 82.9539 55.977H73.863C71.9111 54.8028 70.3048 53.1329 69.2071 51.1371C68.1094 49.1413 67.5594 46.8905 67.6129 44.6133Z"
+              fill="#E9D519" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M71.1845 43.2088L71.1839 43.234C71.1392 45.1331 71.5979 47.0102 72.5134 48.6747C73.3371 50.1724 74.5043 51.45 75.9158 52.4044H83.8078C86.5054 50.7212 88.4898 47.2881 88.4898 43.1836C88.4898 37.1492 84.336 32.8265 79.8371 32.8265C75.3383 32.8265 71.1845 37.1491 71.1845 43.1836V43.2088ZM84.3826 54.5473H75.2917C73.3398 53.3731 71.7335 51.7033 70.6358 49.7074C69.5381 47.7116 68.9881 45.4608 69.0417 43.1836C69.0417 36.2707 73.8712 30.6836 79.8371 30.6836C85.803 30.6836 90.6326 36.2707 90.6326 43.1836C90.6326 48.2026 88.0758 52.5586 84.3826 54.5473Z"
+              fill="#2C3B47" />
+            <path d="M84.2857 54.5723V61.0008H75V54.5723H75.0957H84.2857Z" fill="#5C9CD0" />
+            <path
+              d="M74.251 60.7661V54.5485C74.2426 54.422 74.2614 54.2951 74.306 54.1765C74.3506 54.0578 74.4201 53.95 74.5098 53.8603C74.5994 53.7707 74.7072 53.7012 74.8259 53.6566C74.9446 53.6119 75.0714 53.5932 75.1979 53.6016H84.3836C84.5101 53.5932 84.6369 53.6119 84.7556 53.6566C84.8743 53.7012 84.9821 53.7707 85.0717 53.8603C85.1614 53.95 85.2309 54.0578 85.2755 54.1765C85.3201 54.2951 85.3389 54.422 85.3305 54.5485V60.7661C85.3389 60.8926 85.3201 61.0194 85.2755 61.1381C85.2309 61.2568 85.1614 61.3646 85.0717 61.4542C84.9821 61.5439 84.8743 61.6134 84.7556 61.658C84.6369 61.7026 84.5101 61.7214 84.3836 61.713H75.1979C74.9526 61.6954 74.7218 61.59 74.5479 61.4161C74.374 61.2422 74.2686 61.0114 74.251 60.7661ZM83.4366 55.4955H76.1449V59.8191H83.4366V55.4955Z"
+              fill="#2C3B47" />
+            <circle cx="127" cy="10" r="10" fill="#F1F7FC" />
+            <circle cx="130" cy="32" r="5" fill="#F1F7FC" />
+            <circle cx="3" cy="3" r="3" transform="matrix(1 0 0 -1 137 26)" fill="#F1F7FC" />
+            <defs>
+              <clipPath id="clip0_7537_35289_vote">
+                <rect x="40" y="6" width="80" height="80" rx="40" fill="white" />
+              </clipPath>
+            </defs>
+          </g>
+        </svg>
+      </div>
+
+      <div class="help_illustration_mobile">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="20" fill="#1168A8"/>
+          <path d="M27.5001 22.2043C27.5301 22.1609 27.559 22.116 27.5887 22.0738C28.3442 20.951 28.7485 19.6287 28.7501 18.2754C28.7626 14.3965 25.4899 11.25 21.443 11.25C17.9133 11.25 14.9688 13.652 14.279 16.8406C14.1755 17.3132 14.1231 17.7955 14.1227 18.2793C14.1227 22.1621 17.2696 25.393 21.3165 25.393C21.9598 25.393 22.8266 25.1996 23.302 25.0691C23.7774 24.9387 24.2485 24.7664 24.3704 24.7199C24.4922 24.6734 24.6829 24.6258 24.8348 24.6695L27.859 25.5438C27.8856 25.5516 27.9138 25.5522 27.9407 25.5456C27.9677 25.539 27.9923 25.5253 28.0122 25.5059C28.0321 25.4866 28.0465 25.4624 28.0539 25.4356C28.0613 25.4089 28.0614 25.3807 28.0543 25.3539L27.3622 22.7176C27.3141 22.5223 27.3079 22.4855 27.5001 22.2043Z" fill="white"/>
+          <path d="M22.2086 26.2267C21.908 26.2748 21.6044 26.3015 21.3 26.3068C19.6426 26.3068 18.0774 25.8693 16.8079 25.0489C15.9958 24.5505 15.2908 23.8956 14.734 23.1224C13.7153 21.772 13.1598 20.0556 13.1598 18.2595C13.1598 18.1372 13.1641 18.0196 13.1684 17.9017C13.17 17.8669 13.1607 17.8325 13.142 17.8031C13.1233 17.7737 13.096 17.7508 13.0639 17.7375C13.0317 17.7242 12.9962 17.7211 12.9622 17.7287C12.9282 17.7362 12.8974 17.7541 12.8739 17.7798C11.9385 18.8032 11.3731 20.1105 11.2679 21.4929C11.1627 22.8754 11.5237 24.2532 12.2934 25.4064C12.3899 25.5536 12.4446 25.6673 12.4278 25.7431L11.8774 28.5657C11.8723 28.5926 11.8744 28.6203 11.8833 28.6461C11.8923 28.6719 11.9079 28.6949 11.9285 28.7128C11.9491 28.7307 11.9741 28.7429 12.0009 28.7481C12.0277 28.7534 12.0554 28.7515 12.0813 28.7427L14.7375 27.7958C14.8181 27.764 14.9041 27.7483 14.9907 27.7498C15.0773 27.7513 15.1628 27.7698 15.2422 27.8044C16.0372 28.1169 16.9165 28.3091 17.7957 28.3091C19.4882 28.3146 21.1186 27.6716 22.3516 26.5122C22.3771 26.4874 22.394 26.4551 22.3999 26.4201C22.4058 26.385 22.4004 26.349 22.3845 26.3172C22.3686 26.2854 22.3429 26.2595 22.3113 26.2432C22.2797 26.227 22.2438 26.2212 22.2086 26.2267Z" fill="white"/>
+        </svg>
+      </div>
+
+      @if (currentStep() !== 'preview') {
+        <div id="help_text_wrap" (click)="toggleHelp()" (keydown.enter)="toggleHelp()" role="button" tabindex="0">
+          <div class="title">
+            <span translate="VIEWS.VOTE_CREATE.HELP_HEADING"></span>
+            <div class="mobile_icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </div>
+          </div>
+          <div class="description_text">
+            <div translate="VIEWS.VOTE_CREATE.HELP_DESCRIPTION"></div>
+          </div>
+        </div>
+      } @else {
+        <div id="help_text_wrap_preview">
+          <div class="title">
+            <span translate="VIEWS.VOTE_CREATE.HELP_NEXT_HEADING"></span>
+          </div>
+          <div class="description_text_wide">
+            <div class="small_heading" translate="VIEWS.VOTE_CREATE.HELP_NEXT_HEADING"></div>
+            <div translate="VIEWS.VOTE_CREATE.HELP_NEXT_DESCRIPTION"></div>
+            <div class="items_list">
+              <div class="item">
+                <div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M21.9402 4.63866L18.7711 19.9134C18.532 20.9915 17.9086 21.2598 17.0225 20.7519L12.194 17.1153L9.86409 19.4056C9.60625 19.6691 9.39061 19.8895 8.89369 19.8895L9.24059 14.8634L18.1898 6.59832C18.5789 6.24376 18.1054 6.04732 17.5851 6.40188L6.5216 13.5218L1.75868 11.9982C0.722647 11.6676 0.703896 10.9393 1.97432 10.4314L20.6041 3.09586C21.4667 2.76525 22.2214 3.2923 21.9402 4.63866Z"
+                      fill="#4D5C6A" />
+                  </svg>
+                </div>
+                <span class="item_text" translate="VIEWS.VOTE_CREATE.HELP_ITEM_SHARE_AND_INVITE"></span>
+              </div>
+              <div class="item">
+                <div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M12 0C5.376 0 0 5.376 0 12C0 18.624 5.376 24 12 24C18.624 24 24 18.624 24 12C24 5.376 18.624 0 12 0ZM9.66667 18L19 8.73684L17.25 7L9.66667 14.5263L6.75 11.6316L5 13.3684L9.66667 18Z"
+                      fill="#5AB467" />
+                  </svg>
+                </div>
+                <span class="item_text" translate="VIEWS.VOTE_CREATE.HELP_ITEM_START_COLLECTING_VOTES"></span>
+              </div>
+              <div class="item">
+                <div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="24" height="24" rx="12" fill="#DA7AB1" />
+                    <path d="M13.8933 7.52941L13.6 6H7V19H8.46667V13.6471H12.5733L12.8667 15.1765H18V7.52941H13.8933Z"
+                      fill="white" />
+                  </svg>
+                </div>
+                <span class="item_text" translate="VIEWS.VOTE_CREATE.HELP_ITEM_ADD_FOLLOW_UP"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
 </cos-create-wizard-shell>
