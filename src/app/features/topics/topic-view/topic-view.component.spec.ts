@@ -22,6 +22,7 @@ import { TopicVoteService } from '../../../core/services/topic-vote.service';
 import { TopicEventService } from '../../../core/services/topic-event.service';
 import { TopicMemberUserService } from '../../../core/services/topic-member-user.service';
 import { Topic } from '../../../core/interfaces/topic';
+import { AuthDialogService } from '../../../core/services/auth-dialog.service';
 import { Idea, IdeaStatus } from '../../../core/interfaces/idea';
 import { Ideation } from '../../../core/interfaces/ideation';
 import { DialogService } from '../../../shared/dialog/dialog.service';
@@ -186,6 +187,17 @@ describe('TopicViewComponent', () => {
     query: vi.fn().mockReturnValue(of({ count: 0, rows: [] }))
   };
 
+  const mockAuthDialogService = {
+    openLogin: vi.fn().mockReturnValue({
+      afterClosed: () => of(true),
+      close: vi.fn()
+    }),
+    openRegister: vi.fn().mockReturnValue({
+      afterClosed: () => of(true),
+      close: vi.fn()
+    })
+  };
+
   const activatedRouteStub = {
     params: new BehaviorSubject({ topicId: '123' }),
     queryParams: new BehaviorSubject({}),
@@ -221,7 +233,8 @@ describe('TopicViewComponent', () => {
         { provide: TopicMemberUserService, useValue: mockTopicMemberUserService },
         { provide: TopicIdeationService, useValue: mockTopicIdeationService },
         { provide: TopicVoteService, useValue: mockTopicVoteService },
-        { provide: TopicEventService, useValue: mockTopicEventService }
+        { provide: TopicEventService, useValue: mockTopicEventService },
+        { provide: AuthDialogService, useValue: mockAuthDialogService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).overrideComponent(TopicViewComponent, {
@@ -282,6 +295,13 @@ describe('TopicViewComponent', () => {
   it('should call joinTopic service method', () => {
     TestBed.inject(UserStore).isAuthenticated = Object.assign(() => true, { [Symbol("SIGNAL")]: {} }) as any;
     component.joinTopic(mockTopic as unknown as Topic);
+    expect(mockTopicService.joinPublic).toHaveBeenCalledWith('123');
+  });
+
+  it('should open login dialog on joinTopic when unauthenticated and join upon success', () => {
+    TestBed.inject(UserStore).isAuthenticated = Object.assign(() => false, { [Symbol("SIGNAL")]: {} }) as any;
+    component.joinTopic(mockTopic as unknown as Topic);
+    expect(mockAuthDialogService.openLogin).toHaveBeenCalled();
     expect(mockTopicService.joinPublic).toHaveBeenCalledWith('123');
   });
 

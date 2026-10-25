@@ -22,6 +22,7 @@ import { UiStateService } from '../../../core/services/ui-state.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { SeoService } from '../../../core/services/seo.service';
+import { AuthDialogService } from '../../../core/services/auth-dialog.service';
 
 import { TopicHeaderComponent } from './components/topic-header/topic-header.component';
 import { TopicContentComponent } from './components/topic-content/topic-content.component';
@@ -80,6 +81,7 @@ export class TopicViewComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);
   private seoService = inject(SeoService);
   private destroyRef = inject(DestroyRef);
+  authDialog = inject(AuthDialogService);
   get STATUSES() { return this.topicService.STATUSES; }
 
   topic = signal<Topic | null>(null);
@@ -272,7 +274,8 @@ export class TopicViewComponent implements OnInit {
               this.loading.set(false);
               if (err.status === 401 || err.status === 403 || err.status === 404) {
                 if (!this.userStore.isAuthenticated() && isPlatformBrowser(this.platformId)) {
-                  this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], { queryParams: { redirectSuccess: window.location.href } });
+                  this.router.navigate(['/', this.translate.currentLang, '404'], { queryParams: { redirectSuccess: window.location.href } });
+                  this.authDialog.openLogin(window.location.href);
                 } else {
                   this.router.navigate(['/', this.translate.currentLang, '404']);
                 }
@@ -391,14 +394,19 @@ export class TopicViewComponent implements OnInit {
 
   joinTopic(topic: Topic) {
     if (!this.userStore.isAuthenticated()) {
-      // TODO: (Migration Note)
-      // See ei ole päris vana loogika. Vanas rakenduses avanes nupule vajutades otse "login dialog" aken.
-      // Hetkel on ajutine lahendus suunata kasutaja login lehele redirectSuccess parameetriga.
-      // Tuleb hiljem taastada vana käitumine, kui login dialoog on uues rakenduses implementeeritud.
-      this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], { queryParams: { redirectSuccess: window.location.href } });
+      const dialogRef = this.authDialog.openLogin(window.location.href);
+      dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+        if (success || this.userStore.isAuthenticated()) {
+          this.executeJoinTopic(topic);
+        }
+      });
       return;
     }
 
+    this.executeJoinTopic(topic);
+  }
+
+  private executeJoinTopic(topic: Topic) {
     this.topicService.joinPublic(topic.id)
       .pipe(take(1))
       .subscribe({
