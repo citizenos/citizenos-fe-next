@@ -192,6 +192,14 @@ describe('TopicVoteCastComponent', () => {
     expect(mockDialogService.open).toHaveBeenCalled();
   });
 
+  it('should render #mobile_actions button and options dropdown in setting_button', () => {
+    const mobileActionsBtn = fixture.debugElement.query(By.css('#mobile_actions'));
+    expect(mobileActionsBtn).toBeTruthy();
+
+    const optionsDropdown = fixture.debugElement.query(By.css('.setting_button .options'));
+    expect(optionsDropdown).toBeTruthy();
+  });
+
   it('sendVoteReminder should open dialog', () => {
     component.sendVoteReminder();
     expect(mockDialogService.open).toHaveBeenCalled();

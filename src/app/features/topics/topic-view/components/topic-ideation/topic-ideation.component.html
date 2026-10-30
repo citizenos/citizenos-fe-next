@@ -135,7 +135,7 @@
 
     @if (tabSelected() === 'ideas' || tabSelected() === 'folder') {
         <div class="idea_filters_wrap">
-            <div class="options_row">
+            <div class="options_row mobile_hidden">
                 <div class="options_row_main">
                     @if (!showSearch()) {
                         <div class="dropdown_input">
@@ -243,6 +243,273 @@
                         }
                     </div>
                 </div>
+            </div>
+
+            <!-- Mobile specific filters styling matching citizenos-fe / list-filter-toolbar -->
+            <div class="mobile_show" id="mobile_filters">
+              <div class="dropdown mobile_filters_selection" [class.dropdown_active]="mobileFiltersOpen()">
+                <div class="selection" tabindex="0" role="button" (click)="toggleMobileFilters()" (keydown.enter)="toggleMobileFilters()">
+                  <div class="selected_item">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_FILTER' | translate | titlecase }}</div>
+                  <button type="button" class="btn_medium_plain icon arrow_holder" aria-label="Toggle mobile filter menu">
+                    <cos-icon name="chevron-down" [size]="16"></cos-icon>
+                  </button>
+                </div>
+
+                <div class="options filter_options">
+                  <div class="filter_option" tabindex="0" role="button" (click)="openMobileFilter('type')" (keydown.enter)="openMobileFilter('type')">
+                    <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_TYPE' | translate }}</span>
+                    <a class="bold">
+                      <span>{{ activeTypeLabel }}</span>
+                      <cos-icon name="chevron-right" [size]="24"></cos-icon>
+                    </a>
+                  </div>
+
+                  <div class="filter_option" tabindex="0" role="button" (click)="openMobileFilter('order')" (keydown.enter)="openMobileFilter('order')">
+                    <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_ORDER' | translate }}</span>
+                    <a class="bold">
+                      <span>{{ activeOrderLabel }}</span>
+                      <cos-icon name="chevron-right" [size]="24"></cos-icon>
+                    </a>
+                  </div>
+
+                  <div class="filter_option" tabindex="0" role="button" (click)="openMobileFilter('participants')" (keydown.enter)="openMobileFilter('participants')">
+                    <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_IDEATION.IDEA_FILTER_PARTICIPANTS' | translate }}</span>
+                    <a class="bold">
+                      <span>{{ activeParticipantLabel }}</span>
+                      <cos-icon name="chevron-right" [size]="24"></cos-icon>
+                    </a>
+                  </div>
+
+                  @if (hasDemograficsField().age) {
+                    <div class="filter_option" tabindex="0" role="button" (click)="openMobileFilter('age')" (keydown.enter)="openMobileFilter('age')">
+                      <span class="filter_option_text">{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_AGE' | translate }}</span>
+                      <a class="bold">
+                        <span>{{ activeAgeLabel }}</span>
+                        <cos-icon name="chevron-right" [size]="24"></cos-icon>
+                      </a>
+                    </div>
+                  }
+
+                  @if (hasDemograficsField().gender) {
+                    <div class="filter_option" tabindex="0" role="button" (click)="openMobileFilter('gender')" (keydown.enter)="openMobileFilter('gender')">
+                      <span class="filter_option_text">{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER' | translate }}</span>
+                      <a class="bold">
+                        <span>{{ activeGenderLabel }}</span>
+                        <cos-icon name="chevron-right" [size]="24"></cos-icon>
+                      </a>
+                    </div>
+                  }
+
+                  @if (hasDemograficsField().residence && isCountryEstonia()) {
+                    <div class="filter_option" tabindex="0" role="button" (click)="openMobileFilter('residence')" (keydown.enter)="openMobileFilter('residence')">
+                      <span class="filter_option_text">{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE' | translate }}</span>
+                      <a class="bold">
+                        <span>{{ activeResidenceLabel }}</span>
+                        <cos-icon name="chevron-right" [size]="24"></cos-icon>
+                      </a>
+                    </div>
+                  }
+
+                  <button type="button" class="btn_medium_plain reset_filters_btn" (click)="clearAllFilters()">
+                    <cos-icon name="refresh" [size]="16"></cos-icon>
+                    <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_RESET_FILTERS' | translate }}</span>
+                  </button>
+
+                  <div class="input_area search_input mobile_search">
+                    <cos-input [placeholder]="'COMPONENTS.TOPIC_IDEATION.SEARCH' | translate">
+                      <input type="text" [ngModel]="searchValue()" (ngModelChange)="setSearch($event)" [placeholder]="'COMPONENTS.TOPIC_IDEATION.SEARCH' | translate" />
+                    </cos-input>
+                    @if (searchValue()) {
+                      <a class="clear_search" role="button" tabindex="0" (click)="setSearch('')" (keydown.enter)="setSearch('')">{{ 'VIEWS.MY_TOPICS.LNK_CLEAR' | translate }}</a>
+                    }
+                  </div>
+                </div>
+              </div>
+
+              @if (activeMobileFilter() !== null) {
+                <div class="overlay" tabindex="0" role="button" (click)="closeMobileFilter()" (keydown.enter)="closeMobileFilter()"></div>
+                <div class="mobile_filters_wrap filters_wrap active">
+                  @if (activeMobileFilter() === 'type') {
+                    <div class="options button_options">
+                      <a class="btn_medium_close icon" role="button" tabindex="0" (click)="closeMobileFilter()" (keydown.enter)="closeMobileFilter()">
+                        <cos-icon name="close" [size]="24"></cos-icon>
+                      </a>
+                      <div class="options_wrapper">
+                        <label class="checkbox" tabindex="0" (click)="setType('')" (keydown.enter)="setType('')">
+                          <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate | titlecase }}</span>
+                          <input type="radio" name="mobile_type" [checked]="!selectedType()">
+                          <span class="checkmark"></span>
+                        </label>
+                        @if (userStore.isAuthenticated()) {
+                          <label class="checkbox" tabindex="0" (click)="setType('iCreated')" (keydown.enter)="setType('iCreated')">
+                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_YOUR_IDEAS' | translate | titlecase }}</span>
+                            <input type="radio" name="mobile_type" [checked]="selectedType() === 'iCreated'">
+                            <span class="checkmark"></span>
+                          </label>
+                          <label class="checkbox" tabindex="0" (click)="setType('favourite')" (keydown.enter)="setType('favourite')">
+                            <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_FAVOURITES' | translate | titlecase }}</span>
+                            <input type="radio" name="mobile_type" [checked]="selectedType() === 'favourite'">
+                            <span class="checkmark"></span>
+                          </label>
+                        }
+                        <label class="checkbox" tabindex="0" (click)="setType('showModerated')" (keydown.enter)="setType('showModerated')">
+                          <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_MODERATED' | translate | titlecase }}</span>
+                          <input type="radio" name="mobile_type" [checked]="selectedType() === 'showModerated'">
+                          <span class="checkmark"></span>
+                        </label>
+                      </div>
+                      <button type="button" class="btn_medium_secondary" (click)="closeMobileFilter()">{{ 'COMPONENTS.TOPIC_IDEATION.BTN_APPLY' | translate }}</button>
+                    </div>
+                  }
+
+                  @if (activeMobileFilter() === 'order') {
+                    <div class="options button_options">
+                      <a class="btn_medium_close icon" role="button" tabindex="0" (click)="closeMobileFilter()" (keydown.enter)="closeMobileFilter()">
+                        <cos-icon name="close" [size]="24"></cos-icon>
+                      </a>
+                      <div class="options_wrapper">
+                        <label class="checkbox" tabindex="0" (click)="orderBy('')" (keydown.enter)="orderBy('')">
+                          <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate | titlecase }}</span>
+                          <input type="radio" name="mobile_order" [checked]="!selectedOrder()">
+                          <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox" tabindex="0" (click)="orderBy('likes')" (keydown.enter)="orderBy('likes')">
+                          <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_LIKED' | translate | titlecase }}</span>
+                          <input type="radio" name="mobile_order" [checked]="selectedOrder() === 'likes'">
+                          <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox" tabindex="0" (click)="orderBy('recent')" (keydown.enter)="orderBy('recent')">
+                          <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_RECENT' | translate | titlecase }}</span>
+                          <input type="radio" name="mobile_order" [checked]="selectedOrder() === 'recent'">
+                          <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox" tabindex="0" (click)="orderBy('replies')" (keydown.enter)="orderBy('replies')">
+                          <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_REPLIES' | translate | titlecase }}</span>
+                          <input type="radio" name="mobile_order" [checked]="selectedOrder() === 'replies'">
+                          <span class="checkmark"></span>
+                        </label>
+                      </div>
+                      <button type="button" class="btn_medium_secondary" (click)="closeMobileFilter()">{{ 'COMPONENTS.TOPIC_IDEATION.BTN_APPLY' | translate }}</button>
+                    </div>
+                  }
+
+                  @if (activeMobileFilter() === 'participants') {
+                    <div class="options button_options">
+                      <a class="btn_medium_close icon" role="button" tabindex="0" (click)="closeMobileFilter()" (keydown.enter)="closeMobileFilter()">
+                        <cos-icon name="close" [size]="24"></cos-icon>
+                      </a>
+                      <div class="options_wrapper">
+                        <label class="checkbox" tabindex="0" (click)="setParticipant(null)" (keydown.enter)="setParticipant(null)">
+                          <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate | titlecase }}</span>
+                          <input type="radio" name="mobile_participants" [checked]="!selectedParticipants()">
+                          <span class="checkmark"></span>
+                        </label>
+                        @for (user of participants$ | async; track user.id) {
+                          <label class="checkbox" tabindex="0" (click)="setParticipant(user)" (keydown.enter)="setParticipant(user)">
+                            <div class="author_wrap">
+                              <div class="image_wrap">
+                                @if (user.imageUrl) {
+                                  <img class="profile_image" [src]="user.imageUrl" [alt]="user.name" />
+                                } @else {
+                                  <div class="profile_image_filler">
+                                    <cos-initials [name]="user.name || ''" />
+                                  </div>
+                                }
+                              </div>
+                              <div class="author_name">{{ user.name }}</div>
+                            </div>
+                            <input type="radio" name="mobile_participants" [checked]="selectedParticipants()?.id === user.id">
+                            <span class="checkmark"></span>
+                          </label>
+                        }
+                      </div>
+                      <button type="button" class="btn_medium_secondary" (click)="closeMobileFilter()">{{ 'COMPONENTS.TOPIC_IDEATION.BTN_APPLY' | translate }}</button>
+                    </div>
+                  }
+
+                  @if (activeMobileFilter() === 'age') {
+                    <div class="options button_options">
+                      <a class="btn_medium_close icon" role="button" tabindex="0" (click)="closeMobileFilter()" (keydown.enter)="closeMobileFilter()">
+                        <cos-icon name="close" [size]="24"></cos-icon>
+                      </a>
+                      <div class="options_wrapper">
+                        <label class="checkbox" tabindex="0" (click)="setAge('')" (keydown.enter)="setAge('')">
+                          <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate | titlecase }}</span>
+                          <input type="checkbox" name="mobile_age" [checked]="selectedAge().length === 0 || selectedAge().length === AGE_LIMIT">
+                          <span class="checkmark"></span>
+                        </label>
+                        @for (idx of ageList; track idx) {
+                          <label class="checkbox" tabindex="0" (click)="setAge(idx)" (keydown.enter)="setAge(idx)">
+                            <span>{{ idx }}</span>
+                            <input type="checkbox" name="mobile_age" [checked]="selectedAge().includes(idx.toString())">
+                            <span class="checkmark"></span>
+                          </label>
+                        }
+                      </div>
+                      <button type="button" class="btn_medium_secondary" (click)="closeMobileFilter()">{{ 'COMPONENTS.TOPIC_IDEATION.BTN_APPLY' | translate }}</button>
+                    </div>
+                  }
+
+                  @if (activeMobileFilter() === 'gender') {
+                    <div class="options button_options">
+                      <a class="btn_medium_close icon" role="button" tabindex="0" (click)="closeMobileFilter()" (keydown.enter)="closeMobileFilter()">
+                        <cos-icon name="close" [size]="24"></cos-icon>
+                      </a>
+                      <div class="options_wrapper">
+                        <label class="checkbox" tabindex="0" (click)="setGender('')" (keydown.enter)="setGender('')">
+                          <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate | titlecase }}</span>
+                          <input type="radio" name="mobile_gender" [checked]="!selectedGender()">
+                          <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox" tabindex="0" (click)="setGender('male')" (keydown.enter)="setGender('male')">
+                          <span>{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_MALE' | translate }}</span>
+                          <input type="radio" name="mobile_gender" [checked]="selectedGender() === 'male'">
+                          <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox" tabindex="0" (click)="setGender('female')" (keydown.enter)="setGender('female')">
+                          <span>{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_FEMALE' | translate }}</span>
+                          <input type="radio" name="mobile_gender" [checked]="selectedGender() === 'female'">
+                          <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox" tabindex="0" (click)="setGender('other')" (keydown.enter)="setGender('other')">
+                          <span>{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_OTHER_PLACEHOLDER' | translate }}</span>
+                          <input type="radio" name="mobile_gender" [checked]="selectedGender() === 'other'">
+                          <span class="checkmark"></span>
+                        </label>
+                      </div>
+                      <button type="button" class="btn_medium_secondary" (click)="closeMobileFilter()">{{ 'COMPONENTS.TOPIC_IDEATION.BTN_APPLY' | translate }}</button>
+                    </div>
+                  }
+
+                  @if (activeMobileFilter() === 'residence') {
+                    <div class="options button_options">
+                      <a class="btn_medium_close icon" role="button" tabindex="0" (click)="closeMobileFilter()" (keydown.enter)="closeMobileFilter()">
+                        <cos-icon name="close" [size]="24"></cos-icon>
+                      </a>
+                      <div class="options_wrapper">
+                        <label class="checkbox" tabindex="0" (click)="setResidence('')" (keydown.enter)="setResidence('')">
+                          <span>{{ 'COMPONENTS.TOPIC_IDEATION.FILTER_ALL' | translate | titlecase }}</span>
+                          <input type="radio" name="mobile_residence" [checked]="!selectedResidence()">
+                          <span class="checkmark"></span>
+                        </label>
+                        @for (item of municipalities; track item.name) {
+                          <label class="checkbox" tabindex="0" (click)="setResidence(item.name)" (keydown.enter)="setResidence(item.name)">
+                            <span>{{ item.name }}</span>
+                            <input type="radio" name="mobile_residence" [checked]="selectedResidence() === item.name">
+                            <span class="checkmark"></span>
+                          </label>
+                        }
+                        <label class="checkbox" tabindex="0" (click)="setResidence('other')" (keydown.enter)="setResidence('other')">
+                          <span>{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_OTHER_PLACEHOLDER' | translate }}</span>
+                          <input type="radio" name="mobile_residence" [checked]="selectedResidence() === 'other'">
+                          <span class="checkmark"></span>
+                        </label>
+                      </div>
+                      <button type="button" class="btn_medium_secondary" (click)="closeMobileFilter()">{{ 'COMPONENTS.TOPIC_IDEATION.BTN_APPLY' | translate }}</button>
+                    </div>
+                  }
+                </div>
+              }
             </div>
         </div>
 

@@ -230,6 +230,24 @@ flattenedArguments = computed(() => {
     this.argumentService.loadPage(1);
   }
 
+  resetFilters() {
+    this.selectedTypes.set(['pro', 'con', 'poi']);
+    this.selectedOrder.set('popularity');
+    this.argumentService.setParam('types', null);
+    this.argumentService.setParam('sortOrder', 'popularity');
+    this.argumentService.loadPage(1);
+    this.activeMobileFilter.set(null);
+    this.mobileFiltersOpen.set(false);
+  }
+
+  clearFilters() {
+    this.resetFilters();
+  }
+
+  clearAllFilters() {
+    this.resetFilters();
+  }
+
   onArgumentPosted() {
     this.showPostForm.set(false);
     this.reload();

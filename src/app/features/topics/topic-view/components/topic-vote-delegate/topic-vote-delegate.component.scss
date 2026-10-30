@@ -2,31 +2,104 @@
 
 .dialog {
   max-width: 560px;
+  width: 100%;
+  box-sizing: border-box;
+
+  @include mixins.mobile {
+    max-width: 100%;
+    width: 100%;
+  }
 
   .dialog_content {
     padding: 24px;
     gap: 32px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+
+    @include mixins.mobile {
+      padding: 16px;
+      gap: 16px;
+    }
+
+    &:first-of-type {
+      position: relative;
+      z-index: 10;
+    }
   }
+
   .dialog_info {
     text-align: center;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    word-break: break-word;
+
+    &.bold {
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+
+    #search_wrap {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 8px;
+    }
 
     #input_area {
       width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     .search_area_wrap {
       position: absolute;
-      width: calc(100% - 48px);
+      top: 100%;
+      left: 0;
+      right: 0;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      margin-top: 4px;
+      z-index: 501;
+      max-height: 220px;
+      overflow-y: auto;
+      background: var(--color-surfaces);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      box-shadow: 0px 8px 20px 0px rgba(220, 231, 240, 0.3),
+        0px 12px 16px 0px rgba(50, 85, 112, 0.1);
+      padding: 8px;
+      text-align: left;
+
+      @include mixins.mobile {
+        max-height: 180px;
+        padding: 6px;
+      }
+
+      &.hidden {
+        display: none;
+      }
     }
+
     .search_dropdown_item {
       display: flex;
       flex-direction: row;
       gap: 8px;
-      padding: 8px;
+      padding: 8px 12px;
       justify-content: space-between;
+      align-items: center;
       border-radius: 5px;
       width: 100%;
-      &.active {
+      max-width: 100%;
+      box-sizing: border-box;
+      cursor: pointer;
+      word-break: break-word;
+
+      &.active,
+      &:hover {
         background-color: var(--color-surface-contrast);
       }
 
@@ -35,46 +108,67 @@
         gap: 8px;
         align-items: center;
         vertical-align: middle;
+        word-break: break-word;
+        box-sizing: border-box;
+        max-width: 100%;
+        min-width: 0;
+
+        b {
+          word-break: break-word;
+          overflow-wrap: break-word;
+        }
       }
 
       @include mixins.mobile {
-        flex-direction: column;
+        padding: 8px;
       }
     }
   }
+
   .row_list {
     display: flex;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     margin-top: 8px;
     background-color: var(--color-argument-pro-light);
     justify-content: space-between;
-    padding: 8px;
+    align-items: center;
+    padding: 8px 12px;
     border-radius: 8px;
-    .row_cell {
-      a {
-        min-width: 200px;
-      }
-    }
+    word-break: break-word;
+
     .row_cell_dialog {
       display: flex;
       gap: 8px;
       align-items: center;
+      min-width: 0;
+      box-sizing: border-box;
 
-      .cell_title {
-        display: flex;
-        width: 100%;
-        padding: 8px;
+      &.image_cell {
+        flex: 1;
+        span {
+          word-break: break-word;
+          overflow-wrap: break-word;
+        }
       }
 
-      .action_items {
-        display: flex;
-        gap: 8px;
-        padding: 8px 0;
-        justify-content: space-between;
-        width: 100%;
+      .profile_image_wrap {
+        flex-shrink: 0;
+      }
 
-        .dropdown {
-          width: 100%;
+      button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+        border-radius: 4px;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.05);
         }
       }
     }
@@ -82,9 +176,41 @@
 
   .button_content {
     padding-top: 8px;
+    box-sizing: border-box;
+    width: 100%;
+
+    .button_wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-sizing: border-box;
+      max-width: 100%;
+
+      @include mixins.mobile {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+
+        .btn_medium_submit {
+          width: 100%;
+          min-height: 44px;
+          box-sizing: border-box;
+          word-break: break-word;
+        }
+
+        a[dialogClose] {
+          width: 100%;
+          text-align: center;
+          padding: 8px 0;
+          box-sizing: border-box;
+        }
+      }
+    }
   }
 
   .profile_image_filler {
     width: 40px;
+    height: 40px;
+    flex-shrink: 0;
   }
 }

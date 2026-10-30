@@ -130,20 +130,32 @@
           </button>
         </div>
         <div class="options filter_options">
-          <a class="filter_option" (click)="activeMobileFilter.set('argumentType')" (keydown.enter)="activeMobileFilter.set('argumentType')" tabindex="0">
+          <div class="filter_option" (click)="activeMobileFilter.set('argumentType')" (keydown.enter)="activeMobileFilter.set('argumentType')" tabindex="0">
             <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_TYPE' | translate }}</span>
-            <span>
-              @for (key of getActiveTypeFilters(); track key; let last = $last) {
-                {{ key | translate }}{{ !last ? ', ' : '' }}
-              }
-            </span>
-          </a>
-          <a class="filter_option" (click)="activeMobileFilter.set('sortOrder')" (keydown.enter)="activeMobileFilter.set('sortOrder')" tabindex="0">
+            <a class="bold">
+              <span>
+                @for (key of getActiveTypeFilters(); track key; let last = $last) {
+                  {{ key | translate }}{{ !last ? ', ' : '' }}
+                }
+              </span>
+              <cos-icon name="chevron-right" [size]="24"></cos-icon>
+            </a>
+          </div>
+          <div class="filter_option" (click)="activeMobileFilter.set('sortOrder')" (keydown.enter)="activeMobileFilter.set('sortOrder')" tabindex="0">
             <span class="filter_option_text">{{ 'COMPONENTS.TOPIC_ARGUMENTS.FILTER_ARGUMENT_ORDER' | translate }}</span>
-            <span>
-              {{ getActiveOrderFilterText() | translate }}
-            </span>
-          </a>
+            <a class="bold">
+              <span>
+                {{ getActiveOrderFilterText() | translate }}
+              </span>
+              <cos-icon name="chevron-right" [size]="24"></cos-icon>
+            </a>
+          </div>
+          @if (hasActiveFilters()) {
+            <button type="button" class="btn_medium_plain reset_filters_btn" (click)="resetFilters()" [attr.aria-label]="'COMPONENTS.PUBLIC_TOPICS.BTN_RESET_FILTERS' | translate">
+              <cos-icon name="refresh" [size]="20"></cos-icon>
+              <span>{{ 'COMPONENTS.PUBLIC_TOPICS.BTN_RESET_FILTERS' | translate }}</span>
+            </button>
+          }
         </div>
       </div>
 
@@ -151,7 +163,7 @@
         <div class="overlay" (click)="activeMobileFilter.set(null)" (keydown.enter)="activeMobileFilter.set(null)" tabindex="0"></div>
       }
 
-      <div class="mobile_filters_wrap" [class.active]="activeMobileFilter() !== null">
+      <div class="mobile_filters_wrap filters_wrap" [class.active]="activeMobileFilter() !== null">
         @if (activeMobileFilter() === 'argumentType') {
           <div class="options button_options">
             <a class="btn_medium_close icon" (click)="activeMobileFilter.set(null)" (keydown.enter)="activeMobileFilter.set(null)" tabindex="0" [attr.aria-label]="'BTN_CLOSE' | translate">
@@ -160,7 +172,7 @@
 
             <div class="options_wrapper">
               @for (option of argumentTypes; track option.value) {
-                <label class="checkbox">
+                <label class="checkbox" tabindex="0" (keydown.enter)="toggleTypeFilter(option.value)">
                   <span>{{ option.title | translate }}</span>
                   <input type="checkbox" [checked]="selectedTypes().includes(option.value)" (change)="toggleTypeFilter(option.value)">
                   <span class="checkmark"></span>
@@ -168,7 +180,7 @@
               }
             </div>
 
-            <button class="btn_medium_secondary" (click)="activeMobileFilter.set(null)" translate="VIEWS.MY_TOPICS.BTN_APPLY" [attr.aria-label]="'VIEWS.MY_TOPICS.BTN_APPLY' | translate"></button>
+            <button type="button" class="btn_medium_secondary" (click)="activeMobileFilter.set(null)">{{ 'COMPONENTS.PUBLIC_TOPICS.BTN_APPLY' | translate }}</button>
           </div>
         }
 
@@ -180,7 +192,7 @@
 
             <div class="options_wrapper">
               @for (option of orderByOptions; track option.value) {
-                <label class="checkbox">
+                <label class="checkbox" tabindex="0" (keydown.enter)="setOrder(option.value)">
                   <span>{{ option.title | translate }}</span>
                   <input type="radio" name="sortOrder" [checked]="selectedOrder() === option.value" (change)="setOrder(option.value)">
                   <span class="checkmark"></span>
@@ -188,7 +200,7 @@
               }
             </div>
 
-            <button class="btn_medium_secondary" (click)="activeMobileFilter.set(null)" translate="VIEWS.MY_TOPICS.BTN_APPLY" [attr.aria-label]="'VIEWS.MY_TOPICS.BTN_APPLY' | translate"></button>
+            <button type="button" class="btn_medium_secondary" (click)="activeMobileFilter.set(null)">{{ 'COMPONENTS.PUBLIC_TOPICS.BTN_APPLY' | translate }}</button>
           </div>
         }
       </div>

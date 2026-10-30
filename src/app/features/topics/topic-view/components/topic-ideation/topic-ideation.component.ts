@@ -3,7 +3,7 @@ import { IconComponent } from '../../../../../shared/components/icon/icon.compon
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 import { NoFeatureYetComponent } from '../../../../../shared/components/no-feature-yet/no-feature-yet.component';
 
-import { DatePipe, isPlatformBrowser, AsyncPipe } from '@angular/common';
+import { DatePipe, isPlatformBrowser, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { toObservable, rxResource } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
@@ -39,6 +39,7 @@ import { ButtonComponent } from '../../../../../shared/components/button/button.
   imports: [
     ButtonComponent,
     DatePipe,
+    TitleCasePipe,
     FormsModule,
     TranslateModule,
     RouterModule,
@@ -98,6 +99,10 @@ export class TopicIdeationComponent {
   }
 
   showSearch = signal(false);
+  mobileFiltersOpen = signal(false);
+  activeMobileFilter = signal<'type' | 'order' | 'participants' | 'age' | 'gender' | 'residence' | null>(null);
+  ageList = Array.from({ length: this.AGE_LIMIT }, (_, i) => i + 1);
+
   mobileIdeaFiltersList = signal(false);
   mobileIdeaFilters = signal({
     type: false as boolean | string,
@@ -301,7 +306,7 @@ export class TopicIdeationComponent {
     if (age === '') {
         this.selectedAge.set([]);
     } else {
-        const current = this.selectedAge();
+        const current = [...this.selectedAge()];
         const index = current.indexOf(age.toString());
         if (index > -1) {
             current.splice(index, 1);
@@ -328,7 +333,7 @@ export class TopicIdeationComponent {
     this.currentPage.set(1);
   }
 
-  doClearFilters() {
+  clearAllFilters() {
     this.selectedType.set('');
     this.selectedOrder.set('');
     this.selectedParticipants.set(null);
@@ -337,6 +342,58 @@ export class TopicIdeationComponent {
     this.selectedResidence.set('');
     this.searchValue.set('');
     this.currentPage.set(1);
+  }
+
+  doClearFilters() {
+    this.clearAllFilters();
+  }
+
+  toggleMobileFilters() {
+    this.mobileFiltersOpen.update(open => !open);
+  }
+
+  openMobileFilter(filter: 'type' | 'order' | 'participants' | 'age' | 'gender' | 'residence') {
+    this.activeMobileFilter.set(filter);
+  }
+
+  get activeTypeLabel(): string {
+    const val = this.selectedType();
+    if (!val) return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_ALL');
+    if (val === 'iCreated') return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_YOUR_IDEAS');
+    if (val === 'favourite') return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_FAVOURITES');
+    if (val === 'showModerated') return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_TYPE_MODERATED');
+    return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_ALL');
+  }
+
+  get activeOrderLabel(): string {
+    const val = this.selectedOrder();
+    if (!val) return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_ALL');
+    if (val === 'likes') return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_LIKED');
+    if (val === 'recent') return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_RECENT');
+    if (val === 'replies') return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_ORDER_MOST_REPLIES');
+    return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_ALL');
+  }
+
+  get activeParticipantLabel(): string {
+    return this.selectedParticipants()?.name || this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_ALL');
+  }
+
+  get activeAgeLabel(): string {
+    return this.selectedAge().length > 0 ? this.sortedSelectedAges() : this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_ALL');
+  }
+
+  get activeGenderLabel(): string {
+    const g = this.selectedGender();
+    if (!g) return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_ALL');
+    const key = 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_' + (g === 'other' ? 'OTHER_PLACEHOLDER' : g.toUpperCase());
+    return this.translate.instant(key);
+  }
+
+  get activeResidenceLabel(): string {
+    const r = this.selectedResidence();
+    if (!r) return this.translate.instant('COMPONENTS.TOPIC_IDEATION.FILTER_ALL');
+    if (r === 'other') return this.translate.instant('VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_OTHER_PLACEHOLDER');
+    return r.charAt(0).toUpperCase() + r.slice(1);
   }
 
   onPageChange(p: number) {
@@ -476,11 +533,11 @@ export class TopicIdeationComponent {
   }
 
   showMobileOverlay() {
-    const f = this.mobileIdeaFilters();
-    return f.type || f.orderBy || f.participants || f.age || f.gender || f.residence;
+    return this.activeMobileFilter() !== null;
   }
 
   closeMobileFilter() {
+    this.activeMobileFilter.set(null);
     this.mobileIdeaFilters.set({
         type: false,
         orderBy: false,

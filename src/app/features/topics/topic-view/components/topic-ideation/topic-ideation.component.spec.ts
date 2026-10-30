@@ -11,7 +11,7 @@ import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { Topic } from '../../../../../core/interfaces/topic';
-import { Ideation } from '../../../../../core/interfaces/ideation';
+import { Ideation, IdeaVoter } from '../../../../../core/interfaces/ideation';
 import { Idea } from '../../../../../core/interfaces/idea';
 import { signal } from '@angular/core';
 
@@ -145,5 +145,77 @@ describe('TopicIdeationComponent', () => {
     comp.addIdea();
     expect(mockAuthDialogService.openLogin).toHaveBeenCalled();
     expect(comp.showAddIdea()).toBe(true);
+  });
+
+  it('toggleMobileFilters toggles mobileFiltersOpen signal', () => {
+    const comp = makeComp();
+    expect(comp.mobileFiltersOpen()).toBe(false);
+    comp.toggleMobileFilters();
+    expect(comp.mobileFiltersOpen()).toBe(true);
+    comp.toggleMobileFilters();
+    expect(comp.mobileFiltersOpen()).toBe(false);
+  });
+
+  it('openMobileFilter and closeMobileFilter update activeMobileFilter', () => {
+    const comp = makeComp();
+    expect(comp.activeMobileFilter()).toBe(null);
+    expect(comp.showMobileOverlay()).toBe(false);
+
+    comp.openMobileFilter('type');
+    expect(comp.activeMobileFilter()).toBe('type');
+    expect(comp.showMobileOverlay()).toBe(true);
+
+    comp.openMobileFilter('order');
+    expect(comp.activeMobileFilter()).toBe('order');
+
+    comp.openMobileFilter('participants');
+    expect(comp.activeMobileFilter()).toBe('participants');
+
+    comp.closeMobileFilter();
+    expect(comp.activeMobileFilter()).toBe(null);
+    expect(comp.showMobileOverlay()).toBe(false);
+  });
+
+  it('activeTypeLabel, activeOrderLabel, and activeParticipantLabel reflect current selection', () => {
+    const comp = makeComp();
+    expect(comp.activeTypeLabel).toBeTruthy();
+    expect(comp.activeOrderLabel).toBeTruthy();
+
+    comp.setType('favourite');
+    expect(comp.selectedType()).toBe('favourite');
+    expect(comp.activeTypeLabel).toBeTruthy();
+
+    comp.orderBy('likes');
+    expect(comp.selectedOrder()).toBe('likes');
+    expect(comp.activeOrderLabel).toBeTruthy();
+
+    comp.setParticipant({ id: 'u1', name: 'Alice' } as unknown as IdeaVoter);
+    expect(comp.selectedParticipants()?.name).toBe('Alice');
+    expect(comp.activeParticipantLabel).toBe('Alice');
+  });
+
+  it('clearAllFilters resets all filters and page to default', () => {
+    const comp = makeComp();
+    comp.setType('favourite');
+    comp.orderBy('likes');
+    comp.setParticipant({ id: 'u1', name: 'Alice' } as unknown as IdeaVoter);
+    comp.setAge(25);
+    comp.setGender('female');
+    comp.setResidence('Tallinn');
+    comp.setSearch('my idea');
+    comp.currentPage.set(4);
+
+    expect(comp.filtersSet()).toBe(true);
+
+    comp.clearAllFilters();
+
+    expect(comp.selectedType()).toBe('');
+    expect(comp.selectedOrder()).toBe('');
+    expect(comp.selectedParticipants()).toBe(null);
+    expect(comp.selectedAge()).toEqual([]);
+    expect(comp.selectedGender()).toBe('');
+    expect(comp.selectedResidence()).toBe('');
+    expect(comp.searchValue()).toBe('');
+    expect(comp.currentPage()).toBe(1);
   });
 });

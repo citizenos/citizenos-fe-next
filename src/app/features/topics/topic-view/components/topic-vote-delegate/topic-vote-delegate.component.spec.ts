@@ -1,7 +1,9 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { of, throwError } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 import { TopicVoteDelegateComponent } from './topic-vote-delegate.component';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
@@ -19,15 +21,23 @@ const mockMemberUserService = { query: vi.fn(() => of({ rows: [mockDelegate] }))
 const mockVoteDelegationService = { save: vi.fn(() => of({})) };
 const mockTopicService = { reloadTopic: vi.fn() };
 const mockUserStore = { user: vi.fn(() => mockUser) };
-const mockNotification = { success: vi.fn(), error: vi.fn(), clear: vi.fn(), dismissAll: vi.fn() };
-const mockTranslate = { instant: vi.fn((key: string) => key) };
+const mockNotification = {
+  success: vi.fn(),
+  error: vi.fn(),
+  clear: vi.fn(),
+  dismissAll: vi.fn(),
+  dismiss: vi.fn(),
+  notifications: signal([])
+};
 
 describe('TopicVoteDelegateComponent', () => {
   let component: TopicVoteDelegateComponent;
+  let fixture: ComponentFixture<TopicVoteDelegateComponent>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
+      imports: [TopicVoteDelegateComponent, TranslateModule.forRoot()],
       providers: [
         { provide: DIALOG_DATA, useValue: { topic: mockTopic } },
         { provide: DialogRef, useValue: mockDialogRef },
@@ -35,15 +45,23 @@ describe('TopicVoteDelegateComponent', () => {
         { provide: VoteDelegationService, useValue: mockVoteDelegationService },
         { provide: TopicService, useValue: mockTopicService },
         { provide: UserStore, useValue: mockUserStore },
-        { provide: NotificationService, useValue: mockNotification },
-        { provide: TranslateService, useValue: mockTranslate }
+        { provide: NotificationService, useValue: mockNotification }
       ]
-    });
-    component = TestBed.runInInjectionContext(() => new TopicVoteDelegateComponent());
+    }).overrideComponent(TopicVoteDelegateComponent, {
+      set: { schemas: [NO_ERRORS_SCHEMA] }
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(TopicVoteDelegateComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create and render dialog container with search_wrap', () => {
     expect(component).toBeTruthy();
+    const searchWrap = fixture.debugElement.query(By.css('#search_wrap'));
+    expect(searchWrap).toBeTruthy();
+    const typeahead = fixture.debugElement.query(By.css('cos-typeahead'));
+    expect(typeahead).toBeTruthy();
   });
 
   it('selectUser / addUser should set delegateUser', () => {
@@ -96,5 +114,19 @@ describe('TopicVoteDelegateComponent', () => {
     component.selectUser(mockDelegate);
     component.save();
     expect(mockNotification.error).toHaveBeenCalled();
+  });
+
+  it('should render row_list with delegate user info when delegate is selected', () => {
+    component.selectUser(mockDelegate);
+    fixture.detectChanges();
+
+    const rowList = fixture.debugElement.query(By.css('.row_list'));
+    expect(rowList).toBeTruthy();
+    expect(rowList.nativeElement.textContent).toContain('Bob');
+
+    const deleteBtn = fixture.debugElement.query(By.css('.row_cell_dialog button'));
+    expect(deleteBtn).toBeTruthy();
+    deleteBtn.triggerEventHandler('click', null);
+    expect(component.delegateUser()).toBeNull();
   });
 });

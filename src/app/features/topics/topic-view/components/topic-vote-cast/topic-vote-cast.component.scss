@@ -1,80 +1,109 @@
 @use "../../../../../../assets/styles/figma-tokens" as tokens;
 @use "mixins";
 
-@include mixins.mobile {
-  .options {
-    right: 0;
-  }
-}
+.vote_wrap {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
 
-.vote_header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: tokens.$spacing-l tokens.$spacing-xl;
-  background-color: var(--color-dialog-voting-contrast);
-  border-radius: tokens.$border-radius-lg tokens.$border-radius-lg 0 0;
-  gap: tokens.$spacing-m;
-
-  @include mixins.tablet {
-    padding: tokens.$spacing-l tokens.$spacing-l;
-  }
-
-  @include mixins.mobile {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: tokens.$spacing-m;
-  }
-
-  .header_left {
+  .vote_header {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    gap: 12px;
-
-    .question {
-      font-size: tokens.$font-size-xl;
-      font-style: normal;
-      font-weight: tokens.$font-weight-bold;
-      line-height: 28px;
-      color: var(--color-text-main);
-
-      @include mixins.tablet {
-        font-size: tokens.$font-size-lg;
-        line-height: 24px;
-      }
-
-      @include mixins.mobile {
-        font-size: tokens.$font-size-base;
-        line-height: 20px;
-      }
-    }
-  }
-
-  .header_right {
-    display: flex;
-    align-items: center;
-    gap: tokens.$spacing-l;
+    padding: tokens.$spacing-l tokens.$spacing-xl;
+    background-color: var(--color-dialog-voting-contrast);
+    border-radius: tokens.$border-radius-lg tokens.$border-radius-lg 0 0;
+    gap: tokens.$spacing-m;
+    position: relative;
+    z-index: 10;
+    box-sizing: border-box;
+    max-width: 100%;
 
     @include mixins.tablet {
+      padding: tokens.$spacing-l tokens.$spacing-l;
       gap: tokens.$spacing-m;
-      flex-shrink: 0;
     }
 
     @include mixins.mobile {
-      width: 100%;
-      justify-content: space-between;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: tokens.$spacing-m;
       gap: tokens.$spacing-m;
     }
 
-    .deadline_wrap {
+    .header_left {
       display: flex;
       align-items: center;
-      gap: tokens.$spacing-sm;
-      font-size: tokens.$font-size-sm;
-      font-weight: tokens.$font-weight-bold;
-      color: var(--color-text-main);
-      white-space: nowrap;
+      gap: 12px;
+      box-sizing: border-box;
+      max-width: 100%;
+      min-width: 0;
+
+      .question {
+        font-size: tokens.$font-size-xl;
+        font-style: normal;
+        font-weight: tokens.$font-weight-bold;
+        line-height: 28px;
+        color: var(--color-text-main);
+        box-sizing: border-box;
+        max-width: 100%;
+        word-break: break-word;
+        overflow-wrap: break-word;
+
+        @include mixins.tablet {
+          font-size: tokens.$font-size-lg;
+          line-height: 24px;
+        }
+
+        @include mixins.mobile {
+          font-size: tokens.$font-size-base;
+          line-height: 20px;
+        }
+      }
+    }
+
+    .header_right {
+      display: flex;
+      align-items: center;
+      gap: tokens.$spacing-l;
+      box-sizing: border-box;
+      max-width: 100%;
+
+      @include mixins.tablet {
+        gap: tokens.$spacing-m;
+        flex-shrink: 0;
+      }
+
+      @include mixins.mobile {
+        width: 100%;
+        justify-content: space-between;
+        gap: tokens.$spacing-m;
+      }
+
+      .deadline_wrap {
+        display: flex;
+        align-items: center;
+        gap: tokens.$spacing-sm;
+        font-size: tokens.$font-size-sm;
+        font-weight: tokens.$font-weight-bold;
+        color: var(--color-text-main);
+        white-space: nowrap;
+        box-sizing: border-box;
+        max-width: 100%;
+
+        @include mixins.mobile {
+          font-size: tokens.$font-size-xs;
+          flex-shrink: 1;
+          min-width: 0;
+
+          span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
     }
   }
 }
@@ -90,6 +119,13 @@
   @include mixins.mobile {
     max-width: max-content;
     align-self: flex-end;
+    margin-left: auto;
+  }
+
+  #mobile_actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   button:first-child {
@@ -108,22 +144,42 @@
     display: none;
     position: absolute;
     right: 0;
+    left: auto;
     top: 100%;
+    margin-top: 4px;
     background: var(--color-surfaces);
     box-shadow: var(--shadow-lg);
     border-radius: tokens.$border-radius-m;
-    z-index: 100;
+    z-index: 501;
     padding: tokens.$spacing-sm 0;
     min-width: 200px;
+    max-width: calc(100vw - 32px);
+    box-sizing: border-box;
+
+    @include mixins.mobile {
+      right: 0;
+      left: auto;
+      z-index: 501;
+      min-width: 200px;
+      max-width: calc(100vw - 32px);
+      box-sizing: border-box;
+    }
 
     .option {
       display: flex;
       align-items: center;
       padding: tokens.$spacing-sm tokens.$spacing-m;
       cursor: pointer;
-      gap: tokens.$border-radius-lg; /* 12px might be spacing-m / some other? Let us use 12px or spacing-m */
+      gap: tokens.$spacing-sm;
       font-size: tokens.$font-size-sm;
       color: var(--color-text-main);
+      box-sizing: border-box;
+      max-width: 100%;
+      word-break: break-word;
+
+      span {
+        word-break: break-word;
+      }
 
       &:hover {
         background-color: var(--color-background-hover);
@@ -133,6 +189,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
       }
     }
 
@@ -162,20 +219,29 @@
     background-color: var(--color-surfaces);
     border-radius: 0 0 tokens.$border-radius-lg tokens.$border-radius-lg;
     padding: tokens.$spacing-l;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+
     @include mixins.mobile {
       padding: tokens.$spacing-m;
+      gap: tokens.$spacing-m;
     }
 
     .vote_info_wrap {
       display: flex;
       flex-direction: column;
       gap: tokens.$spacing-m;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%;
 
       .heading {
         font-size: tokens.$font-size-lg;
         font-weight: tokens.$font-weight-bold;
         line-height: 24px;
         color: var(--color-text-main);
+        word-break: break-word;
       }
 
       .vote_info_text_wrap {
@@ -186,6 +252,9 @@
         padding: tokens.$spacing-m tokens.$spacing-l;
         background-color: var(--color-dialog-voting-contrast);
         border-radius: tokens.$border-radius-m;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
 
         @include mixins.tablet {
           gap: tokens.$spacing-m;
@@ -203,12 +272,19 @@
           display: flex;
           align-items: center;
           gap: tokens.$spacing-sm;
+          box-sizing: border-box;
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
 
           .text_area {
             display: flex;
             flex-direction: column;
             max-width: 440px;
+            width: 100%;
             gap: tokens.$spacing-xs;
+            box-sizing: border-box;
+            min-width: 0;
 
             @include mixins.tablet {
               max-width: 100%;
@@ -218,10 +294,12 @@
               font-size: tokens.$font-size-lg;
               font-weight: tokens.$font-weight-bold;
               line-height: 24px;
+              word-break: break-word;
             }
             div {
               font-size: tokens.$font-size-sm;
               line-height: 16px;
+              word-break: break-word;
             }
             .links_wrap {
               margin-top: tokens.$spacing-m;
@@ -229,10 +307,23 @@
               flex-direction: row;
               gap: tokens.$spacing-m;
               align-items: center;
+              box-sizing: border-box;
+              max-width: 100%;
 
               @include mixins.mobile {
                 flex-wrap: wrap;
                 gap: tokens.$spacing-sm;
+                width: 100%;
+
+                cos-button {
+                  max-width: 100%;
+                  box-sizing: border-box;
+                  ::ng-deep button {
+                    max-width: 100%;
+                    box-sizing: border-box;
+                    word-break: break-word;
+                  }
+                }
               }
 
               a {
@@ -241,6 +332,9 @@
                 align-items: center;
                 font-size: tokens.$font-size-sm;
                 color: var(--color-link);
+                box-sizing: border-box;
+                max-width: 100%;
+                word-break: break-word;
               }
             }
           }
@@ -249,6 +343,48 @@
         .vote_text_right {
           display: flex;
           align-items: center;
+          box-sizing: border-box;
+          max-width: 100%;
+        }
+      }
+    }
+
+    cos-vote-options {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+
+      ::ng-deep {
+        .vote_options {
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+        }
+
+        .vote_option {
+          box-sizing: border-box;
+          max-width: 100%;
+          word-break: break-word;
+          overflow-wrap: break-word;
+
+          .radio_text_wrap,
+          .radio_lable_wrap,
+          .checkbox,
+          .radio_box,
+          .option_text {
+            box-sizing: border-box;
+            max-width: 100%;
+            min-width: 0;
+            word-break: break-word;
+            overflow-wrap: break-word;
+          }
+
+          @include mixins.mobile {
+            .radio_lable_wrap {
+              padding: 12px;
+            }
+          }
         }
       }
     }
@@ -257,9 +393,14 @@
       display: flex;
       flex-direction: column;
       gap: tokens.$spacing-sm;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+
       @include mixins.mobile {
         padding-top: tokens.$spacing-sm;
       }
+
       .vote_option {
         padding: 0;
         background-color: var(--color-surfaces);
@@ -268,17 +409,35 @@
         border-radius: 0;
         box-shadow: 0px 2px 4px 0px rgba(220, 231, 240, 0.3);
         cursor: pointer;
+        box-sizing: border-box;
+        max-width: 100%;
+        word-break: break-word;
+        overflow-wrap: break-word;
 
         .radio_text_wrap {
           display: flex;
           align-items: center;
+          box-sizing: border-box;
+          max-width: 100%;
+          min-width: 0;
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
 
         .radio_lable_wrap {
           padding: tokens.$spacing-m;
           display: flex;
           width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+          min-width: 0;
           cursor: pointer;
+          word-break: break-word;
+          overflow-wrap: break-word;
+
+          @include mixins.mobile {
+            padding: 12px;
+          }
         }
         &.voting {
           &:hover {
@@ -293,12 +452,14 @@
 
         .checkbox {
           gap: tokens.$spacing-m;
+          box-sizing: border-box;
+          max-width: 100%;
+          min-width: 0;
         }
 
         .checkmark,
         .radio {
           background-color: var(--color-surfaces);
-          // border: 1px solid var(--color-voting-disabled);
           &::after {
             display: none;
           }
@@ -324,15 +485,51 @@
         right: 0;
         padding: tokens.$spacing-m;
         background: var(--color-secondary);
+        box-sizing: border-box;
 
         a {
           line-height: 24px;
+          word-break: break-word;
+        }
+      }
+    }
+
+    app-big-graph {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+
+      ::ng-deep {
+        .big_graph {
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+
+          .graph_item {
+            box-sizing: border-box;
+            max-width: 100%;
+
+            .grap_item_info {
+              box-sizing: border-box;
+              max-width: 100%;
+              word-break: break-word;
+              overflow-wrap: break-word;
+            }
+
+            .graph_bar {
+              box-sizing: border-box;
+              max-width: 100%;
+            }
+          }
         }
       }
     }
 
     .vote_buttons_wrap {
       width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -346,12 +543,27 @@
       @include mixins.mobile {
         flex-direction: column;
         gap: tokens.$spacing-sm;
+
+        div:empty {
+          display: none;
+        }
+
         cos-button {
           width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+
           ::ng-deep button {
             width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            text-align: center;
             justify-content: center;
             min-height: 44px;
+            padding: 10px 16px;
           }
         }
       }
@@ -374,6 +586,9 @@
     background-color: var(--color-dialog-voting-contrast);
     border-radius: tokens.$border-radius-m;
     gap: tokens.$spacing-m;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
 
     @include mixins.tablet {
       padding: tokens.$spacing-m;
@@ -389,10 +604,18 @@
       display: flex;
       align-items: center;
       gap: tokens.$spacing-m;
+      box-sizing: border-box;
+      max-width: 100%;
+      min-width: 0;
 
       .text_area {
         font-size: tokens.$font-size-sm;
         color: var(--color-text-main);
+        box-sizing: border-box;
+        max-width: 100%;
+        min-width: 0;
+        word-break: break-word;
+        overflow-wrap: break-word;
       }
     }
   }
@@ -402,8 +625,15 @@
   display: flex;
   align-items: flex-start;
   gap: tokens.$spacing-m;
+  box-sizing: border-box;
+  max-width: 100%;
+
+  @include mixins.mobile {
+    flex-wrap: wrap;
+  }
 
   #vote_graph {
+    flex-shrink: 0;
     #graph_background {
       stroke: var(--color-voting-disabled);
     }
@@ -414,12 +644,18 @@
   .text_area {
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 }
 
 .vote_section_heading {
   font-weight: tokens.$font-weight-medium;
   margin-bottom: 8px;
+  word-break: break-word;
 }
 
 .vote_delegation {
@@ -432,6 +668,9 @@
   position: relative;
   justify-content: space-between;
   margin-bottom: 12px;
+  box-sizing: border-box;
+  max-width: 100%;
+  word-break: break-word;
 
   @include mixins.tablet {
     padding: tokens.$spacing-m;
@@ -450,10 +689,19 @@
 
     cos-button {
       width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
       ::ng-deep button {
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        text-align: center;
         justify-content: center;
         min-height: 44px;
+        padding: 10px 16px;
       }
     }
   }
@@ -462,6 +710,9 @@
     display: flex;
     gap: tokens.$spacing-m;
     align-items: center;
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
 
     .icon_delegation {
       width: 40px;
@@ -472,26 +723,39 @@
       justify-content: center;
       background-color: var(--color-dialog-voting-contrast);
       border-radius: 20px;
+      flex-shrink: 0;
     }
 
     .delegation_text_wrap {
       display: flex;
       flex-direction: column;
       gap: tokens.$spacing-xs;
+      box-sizing: border-box;
+      max-width: 100%;
+      min-width: 0;
+      word-break: break-word;
+      overflow-wrap: break-word;
 
       .delegation_row {
         display: flex;
         gap: tokens.$spacing-sm;
         align-items: center;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+        max-width: 100%;
 
         .profile_image_wrap {
           display: flex;
           align-items: center;
+          gap: tokens.$spacing-xs;
+          min-width: 0;
+          box-sizing: border-box;
 
           .profile_image {
             width: 24px;
             height: 24px;
             border-radius: 12px;
+            flex-shrink: 0;
           }
         }
       }

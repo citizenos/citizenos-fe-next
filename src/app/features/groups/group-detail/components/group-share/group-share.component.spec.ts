@@ -126,8 +126,10 @@ describe('GroupShareComponent', () => {
 
   describe('copyInviteLink', () => {
     it('writes to clipboard and sets copySuccess', async () => {
-      Object.assign(navigator, {
-        clipboard: { writeText: vi.fn().mockResolvedValue(undefined) }
+      Object.defineProperty(navigator, 'clipboard', {
+        value: { writeText: vi.fn().mockResolvedValue(undefined) },
+        configurable: true,
+        writable: true,
       });
       component.ngOnInit();
       component.copyInviteLink();
