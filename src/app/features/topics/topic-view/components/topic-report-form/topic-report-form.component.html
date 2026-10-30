@@ -5,23 +5,23 @@
         <div class="icon_notification">
           <cos-icon name="warning-filled" [size]="40"></cos-icon>
         </div>
-        <h1 class="title">{{ 'MODALS.TOPIC_REPORT_HEADING' | translate }}</h1>
+        <h1 class="title">{{ 'COMPONENTS.REPORT_TOPIC.HEADING' | translate }}</h1>
       </div>
       <div class="dialog_close">
-        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
+        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'BTN_CLOSE' | translate">
           <cos-icon name="nav-close"></cos-icon>
         </button>
       </div>
     </div>
 
     <div class="dialog_content">
-      <div class="content_text">{{ 'MODALS.TOPIC_REPORT_TXT_ARE_YOU_SURE' | translate }}</div>
+      <div class="content_text">{{ 'COMPONENTS.REPORT_TOPIC.MESSAGE_MAIN' | translate }}</div>
 
       <form [formRoot]="reportForm" (submit)="doReport(); $event.preventDefault()">
         <div class="form_group">
-          <label for="report_type">{{ 'MODALS.TOPIC_REPORT_LABEL_REASON' | translate }}</label>
+          <label for="report_type">{{ 'COMPONENTS.REPORT_TOPIC.LABLE_REASON' | translate }}</label>
           <cos-dropdown id="report_type">
-            <div selection class="selected_item" [attr.aria-label]="'MODALS.TOPIC_REPORT_LABEL_REASON' | translate">
+            <div selection class="selected_item" [attr.aria-label]="'COMPONENTS.REPORT_TOPIC.LABLE_REASON' | translate">
               {{ 'TXT_REPORT_TYPES_' + (reportForm().value().type | uppercase) | translate }}
             </div>
             <div options>
@@ -35,9 +35,9 @@
         </div>
 
         <div class="form_group">
-          <label for="report_text">{{ 'MODALS.TOPIC_REPORT_LABEL_REASON' | translate }}</label>
+          <label for="report_text">{{ 'COMPONENTS.REPORT_TOPIC.LABLE_REASON' | translate }}</label>
           <textarea id="report_text" [formField]="reportForm.text"
-                    [placeholder]="'MODALS.TOPIC_REPORT_PLACEHOLDER_REPORT_TEXT' | translate"></textarea>
+                    [placeholder]="'COMPONENTS.REPORT_TOPIC.PLACEHOLDER_REPORT_TEXT' | translate"></textarea>
           <div class="char_count">{{ reportForm().value().text.length || 0 }}/2048</div>
         </div>
       </form>
@@ -45,8 +45,8 @@
 
     <div class="dialog_footer with_buttons">
       <div class="button_row">
-        <cos-button variant="secondary" (clicked)="close()" translate="MODALS.TOPIC_REPORT_BTN_NO"></cos-button>
-        <cos-button variant="primary" (clicked)="doReport()" [isDisabled]="reportForm().invalid() || isLoading()" translate="MODALS.TOPIC_REPORT_BTN_YES"></cos-button>
+        <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.REPORT_TOPIC.BTN_CANCEL"></cos-button>
+        <cos-button variant="primary" (clicked)="doReport()" [isDisabled]="reportForm().invalid() || isLoading()" translate="COMPONENTS.REPORT_TOPIC.BTN_SUBMIT"></cos-button>
       </div>
     </div>
   </div>

@@ -101,8 +101,7 @@ import { UserService } from '../../../core/services/user.service';
         </form>
 
         <footer class="login-footer">
-          <span>{{ 'COMPONENTS.LOGIN_FORM.LOGIN_NO_ACCOUNT' | translate: { default: "Don't have an account?" } }} </span>
-          <a [routerLink]="['..', 'signup']">{{ 'COMPONENTS.LOGIN_FORM.LOGIN_SIGN_UP_HERE' | translate: { default: 'Sign up here' } }}</a>
+          <a [routerLink]="['..', 'signup']">{{ 'COMPONENTS.LOGIN_FORM.LOGIN_LNK_NO_ACCOUNT_REGISTER' | translate }}</a>
         </footer>
       </div>
     </div>

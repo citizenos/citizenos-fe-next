@@ -387,11 +387,11 @@
                                 <div class="options">
                                     <button type="button" class="option" (click)="editFolder(folder)">
                                         <cos-icon name="edit" size="16"></cos-icon>
-                                        <span>{{ 'CONTROL.EDIT' | translate }}</span>
+                                        <span>{{ 'COMPONENTS.TOPIC_IDEATION.OPTION_EDIT_FOLDER' | translate }}</span>
                                     </button>
                                     <button type="button" class="option error_text" (click)="deleteFolder(folder)">
                                         <cos-icon name="trash"></cos-icon>
-                                        <span>{{ 'CONTROL.DELETE' | translate }}</span>
+                                        <span>{{ 'COMPONENTS.TOPIC_IDEATION.OPTION_DELETE_FOLDER' | translate }}</span>
                                     </button>
                                 </div>
                             </div>
@@ -403,7 +403,7 @@
             @if (canManageFolders()) {
                 <div id="add_folder_btn">
                     <cos-button variant="primary" (clicked)="addFolder()" icon="plus">
-                        <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_ADD_FOLDER' | translate }}</span>
+                        <span>{{ 'COMPONENTS.TOPIC_IDEATION.BTN_CREATE_NEW_FOLDER' | translate }}</span>
                     </cos-button>
                 </div>
             }

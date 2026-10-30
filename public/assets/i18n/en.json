@@ -1439,8 +1439,6 @@
     "GROUP_MEMBER_USER_DELETE_CONFIRM_BTN_NO": "@:BTN_NO",
     "GROUP_MEMBER_USER_DELETE_CONFIRM_BTN_YES": "@:BTN_YES",
     "GROUP_MEMBER_USER_LEAVE_CONFIRM_BTN_YES": "@:BTN_YES",
-    "LOGIN_SMARTID_PLACEHOLDER_PID": "@:COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_PLACEHOLDER_PID",
-    "LOGIN_SMARTID_BTN_AUTHENTICATE": "@:COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_BTN_AUTHENTICATE_SID",
     "TOPIC_CLOSE_CONFIRM_HEADING_CLOSE_TOPIC": "Close topic",
     "TOPIC_CLOSE_CONFIRM_TXT_ARE_YOU_SURE": "Are you sure you want to continue?",
     "TOPIC_CLOSE_CONFIRM_TXT_NO_UNDO": "Please keep in mind you cannot undo this action.",
@@ -2035,8 +2033,6 @@
       "PLACEHOLDER_NEW_PASSWORD": "New password",
       "PLACEHOLDER_PASSWORD_CONFIRM": "Confirm password",
       "RESET_PASSWORD": "Reset password",
-      "LNK_TERMS": "Terms of Use",
-      "LNK_PRIVACY": "Privacy Policy",
       "UPLOAD_AVATAR": "Upload new",
       "DELETE_AVATAR": "Delete",
       "AVATAR_RESTRICTIONS": "Max 500kb jpg, gif or png",
@@ -2428,7 +2424,6 @@
     },
     "LOGIN": {
       "BTN_BACK": "Back to dashboard",
-      "BTN_BACK_LOGIN": "Back to login",
       "LOGIN_TITLE": "Log in to Citizen OS"
     },
     "MY": {

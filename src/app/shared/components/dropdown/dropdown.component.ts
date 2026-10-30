@@ -6,8 +6,12 @@ import { IconComponent } from '../icon/icon.component';
   selector: 'cos-dropdown',
   standalone: true,
   imports: [IconComponent],
+  host: {
+    '[class.open]': 'isOpen()',
+    '[class.active]': 'isOpen()',
+  },
   template: `
-    <div class="dropdown-wrapper" [class.open]="isOpen()">
+    <div class="dropdown-wrapper dropdown" [class.open]="isOpen()" [class.active]="isOpen()">
       <div class="dropdown-selection"
            [class.with_label]="placeholder()"
            (click)="toggle()"
@@ -32,14 +36,32 @@ import { IconComponent } from '../icon/icon.component';
         </div>
       </div>
       @if (isOpen()) {
-        <div id="dropdown-options-panel" class="dropdown-options" role="listbox" (click)="isOpen.set(false)" (keydown.escape)="isOpen.set(false)" tabindex="-1">
+        <div id="dropdown-options-panel"
+             class="dropdown-options options"
+             [class.align-right]="align() === 'right'"
+             [class.align-left]="align() === 'left'"
+             role="listbox"
+             (click)="isOpen.set(false)"
+             (keydown.escape)="isOpen.set(false)"
+             tabindex="-1">
           <ng-content select="[options]"></ng-content>
         </div>
       }
     </div>
   `,
   styles: [`
-    .dropdown-wrapper {
+    :host {
+      display: block;
+      position: relative;
+    }
+
+    :host(.open),
+    :host(.active) {
+      z-index: 500;
+    }
+
+    .dropdown-wrapper,
+    .dropdown {
       position: relative;
       width: 100%;
       background: var(--color-surfaces);
@@ -47,7 +69,10 @@ import { IconComponent } from '../icon/icon.component';
       border-radius: var(--radius-md);
       transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 
-      &.open {
+      &.open,
+      &.active {
+        z-index: 500;
+        position: relative;
         border-color: var(--color-border-active);
         box-shadow: 0 0 0 3px var(--color-focus-ring);
       }
@@ -97,7 +122,8 @@ import { IconComponent } from '../icon/icon.component';
       color: var(--color-text-muted);
     }
 
-    .open .dropdown-arrow {
+    .open .dropdown-arrow,
+    .active .dropdown-arrow {
       transform: rotate(180deg);
     }
 
@@ -106,14 +132,44 @@ import { IconComponent } from '../icon/icon.component';
       top: 100%;
       left: 0;
       right: 0;
+      min-width: 100%;
+      box-sizing: border-box;
       background: var(--color-surfaces);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       margin-top: 4px;
-      z-index: 100;
+      z-index: 501;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      max-height: 350px;
+      max-height: min(350px, 60vh);
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+
+      &.align-right {
+        left: auto;
+        right: 0;
+      }
+
+      &.align-left {
+        left: 0;
+        right: auto;
+      }
+    }
+
+    :host(.align-right) .dropdown-options {
+      left: auto;
+      right: 0;
+    }
+
+    @media (max-width: 560px) {
+      .dropdown-options,
+      :host(.align-right) .dropdown-options,
+      .dropdown-options.align-right {
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: 100%;
+        max-height: 50vh;
+      }
     }
 
     ::ng-deep .dropdown-options .option,
@@ -135,6 +191,7 @@ import { IconComponent } from '../icon/icon.component';
 })
 export class DropdownComponent {
   placeholder = input<string>('');
+  align = input<'left' | 'right'>('left');
   isOpen = signal<boolean>(false);
 
   toggle() {

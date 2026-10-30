@@ -266,7 +266,7 @@ import { UserStore } from '../../../state/user.store';
             </div>
           </div>
         </div>
-        <div id="close_lightbox" role="button" [attr.aria-label]="'CONTROL.CLOSE' | translate" tabindex="0" (click)="uiState.showOnboarding.set(false)" (keydown.enter)="uiState.showOnboarding.set(false)"></div>
+        <div id="close_lightbox" role="button" [attr.aria-label]="'BTN_CLOSE' | translate" tabindex="0" (click)="uiState.showOnboarding.set(false)" (keydown.enter)="uiState.showOnboarding.set(false)"></div>
       </div>
     }
   `,

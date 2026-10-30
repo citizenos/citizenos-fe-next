@@ -2,10 +2,14 @@
 
 .page_content {
   gap: 24px;
+  min-height: 100%;
+  box-sizing: border-box;
+  padding-bottom: 48px;
 
   @include mixins.tablet {
-    margin: 56px 0;
+    margin: 56px 0 0 0;
     gap: 16px;
+    padding-bottom: 48px;
 
     #page_header {
       margin: 0;
@@ -18,7 +22,7 @@
   }
 
   @include mixins.mobile {
-    padding: 0;
+    padding: 0 8px 48px 8px;
 
     #page_header {
       padding: 16px 8px 0 8px;
@@ -147,6 +151,8 @@
 
 .groups_content {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   display: flex;
   gap: 24px;
   flex-flow: row wrap;
@@ -157,12 +163,22 @@
 
   @include mixins.mobile {
     justify-content: center;
-    padding: 0 16px;
+    padding: 0;
 
     cos-group-card {
       width: 100%;
+      box-sizing: border-box;
+      max-width: 100%;
     }
   }
+}
+
+.pagination_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 16px 0 24px 0;
+  box-sizing: border-box;
 }
 
 .no_groups {

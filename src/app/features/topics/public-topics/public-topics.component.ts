@@ -34,14 +34,14 @@ import { languages } from '../../../core/constants/all-languages';
   template: `
     <div class="page_content">
       <app-page-list-header>
-        <span title translate="VIEWS.PUBLIC_TOPICS.HEADING_TOPICS"></span>
+        <span title translate="COMPONENTS.PUBLIC_TOPICS.HEADER"></span>
         <cos-activities-button activities></cos-activities-button>
       </app-page-list-header>
 
       <app-list-filter-toolbar
         [filters]="filterConfigs()"
         [filtersExtra]="filterExtraConfigs()"
-        [searchPlaceholder]="'COMPONENTS.PUBLIC_TOPICS.PLACEHOLDER_SEARCH_TOPIC' | translate"
+        [searchPlaceholder]="'COMPONENTS.PUBLIC_TOPICS.PLACEHOLDER_SEARCH' | translate"
         [searchValue]="searchValue()"
         (filterChange)="onFilterChange($event)"
         (searchChange)="onSearch($event)"
@@ -52,7 +52,7 @@ import { languages } from '../../../core/constants/all-languages';
           <cos-topic-card [topic]="topic"></cos-topic-card>
         } @empty {
           <div class="no_topics">
-            <div class="no_topics_heading" translate="COMPONENTS.PUBLIC_TOPICS.TEXT_TOPICS_NONE"></div>
+            <div class="no_topics_heading" translate="VIEWS.MY.NO_RESULTS_FOUND_TITLE"></div>
           </div>
         }
       </div>

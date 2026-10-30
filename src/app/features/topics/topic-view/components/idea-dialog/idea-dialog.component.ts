@@ -320,7 +320,7 @@ export class IdeaDialogComponent implements OnInit {
       this.router.createUrlTree(['/', this.translate.currentLang, 'topics', this.topic().id, 'ideation', this.ideation().id, 'ideas', this.idea().id])
     );
     navigator.clipboard?.writeText(url);
-    this.notificationService.show('info', 'COMPONENTS.ARGUMENT.MSG_LINK_COPIED');
+    this.notificationService.show('info', 'VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_COPIED');
   }
 
   addToFolder() {

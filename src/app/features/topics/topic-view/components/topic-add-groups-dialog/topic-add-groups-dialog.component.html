@@ -2,10 +2,10 @@
   <div class="dialog">
     <div class="dialog_header">
       <div class="header_text">
-        <h1 class="title">{{ 'MODALS.TOPIC_ADD_GROUPS_HEADING' | translate }}</h1>
+        <h1 class="title">{{ 'COMPONENTS.TOPIC_ADD_GROUPS_DIALOG.HEADING' | translate }}</h1>
       </div>
       <div class="dialog_close">
-        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
+        <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'BTN_CLOSE' | translate">
           <cos-icon name="nav-close"></cos-icon>
         </button>
       </div>
@@ -16,11 +16,11 @@
         <div class="section_content_wrap">
           <div class="search_wrap">
             <div class="input_area">
-              <label class="hidden" for="group_search">{{ 'COMPONENTS.TOPIC_ADD_GROUPS.PLACEHOLDER_SEARCH_GROUPS' | translate }}</label>
+              <label class="hidden" for="group_search">{{ 'COMPONENTS.TOPIC_ADD_GROUPS.PLACEHOLDER_SEARCH' | translate }}</label>
               <input id="group_search" type="text"
                      [ngModel]="searchString()"
                      (ngModelChange)="onSearchChange($event)"
-                     [placeholder]="'COMPONENTS.TOPIC_ADD_GROUPS.PLACEHOLDER_SEARCH_GROUPS' | translate">
+                     [placeholder]="'COMPONENTS.TOPIC_ADD_GROUPS.PLACEHOLDER_SEARCH' | translate">
               <cos-icon name="search" size="20" class="search_icon"></cos-icon>
             </div>
 
@@ -40,13 +40,13 @@
           @if (selectedGroups().length > 0) {
             <div class="selected_members_wrap">
               <div class="global_level_select">
-                <span>{{ 'COMPONENTS.TOPIC_ADD_GROUPS.LBL_ALL_GROUPS_LEVEL' | translate }}</span>
+                <span>{{ 'COMPONENTS.TOPIC_ADD_GROUPS.HEADING_TOPIC_PERMISSIONS' | translate }}</span>
                 <cos-tooltip
                   [title]="'COMPONENTS.TOPIC_ADD_GROUPS.TOOLTIP_GROUP_PERMISSIONS_TITLE' | translate"
                   [description]="'COMPONENTS.TOPIC_ADD_GROUPS.TOOLTIP_GROUP_PERMISSIONS_CONTENT' | translate">
                 </cos-tooltip>
                 <cos-dropdown>
-                  <div selection class="selected_item" [attr.aria-label]="'COMPONENTS.TOPIC_ADD_GROUPS.LBL_ALL_GROUPS_LEVEL' | translate">
+                  <div selection class="selected_item" [attr.aria-label]="'COMPONENTS.TOPIC_ADD_GROUPS.HEADING_TOPIC_PERMISSIONS' | translate">
                     {{ 'TXT_TOPIC_LEVELS_' + (globalLevel() | uppercase) | translate }}
                   </div>
                   <div options>
@@ -95,11 +95,11 @@
       <div class="dialog_footer with_buttons">
         <div class="info_row tablet_hidden">
           <cos-icon name="info" size="16"></cos-icon>
-          <span>{{ 'COMPONENTS.TOPIC_ADD_GROUPS.TXT_ADD_GROUPS_INFO' | translate }}</span>
+          <span>{{ 'COMPONENTS.TOPIC_ADD_GROUPS.DESC' | translate }}</span>
         </div>
         <div class="button_row">
-          <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_ADD_GROUPS.BTN_CANCEL"></cos-button>
-          <cos-button variant="primary" (clicked)="doSave()" translate="COMPONENTS.TOPIC_ADD_GROUPS.BTN_ADD"></cos-button>
+          <cos-button variant="secondary" (clicked)="close()" translate="COMPONENTS.TOPIC_ADD_GROUPS_DIALOG.LNK_CANCEL"></cos-button>
+          <cos-button variant="primary" (clicked)="doSave()" translate="COMPONENTS.TOPIC_ADD_GROUPS_DIALOG.BTN_SAVE"></cos-button>
         </div>
       </div>
     }

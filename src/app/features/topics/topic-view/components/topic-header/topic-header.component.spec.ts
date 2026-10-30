@@ -223,7 +223,7 @@ describe('TopicHeaderComponent', () => {
     component.topic.set({ ...BASE_TOPIC });
     fixture.detectChanges();
     const moderateBtn = Array.from(fixture.nativeElement.querySelectorAll('.options button') as NodeListOf<HTMLElement>)
-      .find(b => b.textContent?.includes('VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC'));
+      .find(b => b.textContent?.includes('VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_MODERATE'));
     expect(moderateBtn).toBeTruthy();
   });
 });

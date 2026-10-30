@@ -297,6 +297,6 @@ describe('VoteCreateDialogComponent', () => {
 
     mockVoteService.save.mockReturnValueOnce(throwError(() => ({})));
     component.createVote();
-    expect(mockNotification.error).toHaveBeenCalledWith('MSG_ERROR_HTTP_500');
+    expect(mockNotification.error).toHaveBeenCalledWith('MSG_ERROR_50000');
   });
 });

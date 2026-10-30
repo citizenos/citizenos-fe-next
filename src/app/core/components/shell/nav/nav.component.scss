@@ -15,6 +15,7 @@ $mobile-breakpoint: 560px;
   position: sticky;
   top: 0;
   z-index: 100;
+  box-sizing: border-box;
 
   @media (max-width: $tablet-breakpoint) {
     display: flex;
@@ -67,6 +68,7 @@ $mobile-breakpoint: 560px;
 
   @media (max-width: $tablet-breakpoint) {
     display: block;
+    z-index: 999;
   }
 }
 
@@ -84,6 +86,7 @@ $mobile-breakpoint: 560px;
 
     &.nav_is_open {
       pointer-events: auto;
+      z-index: 1001;
 
       .nav {
         transform: translateX(0);
@@ -100,6 +103,7 @@ $mobile-breakpoint: 560px;
   display: flex;
   flex-direction: column;
   font-size: var(--font-size-base); // 14px
+  box-sizing: border-box;
 
   @media (max-width: $tablet-breakpoint) {
     position: absolute;
@@ -189,10 +193,12 @@ $mobile-breakpoint: 560px;
     flex-direction: row;
     
     #create_button {
-      flex: 1;
+      flex: 1 1 0;
+      min-width: 0;
     }
     
     .search_btn {
+      flex: 0 0 48px;
       width: 48px;
       min-width: 0;
       padding: 2px;
@@ -211,6 +217,8 @@ $mobile-breakpoint: 560px;
   padding-bottom: 8px;
   gap: 8px;
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
   
   .btn_big_submit,
   .btn_big_submit_ghost {
@@ -219,6 +227,9 @@ $mobile-breakpoint: 560px;
     padding: 2px 8px;
     margin: 0 auto;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     span {
       font-weight: 600;
@@ -238,12 +249,30 @@ $mobile-breakpoint: 560px;
   }
 
   @media (max-width: $tablet-breakpoint) {
+    flex-direction: row;
     width: 100%;
     
     .btn_big_submit,
     .btn_big_submit_ghost {
-      width: 100%;
-      min-width: 100%;
+      flex: 1 1 0;
+      min-width: 0;
+      width: auto;
+      padding: 0 12px;
+      font-size: 14px;
+      height: 32px;
+      line-height: 32px;
+      box-sizing: border-box;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      span {
+        font-size: 14px;
+        line-height: 32px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 }
@@ -323,6 +352,16 @@ $mobile-breakpoint: 560px;
   border-radius: var(--radius-sm);
   box-shadow: 0 12px 24px rgba(44, 59, 71, 0.15);
   z-index: 1000; // Ensure it stays on top
+  box-sizing: border-box;
+
+  @media (max-width: $tablet-breakpoint) {
+    position: fixed;
+    top: auto;
+    left: 16px;
+    right: 16px;
+    width: calc(100% - 32px);
+    z-index: 1005;
+  }
 
   .separator {
     height: 1px;
@@ -459,30 +498,6 @@ $mobile-breakpoint: 560px;
   }
 }
 
-.big_button_wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-
-  .btn_big_submit,
-  .btn_big_submit_ghost {
-    width: 160px;
-    justify-content: center;
-  }
-
-  @media (max-width: $tablet-breakpoint) {
-    flex-direction: row;
-    width: 100%;
-    
-    .btn_big_submit,
-    .btn_big_submit_ghost {
-      width: 100%;
-      min-width: auto;
-    }
-  }
-}
-
 // Footer
 .nav_footer_wrap {
   flex-shrink: 0;
@@ -565,8 +580,9 @@ $mobile-breakpoint: 560px;
   background: var(--color-surfaces);
   height: $mobile-bar-height;
   width: 100%;
+  box-sizing: border-box;
   border-radius: 16px 16px 0px 0px;
-  z-index: 100;
+  z-index: 1000;
   box-shadow: 0px -8px 20px 0px rgba(220, 231, 240, 0.1),
     0px -12px 16px 0px rgba(50, 85, 112, 0.04);
 
@@ -576,14 +592,28 @@ $mobile-breakpoint: 560px;
 
   button, .nav_create_btn {
     font-weight: 600;
-    width: 100%;
   }
 
-  .btn_big_submit, .btn_big_submit_ghost {
+  .btn_big_submit,
+  .btn_big_submit_ghost,
+  .btn_small_submit,
+  .btn_small_submit_ghost {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+    padding: 0 12px;
+    font-size: 14px;
     height: 32px;
     min-height: 32px;
     max-height: 32px;
     line-height: 32px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -597,6 +627,7 @@ $mobile-breakpoint: 560px;
   justify-content: space-evenly;
   height: $mobile-bar-height;
   width: 100%;
+  box-sizing: border-box;
 
   &.pos_absolute {
     position: absolute;
@@ -610,7 +641,8 @@ $mobile-breakpoint: 560px;
   left: 0;
   height: $mobile-bar-height;
   width: 100%;
-  z-index: 9999;
+  box-sizing: border-box;
+  z-index: 1000;
   display: none;
   @media (max-width: $tablet-breakpoint) {
     display: block;

@@ -154,7 +154,7 @@
       <div class="mobile_filters_wrap" [class.active]="activeMobileFilter() !== null">
         @if (activeMobileFilter() === 'argumentType') {
           <div class="options button_options">
-            <a class="btn_medium_close icon" (click)="activeMobileFilter.set(null)" (keydown.enter)="activeMobileFilter.set(null)" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+            <a class="btn_medium_close icon" (click)="activeMobileFilter.set(null)" (keydown.enter)="activeMobileFilter.set(null)" tabindex="0" [attr.aria-label]="'BTN_CLOSE' | translate">
               <cos-icon name="close" [size]="24"></cos-icon>
             </a>
 
@@ -174,7 +174,7 @@
 
         @if (activeMobileFilter() === 'sortOrder') {
           <div class="options button_options">
-            <a class="btn_medium_close icon" (click)="activeMobileFilter.set(null)" (keydown.enter)="activeMobileFilter.set(null)" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+            <a class="btn_medium_close icon" (click)="activeMobileFilter.set(null)" (keydown.enter)="activeMobileFilter.set(null)" tabindex="0" [attr.aria-label]="'BTN_CLOSE' | translate">
               <cos-icon name="close" [size]="24"></cos-icon>
             </a>
 

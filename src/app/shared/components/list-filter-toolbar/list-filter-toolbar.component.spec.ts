@@ -85,4 +85,40 @@ describe('ListFilterToolbarComponent', () => {
     component.selectFilter('status', 'active');
     expect(component.filterChange.emit).toHaveBeenCalledWith({ key: 'status', value: 'active' });
   });
+
+  it('should toggle mobile filters state', () => {
+    expect(component.mobileFiltersOpen()).toBe(false);
+    component.mobileFiltersOpen.set(true);
+    expect(component.mobileFiltersOpen()).toBe(true);
+  });
+
+  it('should toggle more filters', () => {
+    expect(component.moreFilters()).toBe(false);
+    component.moreFilters.set(true);
+    expect(component.moreFilters()).toBe(true);
+  });
+
+  it('should clear all filters and reset search value on clearAll()', () => {
+    vi.spyOn(component.filterChange, 'emit');
+    component.searchValue.set('test query');
+
+    component.clearAll();
+
+    expect(component.filterChange.emit).toHaveBeenCalledWith({ key: 'status', value: 'all' });
+    expect(component.filterChange.emit).toHaveBeenCalledWith({ key: 'type', value: 'all' });
+    expect(component.searchValue()).toBe('');
+  });
+
+  it('should compute hasActiveFilters correctly', () => {
+    expect(component.hasActiveFilters()).toBe(true); // 'type' is 'public'
+
+    component.filters.set([
+      { key: 'status', placeholder: 'Status', selectedValue: '', items: [] },
+      { key: 'type', placeholder: 'Type', selectedValue: 'all', items: [] }
+    ]);
+    expect(component.hasActiveFilters()).toBe(false);
+
+    component.searchValue.set('search');
+    expect(component.hasActiveFilters()).toBe(true);
+  });
 });

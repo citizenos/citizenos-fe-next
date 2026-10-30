@@ -722,7 +722,7 @@ export class VoteCreateDialogComponent implements OnInit {
             if (typeof msg === 'string' && msg.trim().length > 0) {
               this.notification.showRaw('error', msg);
             } else {
-              this.notification.error('MSG_ERROR_HTTP_500');
+              this.notification.error('MSG_ERROR_50000');
             }
           }
           this.cdr.markForCheck();

@@ -5,7 +5,7 @@
       <div class="header_text">
         <h1 class="title">{{ 'COMPONENTS.GROUP_ADD_TOPICS_DIALOG.HEADING' | translate }}</h1>
         <div class="dialog_close">
-          <button type="button" class="btn_dialog_close icon" dialogClose [attr.aria-label]="'CONTROL.CLOSE' | translate">
+          <button type="button" class="btn_dialog_close icon" dialogClose [attr.aria-label]="'BTN_CLOSE' | translate">
             <cos-icon name="nav-close"></cos-icon>
           </button>
         </div>
@@ -14,7 +14,7 @@
 
     <div class="dialog_content">
       <cos-typeahead
-        [placeholder]="'COMPONENTS.GROUP_ADD_TOPICS_DIALOG.PLACEHOLDER_SEARCH' | translate"
+        [placeholder]="'COMPONENTS.GROUP_ADD_TOPICS.PLACEHOLDER_SEARCH' | translate"
         (search)="onSearch($event)"
       >
         @for (topic of searchResults(); track topic.id) {

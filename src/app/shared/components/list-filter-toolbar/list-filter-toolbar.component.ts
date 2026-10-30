@@ -96,7 +96,7 @@ export interface FilterConfig {
       <div class="dropdown mobile_filters_selection" [ngClass]="{'dropdown_active': mobileFiltersOpen()}">
         <div class="selection" tabindex="0" (click)="mobileFiltersOpen.set(!mobileFiltersOpen())" (keydown.enter)="mobileFiltersOpen.set(!mobileFiltersOpen())">
           <div class="selected_item">{{ 'COMPONENTS.PUBLIC_TOPICS.LBL_FILTER' | translate | titlecase }}</div>
-          <button class="btn_medium_plain icon">
+          <button class="btn_medium_plain icon" aria-label="Toggle mobile filter menu">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M17 10L12 15L7 10" stroke="#2C3B47" stroke-width="2" stroke-linecap="round" />
             </svg>
@@ -123,7 +123,7 @@ export interface FilterConfig {
 
       @if (activeMobileFilter() !== null) {
         <div class="overlay" tabindex="0" (click)="activeMobileFilter.set(null)" (keydown.enter)="activeMobileFilter.set(null)"></div>
-        <div class="mobile_filters_wrap active">
+        <div class="mobile_filters_wrap filters_wrap active">
           <div class="options button_options">
             <label class="checkbox" tabindex="0" (click)="selectFilter(activeMobileFilter()!, 'all')" (keydown.enter)="selectFilter(activeMobileFilter()!, 'all')">
               <span>{{ 'TXT_TOPIC_STATUS_ALL' | translate | titlecase }}</span>
@@ -164,6 +164,14 @@ export interface FilterConfig {
     ])
   ],
   styles: [`
+    :host {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      position: relative;
+    }
+
     .list-filter-toolbar {
       display: flex;
       flex-direction: row;
@@ -173,36 +181,59 @@ export interface FilterConfig {
       border-radius: 16px;
       padding: 16px;
       width: 100%;
+      max-width: 100%;
       margin-bottom: 24px;
       box-sizing: border-box;
+      position: relative;
+      z-index: 50;
     }
     .options_area {
       flex: 1;
       min-width: 0;
+      max-width: 100%;
       display: flex;
       flex-direction: column;
       gap: 16px;
+      box-sizing: border-box;
     }
     .options_row {
       width: 100%;
+      max-width: 100%;
       display: flex;
       flex-flow: row wrap;
       gap: 16px;
       position: relative;
+      box-sizing: border-box;
+    }
+    .options_row:focus-within,
+    .options_row:has(.open) {
+      z-index: 210;
     }
     .toolbar-dropdown {
-      flex: 1;
+      flex: 1 1 calc(25% - 12px);
       min-width: calc(25% - 12px);
+      max-width: 100%;
+      box-sizing: border-box;
+      position: relative;
+    }
+    .toolbar-dropdown:focus-within,
+    .toolbar-dropdown:has(.open) {
+      z-index: 210;
     }
     .toolbar-search {
       display: flex;
-      flex: 2;
+      flex: 2 1 calc(50% - 12px);
       min-width: calc(50% - 12px);
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .extra_area {
       display: flex;
       flex-direction: column;
       gap: 16px;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .font-bold {
       font-weight: 600;
@@ -212,6 +243,8 @@ export interface FilterConfig {
       cursor: pointer;
       font-size: 14px;
       color: var(--color-text);
+      box-sizing: border-box;
+      max-width: 100%;
     }
     .option:hover {
       background: var(--color-secondary);
@@ -221,6 +254,7 @@ export interface FilterConfig {
       flex-direction: column;
       gap: 8px;
       flex-shrink: 0;
+      box-sizing: border-box;
     }
     .btn_big_secondary {
       background: var(--color-background);
@@ -234,18 +268,73 @@ export interface FilterConfig {
       cursor: pointer;
       color: var(--color-link);
       transition: background 0.2s;
+      box-sizing: border-box;
+      flex-shrink: 0;
     }
     .btn_big_secondary:hover {
       background: var(--color-background-hover);
     }
 
+    ::ng-deep .dropdown-options,
+    .dropdown-options {
+      z-index: 200 !important;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
     @media (max-width: 1024px) {
-      .toolbar-dropdown, .toolbar-search {
-        min-width: 0;
+      .list-filter-toolbar {
+        padding: 12px;
+        gap: 12px;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+        max-width: 100%;
+      }
+      .options_area {
+        gap: 12px;
+      }
+      .options_row {
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .toolbar-dropdown {
+        flex: 1 1 calc(50% - 6px);
+        min-width: calc(50% - 6px);
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      .toolbar-search {
+        flex: 1 1 100%;
+        min-width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .list-filter-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .filter_control_buttons {
+        flex-direction: row;
+        justify-content: flex-end;
+        width: 100%;
+      }
+      .toolbar-dropdown {
+        flex: 1 1 100%;
+        min-width: 100%;
       }
     }
 
     /* Mobile specific filters styling matching citizenos-fe */
+    #mobile_filters {
+      display: none;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 24px;
+    }
     .filter_dropdown {
       display: none;
       margin-bottom: 24px;
@@ -254,7 +343,8 @@ export interface FilterConfig {
       .mobile_hidden {
         display: none !important;
       }
-      .mobile_show {
+      .mobile_show,
+      #mobile_filters {
         display: block !important;
       }
       .filter_dropdown {
@@ -264,9 +354,18 @@ export interface FilterConfig {
         background: var(--color-surfaces);
         border-radius: 8px;
         position: relative;
+        z-index: 150;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      .mobile_filters_selection.dropdown_active {
+        z-index: 200;
       }
       .mobile_filters_selection.dropdown_active .options {
         display: block;
+        position: relative;
+        z-index: 200;
       }
       .mobile_filters_selection.dropdown_active .selection svg {
         transform: rotate(180deg);
@@ -278,15 +377,23 @@ export interface FilterConfig {
         padding: 12px 16px;
         cursor: pointer;
         font-weight: 600;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
       }
       .mobile_filters_selection .selection .btn_medium_plain {
         background: none;
         border: none;
         cursor: pointer;
+        display: flex;
+        align-items: center;
       }
       .filter_options {
         display: none;
         padding: 0 16px 16px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
       }
       .filter_option {
         display: flex;
@@ -294,6 +401,11 @@ export interface FilterConfig {
         align-items: center;
         padding: 12px 0;
         border-bottom: 1px solid var(--color-border);
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+        gap: 8px;
       }
       .filter_option:last-child {
         border-bottom: none;
@@ -305,6 +417,7 @@ export interface FilterConfig {
         font-weight: 600;
         cursor: pointer;
         color: var(--color-link);
+        flex-shrink: 0;
       }
       
       .overlay {
@@ -317,16 +430,18 @@ export interface FilterConfig {
         right: 0;
         bottom: 0;
       }
+      .filters_wrap,
       .mobile_filters_wrap {
         display: flex;
         position: fixed;
         bottom: -200px;
-        padding: 16px;
+        padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
         left: 0;
         background-color: var(--color-surfaces);
         z-index: 9999999;
         width: 100%;
-        max-height: 100%;
+        max-width: 100%;
+        max-height: 80vh;
         box-sizing: border-box;
         border-radius: 16px 16px 0 0;
         box-shadow: 0px 8px 20px 0px rgba(220, 231, 240, 0.3),
@@ -334,6 +449,7 @@ export interface FilterConfig {
         transition: bottom 0.2s ease-in;
         visibility: hidden;
       }
+      .filters_wrap.active,
       .mobile_filters_wrap.active {
         bottom: 0;
         visibility: visible;
@@ -343,14 +459,19 @@ export interface FilterConfig {
         border-radius: 8px;
         margin-top: 16px;
         padding: 16px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
       }
       .button_options {
         display: flex;
         flex-direction: column;
         gap: 16px;
         width: 100%;
-        max-height: 80vh;
+        max-width: 100%;
+        max-height: calc(80vh - 32px);
         overflow-y: auto;
+        box-sizing: border-box;
       }
       .checkbox {
         display: flex;
@@ -364,6 +485,8 @@ export interface FilterConfig {
         flex-direction: row-reverse;
         flex-wrap: wrap;
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
       }
       .checkbox span {
         max-width: calc(100% - 40px);

@@ -13,7 +13,7 @@ import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
           @if (type === 'draft') {
             {{ 'MODALS.TOPIC_IDEA_POSTING_DRAFT_ANONYMOUSLY' | translate }}
           } @else {
-            {{ 'MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_HEADING' | translate }}
+            {{ 'MODALS.TOPIC_IDEA_POSTING_ANONIMOUSLY' | translate }}
           }
         </div>
         <div dialogClose class="close-icon-container">
@@ -50,10 +50,10 @@ import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
           <div class="text-container">
             @if (type === 'idea') {
               <div class="bold-text">
-                {{ 'MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_TITLE' | translate }}
+                {{ 'MODALS.TOPIC_IDEA_POSTING_ANONIMOUSLY_TEXT_1' | translate }}
               </div>
               <div class="light-text">
-                {{ 'MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_TXT' | translate }}
+                {{ 'MODALS.TOPIC_IDEA_POSTING_ANONIMOUSLY_TEXT_2' | translate }}
               </div>
             } @else {
               <div class="bold-text">
@@ -72,10 +72,10 @@ import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
             </button>
           } @else {
             <button class="btn-clear" dialogClose>
-              {{ 'MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_BTN_CANCEL' | translate }}
+              {{ 'VIEWS.IDEATION_CREATE.KEEP_EDITING' | translate }}
             </button>
             <button class="btn-clear no-bg" [dialogClose]="true">
-              {{ 'MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_BTN_CONTINUE' | translate }}
+              {{ 'VIEWS.IDEATION_CREATE.NO_IDEAS_BTN_ADD' | translate }}
             </button>
           }
         </div>

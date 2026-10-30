@@ -89,13 +89,13 @@ import { RouterOutlet, RouterLink } from '@angular/router';
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding-top: 40px;
-      padding-bottom: 60px;
+      padding: 24px 16px 48px 16px;
       background-color: #ffffff;
       overflow-y: auto;
+      box-sizing: border-box;
 
       @media (min-width: tokens.$breakpoint-md) {
-        padding-top: 40px;
+        padding: 40px 32px 60px 32px;
       }
     }
 
@@ -103,6 +103,7 @@ import { RouterOutlet, RouterLink } from '@angular/router';
       width: 100%;
       max-width: 440px;
       margin: 0 auto;
+      box-sizing: border-box;
     }
   `]
 })

@@ -25,7 +25,7 @@ import * as webeid from '@web-eid/web-eid-library/web-eid';
     <div id="login_wrap">
       <nav class="nav-back">
         <cos-button variant="light" size="md" [routerLink]="['../']" icon="arrow-left" (click)="cancelMethod()">
-          <span translate="VIEWS.LOGIN.BTN_BACK_LOGIN"></span>
+          <span translate="VIEWS.EST_ID_LOGIN.BTN_BACK"></span>
         </cos-button>
       </nav>
 
@@ -75,7 +75,7 @@ import * as webeid from '@web-eid/web-eid-library/web-eid';
                 </div>
 
                 <cos-button variant="light" (click)="cancelMethod()">
-                  {{ 'COMPONENTS.MOBILE_ID_LOGIN_FORM.BTN_CANCEL' | translate }}
+                  {{ 'LNK_CANCEL' | translate }}
                 </cos-button>
               </div>
             }

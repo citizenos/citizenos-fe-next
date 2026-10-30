@@ -149,7 +149,7 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
             </div>
             @if (i.deadline) {
               <div class="data_section">
-                <div class="title">{{ 'COMPONENTS.TOPIC_IDEATION.DEADLINE' | translate }}</div>
+                <div class="title">{{ 'COMPONENTS.TOPIC_IDEATION.LBL_DEADLINE' | translate }}</div>
                 <div class="deadline">
                   <span class="bold">{{ i.deadline | date: 'dd.MM.yyyy' }}</span>
                   -
@@ -160,7 +160,7 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
           </div>
           <div class="ideation_content">
             <cos-no-feature-yet>
-              <h2 class="description_heading">{{ 'COMPONENTS.TOPIC_IDEATION.NO_IDEAS_YET' | translate }}</h2>
+              <h2 class="description_heading">{{ 'COMPONENTS.TOPIC_IDEATION.NO_IDEAS_HEADING' | translate }}</h2>
             </cos-no-feature-yet>
           </div>
         </div>

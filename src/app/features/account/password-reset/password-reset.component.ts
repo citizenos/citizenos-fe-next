@@ -30,7 +30,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
         </div>
         <p class="success-text" translate="COMPONENTS.PASSWORD_RESET_FORM.TXT_PASSWORD_RESET_SUCCESS"></p>
         <cos-button variant="primary" size="lg" [routerLink]="['..', '..', 'login']">
-           {{ 'COMPONENTS.PASSWORD_RESET_FORM.BTN_BACK_TO_LOGIN' | translate }}
+           {{ 'VIEWS.PASSWORD_RESET.BTN_BACK' | translate }}
         </cos-button>
       } @else {
         <p class="instruction-text" translate="COMPONENTS.PASSWORD_RESET_FORM.TXT_INSTRUCTION"></p>
@@ -44,22 +44,22 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
           }
 
           <cos-input 
-            [placeholder]="'COMPONENTS.PASSWORD_RESET_FORM.LBL_PASSWORD' | translate"
+            [placeholder]="'COMPONENTS.PASSWORD_RESET.PASSWORD_RESET_PLACEHOLDER_PASSWORD' | translate"
             [hasError]="resetForm.controls.password.touched && resetForm.controls.password.invalid"
             [errorMessage]="'Password is required (min 8 characters)'"
           >
-            <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" [placeholder]="'COMPONENTS.PASSWORD_RESET_FORM.LBL_PASSWORD' | translate">
+            <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" [placeholder]="'COMPONENTS.PASSWORD_RESET.PASSWORD_RESET_PLACEHOLDER_PASSWORD' | translate">
             <button type="button" class="view_password" (click)="togglePassword()">
                <cos-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="20"></cos-icon>
             </button>
           </cos-input>
 
           <cos-input 
-            [placeholder]="'COMPONENTS.PASSWORD_RESET_FORM.LBL_PASSWORD_CONFIRM' | translate"
+            [placeholder]="'COMPONENTS.PASSWORD_RESET.PASSWORD_RESET_PLACEHOLDER_PASSWORD_CONFIRM' | translate"
             [hasError]="resetForm.controls.passwordConfirm.touched && resetForm.invalid && resetForm.hasError('passwordMismatch')"
             [errorMessage]="'Passwords do not match'"
           >
-            <input [type]="showPassword() ? 'text' : 'password'" formControlName="passwordConfirm" [placeholder]="'COMPONENTS.PASSWORD_RESET_FORM.LBL_PASSWORD_CONFIRM' | translate">
+            <input [type]="showPassword() ? 'text' : 'password'" formControlName="passwordConfirm" [placeholder]="'COMPONENTS.PASSWORD_RESET.PASSWORD_RESET_PLACEHOLDER_PASSWORD_CONFIRM' | translate">
           </cos-input>
 
           <div class="form-actions">
@@ -70,7 +70,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
               [isLoading]="userStore.isLoading()" 
               [isDisabled]="resetForm.invalid"
             >
-              {{ 'COMPONENTS.PASSWORD_RESET_FORM.BTN_RESET' | translate }}
+              {{ 'COMPONENTS.PASSWORD_RESET.PASSWORD_RESET_BTN_RESET_PASSWORD' | translate }}
             </cos-button>
           </div>
         </form>

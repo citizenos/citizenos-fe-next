@@ -5,7 +5,7 @@
       <div class="header_text">
         <h1 class="title">{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.HEADING' | translate }}</h1>
         <div class="dialog_close">
-          <button type="button" class="btn_dialog_close icon" dialogClose [attr.aria-label]="'CONTROL.CLOSE' | translate">
+          <button type="button" class="btn_dialog_close icon" dialogClose [attr.aria-label]="'BTN_CLOSE' | translate">
             <cos-icon name="nav-close"></cos-icon>
           </button>
         </div>
@@ -36,18 +36,18 @@
       }
 
       <div class="input_wrap">
-        <label class="bold" for="request_message">{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.LBL_MESSAGE' | translate }}</label>
+        <label class="bold" for="request_message">{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.REASON_DESC' | translate }}</label>
         <textarea
           id="request_message"
           rows="3"
-          [placeholder]="'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.PLACEHOLDER_MESSAGE' | translate"
+          [placeholder]="'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.REASON_PLACEHOLDER' | translate"
           [ngModel]="message()"
           (ngModelChange)="message.set($event)"
         ></textarea>
       </div>
 
       @if (noTopicsSelected()) {
-        <div class="inline_error">{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.NO_TOPICS_SELECTED' | translate }}</div>
+        <div class="inline_error">{{ 'COMPONENTS.GROUP_ADD_TOPICS_DIALOG.NO_TOPICS_SELECTED' | translate }}</div>
       }
     </div>
 
@@ -55,7 +55,7 @@
       <div></div>
       <div class="button_row">
         <button type="button" class="btn_link" dialogClose>{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.LNK_CANCEL' | translate }}</button>
-        <button type="button" class="btn_medium_submit" (click)="send()">{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.BTN_SEND' | translate }}</button>
+        <button type="button" class="btn_medium_submit" (click)="send()">{{ 'COMPONENTS.GROUP_REQUEST_ADD_TOPICS_DIALOG.BTN_SAVE' | translate }}</button>
       </div>
     </div>
   </div>

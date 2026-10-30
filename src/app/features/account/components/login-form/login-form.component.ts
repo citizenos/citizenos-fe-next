@@ -113,14 +113,13 @@ import { EstEidComponent } from '../../login/esteid/esteid.component';
         </form>
 
         <footer class="auth-footer">
-          <span>{{ 'COMPONENTS.LOGIN_FORM.LOGIN_NO_ACCOUNT' | translate: { default: "Don't have an account?" } }}</span>
           <a
             role="button"
             tabindex="0"
             (click)="onSwitchToRegister()"
             (keydown.enter)="onSwitchToRegister()"
           >
-            {{ 'COMPONENTS.LOGIN_FORM.LOGIN_SIGN_UP_HERE' | translate: { default: 'Sign up here' } }}
+            {{ 'COMPONENTS.LOGIN_FORM.LOGIN_LNK_NO_ACCOUNT_REGISTER' | translate }}
           </a>
         </footer>
       } @else if (selectedMethod() === 'smartid') {

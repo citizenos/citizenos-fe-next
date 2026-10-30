@@ -28,7 +28,7 @@ export interface RegisterDialogData {
           type="button"
           class="btn-dialog-close"
           (click)="close()"
-          [attr.aria-label]="'CONTROL.CLOSE' | translate"
+          [attr.aria-label]="'BTN_CLOSE' | translate"
         >
           <cos-icon name="close" [size]="20"></cos-icon>
         </button>

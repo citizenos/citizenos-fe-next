@@ -331,6 +331,6 @@ describe('IdeaDialogComponent', () => {
     });
     fixture.componentInstance.copyIdeaLink();
     expect(writeTextSpy).toHaveBeenCalled();
-    expect(notificationServiceMock.show).toHaveBeenCalledWith('info', 'COMPONENTS.ARGUMENT.MSG_LINK_COPIED');
+    expect(notificationServiceMock.show).toHaveBeenCalledWith('info', 'VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_COPIED');
   });
 });

@@ -1,7 +1,7 @@
 <div id="modal_group_invite" class="modal_group_invite">
   <div class="modal_header">
     <div class="header_text">
-      {{ 'VIEWS.GROUP.HEADING_INVITE_MEMBERS' | translate }}
+      {{ 'COMPONENTS.GROUP_INVITE_DIALOG.HEADING' | translate }}
     </div>
     <div class="close_icon" dialogClose>
       <cos-icon name="close" [size]="24"></cos-icon>
@@ -11,10 +11,10 @@
   <div class="modal_content">
     <div class="tabs_nav">
       <button type="button" class="tab_button" [class.active]="activeTab() === 'invite'" (click)="activeTab.set('invite')">
-        {{ 'VIEWS.GROUP.TAB_INVITE' | translate }}
+        {{ 'COMPONENTS.GROUP_INVITE_DIALOG.TAB_INVITE' | translate }}
       </button>
       <button type="button" class="tab_button" [class.active]="activeTab() === 'share'" (click)="activeTab.set('share')">
-        {{ 'VIEWS.GROUP.TAB_SHARE' | translate }}
+        {{ 'COMPONENTS.GROUP_INVITE_DIALOG.TAB_SHARE' | translate }}
       </button>
     </div>
 
@@ -23,7 +23,7 @@
         <div class="invite_tab">
           <div class="search_section">
             <cos-typeahead
-              [placeholder]="'VIEWS.GROUP.PLACEHOLDER_SEARCH_USERS' | translate"
+              [placeholder]="'COMPONENTS.GROUP_INVITE.PLACEHOLDER_SEARCH' | translate"
               (search)="onSearch($event)"
             >
               @for (user of searchResults(); track user.id) {
@@ -41,13 +41,13 @@
 
           <div class="invite_options">
             <div class="option_item">
-              <label class="label" for="invite_message">{{ 'VIEWS.GROUP.LBL_INVITE_MESSAGE' | translate }}</label>
+              <label class="label" for="invite_message">{{ 'COMPONENTS.GROUP_INVITE.MESSAGE_DESC' | translate }}</label>
               <textarea
                 id="invite_message"
                 class="message_area"
                 [ngModel]="inviteMessage()"
                 (ngModelChange)="inviteMessage.set($event)"
-                [placeholder]="'VIEWS.GROUP.PLACEHOLDER_INVITE_MESSAGE' | translate"
+                [placeholder]="'COMPONENTS.GROUP_INVITE.MESSAGE_PLACEHOLDER' | translate"
                 [attr.maxlength]="inviteMessageMaxLength">
               </textarea>
               <div class="char_count">
@@ -57,7 +57,7 @@
 
             <div class="option_item">
               <div class="level_select_header">
-                <div id="all_levels_label" class="label">{{ 'VIEWS.GROUP.LBL_MEMBER_LEVEL' | translate }}</div>
+                <div id="all_levels_label" class="label">{{ 'VIEWS.GROUP.ROLE' | translate }}</div>
                 <cos-tooltip
                   [title]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_HEADING' | translate"
                   [description]="'VIEWS.GROUP.TOOLTIP_MEMBERS_PERMISSIONS_DESCRIPTION' | translate">
@@ -102,12 +102,12 @@
           </div>
           
           @if (noUsersSelected()) {
-            <div class="error_msg">{{ 'VIEWS.GROUP.ERROR_NO_USERS_SELECTED' | translate }}</div>
+            <div class="error_msg">{{ 'COMPONENTS.GROUP_INVITE_DIALOG.NO_USERS_SELECTED' | translate }}</div>
           }
 
           <div class="footer_actions">
             <cos-button (click)="invite()" [isDisabled]="!pendingUsers().length">
-              {{ 'VIEWS.GROUP.BTN_SEND_INVITES' | translate }}
+              {{ 'COMPONENTS.GROUP_INVITE_DIALOG.BTN_SAVE' | translate }}
             </cos-button>
           </div>
         </div>

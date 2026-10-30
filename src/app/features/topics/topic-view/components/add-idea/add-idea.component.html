@@ -174,7 +174,7 @@
 
   <div id="buttons_row">
     <div class="buttons_left_group">
-      <button type="button" class="btn_close_circle" (click)="close()" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+      <button type="button" class="btn_close_circle" (click)="close()" [attr.aria-label]="'BTN_CLOSE' | translate">
         <cos-icon name="close"></cos-icon>
       </button>
       @if (autosavedIdea()) {
@@ -197,5 +197,5 @@
 </div>
 
 @if (isOpen()) {
-  <div class="overlay" (click)="close()" (keydown.enter)="close()" role="button" tabindex="0" [aria-label]="'CONTROL.CLOSE' | translate"></div>
+  <div class="overlay" (click)="close()" (keydown.enter)="close()" role="button" tabindex="0" [aria-label]="'BTN_CLOSE' | translate"></div>
 }

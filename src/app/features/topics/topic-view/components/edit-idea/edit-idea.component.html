@@ -13,7 +13,7 @@
           {{ 'COMPONENTS.EDIT_IDEA.FOOTER_FORM_ANONYMOUS_INFO' | translate }}
         </div>
       }
-      <cos-button variant="ghost" class="close_button" (clicked)="close()" icon="close" [iconMode]="true" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+      <cos-button variant="ghost" class="close_button" (clicked)="close()" icon="close" [iconMode]="true" [attr.aria-label]="'BTN_CLOSE' | translate">
       </cos-button>
     </div>
   </div>
@@ -292,7 +292,7 @@
 
   <div id="buttons_row">
     <div class="btn_row_left">
-      <cos-button variant="ghost" class="close_button" (clicked)="close()" icon="close" [iconMode]="true" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+      <cos-button variant="ghost" class="close_button" (clicked)="close()" icon="close" [iconMode]="true" [attr.aria-label]="'BTN_CLOSE' | translate">
       </cos-button>
       @if (isDraft()) {
         <cos-button variant="danger" (clicked)="deleteDraft()" icon="trash">

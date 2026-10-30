@@ -138,7 +138,7 @@ import { AuthDialogService } from '../../../services/auth-dialog.service';
           <a routerLink="/">
             <cos-logo />
           </a>
-          <button type="button" class="btn_medium_close icon tablet_show" (click)="closeNav()" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+          <button type="button" class="btn_medium_close icon tablet_show" (click)="closeNav()" [attr.aria-label]="'BTN_CLOSE' | translate">
             <cos-icon name="nav-close" [size]="24"></cos-icon>
           </button>
         </div>

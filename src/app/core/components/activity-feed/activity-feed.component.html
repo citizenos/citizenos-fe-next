@@ -1,6 +1,6 @@
 @if (feedState.isOpen()) {
 <div class="overlay" (click)="close()" (keydown.enter)="close()" role="button" tabindex="0"
-  [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
+  [attr.aria-label]="'BTN_CLOSE' | translate"></div>
 }
 
 <div id="activity_feed" [class.open]="feedState.isOpen()" (scroll)="onScroll($event)"
@@ -10,7 +10,7 @@
       {{ 'COMPONENTS.ACTIVITY_FEED.HEADING_' + feedType.toUpperCase() | translate }}
     </div>
     <button type="button" class="btn_medium_close icon" (click)="close()"
-      [attr.aria-label]="'CONTROL.CLOSE' | translate">
+      [attr.aria-label]="'BTN_CLOSE' | translate">
       <cos-icon name="close" [size]="24" />
     </button>
   </div>

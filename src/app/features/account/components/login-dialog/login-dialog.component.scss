@@ -2,7 +2,8 @@
   display: block;
 }
 
-.auth-dialog-card {
+.auth-dialog-card,
+.dialog-card {
   position: relative;
   background-color: #ffffff;
   border-radius: 16px;
@@ -15,6 +16,10 @@
   @media (max-width: 576px) {
     padding: 24px 20px 32px;
     border-radius: 12px;
+  }
+
+  @media (max-width: 400px) {
+    padding: 20px 16px 24px;
   }
 }
 

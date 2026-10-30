@@ -162,6 +162,20 @@
       background-color: rgba(0, 0, 0, 0.05);
     }
   }
+
+  .options {
+    right: 0;
+    left: auto;
+  }
+
+  &.dropdown_active,
+  &.active {
+    .options {
+      @include mixins.mobile {
+        min-width: max-content;
+      }
+    }
+  }
 }
 
 .dropdown {
@@ -198,9 +212,10 @@
     flex-direction: column;
     background: var(--color-surfaces);
     border-radius: 8px;
-    z-index: 100;
+    z-index: 501;
     margin-top: 52px;
-    min-width: max-content;
+    min-width: 100%;
+    box-sizing: border-box;
     position: absolute;
     width: 100%;
     gap: 16px;
@@ -212,6 +227,23 @@
 
     &.filter_options {
       padding: 16px 8px;
+    }
+
+    .filter_option {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 12px 16px;
+      justify-content: space-between;
+      background-color: var(--color-background);
+      border-radius: 16px;
+      gap: 8px;
+      text-align: right;
+
+      .filter_option_text {
+        font-weight: 600;
+        color: var(--color-text);
+      }
     }
 
     .option {
@@ -238,7 +270,11 @@
     }
   }
 
-  &.dropdown_active {
+  &.dropdown_active,
+  &.active {
+    z-index: 500;
+    position: relative;
+
     .options {
       display: flex;
     }
@@ -440,33 +476,92 @@
   }
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(44, 59, 71, 0.6);
+  z-index: 1100;
+  cursor: pointer;
+}
+
 .mobile_filters_wrap {
   position: fixed;
   bottom: -100%;
   left: 0;
   right: 0;
   width: 100%;
+  box-sizing: border-box;
   background-color: var(--color-surfaces);
   flex-direction: column;
   padding: 16px;
-  z-index: 10000;
+  z-index: 1101;
   gap: 16px;
+  max-height: 85vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: 16px 16px 0px 0px;
   box-shadow: 0px -8px 20px 0px rgba(220, 231, 240, 0.1),
     0px -12px 16px 0px rgba(50, 85, 112, 0.04);
   transition: bottom 0.2s ease-in;
   display: none;
 
+  @include mixins.mobile {
+    max-height: calc(100vh - 48px);
+    padding: 16px 16px max(24px, env(safe-area-inset-bottom, 24px));
+  }
+
   &.active {
     display: flex;
     bottom: 0;
+  }
+
+  .options.button_options {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 16px;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    position: static;
+  }
+
+  .btn_medium_close {
+    margin-left: auto;
+    align-self: flex-end;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 50%;
+
+    &:hover {
+      background-color: var(--color-blue-10);
+    }
   }
 
   .options_wrapper {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+    max-height: 50vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 4px;
+  }
+
+  .btn_medium_secondary {
+    width: 100%;
+    justify-content: center;
+    flex-shrink: 0;
   }
 }
 

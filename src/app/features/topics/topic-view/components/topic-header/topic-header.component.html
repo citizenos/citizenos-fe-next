@@ -25,7 +25,7 @@
 
     @if (isLoggedIn()) {
       <cos-tooltip class="tablet_show" [noIcon]="true"
-        [title]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate">
+        [title]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_TOPIC_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate">
         <cos-button
           trigger
           variant="light"
@@ -34,7 +34,7 @@
           (clicked)="onToggleFavourite()"
           [icon]="topic().favourite ? 'favourite-filled-legacy' : 'favourite-legacy'"
           [class.like_active]="topic().favourite"
-          [attr.aria-label]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate"
+          [attr.aria-label]="(topic().favourite ? 'VIEWS.TOPICS_TOPICID.TOOLTIP_TOPIC_SAVED_TO_FAVOURITE' : 'VIEWS.TOPICS_TOPICID.TOOLTIP_FAVOURITE') | translate"
         >
         </cos-button>
       </cos-tooltip>
@@ -160,7 +160,7 @@
             <div class="icon_wrap">
               <cos-icon name="flag" [size]="16"></cos-icon>
             </div>
-            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC' | translate }}</span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_MODERATE' | translate }}</span>
           </button>
         }
 
@@ -170,7 +170,7 @@
             <div class="icon_wrap">
               <cos-icon name="check" [size]="16"></cos-icon>
             </div>
-            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_REVIEW_TOPIC' | translate }}</span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_SUBMIT_FOR_REVIEW' | translate }}</span>
           </button>
         }
 
@@ -180,7 +180,7 @@
             <div class="icon_wrap">
               <cos-icon name="check" [size]="16"></cos-icon>
             </div>
-            <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_RESOLVE_TOPIC' | translate }}</span>
+            <span>{{ 'VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_RESOLVE' | translate }}</span>
           </button>
         }
 
@@ -235,7 +235,7 @@
   <div class="heading_wrap">
     <span>{{ 'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate }}</span>
     <div id="close_mobile" class="mobile_show">
-      <button type="button" class="btn_small_close icon" (click)="mobileActions.set(false)" [aria-label]="'CONTROL.CLOSE' | translate">
+      <button type="button" class="btn_small_close icon" (click)="mobileActions.set(false)" [aria-label]="'BTN_CLOSE' | translate">
         <cos-icon name="close"></cos-icon>
       </button>
     </div>
@@ -347,7 +347,7 @@
         <div class="icon_wrap">
           <cos-icon name="flag"></cos-icon>
         </div>
-        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_MODERATE_TOPIC' | translate }}</span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_MODERATE' | translate }}</span>
       </button>
     }
 
@@ -357,7 +357,7 @@
         <div class="icon_wrap">
           <cos-icon name="check"></cos-icon>
         </div>
-        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_REVIEW_TOPIC' | translate }}</span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_SUBMIT_FOR_REVIEW' | translate }}</span>
       </button>
     }
 
@@ -367,7 +367,7 @@
         <div class="icon_wrap">
           <cos-icon name="check"></cos-icon>
         </div>
-        <span>{{ 'VIEWS.TOPICS_TOPICID.OPTION_RESOLVE_TOPIC' | translate }}</span>
+        <span>{{ 'VIEWS.TOPICS_TOPICID.TAB_INFO_LNK_RESOLVE' | translate }}</span>
       </button>
     }
 

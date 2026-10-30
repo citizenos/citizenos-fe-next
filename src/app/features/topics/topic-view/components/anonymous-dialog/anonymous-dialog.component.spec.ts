@@ -52,21 +52,21 @@ describe('AnonymousDialogComponent', () => {
 
     it('shows idea modal heading in header', () => {
       const header = fixture.nativeElement.querySelector('.header-text');
-      expect(header.textContent).toContain('MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_HEADING');
+      expect(header.textContent).toContain('MODALS.TOPIC_IDEA_POSTING_ANONIMOUSLY');
     });
 
     it('shows idea title and body text', () => {
       const boldText = fixture.nativeElement.querySelector('.bold-text');
       const lightText = fixture.nativeElement.querySelector('.light-text');
-      expect(boldText?.textContent).toContain('MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_TITLE');
-      expect(lightText?.textContent).toContain('MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_TXT');
+      expect(boldText?.textContent).toContain('MODALS.TOPIC_IDEA_POSTING_ANONIMOUSLY_TEXT_1');
+      expect(lightText?.textContent).toContain('MODALS.TOPIC_IDEA_POSTING_ANONIMOUSLY_TEXT_2');
     });
 
     it('shows cancel and continue buttons', () => {
       const buttons = fixture.nativeElement.querySelectorAll('.footer-buttons-container button');
       expect(buttons.length).toBe(2);
-      expect(buttons[0].textContent).toContain('MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_BTN_CANCEL');
-      expect(buttons[1].textContent).toContain('MODALS.TOPIC_IDEA_ANONYMOUS_MODAL_BTN_CONTINUE');
+      expect(buttons[0].textContent).toContain('VIEWS.IDEATION_CREATE.KEEP_EDITING');
+      expect(buttons[1].textContent).toContain('VIEWS.IDEATION_CREATE.NO_IDEAS_BTN_ADD');
     });
   });
 

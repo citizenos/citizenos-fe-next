@@ -14,7 +14,7 @@
         </svg>
         <h1 class="title">{{ 'COMPONENTS.TOPIC_DISCUSSION_CREATE.DIALOG_HEADING' | translate }}</h1>
         <div class="dialog_close">
-          <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'CONTROL.CLOSE' | translate">
+          <button type="button" class="btn_dialog_close icon" dialogClose [aria-label]="'BTN_CLOSE' | translate">
             <cos-icon name="close" [size]="24"></cos-icon>
           </button>
         </div>
@@ -83,13 +83,13 @@
       @if (activeTab() === 2) {
         <div class="content_section">
           <div class="section_content_wrap">
-            <h2 class="bold">{{ 'COMPONENTS.TOPIC_DISCUSSION_CREATE.HEADING_DISCUSSION_QUESTION' | translate }}</h2>
+            <h2 class="bold">{{ 'COMPONENTS.TOPIC_DISCUSSION_CREATE.SETTINGS_HEADING_DISCUSSION_QUESTION' | translate }}</h2>
             <div class="section_content_description">
-              <cos-input [placeholder]="'COMPONENTS.TOPIC_DISCUSSION_CREATE.DISCUSSION_QUESTION_PLACEHOLDER' | translate">
-                <label class="hidden" for="discussion_question">{{ 'COMPONENTS.TOPIC_DISCUSSION_CREATE.DISCUSSION_QUESTION_PLACEHOLDER' | translate }}</label>
+              <cos-input [placeholder]="'COMPONENTS.TOPIC_DISCUSSION_CREATE.SETTINGS_DISCUSSION_QUESTION_PLACEHOLDER' | translate">
+                <label class="hidden" for="discussion_question">{{ 'COMPONENTS.TOPIC_DISCUSSION_CREATE.SETTINGS_DISCUSSION_QUESTION_PLACEHOLDER' | translate }}</label>
                 <input
                   id="discussion_question"
-                  [placeholder]="'COMPONENTS.TOPIC_DISCUSSION_CREATE.DISCUSSION_QUESTION_PLACEHOLDER' | translate"
+                  [placeholder]="'COMPONENTS.TOPIC_DISCUSSION_CREATE.SETTINGS_DISCUSSION_QUESTION_PLACEHOLDER' | translate"
                   [ngModel]="question()"
                   (ngModelChange)="question.set($event)" />
               </cos-input>
@@ -101,7 +101,7 @@
         <div class="content_section">
           <div class="section_content_wrap">
             <div class="header_wrap">
-              <h2 class="bold">{{ 'COMPONENTS.TOPIC_DISCUSSION_CREATE.HEADING_DISCUSSION_DEADLINE' | translate }}</h2>
+              <h2 class="bold">{{ 'COMPONENTS.TOPIC_DISCUSSION_CREATE.SETTINGS_HEADING_DISCUSSION_DEADLINE' | translate }}</h2>
             </div>
             <cos-deadline-picker
               [deadline]="deadline()"

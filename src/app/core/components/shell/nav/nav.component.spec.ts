@@ -103,4 +103,28 @@ describe('NavComponent', () => {
     expect(component.showNav()).toBe(false);
     expect(authDialogMock.openRegister).toHaveBeenCalled();
   });
+
+  it('should toggle profile dropdown', () => {
+    expect(component.showProfileDropdown()).toBe(false);
+    component.toggleProfileDropdown();
+    expect(component.showProfileDropdown()).toBe(true);
+    component.toggleProfileDropdown();
+    expect(component.showProfileDropdown()).toBe(false);
+  });
+
+  it('closeNav() should also reset showProfileDropdown to false', () => {
+    component.showProfileDropdown.set(true);
+    component.closeNav();
+    expect(component.showProfileDropdown()).toBe(false);
+  });
+
+  it('Escape key should close nav, create menu, and profile dropdown', () => {
+    component.showNav.set(true);
+    component.showCreateMenu.set(true);
+    component.showProfileDropdown.set(true);
+    component.onEscape();
+    expect(component.showNav()).toBe(false);
+    expect(component.showCreateMenu()).toBe(false);
+    expect(component.showProfileDropdown()).toBe(false);
+  });
 });

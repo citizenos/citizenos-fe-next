@@ -7,15 +7,15 @@
       <div class="number_wrap mobile_show">
         <div>1</div>
       </div>
-      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.ADD_TOPICS_HEADING' | translate }}</h2>
-      <div class="mobile_hidden">{{ 'VIEWS.GROUP_CREATE.ADD_TOPICS_DESC' | translate }}</div>
+      <h2 class="small_heading">{{ 'COMPONENTS.GROUP_ADD_TOPICS.HEADING' | translate }}</h2>
+      <div class="mobile_hidden">{{ 'COMPONENTS.GROUP_ADD_TOPICS.DESC' | translate }}</div>
     </div>
-    <div class="mobile_show">{{ 'VIEWS.GROUP_CREATE.ADD_TOPICS_DESC' | translate }}</div>
+    <div class="mobile_show">{{ 'COMPONENTS.GROUP_ADD_TOPICS.DESC' | translate }}</div>
 
     <div class="search-container">
-      <cos-input [placeholder]="'VIEWS.GROUP_CREATE.ADD_TOPICS_INPUT_SEARCH' | translate">
+      <cos-input [placeholder]="'COMPONENTS.GROUP_ADD_TOPICS.PLACEHOLDER_SEARCH' | translate">
         <input 
-          [placeholder]="'VIEWS.GROUP_CREATE.ADD_TOPICS_INPUT_SEARCH' | translate"
+          [placeholder]="'COMPONENTS.GROUP_ADD_TOPICS.PLACEHOLDER_SEARCH' | translate"
           [ngModel]="searchString()"
           (ngModelChange)="onSearch($event)">
         <cos-icon name="search"></cos-icon>
@@ -34,14 +34,14 @@
     </div>
 
     <div class="selected-topics">
-      <h3 class="small_heading">{{ 'VIEWS.GROUP_CREATE.ADD_TOPICS_SELECTED' | translate }}</h3>
+      <h3 class="small_heading">{{ 'COMPONENTS.GROUP_ADD_TOPICS.SELECT_TO_ADD' | translate }}</h3>
       @for (topic of selectedTopics(); track topic.id) {
         <div class="selected-item">
           <span class="topic-title">{{topic.title}}</span>
           <cos-button variant="ghost" (clicked)="removeTopic(topic)" icon="trash"></cos-button>
         </div>
       } @empty {
-        <div class="empty-selection">{{ 'VIEWS.GROUP_CREATE.ADD_TOPICS_NO_TOPICS' | translate }}</div>
+        <div class="empty-selection">{{ 'COMPONENTS.GROUP_ADD_TOPICS.NO_TOPICS_HEADING' | translate }}</div>
       }
     </div>
   </div>

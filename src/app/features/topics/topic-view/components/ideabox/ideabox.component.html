@@ -58,7 +58,7 @@
     @if (userStore.isAuthenticated() || isEdited()) {
       <div class="idea_header_right">
         <div class="dropdown button_dropdown" cosDropdown tabindex="-1" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()">
-           <button type="button" class="btn_small_plain icon" trigger aria-label="Idea actions">
+           <button type="button" class="btn_small_plain icon" trigger [attr.aria-label]="'COMPONENTS.ARGUMENT.LBL_ARGUMENT_ACTIONS' | translate">
                <cos-icon name="more-vertical"></cos-icon>
            </button>
            <div class="options">

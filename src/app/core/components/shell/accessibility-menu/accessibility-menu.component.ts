@@ -16,7 +16,7 @@ import { UiStateService } from '../../../services/ui-state.service';
               <div class="header_text">
                 <h1 class="title">{{ 'COMPONENTS.ACCESSIBILITY.MODAL_HEADING' | translate }}</h1>
                 <div class="dialog_close">
-                  <button type="button" class="btn_dialog_close" (click)="uiState.showAccessibility.set(false)" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+                  <button type="button" class="btn_dialog_close" (click)="uiState.showAccessibility.set(false)" [attr.aria-label]="'BTN_CLOSE' | translate">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="#2C3B47"/>
                     </svg>
@@ -135,7 +135,7 @@ import { UiStateService } from '../../../services/ui-state.service';
             </div>
           </div>
         </div>
-        <div id="close_lightbox" (click)="uiState.showAccessibility.set(false)" (keydown.enter)="uiState.showAccessibility.set(false)" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
+        <div id="close_lightbox" (click)="uiState.showAccessibility.set(false)" (keydown.enter)="uiState.showAccessibility.set(false)" role="button" tabindex="0" [attr.aria-label]="'BTN_CLOSE' | translate"></div>
       </div>
     }
   `,

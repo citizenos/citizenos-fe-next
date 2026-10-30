@@ -24,12 +24,12 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
   imports: [TranslateModule, IconComponent, UpperCasePipe],
   template: `
     @if (globalSearch.showSearch()) {
-      <div class="search_overlay" (click)="globalSearch.showSearch.set(false)" (keydown.enter)="globalSearch.showSearch.set(false)" role="button" tabindex="0" [attr.aria-label]="'CONTROL.CLOSE' | translate"></div>
+      <div class="search_overlay" (click)="globalSearch.showSearch.set(false)" (keydown.enter)="globalSearch.showSearch.set(false)" role="button" tabindex="0" [attr.aria-label]="'BTN_CLOSE' | translate"></div>
     }
     <div id="search" [class.open]="globalSearch.showSearch()">
       <div class="search_header">
         <label for="search_field_input" class="small_heading">{{ 'COMPONENTS.SEARCH.TITLE' | translate }}</label>
-        <button type="button" class="btn_medium_close icon" (click)="globalSearch.showSearch.set(false)" [attr.aria-label]="'CONTROL.CLOSE' | translate">
+        <button type="button" class="btn_medium_close icon" (click)="globalSearch.showSearch.set(false)" [attr.aria-label]="'BTN_CLOSE' | translate">
           <cos-icon name="close"></cos-icon>
         </button>
       </div>

@@ -7,15 +7,15 @@
       <div class="number_wrap mobile_show">
         <div>1</div>
       </div>
-      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS' | translate }}</h2>
-      <div class="mobile_hidden">{{ 'VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS_DESC' | translate }}</div>
+      <h2 class="small_heading">{{ 'COMPONENTS.GROUP_CREATE_INVITE.HEADING' | translate }}</h2>
+      <div class="mobile_hidden">{{ 'COMPONENTS.GROUP_CREATE_INVITE.HEADING_DESC' | translate }}</div>
     </div>
-    <div class="mobile_show">{{ 'VIEWS.GROUP_CREATE.INVITE_CHOOSE_USERS_DESC' | translate }}</div>
+    <div class="mobile_show">{{ 'COMPONENTS.GROUP_CREATE_INVITE.HEADING_DESC' | translate }}</div>
 
     <div class="search-container">
-      <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_SEARCH_USERS' | translate">
+      <cos-input [placeholder]="'COMPONENTS.GROUP_INVITE.PLACEHOLDER_SEARCH' | translate">
         <input
-          [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_SEARCH_USERS' | translate"
+          [placeholder]="'COMPONENTS.GROUP_INVITE.PLACEHOLDER_SEARCH' | translate"
           [ngModel]="searchString()"
           (ngModelChange)="onSearch($event)">
         <cos-icon name="search"></cos-icon>
@@ -37,7 +37,7 @@
     </div>
 
     <div class="selected-users">
-      <h3 class="small_heading">{{ 'VIEWS.GROUP_CREATE.INVITE_SELECTED_USERS' | translate }}</h3>
+      <h3 class="small_heading">{{ 'COMPONENTS.GROUP_INVITE.NAME' | translate }}</h3>
       @for (user of selectedUsers(); track (user.id || user.email)) {
         <div class="selected-item">
           <div class="user-info">
@@ -61,7 +61,7 @@
           </div>
         </div>
       } @empty {
-        <div class="empty-selection">{{ 'VIEWS.GROUP_CREATE.INVITE_NO_USERS' | translate }}</div>
+        <div class="empty-selection">{{ 'COMPONENTS.GROUP_INVITE.NO_INVITES_HEADING' | translate }}</div>
       }
     </div>
   </div>
@@ -76,12 +76,12 @@
       <div class="number_wrap mobile_show">
         <div>2</div>
       </div>
-      <h2 class="small_heading">{{ 'VIEWS.GROUP_CREATE.INVITE_HEADING_MESSAGE' | translate }}</h2>
+      <h2 class="small_heading">{{ 'COMPONENTS.GROUP_INVITE.MESSAGE_DESC' | translate }}</h2>
     </div>
 
-    <cos-input [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_MESSAGE' | translate">
+    <cos-input [placeholder]="'COMPONENTS.GROUP_INVITE.MESSAGE_PLACEHOLDER' | translate">
       <textarea
-        [placeholder]="'VIEWS.GROUP_CREATE.INVITE_INPUT_MESSAGE' | translate"
+        [placeholder]="'COMPONENTS.GROUP_INVITE.MESSAGE_PLACEHOLDER' | translate"
         rows="4"
         [ngModel]="inviteMessage()"
         (ngModelChange)="onMessageChange($event)"

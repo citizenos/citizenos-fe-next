@@ -23,7 +23,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
     <div id="password_forgot_wrap">
       <nav class="nav-back">
         <cos-button variant="light" size="md" [routerLink]="['../../login']" icon="arrow-left">
-          <span translate="VIEWS.LOGIN.BTN_BACK_LOGIN"></span>
+          <span translate="VIEWS.PASSWORD_FORGOT.BTN_BACK"></span>
         </cos-button>
       </nav>
 
@@ -36,7 +36,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
         </div>
         <div class="form-actions">
           <cos-button variant="primary" size="lg" [routerLink]="['../../login']">
-             {{ 'VIEWS.LOGIN.BTN_BACK_LOGIN' | translate }}
+             {{ 'VIEWS.PASSWORD_FORGOT.BTN_BACK' | translate }}
           </cos-button>
         </div>
       } @else {
