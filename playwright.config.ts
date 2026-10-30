@@ -59,6 +59,7 @@ export default defineConfig({
         'public-groups.spec.ts',
         'auth-dialog.spec.ts',
         'invitation-join.spec.ts',
+        'mobile-responsive.spec.ts',
       ],
     },
 
@@ -94,7 +95,7 @@ export default defineConfig({
       use: {
         ...devices['iPhone 14'],
       },
-      testMatch: ['home.spec.ts', 'navigation.spec.ts'],
+      testMatch: ['home.spec.ts', 'navigation.spec.ts', 'mobile-responsive.spec.ts'],
     },
 
     // ---------- Visual Parity ----------

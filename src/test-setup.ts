@@ -33,6 +33,35 @@ beforeEach(() => {
   disconnect() { return; }
 };
 
+// Polyfill localStorage in test environment (Node 26+ experimental localStorage handling)
+try {
+  const store = new Map<string, string>();
+  const mockStorage: Storage = {
+    getItem: (key: string) => store.get(String(key)) ?? null,
+    setItem: (key: string, value: string) => { store.set(String(key), String(value)); },
+    removeItem: (key: string) => { store.delete(String(key)); },
+    clear: () => { store.clear(); },
+    get length() { return store.size; },
+    key: (index: number) => Array.from(store.keys())[index] ?? null,
+  };
+  Object.defineProperty(globalThis, 'localStorage', {
+    value: mockStorage,
+    configurable: true,
+    writable: true,
+    enumerable: true,
+  });
+  if (typeof window !== 'undefined') {
+    Object.defineProperty(window, 'localStorage', {
+      value: mockStorage,
+      configurable: true,
+      writable: true,
+      enumerable: true,
+    });
+  }
+} catch {
+  // Ignore if already configured
+}
+
 // Mock Range.getBoundingClientRect for CodeMirror in JSDOM
 if (typeof document !== 'undefined' && document.createRange) {
   const OriginalRange = document.createRange;

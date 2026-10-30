@@ -8,6 +8,31 @@ describe('SiteNotificationComponent', () => {
   let component: SiteNotificationComponent;
   let fixture: ComponentFixture<SiteNotificationComponent>;
 
+  const store = new Map<string, string>();
+  const mockStorage: Storage = {
+    getItem: (key: string) => store.get(String(key)) ?? null,
+    setItem: (key: string, value: string) => { store.set(String(key), String(value)); },
+    removeItem: (key: string) => { store.delete(String(key)); },
+    clear: () => { store.clear(); },
+    get length() { return store.size; },
+    key: (index: number) => Array.from(store.keys())[index] ?? null,
+  };
+
+  try {
+    Object.defineProperty(window, 'localStorage', {
+      value: mockStorage,
+      writable: true,
+      configurable: true,
+    });
+    Object.defineProperty(globalThis, 'localStorage', {
+      value: mockStorage,
+      writable: true,
+      configurable: true,
+    });
+  } catch {
+    // Ignore
+  }
+
   const mockConfigStore = {
     showIssueNotification: () => true
   };
