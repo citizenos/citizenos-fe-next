@@ -127,4 +127,19 @@ describe('NavComponent', () => {
     expect(component.showCreateMenu()).toBe(false);
     expect(component.showProfileDropdown()).toBe(false);
   });
+
+  it('should provide accessible aria-label on logo links and include currentLanguageLabel in language button aria-label', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    const logoLinks = el.querySelectorAll('.logo_wrap a');
+    expect(logoLinks.length).toBe(2);
+    logoLinks.forEach((link) => {
+      expect(link.getAttribute('aria-label')).toBe('Citizen OS');
+    });
+
+    const langBtn = Array.from(el.querySelectorAll('button.nav_item')).find((btn) =>
+      btn.textContent?.includes(component.currentLanguageLabel)
+    );
+    expect(langBtn).toBeTruthy();
+    expect(langBtn?.getAttribute('aria-label')).toContain(component.currentLanguageLabel);
+  });
 });

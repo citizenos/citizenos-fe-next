@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from '../button/button.component';
 import { TooltipComponent } from '../tooltip/tooltip.component';
 import { CosDropdownDirective } from '../../directives/cos-dropdown.directive';
+import { loadExternalScript } from '../../../core/utils/script-loader';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let Dropbox: any;
@@ -154,7 +155,14 @@ export class TopicAttachmentsComponent implements OnInit {
   }
 
   dropboxSelect() {
-    if (typeof Dropbox === 'undefined') return;
+    if (typeof Dropbox === 'undefined') {
+      loadExternalScript('assets/libs/dropbox.js')
+        .then(() => {
+          if (typeof Dropbox !== 'undefined') this.dropboxSelect();
+        })
+        .catch(() => undefined);
+      return;
+    }
     Dropbox.appKey = this.config.dropbox.appKey;
     Dropbox.choose({
       success: (files: { name: string, bytes: number, link: string }[]) => {
@@ -179,7 +187,14 @@ export class TopicAttachmentsComponent implements OnInit {
   }
 
   oneDriveSelect() {
-    if (typeof OneDrive === 'undefined') return;
+    if (typeof OneDrive === 'undefined') {
+      loadExternalScript('https://js.live.net/v7.2/OneDrive.js')
+        .then(() => {
+          if (typeof OneDrive !== 'undefined') this.oneDriveSelect();
+        })
+        .catch(() => undefined);
+      return;
+    }
     OneDrive.open({
       clientId: this.config.oneDrive.clientId,
       action: 'share',
@@ -209,7 +224,14 @@ export class TopicAttachmentsComponent implements OnInit {
   }
 
   googleDriveSelect() {
-    if (typeof gapi === 'undefined' || typeof google === 'undefined') return;
+    if (typeof gapi === 'undefined') {
+      loadExternalScript('https://apis.google.com/js/api.js')
+        .then(() => {
+          if (typeof gapi !== 'undefined') this.googleDriveSelect();
+        })
+        .catch(() => undefined);
+      return;
+    }
     let googlePickerApiLoaded = false;
     let oauthToken: string;
 

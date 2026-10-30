@@ -32,11 +32,15 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "easymde.css",
+                "input": "src/assets/styles",
+                "output": "/assets/styles"
               }
             ],
             "styles": [
               "src/styles.scss",
-              "src/assets/styles/easymde.css",
               {
                 "input": "src/assets/styles/etherpad.scss",
                 "inject": false,

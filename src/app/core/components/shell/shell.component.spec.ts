@@ -56,4 +56,10 @@ describe('ShellComponent', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('#content_root').classList).toContain('dark-theme');
   });
+
+  it('should render a semantic main landmark with id main-content', () => {
+    const mainEl = fixture.nativeElement.querySelector('main#main-content');
+    expect(mainEl).toBeTruthy();
+    expect(mainEl.getAttribute('tabindex')).toBe('-1');
+  });
 });

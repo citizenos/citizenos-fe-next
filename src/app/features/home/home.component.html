@@ -457,7 +457,7 @@
 
   <div id="feature_group">
     <div id="illustration">
-      <img src="/assets/imgs/group image.png" alt="">
+      <img src="/assets/imgs/group image.png" alt="" width="164" height="156" loading="lazy">
     </div>
     <div id="text_area">
       <div class="heading" [innerHTML]="'VIEWS.HOME.FEATURE_GROUP_HEADING' | translate"></div>
@@ -629,6 +629,7 @@
       <button class="btn_big_submit" [innerHTML]="'VIEWS.HOME.MISSION_BOX_SIGN_UP' | translate"
         [routerLink]="['/', translate.currentLang, 'account', 'signup']"></button>
       <a class="btn_big_submit_ghost" target="_blank" href="https://citizenos.com/about-us/"
+        [attr.aria-label]="('VIEWS.HOME.MISSION_BOX_LEARN_MORE' | translate) + ' - ' + ('VIEWS.HOME.MISSION_BOX_HEADING' | translate)"
         [innerHTML]="'VIEWS.HOME.MISSION_BOX_LEARN_MORE' | translate"></a>
     </div>
   </div>

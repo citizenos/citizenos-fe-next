@@ -33,6 +33,7 @@ describe('UserGroupService', () => {
   });
 
   it('should fetch groups with default params', async () => {
+    service.items();
     TestBed.flushEffects();
 
     const req = httpMock.expectOne((request) => request.url.endsWith('/api/users/self/groups'));
@@ -49,6 +50,7 @@ describe('UserGroupService', () => {
   });
 
   it('should apply filters', async () => {
+    service.items();
     TestBed.flushEffects();
     const initialReq = httpMock.expectOne((request) => request.url.endsWith('/api/users/self/groups'));
     initialReq.flush({ data: { rows: [], countTotal: 0 } });

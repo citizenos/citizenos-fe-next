@@ -27,7 +27,7 @@ import { AuthDialogService } from '../../../services/auth-dialog.service';
     <!-- Mobile top bar -->
     <div class="nav_mobile">
       <div class="logo_wrap">
-        <a [routerLink]="['/', translate.currentLang]">
+        <a [routerLink]="['/', translate.currentLang]" aria-label="Citizen OS">
           <cos-logo />
         </a>
       </div>
@@ -49,7 +49,7 @@ import { AuthDialogService } from '../../../services/auth-dialog.service';
           }
         </button>
         @if (userStore.isAuthenticated()) {
-          <a class="nav_avatar_link" [routerLink]="['/', translate.currentLang, 'account']" fragment="profile">
+          <a class="nav_avatar_link" [routerLink]="['/', translate.currentLang, 'account']" fragment="profile" [attr.aria-label]="'DEFAULT.NAV.LNK_MY_ACCOUNT' | translate">
             <div class="profile_photo">
               @if (userStore.user()?.imageUrl) {
                 <img [src]="userStore.user()?.imageUrl" [alt]="userStore.user()?.name">
@@ -71,10 +71,10 @@ import { AuthDialogService } from '../../../services/auth-dialog.service';
     @if (userStore.isAuthenticated()) {
       <div id="mobile_nav_wrap">
         <div id="tablet_nav" [class.hidden]="showCreateMenu()">
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_DASHBOARD' | translate">
             <cos-icon name="home"></cos-icon>
           </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_MY_TOPICS' | translate">
             <cos-icon name="topic"></cos-icon>
           </a>
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_MY_GROUPS' | translate">
@@ -90,13 +90,13 @@ import { AuthDialogService } from '../../../services/auth-dialog.service';
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_PUBLIC_TOPICS' | translate">
             <cos-icon name="public-topic"></cos-icon>
           </a>
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'public', 'groups']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_PUBLIC_GROUPS' | translate">
             <cos-icon name="public-groups"></cos-icon>
           </a>
           <cos-activities-button></cos-activities-button>
         </div>
         <div id="mobile_nav" [class.hidden]="showCreateMenu()">
-          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()">
+          <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_DASHBOARD' | translate">
             <cos-icon name="home"></cos-icon>
           </a>
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'my', 'topics']"  routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_MY_TOPICS' | translate">
@@ -135,7 +135,7 @@ import { AuthDialogService } from '../../../services/auth-dialog.service';
 
         <!-- Logo and Close Button (Tablet/Mobile) -->
         <div class="logo_wrap sidebar_header">
-          <a routerLink="/">
+          <a [routerLink]="['/', translate.currentLang]" aria-label="Citizen OS">
             <cos-logo />
           </a>
           <button type="button" class="btn_medium_close icon tablet_show" (click)="closeNav()" [attr.aria-label]="'BTN_CLOSE' | translate">
@@ -268,7 +268,7 @@ import { AuthDialogService } from '../../../services/auth-dialog.service';
 
           <!-- Legacy #nav_items_constant equivalents -->
           <div class="nav_items_wrap">
-            <button type="button" class="nav_item" (click)="openLanguageSelect()" [attr.aria-label]="'MODALS.LANGUAGES_MODAL_HEADING' | translate">
+            <button type="button" class="nav_item" (click)="openLanguageSelect()" [attr.aria-label]="('MODALS.LANGUAGES_MODAL_HEADING' | translate) + ': ' + currentLanguageLabel">
               <div class="icon_wrap">
                  <cos-icon name="globe" [size]="16"></cos-icon>
               </div>

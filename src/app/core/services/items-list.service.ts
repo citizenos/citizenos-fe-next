@@ -1,4 +1,4 @@
-import { Service, signal, computed } from '@angular/core';
+import { Service, signal, computed, inject, Injector, ResourceRef, untracked } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
 
@@ -15,6 +15,9 @@ export interface ListParams {
 
 @Service()
 export abstract class ItemsListService<T extends ListParams = ListParams, U = unknown> {
+  private injector = inject(Injector);
+  private _resource?: ResourceRef<{ rows: U[]; countTotal?: number; count?: unknown } | undefined>;
+
   protected defaultParams: T = {
     page: 1,
     offset: 0,
@@ -27,15 +30,27 @@ export abstract class ItemsListService<T extends ListParams = ListParams, U = un
 
   params = signal<T>({ ...this.defaultParams });
   page = signal<number>(1);
-  
-  private resource = rxResource<{ rows: U[], countTotal?: number, count?: unknown }, { page: number, params: T }>({
-    params: () => ({ page: this.page(), params: this.params() }),
-    stream: ({ params }) => {
-      const { page, params: requestParams } = params;
-      const offset = (page - 1) * requestParams.limit;
-      return this.getItems({ ...requestParams, offset, page } as T) as Observable<{ rows: U[], countTotal?: number, count?: unknown }>;
+
+  private get resource(): ResourceRef<{ rows: U[]; countTotal?: number; count?: unknown } | undefined> {
+    if (!this._resource) {
+      this._resource = untracked(() =>
+        rxResource<{ rows: U[]; countTotal?: number; count?: unknown }, { page: number; params: T }>({
+          injector: this.injector,
+          params: () => ({ page: this.page(), params: this.params() }),
+          stream: ({ params }) => {
+            const { page, params: requestParams } = params;
+            const offset = (page - 1) * requestParams.limit;
+            return this.getItems({ ...requestParams, offset, page } as T) as Observable<{
+              rows: U[];
+              countTotal?: number;
+              count?: unknown;
+            }>;
+          }
+        })
+      );
     }
-  });
+    return this._resource;
+  }
 
   items = computed(() => this.resource.value()?.rows ?? []);
   countTotal = computed(() => {
@@ -55,8 +70,8 @@ export abstract class ItemsListService<T extends ListParams = ListParams, U = un
     return total > 0 && currentPage < total;
   });
 
-  isLoading = this.resource.isLoading;
-  error = this.resource.error;
+  isLoading = computed(() => this.resource.isLoading());
+  error = computed(() => this.resource.error());
   protected setDefaults(defaults: Partial<T>) {
     this.defaultParams = { ...this.defaultParams, ...defaults };
     this.params.set({ ...this.defaultParams });

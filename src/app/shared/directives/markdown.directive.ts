@@ -11,6 +11,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../dialog/dialog.service';
 import { MarkdownLinkDialogComponent } from './components/markdown-link-dialog/markdown-link-dialog.component';
+import { loadExternalStylesheet } from '../../core/utils/script-loader';
 import EasyMDE from 'easymde';
 
 @Directive({
@@ -34,6 +35,7 @@ export class MarkdownDirective implements OnInit, OnChanges, OnDestroy {
   private curLength = 0;
 
   ngOnInit(): void {
+    loadExternalStylesheet('/assets/styles/easymde.css');
     const placeholder =
       this.placeholder() ??
       this.el.nativeElement.attributes.getNamedItem('placeholder')?.value;

@@ -6,6 +6,7 @@ import { ConfigStore } from '../state/config.store';
 import { UserStore } from '../state/user.store';
 import { ApiResponse } from '../interfaces/api-response';
 import { TopicAttachment } from '../interfaces/topic';
+import { loadExternalScript } from '../utils/script-loader';
 
 export interface TopicAttachmentParams extends ListParams {
   topicId: string;
@@ -89,8 +90,11 @@ export class TopicAttachmentService extends ItemsListService<TopicAttachmentPara
 
   /* Cloud Storage Selection Methods */
 
-  googleDriveSelect(): Promise<Partial<TopicAttachment> | null> {
-    if (typeof gapi === 'undefined' || typeof google === 'undefined') return Promise.resolve(null);
+  async googleDriveSelect(): Promise<Partial<TopicAttachment> | null> {
+    if (typeof gapi === 'undefined') {
+      await loadExternalScript('https://apis.google.com/js/api.js').catch(() => undefined);
+    }
+    if (typeof gapi === 'undefined') return null;
     const config = this.configStore.attachments().googleDrive;
 
     let googlePickerApiLoaded = false;
@@ -155,8 +159,11 @@ export class TopicAttachmentService extends ItemsListService<TopicAttachmentPara
     });
   }
 
-  dropboxSelect(): Promise<Partial<TopicAttachment> | null> {
-    if (typeof Dropbox === 'undefined') return Promise.resolve(null);
+  async dropboxSelect(): Promise<Partial<TopicAttachment> | null> {
+    if (typeof Dropbox === 'undefined') {
+      await loadExternalScript('assets/libs/dropbox.js').catch(() => undefined);
+    }
+    if (typeof Dropbox === 'undefined') return null;
     const config = this.configStore.attachments().dropbox;
     Dropbox.appKey = config.appKey;
 
@@ -183,8 +190,11 @@ export class TopicAttachmentService extends ItemsListService<TopicAttachmentPara
     });
   }
 
-  oneDriveSelect(): Promise<Partial<TopicAttachment> | null> {
-    if (typeof OneDrive === 'undefined') return Promise.resolve(null);
+  async oneDriveSelect(): Promise<Partial<TopicAttachment> | null> {
+    if (typeof OneDrive === 'undefined') {
+      await loadExternalScript('https://js.live.net/v7.2/OneDrive.js').catch(() => undefined);
+    }
+    if (typeof OneDrive === 'undefined') return null;
     const config = this.configStore.attachments().oneDrive;
 
     return new Promise((resolve) => {

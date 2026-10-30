@@ -143,11 +143,23 @@ describe('HomeComponent', () => {
     expect(signupBtn).toBeTruthy();
   });
 
-  it('should have correct link to learn more', () => {
+  it('should have correct link to learn more with descriptive aria-label', () => {
     createComponent();
     const compiled = fixture.nativeElement as HTMLElement;
     const learnMoreLnk = compiled.querySelector('.btn_big_submit_ghost');
     expect(learnMoreLnk?.getAttribute('href')).toBe('https://citizenos.com/about-us/');
+    expect(learnMoreLnk?.getAttribute('aria-label')).toContain('VIEWS.HOME.MISSION_BOX_LEARN_MORE');
+    expect(learnMoreLnk?.getAttribute('aria-label')).toContain('VIEWS.HOME.MISSION_BOX_HEADING');
+  });
+
+  it('should set width, height, and loading="lazy" on the group illustration image', () => {
+    createComponent();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const groupImg = compiled.querySelector('#feature_group img');
+    expect(groupImg).toBeTruthy();
+    expect(groupImg?.getAttribute('width')).toBe('164');
+    expect(groupImg?.getAttribute('height')).toBe('156');
+    expect(groupImg?.getAttribute('loading')).toBe('lazy');
   });
 
   it('should call services with limit 3 when mobile', () => {

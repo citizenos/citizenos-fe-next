@@ -32,9 +32,9 @@ import { SiteNotificationComponent } from '../../../shared/components/site-notif
     <div id="content_root" [class]="uiState.accessibilityClasses()" [class.dark-theme]="configStore.isDarkTheme()">
       <cos-site-notification></cos-site-notification>
       <cos-nav />
-      <div id="main-content" tabindex="-1">
+      <main id="main-content" tabindex="-1">
         <router-outlet></router-outlet>
-      </div>
+      </main>
       @defer (on idle) {
         <cos-global-search-panel></cos-global-search-panel>
       }

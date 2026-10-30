@@ -96,4 +96,11 @@ describe('FeatureBoxComponent', () => {
 
     expect(navigateSpy).toHaveBeenCalledWith(['/', 'en', 'topics', 'create']);
   });
+
+  it('should render valid SVG path for discussion icon', async () => {
+    const compiled = await setup('discussion', 1);
+    const paths = compiled.querySelectorAll('.feature_box_header svg path');
+    expect(paths.length).toBe(2);
+    expect(paths[1].getAttribute('d')).toContain('25.9253 31.5608 25.5601 31.5671C23.5711');
+  });
 });

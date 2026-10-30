@@ -72,4 +72,13 @@ describe('TopicVoteSignEsteidComponent', () => {
     const result = component.getOptionValueText('Yes');
     expect(result).toBe('Yes');
   });
+
+  it('doSignWithCard should dynamically load hwcrypto-js.js if hwcrypto is undefined', () => {
+    delete (globalThis as unknown as { hwcrypto?: unknown }).hwcrypto;
+    component.doSignWithCard();
+    expect(component.isLoadingIdCard()).toBe(true);
+    const scriptEl = document.querySelector('script[src="assets/libs/hwcrypto-js.js"]');
+    expect(scriptEl).toBeTruthy();
+    scriptEl?.remove();
+  });
 });

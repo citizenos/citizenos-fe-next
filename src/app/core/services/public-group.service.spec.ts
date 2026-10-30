@@ -33,6 +33,7 @@ describe('PublicGroupService', () => {
   });
 
   it('should fetch public groups', async () => {
+    service.items();
     TestBed.flushEffects();
     const req = httpMock.expectOne((request) => request.url.endsWith('/api/groups'));
     req.flush({ data: { rows: [{ id: '1', name: 'Public Group' }], count: 1 } });
@@ -45,8 +46,9 @@ describe('PublicGroupService', () => {
     expect(groups.length).toBe(1);
   });
 
-  it('should getPreview', async () => {
+  it('should getPreview without triggering default items list request', async () => {
     const promise = firstValueFrom(service.getPreview(3));
+    TestBed.flushEffects();
     const req = httpMock.expectOne((request) => request.url.endsWith('/api/groups') && request.params.get('limit') === '3');
     req.flush({ data: { rows: [] } });
     await promise;

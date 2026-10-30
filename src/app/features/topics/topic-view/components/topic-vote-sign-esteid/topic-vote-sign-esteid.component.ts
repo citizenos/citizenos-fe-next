@@ -12,6 +12,7 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { Topic, TopicVoteCast } from '../../../../../core/interfaces/topic';
 import { NotificationComponent } from '../../../../../shared/components/notification/notification.component';
+import { loadExternalScript } from '../../../../../core/utils/script-loader';
 
 declare let hwcrypto: {
   getCertificate: (options: Record<string, unknown>) => Promise<{ hex: string }>;
@@ -89,6 +90,26 @@ export class TopicVoteSignEsteidComponent {
 
   doSignWithCard() {
     this.isLoadingIdCard.set(true);
+    if (typeof hwcrypto === 'undefined') {
+      loadExternalScript('assets/libs/hwcrypto-js.js')
+        .then(() => {
+          if (typeof hwcrypto !== 'undefined') {
+            this.executeSignWithCard();
+          } else {
+            this.isLoadingIdCard.set(false);
+            this.notification.error('MSG_ERROR_HWCRYPTO_TECHNICAL_ERROR');
+          }
+        })
+        .catch(() => {
+          this.isLoadingIdCard.set(false);
+          this.notification.error('MSG_ERROR_HWCRYPTO_TECHNICAL_ERROR');
+        });
+      return;
+    }
+    this.executeSignWithCard();
+  }
+
+  private executeSignWithCard() {
     hwcrypto.getCertificate({}).then((certificate: { hex: string }) => {
       const userVote = {
         voteId: this.data.topic.voteId || undefined,
