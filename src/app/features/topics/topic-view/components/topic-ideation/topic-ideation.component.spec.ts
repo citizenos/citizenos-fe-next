@@ -56,11 +56,11 @@ describe('TopicIdeationComponent', () => {
     injector = TestBed.inject(EnvironmentInjector);
   });
 
-  function makeComp() {
+  function makeComp(ideationOverride?: Partial<Ideation>, topicOverride?: Partial<Topic>) {
     return runInInjectionContext(injector, () => {
       const comp = new TopicIdeationComponent();
-      (comp as unknown as { topic: unknown }).topic = signal(mockTopic);
-      (comp as unknown as { ideation: unknown }).ideation = signal(mockIdeation);
+      (comp as unknown as { topic: unknown }).topic = signal({ ...mockTopic, ...topicOverride });
+      (comp as unknown as { ideation: unknown }).ideation = signal({ ...mockIdeation, ...ideationOverride });
       TestBed.flushEffects();
       return comp;
     });
@@ -167,6 +167,22 @@ describe('TopicIdeationComponent', () => {
   it('addIdea does not open form when ideation has ended', () => {
     mockIdeationService.hasIdeationEnded.mockReturnValue(true);
     const comp = makeComp();
+    comp.showAddIdea.set(false);
+    comp.addIdea();
+    expect(comp.showAddIdea()).toBe(false);
+  });
+
+  it('hasIdeationEnded and hasIdeationEndedExpired delegate to ideationService and block addIdea when deadline has passed', () => {
+    mockIdeationService.hasIdeationEnded.mockReturnValue(true);
+    mockIdeationService.hasIdeationEndedExpired.mockReturnValue(true);
+    const pastDeadline = new Date(Date.now() - 3600000).toISOString();
+    const comp = makeComp({ deadline: pastDeadline });
+
+    expect(comp.hasIdeationEnded()).toBe(true);
+    expect(comp.hasIdeationEndedExpired()).toBe(true);
+    expect(mockIdeationService.hasIdeationEnded).toHaveBeenCalledWith(comp.topic(), comp.ideation());
+    expect(mockIdeationService.hasIdeationEndedExpired).toHaveBeenCalledWith(comp.topic(), comp.ideation());
+
     comp.showAddIdea.set(false);
     comp.addIdea();
     expect(comp.showAddIdea()).toBe(false);

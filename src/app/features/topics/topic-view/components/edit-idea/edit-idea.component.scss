@@ -212,6 +212,28 @@
         flex-direction: column;
         gap: 6px;
         width: 100%;
+
+        input {
+          width: 100%;
+          min-height: 44px;
+          padding: 10px 14px;
+          border: 1px solid var(--color-border);
+          border-radius: 8px;
+          background: var(--color-surfaces);
+          color: var(--color-text-main);
+          font-family: inherit;
+          font-size: 14px;
+          box-sizing: border-box;
+
+          &:focus {
+            outline: none;
+            border-color: var(--color-primary);
+          }
+
+          &.error_input {
+            border-color: var(--color-error);
+          }
+        }
       }
     }
 

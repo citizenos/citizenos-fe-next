@@ -7,7 +7,6 @@ import { UserStore } from '../../../../core/state/user.store';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
-import { authenticate } from '@web-eid/web-eid-library/web-eid';
 
 @Component({
   selector: 'app-esteid',
@@ -251,6 +250,7 @@ export class EstEidComponent implements OnDestroy {
     this.isLoadingIdCard.set(true);
     this.error.set(null);
     try {
+      const { authenticate } = await import('@web-eid/web-eid-library/web-eid');
       const nonce = "s26kIBTGw/XlFHtC3LF16i1hAwK9syO5NgcgAL77iu4=";
       const authResponse = await authenticate(nonce, { lang: 'et' });
       await this.userStore.loginIdCard(authResponse);

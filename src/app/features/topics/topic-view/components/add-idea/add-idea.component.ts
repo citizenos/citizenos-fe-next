@@ -3,10 +3,10 @@ import { AuthDialogService } from '../../../../../core/services/auth-dialog.serv
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild, computed, model, effect } from '@angular/core';
+import { Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit, OnDestroy, ElementRef, ViewChild, computed, model, effect } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { take, lastValueFrom } from 'rxjs';
+import { take, lastValueFrom, Subscription, interval } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
@@ -46,7 +46,7 @@ import { CloseWithoutSavingDialogComponent } from '../close-without-saving-dialo
   templateUrl: './add-idea.component.html',
   styleUrls: ['./add-idea.component.scss'],
 })
-export class AddIdeaComponent implements OnInit {
+export class AddIdeaComponent implements OnInit, OnDestroy {
   topic = input.required<Topic>();
   ideation = input.required<Ideation>();
   isOpen = model(false);
@@ -77,6 +77,8 @@ export class AddIdeaComponent implements OnInit {
   IDEA_STATEMENT_MAXLENGTH = 1024;
   IMAGE_LIMIT = 3;
   AUTOSAVE_HIDE_DELAY = 1000;
+  private readonly AUTOSAVE_TIME = 15000;
+  private autosaveSubscription?: Subscription;
   
   toggleExpand = signal(false);
   isAutosaving = signal(false);
@@ -89,7 +91,15 @@ export class AddIdeaComponent implements OnInit {
   municipalities = municipalities;
   filtersData = signal<Record<string, { selectedValue: string; items: { title: string; value: string }[]; error: boolean }>>({
     residence: { selectedValue: '', items: municipalities.map(m => ({ title: m.name, value: m.name })), error: false },
-    gender: { selectedValue: '', items: [{ title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_FEMALE', value: 'female' }, { title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_MALE', value: 'male' }, { title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_OTHER_PLACEHOLDER', value: 'other' }], error: false }
+    gender: {
+      selectedValue: '',
+      items: [
+        { title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_FEMALE', value: 'female' },
+        { title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_MALE', value: 'male' },
+        { title: 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_OTHER', value: 'other' }
+      ],
+      error: false
+    }
   });
 
   isCountryEstonia = computed(() => {
@@ -112,6 +122,41 @@ export class AddIdeaComponent implements OnInit {
 
   ngOnInit() {
     this.initDemographicsControls();
+    this.ideaForm.get('statement')?.valueChanges.subscribe((val: string) => {
+      if (this.isOpen() && val && val.trim().length > 0) {
+        const isNotSubscribed = !this.autosaveSubscription || this.autosaveSubscription.closed;
+        if (isNotSubscribed) {
+          this.startAutosave();
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.stopAutosave();
+  }
+
+  startAutosave(): void {
+    if (this.autosaveSubscription && !this.autosaveSubscription.closed) {
+      return;
+    }
+    this.autosaveSubscription = interval(this.AUTOSAVE_TIME).subscribe(() => {
+      const statement = this.ideaForm.get('statement')?.value?.trim();
+      const description = this.ideaForm.get('description')?.value?.trim();
+      if (statement || description) {
+        this.saveIdea(IdeaStatus.draft, true);
+      }
+    });
+  }
+
+  stopAutosave(): void {
+    if (this.autosaveSubscription && !this.autosaveSubscription.closed) {
+      this.autosaveSubscription.unsubscribe();
+    }
+  }
+
+  hasIdeationEnded(): boolean {
+    return this.ideationService.hasIdeationEnded(this.topic(), this.ideation());
   }
 
   initDemographicsControls() {
@@ -149,7 +194,11 @@ export class AddIdeaComponent implements OnInit {
     });
     const ctrl = this.ideaForm.get('demographics_' + key);
     if (ctrl) {
-      ctrl.setValue(value);
+      if (value === 'other') {
+        ctrl.setValue('');
+      } else {
+        ctrl.setValue(value);
+      }
       ctrl.markAsTouched();
       ctrl.setErrors(null);
     }
@@ -164,8 +213,17 @@ export class AddIdeaComponent implements OnInit {
   }
 
   updateText(text: string) {
+    const prevValue = this.description();
     this.description.set(text);
     this.ideaForm.patchValue({ description: text }, { emitEvent: false });
+
+    if (this.isOpen()) {
+      const isValueChanged = text && prevValue && text !== prevValue;
+      const isNotSubscribed = !this.autosaveSubscription || this.autosaveSubscription.closed;
+      if (isValueChanged && isNotSubscribed) {
+        this.startAutosave();
+      }
+    }
   }
 
   uploadImage() {
@@ -227,20 +285,32 @@ export class AddIdeaComponent implements OnInit {
     const prefix = "other: ";
     const demographics: Record<string, string> = {};
     Object.keys(config).forEach(curr => {
-      let val = this.ideaForm.get('demographics_' + curr)?.value as string;
-      if (!val) {
-        val = this.filtersData()[curr]?.selectedValue || '';
-      }
-      
-      if (curr === 'residence' || curr === 'gender') {
-        const isStandard = this.filtersData()[curr]?.items?.find(i => i.value === val);
-        if (!isStandard && val) {
-          demographics[curr] = prefix + val;
+      const filterData = this.filtersData()[curr];
+      const ctrl = this.ideaForm.get('demographics_' + curr);
+      const customText = ctrl?.value !== null && ctrl?.value !== undefined ? String(ctrl.value).trim() : '';
+
+      if (curr === 'residence') {
+        if (this.isCountryEstonia()) {
+          const sel = filterData?.selectedValue || '';
+          if (sel === 'other') {
+            const textWithoutPrefix = customText.startsWith(prefix) ? customText.slice(prefix.length).trim() : customText;
+            demographics[curr] = prefix + textWithoutPrefix;
+          } else {
+            demographics[curr] = sel;
+          }
         } else {
-          demographics[curr] = val;
+          demographics[curr] = customText;
+        }
+      } else if (curr === 'gender') {
+        const sel = filterData?.selectedValue || '';
+        if (sel === 'other') {
+          const textWithoutPrefix = customText.startsWith(prefix) ? customText.slice(prefix.length).trim() : customText;
+          demographics[curr] = prefix + textWithoutPrefix;
+        } else {
+          demographics[curr] = sel;
         }
       } else {
-        demographics[curr] = val;
+        demographics[curr] = customText;
       }
     });
     return demographics;
@@ -263,26 +333,34 @@ export class AddIdeaComponent implements OnInit {
         const isRequired = !!config[key]?.required;
         const controlName = 'demographics_' + key;
         const ctrl = this.ideaForm.get(controlName);
+        const filterData = this.filtersData()[key];
+        const isDropdown = filterData && (key === 'residence' ? this.isCountryEstonia() : true);
 
         if (isRequired) {
           ctrl?.markAsTouched();
-          const filterData = this.filtersData()[key];
 
-          if (filterData) {
-            const val = filterData.selectedValue || ctrl?.value;
-            const isEmpty = !val || String(val).trim() === '';
+          if (isDropdown) {
+            const selVal = filterData.selectedValue;
+            const isSelected = !!selVal && String(selVal).trim() !== '';
+            const customVal = ctrl?.value ? String(ctrl.value).trim() : '';
+
+            let hasError = false;
+            if (!isSelected) {
+              hasError = true;
+            } else if (selVal === 'other' && (!customVal || customVal === 'other')) {
+              hasError = true;
+            }
+
             this.filtersData.update(data => {
               if (data[key]) {
-                data[key].error = isEmpty;
+                data[key].error = hasError;
               }
               return { ...data };
             });
-            if (isEmpty) {
+
+            if (hasError) {
               isValid = false;
               ctrl?.setErrors({ required: true });
-            } else if (val === 'other' && (!ctrl?.value || String(ctrl.value).trim() === '')) {
-              ctrl?.setErrors({ required: true });
-              isValid = false;
             } else {
               ctrl?.setErrors(null);
             }
@@ -297,12 +375,15 @@ export class AddIdeaComponent implements OnInit {
             }
           }
         } else {
-          if (this.filtersData()[key]) {
+          if (filterData) {
             this.filtersData.update(data => {
-              data[key].error = false;
+              if (data[key]) {
+                data[key].error = false;
+              }
               return { ...data };
             });
           }
+          ctrl?.setErrors(null);
         }
       });
     } else {
@@ -414,6 +495,7 @@ export class AddIdeaComponent implements OnInit {
     this.doSaveAttachments(idea.id);
 
     if (idea.status !== IdeaStatus.draft) {
+      this.stopAutosave();
       this.isOpen.set(false);
       this.clear();
       this.ideaAdded.emit(idea);
@@ -464,6 +546,7 @@ export class AddIdeaComponent implements OnInit {
   }
 
   openAddIdea() {
+    if (this.hasIdeationEnded()) return;
     if (!this.userStore.isAuthenticated()) {
       const dialogRef = this.authDialog.openLogin(this.router.url);
       dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
@@ -538,6 +621,7 @@ export class AddIdeaComponent implements OnInit {
   }
 
   clear() {
+    this.stopAutosave();
     this.idea = null;
     this.ideaForm.reset();
     const template = this.ideation()?.template || '';

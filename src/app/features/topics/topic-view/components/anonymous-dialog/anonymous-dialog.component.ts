@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
+import { DIALOG_DATA, DialogCloseDirective } from '../../../../../shared/dialog';
 
 @Component({
   selector: 'cos-anonymous-dialog',
@@ -67,15 +67,15 @@ import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
         </div>
         <div class="footer-buttons-container">
           @if (type === 'draft') {
-            <button class="btn-clear no-bg" [dialogClose]="true">
+            <button type="button" class="btn_big_submit" [dialogClose]="true">
               {{ 'MODALS.TOPIC_IDEA_POSTING_DRAFT_ANONIMOUSLY_BTN_GOT_IT' | translate }}
             </button>
           } @else {
-            <button class="btn-clear" dialogClose>
-              {{ 'VIEWS.IDEATION_CREATE.KEEP_EDITING' | translate }}
-            </button>
-            <button class="btn-clear no-bg" [dialogClose]="true">
+            <button type="button" class="btn_big_submit" [dialogClose]="true">
               {{ 'VIEWS.IDEATION_CREATE.NO_IDEAS_BTN_ADD' | translate }}
+            </button>
+            <button type="button" class="btn-clear" dialogClose>
+              {{ 'VIEWS.IDEATION_CREATE.KEEP_EDITING' | translate }}
             </button>
           }
         </div>
@@ -149,23 +149,41 @@ import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
       .footer-buttons-container {
         display: flex;
         justify-content: flex-end;
+        align-items: center;
         gap: 16px;
+
+        .btn_big_submit {
+          background-color: var(--color-primary, #1168a8);
+          color: white;
+          border: none;
+          border-radius: 48px;
+          padding: 12px 32px;
+          font-weight: 600;
+          font-size: 16px;
+          cursor: pointer;
+          min-width: 140px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background-color 0.2s ease-in-out;
+
+          &:hover {
+            background-color: var(--color-primary-hover, #0d5284);
+          }
+        }
 
         .btn-clear {
           background: none;
           border: none;
           cursor: pointer;
-          color: #2c3b47;
+          color: #727c84;
           padding: 12px 24px;
           font-weight: 600;
           font-size: 14px;
+          text-decoration: underline;
 
-          &.no-bg {
-            color: #1168a8;
-            
-            &:hover {
-              background-color: rgba(17, 104, 168, 0.05);
-            }
+          &:hover {
+            color: #2c3b47;
           }
         }
       }
@@ -182,16 +200,38 @@ import { DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
         .info-content-container {
           gap: 16px;
         }
+
+        .footer-buttons-container {
+          flex-direction: column;
+          gap: 12px;
+          width: 100%;
+
+          .btn_big_submit,
+          .btn-clear {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+          }
+        }
       }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnonymousDialogComponent {
+  private data = inject<{ type?: 'idea' | 'draft' }>(DIALOG_DATA, { optional: true });
+
   /**
    * Type of dialog:
    * - 'idea': Standard anonymous idea posting info
    * - 'draft': Info when saving a draft anonymously
    */
-  @Input() type: 'idea' | 'draft' = 'idea';
+  @Input()
+  get type(): 'idea' | 'draft' {
+    return this._type;
+  }
+  set type(value: 'idea' | 'draft') {
+    this._type = value;
+  }
+  private _type: 'idea' | 'draft' = this.data?.type ?? 'idea';
 }

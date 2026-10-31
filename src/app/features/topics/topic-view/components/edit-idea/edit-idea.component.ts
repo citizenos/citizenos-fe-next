@@ -154,26 +154,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
     this.description.set(idea.description);
     this.isPublished.set(idea.status === IdeaStatus.published);
 
-    const config = this.ideation().demographicsConfig;
-    if (config && idea.demographics) {
-      const vals: Record<string, string> = {};
-      Object.keys(config).forEach(key => {
-        const rawVal = (idea.demographics as Record<string, string | null | undefined>)?.[key] || '';
-        let val = rawVal;
-        if (key === 'residence') {
-          const isOther = val.startsWith('other: ');
-          this.residenceValue.set(isOther ? 'other' : val);
-          if (isOther) val = val.slice('other: '.length);
-        }
-        if (key === 'gender') {
-          const isOther = val.startsWith('other: ');
-          this.genderValue.set(isOther ? 'other' : val);
-          if (isOther) val = val.slice('other: '.length);
-        }
-        vals[key] = val;
-      });
-      this.demographicValues.set(vals);
-    }
+    this.initDemographics();
 
     this.attachmentService.getItems({
       topicId: this.topic().id,
@@ -185,6 +166,43 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
     }).pipe(take(1)).subscribe((res: { rows: Attachment[]; countTotal: number }) => {
       this.images.set(res.rows ?? []);
     });
+  }
+
+  initDemographics() {
+    const idea = this.idea();
+    const config = this.ideation()?.demographicsConfig;
+    const demographics = idea?.demographics as Record<string, string | null | undefined> | null | undefined;
+
+    if (config || demographics) {
+      const allKeys = new Set([...Object.keys(config || {}), ...Object.keys(demographics || {})]);
+      const vals: Record<string, string> = {};
+
+      allKeys.forEach(key => {
+        const rawVal = demographics?.[key] ?? '';
+        let val = String(rawVal);
+
+        if (key === 'residence') {
+          const isOther = val === 'other' || val.startsWith('other:') || val.startsWith('other: ');
+          if (isOther) {
+            this.residenceValue.set('other');
+            val = val.replace(/^other:\s*/, '');
+          } else {
+            this.residenceValue.set(val);
+          }
+        } else if (key === 'gender') {
+          const isOther = val === 'other' || val.startsWith('other:') || val.startsWith('other: ');
+          if (isOther) {
+            this.genderValue.set('other');
+            val = val.replace(/^other:\s*/, '');
+          } else {
+            this.genderValue.set(val);
+          }
+        }
+        vals[key] = val;
+      });
+
+      this.demographicValues.set(vals);
+    }
   }
 
   ngOnDestroy() {
@@ -203,17 +221,31 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
   }
 
   setResidenceValue(value: string) {
+    const prev = this.residenceValue();
     this.residenceValue.set(value);
     this.residenceError.set(false);
     this.errors.update(e => ({ ...e, residence: '' }));
-    this.setDemographicValue('residence', value === 'other' ? '' : value);
+    if (value === 'other') {
+      if (prev !== 'other') {
+        this.setDemographicValue('residence', '');
+      }
+    } else {
+      this.setDemographicValue('residence', value);
+    }
   }
 
   setGenderValue(value: string) {
+    const prev = this.genderValue();
     this.genderValue.set(value);
     this.genderError.set(false);
     this.errors.update(e => ({ ...e, gender: '' }));
-    this.setDemographicValue('gender', value === 'other' ? '' : value);
+    if (value === 'other') {
+      if (prev !== 'other') {
+        this.setDemographicValue('gender', '');
+      }
+    } else {
+      this.setDemographicValue('gender', value);
+    }
   }
 
   onStatementChange(value: string) {
@@ -287,6 +319,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
             this.genderError.set(true);
             errs['gender'] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
           } else if (this.genderValue() === 'other' && !this.demographicValues()['gender']?.trim()) {
+            this.genderError.set(true);
             errs['gender'] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
           }
         } else {
@@ -301,17 +334,21 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
     return Object.keys(errs).length === 0;
   }
 
-  private buildDemographics(): Record<string, string> | null {
-    const config = this.ideation().demographicsConfig;
+  buildDemographics(): Record<string, string> | null {
+    const config = this.ideation()?.demographicsConfig;
     if (!config) return null;
 
     const prefix = 'other: ';
     const result: Record<string, string> = {};
     Object.keys(config).forEach(key => {
       if (key === 'residence') {
-        const selected = this.residenceValue();
-        const freeText = this.demographicValues()[key] || '';
-        result[key] = selected === 'other' ? prefix + freeText : selected;
+        if (this.isCountryEstonia()) {
+          const selected = this.residenceValue();
+          const freeText = this.demographicValues()[key] || '';
+          result[key] = selected === 'other' ? prefix + freeText : selected;
+        } else {
+          result[key] = this.demographicValues()[key] || '';
+        }
       } else if (key === 'gender') {
         const selected = this.genderValue();
         const freeText = this.demographicValues()[key] || '';
@@ -326,7 +363,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
   publish() {
     if (!this.validateForPublish()) return;
     if (this.ideation().allowAnonymous) {
-      const dlg = this.dialog.open(AnonymousDialogComponent);
+      const dlg = this.dialog.open(AnonymousDialogComponent, { data: { type: 'idea' } });
       dlg.afterClosed().subscribe(res => {
         if (res) this.saveIdea(IdeaStatus.published);
       });

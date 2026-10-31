@@ -17,6 +17,7 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { Idea } from '../../../../../core/interfaces/idea';
 import { Attachment } from '../../../../../core/interfaces/attachment';
+import { AnonymousDialogComponent } from '../anonymous-dialog/anonymous-dialog.component';
 import { signal } from '@angular/core';
 
 const mockTopic = { id: 't1', country: null } as unknown as Topic;
@@ -192,7 +193,7 @@ describe('EditIdeaComponent', () => {
     comp.onStatementChange('S');
     comp.onDescriptionChange('D');
     comp.publish();
-    expect(mockDialog.open).toHaveBeenCalledWith(expect.anything());
+    expect(mockDialog.open).toHaveBeenCalledWith(AnonymousDialogComponent, { data: { type: 'idea' } });
   });
 
   it('getDemographicKeys returns empty array when no config', () => {
@@ -448,5 +449,130 @@ describe('EditIdeaComponent', () => {
     comp.publishIdea();
 
     expect(mockNotification.error).toHaveBeenCalledWith('MSG_ERROR_50000');
+  });
+
+  describe('Demographics other: <value> handling', () => {
+    const estoniaTopic = { id: 't1', country: 'Estonia' } as Topic;
+    const ideationWithDemo: Ideation = {
+      ...mockIdeation,
+      allowAnonymous: true,
+      demographicsConfig: {
+        residence: { required: true },
+        gender: { required: false },
+        age: { required: false },
+      },
+    };
+
+    it('loads existing "other: Tartu vald" residence into "other" dropdown and "Tartu vald" free text', () => {
+      const ideaWithOtherResidence: Idea = {
+        ...mockIdea,
+        demographics: {
+          residence: 'other: Tartu vald',
+        },
+      };
+
+      const comp = runInInjectionContext(injector, () => {
+        const c = new EditIdeaComponent();
+        (c as unknown as { topic: unknown }).topic = signal(estoniaTopic);
+        (c as unknown as { ideation: unknown }).ideation = signal(ideationWithDemo);
+        (c as unknown as { idea: unknown }).idea = signal(ideaWithOtherResidence);
+        c.ngOnInit();
+        return c;
+      });
+
+      expect(comp.residenceValue()).toBe('other');
+      expect(comp.demographicValues()['residence']).toBe('Tartu vald');
+
+      const built = comp.buildDemographics();
+      expect(built?.['residence']).toBe('other: Tartu vald');
+    });
+
+    it('loads existing standard municipality residence without other prefix', () => {
+      const ideaWithStdResidence: Idea = {
+        ...mockIdea,
+        demographics: {
+          residence: 'Tartu vald',
+        },
+      };
+
+      const comp = runInInjectionContext(injector, () => {
+        const c = new EditIdeaComponent();
+        (c as unknown as { topic: unknown }).topic = signal(estoniaTopic);
+        (c as unknown as { ideation: unknown }).ideation = signal(ideationWithDemo);
+        (c as unknown as { idea: unknown }).idea = signal(ideaWithStdResidence);
+        c.ngOnInit();
+        return c;
+      });
+
+      expect(comp.residenceValue()).toBe('Tartu vald');
+      expect(comp.demographicValues()['residence']).toBe('Tartu vald');
+
+      const built = comp.buildDemographics();
+      expect(built?.['residence']).toBe('Tartu vald');
+    });
+
+    it('loads existing "other: Non-binary" gender into "other" and "Non-binary" text', () => {
+      const ideaWithOtherGender: Idea = {
+        ...mockIdea,
+        demographics: {
+          gender: 'other: Non-binary',
+        },
+      };
+
+      const comp = runInInjectionContext(injector, () => {
+        const c = new EditIdeaComponent();
+        (c as unknown as { topic: unknown }).topic = signal(estoniaTopic);
+        (c as unknown as { ideation: unknown }).ideation = signal(ideationWithDemo);
+        (c as unknown as { idea: unknown }).idea = signal(ideaWithOtherGender);
+        c.ngOnInit();
+        return c;
+      });
+
+      expect(comp.genderValue()).toBe('other');
+      expect(comp.demographicValues()['gender']).toBe('Non-binary');
+
+      const built = comp.buildDemographics();
+      expect(built?.['gender']).toBe('other: Non-binary');
+    });
+
+    it('switching to other clears input if previous value was a municipality, but preserves when already other', () => {
+      const comp = runInInjectionContext(injector, () => {
+        const c = new EditIdeaComponent();
+        (c as unknown as { topic: unknown }).topic = signal(estoniaTopic);
+        (c as unknown as { ideation: unknown }).ideation = signal(ideationWithDemo);
+        (c as unknown as { idea: unknown }).idea = signal(mockIdea);
+        c.ngOnInit();
+        return c;
+      });
+
+      comp.setResidenceValue('Tallinn');
+      expect(comp.demographicValues()['residence']).toBe('Tallinn');
+
+      comp.setResidenceValue('other');
+      expect(comp.demographicValues()['residence']).toBe('');
+
+      comp.setDemographicValue('residence', 'Elva');
+      comp.setResidenceValue('other'); // re-selecting other does not wipe user input
+      expect(comp.demographicValues()['residence']).toBe('Elva');
+
+      const built = comp.buildDemographics();
+      expect(built?.['residence']).toBe('other: Elva');
+    });
+
+    it('saves residence as plain text without other: prefix when country is not Estonia', () => {
+      const nonEstoniaTopic = { id: 't2', country: 'Finland' } as Topic;
+      const comp = runInInjectionContext(injector, () => {
+        const c = new EditIdeaComponent();
+        (c as unknown as { topic: unknown }).topic = signal(nonEstoniaTopic);
+        (c as unknown as { ideation: unknown }).ideation = signal(ideationWithDemo);
+        (c as unknown as { idea: unknown }).idea = signal(mockIdea);
+        c.ngOnInit();
+        return c;
+      });
+
+      comp.setDemographicValue('residence', 'Helsinki');
+      const built = comp.buildDemographics();
+      expect(built?.['residence']).toBe('Helsinki');
+    });
   });
 });

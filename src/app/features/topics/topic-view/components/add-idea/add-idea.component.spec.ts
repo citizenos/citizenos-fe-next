@@ -31,6 +31,7 @@ const mockIdeationService = {
   createIdea: vi.fn().mockReturnValue(of(mockCreatedIdea)),
   updateIdea: vi.fn().mockReturnValue(of(mockCreatedIdea)),
   deleteIdea: vi.fn().mockReturnValue(of({})),
+  hasIdeationEnded: vi.fn().mockReturnValue(false),
 };
 const mockNotification = {
   addError: vi.fn(),
@@ -62,6 +63,7 @@ describe('AddIdeaComponent', () => {
     vi.clearAllMocks();
     mockIdeationService.createIdea.mockReturnValue(of(mockCreatedIdea));
     mockIdeationService.updateIdea.mockReturnValue(of(mockCreatedIdea));
+    mockIdeationService.hasIdeationEnded.mockReturnValue(false);
     mockDialogService.open.mockReturnValue({
       afterClosed: () => of(true),
       close: vi.fn(),
@@ -142,6 +144,34 @@ describe('AddIdeaComponent', () => {
 
       expect(comp.description()).toBe('My existing user description');
       expect(comp.ideaForm.get('description')?.value).toBe('My existing user description');
+    });
+
+    it('openAddIdea does not open form when ideation has ended', () => {
+      mockIdeationService.hasIdeationEnded.mockReturnValue(true);
+      const comp = makeComp();
+      comp.isOpen.set(false);
+      comp.openAddIdea();
+      expect(comp.hasIdeationEnded()).toBe(true);
+      expect(comp.isOpen()).toBe(false);
+    });
+
+    it('hasIdeationEnded disabled state in template when ideation has ended', () => {
+      if (typeof Range !== 'undefined') {
+        Range.prototype.getBoundingClientRect = () => ({ width: 0, height: 0, top: 0, left: 0, right: 0, bottom: 0, x: 0, y: 0, toJSON: () => ({}) });
+        Range.prototype.getClientRects = () => ({ length: 0, item: () => null } as unknown as DOMRectList);
+      }
+      mockIdeationService.hasIdeationEnded.mockReturnValue(true);
+      const fixture = TestBed.createComponent(AddIdeaComponent);
+      fixture.componentRef.setInput('topic', mockTopic);
+      fixture.componentRef.setInput('ideation', mockIdeation);
+      fixture.detectChanges();
+
+      const footerBtn = fixture.nativeElement.querySelector('#create_idea_footer_menu cos-button');
+      expect(footerBtn).toBeTruthy();
+      expect(fixture.componentInstance.hasIdeationEnded()).toBe(true);
+
+      const tabletBtn = fixture.nativeElement.querySelector('#create_idea_tablet_btn button');
+      expect(tabletBtn?.disabled).toBe(true);
     });
   });
 
@@ -232,6 +262,73 @@ describe('AddIdeaComponent', () => {
       const isValid = comp.validateRequiredFieldsForPublish();
       expect(isValid).toBe(false);
       expect(comp.ideaForm.get('demographics_residence')?.invalid).toBe(true);
+    });
+
+    it('does not write other into input control when other is selected and getDemographicValues returns other: <text>', () => {
+      const comp = makeComp({
+        allowAnonymous: true,
+        demographicsConfig: {
+          residence: { required: true, value: '' },
+          gender: { required: true, value: '' },
+        } as never,
+      });
+
+      // Select 'other' for residence
+      comp.setDemographicsValue('residence', 'other');
+      expect(comp.filtersData()['residence'].selectedValue).toBe('other');
+      expect(comp.ideaForm.get('demographics_residence')?.value).toBe('');
+
+      // User enters custom municipality
+      comp.ideaForm.get('demographics_residence')?.setValue('Tartu vald');
+
+      // Select 'other' for gender
+      comp.setDemographicsValue('gender', 'other');
+      expect(comp.filtersData()['gender'].selectedValue).toBe('other');
+      expect(comp.ideaForm.get('demographics_gender')?.value).toBe('');
+
+      // User enters custom gender
+      comp.ideaForm.get('demographics_gender')?.setValue('non-binary');
+
+      const values = comp.getDemographicValues();
+      expect(values?.['residence']).toBe('other: Tartu vald');
+      expect(values?.['gender']).toBe('other: non-binary');
+    });
+
+    it('formats full demographics payload with age, gender other, and residence other', () => {
+      const comp = makeComp({
+        allowAnonymous: true,
+        demographicsConfig: {
+          residence: { required: true, value: '' },
+          gender: { required: true, value: '' },
+          age: { required: true, value: '' },
+        } as never,
+      });
+
+      comp.ideaForm.patchValue({
+        statement: 'Solar-Powered Electric Transport',
+        description: 'Transition municipal buses to electric.',
+      });
+
+      // Age input
+      comp.ideaForm.get('demographics_age')?.setValue('38');
+
+      // Select other for residence & enter text without pre-filled 'other'
+      comp.setDemographicsValue('residence', 'other');
+      expect(comp.ideaForm.get('demographics_residence')?.value).toBe('');
+      comp.ideaForm.get('demographics_residence')?.setValue('Tartu suburb');
+
+      // Select other for gender & enter text without pre-filled 'other'
+      comp.setDemographicsValue('gender', 'other');
+      expect(comp.ideaForm.get('demographics_gender')?.value).toBe('');
+      comp.ideaForm.get('demographics_gender')?.setValue('Non-binary');
+
+      const values = comp.getDemographicValues();
+      expect(values).toEqual({
+        age: '38',
+        gender: 'other: Non-binary',
+        residence: 'other: Tartu suburb',
+      });
+      expect(comp.validateRequiredFieldsForPublish()).toBe(true);
     });
   });
 

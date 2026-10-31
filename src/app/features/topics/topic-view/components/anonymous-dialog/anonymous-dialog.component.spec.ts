@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AnonymousDialogComponent } from './anonymous-dialog.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input } from '@angular/core';
-import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
+import { DialogRef, DIALOG_DATA } from '../../../../../shared/dialog';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 
 @Component({
@@ -44,6 +44,19 @@ describe('AnonymousDialogComponent', () => {
     expect(component.type).toBe('idea');
   });
 
+  it('initializes type from DIALOG_DATA when provided', () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      imports: [AnonymousDialogComponent, TranslateModule.forRoot()],
+      providers: [
+        { provide: DialogRef, useValue: { close: () => { return; } } },
+        { provide: DIALOG_DATA, useValue: { type: 'draft' } },
+      ]
+    });
+    const draftFixture = TestBed.createComponent(AnonymousDialogComponent);
+    expect(draftFixture.componentInstance.type).toBe('draft');
+  });
+
   describe('type="idea"', () => {
     beforeEach(() => {
       fixture.componentRef.setInput('type', 'idea');
@@ -62,11 +75,13 @@ describe('AnonymousDialogComponent', () => {
       expect(lightText?.textContent).toContain('MODALS.TOPIC_IDEA_POSTING_ANONIMOUSLY_TEXT_2');
     });
 
-    it('shows cancel and continue buttons', () => {
+    it('shows cancel and continue buttons in proper order with primary styling', () => {
       const buttons = fixture.nativeElement.querySelectorAll('.footer-buttons-container button');
       expect(buttons.length).toBe(2);
-      expect(buttons[0].textContent).toContain('VIEWS.IDEATION_CREATE.KEEP_EDITING');
-      expect(buttons[1].textContent).toContain('VIEWS.IDEATION_CREATE.NO_IDEAS_BTN_ADD');
+      expect(buttons[0].textContent).toContain('VIEWS.IDEATION_CREATE.NO_IDEAS_BTN_ADD');
+      expect(buttons[0].classList.contains('btn_big_submit')).toBe(true);
+      expect(buttons[1].textContent).toContain('VIEWS.IDEATION_CREATE.KEEP_EDITING');
+      expect(buttons[1].classList.contains('btn-clear')).toBe(true);
     });
   });
 
@@ -88,10 +103,11 @@ describe('AnonymousDialogComponent', () => {
       expect(lightText?.textContent).toContain('MODALS.TOPIC_IDEA_POSTING_DRAFT_ANONIMOUSLY_TEXT_2');
     });
 
-    it('shows only the Got it button', () => {
+    it('shows only the Got it button with primary styling', () => {
       const buttons = fixture.nativeElement.querySelectorAll('.footer-buttons-container button');
       expect(buttons.length).toBe(1);
       expect(buttons[0].textContent).toContain('MODALS.TOPIC_IDEA_POSTING_DRAFT_ANONIMOUSLY_BTN_GOT_IT');
+      expect(buttons[0].classList.contains('btn_big_submit')).toBe(true);
     });
   });
 });
