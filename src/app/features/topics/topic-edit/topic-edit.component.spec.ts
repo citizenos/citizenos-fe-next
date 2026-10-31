@@ -175,6 +175,13 @@ describe('TopicEditComponent', () => {
     expect(component.currentStep()).toBe('discussion');
   });
 
+  it('should map legacy ideation_system fragment to ideation step', () => {
+    const route = TestBed.inject(ActivatedRoute);
+    Object.assign(route.snapshot, { fragment: 'ideation_system' });
+    component.ngOnInit();
+    expect(component.currentStep()).toBe('ideation');
+  });
+
   it('should fall back to parent topicId if route snapshot does not have topicId', () => {
     const route = TestBed.inject(ActivatedRoute);
     Object.defineProperty(route.snapshot, 'paramMap', {

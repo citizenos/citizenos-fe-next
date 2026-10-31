@@ -278,4 +278,20 @@ describe('TopicIdeationComponent', () => {
     expect(comp.searchValue()).toBe('sustainability');
     expect(comp.currentPage()).toBe(1);
   });
+
+  it('canEditDeadline returns true when canEdit and topic status is ideation', () => {
+    const comp = makeComp({}, { status: 'ideation' });
+    expect(comp.canEditDeadline()).toBe(true);
+  });
+
+  it('canEditDeadline returns false when topic status is not ideation', () => {
+    const comp = makeComp({}, { status: 'inProgress' });
+    expect(comp.canEditDeadline()).toBe(false);
+  });
+
+  it('editDeadline opens EditIdeationDeadlineComponent dialog', () => {
+    const comp = makeComp();
+    comp.editDeadline();
+    expect(mockDialogService.open).toHaveBeenCalled();
+  });
 });

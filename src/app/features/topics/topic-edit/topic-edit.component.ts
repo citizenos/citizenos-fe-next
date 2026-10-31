@@ -143,7 +143,8 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
     if (topicId) {
       const fragment = this.route.snapshot.fragment;
       if (fragment) {
-        this.currentStep.set(fragment);
+        const step = fragment === 'ideation_system' ? 'ideation' : fragment;
+        this.currentStep.set(step);
       }
       this.loadExistingTopic(topicId);
     } else {
@@ -195,7 +196,8 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
         this.isLoading.set(false);
         const fragment = this.route.snapshot.fragment;
         if (fragment) {
-          this.onStepChange(fragment);
+          const step = fragment === 'ideation_system' ? 'ideation' : fragment;
+          this.onStepChange(step);
         } else if (!this.topicService.canEditDescription(topic) && this.currentStep() === 'info') {
           this.onStepChange('info');
         }
