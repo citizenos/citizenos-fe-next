@@ -333,6 +333,20 @@ export class TopicIdeationComponent {
     this.currentPage.set(1);
   }
 
+  openSearch(event?: Event) {
+    event?.stopPropagation();
+    this.showSearch.set(true);
+    setTimeout(() => {
+      const input = document.querySelector('.search_input input') as HTMLInputElement;
+      input?.focus();
+    });
+  }
+
+  closeSearch(event?: Event) {
+    event?.stopPropagation();
+    this.showSearch.set(false);
+  }
+
   clearAllFilters() {
     this.selectedType.set('');
     this.selectedOrder.set('');
@@ -402,16 +416,31 @@ export class TopicIdeationComponent {
 
   onIdeaDeleted(_idea: Idea) {
     this.refreshTrigger.update(n => n + 1);
+    try {
+      this.ideasResource.reload();
+    } catch (e) {
+      console.debug(e);
+    }
   }
 
   onIdeaUpdated(_idea: Idea) {
     this.refreshTrigger.update(n => n + 1);
+    try {
+      this.ideasResource.reload();
+    } catch (e) {
+      console.debug(e);
+    }
   }
 
   onIdeaAdded(_idea: Idea) {
     this.showAddIdea.set(false);
     this.currentPage.set(1);
     this.refreshTrigger.update(n => n + 1);
+    try {
+      this.ideasResource.reload();
+    } catch (e) {
+      console.debug(e);
+    }
   }
 
   addIdea() {

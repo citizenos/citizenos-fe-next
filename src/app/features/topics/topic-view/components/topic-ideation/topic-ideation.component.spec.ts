@@ -126,8 +126,15 @@ describe('TopicIdeationComponent', () => {
   it('onIdeaAdded hides add form and reloads', () => {
     const comp = makeComp();
     comp.showAddIdea.set(true);
+    comp.currentPage.set(3);
+    const callsBefore = mockIdeationService.getIdeas.mock.calls.length;
+
     comp.onIdeaAdded({ id: 'new' } as Idea);
+    TestBed.flushEffects();
+
     expect(comp.showAddIdea()).toBe(false);
+    expect(comp.currentPage()).toBe(1);
+    expect(mockIdeationService.getIdeas.mock.calls.length).toBeGreaterThan(callsBefore);
   });
 
   it('exportIdeas opens download URL', () => {
@@ -140,7 +147,7 @@ describe('TopicIdeationComponent', () => {
 
   it('addIdea opens login dialog when unauthenticated and opens form on login', () => {
     const userStore = TestBed.inject(UserStore);
-    userStore.isAuthenticated = Object.assign(() => false, { [Symbol("SIGNAL")]: {} }) as any;
+    userStore.isAuthenticated = Object.assign(() => false, { [Symbol("SIGNAL")]: {} }) as unknown as InstanceType<typeof UserStore>['isAuthenticated'];
     const comp = makeComp();
     comp.addIdea();
     expect(mockAuthDialogService.openLogin).toHaveBeenCalled();
@@ -216,6 +223,25 @@ describe('TopicIdeationComponent', () => {
     expect(comp.selectedGender()).toBe('');
     expect(comp.selectedResidence()).toBe('');
     expect(comp.searchValue()).toBe('');
+    expect(comp.currentPage()).toBe(1);
+  });
+
+  it('openSearch and closeSearch toggle showSearch signal', () => {
+    const comp = makeComp();
+    expect(comp.showSearch()).toBe(false);
+
+    comp.openSearch();
+    expect(comp.showSearch()).toBe(true);
+
+    comp.closeSearch();
+    expect(comp.showSearch()).toBe(false);
+  });
+
+  it('setSearch updates searchValue and resets page', () => {
+    const comp = makeComp();
+    comp.currentPage.set(3);
+    comp.setSearch('sustainability');
+    expect(comp.searchValue()).toBe('sustainability');
     expect(comp.currentPage()).toBe(1);
   });
 });

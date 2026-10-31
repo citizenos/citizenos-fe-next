@@ -284,6 +284,7 @@
       width: 100%;
       display: flex;
       gap: figma.$spacing-m;
+      align-items: center;
 
       @include mixins.tablet {
         flex-wrap: wrap;
@@ -294,6 +295,8 @@
       }
 
       .dropdown_input {
+        flex: 1 1 0;
+        min-width: 0;
         width: 100%;
       }
     }
@@ -303,24 +306,151 @@
     }
 
     .search_input {
-      flex-grow: 1;
-      padding: 0 figma.$spacing-m 0 figma.$spacing-m;
+      display: flex;
+      align-items: center;
+      background: var(--color-surfaces);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      height: 48px;
+      min-height: 48px;
+      box-sizing: border-box;
+      position: relative;
+      transition: border-color var(--transition-fast, 0.2s), box-shadow var(--transition-fast, 0.2s);
 
-      cos-input {
-        flex-grow: 1;
-      }
-
-      button {
+      &:not(.open) {
+        flex: 0 0 48px;
+        width: 48px;
+        min-width: 48px;
+        max-width: 48px;
         padding: 0;
+        justify-content: center;
+        cursor: pointer;
+
+        &:hover {
+          border-color: var(--color-border-active);
+          background: var(--color-background-hover);
+        }
+
+        .search_start {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+          color: var(--color-text-muted);
+          position: relative;
+          background: none;
+          border: none;
+          padding: 0;
+
+          &:hover {
+            color: var(--color-text);
+          }
+        }
+
+        .text_exist_icon {
+          position: absolute;
+          z-index: 2;
+          top: -4px;
+          right: -4px;
+          border: 2px solid #fff;
+          border-radius: 50%;
+          color: var(--color-primary);
+          background: #fff;
+        }
       }
 
-      .text_exist_icon {
-        position: absolute;
-        z-index: 1;
-        top: -4px;
-        right: -4px;
-        border: 2px solid #fff;
-        border-radius: 50%;
+      &.open {
+        flex: 1 1 100%;
+        width: 100%;
+        padding: 0 figma.$spacing-m;
+        gap: figma.$spacing-sm;
+
+        &:focus-within {
+          border-color: var(--color-border-active);
+          box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+
+        .search_icon_holder {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--color-text-muted);
+          flex-shrink: 0;
+        }
+
+        cos-input {
+          flex: 1;
+          min-width: 0;
+          display: flex;
+          align-items: center;
+
+          ::ng-deep {
+            .input-container {
+              width: 100%;
+            }
+
+            .input-wrapper {
+              border: none !important;
+              background: transparent !important;
+              box-shadow: none !important;
+              min-height: 46px !important;
+              padding: 0 !important;
+            }
+
+            input {
+              border: none !important;
+              background: transparent !important;
+              box-shadow: none !important;
+              height: 46px !important;
+              padding: 0 figma.$spacing-xs !important;
+              font-size: figma.$font-size-sm;
+
+              &.with_value {
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+              }
+            }
+
+            .cos_input_placeholder {
+              display: none !important;
+            }
+          }
+        }
+
+        .clear_search {
+          color: var(--color-link);
+          cursor: pointer;
+          font-size: figma.$font-size-sm;
+          text-decoration: underline;
+          white-space: nowrap;
+          flex-shrink: 0;
+          padding: 0 figma.$spacing-xs;
+
+          &:hover {
+            text-decoration: none;
+          }
+        }
+
+        .search_close {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          color: var(--color-text-muted);
+          flex-shrink: 0;
+          padding: 4px;
+          border-radius: 50%;
+          background: none;
+          border: none;
+          transition: background 0.2s, color 0.2s;
+
+          &:hover {
+            color: var(--color-text);
+            background: var(--color-background-hover);
+          }
+        }
       }
     }
   }

@@ -222,23 +222,26 @@
                         </div>
                     }
 
-                    <div class="search_input">
-                        <button type="button" (click)="showSearch.set(true)" class="search_start">
-                            <cos-icon name="search"></cos-icon>
-                            @if (searchValue() && !showSearch()) {
-                                <cos-icon name="close"></cos-icon>
-                            }
-                        </button>
-
-                        @if (showSearch()) {
+                    <div class="search_input" [class.open]="showSearch()">
+                        @if (!showSearch()) {
+                            <button type="button" (click)="openSearch($event)" class="search_start" aria-label="Open search">
+                                <cos-icon name="search" size="20"></cos-icon>
+                                @if (searchValue()) {
+                                    <cos-icon name="check" size="16" class="text_exist_icon"></cos-icon>
+                                }
+                            </button>
+                        } @else {
+                            <div class="search_icon_holder">
+                                <cos-icon name="search" size="20"></cos-icon>
+                            </div>
                             <cos-input [placeholder]="'COMPONENTS.TOPIC_IDEATION.SEARCH' | translate">
-                                <input type="text" [ngModel]="searchValue()" (ngModelChange)="setSearch($event)" />
+                                <input type="text" [ngModel]="searchValue()" (ngModelChange)="setSearch($event)" (keydown.escape)="closeSearch($event)" [placeholder]="'COMPONENTS.TOPIC_IDEATION.SEARCH' | translate" />
                             </cos-input>
                             @if (searchValue()) {
-                                <a class="clear_search" role="button" tabindex="0" (click)="setSearch('')" (keydown.enter)="setSearch('')">{{ 'VIEWS.MY_TOPICS.LNK_CLEAR' | translate }}</a>
+                                <a class="clear_search" role="button" tabindex="0" (click)="setSearch(''); $event.stopPropagation()" (keydown.enter)="setSearch(''); $event.stopPropagation()">{{ 'VIEWS.MY_TOPICS.LNK_CLEAR' | translate }}</a>
                             }
-                            <button type="button" (click)="showSearch.set(false)">
-                                <cos-icon name="close"></cos-icon>
+                            <button type="button" class="search_close" (click)="closeSearch($event)" aria-label="Close search">
+                                <cos-icon name="close" size="20"></cos-icon>
                             </button>
                         }
                     </div>
