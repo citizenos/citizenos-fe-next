@@ -59,6 +59,22 @@ export class TopicIdeationComponent {
   topic = input.required<Topic>();
   ideation = input.required<Ideation>();
 
+  private safeTopic = computed(() => {
+    try {
+      return this.topic();
+    } catch {
+      return null;
+    }
+  });
+
+  private safeIdeation = computed(() => {
+    try {
+      return this.ideation();
+    } catch {
+      return null;
+    }
+  });
+
   private ideationService = inject(TopicIdeationService);
   private topicService = inject(TopicService);
   private dialogService = inject(DialogService);
@@ -83,9 +99,11 @@ export class TopicIdeationComponent {
   selectedGender = signal<string>('');
   selectedResidence = signal<string>('');
   
-  tabSelected = signal<'ideas' | 'folders' | 'folder'>('ideas');
+  tabSelected = signal<'ideas' | 'folders' | 'folder'>(
+    this.route.snapshot?.queryParams?.['folderId'] ? 'folder' : 'ideas'
+  );
   selectedFolder = signal<IdeationFolder | null>(null);
-  folderId = signal<string>('');
+  folderId = signal<string>(this.route.snapshot?.queryParams?.['folderId'] || '');
   foldersLoadedCount = signal<number | null>(null);
   foldersCount = computed(() => this.foldersLoadedCount() ?? (this.ideation()?.folders?.count || 0));
   loadFolders$ = new BehaviorSubject<void>(undefined);
@@ -158,7 +176,7 @@ export class TopicIdeationComponent {
     params: () => this.ideasParams(),
     stream: ({ params }) => {
       const { search, type, order, page, participant, age, gender, residence, folderId, topic, ideation, tab } = params;
-      if (!topic?.id || !ideation?.id || tab === 'folders') return of({ rows: [] as Idea[], count: 0 });
+      if (!topic?.id || !ideation?.id || tab === 'folders' || (tab === 'folder' && !folderId)) return of({ rows: [] as Idea[], count: 0 });
       const req: Record<string, unknown> = {
         limit: this.PAGE_SIZE,
         offset: (page - 1) * this.PAGE_SIZE,
@@ -257,44 +275,42 @@ export class TopicIdeationComponent {
   constructor() {
     this.folders$.pipe(takeUntilDestroyed()).subscribe();
 
-    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe(params => {
-      const fId = params['folderId'];
+    combineLatest([
+      toObservable(this.safeTopic),
+      toObservable(this.safeIdeation),
+      this.route.queryParams
+    ]).pipe(takeUntilDestroyed()).subscribe(([topic, ideation, params]) => {
+      const fId = params?.['folderId'];
       if (fId) {
-        if (this.selectedFolder()?.id !== fId || this.tabSelected() !== 'folder') {
-          const topicId = this.topic?.()?.id;
-          const ideationId = this.ideation?.()?.id;
-          if (topicId && ideationId) {
-            this.IdeationFolderService.query({
-              topicId,
-              ideationId,
-              folderId: fId
-            }).pipe(
-              take(1),
-              catchError(() => of({ rows: [] as IdeationFolder[], count: 0 }))
-            ).subscribe(foldersRes => {
-              const folder = foldersRes?.rows?.find((f: IdeationFolder) => f.id === fId);
-              if (folder) {
-                this.selectedFolder.set(folder);
-                this.tabSelected.set('folder');
-                this.folderId.set(folder.id);
-              } else if (this.ideationService.getFolder) {
-                this.ideationService.getFolder({
-                  topicId,
-                  ideationId,
-                  folderId: fId
-                }).pipe(
-                  take(1),
-                  catchError(() => of(null))
-                ).subscribe(f => {
-                  if (f) {
-                    this.selectedFolder.set(f);
-                    this.tabSelected.set('folder');
-                    this.folderId.set(f.id);
-                  }
-                });
-              }
-            });
-          }
+        this.folderId.set(fId);
+        this.tabSelected.set('folder');
+        if (this.selectedFolder()?.id !== fId && topic?.id && ideation?.id) {
+          this.IdeationFolderService.query({
+            topicId: topic.id,
+            ideationId: ideation.id,
+            folderId: fId
+          }).pipe(
+            take(1),
+            catchError(() => of({ rows: [] as IdeationFolder[], count: 0 }))
+          ).subscribe(foldersRes => {
+            const folder = foldersRes?.rows?.find((f: IdeationFolder) => f.id === fId);
+            if (folder) {
+              this.selectedFolder.set(folder);
+            } else if (this.ideationService.getFolder) {
+              this.ideationService.getFolder({
+                topicId: topic.id,
+                ideationId: ideation.id,
+                folderId: fId
+              }).pipe(
+                take(1),
+                catchError(() => of(null))
+              ).subscribe(f => {
+                if (f) {
+                  this.selectedFolder.set(f);
+                }
+              });
+            }
+          });
         }
       } else {
         if (this.tabSelected() === 'folder') {
@@ -335,7 +351,7 @@ export class TopicIdeationComponent {
     this.selectedFolder.set(null);
     this.folderId.set('');
     this.currentPage.set(1);
-    this.router.navigate([], { queryParams: { folderId: null }, queryParamsHandling: 'merge' });
+    this.router.navigate([], { queryParams: { folderId: null }, queryParamsHandling: 'merge', preserveFragment: true });
   }
 
   viewFolder(folder: IdeationFolder) {
@@ -343,7 +359,7 @@ export class TopicIdeationComponent {
     this.folderId.set(folder.id);
     this.tabSelected.set('folder');
     this.currentPage.set(1);
-    this.router.navigate([], { queryParams: { folderId: folder.id }, queryParamsHandling: 'merge' });
+    this.router.navigate([], { queryParams: { folderId: folder.id }, queryParamsHandling: 'merge', preserveFragment: true });
   }
 
   leaveFolder() {
@@ -351,7 +367,7 @@ export class TopicIdeationComponent {
     this.folderId.set('');
     this.tabSelected.set('folders');
     this.currentPage.set(1);
-    this.router.navigate([], { queryParams: { folderId: null }, queryParamsHandling: 'merge' });
+    this.router.navigate([], { queryParams: { folderId: null }, queryParamsHandling: 'merge', preserveFragment: true });
   }
 
   setType(value: string) {

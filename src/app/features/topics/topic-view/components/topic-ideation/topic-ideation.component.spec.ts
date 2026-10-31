@@ -423,4 +423,39 @@ describe('TopicIdeationComponent', () => {
     expect(comp.selectedFolder()).toBeNull();
     expect(comp.folderId()).toBe('');
   });
+
+  it('initializes with folderId in queryParams before inputs are bound without throwing NG0950 and only fetches ideas for that folder', () => {
+    const mockFolder = { id: 'f_init', name: 'Initial Folder', ideas: { count: 2 } } as unknown as IdeationFolder;
+    const folderIdeas = [
+      { id: 'i1', statement: 'Folder Idea 1', status: 'published', votes: { up: { count: 1, selected: false }, down: { count: 0, selected: false }, count: 1 } },
+      { id: 'i2', statement: 'Folder Idea 2', status: 'published', votes: { up: { count: 2, selected: false }, down: { count: 0, selected: false }, count: 2 } }
+    ] as unknown as Idea[];
+    mockIdeationService.getFolders.mockReturnValue(of({ rows: [mockFolder], count: 1 }));
+    mockIdeationService.getIdeas.mockImplementation((params: Record<string, unknown>) => {
+      if (params['folderId'] === 'f_init') {
+        return of({ rows: folderIdeas, count: 2 });
+      }
+      return of({ rows: [...folderIdeas, { id: 'i3', statement: 'Unassigned Idea 3', status: 'published', votes: { up: { count: 0, selected: false }, down: { count: 0, selected: false }, count: 0 } }], count: 3 });
+    });
+
+    queryParamsSubject.next({ folderId: 'f_init' });
+    mockActivatedRoute.snapshot.queryParams = { folderId: 'f_init' };
+
+    const fixture = TestBed.createComponent(TopicIdeationComponent);
+    fixture.componentRef.setInput('topic', mockTopic);
+    fixture.componentRef.setInput('ideation', mockIdeation);
+    fixture.detectChanges();
+    TestBed.flushEffects();
+    fixture.detectChanges();
+
+    const comp = fixture.componentInstance;
+    expect(comp.tabSelected()).toBe('folder');
+    expect(comp.folderId()).toBe('f_init');
+    expect(comp.selectedFolder()?.id).toBe('f_init');
+    expect(comp.ideas().length).toBe(2);
+    expect(comp.ideasCount()).toBe(2);
+
+    // Cleanup snapshot for subsequent tests
+    mockActivatedRoute.snapshot.queryParams = {};
+  });
 });

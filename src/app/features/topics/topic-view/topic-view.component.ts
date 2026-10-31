@@ -196,27 +196,33 @@ export class TopicViewComponent implements OnInit {
   private topicResource = toSignal(
     combineLatest([
       this.route.params,
-      this.route.queryParams,
       this.translate.onLangChange.pipe(startWith(null)),
       toObservable(this.userStore.isAuthenticated)
     ]).pipe(
-      switchMap(([params, _queryParams, _langChange, _isAuthenticated]: [Params, Params, LangChangeEvent | null, boolean]) => {
+      switchMap(([params, _langChange, _isAuthenticated]: [Params, LangChangeEvent | null, boolean]) => {
         const topicId = params['topicId'] || this.route.parent?.snapshot.params['topicId'] || this.route.snapshot.paramMap.get('topicId') || this.route.parent?.snapshot.paramMap.get('topicId');
         if (topicId) {
+          if (this.topic()?.id !== topicId) {
+            this.loading.set(true);
+          }
           this.topicId = topicId;
-          this.loading.set(true);
           this.navigation.set({
             title: 'DEFAULT.NAV.HEADING_TOPICS',
             link: ['/', this.translate.currentLang, 'my', 'topics']
           });
-          return this.topicService.loadTopic(topicId).pipe(
-            tap((topic: Topic) => {
+          return combineLatest([
+            this.topicService.loadTopic(topicId),
+            this.route.queryParams
+          ]).pipe(
+            tap(([topic, _queryParams]: [Topic, Params]) => {
               if (topic.status === this.STATUSES.draft) {
                 this.router.navigate(['/', this.translate.currentLang, 'topics', 'edit', topic.id]);
                 return;
               }
 
-              this.topic.set(topic);
+              if (this.topic() !== topic) {
+                this.topic.set(topic);
+              }
               this.hideTopicContent.set(!!topic.report?.moderatedReasonType);
               this.seoService.setPageTitle(topic.title || undefined);
               this.loading.set(false);
@@ -249,6 +255,8 @@ export class TopicViewComponent implements OnInit {
               } else if (_queryParams['ideaId']) {
                 this.selectTab('ideation');
                 this.openIdeaDialog(topicId, params['ideationId'] || topic.ideationId, _queryParams['ideaId'], _queryParams['reply'] === 'true');
+              } else if (_queryParams['folderId']) {
+                this.selectTab('ideation');
               } else if (_queryParams['argumentId']) {
                 this.selectTab('discussion');
               } else if (fragment) {
@@ -269,6 +277,7 @@ export class TopicViewComponent implements OnInit {
                 this.appTopicNotificationSettings();
               }
             }),
+            map(([topic]) => topic),
             catchError((err) => {
               console.error('Error loading topic:', err);
               this.loading.set(false);
