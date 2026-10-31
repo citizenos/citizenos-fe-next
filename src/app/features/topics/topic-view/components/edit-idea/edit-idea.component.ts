@@ -77,6 +77,20 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
   private dialogData = inject<EditIdeaDialogData>(DIALOG_DATA, { optional: true });
   private dialogRef = inject(DialogRef, { optional: true });
 
+  private isDirectDialog(): boolean {
+    if (!this.dialogRef) return false;
+    if (this.dialogRef.component) {
+      return this.dialogRef.component === EditIdeaComponent || this.dialogRef.component.name === 'EditIdeaComponent';
+    }
+    return !!this.dialogData?.idea;
+  }
+
+  private closeDialog(result?: unknown) {
+    if (this.isDirectDialog()) {
+      this.dialogRef?.close(result);
+    }
+  }
+
   topic = input<Topic>(this.dialogData?.topic || ({
     id: this.dialogData?.topicId || '',
     country: this.dialogData?.topicCountry || null,
@@ -144,16 +158,19 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
     if (config && idea.demographics) {
       const vals: Record<string, string> = {};
       Object.keys(config).forEach(key => {
-        const val = (idea.demographics as Record<string, string | null | undefined>)?.[key] || '';
-        vals[key] = val;
+        const rawVal = (idea.demographics as Record<string, string | null | undefined>)?.[key] || '';
+        let val = rawVal;
         if (key === 'residence') {
           const isOther = val.startsWith('other: ');
           this.residenceValue.set(isOther ? 'other' : val);
+          if (isOther) val = val.slice('other: '.length);
         }
         if (key === 'gender') {
           const isOther = val.startsWith('other: ');
           this.genderValue.set(isOther ? 'other' : val);
+          if (isOther) val = val.slice('other: '.length);
         }
+        vals[key] = val;
       });
       this.demographicValues.set(vals);
     }
@@ -180,6 +197,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
 
   setDemographicValue(key: string, value: string) {
     this.demographicValues.update(v => ({ ...v, [key]: value }));
+    this.errors.update(e => ({ ...e, [key]: '' }));
     if (this.isPublished() || this.autosaveSubscription && !this.autosaveSubscription.closed) return;
     this.maybeStartAutosave();
   }
@@ -187,12 +205,14 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
   setResidenceValue(value: string) {
     this.residenceValue.set(value);
     this.residenceError.set(false);
+    this.errors.update(e => ({ ...e, residence: '' }));
     this.setDemographicValue('residence', value === 'other' ? '' : value);
   }
 
   setGenderValue(value: string) {
     this.genderValue.set(value);
     this.genderError.set(false);
+    this.errors.update(e => ({ ...e, gender: '' }));
     this.setDemographicValue('gender', value === 'other' ? '' : value);
   }
 
@@ -214,7 +234,10 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       if (num > AGE_LIMIT) num = AGE_LIMIT;
       if (num < 0) num = 0;
       this.setDemographicValue('age', String(num));
+    } else {
+      this.setDemographicValue('age', '');
     }
+    this.errors.update(e => ({ ...e, age: '' }));
   }
 
   numberOnly(event: KeyboardEvent): boolean {
@@ -234,16 +257,44 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
     if (!this.statement().trim()) errs['statement'] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
     if (!this.description().trim()) errs['description'] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
 
-    const config = this.ideation().demographicsConfig;
-    if (config) {
-      if ('residence' in config && !this.residenceValue()) {
-        this.residenceError.set(true);
-        errs['residence'] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
-      }
-      if ('gender' in config && !this.genderValue()) {
-        this.genderError.set(true);
-        errs['gender'] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
-      }
+    this.residenceError.set(false);
+    this.genderError.set(false);
+
+    const allowAnonymous = this.ideation()?.allowAnonymous;
+    const config = this.ideation()?.demographicsConfig;
+
+    if (allowAnonymous && config) {
+      Object.keys(config).forEach(key => {
+        if (!config[key]?.required) return;
+
+        if (key === 'residence') {
+          if (this.isCountryEstonia()) {
+            if (!this.residenceValue()) {
+              this.residenceError.set(true);
+              errs['residence'] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
+            } else if (this.residenceValue() === 'other' && !this.demographicValues()['residence']?.trim()) {
+              this.residenceError.set(true);
+              errs['residence'] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
+            }
+          } else {
+            if (!this.demographicValues()['residence']?.trim()) {
+              this.residenceError.set(true);
+              errs['residence'] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
+            }
+          }
+        } else if (key === 'gender') {
+          if (!this.genderValue()) {
+            this.genderError.set(true);
+            errs['gender'] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
+          } else if (this.genderValue() === 'other' && !this.demographicValues()['gender']?.trim()) {
+            errs['gender'] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
+          }
+        } else {
+          if (!this.demographicValues()[key]?.trim()) {
+            errs[key] = 'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY';
+          }
+        }
+      });
     }
 
     this.errors.set(errs);
@@ -284,6 +335,10 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
     }
   }
 
+  publishIdea() {
+    this.publish();
+  }
+
   saveDraft() {
     this.saveIdea(IdeaStatus.draft);
   }
@@ -295,7 +350,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       ideaId: this.idea().id,
     }).pipe(take(1)).subscribe(() => {
       this.closed.emit();
-      this.dialogRef?.close();
+      this.closeDialog();
     });
   }
 
@@ -304,17 +359,20 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       const dlg = this.dialog.open(CloseWithoutSavingDialogComponent);
       dlg.afterClosed().subscribe(res => {
         if (!res) {
-          this.saveIdea(IdeaStatus.draft);
           this.autosaveSubscription?.unsubscribe();
           this.closed.emit();
-          this.dialogRef?.close();
+          this.closeDialog();
         }
       });
     } else {
       this.autosaveSubscription?.unsubscribe();
       this.closed.emit();
-      this.dialogRef?.close();
+      this.closeDialog();
     }
+  }
+
+  cancel() {
+    this.close();
   }
 
   isDraft(): boolean {
@@ -404,15 +462,22 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
         } else {
           this.autosaveSubscription?.unsubscribe();
           this.ideaUpdated.emit(idea);
+          this.closed.emit();
           this.doSaveAttachments(idea.id);
-          this.dialogRef?.close(idea);
+          this.closeDialog(idea);
         }
       },
-      error: (err: { errors?: Record<string, string> }) => {
+      error: (err: { errors?: Record<string, string>; error?: { errors?: Record<string, string>; status?: { message?: string } }; message?: string; status?: { message?: string } }) => {
         if (isAutosave) {
           timer(AUTOSAVE_HIDE_DELAY).pipe(take(1)).subscribe(() => this.isAutosaving.set(false));
         } else {
-          this.errors.set(err?.errors ?? {});
+          const apiErrors = err?.error?.errors || err?.errors;
+          if (apiErrors && Object.keys(apiErrors).length > 0) {
+            this.errors.set(apiErrors);
+          } else {
+            const msgKey = err?.error?.status?.message || err?.status?.message || err?.message || 'MSG_ERROR_50000';
+            this.notificationService.error(msgKey);
+          }
         }
       },
     });

@@ -53,16 +53,16 @@
       </div>
     </div>
 
-    <form id="idea_form" [formGroup]="ideaForm" (ngSubmit)="publishIdea()">
+    <form id="idea_form" [formGroup]="ideaForm" (ngSubmit)="publishIdea()" novalidate>
       <cos-input placeholder="{{ 'COMPONENTS.ADD_IDEA.PLACEHOLDER_ADD_STATEMENT_TO_IDEA' | translate }}" 
                  [limit]="(ideaForm.get('statement')?.value?.length || 0) + '/' + IDEA_STATEMENT_MAXLENGTH">
         <input id="idea_statement" name="statement" formControlName="statement" autocomplete="off" 
                [placeholder]="'COMPONENTS.ADD_IDEA.PLACEHOLDER_ADD_STATEMENT_TO_IDEA' | translate" 
-               class="gray_borders" [class.error_input]="ideaForm.get('statement')?.invalid && ideaForm.get('statement')?.touched" required />
+               class="gray_borders" [class.error_input]="ideaForm.get('statement')?.invalid && ideaForm.get('statement')?.touched" />
         @if (ideaForm.get('statement')?.errors?.['required'] && ideaForm.get('statement')?.touched) {
-          <label for="idea_statement" class="error_label">
+          <div class="error_label">
             <span class="error_text" translate="COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY"></span>
-          </label>
+          </div>
         }
       </cos-input>
 
@@ -88,20 +88,35 @@
                         </div>
                         <div class="options">
                           @for (option of filtersData()['residence'].items; track option.value) {
-                            <div class="option" role="button" tabindex="0" (click)="setFilterValue('residence', option.value)" (keydown.enter)="setFilterValue('residence', option.value)">
+                            <div class="option" role="button" tabindex="0" (click)="setDemographicsValue('residence', option.value)" (keydown.enter)="setDemographicsValue('residence', option.value)">
                               <span>{{ option.title }}</span>
                             </div>
                           }
                           <hr class="options_line" />
-                          <div class="option" role="button" tabindex="0" (click)="setFilterValue('residence', 'other')" (keydown.enter)="setFilterValue('residence', 'other')">
+                          <div class="option" role="button" tabindex="0" (click)="setDemographicsValue('residence', 'other')" (keydown.enter)="setDemographicsValue('residence', 'other')">
                             <span>{{ "VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_OTHER" | translate }}</span>
                           </div>
                         </div>
                       </div>
+                      @if (filtersData()['residence'].selectedValue === 'other') {
+                        <input [id]="'demographics_' + key" [name]="'demographics_' + key" [formControlName]="'demographics_' + key" autocomplete="off"
+                               [placeholder]="'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE_PLACEHOLDER' | translate" class="gray_borders" />
+                      }
+                      @if (filtersData()['residence'].error) {
+                        <div class="error_label">
+                          <span class="error_text" translate="COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY"></span>
+                        </div>
+                      }
                     </div>
                 } @else {
-                    <cos-input placeholder="{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_' + key | uppercase | translate }}">
-                        <input [id]="'demographics_' + key" [formControlName]="'demographics_' + key" class="gray_borders" required />
+                    <cos-input [placeholder]="'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_' + key | uppercase | translate">
+                        <input [id]="'demographics_' + key" [name]="'demographics_' + key" [formControlName]="'demographics_' + key" class="gray_borders"
+                               [class.error_input]="ideaForm.get('demographics_' + key)?.invalid && ideaForm.get('demographics_' + key)?.touched" />
+                        @if (ideaForm.get('demographics_' + key)?.errors?.['required'] && ideaForm.get('demographics_' + key)?.touched) {
+                          <div class="error_label">
+                            <span class="error_text" translate="COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY"></span>
+                          </div>
+                        }
                     </cos-input>
                 }
               }
@@ -120,17 +135,33 @@
                     </div>
                     <div class="options">
                       @for (option of filtersData()['gender'].items; track option.value) {
-                        <div class="option" role="button" tabindex="0" (click)="setFilterValue('gender', option.value)" (keydown.enter)="setFilterValue('gender', option.value)">
+                        <div class="option" role="button" tabindex="0" (click)="setDemographicsValue('gender', option.value)" (keydown.enter)="setDemographicsValue('gender', option.value)">
                           <span>{{ option.title | translate }}</span>
                         </div>
                       }
                     </div>
                   </div>
+                  @if (filtersData()['gender'].selectedValue === 'other') {
+                    <input [id]="'demographics_' + key" [name]="'demographics_' + key" [formControlName]="'demographics_' + key" autocomplete="off"
+                           [placeholder]="'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_GENDER_PLACEHOLDER' | translate" class="gray_borders" />
+                  }
+                  @if (filtersData()['gender'].error || (filtersData()['gender'].selectedValue === 'other' && ideaForm.get('demographics_' + key)?.errors?.['required'] && ideaForm.get('demographics_' + key)?.touched)) {
+                    <div class="error_label">
+                      <span class="error_text" translate="COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY"></span>
+                    </div>
+                  }
                 </div>
               }
               @case ('age') {
-                <cos-input placeholder="{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_' + key | uppercase | translate }}">
-                  <input type="number" [id]="'demographics_' + key" [formControlName]="'demographics_' + key" class="gray_borders" required (keypress)="numberOnly($event)" />
+                <cos-input [placeholder]="'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_' + key | uppercase | translate">
+                  <input type="number" [id]="'demographics_' + key" [name]="'demographics_' + key" [formControlName]="'demographics_' + key" class="gray_borders"
+                         [class.error_input]="ideaForm.get('demographics_' + key)?.invalid && ideaForm.get('demographics_' + key)?.touched"
+                         (keypress)="numberOnly($event)" />
+                  @if (ideaForm.get('demographics_' + key)?.errors?.['required'] && ideaForm.get('demographics_' + key)?.touched) {
+                    <div class="error_label">
+                      <span class="error_text" translate="COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY"></span>
+                    </div>
+                  }
                 </cos-input>
               }
             }
@@ -144,12 +175,12 @@
           [item]="ideaForm.get('description')?.value || ''" class="gray_borders" (itemChange)="updateText($event)"
           [initialValue]="ideation().template || ''" [placeholder]="'COMPONENTS.ADD_IDEA.PLACEHOLDER_EXPLAIN_YOUR_IDEA' | translate" 
           [class.error_input]="ideaForm.get('description')?.invalid && ideaForm.get('description')?.touched" 
-          [limit]="ideaMaxLength()" [class.expanded]="toggleExpand()" required></textarea>
+          [limit]="ideaMaxLength()" [class.expanded]="toggleExpand()"></textarea>
 
         @if (ideaForm.get('description')?.invalid && ideaForm.get('description')?.touched) {
-          <label for="description" class="error_label">
+          <div class="error_label">
             <span class="error_text" translate="COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY"></span>
-          </label>
+          </div>
         }
       </div>
 
@@ -189,7 +220,7 @@
       <cos-button variant="ghost" (clicked)="uploadImage()" icon="no-image">
         <span translate="COMPONENTS.POST_ARGUMENT.BTN_ADD_IMAGE"></span>
       </cos-button>
-      <cos-button variant="primary" (clicked)="publishIdea()">
+      <cos-button variant="primary" (clicked)="publishIdea()" [isDisabled]="isSubmitting()">
         <span class="btn_text" translate="COMPONENTS.ADD_IDEA.BTN_IDEA_POST"></span>
       </cos-button>
     </div>

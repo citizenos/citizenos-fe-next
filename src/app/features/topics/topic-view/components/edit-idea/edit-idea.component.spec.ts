@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { runInInjectionContext, EnvironmentInjector, createEnvironmentInjector } from '@angular/core';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { EditIdeaComponent } from './edit-idea.component';
@@ -266,5 +266,187 @@ describe('EditIdeaComponent', () => {
 
     comp.close();
     expect(mockDialogRef.close).toHaveBeenCalled();
+  });
+
+  it('does not block publishIdea when demographic fields are not required', () => {
+    const ideationWithOptionalDemo: Ideation = {
+      ...mockIdeation,
+      allowAnonymous: true,
+      demographicsConfig: {
+        residence: { required: false },
+        gender: { required: false },
+        age: { required: false },
+      },
+    };
+    const comp = makeComp(mockIdea, ideationWithOptionalDemo);
+    comp.onStatementChange('Valid statement');
+    comp.onDescriptionChange('Valid description');
+    expect(comp.residenceValue()).toBe('');
+    expect(comp.genderValue()).toBe('');
+
+    comp.publishIdea();
+
+    expect(mockIdeationService.updateIdea).toHaveBeenCalledWith(expect.objectContaining({
+      ideaId: 'idea1',
+      status: IdeaStatus.published,
+      statement: 'Valid statement',
+      description: 'Valid description',
+    }));
+  });
+
+  it('does not validate demographics when allowAnonymous is false even if config has required fields', () => {
+    const ideationNotAnonymous: Ideation = {
+      ...mockIdeation,
+      allowAnonymous: false,
+      demographicsConfig: {
+        residence: { required: true },
+        gender: { required: true },
+        age: { required: true },
+      },
+    };
+    const comp = makeComp(mockIdea, ideationNotAnonymous);
+    comp.onStatementChange('Valid statement');
+    comp.onDescriptionChange('Valid description');
+
+    comp.publishIdea();
+
+    expect(mockIdeationService.updateIdea).toHaveBeenCalledWith(expect.objectContaining({
+      ideaId: 'idea1',
+      status: IdeaStatus.published,
+    }));
+  });
+
+  it('validates required demographic fields when allowAnonymous is true and required is true', () => {
+    const ideationWithRequiredDemo: Ideation = {
+      ...mockIdeation,
+      allowAnonymous: true,
+      demographicsConfig: {
+        residence: { required: true },
+        gender: { required: true },
+        age: { required: true },
+      },
+    };
+    const comp = makeComp(mockIdea, ideationWithRequiredDemo);
+    (comp as unknown as { topic: unknown }).topic = signal({ id: 't1', country: 'Estonia' } as Topic);
+    comp.onStatementChange('Valid statement');
+    comp.onDescriptionChange('Valid description');
+
+    comp.publishIdea();
+
+    expect(mockIdeationService.updateIdea).not.toHaveBeenCalled();
+    expect(comp.residenceError()).toBe(true);
+    expect(comp.genderError()).toBe(true);
+    expect(comp.errors()['age']).toBe('COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY');
+
+    comp.setResidenceValue('Tallinn');
+    comp.setGenderValue('male');
+    comp.onAgeChange('30');
+
+    comp.publishIdea();
+
+    expect(mockIdeationService.updateIdea).toHaveBeenCalledWith(expect.objectContaining({
+      ideaId: 'idea1',
+      status: IdeaStatus.published,
+      demographics: expect.objectContaining({
+        residence: 'Tallinn',
+        gender: 'male',
+        age: '30',
+      }),
+    }));
+  });
+
+  it('successful save emits ideaUpdated and closed without closing parent IdeaDialogComponent dialog when embedded', () => {
+    const mockParentDialogRef = {
+      component: { name: 'IdeaDialogComponent' },
+      close: vi.fn(),
+    };
+    const customInjector = createEnvironmentInjector([
+      { provide: TopicIdeationService, useValue: mockIdeationService },
+      { provide: IdeaAttachmentService, useValue: mockAttachmentService },
+      { provide: NotificationService, useValue: mockNotification },
+      { provide: UploadService, useValue: mockUpload },
+      { provide: UserStore, useValue: mockUserStore },
+      { provide: ConfigStore, useValue: mockConfigStore },
+      { provide: DialogService, useValue: mockDialog },
+      { provide: DialogRef, useValue: mockParentDialogRef },
+    ], injector);
+
+    const comp = runInInjectionContext(customInjector, () => {
+      const c = new EditIdeaComponent();
+      (c as unknown as { topic: unknown }).topic = signal(mockTopic);
+      (c as unknown as { ideation: unknown }).ideation = signal(mockIdeation);
+      (c as unknown as { idea: unknown }).idea = signal(mockIdea);
+      c.ngOnInit();
+      return c;
+    });
+
+    const ideaUpdatedSpy = vi.spyOn(comp.ideaUpdated, 'emit');
+    const closedSpy = vi.spyOn(comp.closed, 'emit');
+
+    comp.onStatementChange('Updated statement');
+    comp.onDescriptionChange('Updated description');
+    comp.publishIdea();
+
+    expect(ideaUpdatedSpy).toHaveBeenCalledWith(expect.objectContaining({
+      statement: 'New statement',
+    }));
+    expect(closedSpy).toHaveBeenCalled();
+    expect(mockParentDialogRef.close).not.toHaveBeenCalled();
+  });
+
+  it('cancel emits closed without closing parent IdeaDialogComponent dialog when embedded', () => {
+    const mockParentDialogRef = {
+      component: { name: 'IdeaDialogComponent' },
+      close: vi.fn(),
+    };
+    const customInjector = createEnvironmentInjector([
+      { provide: TopicIdeationService, useValue: mockIdeationService },
+      { provide: IdeaAttachmentService, useValue: mockAttachmentService },
+      { provide: NotificationService, useValue: mockNotification },
+      { provide: UploadService, useValue: mockUpload },
+      { provide: UserStore, useValue: mockUserStore },
+      { provide: ConfigStore, useValue: mockConfigStore },
+      { provide: DialogService, useValue: mockDialog },
+      { provide: DialogRef, useValue: mockParentDialogRef },
+    ], injector);
+
+    const comp = runInInjectionContext(customInjector, () => {
+      const c = new EditIdeaComponent();
+      (c as unknown as { topic: unknown }).topic = signal(mockTopic);
+      (c as unknown as { ideation: unknown }).ideation = signal(mockIdeation);
+      (c as unknown as { idea: unknown }).idea = signal(mockIdea);
+      c.ngOnInit();
+      return c;
+    });
+
+    const closedSpy = vi.spyOn(comp.closed, 'emit');
+    comp.cancel();
+
+    expect(closedSpy).toHaveBeenCalled();
+    expect(mockParentDialogRef.close).not.toHaveBeenCalled();
+  });
+
+  it('shows error notification when saveIdea fails without err.errors', () => {
+    mockIdeationService.updateIdea.mockReturnValueOnce(throwError(() => ({
+      status: { message: 'MSG_ERROR_CUSTOM' },
+    })));
+
+    const comp = makeComp();
+    comp.onStatementChange('Valid statement');
+    comp.onDescriptionChange('Valid description');
+    comp.publishIdea();
+
+    expect(mockNotification.error).toHaveBeenCalledWith('MSG_ERROR_CUSTOM');
+  });
+
+  it('shows fallback error notification when saveIdea fails with generic error', () => {
+    mockIdeationService.updateIdea.mockReturnValueOnce(throwError(() => ({})));
+
+    const comp = makeComp();
+    comp.onStatementChange('Valid statement');
+    comp.onDescriptionChange('Valid description');
+    comp.publishIdea();
+
+    expect(mockNotification.error).toHaveBeenCalledWith('MSG_ERROR_50000');
   });
 });

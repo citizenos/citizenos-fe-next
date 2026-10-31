@@ -13,7 +13,7 @@
           {{ 'COMPONENTS.EDIT_IDEA.FOOTER_FORM_ANONYMOUS_INFO' | translate }}
         </div>
       }
-      <cos-button variant="ghost" class="close_button" (clicked)="close()" icon="close" [iconMode]="true" [attr.aria-label]="'BTN_CLOSE' | translate">
+      <cos-button variant="ghost" class="close_button" (clicked)="cancel()" icon="close" [iconMode]="true" [attr.aria-label]="'BTN_CLOSE' | translate">
       </cos-button>
     </div>
   </div>
@@ -102,13 +102,18 @@
                     </label>
                   }
                 } @else {
-                  <cos-input [placeholder]="'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE' | translate">
+                  <cos-input
+                    [placeholder]="'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE' | translate"
+                    [hasError]="!!errors()['residence']"
+                    [errorMessage]="'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY' | translate"
+                  >
                     <input
                       [id]="'demographics_' + key"
                       [name]="'demographics_' + key"
                       autocomplete="off"
                       placeholder="{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_RESIDENCE' | translate }}"
                       class="gray_borders"
+                      [class.error_input]="errors()['residence']"
                       [ngModel]="demographicValues()[key]"
                       (ngModelChange)="setDemographicValue(key, $event)"
                     />
@@ -172,13 +177,18 @@
             }
 
             @case ('age') {
-              <cos-input [placeholder]="'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_AGE' | translate">
+              <cos-input
+                [placeholder]="'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_AGE' | translate"
+                [hasError]="!!errors()['age']"
+                [errorMessage]="'COMPONENTS.ADD_IDEA.FIELD_IS_MANDATORY' | translate"
+              >
                 <input
                   [id]="'demographics_' + key"
                   [name]="'demographics_' + key"
                   autocomplete="off"
                   placeholder="{{ 'VIEWS.IDEATION_CREATE.DEMOGRAPHICS_DATA_AGE' | translate }}"
                   class="gray_borders"
+                  [class.error_input]="errors()['age']"
                   type="number"
                   [ngModel]="demographicValues()[key]"
                   (ngModelChange)="onAgeChange($event)"
@@ -202,7 +212,6 @@
       [class.error_input]="errors()['description']"
       placeholder="COMPONENTS.EDIT_IDEA.PLACEHOLDER_EXPLAIN_YOUR_IDEA"
       [limit]="0"
-      required
     ></textarea>
     @if (errors()['description']) {
       <label for="idea_description" class="error_label">
@@ -292,7 +301,7 @@
 
   <div id="buttons_row">
     <div class="btn_row_left">
-      <cos-button variant="ghost" class="close_button" (clicked)="close()" icon="close" [iconMode]="true" [attr.aria-label]="'BTN_CLOSE' | translate">
+      <cos-button variant="ghost" class="close_button" (clicked)="cancel()" icon="close" [iconMode]="true" [attr.aria-label]="'BTN_CLOSE' | translate">
       </cos-button>
       @if (isDraft()) {
         <cos-button variant="danger" (clicked)="deleteDraft()" icon="trash">
@@ -304,7 +313,7 @@
       <cos-button variant="ghost" (clicked)="uploadImage()" icon="no-image">
         <span translate="COMPONENTS.EDIT_IDEA.BTN_ADD_IMAGE"></span>
       </cos-button>
-      <cos-button variant="primary" (clicked)="publish()">
+      <cos-button variant="primary" (clicked)="publishIdea()">
         <span class="btn_text" [translate]="isDraft() ? 'COMPONENTS.EDIT_IDEA.BTN_IDEA_POST' : 'COMPONENTS.EDIT_IDEA.BTN_IDEA_UPDATE'"></span>
       </cos-button>
     </div>
