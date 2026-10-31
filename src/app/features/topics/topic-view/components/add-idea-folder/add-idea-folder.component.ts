@@ -7,6 +7,7 @@ import { InputComponent } from '../../../../../shared/components/input/input.com
 import { Idea } from '../../../../../core/interfaces/idea';
 import { IdeationFolder } from '../../../../../core/interfaces/ideation';
 import { take, forkJoin, Observable } from 'rxjs';
+import { exhaustMap } from 'rxjs/operators';
 
 interface AddIdeaFolderDialogData {
   topicId: string;
@@ -124,6 +125,11 @@ interface AddIdeaFolderDialogData {
       display: block;
       width: 100%;
       max-width: 600px;
+      @media (max-width: 560px) {
+        width: 100%;
+        max-width: calc(100vw - 32px);
+        margin: 0 auto;
+      }
     }
     .dialog {
       background: white;
@@ -137,6 +143,10 @@ interface AddIdeaFolderDialogData {
       box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.15);
       position: relative;
       z-index: 1;
+      @media (max-width: 560px) {
+        width: 100%;
+        max-width: calc(100vw - 32px);
+      }
     }
     .dialog_header {
       padding: 24px;
@@ -164,20 +174,72 @@ interface AddIdeaFolderDialogData {
         padding: 16px;
         border-radius: 4px;
         gap: 16px;
-        .icon { flex-shrink: 0; }
+        margin-top: 8px;
+        .icon { flex-shrink: 0; display: flex; align-items: center; }
         .bold { margin-bottom: 0; }
       }
     }
+    .folder_list_wrap {
+      margin-bottom: 24px;
+    }
     .idea_selection_wrap {
+      display: flex;
+      flex-direction: column;
       border: 1px solid var(--color-border);
       border-radius: 4px;
-      margin-bottom: 24px;
+      padding: 16px;
+      max-height: 240px;
+      overflow: auto;
+      gap: 16px;
+    }
+    .line_separator {
+      background: var(--color-border);
+      height: 1px;
+      width: 100%;
     }
     .idea_selection_header {
       display: flex;
       justify-content: space-between;
-      padding: 12px;
-      background: #F4F6F8;
+      align-items: center;
+      width: 100%;
+      .checkbox_wrap {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        cursor: pointer;
+      }
+    }
+    .ideas_wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .idea_row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      .checkbox_wrap {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        cursor: pointer;
+        flex: 1;
+      }
+      .name_wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .folder_name { font-size: 14px; }
+    }
+    .new_folder_toggle { margin-bottom: 16px; cursor: pointer; }
+    cos-input {
+      display: block;
+      width: 100%;
+    }
+    form {
+      width: 100%;
+      margin-bottom: 16px;
     }
     .checkbox_wrap {
       display: flex;
@@ -199,13 +261,6 @@ interface AddIdeaFolderDialogData {
         .checkmark { display: block; }
       }
     }
-    .idea_row {
-      display: flex;
-      padding: 12px;
-      border-top: 1px solid var(--color-border);
-      align-items: center;
-    }
-    .new_folder_toggle { margin-bottom: 16px; }
     .dialog_footer {
       padding: 24px;
       display: flex;
@@ -213,7 +268,14 @@ interface AddIdeaFolderDialogData {
       align-items: center;
       gap: 24px;
       border-top: 1px solid var(--color-border);
-      a { cursor: pointer; color: var(--color-ideation); }
+      a, .btn_link {
+        cursor: pointer;
+        color: var(--color-ideation);
+        background: transparent;
+        border: none;
+        font-weight: bold;
+        font-size: 16px;
+      }
     }
     .btn_big_submit {
       background: var(--color-ideation);
@@ -222,6 +284,7 @@ interface AddIdeaFolderDialogData {
       padding: 12px 24px;
       border-radius: 4px;
       font-weight: bold;
+      font-size: 16px;
       cursor: pointer;
       &:disabled { opacity: 0.5; cursor: not-allowed; }
     }
@@ -249,6 +312,14 @@ export class AddIdeaFolderComponent {
     const currentFolders = this.folders();
     return currentFolders.length > 0 && this.selectedFolderIds().size === currentFolders.length;
   });
+
+  foldersSelected = computed(() => {
+    return Array.from(this.selectedFolderIds()).filter(id => !this.initialFolderIds.has(id));
+  });
+
+  get foldersToRemove(): string[] {
+    return Array.from(this.initialFolderIds).filter(id => !this.selectedFolderIds().has(id));
+  }
 
   constructor() {
     this.loadData();
@@ -303,30 +374,34 @@ export class AddIdeaFolderComponent {
   }
 
   save() {
-    this.loading.set(true);
     const topicId = this.dialogData.topicId;
     const ideationId = this.dialogData.ideationId;
     const ideaId = this.dialogData.idea.id;
 
-    const currentSelected = this.selectedFolderIds();
-    const foldersToAdd = Array.from(currentSelected).filter(id => !this.initialFolderIds.has(id));
-    const foldersToRemove = Array.from(this.initialFolderIds).filter(id => !currentSelected.has(id));
+    const foldersToAdd = this.foldersSelected();
+    const foldersToRemove = this.foldersToRemove;
+    const isCreatingNewFolder = this.showFolderInput() && this.form().valid();
 
+    if (!foldersToAdd.length && !foldersToRemove.length && !isCreatingNewFolder) {
+      this.dialogRef.close(false);
+      return;
+    }
+
+    this.loading.set(true);
     const actions: Observable<unknown>[] = [];
 
-    // 1. Handle existing folder changes
+    // 1. Handle existing folder additions
     if (foldersToAdd.length > 0) {
       actions.push(this.ideationService.addFoldersToIdea({ topicId, ideationId, ideaId }, foldersToAdd));
     }
-    
-    // Legacy did one removal at a time, we'll follow that pattern for stability or use the existing service if it supports bulk?
-    // Looking at service, removeIdeaFromFolder takes ONE idea and ONE folder.
+
+    // 2. Handle folder removals
     foldersToRemove.forEach(folderId => {
       actions.push(this.ideationService.removeIdeaFromFolder({ topicId, ideationId, folderId, ideaId }));
     });
 
-    // 2. Handle new folder creation if requested
-    if (this.showFolderInput() && this.form().valid()) {
+    // 3. Handle new folder creation if requested
+    if (isCreatingNewFolder) {
       actions.push(
         this.ideationService.createFolder({ topicId, ideationId, name: this.form().value().name! })
           .pipe(take(1), exhaustMap((folder) => {
@@ -335,21 +410,21 @@ export class AddIdeaFolderComponent {
       );
     }
 
-    if (actions.length > 0) {
-      forkJoin(actions).pipe(take(1)).subscribe({
-        next: () => this.dialogRef.close(true),
-        error: (err) => {
-          console.error('Error saving idea folders', err);
-          this.loading.set(false);
-          // Still close if something succeeded? Legacy closed on error too sometimes.
-          this.dialogRef.close(true);
-        }
-      });
-    } else {
-      this.dialogRef.close(false);
-    }
+    forkJoin(actions).pipe(take(1)).subscribe({
+      next: () => this.dialogRef.close(true),
+      error: (err) => {
+        console.error('Error saving idea folders', err);
+        this.loading.set(false);
+        this.dialogRef.close(true);
+      }
+    });
+  }
+
+  createFolder() {
+    this.save();
+  }
+
+  addFolders() {
+    this.save();
   }
 }
-
-// Helper to use exhaustMap in the forkJoin context if needed, but since it's a pipe on one of the items, it's fine.
-import { exhaustMap } from 'rxjs/operators';

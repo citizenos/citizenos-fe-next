@@ -44,16 +44,18 @@ interface IdeationFolderDialogData {
         <div class="content_section">
           <div class="section_content_wrap">
             <label class="bold" for="name">{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LBL_NAME' | translate }}</label>
-            <form [formRoot]="form">
-              <cos-input
-                [placeholder]="'COMPONENTS.CREATE_IDEA_FOLDER.PLACEHOLDER_NAME' | translate"
-                [hasError]="form.name().invalid() && form.name().touched()"
-                [errorMessage]="'COMPONENTS.CREATE_IDEA_FOLDER.ADD_NAME_ERROR_MSG_INVALID' | translate"
-              >
-                <input id="name" [formField]="form.name" type="text"
-                  [placeholder]="'COMPONENTS.CREATE_IDEA_FOLDER.PLACEHOLDER_NAME' | translate">
-              </cos-input>
-            </form>
+            <div id="folder_name_wrap">
+              <form [formRoot]="form">
+                <cos-input
+                  [placeholder]="'COMPONENTS.CREATE_IDEA_FOLDER.PLACEHOLDER_NAME' | translate"
+                  [hasError]="form.name().invalid() && form.name().touched()"
+                  [errorMessage]="'COMPONENTS.CREATE_IDEA_FOLDER.ADD_NAME_ERROR_MSG_INVALID' | translate"
+                >
+                  <input id="name" [formField]="form.name" type="text"
+                    [placeholder]="'COMPONENTS.CREATE_IDEA_FOLDER.PLACEHOLDER_NAME' | translate">
+                </cos-input>
+              </form>
+            </div>
 
             @if (ideas().length > 0) {
               <div class="bold">{{ 'COMPONENTS.CREATE_IDEA_FOLDER.LBL_IDEAS_SELECTION' | translate }}</div>
@@ -94,10 +96,10 @@ interface IdeationFolderDialogData {
       </div>
 
       <div class="dialog_footer with_buttons">
-        <cos-button variant="ghost" (click)="dialogRef.close()">
+        <cos-button variant="secondary" (clicked)="dialogRef.close()">
           {{ 'COMPONENTS.CREATE_IDEA_FOLDER.LNK_CANCEL' | translate }}
         </cos-button>
-        <cos-button variant="primary" (click)="createFolder()" [isDisabled]="form().invalid() || loading()">
+        <cos-button variant="primary" (clicked)="createFolder()" [isDisabled]="form().invalid() || loading()">
           {{ 'COMPONENTS.CREATE_IDEA_FOLDER.BTN_CREATE' | translate }}
         </cos-button>
       </div>

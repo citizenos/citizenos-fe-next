@@ -12,6 +12,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
 import { Ideation } from '../../../../../core/interfaces/ideation';
+import { AddIdeaFolderComponent } from '../add-idea-folder/add-idea-folder.component';
 
 const mockTopic = { id: 't1', status: 'ideation' } as unknown as Topic;
 const mockIdeation = { id: 'i1' } as unknown as Ideation;
@@ -148,5 +149,28 @@ describe('IdeaboxComponent', () => {
     expect(mockDialogService.open).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({
       data: expect.objectContaining({ ideaId: 'idea1' })
     }));
+  });
+
+  it('addToFolder opens AddIdeaFolderComponent and emits ideaUpdated when dialog closes with truthy value', () => {
+    const comp = makeComp();
+    const emitSpy = vi.spyOn(comp.ideaUpdated, 'emit');
+    comp.addToFolder();
+    expect(mockDialogService.open).toHaveBeenCalledWith(AddIdeaFolderComponent, {
+      data: {
+        idea: mockIdea,
+        topicId: 't1',
+        ideationId: 'i1'
+      }
+    });
+    expect(emitSpy).toHaveBeenCalledWith(mockIdea);
+  });
+
+  it('addToFolder does not emit ideaUpdated when dialog closes with falsy value', () => {
+    mockDialogService.open.mockReturnValueOnce({ afterClosed: () => of(false) });
+    const comp = makeComp();
+    const emitSpy = vi.spyOn(comp.ideaUpdated, 'emit');
+    comp.addToFolder();
+    expect(mockDialogService.open).toHaveBeenCalled();
+    expect(emitSpy).not.toHaveBeenCalled();
   });
 });

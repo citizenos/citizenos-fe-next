@@ -7,6 +7,8 @@ import { DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
 import { of, throwError } from 'rxjs';
 import { vi, describe, it, expect, beforeEach, Mock } from 'vitest';
 import { Component, Input } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Idea } from '../../../../../core/interfaces/idea';
@@ -143,5 +145,20 @@ describe('EditIdeaFolderComponent', () => {
 
     expect(component.loading()).toBe(false);
     expect(mockDialogRef.close).not.toHaveBeenCalled();
+  });
+
+  it('should close dialog when cancel button (clicked) event is fired', () => {
+    const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
+    const cancelButton = buttons[0];
+    cancelButton.triggerEventHandler('clicked', null);
+    expect(mockDialogRef.close).toHaveBeenCalled();
+  });
+
+  it('should call saveFolderName when create button (clicked) event is fired', () => {
+    const saveSpy = vi.spyOn(component, 'saveFolderName');
+    const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
+    const createButton = buttons[1];
+    createButton.triggerEventHandler('clicked', null);
+    expect(saveSpy).toHaveBeenCalled();
   });
 });

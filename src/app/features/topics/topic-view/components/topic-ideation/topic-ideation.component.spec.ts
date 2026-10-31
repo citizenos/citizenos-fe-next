@@ -7,13 +7,15 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { UserStore } from '../../../../../core/state/user.store';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
 import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
-import { of } from 'rxjs';
+import { of, BehaviorSubject } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { Topic } from '../../../../../core/interfaces/topic';
-import { Ideation, IdeaVoter } from '../../../../../core/interfaces/ideation';
+import { Ideation, IdeationFolder, IdeaVoter } from '../../../../../core/interfaces/ideation';
 import { Idea } from '../../../../../core/interfaces/idea';
 import { signal } from '@angular/core';
+import { NotificationService } from '../../../../../core/services/notification.service';
+import { UploadService } from '../../../../../core/services/upload.service';
 
 const mockTopic = { id: 't1', status: 'ideation' } as unknown as Topic;
 const mockIdeation = { id: 'i1', question: 'What should we do?', deadline: null } as unknown as Ideation;
@@ -22,6 +24,11 @@ const mockIdea2 = { id: 'a2', status: 'published', votes: { up: { count: 0, sele
 
 const mockIdeationService = {
   getIdeas: vi.fn().mockReturnValue(of({ rows: [mockIdea1, mockIdea2], count: 2 })),
+  getFolders: vi.fn().mockReturnValue(of({ rows: [], count: 0 })),
+  getFolder: vi.fn().mockReturnValue(of(null)),
+  participants: vi.fn().mockReturnValue(of({ rows: [], count: 0 })),
+  deleteFolder: vi.fn().mockReturnValue(of({})),
+  createFolder: vi.fn().mockReturnValue(of({})),
   update: vi.fn().mockReturnValue(of({})),
   downloadIdeas: vi.fn().mockReturnValue('https://example.com/download'),
   hasIdeationEndedExpired: vi.fn().mockReturnValue(false),
@@ -33,16 +40,28 @@ const mockTopicService = {
   canEdit: vi.fn().mockReturnValue(true),
   reloadTopic: vi.fn(),
   STATUSES: { draft: 'draft', ideation: 'ideation', inProgress: 'inProgress' },
+  VISIBILITY: { public: 'public', private: 'private' },
 };
 const mockUserStore = { user: vi.fn().mockReturnValue({ id: 'u1' }) };
 const mockDialogService = { open: vi.fn().mockReturnValue({ afterClosed: () => of(true) }) };
 const mockAuthDialogService = { openLogin: vi.fn().mockReturnValue({ afterClosed: () => of(true) }) };
+const mockNotificationService = { show: vi.fn() };
+const mockUploadService = {};
+
+const queryParamsSubject = new BehaviorSubject<Record<string, unknown>>({});
+const mockActivatedRoute = {
+  queryParams: queryParamsSubject.asObservable(),
+  snapshot: {
+    queryParams: {},
+  },
+};
 
 describe('TopicIdeationComponent', () => {
   let injector: EnvironmentInjector;
 
   beforeEach(() => {
     vi.clearAllMocks();
+    queryParamsSubject.next({});
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(), RouterModule.forRoot([])],
       providers: [
@@ -51,6 +70,9 @@ describe('TopicIdeationComponent', () => {
         { provide: UserStore, useValue: mockUserStore },
         { provide: DialogService, useValue: mockDialogService },
         { provide: AuthDialogService, useValue: mockAuthDialogService },
+        { provide: NotificationService, useValue: mockNotificationService },
+        { provide: UploadService, useValue: mockUploadService },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
       ],
     });
     injector = TestBed.inject(EnvironmentInjector);
@@ -293,5 +315,112 @@ describe('TopicIdeationComponent', () => {
     const comp = makeComp();
     comp.editDeadline();
     expect(mockDialogService.open).toHaveBeenCalled();
+  });
+
+  it('canManageFolders delegates to topicService canUpdate', () => {
+    const comp = makeComp();
+    expect(comp.canManageFolders()).toBe(true);
+    expect(mockTopicService.canUpdate).toHaveBeenCalledWith(comp.topic());
+  });
+
+  it('Ideation Folders Empty state: renders cos-no-feature-yet with NO_FOLDERS_HEADING and hides row_header when folders is empty', () => {
+    mockIdeationService.getFolders.mockReturnValue(of({ rows: [], count: 0 }));
+    const fixture = TestBed.createComponent(TopicIdeationComponent);
+    fixture.componentRef.setInput('topic', mockTopic);
+    fixture.componentRef.setInput('ideation', mockIdeation);
+    fixture.detectChanges();
+    const comp = fixture.componentInstance;
+
+    comp.selectTab('folders');
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('.folder_row.row_header')).toBeNull();
+    expect(el.querySelector('cos-no-feature-yet')).toBeTruthy();
+    expect(el.querySelector('.description_heading')?.textContent).toContain('COMPONENTS.TOPIC_IDEATION.NO_FOLDERS_HEADING');
+    expect(el.querySelector('.description')?.textContent).toContain('COMPONENTS.TOPIC_IDEATION.NO_FOLDERS_DESC');
+    expect(comp.foldersCount()).toBe(0);
+  });
+
+  it('Ideation - Folders list: renders .folder_row items and updates foldersCount on TAB_FOLDERS when folders exist', () => {
+    const mockFolder1 = { id: 'f1', name: 'Folder One', ideas: { count: 3 }, updatedAt: '2026-01-01' } as unknown as IdeationFolder;
+    const mockFolder2 = { id: 'f2', name: 'Folder Two', ideas: { count: 5 }, updatedAt: '2026-01-02' } as unknown as IdeationFolder;
+    mockIdeationService.getFolders.mockReturnValue(of({ rows: [mockFolder1, mockFolder2], count: 2 }));
+
+    const fixture = TestBed.createComponent(TopicIdeationComponent);
+    fixture.componentRef.setInput('topic', mockTopic);
+    fixture.componentRef.setInput('ideation', mockIdeation);
+    fixture.detectChanges();
+    const comp = fixture.componentInstance;
+
+    expect(comp.foldersCount()).toBe(2);
+    comp.selectTab('folders');
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    const rows = el.querySelectorAll('.folder_row:not(.row_header)');
+    expect(rows.length).toBe(2);
+    expect(el.querySelector('.folder_row.row_header')).toBeTruthy();
+    expect(el.querySelector('.folders_desc')).toBeTruthy();
+  });
+
+  it('Ideas in folder: renders folder_data_wrap with yellow folder SVG, folder name and ideas count, and reloads ideas & folder count when addIdeasToFolder dialog closes with true', () => {
+    const mockFolder = { id: 'f1', name: 'Special Folder', ideas: { count: 4 }, updatedAt: '2026-01-01' } as unknown as IdeationFolder;
+    mockIdeationService.getFolders.mockReturnValue(of({ rows: [mockFolder], count: 1 }));
+    mockIdeationService.getFolder.mockReturnValue(of(mockFolder));
+
+    const fixture = TestBed.createComponent(TopicIdeationComponent);
+    fixture.componentRef.setInput('topic', mockTopic);
+    fixture.componentRef.setInput('ideation', mockIdeation);
+    fixture.detectChanges();
+    const comp = fixture.componentInstance;
+
+    comp.viewFolder(mockFolder);
+    fixture.detectChanges();
+
+    expect(comp.tabSelected()).toBe('folder');
+    expect(comp.selectedFolder()).toEqual(mockFolder);
+
+    const el = fixture.nativeElement as HTMLElement;
+    const folderDataWrap = el.querySelector('.folder_data_wrap');
+    expect(folderDataWrap).toBeTruthy();
+    expect(folderDataWrap?.querySelector('.folder_name')?.textContent).toContain('Special Folder');
+    expect(folderDataWrap?.querySelector('.folder_name')?.textContent).toContain('(4)');
+
+    // Verify yellow folder SVG in .left div.icon
+    const folderIconSvg = folderDataWrap?.querySelector('.left div.icon svg');
+    expect(folderIconSvg).toBeTruthy();
+    expect(folderIconSvg?.getAttribute('viewBox')).toBe('0 0 28 24');
+
+    // Trigger addIdeasToFolder and verify reload
+    const reloadSpy = vi.fn();
+    (comp as unknown as { ideasResource: unknown }).ideasResource = { reload: reloadSpy, isLoading: () => false, hasValue: () => true, value: () => ({ rows: [], count: 0 }) };
+    const loadFoldersSpy = vi.spyOn(comp.loadFolders$, 'next');
+
+    comp.addIdeasToFolder(mockFolder);
+    expect(mockDialogService.open).toHaveBeenCalled();
+    expect(reloadSpy).toHaveBeenCalled();
+    expect(loadFoldersSpy).toHaveBeenCalled();
+  });
+
+  it('reactively updates selectedFolder and tab when queryParams folderId changes and resets on removal', () => {
+    const mockFolder = { id: 'f_query', name: 'Route Folder', ideas: { count: 10 } } as unknown as IdeationFolder;
+    mockIdeationService.getFolders.mockReturnValue(of({ rows: [mockFolder], count: 1 }));
+
+    const comp = makeComp();
+
+    queryParamsSubject.next({ folderId: 'f_query' });
+    TestBed.flushEffects();
+
+    expect(comp.tabSelected()).toBe('folder');
+    expect(comp.selectedFolder()?.name).toBe('Route Folder');
+    expect(comp.folderId()).toBe('f_query');
+
+    queryParamsSubject.next({});
+    TestBed.flushEffects();
+
+    expect(comp.tabSelected()).toBe('folders');
+    expect(comp.selectedFolder()).toBeNull();
+    expect(comp.folderId()).toBe('');
   });
 });

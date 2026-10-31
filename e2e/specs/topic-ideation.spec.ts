@@ -52,12 +52,14 @@ interface SetupMocksOptions {
   topic?: Record<string, any>;
   ideation?: Record<string, any>;
   initialIdeas?: any[];
+  initialFolders?: any[];
 }
 
 async function setupTopicIdeationRoutes(page: Page, options: SetupMocksOptions = {}) {
   const currentTopic = { ...defaultMockTopic, ...options.topic };
   const currentIdeation = { ...defaultMockIdeation, ...options.ideation };
   const ideasList = options.initialIdeas ? [...options.initialIdeas] : [...defaultInitialIdeas];
+  const foldersList = options.initialFolders ? [...options.initialFolders] : [];
 
   await page.addInitScript(() => {
     localStorage.setItem('show-topic-tour', 'true');
@@ -125,12 +127,20 @@ async function setupTopicIdeationRoutes(page: Page, options: SetupMocksOptions =
         body: JSON.stringify({ status: { code: 20000, message: 'Success' }, data: newIdea }),
       });
     } else {
+      const url = new URL(routeHandler.request().url());
+      const reqFolderId = url.searchParams.get('folderId');
+      let resultIdeas = ideasList;
+      if (reqFolderId) {
+        resultIdeas = ideasList.filter(
+          (idea) => idea.folderId === reqFolderId || idea.folderIds?.includes(reqFolderId)
+        );
+      }
       await routeHandler.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
           status: { code: 20000, message: 'Success' },
-          data: { rows: ideasList, count: ideasList.length },
+          data: { rows: resultIdeas, count: resultIdeas.length },
         }),
       });
     }
@@ -193,12 +203,97 @@ async function setupTopicIdeationRoutes(page: Page, options: SetupMocksOptions =
     });
   });
 
+  // Intercept folders endpoints (GET and POST)
   await page.route(new RegExp(`/api/(users/self/)?topics/${topicId}/ideations/${ideationId}/folders(\\?.*)?$`), async (routeHandler) => {
-    await routeHandler.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({ status: { code: 20000, message: 'Success' }, data: { rows: [], count: 0 } }),
-    });
+    if (routeHandler.request().method() === 'POST') {
+      const postData = routeHandler.request().postDataJSON() || {};
+      const newFolder = {
+        id: `folder-${Date.now()}`,
+        name: postData.name || '',
+        description: postData.description || null,
+        ideationId,
+        topicId,
+        ideas: { count: 0, rows: [] },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      foldersList.push(newFolder);
+      await routeHandler.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ status: { code: 20000, message: 'Success' }, data: newFolder }),
+      });
+    } else {
+      await routeHandler.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ status: { code: 20000, message: 'Success' }, data: { rows: foldersList, count: foldersList.length } }),
+      });
+    }
+  });
+
+  // Intercept ideas in folder endpoint (GET and POST)
+  await page.route(new RegExp(`/api/(users/self/)?topics/${topicId}/ideations/${ideationId}/folders/([^/?#]+)/ideas(\\?.*)?$`), async (routeHandler) => {
+    const url = routeHandler.request().url();
+    const match = url.match(new RegExp(`/folders/([^/?#]+)/ideas`));
+    const targetFolderId = match ? match[1] : '';
+
+    if (routeHandler.request().method() === 'POST') {
+      const postData = routeHandler.request().postDataJSON() || [];
+      const idsToAdd: string[] = Array.isArray(postData) ? postData.map((item: any) => item.id || item) : [postData.id || postData];
+      ideasList.forEach((idea) => {
+        if (idsToAdd.includes(idea.id)) {
+          idea.folderId = targetFolderId;
+          if (!idea.folderIds) idea.folderIds = [];
+          if (!idea.folderIds.includes(targetFolderId)) idea.folderIds.push(targetFolderId);
+        }
+      });
+      const targetFolder = foldersList.find((f) => f.id === targetFolderId);
+      if (targetFolder) {
+        const matchingIdeasCount = ideasList.filter(
+          (i) => i.folderId === targetFolderId || i.folderIds?.includes(targetFolderId)
+        ).length;
+        targetFolder.ideas = { count: matchingIdeasCount, rows: [] };
+      }
+      await routeHandler.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ status: { code: 20000, message: 'Success' }, data: {} }),
+      });
+    } else {
+      const folderIdeas = ideasList.filter(
+        (idea) => idea.folderId === targetFolderId || idea.folderIds?.includes(targetFolderId)
+      );
+      await routeHandler.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          status: { code: 20000, message: 'Success' },
+          data: { rows: folderIdeas, count: folderIdeas.length },
+        }),
+      });
+    }
+  });
+
+  // Intercept single folder details endpoint (GET)
+  await page.route(new RegExp(`/api/(users/self/)?topics/${topicId}/ideations/${ideationId}/folders/([^/?#]+)(\\?.*)?$`), async (routeHandler) => {
+    const url = routeHandler.request().url();
+    const match = url.match(new RegExp(`/folders/([^/?#]+)($|\\?)`));
+    const targetFolderId = match ? match[1] : '';
+    const folder = foldersList.find((f) => f.id === targetFolderId);
+    if (folder) {
+      await routeHandler.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ status: { code: 20000, message: 'Success' }, data: folder }),
+      });
+    } else {
+      await routeHandler.fulfill({
+        status: 404,
+        contentType: 'application/json',
+        body: JSON.stringify({ status: { code: 40401, message: 'Folder not found' } }),
+      });
+    }
   });
 
   await page.goto(route(`topics/${topicId}#ideation`));
@@ -511,5 +606,240 @@ test.describe('Topic Ideation - Expired Ideation Deadline', () => {
     await footerMenuBtn.click({ force: true });
     await expect(addIdeaWrap).not.toHaveClass(/open/);
     await expect(addIdeaWrap).toHaveClass(/closed/);
+  });
+});
+
+test.describe('Topic Ideation - Folders & Ideas in Folder Flow', () => {
+  test('Ideation Folders Empty state: should show empty state when switching to Folders tab with 0 folders', async ({ page }) => {
+    await setupTopicIdeationRoutes(page, {
+      initialFolders: [],
+    });
+
+    // 1. Locate Folders tab item and click it
+    const foldersTab = page.locator('.tabs_wrap .tab_item').filter({ hasText: /Folders/i });
+    await expect(foldersTab).toBeVisible();
+    await foldersTab.click();
+
+    // 2. Folders tab should be active
+    await expect(foldersTab).toHaveClass(/active/);
+
+    // 3. .folder_row.row_header is NOT visible
+    await expect(page.locator('.folder_row.row_header')).not.toBeVisible();
+
+    // 4. cos-no-feature-yet empty state container is visible
+    const emptyState = page.locator('cos-no-feature-yet');
+    await expect(emptyState).toBeVisible();
+
+    // 5. Verify empty state heading and description
+    await expect(emptyState.locator('.description_heading')).toContainText(/There are no idea folders yet/i);
+    await expect(emptyState.locator('.description')).toContainText(/Topic admins can create folders to group ideas/i);
+
+    // 6. Verify 96x96 illustration SVG
+    const illustrationSvg = emptyState.locator('svg[width="96"][height="96"]');
+    await expect(illustrationSvg).toBeVisible();
+
+    // 7. Verify "+ Create new folder" button
+    const createFolderBtn = emptyState.locator('cos-button').filter({ hasText: /Create new folder/i });
+    await expect(createFolderBtn).toBeVisible();
+  });
+
+  test('Ideation - Folders list view & Create Folder dialog: should render folders, action menu, and create new folder via dialog', async ({ page }) => {
+    const existingFolder = {
+      id: 'folder-e2e-1',
+      name: 'Renewable Energy Initiatives',
+      ideationId,
+      topicId,
+      ideas: { count: 3, rows: [] },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    await setupTopicIdeationRoutes(page, {
+      initialFolders: [existingFolder],
+    });
+
+    // 1. Switch to Folders tab
+    const foldersTab = page.locator('.tabs_wrap .tab_item').filter({ hasText: /Folders/i });
+    await expect(foldersTab).toBeVisible();
+    await foldersTab.click();
+    await expect(foldersTab).toHaveClass(/active/);
+
+    // 2. Verify .folder_row.row_header is visible with expected column headers
+    const rowHeader = page.locator('.folder_row.row_header');
+    await expect(rowHeader).toBeVisible();
+    await expect(rowHeader.locator('.folder_name')).toContainText(/Folder/i);
+    await expect(rowHeader.locator('.ideas_cell')).toContainText(/Ideas/i);
+    await expect(rowHeader.locator('.date_cell')).toContainText(/Last activity/i);
+    await expect(rowHeader.locator('.actions_cell')).toContainText(/Actions/i);
+
+    // 3. Verify .folder_row item is rendered with folder name and idea count
+    const folderRow = page.locator('.folders_wrap .folder_row:not(.row_header)').filter({ hasText: 'Renewable Energy Initiatives' });
+    await expect(folderRow).toBeVisible();
+    await expect(folderRow.locator('.folder_name')).toContainText('Renewable Energy Initiatives');
+    await expect(folderRow.locator('.ideas_cell')).toContainText('3');
+
+    // 4. Verify 3-dot action menu (.actions_cell .dropdown.button_dropdown)
+    const actionDropdown = folderRow.locator('.actions_cell .dropdown.button_dropdown');
+    await expect(actionDropdown).toBeVisible();
+    const actionTrigger = actionDropdown.locator('button[trigger], button.btn_small_plain');
+    await expect(actionTrigger).toBeVisible();
+
+    // 5. Click "+ Create new folder" button
+    const createNewFolderBtn = page.locator('#add_folder_btn cos-button').filter({ hasText: /Create new folder/i });
+    await expect(createNewFolderBtn).toBeVisible();
+    await createNewFolderBtn.click();
+
+    // 6. Verify app-create-idea-folder dialog opens
+    const createDialog = page.locator('app-create-idea-folder');
+    await expect(createDialog).toBeVisible();
+    await expect(createDialog.locator('.title')).toContainText(/Create folder/i);
+
+    // 7. Fill in folder name
+    const folderNameInput = createDialog.locator('#name');
+    await expect(folderNameInput).toBeVisible();
+    await folderNameInput.fill('Civic Transportation Proposals');
+
+    // 8. Capture POST request and click Create button
+    const postFolderPromise = page.waitForRequest(
+      (req) => req.url().includes(`/topics/${topicId}/ideations/${ideationId}/folders`) && req.method() === 'POST',
+      { timeout: 15000 }
+    );
+
+    const submitCreateBtn = createDialog.locator('.dialog_footer cos-button').filter({ hasText: /Create folder|Create/i });
+    await expect(submitCreateBtn).toBeVisible();
+    await submitCreateBtn.click();
+
+    // 9. Assert POST request payload
+    const postReq = await postFolderPromise;
+    expect(postReq.postDataJSON().name).toBe('Civic Transportation Proposals');
+
+    // 10. Verify dialog closes and newly created folder is rendered in the list
+    await expect(createDialog).not.toBeVisible();
+    const newFolderRow = page.locator('.folders_wrap .folder_row:not(.row_header)').filter({ hasText: 'Civic Transportation Proposals' });
+    await expect(newFolderRow).toBeVisible();
+  });
+
+  test('Ideas in folder view & Add Ideas to Folder dialog: should enter folder view, display header details, and add ideas to folder via dialog', async ({ page }) => {
+    const targetFolder = {
+      id: 'folder-solar-1',
+      name: 'Municipal Solar Initiatives',
+      ideationId,
+      topicId,
+      ideas: { count: 1, rows: [] },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const ideaAlreadyInFolder = {
+      id: 'idea-solar-existing',
+      topicId,
+      ideationId,
+      folderId: 'folder-solar-1',
+      statement: 'Rooftop Solar on City Hall',
+      description: 'Solar panels installed on the roof of municipal administration building.',
+      status: 'published',
+      author: { id: 'user-admin', name: 'Admin Coordinator' },
+      votes: { up: { count: 6, selected: false }, down: { count: 0, selected: false }, count: 6 },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const ideaUnassigned = {
+      id: 'idea-unassigned-2',
+      topicId,
+      ideationId,
+      statement: 'Battery Storage Facility at Port',
+      description: 'Large-scale battery facility to balance peak renewable grid load.',
+      status: 'published',
+      author: { id: 'user-admin', name: 'Admin Coordinator' },
+      votes: { up: { count: 3, selected: false }, down: { count: 0, selected: false }, count: 3 },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    await setupTopicIdeationRoutes(page, {
+      initialFolders: [targetFolder],
+      initialIdeas: [ideaAlreadyInFolder, ideaUnassigned],
+    });
+
+    // 1. Switch to Folders tab
+    const foldersTab = page.locator('.tabs_wrap .tab_item').filter({ hasText: /Folders/i });
+    await expect(foldersTab).toBeVisible();
+    await foldersTab.click();
+
+    // 2. Click folder row to enter "Ideas in folder" view
+    const folderRow = page.locator('.folders_wrap .folder_row:not(.row_header)').filter({ hasText: 'Municipal Solar Initiatives' });
+    await expect(folderRow).toBeVisible();
+    await folderRow.click();
+
+    // 3. Verify .folder_data_wrap is visible
+    const folderDataWrap = page.locator('.folder_data_wrap');
+    await expect(folderDataWrap).toBeVisible();
+
+    // 4. Verify back button is visible
+    const backBtn = folderDataWrap.locator('button.btn_medium_close');
+    await expect(backBtn).toBeVisible();
+
+    // 5. Verify yellow folder icon SVG (28x24)
+    const folderIconSvg = folderDataWrap.locator('svg[width="28"][height="24"]');
+    await expect(folderIconSvg).toBeVisible();
+
+    // 6. Verify folder name and count (Municipal Solar Initiatives (1))
+    const folderNameElem = folderDataWrap.locator('.folder_name');
+    await expect(folderNameElem).toBeVisible();
+    await expect(folderNameElem).toContainText('Municipal Solar Initiatives');
+    await expect(folderNameElem).toContainText('(1)');
+
+    // 7. Verify ideas belonging to the folder are rendered, and unassigned idea is NOT rendered
+    const assignedIdeaCard = page.locator('.ideas_wrap app-ideabox').filter({ hasText: 'Rooftop Solar on City Hall' });
+    await expect(assignedIdeaCard).toBeVisible();
+    const unassignedIdeaCard = page.locator('.ideas_wrap app-ideabox').filter({ hasText: 'Battery Storage Facility at Port' });
+    await expect(unassignedIdeaCard).not.toBeVisible();
+
+    // 8. Click "Add ideas to folder" header action button
+    const addIdeasToFolderBtn = page.locator('.header_actions cos-button').filter({ hasText: /Add ideas to folder/i });
+    await expect(addIdeasToFolderBtn).toBeVisible();
+    await addIdeasToFolderBtn.click();
+
+    // 9. Verify app-add-ideas-to-folder dialog opens
+    const addIdeasDialog = page.locator('app-add-ideas-to-folder');
+    await expect(addIdeasDialog).toBeVisible();
+    await expect(addIdeasDialog.locator('.title')).toContainText(/Add ideas to folder/i);
+
+    // 10. Select the unassigned idea by clicking its checkbox
+    const unassignedRow = addIdeasDialog.locator('.idea_row').filter({ hasText: 'Battery Storage Facility at Port' });
+    await expect(unassignedRow).toBeVisible();
+    await unassignedRow.locator('.checkbox_wrap').click();
+    await expect(unassignedRow.locator('.checkbox')).toHaveClass(/selected/);
+
+    // 11. Capture POST request for adding ideas to folder
+    const postIdeasPromise = page.waitForRequest(
+      (req) => req.url().includes(`/topics/${topicId}/ideations/${ideationId}/folders/${targetFolder.id}/ideas`) && req.method() === 'POST',
+      { timeout: 15000 }
+    );
+
+    // 12. Click submit button (.btn_big_submit)
+    const submitBtn = addIdeasDialog.locator('button.btn_big_submit');
+    await expect(submitBtn).toBeVisible();
+    await submitBtn.click();
+
+    // 13. Verify POST request payload has selected idea id
+    const postReq = await postIdeasPromise;
+    const postPayload = postReq.postDataJSON();
+    expect(postPayload).toEqual([{ id: 'idea-unassigned-2' }]);
+
+    // 14. Dialog closes
+    await expect(addIdeasDialog).not.toBeVisible();
+
+    // 15. Reloads folder ideas and count: both ideas are now displayed in folder view
+    await expect(page.locator('.ideas_wrap app-ideabox').filter({ hasText: 'Rooftop Solar on City Hall' })).toBeVisible();
+    await expect(page.locator('.ideas_wrap app-ideabox').filter({ hasText: 'Battery Storage Facility at Port' })).toBeVisible();
+    await expect(folderNameElem).toContainText('(2)');
+
+    // 16. Verify clicking back button leaves folder view and returns to Folders list
+    await backBtn.click();
+    await expect(page.locator('.folder_data_wrap')).not.toBeVisible();
+    await expect(page.locator('.folders_wrap .folder_row.row_header')).toBeVisible();
+    await expect(page.locator('.folders_wrap .folder_row:not(.row_header)').filter({ hasText: 'Municipal Solar Initiatives' })).toBeVisible();
   });
 });

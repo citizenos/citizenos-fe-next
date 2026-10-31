@@ -1,14 +1,14 @@
-import { Component, input, inject, signal, computed, ChangeDetectionStrategy, PLATFORM_ID, HostListener, effect } from '@angular/core';
+import { Component, input, inject, signal, computed, ChangeDetectionStrategy, PLATFORM_ID, HostListener } from '@angular/core';
 import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 import { NoFeatureYetComponent } from '../../../../../shared/components/no-feature-yet/no-feature-yet.component';
 
 import { DatePipe, isPlatformBrowser, AsyncPipe, TitleCasePipe } from '@angular/common';
-import { toObservable, rxResource } from '@angular/core/rxjs-interop';
+import { toObservable, rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { of, switchMap, take, map, catchError } from 'rxjs';
+import { of, switchMap, take, map, catchError, BehaviorSubject, combineLatest, tap, shareReplay } from 'rxjs';
 
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { TopicService } from '../../../../../core/services/topic.service';
@@ -85,6 +85,20 @@ export class TopicIdeationComponent {
   
   tabSelected = signal<'ideas' | 'folders' | 'folder'>('ideas');
   selectedFolder = signal<IdeationFolder | null>(null);
+  folderId = signal<string>('');
+  foldersLoadedCount = signal<number | null>(null);
+  foldersCount = computed(() => this.foldersLoadedCount() ?? (this.ideation()?.folders?.count || 0));
+  loadFolders$ = new BehaviorSubject<void>(undefined);
+
+  dialog = this.dialogService;
+  IdeationFolderService = {
+    query: (params: Parameters<TopicIdeationService['getFolders']>[0]) => {
+      return this.ideationService.getFolders(params);
+    },
+    get: (params: { topicId: string; ideationId: string; folderId: string }) => {
+      return this.ideationService.getFolder(params);
+    }
+  };
   
   private refreshTrigger = signal(0);
   private refreshFoldersTrigger = signal(0);
@@ -114,11 +128,14 @@ export class TopicIdeationComponent {
   });
   mobileAges = signal<string[]>([]);
 
-  participants$ = toObservable(computed(() => ({ topicId: this.topic().id, ideationId: this.ideation().id }))).pipe(
-    switchMap(({ topicId, ideationId }) => this.ideationService.participants({ topicId, ideationId }).pipe(
-      catchError(() => of({ rows: [] as IdeaVoter[], count: 0 }))
-    )),
-    map(res => res.rows)
+  participants$ = toObservable(computed(() => ({ topicId: this.topic?.()?.id, ideationId: this.ideation?.()?.id }))).pipe(
+    switchMap(({ topicId, ideationId }) => {
+      if (!topicId || !ideationId || !this.ideationService?.participants) return of([] as IdeaVoter[]);
+      return this.ideationService.participants({ topicId, ideationId }).pipe(
+        catchError(() => of({ rows: [] as IdeaVoter[], count: 0 })),
+        map(res => res.rows)
+      );
+    })
   );
 
   private ideasParams = computed(() => ({
@@ -130,7 +147,7 @@ export class TopicIdeationComponent {
     age: this.selectedAge(),
     gender: this.selectedGender(),
     residence: this.selectedResidence(),
-    folderId: this.selectedFolder()?.id,
+    folderId: this.folderId() || this.selectedFolder()?.id,
     _v: this.refreshTrigger(),
     topic: this.topic(),
     ideation: this.ideation(),
@@ -187,17 +204,32 @@ export class TopicIdeationComponent {
     }
   });
 
-  folders$ = toObservable(computed(() => ({ topicId: this.topic().id, ideationId: this.ideation().id, _v: this.refreshFoldersTrigger() }))).pipe(
-    switchMap(({ topicId, ideationId }) => {
-        if (!topicId || !ideationId) return of({ rows: [] as IdeationFolder[], count: 0 });
-        return this.ideationService.getFolders({ topicId, ideationId }).pipe(
-          catchError((err) => {
-            console.error('Error loading folders', err);
-            return of({ rows: [] as IdeationFolder[], count: 0 });
-          })
-        );
+  folders$ = combineLatest([
+    toObservable(computed(() => ({ topicId: this.topic()?.id, ideationId: this.ideation()?.id }))),
+    this.loadFolders$
+  ]).pipe(
+    switchMap(([{ topicId, ideationId }]) => {
+      if (!topicId || !ideationId || !this.ideationService?.getFolders) return of({ rows: [] as IdeationFolder[], count: 0 });
+      return this.ideationService.getFolders({ topicId, ideationId }).pipe(
+        catchError((err) => {
+          console.error('Error loading folders', err);
+          return of({ rows: [] as IdeationFolder[], count: 0 });
+        })
+      );
     }),
-    map((res: { rows: IdeationFolder[] }) => res.rows)
+    tap((res: { rows: IdeationFolder[]; count?: number }) => {
+      const rows = Array.isArray(res) ? res : (res?.rows ?? []);
+      const count = Array.isArray(res) ? res.length : (res?.count ?? rows.length);
+      this.foldersLoadedCount.set(count);
+      if (this.selectedFolder()) {
+        const updated = rows.find(f => f.id === this.selectedFolder()?.id);
+        if (updated) {
+          this.selectedFolder.set(updated);
+        }
+      }
+    }),
+    map((res: { rows: IdeationFolder[] }) => Array.isArray(res) ? res : (res?.rows ?? [])),
+    shareReplay(1)
   );
 
   filtersSet = computed(() => {
@@ -223,23 +255,54 @@ export class TopicIdeationComponent {
   Math = Math;
 
   constructor() {
-    effect(() => {
-        const routeParams = this.route.snapshot.queryParams;
-        if (routeParams['folderId']) {
-            this.ideationService.getFolder({
-                topicId: this.topic().id,
-                ideationId: this.ideation().id,
-                folderId: routeParams['folderId']
+    this.folders$.pipe(takeUntilDestroyed()).subscribe();
+
+    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe(params => {
+      const fId = params['folderId'];
+      if (fId) {
+        if (this.selectedFolder()?.id !== fId || this.tabSelected() !== 'folder') {
+          const topicId = this.topic?.()?.id;
+          const ideationId = this.ideation?.()?.id;
+          if (topicId && ideationId) {
+            this.IdeationFolderService.query({
+              topicId,
+              ideationId,
+              folderId: fId
             }).pipe(
               take(1),
-              catchError(() => of(null))
-            ).subscribe(folder => {
-                if (folder) {
-                  this.selectedFolder.set(folder);
-                  this.tabSelected.set('folder');
-                }
+              catchError(() => of({ rows: [] as IdeationFolder[], count: 0 }))
+            ).subscribe(foldersRes => {
+              const folder = foldersRes?.rows?.find((f: IdeationFolder) => f.id === fId);
+              if (folder) {
+                this.selectedFolder.set(folder);
+                this.tabSelected.set('folder');
+                this.folderId.set(folder.id);
+              } else if (this.ideationService.getFolder) {
+                this.ideationService.getFolder({
+                  topicId,
+                  ideationId,
+                  folderId: fId
+                }).pipe(
+                  take(1),
+                  catchError(() => of(null))
+                ).subscribe(f => {
+                  if (f) {
+                    this.selectedFolder.set(f);
+                    this.tabSelected.set('folder');
+                    this.folderId.set(f.id);
+                  }
+                });
+              }
             });
+          }
         }
+      } else {
+        if (this.tabSelected() === 'folder') {
+          this.selectedFolder.set(null);
+          this.folderId.set('');
+          this.tabSelected.set('folders');
+        }
+      }
     });
   }
 
@@ -252,7 +315,7 @@ export class TopicIdeationComponent {
   }
 
   canManageFolders() {
-    return this.topicService.canDelete(this.topic()); // admin only
+    return this.canUpdate();
   }
 
   canEditDeadline() {
@@ -269,12 +332,15 @@ export class TopicIdeationComponent {
 
   selectTab(tab: 'ideas' | 'folders') {
     this.tabSelected.set(tab);
+    this.selectedFolder.set(null);
+    this.folderId.set('');
     this.currentPage.set(1);
     this.router.navigate([], { queryParams: { folderId: null }, queryParamsHandling: 'merge' });
   }
 
   viewFolder(folder: IdeationFolder) {
     this.selectedFolder.set(folder);
+    this.folderId.set(folder.id);
     this.tabSelected.set('folder');
     this.currentPage.set(1);
     this.router.navigate([], { queryParams: { folderId: folder.id }, queryParamsHandling: 'merge' });
@@ -282,6 +348,7 @@ export class TopicIdeationComponent {
 
   leaveFolder() {
     this.selectedFolder.set(null);
+    this.folderId.set('');
     this.tabSelected.set('folders');
     this.currentPage.set(1);
     this.router.navigate([], { queryParams: { folderId: null }, queryParamsHandling: 'merge' });
@@ -416,6 +483,8 @@ export class TopicIdeationComponent {
 
   onIdeaDeleted(_idea: Idea) {
     this.refreshTrigger.update(n => n + 1);
+    this.loadFolders$.next();
+    this.refreshFoldersTrigger.update(n => n + 1);
     try {
       this.ideasResource.reload();
     } catch (e) {
@@ -425,6 +494,8 @@ export class TopicIdeationComponent {
 
   onIdeaUpdated(_idea: Idea) {
     this.refreshTrigger.update(n => n + 1);
+    this.loadFolders$.next();
+    this.refreshFoldersTrigger.update(n => n + 1);
     try {
       this.ideasResource.reload();
     } catch (e) {
@@ -436,6 +507,8 @@ export class TopicIdeationComponent {
     this.showAddIdea.set(false);
     this.currentPage.set(1);
     this.refreshTrigger.update(n => n + 1);
+    this.loadFolders$.next();
+    this.refreshFoldersTrigger.update(n => n + 1);
     try {
       this.ideasResource.reload();
     } catch (e) {
@@ -496,6 +569,7 @@ export class TopicIdeationComponent {
     });
     dialog.afterClosed().subscribe(result => {
         if (result) {
+            this.loadFolders$.next();
             this.refreshFoldersTrigger.update(n => n + 1);
         }
     });
@@ -511,7 +585,20 @@ export class TopicIdeationComponent {
     });
     dialog.afterClosed().subscribe(result => {
         if (result) {
+            this.loadFolders$.next();
             this.refreshFoldersTrigger.update(n => n + 1);
+            if (this.selectedFolder()?.id === folder.id) {
+                this.IdeationFolderService.query({
+                    topicId: this.topic().id,
+                    ideationId: this.ideation().id,
+                    folderId: folder.id
+                }).pipe(take(1)).subscribe((foldersRes) => {
+                    const updated = foldersRes?.rows?.find((f: IdeationFolder) => f.id === folder.id);
+                    if (updated) {
+                        this.selectedFolder.set(updated);
+                    }
+                });
+            }
         }
     });
   }
@@ -545,18 +632,44 @@ export class TopicIdeationComponent {
                 ideationId: this.ideation().id,
                 folderId: folder.id
             }).pipe(take(1)).subscribe(() => {
+                this.loadFolders$.next();
                 this.refreshFoldersTrigger.update(n => n + 1);
+                if (this.selectedFolder()?.id === folder.id) {
+                    this.leaveFolder();
+                }
             });
         }
     });
   }
 
   addIdeasToFolder(folder: IdeationFolder) {
-    this.dialogService.open(AddIdeasToFolderComponent, {
+    const dialogRef = this.dialog.open(AddIdeasToFolderComponent, {
         data: {
+            folder,
             topicId: this.topic().id,
-            ideationId: this.ideation().id,
-            folder: folder
+            ideationId: this.ideation().id
+        }
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+        if (res) {
+            try {
+                this.ideasResource.reload();
+            } catch (e) {
+                console.debug(e);
+            }
+            this.refreshTrigger.update(n => n + 1);
+            this.loadFolders$.next();
+            this.refreshFoldersTrigger.update(n => n + 1);
+            this.IdeationFolderService.query({
+                topicId: this.topic().id,
+                ideationId: this.ideation().id,
+                folderId: folder.id
+            }).pipe(take(1)).subscribe((foldersRes) => {
+                const updated = foldersRes?.rows?.find((f: IdeationFolder) => f.id === folder.id);
+                if (updated) {
+                    this.selectedFolder.set(updated);
+                }
+            });
         }
     });
   }

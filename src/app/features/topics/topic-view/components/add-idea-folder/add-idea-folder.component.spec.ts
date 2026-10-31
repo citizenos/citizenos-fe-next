@@ -112,4 +112,41 @@ describe('AddIdeaFolderComponent', () => {
     });
     expect(mockDialogRef.close).toHaveBeenCalledWith(true);
   });
+
+  it('should remove folders and close with true', () => {
+    component.toggleFolder({ id: 'folder1' } as IdeationFolder); // Remove folder1
+    component.save();
+
+    expect(mockIdeationService.removeIdeaFromFolder).toHaveBeenCalledWith({
+      topicId: 'topic1',
+      ideationId: 'ideation1',
+      folderId: 'folder1',
+      ideaId: 'idea1'
+    });
+    expect(mockDialogRef.close).toHaveBeenCalledWith(true);
+  });
+
+  it('should add existing folders and close with true', () => {
+    component.toggleFolder({ id: 'folder2' } as IdeationFolder); // Add folder2
+    component.save();
+
+    expect(mockIdeationService.addFoldersToIdea).toHaveBeenCalledWith(
+      expect.anything(),
+      ['folder2']
+    );
+    expect(mockDialogRef.close).toHaveBeenCalledWith(true);
+  });
+
+  it('should close with false when no changes are made', () => {
+    component.save();
+    expect(mockDialogRef.close).toHaveBeenCalledWith(false);
+  });
+
+  it('should delegate createFolder and addFolders to save', () => {
+    const saveSpy = vi.spyOn(component, 'save');
+    component.createFolder();
+    expect(saveSpy).toHaveBeenCalledTimes(1);
+    component.addFolders();
+    expect(saveSpy).toHaveBeenCalledTimes(2);
+  });
 });

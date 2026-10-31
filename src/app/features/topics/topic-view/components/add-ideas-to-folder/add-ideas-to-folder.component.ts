@@ -39,7 +39,35 @@ interface IdeationFolderDialogData {
         <div class="dialog_content">
           <div class="content_section">
             <div class="section_content_wrap">
-              <div class="bold" [innerHTML]="'COMPONENTS.ADD_IDEAS_TO_FOLDER.LBL_FOLDER_INFO' | translate:{name: dialogData.folder.name}"></div>
+              <div class="folder_info_wrap">
+                <div>{{ 'COMPONENTS.ADD_IDEAS_TO_FOLDER.LBL_FOLDER_INFO' | translate }}</div>
+                <div class="folder_wrap">
+                  <div class="icon">
+                    <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M0 2.80078C0 1.69621 0.895431 0.800781 2 0.800781H9.06325C9.65681 0.800781 10.2197 1.06443 10.5997 1.52041L11.4003 2.48115C11.7803 2.93714 12.3432 3.20078 12.9367 3.20078H22C23.1046 3.20078 24 4.09621 24 5.20078V19.2008C24 20.3054 23.1046 21.2008 22 21.2008H2C0.89543 21.2008 0 20.3054 0 19.2008V2.80078Z"
+                        fill="url(#paint0_linear_add_ideas)" />
+                      <path
+                        d="M0 7C0 5.89543 0.895431 5 2 5H22C23.1046 5 24 5.89543 24 7V19.2C24 20.3046 23.1046 21.2 22 21.2H2C0.89543 21.2 0 20.3046 0 19.2V7Z"
+                        fill="url(#paint1_linear_add_ideas)" />
+                      <defs>
+                        <linearGradient id="paint0_linear_add_ideas" x1="12" y1="3.42578" x2="12" y2="13.501"
+                          gradientUnits="userSpaceOnUse">
+                          <stop stop-color="#FFEBA2" />
+                          <stop offset="0.192708" stop-color="#FFD84F" />
+                          <stop offset="0.265625" stop-color="#FFDF6F" />
+                        </linearGradient>
+                        <linearGradient id="paint1_linear_add_ideas" x1="11" y1="5" x2="11" y2="21.2"
+                          gradientUnits="userSpaceOnUse">
+                          <stop offset="0.901042" stop-color="#FFEAA1" />
+                          <stop offset="1" stop-color="#FFDF6F" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div class="bold" [innerHTML]="dialogData.folder.name"></div>
+                </div>
+              </div>
 
               @if (ideas().length > 0) {
                 <div class="bold">{{ 'COMPONENTS.ADD_IDEAS_TO_FOLDER.LBL_IDEAS_SELECTION' | translate }}</div>
@@ -93,6 +121,11 @@ interface IdeationFolderDialogData {
       display: block;
       width: 100%;
       max-width: 600px;
+      @media (max-width: 560px) {
+        width: 100%;
+        max-width: calc(100vw - 32px);
+        margin: 0 auto;
+      }
     }
     .dialog {
       background: white;
@@ -106,6 +139,10 @@ interface IdeationFolderDialogData {
       box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.15);
       position: relative;
       z-index: 1;
+      @media (max-width: 560px) {
+        width: 100%;
+        max-width: calc(100vw - 32px);
+      }
     }
     .dialog_header {
       padding: 24px;
@@ -124,16 +161,72 @@ interface IdeationFolderDialogData {
       flex: 1;
     }
     .bold { font-weight: bold; margin-bottom: 8px; }
+    .folder_info_wrap {
+      margin-bottom: 24px;
+      .folder_wrap {
+        display: flex;
+        align-items: center;
+        background: #F4F6F8;
+        padding: 16px;
+        border-radius: 4px;
+        gap: 16px;
+        margin-top: 8px;
+        .icon { flex-shrink: 0; display: flex; align-items: center; }
+        .bold { margin-bottom: 0; }
+      }
+    }
     .idea_selection_wrap {
+      display: flex;
+      flex-direction: column;
       border: 1px solid var(--color-border);
       border-radius: 4px;
       margin-top: 16px;
+      padding: 16px;
+      max-height: 240px;
+      overflow: auto;
+      gap: 16px;
+    }
+    .line_separator {
+      background: var(--color-border);
+      height: 1px;
+      width: 100%;
     }
     .idea_selection_header {
       display: flex;
       justify-content: space-between;
-      padding: 12px;
-      background: #F4F6F8;
+      align-items: center;
+      width: 100%;
+      .checkbox_wrap {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        cursor: pointer;
+      }
+      .likes_wrap {
+        display: flex;
+        gap: 0;
+        align-items: center;
+      }
+    }
+    .ideas_wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .idea_row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      .checkbox_wrap {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        cursor: pointer;
+        flex: 1;
+      }
+      .statement { flex: 1; margin-right: 16px; font-size: 14px; }
+      .votes { width: 40px; color: #727C84; font-size: 14px; text-align: right; }
     }
     .checkbox_wrap {
       display: flex;
@@ -155,15 +248,6 @@ interface IdeationFolderDialogData {
         .checkmark { display: block; }
       }
     }
-    .idea_row {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px;
-      border-top: 1px solid var(--color-border);
-      align-items: flex-start;
-      .statement { flex: 1; margin-right: 16px; font-size: 14px; }
-      .votes { color: #727C84; font-size: 14px; }
-    }
     .dialog_footer {
       padding: 24px;
       display: flex;
@@ -171,7 +255,14 @@ interface IdeationFolderDialogData {
       align-items: center;
       gap: 24px;
       border-top: 1px solid var(--color-border);
-      a { cursor: pointer; color: var(--color-ideation); }
+      a, .btn_link {
+        cursor: pointer;
+        color: var(--color-ideation);
+        background: transparent;
+        border: none;
+        font-weight: bold;
+        font-size: 16px;
+      }
     }
     .btn_big_submit {
       background: var(--color-ideation);
@@ -180,6 +271,7 @@ interface IdeationFolderDialogData {
       padding: 12px 24px;
       border-radius: 4px;
       font-weight: bold;
+      font-size: 16px;
       cursor: pointer;
       &:disabled { opacity: 0.5; cursor: not-allowed; }
     }
@@ -200,6 +292,14 @@ export class AddIdeasToFolderComponent {
     const currentIdeas = this.ideas();
     return currentIdeas.length > 0 && this.selectedIdeaIds().size === currentIdeas.length;
   });
+
+  ideasSelected = computed(() => {
+    return Array.from(this.selectedIdeaIds()).filter(id => !this.initialIdeaIds.has(id));
+  });
+
+  get ideasToRemove(): string[] {
+    return Array.from(this.initialIdeaIds).filter(id => !this.selectedIdeaIds().has(id));
+  }
 
   constructor() {
     this.loadData();
@@ -254,14 +354,18 @@ export class AddIdeasToFolderComponent {
   }
 
   addIdeas() {
+    const ideasToAdd = this.ideasSelected();
+    const ideasToRemove = this.ideasToRemove;
+
+    if (!ideasToAdd.length && !ideasToRemove.length) {
+      this.dialogRef.close(false);
+      return;
+    }
+
     this.loading.set(true);
     const topicId = this.dialogData.topicId;
     const ideationId = this.dialogData.ideationId;
     const folderId = this.dialogData.folder.id;
-
-    const currentSelected = this.selectedIdeaIds();
-    const ideasToAdd = Array.from(currentSelected).filter(id => !this.initialIdeaIds.has(id));
-    const ideasToRemove = Array.from(this.initialIdeaIds).filter(id => !currentSelected.has(id));
 
     const actions: Observable<unknown>[] = [];
     if (ideasToAdd.length > 0) {
@@ -271,16 +375,17 @@ export class AddIdeasToFolderComponent {
       actions.push(this.ideationService.removeIdeaFromFolder({ topicId, ideationId, folderId, ideaId }));
     });
 
-    if (actions.length > 0) {
-      forkJoin(actions).pipe(take(1)).subscribe({
-        next: () => this.dialogRef.close(true),
-        error: (err) => {
-          console.error('Error syncing folder ideas', err);
-          this.loading.set(false);
-        }
-      });
-    } else {
-      this.dialogRef.close(false);
-    }
+    forkJoin(actions).pipe(take(1)).subscribe({
+      next: () => this.dialogRef.close(true),
+      error: (err) => {
+        console.error('Error syncing folder ideas', err);
+        this.loading.set(false);
+        this.dialogRef.close(true);
+      }
+    });
+  }
+
+  createFolder() {
+    this.addIdeas();
   }
 }

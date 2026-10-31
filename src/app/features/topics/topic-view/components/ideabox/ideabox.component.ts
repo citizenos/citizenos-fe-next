@@ -180,12 +180,17 @@ export class IdeaboxComponent {
     });
   }
 
-  addToFolder() {
-    this.dialogService.open(AddIdeaFolderComponent, {
+  addToFolder(): void {
+    const dialogRef = this.dialogService.open(AddIdeaFolderComponent, {
       data: {
+        idea: this.idea(),
         topicId: this.topic().id,
-        ideationId: this.ideation().id,
-        idea: this.idea()
+        ideationId: this.ideation().id
+      }
+    });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((result) => {
+      if (result) {
+        this.ideaUpdated.emit(this.idea());
       }
     });
   }

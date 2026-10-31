@@ -111,4 +111,28 @@ describe('AddIdeasToFolderComponent', () => {
     component.addIdeas();
     expect(mockDialogRef.close).toHaveBeenCalledWith(false);
   });
+
+  it('should handle combined add and remove ideas', () => {
+    component.toggleIdea({ id: 'idea1' } as Idea);
+    component.toggleIdea({ id: 'idea2' } as Idea);
+    component.addIdeas();
+
+    expect(mockIdeationService.addIdeaToFolder).toHaveBeenCalledWith(
+      expect.anything(),
+      ['idea2']
+    );
+    expect(mockIdeationService.removeIdeaFromFolder).toHaveBeenCalledWith({
+      topicId: 'topic1',
+      ideationId: 'ideation1',
+      folderId: 'folder1',
+      ideaId: 'idea1'
+    });
+    expect(mockDialogRef.close).toHaveBeenCalledWith(true);
+  });
+
+  it('should delegate createFolder to addIdeas', () => {
+    const addIdeasSpy = vi.spyOn(component, 'addIdeas');
+    component.createFolder();
+    expect(addIdeasSpy).toHaveBeenCalled();
+  });
 });
