@@ -173,4 +173,15 @@ describe('IdeaboxComponent', () => {
     expect(mockDialogService.open).toHaveBeenCalled();
     expect(emitSpy).not.toHaveBeenCalled();
   });
+
+  it('goToView(true) navigates to idea route with reply: true query param', () => {
+    const comp = makeComp();
+    const router = TestBed.inject(Router);
+    const navSpy = vi.spyOn(router, 'navigate');
+    comp.goToView(true);
+    expect(navSpy).toHaveBeenCalledWith(
+      expect.arrayContaining(['topics', 't1', 'ideation', 'i1', 'ideas', 'idea1']),
+      expect.objectContaining({ queryParams: { reply: true } })
+    );
+  });
 });

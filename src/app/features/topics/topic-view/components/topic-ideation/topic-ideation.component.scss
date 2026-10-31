@@ -24,6 +24,18 @@
   @include mixins.mobile {
     grid-template-columns: 1fr;
     gap: figma.$spacing-m;
+    justify-items: center;
+  }
+}
+
+.ideas_section,
+.ideabox_wrap {
+  @include mixins.mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
 }
 

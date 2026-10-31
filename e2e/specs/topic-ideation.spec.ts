@@ -53,6 +53,7 @@ interface SetupMocksOptions {
   ideation?: Record<string, any>;
   initialIdeas?: any[];
   initialFolders?: any[];
+  initialReplies?: any[];
 }
 
 async function setupTopicIdeationRoutes(page: Page, options: SetupMocksOptions = {}) {
@@ -60,6 +61,7 @@ async function setupTopicIdeationRoutes(page: Page, options: SetupMocksOptions =
   const currentIdeation = { ...defaultMockIdeation, ...options.ideation };
   const ideasList = options.initialIdeas ? [...options.initialIdeas] : [...defaultInitialIdeas];
   const foldersList = options.initialFolders ? [...options.initialFolders] : [];
+  const repliesList = options.initialReplies ? [...options.initialReplies] : [];
 
   await page.addInitScript(() => {
     localStorage.setItem('show-topic-tour', 'true');
@@ -141,6 +143,80 @@ async function setupTopicIdeationRoutes(page: Page, options: SetupMocksOptions =
         body: JSON.stringify({
           status: { code: 20000, message: 'Success' },
           data: { rows: resultIdeas, count: resultIdeas.length },
+        }),
+      });
+    }
+  });
+
+  // Intercept single idea details endpoint (GET)
+  await page.route(new RegExp(`/api/(users/self/)?topics/${topicId}/ideations/${ideationId}/ideas/([a-zA-Z0-9_-]+)(\\?.*)?$`), async (routeHandler) => {
+    const url = routeHandler.request().url();
+    const match = url.match(new RegExp(`/ideas/([a-zA-Z0-9_-]+)`));
+    const targetIdeaId = match ? match[1] : '';
+    const idea = ideasList.find((i) => i.id === targetIdeaId) || ideasList[0];
+    if (idea) {
+      await routeHandler.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ status: { code: 20000, message: 'Success' }, data: idea }),
+      });
+    } else {
+      await routeHandler.fulfill({
+        status: 404,
+        contentType: 'application/json',
+        body: JSON.stringify({ status: { code: 40401, message: 'Idea not found' } }),
+      });
+    }
+  });
+
+  // Intercept idea folders endpoint (GET)
+  await page.route(new RegExp(`/api/(users/self/)?topics/${topicId}/ideations/${ideationId}/ideas/([^/?#]+)/folders(\\?.*)?$`), async (routeHandler) => {
+    await routeHandler.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ status: { code: 20000, message: 'Success' }, data: { rows: [], count: 0 } }),
+    });
+  });
+
+  // Intercept idea attachments endpoint (GET)
+  await page.route(new RegExp(`/api/(users/self/)?topics/${topicId}/ideations/${ideationId}/ideas/([^/?#]+)/attachments(\\?.*)?$`), async (routeHandler) => {
+    await routeHandler.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ status: { code: 20000, message: 'Success' }, data: { rows: [], count: 0 } }),
+    });
+  });
+
+  // Intercept idea comments (replies) endpoint (GET and POST)
+  await page.route(new RegExp(`/api/(users/self/)?topics/${topicId}/ideations/${ideationId}/ideas/([^/?#]+)/comments(\\?.*)?$`), async (routeHandler) => {
+    if (routeHandler.request().method() === 'POST') {
+      const postData = routeHandler.request().postDataJSON() || {};
+      const newComment = {
+        id: `reply-${Date.now()}`,
+        topicId,
+        ideationId,
+        ideaId: postData.ideaId || 'idea-init-1',
+        parentId: postData.parentId || null,
+        text: postData.text || '',
+        creator: { id: 'user-admin', name: 'Admin Coordinator' },
+        author: { id: 'user-admin', name: 'Admin Coordinator' },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        votes: { up: { count: 0, selected: false }, down: { count: 0, selected: false } },
+      };
+      repliesList.push(newComment);
+      await routeHandler.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ status: { code: 20000, message: 'Success' }, data: newComment }),
+      });
+    } else {
+      await routeHandler.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          status: { code: 20000, message: 'Success' },
+          data: { rows: repliesList, count: repliesList.length },
         }),
       });
     }
@@ -841,5 +917,192 @@ test.describe('Topic Ideation - Folders & Ideas in Folder Flow', () => {
     await expect(page.locator('.folder_data_wrap')).not.toBeVisible();
     await expect(page.locator('.folders_wrap .folder_row.row_header')).toBeVisible();
     await expect(page.locator('.folders_wrap .folder_row:not(.row_header)').filter({ hasText: 'Municipal Solar Initiatives' })).toBeVisible();
+  });
+});
+
+test.describe('Topic Ideation - Mobile Idea View, Collapsible Replies, Reply Actions & Ideabox Mobile Parity', () => {
+  test('should verify mobile ideabox dimensions, opening idea dialog, dual footer pills, collapsible replies, floating circular header, and reply kebab menu', async ({ page }) => {
+    const mobileMockIdea1 = {
+      id: 'idea-mobile-1',
+      topicId,
+      ideationId,
+      statement: 'Community Solar Cooperative',
+      description: 'Establish a local cooperative to fund and install distributed solar systems.',
+      status: 'published',
+      author: { id: 'user-admin', name: 'Admin Coordinator' },
+      votes: { up: { count: 5, selected: false }, down: { count: 0, selected: false }, count: 5 },
+      replies: { count: 2, rows: [] },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const mobileMockIdea2 = {
+      id: 'idea-mobile-2',
+      topicId,
+      ideationId,
+      statement: 'Neighborhood Heat Pumps',
+      description: 'Shared ground-source heat pump network for district heating.',
+      status: 'published',
+      author: { id: 'user-admin', name: 'Admin Coordinator' },
+      votes: { up: { count: 3, selected: false }, down: { count: 0, selected: false }, count: 3 },
+      replies: { count: 0, rows: [] },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const mobileMockReplies = [
+      {
+        id: 'reply-root-1',
+        topicId,
+        ideationId,
+        ideaId: 'idea-mobile-1',
+        text: 'Can we also include battery storage for nighttime power?',
+        creator: { id: 'user-admin', name: 'Admin Coordinator' },
+        author: { id: 'user-admin', name: 'Admin Coordinator' },
+        createdAt: new Date().toISOString(),
+        votes: { up: { count: 3, selected: false }, down: { count: 0, selected: false } },
+        replies: { count: 1, rows: [] },
+      },
+      {
+        id: 'reply-child-1',
+        topicId,
+        ideationId,
+        ideaId: 'idea-mobile-1',
+        parentId: 'reply-root-1',
+        parent: {
+          id: 'reply-root-1',
+          creator: { name: 'Admin Coordinator' },
+          author: { name: 'Admin Coordinator' },
+        },
+        text: 'Yes, battery storage is factored into phase 2 of the roadmap.',
+        creator: { id: 'user-citizen', name: 'Citizen Planner' },
+        author: { id: 'user-citizen', name: 'Citizen Planner' },
+        createdAt: new Date().toISOString(),
+        votes: { up: { count: 1, selected: false }, down: { count: 0, selected: false } },
+        replies: { count: 0, rows: [] },
+      },
+    ];
+
+    // 1. Set mobile viewport (375 x 812)
+    await page.setViewportSize({ width: 375, height: 812 });
+
+    await setupTopicIdeationRoutes(page, {
+      initialIdeas: [mobileMockIdea1, mobileMockIdea2],
+      initialReplies: mobileMockReplies,
+    });
+
+    // 2. Verify mobile ideabox card dimensions (288px width, 244px height)
+    const ideaCard = page.locator('.ideas_wrap app-ideabox .idea').filter({ hasText: 'Community Solar Cooperative' });
+    await expect(ideaCard).toBeVisible();
+    await expect(ideaCard).toHaveCSS('width', '288px');
+    await expect(ideaCard).toHaveCSS('height', '244px');
+
+    // 3. Open Idea Dialog by clicking the ideabox card
+    await ideaCard.click();
+
+    const ideaDialog = page.locator('app-idea-dialog, .dialog.idea_dialog');
+    await expect(ideaDialog).toBeVisible();
+    await expect(ideaDialog.locator('.statement')).toContainText('Community Solar Cooperative');
+
+    // 4. Verify floating circular header buttons (.mobile_buttons.mobile_show) and hidden desktop navigation
+    const mobileHeaderButtons = ideaDialog.locator('.mobile_buttons.mobile_show');
+    await expect(mobileHeaderButtons).toBeVisible();
+    const closeBtn = mobileHeaderButtons.locator('#close_button');
+    await expect(closeBtn).toBeVisible();
+    await expect(ideaDialog.locator('.desktop_nav')).not.toBeVisible();
+
+    // With multiple ideas, mobile prev & next circular buttons are present
+    const prevBtn = mobileHeaderButtons.locator('.mobile_buttons_left button').first();
+    const nextBtn = mobileHeaderButtons.locator('.mobile_buttons_left button').last();
+    await expect(prevBtn).toBeVisible();
+    await expect(nextBtn).toBeVisible();
+
+    // 5. Verify dual footer pill buttons (.btn_replies_toggle and .btn_reply inside .buttons_wrap.mobile_show)
+    const footerButtonsWrap = ideaDialog.locator('.idea_footer .buttons_wrap.mobile_show');
+    await expect(footerButtonsWrap).toBeVisible();
+
+    const toggleRepliesBtn = footerButtonsWrap.locator('cos-button.btn_replies_toggle');
+    const footerReplyBtn = footerButtonsWrap.locator('cos-button.btn_reply');
+    await expect(toggleRepliesBtn).toBeVisible();
+    await expect(footerReplyBtn).toBeVisible();
+
+    // 6. Verify collapsible .idea_content_replies (.mobile_hidden toggled when clicking Show/Hide replies)
+    const repliesSection = ideaDialog.locator('.idea_content_replies');
+    // Initially replies section is collapsed with .mobile_hidden
+    await expect(repliesSection).toHaveClass(/mobile_hidden/);
+    await expect(toggleRepliesBtn).toContainText(/Show replies/i);
+
+    // Expand replies
+    await toggleRepliesBtn.click();
+    await expect(repliesSection).not.toHaveClass(/mobile_hidden/);
+    await expect(repliesSection).toBeVisible();
+    await expect(toggleRepliesBtn).toContainText(/Hide replies/i);
+
+    // Collapse replies
+    await toggleRepliesBtn.click();
+    await expect(repliesSection).toHaveClass(/mobile_hidden/);
+    await expect(toggleRepliesBtn).toContainText(/Show replies/i);
+
+    // Expand replies again for subsequent tests
+    await toggleRepliesBtn.click();
+    await expect(repliesSection).not.toHaveClass(/mobile_hidden/);
+    await expect(repliesSection).toBeVisible();
+
+    // 7. Verify mobile idea-reply kebab button (.btn_argument_actions.mobile_show)
+    const rootReply = repliesSection.locator('app-idea-reply').filter({ hasText: 'Can we also include battery storage' });
+    await expect(rootReply).toBeVisible();
+
+    const kebabBtn = rootReply.locator('.btn_argument_actions.mobile_show');
+    await expect(kebabBtn).toBeVisible();
+    await expect(rootReply.locator('.dropdown.button_dropdown.mobile_hidden')).not.toBeVisible();
+
+    // 8. Click kebab button to toggle .mobile_actions_wrap.mobile_show bottom-sheet menu
+    await kebabBtn.click();
+
+    const bottomSheet = page.locator('.mobile_actions_wrap.mobile_show');
+    await expect(bottomSheet).toBeVisible();
+    await expect(bottomSheet).toHaveClass(/show/);
+    await expect(bottomSheet.locator('.heading_wrap')).toContainText(/Actions/i);
+
+    // Close bottom-sheet menu via mobile close button
+    const closeBottomSheetBtn = bottomSheet.locator('#close_mobile button');
+    await expect(closeBottomSheetBtn).toBeVisible();
+    await closeBottomSheetBtn.click();
+    await expect(bottomSheet).not.toBeVisible();
+
+    // 9. Expand child reply to verify recipient mention (.recipient_mention)
+    const showChildRepliesBtn = rootReply.locator('button.btn_ghost_reply_argument');
+    await expect(showChildRepliesBtn).toBeVisible();
+    await showChildRepliesBtn.click();
+
+    const childReply = rootReply.locator('app-idea-reply').filter({ hasText: 'Yes, battery storage is factored into phase 2' });
+    await expect(childReply).toBeVisible();
+
+    const recipientMention = childReply.locator('.recipient_mention');
+    await expect(recipientMention).toBeVisible();
+    await expect(recipientMention).toContainText('Admin Coordinator');
+
+    // 10. Click reply button on argument to verify reply form header (idea-reply-form)
+    const replyArgBtn = rootReply.locator('button.btn_reply_argument');
+    await expect(replyArgBtn).toBeVisible();
+    await replyArgBtn.click();
+
+    const replyForm = rootReply.locator('app-idea-reply-form');
+    await expect(replyForm).toBeVisible();
+    const replyFormHeading = replyForm.locator('.heading');
+    await expect(replyFormHeading).toBeVisible();
+    await expect(replyFormHeading).toContainText('Admin Coordinator');
+    await expect(replyFormHeading).toContainText(/Add your reply|Reply/i);
+
+    // Close reply form
+    const closeFormBtn = replyForm.locator('button.close_button');
+    await expect(closeFormBtn).toBeVisible();
+    await closeFormBtn.click();
+    await expect(replyForm).not.toBeVisible();
+
+    // 11. Close Idea Dialog via floating circular header close button
+    await closeBtn.click();
+    await expect(ideaDialog).not.toBeVisible();
+    await expect(ideaCard).toBeVisible();
   });
 });

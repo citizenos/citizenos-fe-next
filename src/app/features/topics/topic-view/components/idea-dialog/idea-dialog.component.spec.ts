@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -69,8 +70,12 @@ const dialogServiceMock = { open: vi.fn().mockReturnValue({ afterClosed: () => o
 const unauthUserStore = { isAuthenticated: () => false, user: () => null };
 const authUserStore = { isAuthenticated: () => true, user: () => ({ id: 'user-1', name: 'Alice' }) };
 import { NotificationService } from '../../../../../core/services/notification.service';
+import { AuthDialogService } from '../../../../../core/services/auth-dialog.service';
 
 const notificationServiceMock = { show: vi.fn() };
+const authDialogMock = {
+  openLogin: vi.fn().mockReturnValue({ afterClosed: () => of(null) }),
+};
 
 function createFixture(
   overrides: { idea?: Partial<Idea>; userStore?: object; showReplies?: boolean } = {}
@@ -86,6 +91,7 @@ function createFixture(
       { provide: IdeaAttachmentService, useValue: attachmentServiceMock },
       { provide: DialogService, useValue: dialogServiceMock },
       { provide: NotificationService, useValue: notificationServiceMock },
+      { provide: AuthDialogService, useValue: authDialogMock },
       { provide: UserStore, useValue: overrides.userStore ?? unauthUserStore },
       provideRouter([{ path: '**', component: EmptyComponent }]),
     ],
@@ -332,5 +338,98 @@ describe('IdeaDialogComponent', () => {
     fixture.componentInstance.copyIdeaLink();
     expect(writeTextSpy).toHaveBeenCalled();
     expect(notificationServiceMock.show).toHaveBeenCalledWith('info', 'VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_COPIED');
+  });
+
+  it('replyIdea(true) sets showReply to true and showReplies to true when user is authenticated', () => {
+    const fixture = createFixture({ userStore: authUserStore });
+    expect(fixture.componentInstance.showReply()).toBe(false);
+    expect(fixture.componentInstance.showReplies()).toBe(false);
+
+    fixture.componentInstance.replyIdea(true);
+    expect(fixture.componentInstance.showReply()).toBe(true);
+    expect(fixture.componentInstance.showReplies()).toBe(true);
+  });
+
+  it('replyIdea(false) sets showReply to false', () => {
+    const fixture = createFixture({ userStore: authUserStore });
+    fixture.componentInstance.replyIdea(true);
+    expect(fixture.componentInstance.showReply()).toBe(true);
+
+    fixture.componentInstance.replyIdea(false);
+    expect(fixture.componentInstance.showReply()).toBe(false);
+  });
+
+  it('replyIdea() opens login dialog when user is unauthenticated and activates replies on success', () => {
+    authDialogMock.openLogin.mockReturnValueOnce({ afterClosed: () => of(true) });
+    const fixture = createFixture({ userStore: unauthUserStore });
+    fixture.componentInstance.replyIdea(true);
+    expect(authDialogMock.openLogin).toHaveBeenCalled();
+    expect(fixture.componentInstance.showReply()).toBe(true);
+    expect(fixture.componentInstance.showReplies()).toBe(true);
+  });
+
+  it('showReplies signal toggles correctly and updates mobile_hidden class on replies section', () => {
+    const fixture = createFixture();
+    fixture.detectChanges();
+
+    const repliesEl = fixture.nativeElement.querySelector('.idea_content_replies');
+    expect(repliesEl).toBeTruthy();
+    expect(fixture.componentInstance.showReplies()).toBe(false);
+    expect(repliesEl.classList.contains('mobile_hidden')).toBe(true);
+
+    fixture.componentInstance.showReplies.set(true);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.showReplies()).toBe(true);
+    expect(repliesEl.classList.contains('mobile_hidden')).toBe(false);
+
+    fixture.componentInstance.showReplies.set(false);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.showReplies()).toBe(false);
+    expect(repliesEl.classList.contains('mobile_hidden')).toBe(true);
+  });
+
+  it('renders dual mobile footer buttons when replyCount > 0 and disableReplies is false', () => {
+    ideationServiceMock.getIdeaComments.mockReturnValue(of({ count: 3, rows: [] }));
+    const fixture = createFixture({ userStore: authUserStore });
+    fixture.detectChanges();
+
+    const toggleBtnDe = fixture.debugElement.query(By.css('.btn_replies_toggle'));
+    const replyBtnDe = fixture.debugElement.query(By.css('.btn_reply'));
+    expect(toggleBtnDe).toBeTruthy();
+    expect(replyBtnDe).toBeTruthy();
+    expect(toggleBtnDe.nativeElement.textContent).toContain('COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES');
+
+    // Toggle replies via button clicked output
+    toggleBtnDe.triggerEventHandler('clicked', null);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.showReplies()).toBe(true);
+    expect(toggleBtnDe.nativeElement.textContent).toContain('COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES');
+
+    // Clicking reply button calls replyIdea
+    const replySpy = vi.spyOn(fixture.componentInstance, 'replyIdea');
+    replyBtnDe.triggerEventHandler('clicked', null);
+    expect(replySpy).toHaveBeenCalledWith(true);
+  });
+
+  it('does not render show replies toggle button when replyCount is 0', () => {
+    ideationServiceMock.getIdeaComments.mockReturnValue(of({ count: 0, rows: [] }));
+    const fixture = createFixture({ userStore: authUserStore });
+    fixture.detectChanges();
+
+    const toggleBtn = fixture.nativeElement.querySelector('.btn_replies_toggle');
+    expect(toggleBtn).toBeFalsy();
+    const replyBtn = fixture.nativeElement.querySelector('.btn_reply');
+    expect(replyBtn).toBeTruthy();
+  });
+
+  it('renders author info with name and date stacked in header and hides duplicate footer date on mobile', () => {
+    const fixture = createFixture();
+    const authorInfo = fixture.nativeElement.querySelector('.author_info');
+    expect(authorInfo).toBeTruthy();
+    expect(authorInfo.querySelector('.name')).toBeTruthy();
+    expect(authorInfo.querySelector('.date')).toBeTruthy();
+
+    const footerDate = fixture.nativeElement.querySelector('.footer_date');
+    expect(footerDate.classList.contains('mobile_hidden')).toBe(true);
   });
 });

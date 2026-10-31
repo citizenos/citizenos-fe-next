@@ -1,4 +1,4 @@
-<div class="dialog" cdkTrapFocus [cdkTrapFocusAutoCapture]="true" role="dialog" aria-modal="true">
+<div class="dialog idea_dialog" cdkTrapFocus [cdkTrapFocusAutoCapture]="true" role="dialog" aria-modal="true">
   <!-- Mobile navigation row -->
   <div class="mobile_buttons mobile_show">
     <div class="mobile_buttons_left">
@@ -81,13 +81,13 @@
                     </div>
                   }
                 </div>
-                <div class="name_wrap">
+                <div class="name_wrap author_info">
                   <div class="name" [innerHTML]="idea().author!.name"></div>
                   <div class="date">{{ idea().createdAt | date: 'y-MM-dd HH:mm' }}</div>
                 </div>
                 <div class="vertical_line_separator"></div>
               } @else {
-                <div class="name_wrap">
+                <div class="name_wrap author_info">
                   <div class="name" [innerHTML]="'COMPONENTS.IDEABOX.IDEA_NUMBER' | translate:{ number: ideaNumber() }"></div>
                   <div class="date">{{ idea().createdAt | date: 'y-MM-dd HH:mm' }}</div>
                 </div>
@@ -283,11 +283,20 @@
               </a>
             </div>
 
-            <div class="footer_date">{{ idea().createdAt | date: 'y-MM-dd HH:mm' }}</div>
+            <div class="footer_date mobile_hidden">{{ idea().createdAt | date: 'y-MM-dd HH:mm' }}</div>
 
             <div class="buttons_wrap mobile_show">
-              @if (!showReply() && canReply()) {
-                <cos-button variant="primary" size="sm" [isDisabled]="!!idea().deletedAt" (clicked)="showReply.set(true)">
+              @if (replyCount() > 0) {
+                <cos-button variant="ghost" size="sm" class="btn_replies_toggle btn_ghost_reply_idea" (clicked)="showReplies.set(!showReplies())">
+                  @if (!showReplies()) {
+                    <span>{{ 'COMPONENTS.ARGUMENT.LNK_SHOW_REPLIES' | translate:{ count: replyCount() } }}</span>
+                  } @else {
+                    <span translate="COMPONENTS.ARGUMENT.LNK_HIDE_REPLIES"></span>
+                  }
+                </cos-button>
+              }
+              @if (!ideation().disableReplies) {
+                <cos-button variant="primary" size="sm" class="btn_reply btn_small_submit" [isDisabled]="!!idea().deletedAt" (clicked)="replyIdea(true)">
                   <span translate="COMPONENTS.IDEA_DIALOG.BTN_REPLY"></span>
                 </cos-button>
               }
@@ -296,11 +305,11 @@
         </div>
 
         <!-- Replies section directly below idea in single vertical stream -->
-        <div class="idea_content_replies" [hidden]="showEdit()">
+        <div class="idea_content_replies" [class.mobile_hidden]="!showReplies()" [hidden]="showEdit()">
           <div class="replies_header_row">
             <span class="replies_title">{{ 'COMPONENTS.ARGUMENT.HEADING_REPLIES' | translate:{ count: replyCount() } }}</span>
-            @if (!showReply() && canReply()) {
-              <cos-button variant="primary" size="sm" [isDisabled]="!!idea().deletedAt" (clicked)="showReply.set(true)">
+            @if (!showReply() && !ideation().disableReplies) {
+              <cos-button variant="primary" size="sm" [isDisabled]="!!idea().deletedAt" (clicked)="replyIdea(true)">
                 <span translate="COMPONENTS.IDEA_DIALOG.BTN_REPLY"></span>
               </cos-button>
             }

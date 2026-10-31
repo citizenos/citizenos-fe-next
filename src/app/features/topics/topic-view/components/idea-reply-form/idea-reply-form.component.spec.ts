@@ -8,20 +8,8 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { Router, ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { Component, Input } from '@angular/core';
-import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { IdeaComment } from '../../../../../core/interfaces/ideation';
-
-@Component({
-  selector: 'cos-icon',
-  standalone: true,
-  template: ''
-})
-class MockIconComponent {
-  @Input() name = '';
-  @Input() size: number | string = 24;
-}
 
 describe('IdeaReplyFormComponent', () => {
   let mockIdeationService: {
@@ -60,12 +48,7 @@ describe('IdeaReplyFormComponent', () => {
           useValue: { queryParams: of({}) }
         }
       ]
-    })
-    .overrideComponent(IdeaReplyFormComponent, {
-        remove: { imports: [IconComponent] },
-        add: { imports: [MockIconComponent] }
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   const createComponent = async (inputs: { topicId?: string; ideationId?: string; ideaId?: string; editMode?: boolean; argument?: Partial<IdeaComment> } = {}) => {
@@ -104,6 +87,65 @@ describe('IdeaReplyFormComponent', () => {
     expect(component.replyForm.text().invalid()).toBe(false);
   });
 
+  it('should display header with recipient name when replying to an author', async () => {
+    const { fixture } = await createComponent({
+      argument: {
+        id: 'arg1',
+        creator: { id: 'c1', name: 'Margo Loor' },
+        text: 'Parent comment'
+      }
+    });
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const headingEl = compiled.querySelector('.heading');
+    expect(headingEl).toBeTruthy();
+    expect(headingEl?.textContent).toContain('Margo Loor');
+  });
+
+  it('should display default header when argument has no creator', async () => {
+    const { fixture } = await createComponent({
+      argument: {
+        id: 'arg1',
+        text: 'Parent comment without author'
+      }
+    });
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const headingEl = compiled.querySelector('.heading');
+    expect(headingEl).toBeTruthy();
+    expect(headingEl?.textContent).toContain('COMPONENTS.IDEA_REPLY_FORM.HEADING');
+  });
+
+  it('should render circular close button (btn_close_circle) and emit showReplyChange on click', async () => {
+    const { component, fixture } = await createComponent();
+    const emitSpy = vi.spyOn(component.showReplyChange, 'emit');
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const closeBtn = compiled.querySelector('button.btn_close_circle') as HTMLButtonElement;
+    expect(closeBtn).toBeTruthy();
+
+    closeBtn.click();
+    expect(emitSpy).toHaveBeenCalledWith(false);
+  });
+
+  it('should render dark pill submit button (btn_submit_reply) and be disabled when text is empty', async () => {
+    const { component, fixture } = await createComponent();
+    component.replyModel.update(m => ({ ...m, text: '' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const submitBtn = compiled.querySelector('button.btn_submit_reply') as HTMLButtonElement;
+    expect(submitBtn).toBeTruthy();
+    expect(submitBtn.disabled).toBe(true);
+
+    component.replyModel.update(m => ({ ...m, text: 'Valid reply text' }));
+    fixture.detectChanges();
+    TestBed.flushEffects();
+
+    expect(submitBtn.disabled).toBe(false);
+  });
+
   it('should call saveIdeaComment on save when in post mode', async () => {
     const { component, fixture } = await createComponent();
     component.replyModel.update(m => ({ ...m, text: 'Test reply' }));
@@ -116,13 +158,12 @@ describe('IdeaReplyFormComponent', () => {
 
   it('should call updateIdeaComment on save when in edit mode', async () => {
     const { component, fixture } = await createComponent({
-        editMode: true,
-        argument: { id: 'arg1', text: 'Old text' }
+      editMode: true,
+      argument: { id: 'arg1', text: 'Old text' }
     });
     
-    // Check if signals are actually set
     if (component.editMode() && component.argument()) {
-        TestBed.flushEffects();
+      TestBed.flushEffects();
     }
     fixture.detectChanges();
 

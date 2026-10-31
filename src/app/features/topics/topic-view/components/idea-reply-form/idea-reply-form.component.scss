@@ -16,15 +16,72 @@
     left: 0;
   }
 }
+
+.heading {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  color: #2C3B47;
+  margin-bottom: 4px;
+}
+
 .buttons_wrap {
   display: flex;
   align-items: center;
   width: 100%;
   justify-content: space-between;
+  margin-top: 8px;
 
-  .close_button {
-    svg path {
-      fill: tokens.$color-text-secondary;
+  .close_button.btn_close_circle {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    border: 1.5px solid #2C3B47;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: rgba(44, 59, 71, 0.08);
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      path {
+        fill: #2C3B47;
+      }
+    }
+  }
+
+  .btn_submit_reply {
+    background-color: #2C3B47;
+    color: #FFFFFF;
+    border-radius: 9999px;
+    height: 36px;
+    padding: 8px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease, opacity 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background-color: #1E293B;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
 }
@@ -36,6 +93,13 @@ form {
 }
 
 .error_label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  color: tokens.$color-error;
+  font-size: tokens.$font-size-xs;
+
   svg path {
     fill: tokens.$color-error;
   }
@@ -56,5 +120,9 @@ textarea.gray_borders {
 
   &:focus {
     border-color: var(--color-primary, #{tokens.$color-primary});
+  }
+
+  &::placeholder {
+    color: #94A3B8;
   }
 }

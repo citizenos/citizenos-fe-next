@@ -1,4 +1,4 @@
-import { Component, inject, signal, output, ChangeDetectionStrategy, effect, model } from '@angular/core';
+import { Component, inject, signal, computed, output, ChangeDetectionStrategy, effect, model } from '@angular/core';
 import { form, FormRoot, FormField, required, maxLength } from '@angular/forms/signals';
 import { TranslateModule } from '@ngx-translate/core';
 import { IdeaComment } from '../../../../../core/interfaces/ideation';
@@ -7,16 +7,13 @@ import { UserStore } from '../../../../../core/state/user.store';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ButtonComponent } from '../../../../../shared/components/button/button.component';
-
 @Component({
   selector: 'app-idea-reply-form',
   standalone: true,
   imports: [
     TranslateModule,
     FormRoot,
-    FormField,
-    ButtonComponent
+    FormField
   ],
   templateUrl: './idea-reply-form.component.html',
   styleUrls: ['./idea-reply-form.component.scss'],
@@ -40,15 +37,21 @@ export class IdeaReplyFormComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  COMMENT_TYPES_MAXLENGTH = this.ideationService.COMMENT_TYPES_MAXLENGTH;
+  COMMENT_TYPES_MAXLENGTH = this.ideationService.COMMENT_TYPES_MAXLENGTH || { reply: 2048 };
 
   replyModel = signal({ text: '' });
   replyForm = form(this.replyModel, (path) => {
     required(path.text);
-    maxLength(path.text, this.COMMENT_TYPES_MAXLENGTH.reply);
+    maxLength(path.text, this.COMMENT_TYPES_MAXLENGTH?.reply || 2048);
   });
 
   errors = signal<Record<string, string[]>>({});
+
+  recipientName = computed(() => {
+    const arg = this.argument();
+    const creator = arg?.creator || arg?.author;
+    return creator?.name || '';
+  });
 
   constructor() {
     effect(() => {
@@ -58,8 +61,6 @@ export class IdeaReplyFormComponent {
       }
     });
   }
-
-
 
   save() {
     if (this.replyForm().invalid()) return;

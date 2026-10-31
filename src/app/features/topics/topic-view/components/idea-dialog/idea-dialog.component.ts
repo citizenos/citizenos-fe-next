@@ -232,6 +232,25 @@ export class IdeaDialogComponent implements OnInit {
     return this.topic().status === this.topicService.STATUSES.ideation && !this.ideation().disableReplies && this.userStore.isAuthenticated();
   }
 
+  replyIdea(show = true) {
+    if (!this.userStore.isAuthenticated()) {
+      const dialogRef = this.authDialog.openLogin(this.router.url);
+      dialogRef.afterClosed().pipe(take(1)).subscribe((success) => {
+        if (success || this.userStore.isAuthenticated()) {
+          this.showReply.set(show);
+          if (show) {
+            this.showReplies.set(true);
+          }
+        }
+      });
+      return;
+    }
+    this.showReply.set(show);
+    if (show) {
+      this.showReplies.set(true);
+    }
+  }
+
   canVote() {
     return this.topic().status === this.topicService.STATUSES.ideation;
   }
