@@ -131,6 +131,18 @@ describe('AddIdeaComponent', () => {
       expect(comp.isOpen()).toBe(true);
       expect(comp.description()).toBe('Auth template');
     });
+
+    it('does not overwrite existing description with template on isOpen if user already entered text', () => {
+      const comp = makeComp({ template: 'Default template' });
+      comp.ideaForm.patchValue({ description: 'My existing user description' });
+      comp.description.set('My existing user description');
+
+      comp.isOpen.set(true);
+      TestBed.flushEffects();
+
+      expect(comp.description()).toBe('My existing user description');
+      expect(comp.ideaForm.get('description')?.value).toBe('My existing user description');
+    });
   });
 
   describe('Demographics Validation and Error Messages', () => {
@@ -199,6 +211,27 @@ describe('AddIdeaComponent', () => {
       expect(comp.filtersData()['gender'].error).toBe(false);
       expect(comp.filtersData()['gender'].selectedValue).toBe('female');
       expect(comp.ideaForm.get('demographics_gender')?.value).toBe('female');
+    });
+
+    it('validates other demographic input when other is selected but text input is empty', () => {
+      const comp = makeComp({
+        allowAnonymous: true,
+        demographicsConfig: {
+          residence: { required: true, value: '' },
+        } as never,
+      });
+
+      comp.ideaForm.patchValue({
+        statement: 'Valid statement',
+        description: 'Valid description',
+      });
+
+      comp.setDemographicsValue('residence', 'other');
+      comp.ideaForm.get('demographics_residence')?.setValue('');
+
+      const isValid = comp.validateRequiredFieldsForPublish();
+      expect(isValid).toBe(false);
+      expect(comp.ideaForm.get('demographics_residence')?.invalid).toBe(true);
     });
   });
 
@@ -301,9 +334,49 @@ describe('AddIdeaComponent', () => {
       expect(comp.isOpen()).toBe(true);
       expect(comp.ideaForm.get('statement')?.value).toBe('Draft text');
     });
+
+    it('closeAddIdea delegates to close()', () => {
+      const comp = makeComp();
+      comp.isOpen.set(true);
+      const closeSpy = vi.spyOn(comp, 'close');
+      comp.closeAddIdea();
+      expect(closeSpy).toHaveBeenCalled();
+      expect(comp.isOpen()).toBe(false);
+    });
   });
 
   describe('Saving, Form Closing, Notifications and Error Handling', () => {
+    it('saveIdea calls updateIdea when autosavedIdea exists', () => {
+      const comp = makeComp();
+      comp.autosavedIdea.set({ id: 'draft-1', status: IdeaStatus.draft } as Idea);
+      comp.ideaForm.patchValue({
+        statement: 'Draft statement',
+        description: 'Draft description',
+      });
+
+      comp.publishIdea();
+
+      expect(mockIdeationService.updateIdea).toHaveBeenCalledWith(expect.objectContaining({
+        ideaId: 'draft-1',
+        statement: 'Draft statement',
+        status: IdeaStatus.published,
+      }));
+    });
+
+    it('deleteDraftIdea calls deleteIdea and resets form', () => {
+      const comp = makeComp();
+      comp.isOpen.set(true);
+      const draft = { id: 'draft-to-delete' } as Idea;
+
+      comp.deleteDraftIdea(draft);
+
+      expect(mockIdeationService.deleteIdea).toHaveBeenCalledWith({
+        topicId: 't1',
+        ideationId: 'i1',
+        ideaId: 'draft-to-delete',
+      });
+      expect(comp.isOpen()).toBe(false);
+    });
     it('afterPost resets form, closes immediately, emits ideaAdded, and shows success notification', () => {
       const comp = makeComp();
       comp.isOpen.set(true);

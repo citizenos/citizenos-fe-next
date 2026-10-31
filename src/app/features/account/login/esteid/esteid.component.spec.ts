@@ -1,17 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { RouterModule } from '@angular/router';
-import { EstEidComponent } from './esteid.component';
-import { UserStore } from '../../../../core/state/user.store';
-import { of } from 'rxjs';
-import { authenticate } from '@web-eid/web-eid-library/web-eid';
 import { vi, describe, it, expect, beforeEach, afterEach, Mock } from 'vitest';
-import { MockButtonComponent, MockInputComponent, MockIconComponent } from '../../../../shared/testing/mocks';
 
 vi.mock('@web-eid/web-eid-library/web-eid', () => ({
   authenticate: vi.fn()
 }));
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { RouterModule } from '@angular/router';
+import { of } from 'rxjs';
+import { authenticate } from '@web-eid/web-eid-library/web-eid';
+import { EstEidComponent } from './esteid.component';
+import { UserStore } from '../../../../core/state/user.store';
+import { MockButtonComponent, MockInputComponent, MockIconComponent } from '../../../../shared/testing/mocks';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
@@ -29,6 +30,7 @@ describe('EstEidComponent', () => {
       loginIdCard: vi.fn(),
       checkStatus: vi.fn()
     };
+    Object.defineProperty(window, 'isSecureContext', { value: true, configurable: true, writable: true });
 
     await TestBed.configureTestingModule({
       imports: [
@@ -53,7 +55,7 @@ describe('EstEidComponent', () => {
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should create', () => {

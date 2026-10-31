@@ -154,6 +154,24 @@ describe('TopicIdeationComponent', () => {
     expect(comp.showAddIdea()).toBe(true);
   });
 
+  it('addIdea opens form directly when authenticated', () => {
+    const userStore = TestBed.inject(UserStore);
+    userStore.isAuthenticated = Object.assign(() => true, { [Symbol("SIGNAL")]: {} }) as unknown as InstanceType<typeof UserStore>['isAuthenticated'];
+    const comp = makeComp();
+    comp.showAddIdea.set(false);
+    comp.addIdea();
+    expect(mockAuthDialogService.openLogin).not.toHaveBeenCalled();
+    expect(comp.showAddIdea()).toBe(true);
+  });
+
+  it('addIdea does not open form when ideation has ended', () => {
+    mockIdeationService.hasIdeationEnded.mockReturnValue(true);
+    const comp = makeComp();
+    comp.showAddIdea.set(false);
+    comp.addIdea();
+    expect(comp.showAddIdea()).toBe(false);
+  });
+
   it('toggleMobileFilters toggles mobileFiltersOpen signal', () => {
     const comp = makeComp();
     expect(comp.mobileFiltersOpen()).toBe(false);

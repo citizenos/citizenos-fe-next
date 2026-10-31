@@ -390,7 +390,7 @@ export interface FilterConfig {
       }
       .filter_options {
         display: none;
-        padding: 0 16px 16px;
+        padding: 0 0 16px;
         width: 100%;
         max-width: 100%;
         box-sizing: border-box;
@@ -399,13 +399,17 @@ export interface FilterConfig {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 12px 0;
+        padding: 12px 16px;
         border-bottom: 1px solid var(--color-border);
         width: 100%;
         max-width: 100%;
         box-sizing: border-box;
         flex-wrap: wrap;
         gap: 8px;
+        cursor: pointer;
+      }
+      .filter_option:hover {
+        background-color: var(--color-background-hover);
       }
       .filter_option:last-child {
         border-bottom: none;

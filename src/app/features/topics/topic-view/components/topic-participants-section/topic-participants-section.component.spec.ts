@@ -109,7 +109,7 @@ describe('TopicParticipantsSectionComponent', () => {
   it('calls manageParticipants when manage link is clicked', () => {
     (topicServiceMock.canUpdate as ReturnType<typeof vi.fn>).mockReturnValue(true);
     fixture.detectChanges();
-    const spy = vi.spyOn(component, 'manageParticipants');
+    const spy = vi.spyOn(component, 'manageParticipants').mockImplementation(() => {});
     fixture.nativeElement.querySelector('.manage_link').click();
     expect(spy).toHaveBeenCalled();
   });
