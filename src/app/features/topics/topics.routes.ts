@@ -61,6 +61,11 @@ export const TOPICS_ROUTES: Routes = [
     path: ':topicId',
     children: [
       { path: '', loadComponent: () => import('./topic-view/topic-view.component').then(m => m.TopicViewComponent) },
+      {
+        path: 'edit',
+        loadComponent: () => import('./topic-edit/topic-edit.component').then(m => m.TopicEditComponent),
+        canDeactivate: [pendingChangesGuard]
+      },
       { path: 'ideation/:ideationId/ideas/:ideaId', loadComponent: () => import('./topic-view/topic-view.component').then(m => m.TopicViewComponent) },
       {
         path: 'invites/users/:inviteId',

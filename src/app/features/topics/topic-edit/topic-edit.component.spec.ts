@@ -167,4 +167,25 @@ describe('TopicEditComponent', () => {
     component.cancelEdit();
     expect(navigateSpy).toHaveBeenCalledWith(['/topics', 'topic-123']);
   });
+
+  it('should navigate to fragment step on init if fragment is present', () => {
+    const route = TestBed.inject(ActivatedRoute);
+    Object.assign(route.snapshot, { fragment: 'discussion' });
+    component.ngOnInit();
+    expect(component.currentStep()).toBe('discussion');
+  });
+
+  it('should fall back to parent topicId if route snapshot does not have topicId', () => {
+    const route = TestBed.inject(ActivatedRoute);
+    Object.defineProperty(route.snapshot, 'paramMap', {
+      value: { get: () => null },
+      configurable: true
+    });
+    Object.defineProperty(route, 'parent', {
+      value: { snapshot: { paramMap: { get: (k: string) => k === 'topicId' ? 'topic-parent-1' : null } } },
+      configurable: true
+    });
+    component.ngOnInit();
+    expect(mockTopicService.get).toHaveBeenCalledWith('topic-parent-1');
+  });
 });

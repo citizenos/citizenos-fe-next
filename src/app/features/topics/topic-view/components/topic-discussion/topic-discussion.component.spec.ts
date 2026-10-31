@@ -187,4 +187,20 @@ describe('TopicDiscussionComponent', () => {
 
     expect(component.activeMobileFilter()).toBeNull();
   });
+
+  it('should render setting_button and options dropdown with edit discussion link', () => {
+    const settingBtn = fixture.nativeElement.querySelector('.setting_button');
+    expect(settingBtn).toBeTruthy();
+
+    const mobileActions = settingBtn.querySelector('#mobile_actions');
+    expect(mobileActions).toBeTruthy();
+
+    const options = settingBtn.querySelector('.options');
+    expect(options).toBeTruthy();
+
+    const editLink = options.querySelector('a.option');
+    expect(editLink).toBeTruthy();
+    expect(editLink.getAttribute('fragment')).toBe('discussion');
+    expect(editLink.getAttribute('href')).toContain('/topics/edit/topic-1');
+  });
 });

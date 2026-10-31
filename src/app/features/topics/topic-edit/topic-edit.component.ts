@@ -139,8 +139,12 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
   ]);
 
   ngOnInit() {
-    const topicId = this.route.snapshot.paramMap.get('topicId');
+    const topicId = this.route.snapshot.paramMap.get('topicId') || this.route.parent?.snapshot.paramMap.get('topicId');
     if (topicId) {
+      const fragment = this.route.snapshot.fragment;
+      if (fragment) {
+        this.currentStep.set(fragment);
+      }
       this.loadExistingTopic(topicId);
     } else {
       this.router.navigate(['/']);
@@ -189,7 +193,10 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
           });
         }
         this.isLoading.set(false);
-        if (!this.topicService.canEditDescription(topic) && this.currentStep() === 'info') {
+        const fragment = this.route.snapshot.fragment;
+        if (fragment) {
+          this.onStepChange(fragment);
+        } else if (!this.topicService.canEditDescription(topic) && this.currentStep() === 'info') {
           this.onStepChange('info');
         }
       },
