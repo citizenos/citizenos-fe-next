@@ -178,7 +178,10 @@ export class TopicEditComponent implements OnInit, PendingChangesComponent {
         }
         if (topic.ideationId) {
           this.ideationService.get({ topicId, ideationId: topic.ideationId }).subscribe({
-            next: (i) => this.ideation.set(i),
+            next: (i) => this.ideation.set({
+              ...i,
+              question: (i.question || '').trim()
+            }),
             error: () => { /* intentionally empty */ }
           });
         }

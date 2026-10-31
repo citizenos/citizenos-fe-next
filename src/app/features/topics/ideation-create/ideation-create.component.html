@@ -35,6 +35,7 @@
     }
     @case ('ideation') {
       <cos-step-ideation-settings
+        [topic]="topicModel()"
         [ideation]="ideationModel()"
         (ideationUpdate)="onIdeationUpdate($event)"
       ></cos-step-ideation-settings>

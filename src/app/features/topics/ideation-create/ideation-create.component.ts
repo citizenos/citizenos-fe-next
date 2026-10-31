@@ -179,7 +179,10 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
       })
     ).subscribe({
       next: (savedIdeation) => {
-        this.ideationModel.set(savedIdeation);
+        this.ideationModel.set({
+          ...savedIdeation,
+          question: (savedIdeation.question || '').trim()
+        });
         this.isLoading.set(false);
         this.isEagerlyCreated.set(true);
         this.hasChanges.set(true);
@@ -222,7 +225,7 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
   isFooterNextDisabled(): boolean {
     if (this.isLoading()) return true;
     if (this.currentStep() === 'info' && !this.topicModel().title) return true;
-    if (this.currentStep() === 'ideation' && !this.ideationModel().question) return true;
+    if (this.currentStep() === 'ideation' && !this.ideationModel().question?.trim()) return true;
     return false;
   }
 
@@ -324,7 +327,11 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
     this.isLoading.set(true);
     this.topicService.patch(t).subscribe({
       next: () => {
-        const payload = { ...this.ideationModel(), topicId: t.id || '' };
+        const payload = {
+          ...this.ideationModel(),
+          topicId: t.id || '',
+          question: (this.ideationModel().question || '').trim()
+        };
         if (payload.id && payload.id !== 'undefined') {
           this.ideationService.update(payload).pipe(take(1)).subscribe();
         } else if (payload.question && payload.question.trim().length > 0) {
@@ -348,7 +355,11 @@ export class IdeationCreateComponent implements OnInit, PendingChangesComponent 
     this.isLoading.set(true);
     this.topicService.patch({ ...t, status: 'ideation' }).subscribe({
       next: (savedTopic) => {
-        const payload = { ...this.ideationModel(), topicId: t.id || '' };
+        const payload = {
+          ...this.ideationModel(),
+          topicId: t.id || '',
+          question: (this.ideationModel().question || '').trim()
+        };
         console.log('BROWSER CONSOLE: onPublish payload.id is:', payload.id);
         const request$ = payload.id && payload.id !== 'undefined'
           ? this.ideationService.update(payload)

@@ -56,4 +56,42 @@ describe('StepIdeationSettingsComponent (business logic)', () => {
     component.onToggleAnonymous();
     expect(spy).toHaveBeenCalledWith(expect.objectContaining({ disableReplies: true }));
   });
+
+  it('canEditQuestion should be true when topic has draft status or no status', () => {
+    fixture.componentRef.setInput('topic', { status: 'draft' });
+    expect(component.canEditQuestion()).toBe(true);
+
+    fixture.componentRef.setInput('topic', null);
+    expect(component.canEditQuestion()).toBe(true);
+  });
+
+  it('canEditQuestion should be false when topic has ideation status and input is disabled', () => {
+    fixture.componentRef.setInput('topic', { status: 'ideation' });
+    TestBed.flushEffects();
+    fixture.detectChanges();
+    expect(component.canEditQuestion()).toBe(false);
+
+    const inputEl = fixture.nativeElement.querySelector('#ideation-question') as HTMLInputElement;
+    expect(inputEl.disabled).toBe(true);
+  });
+
+  it('onQuestionChange should not update ideation when canEditQuestion is false', () => {
+    fixture.componentRef.setInput('topic', { status: 'ideation' });
+    fixture.componentRef.setInput('ideation', { question: 'Original' });
+    const spy = vi.spyOn(component.ideationUpdate, 'emit');
+
+    component.onQuestionChange('Changed');
+    expect(component.ideation().question).toBe('Original');
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('onQuestionChange should update ideation and emit when canEditQuestion is true', () => {
+    fixture.componentRef.setInput('topic', { status: 'draft' });
+    fixture.componentRef.setInput('ideation', { question: 'Original' });
+    const spy = vi.spyOn(component.ideationUpdate, 'emit');
+
+    component.onQuestionChange('Changed');
+    expect(component.ideation().question).toBe('Changed');
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining({ question: 'Changed' }));
+  });
 });

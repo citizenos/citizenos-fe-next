@@ -1,8 +1,10 @@
-import { Component, model, output } from '@angular/core';
+import { Component, computed, inject, input, model, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { Ideation } from '../../../../../core/interfaces/ideation';
+import { Topic } from '../../../../../core/interfaces/topic';
+import { TopicService } from '../../../../../core/services/topic.service';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { ToggleComponent } from '../../../../../shared/components/toggle/toggle.component';
 import { MarkdownDirective } from '../../../../../shared/directives/markdown.directive';
@@ -50,12 +52,19 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
           </div>
           <div class="mobile_show" translate="VIEWS.IDEATION_CREATE.SETTINGS_HEADING_IDEATION_QUESTION_DESC"></div>
           
-          <cos-input [placeholder]="'VIEWS.IDEATION_CREATE.SETTINGS_IDEATION_QUESTION_PLACEHOLDER' | translate">
+          <cos-input
+            [placeholder]="'VIEWS.IDEATION_CREATE.SETTINGS_IDEATION_QUESTION_PLACEHOLDER' | translate"
+            [class.disabled]="!canEditQuestion()"
+          >
             <input
               type="text"
               id="ideation-question"
-              [(ngModel)]="ideation().question"
-              (ngModelChange)="onIdeationUpdate()"
+              [placeholder]="'VIEWS.IDEATION_CREATE.SETTINGS_IDEATION_QUESTION_PLACEHOLDER' | translate"
+              [ngModel]="ideation().question"
+              (ngModelChange)="onQuestionChange($event)"
+              [disabled]="!canEditQuestion()"
+              [attr.disabled]="!canEditQuestion() ? '' : null"
+              [class.disabled]="!canEditQuestion()"
             />
           </cos-input>
         </div>
@@ -179,10 +188,24 @@ import { DeadlinePickerComponent } from '../../../../../shared/components/deadli
   styleUrl: './step-ideation-settings.component.scss'
 })
 export class StepIdeationSettingsComponent {
+  private topicService = inject(TopicService);
+
+  topic = input<Partial<Topic> | null>(null);
   ideation = model.required<Partial<Ideation>>();
   ideationUpdate = output<Partial<Ideation>>();
 
+  canEditQuestion = computed(() => {
+    const status = this.topic()?.status;
+    return !status || status === this.topicService.STATUSES.draft;
+  });
+
   demographicKeys = ['age', 'gender', 'residence', 'education'];
+
+  onQuestionChange(question: string) {
+    if (!this.canEditQuestion()) return;
+    this.ideation.update(i => ({ ...i, question }));
+    this.onIdeationUpdate();
+  }
 
   getDeadlineDate(): Date | null {
     const d = this.ideation().deadline;

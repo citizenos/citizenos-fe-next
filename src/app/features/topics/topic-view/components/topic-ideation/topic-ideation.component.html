@@ -2,7 +2,7 @@
     <div class="ideation_header">
     <div class="header_left">
       <cos-icon name="topic-tab-ideation" size="24"></cos-icon>
-      <div class="question">{{ ideation().question }}</div>
+      <div class="question">{{ (ideation().question || '').trim() || ('VIEWS.TOPICS_TOPICID.TAB_IDEATION' | translate) }}</div>
     </div>
 
     <div class="header_right">

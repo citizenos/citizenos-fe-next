@@ -144,7 +144,7 @@ import { VoteOptionsComponent } from '../vote-options/vote-options.component';
           <div class="ideation_header">
             <div class="header_section">
               <div class="question">
-                {{ i.question }}
+                {{ (i.question || '').trim() || ('VIEWS.TOPICS_TOPICID.TAB_IDEATION' | translate) }}
               </div>
             </div>
             @if (i.deadline) {
