@@ -53,6 +53,7 @@
       &.empty {
         cursor: pointer;
         border-color: var(--color-discussion-disabled);
+        border-left-color: var(--color-discussion);
         .icon_wrap {
           background-color: var(--color-discussion-disabled);
         }
