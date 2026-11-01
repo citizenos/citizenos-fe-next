@@ -8,7 +8,7 @@ import { By } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { IdeaDialogComponent } from './idea-dialog.component';
+import { IdeaDialogComponent, IdeaCommentWithParent } from './idea-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
@@ -431,5 +431,163 @@ describe('IdeaDialogComponent', () => {
 
     const footerDate = fixture.nativeElement.querySelector('.footer_date');
     expect(footerDate.classList.contains('mobile_hidden')).toBe(true);
+  });
+
+  it('nested reply flattening: flattens recursive descendants into root children with replies reset', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+
+    const mockRows: IdeaCommentWithParent[] = [
+      {
+        id: 'root-1',
+        ideaId: 'idea-1',
+        ideationId: 'ideation-1',
+        authorId: 'user-1',
+        text: 'Root comment',
+        createdAt: '2026-01-01',
+        updatedAt: '2026-01-01',
+        creator: { id: 'user-1', name: 'Root Creator' },
+        parent: { id: 'root-1' },
+        replies: {
+          count: 2,
+          rows: [
+            {
+              id: 'reply-1',
+              ideaId: 'idea-1',
+              ideationId: 'ideation-1',
+              authorId: 'user-2',
+              text: 'Direct reply',
+              createdAt: '2026-01-02',
+              updatedAt: '2026-01-02',
+              creator: { id: 'user-2', name: 'Reply Creator' },
+              parent: { id: 'root-1' },
+              replies: {
+                count: 1,
+                rows: [
+                  {
+                    id: 'reply-2',
+                    ideaId: 'idea-1',
+                    ideationId: 'ideation-1',
+                    authorId: 'user-3',
+                    text: 'Nested descendant reply',
+                    createdAt: '2026-01-03',
+                    updatedAt: '2026-01-03',
+                    creator: { id: 'user-3', name: 'Nested Creator' },
+                    parent: { id: 'reply-1' },
+                    replies: { count: 0, rows: [] }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ];
+
+    const result = component.buildReplyTree(mockRows);
+    expect(result.length).toBe(1);
+    const root = result[0];
+    expect(root.children).toBeDefined();
+    expect(root.children?.length).toBe(2);
+    expect(root.children?.map(c => c.id)).toEqual(['reply-1', 'reply-2']);
+
+    // Descendants have replies reset to count: 0, rows: []
+    expect(root.children?.[0].replies).toEqual({ count: 0, rows: [] });
+    expect(root.children?.[1].replies).toEqual({ count: 0, rows: [] });
+  });
+
+  it('parent population: populates parent creator information from argArray lookup for mentions', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+
+    const mockRows: IdeaCommentWithParent[] = [
+      {
+        id: 'root-1',
+        ideaId: 'idea-1',
+        ideationId: 'ideation-1',
+        authorId: 'user-1',
+        text: 'Root comment',
+        createdAt: '2026-01-01',
+        updatedAt: '2026-01-01',
+        creator: { id: 'user-1', name: 'Root Creator' },
+        parent: { id: 'root-1' },
+        replies: {
+          count: 2,
+          rows: [
+            {
+              id: 'reply-1',
+              ideaId: 'idea-1',
+              ideationId: 'ideation-1',
+              authorId: 'user-2',
+              text: 'Direct reply',
+              createdAt: '2026-01-02',
+              updatedAt: '2026-01-02',
+              creator: { id: 'user-2', name: 'Reply Creator' },
+              parent: { id: 'root-1' },
+              replies: {
+                count: 1,
+                rows: [
+                  {
+                    id: 'reply-2',
+                    ideaId: 'idea-1',
+                    ideationId: 'ideation-1',
+                    authorId: 'user-3',
+                    text: 'Nested reply',
+                    createdAt: '2026-01-03',
+                    updatedAt: '2026-01-03',
+                    creator: { id: 'user-3', name: 'Nested Creator' },
+                    parent: { id: 'reply-1' },
+                    replies: { count: 0, rows: [] }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ];
+
+    const result = component.buildReplyTree(mockRows);
+    const root = result[0];
+    const reply1 = root.children?.[0] as IdeaCommentWithParent;
+    const reply2 = root.children?.[1] as IdeaCommentWithParent;
+
+    expect(reply1.parent?.creator?.name).toBe('Root Creator');
+    expect(reply2.parent?.creator?.name).toBe('Reply Creator');
+  });
+
+  it('replyCount from object: sets replyCount correctly from total ?? reply ?? 0 object responses', () => {
+    // 1. With total property present
+    ideationServiceMock.getIdeaComments.mockReturnValue(of({
+      count: { total: 7, reply: 3, pro: 2, con: 2 } as unknown as number,
+      rows: []
+    }));
+    const fixture = createFixture();
+    fixture.componentInstance.loadReplies();
+    expect(fixture.componentInstance.replyCount()).toBe(7);
+
+    // 2. With only reply property present
+    ideationServiceMock.getIdeaComments.mockReturnValue(of({
+      count: { reply: 4 } as unknown as number,
+      rows: []
+    }));
+    fixture.componentInstance.loadReplies();
+    expect(fixture.componentInstance.replyCount()).toBe(4);
+
+    // 3. With empty object
+    ideationServiceMock.getIdeaComments.mockReturnValue(of({
+      count: {} as unknown as number,
+      rows: []
+    }));
+    fixture.componentInstance.loadReplies();
+    expect(fixture.componentInstance.replyCount()).toBe(0);
+
+    // 4. With raw number
+    ideationServiceMock.getIdeaComments.mockReturnValue(of({
+      count: 9,
+      rows: []
+    }));
+    fixture.componentInstance.loadReplies();
+    expect(fixture.componentInstance.replyCount()).toBe(9);
   });
 });

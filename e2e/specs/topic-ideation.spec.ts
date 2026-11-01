@@ -54,6 +54,7 @@ interface SetupMocksOptions {
   initialIdeas?: any[];
   initialFolders?: any[];
   initialReplies?: any[];
+  initialRepliesCount?: number | Record<string, unknown>;
 }
 
 async function setupTopicIdeationRoutes(page: Page, options: SetupMocksOptions = {}) {
@@ -216,7 +217,7 @@ async function setupTopicIdeationRoutes(page: Page, options: SetupMocksOptions =
         contentType: 'application/json',
         body: JSON.stringify({
           status: { code: 20000, message: 'Success' },
-          data: { rows: repliesList, count: repliesList.length },
+          data: { rows: repliesList, count: options.initialRepliesCount ?? repliesList.length },
         }),
       });
     }
@@ -1104,5 +1105,206 @@ test.describe('Topic Ideation - Mobile Idea View, Collapsible Replies, Reply Act
     await closeBtn.click();
     await expect(ideaDialog).not.toBeVisible();
     await expect(ideaCard).toBeVisible();
+  });
+
+  test('should verify translated replies heading and nested reply rendering from recursive API structure in idea dialog', async ({ page }) => {
+    const mockIdeaWithReplies = {
+      id: 'idea-nested-replies-1',
+      topicId,
+      ideationId,
+      statement: 'Offshore Wind Generation System',
+      description: 'Community-funded offshore wind farm to provide stable renewable baseload.',
+      status: 'published',
+      author: { id: 'user-admin', name: 'Admin Coordinator' },
+      votes: { up: { count: 8, selected: false }, down: { count: 0, selected: false }, count: 8 },
+      replies: { count: 3, rows: [] },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const recursiveMockReplies = [
+      {
+        id: 'reply-root-nested',
+        topicId,
+        ideationId,
+        ideaId: 'idea-nested-replies-1',
+        text: 'Root comment: Should we include battery banks?',
+        creator: { id: 'user-admin', name: 'Admin Coordinator' },
+        author: { id: 'user-admin', name: 'Admin Coordinator' },
+        createdAt: new Date().toISOString(),
+        votes: { up: { count: 2, selected: false }, down: { count: 0, selected: false } },
+        replies: {
+          count: 2,
+          rows: [
+            {
+              id: 'reply-level-1',
+              topicId,
+              ideationId,
+              ideaId: 'idea-nested-replies-1',
+              parentId: 'reply-root-nested',
+              parent: {
+                id: 'reply-root-nested',
+                creator: { name: 'Admin Coordinator' },
+                author: { name: 'Admin Coordinator' },
+              },
+              text: 'Level 1 reply: Yes, lithium iron phosphate batteries are proposed.',
+              creator: { id: 'user-planner', name: 'Planner User' },
+              author: { id: 'user-planner', name: 'Planner User' },
+              createdAt: new Date().toISOString(),
+              votes: { up: { count: 1, selected: false }, down: { count: 0, selected: false } },
+              replies: {
+                count: 1,
+                rows: [
+                  {
+                    id: 'reply-level-2-nested',
+                    topicId,
+                    ideationId,
+                    ideaId: 'idea-nested-replies-1',
+                    parentId: 'reply-level-1',
+                    parent: {
+                      id: 'reply-level-1',
+                      creator: { name: 'Planner User' },
+                      author: { name: 'Planner User' },
+                    },
+                    text: 'Nested reply of a reply: What is the estimated lifecycle and degradation rate?',
+                    creator: { id: 'user-engineer', name: 'Engineer User' },
+                    author: { id: 'user-engineer', name: 'Engineer User' },
+                    createdAt: new Date().toISOString(),
+                    votes: { up: { count: 0, selected: false }, down: { count: 0, selected: false } },
+                    replies: { count: 0, rows: [] },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ];
+
+    // Set mobile viewport
+    await page.setViewportSize({ width: 375, height: 812 });
+
+    await setupTopicIdeationRoutes(page, {
+      initialIdeas: [mockIdeaWithReplies],
+      initialReplies: recursiveMockReplies,
+      initialRepliesCount: 3,
+    });
+
+    // Open Idea Dialog by clicking the card
+    const ideaCard = page.locator('.ideas_wrap app-ideabox .idea').filter({ hasText: 'Offshore Wind Generation System' });
+    await expect(ideaCard).toBeVisible();
+    await ideaCard.click();
+
+    const ideaDialog = page.locator('app-idea-dialog, .dialog.idea_dialog');
+    await expect(ideaDialog).toBeVisible();
+
+    // Expand replies section on mobile
+    const toggleRepliesBtn = ideaDialog.locator('.idea_footer .buttons_wrap.mobile_show cos-button.btn_replies_toggle');
+    await expect(toggleRepliesBtn).toBeVisible();
+    await toggleRepliesBtn.click();
+
+    // (a) Idea dialog shows translated replies heading (no raw COMPONENTS.ARGUMENT.HEADING_REPLIES text)
+    const repliesHeading = ideaDialog.locator('.idea_content_replies .replies_title');
+    await expect(repliesHeading).toBeVisible();
+    await expect(repliesHeading).not.toContainText('COMPONENTS.ARGUMENT.HEADING_REPLIES');
+    await expect(repliesHeading).toContainText(/Replies\s*\(\d+\)/i);
+
+    // Expand replies on the root comment to view nested reply chain
+    const rootReply = ideaDialog.locator('app-idea-reply').filter({ hasText: 'Root comment: Should we include battery banks?' });
+    await expect(rootReply).toBeVisible();
+    const showChildRepliesBtn = rootReply.locator('button.btn_ghost_reply_argument');
+    await expect(showChildRepliesBtn).toBeVisible();
+    await showChildRepliesBtn.click();
+
+    // (b) Nested reply (reply of a reply, mock API replies.rows recursive with parent:{id}) is rendered in the idea dialog
+    const level1Reply = rootReply.locator('app-idea-reply').filter({ hasText: 'Level 1 reply: Yes, lithium iron phosphate batteries' });
+    await expect(level1Reply).toBeVisible();
+
+    const nestedGrandchildReply = rootReply.locator('app-idea-reply').filter({ hasText: 'Nested reply of a reply: What is the estimated lifecycle' });
+    await expect(nestedGrandchildReply).toBeVisible();
+    const recipientMention = nestedGrandchildReply.locator('.recipient_mention');
+    await expect(recipientMention).toBeVisible();
+    await expect(recipientMention).toContainText('Planner User');
+  });
+
+  test('should verify mobile idea dialog layout at 375x812 viewport: mobile_buttons at top (y < 60) and dialog card below with width approx 343px', async ({ page }) => {
+    const mobileMockIdea = {
+      id: 'idea-layout-1',
+      topicId,
+      ideationId,
+      statement: 'Mobile Layout Dimension Verification',
+      description: 'Verify precise viewport dimensions and bounding boxes for mobile idea dialog.',
+      status: 'published',
+      author: { id: 'user-admin', name: 'Admin Coordinator' },
+      votes: { up: { count: 3, selected: false }, down: { count: 0, selected: false }, count: 3 },
+      replies: { count: 0, rows: [] },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    // (c) At 375x812 viewport the idea dialog .mobile_buttons are at top (boundingBox y < 60) and card .dialog.idea_dialog is below them with width ≈ 343
+    await page.setViewportSize({ width: 375, height: 812 });
+
+    await setupTopicIdeationRoutes(page, {
+      initialIdeas: [mobileMockIdea],
+    });
+
+    const ideaCard = page.locator('.ideas_wrap app-ideabox .idea').filter({ hasText: 'Mobile Layout Dimension Verification' });
+    await expect(ideaCard).toBeVisible();
+    await ideaCard.click();
+
+    const ideaDialog = page.locator('app-idea-dialog');
+    await expect(ideaDialog).toBeVisible();
+
+    // Verify .mobile_buttons are at top (boundingBox y < 60)
+    const mobileButtons = ideaDialog.locator('.mobile_buttons.mobile_show');
+    await expect(mobileButtons).toBeVisible();
+    const mobileButtonsBox = await mobileButtons.boundingBox();
+    expect(mobileButtonsBox).not.toBeNull();
+    expect(mobileButtonsBox!.y).toBeLessThan(60);
+
+    // Verify card .dialog.idea_dialog is below mobile buttons and has width ≈ 343 (calc(100vw - 32px))
+    const dialogCard = page.locator('.dialog.idea_dialog');
+    await expect(dialogCard).toBeVisible();
+    const dialogCardBox = await dialogCard.boundingBox();
+    expect(dialogCardBox).not.toBeNull();
+    expect(dialogCardBox!.y).toBeGreaterThanOrEqual(mobileButtonsBox!.y);
+    expect(dialogCardBox!.width).toBeGreaterThanOrEqual(335);
+    expect(dialogCardBox!.width).toBeLessThanOrEqual(350);
+  });
+
+  test('should verify topic tabs tablet bar is visible and z-index is above mobile_nav_wrap on mobile/tablet viewports', async ({ page }) => {
+    // (d) On a topic page at mobile/tablet viewport, .topic_tabs.tablet is visible and not covered (z-index above #mobile_nav_wrap; check via computed z-index comparison)
+    // 1. Mobile viewport (375x812)
+    await page.setViewportSize({ width: 375, height: 812 });
+    await setupTopicIdeationRoutes(page);
+
+    const topicTabsTablet = page.locator('.topic_tabs.tablet');
+    await expect(topicTabsTablet).toBeVisible();
+
+    const mobileNavWrap = page.locator('#mobile_nav_wrap');
+    await expect(mobileNavWrap).toBeAttached();
+
+    const topicTabsZIndexMobile = await topicTabsTablet.evaluate((el) => {
+      return parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
+    });
+    const mobileNavZIndexMobile = await mobileNavWrap.evaluate((el) => {
+      return parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
+    });
+
+    expect(topicTabsZIndexMobile).toBeGreaterThan(mobileNavZIndexMobile);
+
+    // 2. Tablet viewport (768x1024)
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await expect(topicTabsTablet).toBeVisible();
+
+    const topicTabsZIndexTablet = await topicTabsTablet.evaluate((el) => {
+      return parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
+    });
+    const mobileNavZIndexTablet = await mobileNavWrap.evaluate((el) => {
+      return parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
+    });
+
+    expect(topicTabsZIndexTablet).toBeGreaterThan(mobileNavZIndexTablet);
   });
 });

@@ -208,7 +208,7 @@ interface IdeaCommentWithParent extends IdeaComment {
 
     @if (showReplies()) {
       <div class="replies_wrap">
-        @let iterReplies = argument().children || argument().replies?.rows || [];
+        @let iterReplies = (argument().children && argument().children!.length > 0) ? argument().children! : (argument().replies?.rows || []);
         @for (reply of iterReplies; track reply.id; let last = $last) {
           <div class="reply_container">
             <div class="reply_referer"></div>

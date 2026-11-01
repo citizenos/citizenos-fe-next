@@ -115,5 +115,24 @@ describe('TopicTabsComponent', () => {
 
     expect(mockTopicService.toggleFavourite).toHaveBeenCalledWith(MOCK_TOPIC);
   });
+
+  it('should apply tablet class and render general tab when wWidth <= 1024', () => {
+    componentRef.setInput('wWidth', 768);
+    fixture.detectChanges();
+
+    const tabsContainer = fixture.debugElement.query(By.css('#topic_tabs'));
+    expect(tabsContainer.nativeElement.classList.contains('tablet')).toBe(true);
+
+    const generalIcon = fixture.debugElement.query(By.css('cos-icon[name="topic-tab-general"]'));
+    expect(generalIcon).toBeTruthy();
+  });
+
+  it('should not apply tablet class when wWidth > 1024', () => {
+    componentRef.setInput('wWidth', 1280);
+    fixture.detectChanges();
+
+    const tabsContainer = fixture.debugElement.query(By.css('#topic_tabs'));
+    expect(tabsContainer.nativeElement.classList.contains('tablet')).toBe(false);
+  });
 });
 

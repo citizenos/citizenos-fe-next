@@ -30,6 +30,25 @@ import { EditIdeaComponent } from '../edit-idea/edit-idea.component';
 import { IdeaReactionsComponent } from '../idea-reactions/idea-reactions.component';
 import { Attachment } from '../../../../../core/interfaces/attachment';
 
+export type CommentCountResponse = number | {
+  total?: number;
+  reply?: number;
+  [key: string]: unknown;
+};
+
+export interface IdeaCommentWithParent extends IdeaComment {
+  parent?: {
+    id: string;
+    creator?: { id?: string; name?: string; imageUrl?: string | null; email?: string | null };
+    author?: { id?: string; name?: string; imageUrl?: string | null; email?: string | null };
+    [key: string]: unknown;
+  };
+  replies?: {
+    count: number;
+    rows?: IdeaCommentWithParent[];
+  };
+}
+
 @Component({
   selector: 'app-idea-dialog',
   standalone: true,
@@ -130,12 +149,18 @@ export class IdeaDialogComponent implements OnInit {
       catchError(() => of([]))
     );
 
+    this.loadReplies();
+  }
+
+  loadReplies() {
+    const idea = this.idea();
     this.replies$ = this.ideationService.getIdeaComments({
       topicId: this.topic().id,
       ideationId: this.ideation().id,
       ideaId: idea.id
     }).pipe(
       map(res => {
+        this.replyCount.set(this.parseReplyCount(res.count as unknown as CommentCountResponse));
         return this.buildReplyTree(res.rows);
       }),
       catchError(() => of([])),
@@ -144,18 +169,18 @@ export class IdeaDialogComponent implements OnInit {
 
     // Eagerly fetch to get the replyCount for the toggle button
     this.replies$.pipe(take(1)).subscribe();
+  }
 
-    this.ideationService.getIdeaComments({
-      topicId: this.topic().id,
-      ideationId: this.ideation().id,
-      ideaId: idea.id,
-      limit: 1 // only need count
-    }).pipe(
-      take(1),
-      catchError(() => of({ count: 0, rows: [] }))
-    ).subscribe(res => {
-      this.replyCount.set(res.count);
-    });
+  private parseReplyCount(count: CommentCountResponse | null | undefined): number {
+    if (typeof count === 'number') {
+      return count;
+    }
+    if (count && typeof count === 'object') {
+      const total = typeof count.total === 'number' ? count.total : undefined;
+      const reply = typeof count.reply === 'number' ? count.reply : undefined;
+      return total ?? reply ?? 0;
+    }
+    return 0;
   }
 
   private loadIdeationIdeas() {
@@ -182,24 +207,56 @@ export class IdeaDialogComponent implements OnInit {
     this.currentIndex.set(idx);
   }
 
-  private buildReplyTree(rows: IdeaComment[]): IdeaComment[] {
-    const map = new Map<string, IdeaComment>();
-    const roots: IdeaComment[] = [];
+  buildReplyTree(rows: IdeaComment[]): IdeaComment[] {
+    const results = rows.map(row => ({
+      ...row,
+      children: [] as IdeaComment[]
+    }));
+    const argArray: IdeaComment[] = [];
 
-    rows.forEach(reply => {
-      map.set(reply.id, { ...reply, children: [] });
-    });
-
-    rows.forEach(reply => {
-      const node = map.get(reply.id)!;
-      if (reply.parentId && map.has(reply.parentId)) {
-        map.get(reply.parentId)!.children!.push(node);
-      } else {
-        roots.push(node);
+    const countTree = (parentNode: IdeaComment, currentNode: IdeaComment) => {
+      argArray.push(currentNode);
+      if (currentNode.replies?.rows && currentNode.replies.rows.length > 0) {
+        currentNode.replies.rows.forEach(reply => {
+          const parentObj = (reply as IdeaCommentWithParent).parent;
+          if (parentObj?.id) {
+            const found = argArray.find(arg => arg.id === parentObj.id);
+            if (found && found.id !== reply.id) {
+              (reply as IdeaCommentWithParent).parent = {
+                ...parentObj,
+                ...found
+              };
+            }
+          }
+          const replyClone: IdeaComment = {
+            ...reply,
+            replies: { count: 0, rows: [] }
+          };
+          if (!parentNode.children) {
+            parentNode.children = [];
+          }
+          parentNode.children.push(replyClone);
+          countTree(parentNode, reply);
+        });
       }
+
+      const parentObj = (currentNode as IdeaCommentWithParent).parent;
+      if (parentObj?.id) {
+        const found = argArray.find(arg => arg.id === parentObj.id);
+        if (found && found.id !== currentNode.id) {
+          (currentNode as IdeaCommentWithParent).parent = {
+            ...parentObj,
+            ...found
+          };
+        }
+      }
+    };
+
+    results.forEach(row => {
+      countTree(row, row);
     });
 
-    return roots;
+    return results;
   }
 
   ideaNumber = computed(() => this.currentIndex() + 1);
@@ -432,17 +489,6 @@ export class IdeaDialogComponent implements OnInit {
   }
 
   private reloadReplies() {
-    const idea = this.idea();
-    this.replies$ = this.ideationService.getIdeaComments({
-      topicId: this.topic().id,
-      ideationId: this.ideation().id,
-      ideaId: idea.id
-    }).pipe(
-      map(res => {
-        this.replyCount.set(res.count);
-        return this.buildReplyTree(res.rows);
-      }),
-      catchError(() => of([]))
-    );
+    this.loadReplies();
   }
 }

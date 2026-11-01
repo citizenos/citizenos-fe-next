@@ -361,6 +361,9 @@ label:has(input:focus-visible) .radio {
 
 
 /* CDK Dialog overlay */
+.cdk-overlay-container {
+  z-index: 2000;
+}
 .cos-dialog-backdrop {
   background: rgba(0, 0, 0, 0.45);
 }
@@ -374,6 +377,14 @@ label:has(input:focus-visible) .radio {
   padding: 16px;
   box-sizing: border-box;
   overflow-y: auto;
+
+  @include mixins.mobile {
+    &:has(.idea_dialog),
+    &.idea-dialog-panel {
+      align-items: flex-start;
+      padding: 0;
+    }
+  }
 }
 
 

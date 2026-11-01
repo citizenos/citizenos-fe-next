@@ -54,9 +54,9 @@
   margin: 0 auto;
 
   @include mixins.mobile {
-    width: calc(100vw - 32px);
-    max-width: calc(100vw - 32px);
-    margin: 16px auto;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
   }
 }
 
@@ -81,6 +81,8 @@
     @include mixins.mobile {
       width: calc(100vw - 32px);
       max-width: calc(100vw - 32px);
+      margin: 48px auto 16px;
+      border-radius: 16px;
     }
   }
 }
@@ -167,8 +169,22 @@
 
   @include mixins.mobile {
     display: flex;
-    margin-bottom: 8px;
+    position: fixed;
+    top: 8px;
+    left: 16px;
+    right: 16px;
+    width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+    height: 40px;
+    margin: 0 auto;
     padding: 0;
+    z-index: 1000;
+    pointer-events: none;
+
+    .mobile_buttons_left,
+    .mobile_buttons_right {
+      pointer-events: auto;
+    }
   }
 
   .mobile_buttons_left {
@@ -245,7 +261,8 @@
     max-width: calc(100vw - 32px);
     border-radius: 16px;
     background-color: #FFFFFF;
-    max-height: 85vh;
+    max-height: calc(100vh - 64px);
+    max-height: calc(100dvh - 64px);
     box-shadow: 0 4px 12px rgba(44, 59, 71, 0.12);
   }
 

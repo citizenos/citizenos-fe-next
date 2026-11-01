@@ -103,7 +103,9 @@
       "OPT_TEXT_SIZE_EXTRA_LARGE": "Extra large",
       "HEADING_HAVING_ISSUES": "Still need help?",
       "READ_STATEMENT": "Read our accessibility statement",
-      "CONTACT_US": "Contact us"
+      "CONTACT_US": "Contact us",
+      "PAGINATION_PREV": "Previous",
+      "PAGINATION_NEXT": "Next"
     },
     "ACTIVITY_FEED": {
       "HEADING_GLOBAL": "Recent activity",
@@ -177,7 +179,10 @@
       "ARGUMENT_LNK_EDIT": "@:VIEWS.MY_TOPICS_TOPICID.LNK_EDIT",
       "ARGUMENT_LNK_DELETE": "@:VIEWS.MY_GROUPS_GROUPID.LNK_DELETE",
       "ARGUMENT_LNK_COPIED": "@:VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_COPIED",
-      "ARGUMENT_LNK_REPORT": "@:VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_REPORT"
+      "ARGUMENT_LNK_REPORT": "@:VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_REPORT",
+      "HEADING_REPLIES": "Replies ({{count}})",
+      "LBL_VOTE_UP": "Vote up",
+      "LBL_VOTE_DOWN": "Vote down"
     },
     "ARGUMENT_EDITS": {
       "HEADING": "Argument edits",
@@ -511,6 +516,9 @@
       "BTN_POST_REPLY": "@:VIEWS.TOPICS_TOPICID.BTN_ARGUMENT_POST_REPLY",
       "BTN_UPDATE_REPLY": "@:VIEWS.TOPIC_CREATE.FOOTER_BTN_SAVE_CHANGES",
       "MSG_SUCCESS": "Reply successfully posted"
+    },
+    "IDEA_REPLY": {
+      "MSG_DELETE_SUCCESS": "Reply deleted successfully"
     },
     "IDEA_REPORT": {
       "HEADING": "Report idea to admin",
@@ -3472,6 +3480,7 @@
   "MSG_REQUEST_REJECTED": "Request has been rejected!",
   "MSG_REQUEST_ACCEPTED_ALREADY": "Request has already been accepted!",
   "MSG_REQUEST_REJECTED_ALREADY": "Request has already been rejected!",
+  "MSG_ERROR_GET": "Failed to load content",
   "MSG_ERROR_POST_API_AUTH_SIGNUP_40000_EMAIL": "Invalid email.",
   "MSG_ERROR_POST_API_AUTH_SIGNUP_40001_EMAIL": "This email address is already in use.",
   "MSG_ERROR_POST_API_AUTH_SIGNUP_40000_NAME": "Name must be 1 to 255 characters long.",

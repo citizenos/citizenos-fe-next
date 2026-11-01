@@ -264,4 +264,32 @@ describe('IdeaReplyComponent', () => {
     const replyBtn = compiled.querySelector('.btn_reply_argument') as HTMLElement;
     expect(replyBtn).toBeTruthy();
   });
+
+  it('iterReplies fallback rendering: should render replies from replies.rows when children is empty', () => {
+    const { component, fixture } = createComponent({
+      argument: {
+        id: 'arg1',
+        creator: { id: 'user1', name: 'User 1' },
+        text: 'Top level comment',
+        children: [],
+        replies: {
+          count: 1,
+          rows: [
+            {
+              id: 'sub1',
+              creator: { id: 'user2', name: 'User 2' },
+              text: 'Fallback reply text'
+            } as IdeaComment
+          ]
+        }
+      }
+    });
+
+    component.showReplies.set(true);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const subReplies = compiled.querySelectorAll('app-idea-reply');
+    expect(subReplies.length).toBe(1);
+  });
 });
