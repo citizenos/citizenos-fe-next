@@ -429,8 +429,8 @@ export class TopicViewComponent implements OnInit {
 
   startDiscussion(topic: Topic) {
     if (!this.topicService.canUpdate(topic)) return;
-    import('../topic-create/components/step-topic-discussion/step-topic-discussion.component').then(m => {
-      this.dialogService.open(m.StepTopicDiscussionComponent, { data: { topic } })
+    import('./components/topic-discussion-create-dialog/topic-discussion-create-dialog.component').then(m => {
+      this.dialogService.open(m.TopicDiscussionCreateDialogComponent, { data: { topic } })
         .afterClosed()
         .subscribe((created: unknown) => {
           if (created) this.topicService.reloadTopic();

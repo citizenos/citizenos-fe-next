@@ -127,8 +127,26 @@ describe('TopicStateItemsComponent', () => {
     expect(component.navigateTab.emit).toHaveBeenCalledWith('voting');
   });
 
-  it('should calculate argument percentages correctly', () => {
-    // 4 pro out of 10 total = 40%
-    expect(component.getArgumentPercentage(4)).toEqual(40);
+  it('should calculate argument percentages correctly based on pro + con', () => {
+    // 4 pro out of (4 pro + 3 con = 7)
+    expect(component.getArgumentPercentage(4)).toBeCloseTo((4 / 7) * 100);
+  });
+
+  it('should render empty discussion state and emit startDiscussion on click when status is ideation and count is 0', () => {
+    vi.spyOn(component.startDiscussion, 'emit');
+    component.topic.set({
+      ...component.topic(),
+      status: 'ideation',
+      discussionId: null
+    } as Topic);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const discItem = compiled.querySelector('.state_item.discussion') as HTMLElement;
+    expect(discItem).toBeTruthy();
+    expect(discItem.classList.contains('empty')).toBe(true);
+
+    discItem.click();
+    expect(component.startDiscussion.emit).toHaveBeenCalledWith(component.topic());
   });
 });

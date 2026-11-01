@@ -320,6 +320,19 @@ describe('TopicViewComponent', () => {
     expect(typeof component.startVote).toBe('function');
   });
 
+  it('should open TopicDiscussionCreateDialogComponent on startDiscussion when canUpdate', async () => {
+    const dialogService = TestBed.inject(DialogService);
+    const openSpy = vi.spyOn(dialogService, 'open').mockReturnValue({ afterClosed: () => of(true) } as unknown as DialogRef<unknown>);
+    mockTopicService.canUpdate.mockReturnValue(true);
+
+    component.startDiscussion(mockTopic as unknown as Topic);
+    await vi.waitFor(() => {
+      expect(openSpy).toHaveBeenCalled();
+    });
+    const { TopicDiscussionCreateDialogComponent } = await import('./components/topic-discussion-create-dialog/topic-discussion-create-dialog.component');
+    expect(openSpy).toHaveBeenCalledWith(TopicDiscussionCreateDialogComponent, { data: { topic: mockTopic } });
+  });
+
   it('should update navigation to private topics when no groups', () => {
     expect(component.navigation().title).toBe('VIEWS.TOPICS_TOPICID.HEADING_BACK_TO_MY_TOPICS');
   });

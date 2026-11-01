@@ -109,8 +109,12 @@
               </div>
             </div>
             <div class="graph">
-              <div class="arguments_pro" [style.width.%]="getArgumentPercentage(argumentCount().pro)"></div>
-              <div class="arguments_con" [style.width.%]="getArgumentPercentage(argumentCount().con)"></div>
+              @if (argumentCount().pro > 0) {
+                <div class="arguments_pro" [style.width.%]="getArgumentPercentage(argumentCount().pro)"></div>
+              }
+              @if (argumentCount().con > 0) {
+                <div class="arguments_con" [style.width.%]="getArgumentPercentage(argumentCount().con)"></div>
+              }
             </div>
           </div>
         </div>

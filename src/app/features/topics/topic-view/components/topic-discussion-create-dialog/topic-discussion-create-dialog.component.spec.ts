@@ -20,7 +20,11 @@ const mockTopic = { id: 'topic-1', title: 'T', status: 'inProgress', categories:
 describe('TopicDiscussionCreateDialogComponent', () => {
   let component: TopicDiscussionCreateDialogComponent;
   const mockDiscussionService = { create: vi.fn(), update: vi.fn() };
-  const mockTopicService = { reloadTopic: vi.fn(), STATUSES: {} };
+  const mockTopicService = {
+    reloadTopic: vi.fn(),
+    patch: vi.fn().mockReturnValue(of({})),
+    STATUSES: { inProgress: 'inProgress', ideation: 'ideation' }
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -50,10 +54,32 @@ describe('TopicDiscussionCreateDialogComponent', () => {
     expect(component.activeTab()).toBe(2);
   });
 
+  it('should have 2 tabs (Introduction and Settings)', () => {
+    expect(component.tabs).toEqual([1, 2]);
+  });
+
+  it('should disable next on tab 2 when question is empty', () => {
+    expect(component.isNextDisabled()).toBe(false);
+    component.selectTab(2);
+    expect(component.isNextDisabled()).toBe(true);
+    component.question.set('How should we proceed?');
+    expect(component.isNextDisabled()).toBe(false);
+  });
+
   it('should call create on save when no discussionId', () => {
     mockDiscussionService.create.mockReturnValue(of({ id: 'disc-1' }));
     component.question.set('Q?');
     component.save();
     expect(mockDiscussionService.create).toHaveBeenCalledWith('topic-1', expect.any(Object));
+  });
+
+  it('should patch topic status to inProgress when saving from ideation status', () => {
+    mockDiscussionService.create.mockReturnValue(of({ id: 'disc-1' }));
+    component.topic = { ...mockTopic, status: 'ideation' } as unknown as typeof component.topic;
+    component.question.set('Q?');
+    component.save();
+    expect(mockDiscussionService.create).toHaveBeenCalledWith('topic-1', expect.any(Object));
+    expect(mockTopicService.patch).toHaveBeenCalledWith({ topicId: 'topic-1', status: 'inProgress' });
+    expect(mockTopicService.reloadTopic).toHaveBeenCalled();
   });
 });

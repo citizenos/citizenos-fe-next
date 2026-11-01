@@ -1,7 +1,8 @@
-import { Component, output, inject, ChangeDetectionStrategy, model } from '@angular/core';
+import { Component, output, inject, ChangeDetectionStrategy, model, effect } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NgClass, DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { take } from 'rxjs';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
@@ -45,6 +46,19 @@ export class TopicStateItemsComponent {
 
   argumentCount = toSignal(this.topicArgumentService.count, { initialValue: { total: 0, pro: 0, con: 0, poi: 0, reply: 0 } });
 
+  constructor() {
+    effect(() => {
+      const t = this.topic();
+      if (t?.discussionId) {
+        if (this.topicArgumentService.getArguments) {
+          this.topicArgumentService.getArguments({ topicId: t.id, discussionId: t.discussionId, page: 1, limit: 1, offset: 0 }).pipe(take(1)).subscribe();
+        }
+      } else if (this.topicArgumentService.count?.next) {
+        this.topicArgumentService.count.next({ total: 0, pro: 0, con: 0, poi: 0, reply: 0 });
+      }
+    });
+  }
+
   get isLoggedIn() { return this.userStore.isAuthenticated; }
 
   get STATUSES() {
@@ -75,7 +89,7 @@ export class TopicStateItemsComponent {
   }
 
   getArgumentPercentage(count: number) {
-    const total = this.argumentCount().total;
+    const total = this.argumentCount().pro + this.argumentCount().con;
     if (total === 0) return 0;
     return (count / total) * 100;
   }
