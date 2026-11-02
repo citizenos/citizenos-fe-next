@@ -150,7 +150,7 @@ import { EstEidComponent } from '../../login/esteid/esteid.component';
             <cos-button
               type="submit"
               variant="primary"
-              size="lg"
+              [size]="isDialog() ? 'md' : 'lg'"
               [isLoading]="userStore.isLoading()"
               [isDisabled]="registerForm().invalid()"
               (clicked)="submitRegister()"
