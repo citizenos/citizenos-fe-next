@@ -80,11 +80,17 @@ export class TopicDiscussionComponent {
   mobileFiltersOpen = signal(false);
   activeMobileFilter = signal<string | null>(null);
 
+  discussionIdOverride = signal<string | null>(null);
+
   private discussionResource = rxResource({
-    params: () => this.topic(),
-    stream: ({ params: topic }) => {
-      if (topic.discussionId) {
-        return this.discussionService.get(topic.id, topic.discussionId).pipe(
+    params: () => ({
+      topic: this.topic(),
+      discussionId: this.discussionIdOverride() || this.topic().discussionId
+    }),
+    stream: ({ params }) => {
+      const { topic, discussionId } = params;
+      if (discussionId) {
+        return this.discussionService.get(topic.id, discussionId).pipe(
           tap(disc => {
             this.argumentService.setParam('topicId', topic.id);
             this.argumentService.setParam('discussionId', disc.id);
@@ -92,8 +98,15 @@ export class TopicDiscussionComponent {
             this.argumentService.loadPage(1);
 
             if (!disc.question && disc.createdAt === disc.updatedAt && this.canUpdate()) {
-              this.dialog.open(MissingDiscussionComponent, {
+              this.dialog.open<MissingDiscussionComponent, boolean>(MissingDiscussionComponent, {
                 data: { topic: topic }
+              }).afterClosed().subscribe((result?: boolean) => {
+                if (result) {
+                  if (this.topicService.reloadTopic) {
+                    this.topicService.reloadTopic();
+                  }
+                  this.discussionResource.reload();
+                }
               });
             }
           })
@@ -262,17 +275,34 @@ flattenedArguments = computed(() => {
   }
 
   openEditDeadline() {
-    this.dialog.open(EditDiscussionDeadlineComponent, {
+    this.dialog.open<EditDiscussionDeadlineComponent, boolean>(EditDiscussionDeadlineComponent, {
       data: {
         topic: this.topic(),
         discussion: this.discussion()
+      }
+    }).afterClosed().subscribe((result?: boolean) => {
+      if (result) {
+        if (this.topicService.reloadTopic) {
+          this.topicService.reloadTopic();
+        }
+        this.discussionResource.reload();
       }
     });
   }
 
   openCreateDiscussion() {
-    this.dialog.open(TopicDiscussionCreateDialogComponent, {
+    this.dialog.open<TopicDiscussionCreateDialogComponent, Discussion>(TopicDiscussionCreateDialogComponent, {
       data: { topic: this.topic() }
+    }).afterClosed().subscribe((result?: Discussion) => {
+      if (result) {
+        if (result.id) {
+          this.discussionIdOverride.set(result.id);
+        }
+        if (this.topicService.reloadTopic) {
+          this.topicService.reloadTopic();
+        }
+        this.discussionResource.reload();
+      }
     });
   }
 

@@ -8,6 +8,9 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicDiscussionService } from '../../../../../core/services/topic-discussion.service';
 import { TopicArgumentService } from '../../../../../core/services/topic-argument.service';
 import { UserStore } from '../../../../../core/state/user.store';
+import { DialogService } from '../../../../../shared/dialog';
+import { TopicDiscussionCreateDialogComponent } from '../topic-discussion-create-dialog/topic-discussion-create-dialog.component';
+import { EditDiscussionDeadlineComponent } from '../edit-discussion-deadline/edit-discussion-deadline.component';
 import { BehaviorSubject, of } from 'rxjs';
 import { Topic } from '../../../../../core/interfaces/topic';
 import { Discussion, Argument } from '../../../../../core/interfaces/discussion';
@@ -33,9 +36,14 @@ const mockArgumentService = {
 const mockDiscussionService = { get: vi.fn(), hasDiscussionEndedExpired: vi.fn().mockReturnValue(false) };
 const mockTopicService = { 
   canUpdate: vi.fn(),
+  reloadTopic: vi.fn(),
   STATUSES: { draft: 'draft', ideation: 'ideation', inProgress: 'inProgress' }
 };
 const mockUserStore = { isAuthenticated: vi.fn(), user: vi.fn() };
+const mockDialog = {
+  open: vi.fn().mockReturnValue({ afterClosed: () => of(undefined) }),
+  closeAll: vi.fn()
+};
 
 describe('TopicDiscussionComponent', () => {
   let component: TopicDiscussionComponent;
@@ -49,6 +57,7 @@ describe('TopicDiscussionComponent', () => {
     mockDiscussionService.get.mockReturnValue(of(mockDiscussion));
     mockTopicService.canUpdate.mockReturnValue(true);
     mockUserStore.isAuthenticated.mockReturnValue(true);
+    mockDialog.open.mockReturnValue({ afterClosed: () => of(undefined) });
 
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -57,6 +66,7 @@ describe('TopicDiscussionComponent', () => {
         { provide: TopicDiscussionService, useValue: mockDiscussionService },
         { provide: TopicArgumentService, useValue: mockArgumentService },
         { provide: UserStore, useValue: mockUserStore },
+        { provide: DialogService, useValue: mockDialog },
         provideRouter([{ path: '**', component: TopicDiscussionComponent }])
       ]
     });
@@ -202,5 +212,79 @@ describe('TopicDiscussionComponent', () => {
     expect(editLink).toBeTruthy();
     expect(editLink.getAttribute('fragment')).toBe('discussion');
     expect(editLink.getAttribute('href')).toContain('/topics/edit/topic-1');
+  });
+
+  it('openCreateDiscussion should open TopicDiscussionCreateDialogComponent and refresh discussion on result', async () => {
+    mockDiscussionService.get.mockClear();
+    const createdDiscussion: Discussion = { id: 'disc-created', question: 'Created discussion?', deadline: null } as unknown as Discussion;
+    mockDialog.open.mockReturnValue({ afterClosed: () => of(createdDiscussion) });
+    mockDiscussionService.get.mockReturnValue(of(createdDiscussion));
+
+    component.openCreateDiscussion();
+    TestBed.flushEffects();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(mockDialog.open).toHaveBeenCalledWith(TopicDiscussionCreateDialogComponent, {
+      data: { topic: component.topic() }
+    });
+    expect(component.discussionIdOverride()).toBe('disc-created');
+    expect(mockTopicService.reloadTopic).toHaveBeenCalled();
+    expect(mockDiscussionService.get).toHaveBeenCalledWith('topic-1', 'disc-created');
+  });
+
+  it('openCreateDiscussion should not reload when dialog closes without result', () => {
+    mockDialog.open.mockReturnValue({ afterClosed: () => of(undefined) });
+    mockTopicService.reloadTopic.mockClear();
+
+    component.openCreateDiscussion();
+
+    expect(mockDialog.open).toHaveBeenCalledWith(TopicDiscussionCreateDialogComponent, {
+      data: { topic: component.topic() }
+    });
+    expect(component.discussionIdOverride()).toBeNull();
+    expect(mockTopicService.reloadTopic).not.toHaveBeenCalled();
+  });
+
+  it('openEditDeadline should open EditDiscussionDeadlineComponent and reload on result', () => {
+    mockDialog.open.mockReturnValue({ afterClosed: () => of(true) });
+    mockTopicService.reloadTopic.mockClear();
+
+    component.openEditDeadline();
+
+    expect(mockDialog.open).toHaveBeenCalledWith(EditDiscussionDeadlineComponent, {
+      data: {
+        topic: component.topic(),
+        discussion: component.discussion()
+      }
+    });
+    expect(mockTopicService.reloadTopic).toHaveBeenCalled();
+  });
+
+  it('should remove empty state and render discussion when start discussion succeeds', async () => {
+    const topicWithoutDiscussion: Topic = { id: 'topic-empty', status: 'ideation', discussionId: undefined } as unknown as Topic;
+    fixture.componentRef.setInput('topic', topicWithoutDiscussion);
+    mockDiscussionService.get.mockReturnValue(of(null));
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const emptyStateHeading = fixture.nativeElement.querySelector('.description_heading');
+    expect(emptyStateHeading).toBeTruthy();
+
+    const createdDiscussion: Discussion = { id: 'disc-new', question: 'New discussion', deadline: null } as Discussion;
+    mockDialog.open.mockReturnValue({ afterClosed: () => of(createdDiscussion) });
+    mockDiscussionService.get.mockReturnValue(of(createdDiscussion));
+
+    component.openCreateDiscussion();
+
+    TestBed.flushEffects();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(component.discussion()).toEqual(createdDiscussion);
+    const argumentsWrap = fixture.nativeElement.querySelector('.arguments_wrap');
+    expect(argumentsWrap).toBeTruthy();
   });
 });

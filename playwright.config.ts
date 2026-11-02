@@ -84,6 +84,7 @@ export default defineConfig({
         'topic-settings.spec.ts',
         'moderation-reporting.spec.ts',
         'topic-followup.spec.ts',
+        'topic-discussion.spec.ts',
         'group-create.spec.ts',
         'group-detail.spec.ts',
       ],
