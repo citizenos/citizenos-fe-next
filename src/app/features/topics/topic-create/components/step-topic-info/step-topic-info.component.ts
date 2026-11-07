@@ -1,4 +1,4 @@
-import { Component, input, output, signal, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, input, output, signal, effect, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { IconComponent } from '../../../../../shared';
@@ -50,8 +50,17 @@ export class StepTopicInfoComponent implements OnInit {
     description: false
   });
 
+  constructor() {
+    effect(() => {
+      this.syncBlocksFromTopic(this.topic());
+    });
+  }
+
   ngOnInit() {
-    const t = this.topic();
+    this.syncBlocksFromTopic(this.topic());
+  }
+
+  private syncBlocksFromTopic(t: Partial<Topic>) {
     this.block.update(b => {
       const updates = { ...b };
       if (t.imageUrl) updates.headerImage = true;
