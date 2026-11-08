@@ -8,10 +8,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IdeaReport } from '../../../../../core/interfaces/ideation';
 import { Idea } from '../../../../../core/interfaces/idea';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
+import { NotificationService } from '../../../../../core/services/notification.service';
 import { UserStore } from '../../../../../core/state/user.store';
-import { DIALOG_DATA, DialogCloseDirective, DialogService } from '../../../../../shared/dialog';
+import { DIALOG_DATA, DialogCloseDirective, DialogRef, DialogService } from '../../../../../shared/dialog';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
-import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 
 interface IdeaReportModerateData {
   idea?: Idea;
@@ -25,7 +27,7 @@ interface IdeaReportModerateData {
 @Component({
   selector: 'app-idea-report-moderate',
   standalone: true,
-  imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, DialogCloseDirective, InputComponent, CosDropdownDirective],
+  imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, DialogCloseDirective, InputComponent, IconComponent, DropdownComponent],
   templateUrl: './idea-report-moderate.component.html',
   styleUrls: ['./idea-report-moderate.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -33,7 +35,9 @@ interface IdeaReportModerateData {
 export class IdeaReportModerateComponent {
   private data = inject<IdeaReportModerateData>(DIALOG_DATA);
   private ideationService = inject(TopicIdeationService);
+  private notificationService = inject(NotificationService);
   private dialog = inject(DialogService);
+  private dialogRef = inject(DialogRef<IdeaReportModerateComponent>, { optional: true });
   private fb = inject(FormBuilder);
   userStore = inject(UserStore);
 
@@ -76,8 +80,26 @@ export class IdeaReportModerateComponent {
       reportId: this.reportId as string,
       report: this.report.value as { type: string; text: string }
     }).pipe(take(1)).subscribe({
-      next: () => this.dialog.closeAll(),
-      error: () => this.dialog.closeAll()
+      next: () => {
+        this.notificationService.success('COMPONENTS.ARGUMENT_REPORT_MODERATE.MSG_MODERATION_SUCCESS');
+        if (this.dialogRef) {
+          this.dialogRef.close(true);
+        } else {
+          this.dialog.closeAll();
+        }
+      },
+      error: (err) => {
+        if (err?.error?.status?.code === 10 || err?.status?.code === 10) {
+          this.notificationService.error('MSG_ERROR_POST_API_TOPICS_COMMENTS_REPORTS_MODERATE_40010');
+        } else {
+          this.notificationService.error('MSG_ERROR_MODERATION_FAILED');
+        }
+        if (this.dialogRef) {
+          this.dialogRef.close();
+        } else {
+          this.dialog.closeAll();
+        }
+      }
     });
   }
 }

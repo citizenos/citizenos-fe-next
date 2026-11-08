@@ -13,8 +13,15 @@
       </svg>
         @if (idea().deletedReasonType && idea().deletedReasonText) {
           <div class="bold" [innerHTML]="'COMPONENTS.IDEABOX.IDEA_FOUND_INAPPRIOPRIATE_BY' | translate:{usersFullName: idea().deletedBy?.name}"></div>
+          <div class="buttons_wrap">
+            <a role="button" tabindex="0" (click)="$event.stopPropagation(); reportReasonDialog()" (keydown.enter)="$event.stopPropagation(); reportReasonDialog()">{{ 'COMPONENTS.IDEABOX.NOTIFICATION_LNK_WHY' | translate }}</a>
+            <a role="button" tabindex="0" (click)="$event.stopPropagation(); goToView()" (keydown.enter)="$event.stopPropagation(); goToView()">{{ 'COMPONENTS.IDEABOX.NOTIFICATION_LNK_VIEW' | translate }}</a>
+          </div>
         } @else if (idea().deletedBy?.id === idea().author?.id) {
           <div class="bold" [innerHTML]="'COMPONENTS.IDEABOX.IDEA_AUTHOR_REMOVED_IDEA' | translate"></div>
+          <div class="buttons_wrap">
+            <a role="button" tabindex="0" (click)="$event.stopPropagation(); goToView()" (keydown.enter)="$event.stopPropagation(); goToView()">{{ 'COMPONENTS.IDEABOX.NOTIFICATION_LNK_VIEW' | translate }}</a>
+          </div>
         }
       </div>
     </div>

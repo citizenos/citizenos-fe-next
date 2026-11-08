@@ -13,7 +13,7 @@ import { DIALOG_DATA, DialogCloseDirective, DialogService } from '../../../../..
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
-import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
+import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 
 interface ArgumentReportModerateData {
   argument?: Argument;
@@ -27,7 +27,7 @@ interface ArgumentReportModerateData {
 @Component({
   selector: 'app-argument-report-moderate',
   standalone: true,
-  imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, DialogCloseDirective, InputComponent, ButtonComponent, CosDropdownDirective, IconComponent],
+  imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, DialogCloseDirective, InputComponent, ButtonComponent, DropdownComponent, IconComponent],
   templateUrl: './argument-report-moderate.component.html',
   styleUrls: ['./argument-report-moderate.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

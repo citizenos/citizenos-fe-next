@@ -75,10 +75,10 @@ export const UserStore = signalStore(
         }
       },
 
-      async resetPassword(password: string, token: string) {
+      async resetPassword(password: string, token: string, email?: string) {
         patchState(store, { isLoading: true });
         try {
-          await firstValueFrom(userService.resetPassword(password, token));
+          await firstValueFrom(userService.resetPassword(password, token, email));
           patchState(store, { isLoading: false });
         } catch (error) {
           patchState(store, { isLoading: false });

@@ -13,6 +13,8 @@ import { Topic } from '../../../../../core/interfaces/topic';
 import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
 import { Ideation } from '../../../../../core/interfaces/ideation';
 import { AddIdeaFolderComponent } from '../add-idea-folder/add-idea-folder.component';
+import { IdeaReportComponent } from '../idea-report/idea-report.component';
+import { IdeaReportReasonComponent } from '../idea-report-reason/idea-report-reason.component';
 
 const mockTopic = { id: 't1', status: 'ideation' } as unknown as Topic;
 const mockIdeation = { id: 'i1' } as unknown as Ideation;
@@ -183,5 +185,33 @@ describe('IdeaboxComponent', () => {
       expect.arrayContaining(['topics', 't1', 'ideation', 'i1', 'ideas', 'idea1']),
       expect.objectContaining({ queryParams: { reply: true } })
     );
+  });
+
+  it('doIdeaReport opens IdeaReportComponent with full idea object', () => {
+    const comp = makeComp();
+    comp.doIdeaReport();
+    expect(mockDialogService.open).toHaveBeenCalledWith(IdeaReportComponent, {
+      data: {
+        idea: mockIdea,
+        topicId: 't1',
+        ideationId: 'i1'
+      }
+    });
+  });
+
+  it('reportReasonDialog opens IdeaReportReasonComponent with moderation reason', () => {
+    const comp = makeComp({
+      deletedReasonText: 'Violates community guidelines',
+      deletedReasonType: 'spam'
+    });
+    comp.reportReasonDialog();
+    expect(mockDialogService.open).toHaveBeenCalledWith(IdeaReportReasonComponent, {
+      data: {
+        report: {
+          moderatedReasonText: 'Violates community guidelines',
+          moderatedReasonType: 'spam'
+        }
+      }
+    });
   });
 });

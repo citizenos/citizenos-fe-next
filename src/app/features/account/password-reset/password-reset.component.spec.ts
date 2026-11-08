@@ -21,7 +21,8 @@ describe('PasswordResetComponent', () => {
     };
     mockActivatedRoute = {
       snapshot: {
-        params: { passwordResetCode: 'test-code' }
+        params: { passwordResetCode: 'test-code' },
+        queryParams: { email: 'user@example.com' }
       }
     };
 
@@ -44,8 +45,9 @@ describe('PasswordResetComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should extract reset code from route', () => {
+  it('should extract reset code and email from route', () => {
     expect(component.resetCode).toBe('test-code');
+    expect(component.email).toBe('user@example.com');
   });
 
   it('should validate password length', () => {
@@ -80,7 +82,7 @@ describe('PasswordResetComponent', () => {
     
     await component.onSubmit();
     
-    expect((mockUserStore as { resetPassword: Mock }).resetPassword).toHaveBeenCalledWith('newpassword123', 'test-code');
+    expect((mockUserStore as { resetPassword: Mock }).resetPassword).toHaveBeenCalledWith('newpassword123', 'test-code', 'user@example.com');
     expect(component.success()).toBeTruthy();
   });
 

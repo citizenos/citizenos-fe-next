@@ -64,10 +64,11 @@ export class UserService {
     return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/password/reset/send`, { email });
   }
 
-  resetPassword(password: string, passwordResetToken: string): Observable<unknown> {
+  resetPassword(password: string, passwordResetCode: string, email?: string): Observable<unknown> {
     return this.http.post<ApiResponse<unknown>>(`${this.apiUrl}/api/auth/password/reset`, {
+      email,
       password,
-      passwordResetToken
+      passwordResetCode
     });
   }
 

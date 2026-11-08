@@ -53,4 +53,20 @@ describe('LoginDialogComponent', () => {
     expect(mockDialogRef.close).toHaveBeenCalled();
     expect(mockDialogService.open).toHaveBeenCalled();
   });
+
+  it('should switch dialog title to forgot password on onForgotPassword() and back on onBackToLogin()', () => {
+    expect(component.isForgotPassword()).toBe(false);
+    const titleEl = fixture.nativeElement.querySelector('.dialog-title');
+    expect(titleEl.textContent.trim()).toBe('VIEWS.LOGIN.LOGIN_TITLE');
+
+    component.onForgotPassword();
+    fixture.detectChanges();
+    expect(component.isForgotPassword()).toBe(true);
+    expect(titleEl.textContent.trim()).toBe('VIEWS.PASSWORD_FORGOT.PASSWORD_FORGOT_TITLE');
+
+    component.onBackToLogin();
+    fixture.detectChanges();
+    expect(component.isForgotPassword()).toBe(false);
+    expect(titleEl.textContent.trim()).toBe('VIEWS.LOGIN.LOGIN_TITLE');
+  });
 });

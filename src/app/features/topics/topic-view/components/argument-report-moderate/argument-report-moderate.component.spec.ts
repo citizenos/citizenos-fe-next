@@ -11,7 +11,20 @@ import { UpperCasePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({ selector: 'cos-input', standalone: true, template: '<ng-content></ng-content>' })
-class MockInputComponent { @Input() placeholder = ''; }
+class MockInputComponent {
+  @Input() placeholder = '';
+  @Input() hasError = false;
+  @Input() errorMessage = '';
+}
+
+@Component({
+  selector: 'cos-dropdown',
+  standalone: true,
+  template: '<ng-content select="[selection]"></ng-content><ng-content select="[options]"></ng-content>'
+})
+class MockDropdownComponent {
+  @Input() placeholder = '';
+}
 
 const MOCK_ARGUMENT = { id: 'arg1', subject: 'Test subject', text: 'Test text' };
 const MOCK_REPORT = { id: 'rep1', type: 'abuse', text: '', comment: MOCK_ARGUMENT };
@@ -48,7 +61,7 @@ describe('ArgumentReportModerateComponent', () => {
       ]
     })
     .overrideComponent(ArgumentReportModerateComponent, {
-      set: { imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, MockInputComponent,
+      set: { imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, MockInputComponent, MockDropdownComponent,
           MockIconComponent, MockButtonComponent] }
     })
     .compileComponents();

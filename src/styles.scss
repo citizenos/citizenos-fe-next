@@ -774,9 +774,11 @@ label:has(input:focus-visible) .radio {
           align-items: center;
         }
 
+        &.row,
         .row {
           display: flex;
           flex-direction: row;
+          justify-content: flex-start;
           gap: 16px;
           width: 100%;
           align-items: center;

@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { vi } from 'vitest';
 
 import { IdeaReplyReportModerateComponent } from './idea-reply-report-moderate.component';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
+import { NotificationService } from '../../../../../core/services/notification.service';
 
 
 const mockArgument = { id: 'comment1', subject: 'Test subject', text: 'Test text' };
@@ -30,6 +31,7 @@ const mockIdeationService = {
 };
 
 const mockDialogRef = { close: vi.fn() };
+const mockNotificationService = { success: vi.fn(), error: vi.fn() };
 
 describe('IdeaReplyReportModerateComponent', () => {
   let component: IdeaReplyReportModerateComponent;
@@ -37,6 +39,7 @@ describe('IdeaReplyReportModerateComponent', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
+    mockIdeationService.moderateIdeaComment.mockReturnValue(of({}));
 
     await TestBed.configureTestingModule({
       imports: [IdeaReplyReportModerateComponent, TranslateModule.forRoot()],
@@ -44,6 +47,7 @@ describe('IdeaReplyReportModerateComponent', () => {
         { provide: DIALOG_DATA, useValue: mockDialogData },
         { provide: DialogRef, useValue: mockDialogRef },
         { provide: TopicIdeationService, useValue: mockIdeationService },
+        { provide: NotificationService, useValue: mockNotificationService },
         provideRouter([{ path: '**', component: IdeaReplyReportModerateComponent }])
       ]
     }).compileComponents();
@@ -76,6 +80,7 @@ describe('IdeaReplyReportModerateComponent', () => {
         { provide: DIALOG_DATA, useValue: { ...mockDialogData, argument: { id: 'c1', subject: null, text: null }, report: mockReport } },
         { provide: DialogRef, useValue: mockDialogRef },
         { provide: TopicIdeationService, useValue: mockIdeationService },
+        { provide: NotificationService, useValue: mockNotificationService },
         provideRouter([{ path: '**', component: IdeaReplyReportModerateComponent }])
       ]
     }).compileComponents();
@@ -125,10 +130,21 @@ describe('IdeaReplyReportModerateComponent', () => {
     );
   });
 
-  it('doModerate() calls dialogRef.close(true) on success', () => {
+  it('doModerate() calls dialogRef.close(true) and shows success notification on success', () => {
     component.report.get('text')?.setValue('Valid reason');
     component.doModerate();
+    expect(mockNotificationService.success).toHaveBeenCalledWith('COMPONENTS.ARGUMENT_REPORT_MODERATE.MSG_MODERATION_SUCCESS');
     expect(mockDialogRef.close).toHaveBeenCalledWith(true);
+  });
+
+  it('doModerate() shows stale report error notification when moderation fails with code 10', () => {
+    mockIdeationService.moderateIdeaComment.mockReturnValueOnce(
+      throwError(() => ({ error: { status: { code: 10 } } }))
+    );
+    component.report.get('text')?.setValue('Valid reason');
+    component.doModerate();
+    expect(mockNotificationService.error).toHaveBeenCalledWith('MSG_ERROR_POST_API_TOPICS_COMMENTS_REPORTS_MODERATE_40010');
+    expect(mockDialogRef.close).toHaveBeenCalled();
   });
 
   it('shows error label when text is touched and empty', () => {

@@ -3,6 +3,7 @@ import { IdeaReplyReportComponent, IdeaReplyReportData } from './idea-reply-repo
 import { TranslateModule } from '@ngx-translate/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
+import { NotificationService } from '../../../../../core/services/notification.service';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
 import { of, throwError } from 'rxjs';
@@ -30,6 +31,7 @@ class MockInitialsComponent {
 })
 class MockIconComponent {
   @Input() name = '';
+  @Input() size: string | number = '';
 }
 
 @Component({
@@ -48,7 +50,9 @@ class MockInputComponent {
   standalone: true,
   template: '<ng-content select="[selection]"></ng-content><ng-content select="[options]"></ng-content>'
 })
-class MockDropdownComponent {}
+class MockDropdownComponent {
+  @Input() placeholder = '';
+}
 
 describe('IdeaReplyReportComponent', () => {
   let component: IdeaReplyReportComponent;
@@ -58,6 +62,7 @@ describe('IdeaReplyReportComponent', () => {
     reportIdeaComment: ReturnType<typeof vi.fn>;
   };
   let mockDialogRef: { close: ReturnType<typeof vi.fn> };
+  let mockNotificationService: Partial<NotificationService>;
 
   const mockData: IdeaReplyReportData = {
     argument: { id: 'arg1', creator: { id: 'c1', name: 'Test Author' }, text: 'Test text' } as unknown as IdeaComment,
@@ -68,10 +73,11 @@ describe('IdeaReplyReportComponent', () => {
 
   beforeEach(async () => {
     mockIdeaService = {
-      COMMENT_REPORT_TYPES: { obscene: 'obscene', spam: 'spam', abuse: 'abuse', duplicate: 'duplicate', hate: 'hate', other: 'other' },
+      COMMENT_REPORT_TYPES: { abuse: 'abuse', obscene: 'obscene', spam: 'spam', duplicate: 'duplicate', hate: 'hate', other: 'other' },
       reportIdeaComment: vi.fn().mockReturnValue(of({}))
     };
     mockDialogRef = { close: vi.fn() };
+    mockNotificationService = { success: vi.fn(), error: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [
@@ -85,6 +91,7 @@ describe('IdeaReplyReportComponent', () => {
       ],
       providers: [
         { provide: TopicIdeationService, useValue: mockIdeaService },
+        { provide: NotificationService, useValue: mockNotificationService },
         { provide: DialogRef, useValue: mockDialogRef },
         { provide: DIALOG_DATA, useValue: mockData }
       ]
@@ -120,7 +127,8 @@ describe('IdeaReplyReportComponent', () => {
     component.report.get('text')?.setValue('Some text');
     component.doReport();
     expect(mockIdeaService.reportIdeaComment).toHaveBeenCalled();
-    expect(mockDialogRef.close).toHaveBeenCalled();
+    expect(mockNotificationService.success).toHaveBeenCalledWith('COMPONENTS.ARGUMENT_REPORT.MSG_REPORT_SENT');
+    expect(mockDialogRef.close).toHaveBeenCalledWith(true);
   });
 
   it('should handle error on doReport', () => {
@@ -128,6 +136,7 @@ describe('IdeaReplyReportComponent', () => {
     component.report.get('text')?.setValue('Some text');
     component.doReport();
     expect(component.errors()).toEqual({ text: 'error' });
+    expect(mockNotificationService.error).toHaveBeenCalledWith('MSG_ERROR_REPORT_SEND_FAILED');
     expect(mockDialogRef.close).not.toHaveBeenCalled();
   });
 });

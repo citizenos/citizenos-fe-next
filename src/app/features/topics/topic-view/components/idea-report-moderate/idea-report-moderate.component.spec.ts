@@ -5,18 +5,29 @@ import { UpperCasePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 import { IdeaReportModerateComponent } from './idea-report-moderate.component';
 import { DIALOG_DATA, DialogService } from '../../../../../shared/dialog';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
+import { NotificationService } from '../../../../../core/services/notification.service';
 
 @Component({ selector: 'cos-input', template: '<ng-content/>', standalone: true })
-class InputStub { @Input() placeholder?: string; }
+class InputStub {
+  @Input() placeholder?: string;
+  @Input() hasError?: boolean;
+  @Input() errorMessage?: string;
+}
 
-@Directive({ selector: '[cosDropdown]', standalone: true })
-class CosDropdownStub {}
+@Component({
+  selector: 'cos-dropdown',
+  template: '<ng-content select="[selection]"></ng-content><ng-content select="[options]"></ng-content>',
+  standalone: true
+})
+class DropdownStub {
+  @Input() placeholder?: string;
+}
 
 // eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[dialogClose]', standalone: true })
@@ -36,23 +47,26 @@ describe('IdeaReportModerateComponent', () => {
   let component: IdeaReportModerateComponent;
   let ideationService: Partial<TopicIdeationService> & { IDEA_REPORT_TYPES: Record<string, string> };
   let dialogService: Partial<DialogService>;
+  let notificationService: Partial<NotificationService>;
 
   beforeEach(async () => {
     ideationService = {
-      IDEA_REPORT_TYPES: { obscene: 'obscene', spam: 'spam', hate: 'hate', duplicate: 'duplicate', other: 'other' },
+      IDEA_REPORT_TYPES: { abuse: 'abuse', obscene: 'obscene', spam: 'spam', hate: 'hate', duplicate: 'duplicate', other: 'other' },
       moderateIdea: vi.fn().mockReturnValue(of({}))
     };
     dialogService = { closeAll: vi.fn() };
+    notificationService = { success: vi.fn(), error: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [IdeaReportModerateComponent, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [
         { provide: DIALOG_DATA, useValue: mockData },
         { provide: TopicIdeationService, useValue: ideationService },
-        { provide: DialogService, useValue: dialogService }
+        { provide: DialogService, useValue: dialogService },
+        { provide: NotificationService, useValue: notificationService }
       ]
     }).overrideComponent(IdeaReportModerateComponent, {
-      set: { imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, InputStub, CosDropdownStub, DialogCloseStub,
+      set: { imports: [UpperCasePipe, ReactiveFormsModule, TranslateModule, InputStub, DropdownStub, DialogCloseStub,
           MockIconComponent] }
     }).compileComponents();
 
@@ -66,7 +80,7 @@ describe('IdeaReportModerateComponent', () => {
   });
 
   it('populates report types from ideation service', () => {
-    expect(component.reportTypes).toEqual(['obscene', 'spam', 'hate', 'duplicate', 'other']);
+    expect(component.reportTypes).toEqual(['abuse', 'obscene', 'spam', 'hate', 'duplicate', 'other']);
   });
 
   it('patches form with report data', () => {
@@ -95,6 +109,17 @@ describe('IdeaReportModerateComponent', () => {
     expect(ideationService.moderateIdea).toHaveBeenCalledWith(
       expect.objectContaining({ topicId: 'topic1', ideationId: 'ideation1', token: 'tok123' })
     );
+    expect(notificationService.success).toHaveBeenCalledWith('COMPONENTS.ARGUMENT_REPORT_MODERATE.MSG_MODERATION_SUCCESS');
+    expect(dialogService.closeAll).toHaveBeenCalled();
+  });
+
+  it('shows stale report error notification when moderateIdea fails with code 10', () => {
+    (ideationService.moderateIdea as ReturnType<typeof vi.fn>).mockReturnValue(
+      throwError(() => ({ error: { status: { code: 10 } } }))
+    );
+    component.report.patchValue({ type: 'spam', text: 'This is spam content' });
+    component.doModerate();
+    expect(notificationService.error).toHaveBeenCalledWith('MSG_ERROR_POST_API_TOPICS_COMMENTS_REPORTS_MODERATE_40010');
     expect(dialogService.closeAll).toHaveBeenCalled();
   });
 });

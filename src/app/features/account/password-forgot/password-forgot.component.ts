@@ -1,4 +1,4 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, input, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -20,14 +20,22 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
     IconComponent
   ],
   template: `
-    <div id="password_forgot_wrap">
+    <div id="password_forgot_wrap" [class.dialog-mode]="isDialog()">
       <nav class="nav-back">
-        <cos-button variant="light" size="md" [routerLink]="['../../login']" icon="arrow-left">
-          <span translate="VIEWS.PASSWORD_FORGOT.BTN_BACK"></span>
-        </cos-button>
+        @if (isDialog()) {
+          <cos-button variant="light" size="md" icon="arrow-left" (clicked)="onBack()">
+            <span translate="VIEWS.PASSWORD_FORGOT.BTN_BACK"></span>
+          </cos-button>
+        } @else {
+          <cos-button variant="light" size="md" [routerLink]="['../../login']" icon="arrow-left">
+            <span translate="VIEWS.PASSWORD_FORGOT.BTN_BACK"></span>
+          </cos-button>
+        }
       </nav>
 
-      <h1 class="main_heading">{{ 'VIEWS.PASSWORD_FORGOT.PASSWORD_FORGOT_TITLE' | translate }}</h1>
+      @if (!isDialog()) {
+        <h1 class="main_heading">{{ 'VIEWS.PASSWORD_FORGOT.PASSWORD_FORGOT_TITLE' | translate }}</h1>
+      }
 
       @if (success()) {
         <div class="success-banner" role="alert">
@@ -35,9 +43,15 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
           <span translate="MSG_INFO_PASSWORD_RECOVERY_EMAIL_SENT"></span>
         </div>
         <div class="form-actions">
-          <cos-button variant="primary" size="lg" [routerLink]="['../../login']">
-             {{ 'VIEWS.PASSWORD_FORGOT.BTN_BACK' | translate }}
-          </cos-button>
+          @if (isDialog()) {
+            <cos-button variant="primary" size="md" (clicked)="onBack()">
+               {{ 'VIEWS.PASSWORD_FORGOT.BTN_BACK' | translate }}
+            </cos-button>
+          } @else {
+            <cos-button variant="primary" size="lg" [routerLink]="['../../login']">
+               {{ 'VIEWS.PASSWORD_FORGOT.BTN_BACK' | translate }}
+            </cos-button>
+          }
         </div>
       } @else {
         <p class="instruction-text" translate="VIEWS.PASSWORD_FORGOT.PASSWORD_FORGOT_DESCRIPTION"></p>
@@ -62,7 +76,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
             <cos-button 
               type="submit" 
               variant="primary"
-              size="lg"
+              [size]="isDialog() ? 'md' : 'lg'"
               [isLoading]="userStore.isLoading()" 
               [isDisabled]="forgotForm.invalid"
             >
@@ -79,6 +93,10 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
       flex-direction: column;
       gap: 32px;
       width: 100%;
+
+      &.dialog-mode {
+        gap: 16px;
+      }
     }
 
     .nav-back {
@@ -98,6 +116,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
       font-size: 16px;
       color: var(--color-text-muted);
       line-height: 1.5;
+      margin: 0;
     }
 
     .error-banner {
@@ -130,6 +149,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
 
       cos-button {
         width: 100%;
+        display: block;
       }
     }
   `]
@@ -138,6 +158,9 @@ export class PasswordForgotComponent {
   private fb = inject(FormBuilder);
   userStore = inject(UserStore);
 
+  isDialog = input<boolean>(false);
+  back = output<void>();
+
   success = signal(false);
   error = signal<string | null>(null);
 
@@ -145,9 +168,16 @@ export class PasswordForgotComponent {
     email: ['', [Validators.required, Validators.email]]
   });
 
+  onBack() {
+    this.success.set(false);
+    this.error.set(null);
+    this.back.emit();
+  }
+
   async onSubmit() {
     if (this.forgotForm.valid) {
       const { email } = this.forgotForm.getRawValue();
+      this.error.set(null);
       try {
         await this.userStore.sendPasswordReset(email!);
         this.success.set(true);

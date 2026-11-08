@@ -7,15 +7,17 @@ import { take, combineLatest, switchMap } from 'rxjs';
 
 import { IdeaComment, IdeaReport } from '../../../../../core/interfaces/ideation';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
+import { NotificationService } from '../../../../../core/services/notification.service';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
 import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
 import { DialogService } from '../../../../../shared/dialog/dialog.service';
-import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
+import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 
 import { UserStore } from '../../../../../core/state/user.store';
 
 export interface IdeaReplyReportModerateData {
-  argument: IdeaComment;
+  argument?: IdeaComment;
   report: IdeaReport;
   topicId: string;
   ideationId: string;
@@ -29,14 +31,16 @@ export interface IdeaReplyReportModerateData {
   selector: 'app-idea-reply-report-moderate',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, ReactiveFormsModule, NgClass, DialogCloseDirective, CosDropdownDirective],
+  imports: [TranslateModule, ReactiveFormsModule, NgClass, DialogCloseDirective, IconComponent, DropdownComponent],
   templateUrl: './idea-reply-report-moderate.component.html',
   styleUrl: './idea-reply-report-moderate.component.scss'
 })
 export class IdeaReplyReportModerateComponent {
   private data = inject<IdeaReplyReportModerateData>(DIALOG_DATA);
-  protected dialogRef = inject(DialogRef);
+  protected dialogRef = inject(DialogRef, { optional: true });
+  private dialog = inject(DialogService);
   private ideationService = inject(TopicIdeationService);
+  private notificationService = inject(NotificationService);
   userStore = inject(UserStore);
 
   argument = this.data.argument || this.data.report?.comment;
@@ -80,8 +84,26 @@ export class IdeaReplyReportModerateComponent {
       reportId: this.reportId,
       report: this.report.value as { type: string; text: string }
     }).pipe(take(1)).subscribe({
-      next: () => this.dialogRef.close(true),
-      error: () => this.dialogRef.close()
+      next: () => {
+        this.notificationService.success('COMPONENTS.ARGUMENT_REPORT_MODERATE.MSG_MODERATION_SUCCESS');
+        if (this.dialogRef) {
+          this.dialogRef.close(true);
+        } else {
+          this.dialog.closeAll();
+        }
+      },
+      error: (err) => {
+        if (err?.error?.status?.code === 10 || err?.status?.code === 10) {
+          this.notificationService.error('MSG_ERROR_POST_API_TOPICS_COMMENTS_REPORTS_MODERATE_40010');
+        } else {
+          this.notificationService.error('MSG_ERROR_MODERATION_FAILED');
+        }
+        if (this.dialogRef) {
+          this.dialogRef.close();
+        } else {
+          this.dialog.closeAll();
+        }
+      }
     });
   }
 }

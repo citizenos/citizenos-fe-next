@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { DialogRef } from '../../../../shared/dialog/dialog-ref';
 import { DIALOG_DATA } from '../../../../shared/dialog/dialog-tokens';
@@ -19,7 +19,9 @@ export interface LoginDialogData {
   template: `
     <div class="auth-dialog-card">
       <div class="auth-dialog-header">
-        <h2 class="dialog-title">{{ 'VIEWS.LOGIN.LOGIN_TITLE' | translate }}</h2>
+        <h2 class="dialog-title">
+          {{ (isForgotPassword() ? 'VIEWS.PASSWORD_FORGOT.PASSWORD_FORGOT_TITLE' : 'VIEWS.LOGIN.LOGIN_TITLE') | translate }}
+        </h2>
         <button
           type="button"
           class="btn-dialog-close"
@@ -35,6 +37,8 @@ export interface LoginDialogData {
         [redirectSuccess]="data.redirectSuccess"
         (loggedIn)="onLoggedIn()"
         (switchToRegister)="openRegister()"
+        (forgotPassword)="onForgotPassword()"
+        (backToLogin)="onBackToLogin()"
       />
     </div>
   `,
@@ -45,12 +49,22 @@ export class LoginDialogComponent {
   private dialogService = inject(DialogService);
   readonly data = inject<LoginDialogData>(DIALOG_DATA);
 
+  isForgotPassword = signal(false);
+
   close() {
     this.dialogRef.close();
   }
 
   onLoggedIn() {
     this.dialogRef.close(true);
+  }
+
+  onForgotPassword() {
+    this.isForgotPassword.set(true);
+  }
+
+  onBackToLogin() {
+    this.isForgotPassword.set(false);
   }
 
   openRegister() {

@@ -9,6 +9,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
 import { UserService } from '../../../../core/services/user.service';
 import { SmartIdComponent } from '../../login/smart-id/smart-id.component';
 import { EstEidComponent } from '../../login/esteid/esteid.component';
+import { PasswordForgotComponent } from '../../password-forgot/password-forgot.component';
 
 @Component({
   selector: 'app-login-form',
@@ -23,7 +24,8 @@ import { EstEidComponent } from '../../login/esteid/esteid.component';
     InputComponent,
     IconComponent,
     SmartIdComponent,
-    EstEidComponent
+    EstEidComponent,
+    PasswordForgotComponent
   ],
   template: `
     <div class="login-form-container">
@@ -123,9 +125,11 @@ import { EstEidComponent } from '../../login/esteid/esteid.component';
           </a>
         </footer>
       } @else if (selectedMethod() === 'smartid') {
-        <app-smart-id (cancel)="selectedMethod.set('default')"></app-smart-id>
+        <app-smart-id [isDialog]="isDialog()" (cancelled)="selectedMethod.set('default')"></app-smart-id>
       } @else if (selectedMethod() === 'esteid') {
-        <app-esteid (cancel)="selectedMethod.set('default')"></app-esteid>
+        <app-esteid [isDialog]="isDialog()" (cancelled)="selectedMethod.set('default')"></app-esteid>
+      } @else if (selectedMethod() === 'forgot') {
+        <app-password-forgot [isDialog]="isDialog()" (back)="onBackFromForgot()"></app-password-forgot>
       }
     </div>
   `,
@@ -144,8 +148,9 @@ export class LoginFormComponent {
   loggedIn = output<void>();
   switchToRegister = output<void>();
   forgotPassword = output<void>();
+  backToLogin = output<void>();
 
-  selectedMethod = signal<'default' | 'smartid' | 'esteid'>('default');
+  selectedMethod = signal<'default' | 'smartid' | 'esteid' | 'forgot'>('default');
   showPassword = signal(false);
   error = signal<string | null>(null);
 
@@ -183,10 +188,17 @@ export class LoginFormComponent {
 
   onForgotPassword() {
     this.forgotPassword.emit();
-    if (!this.isDialog()) {
+    if (this.isDialog()) {
+      this.selectedMethod.set('forgot');
+    } else {
       const lang = this.translate.currentLang || this.translate.defaultLang || 'en';
       this.router.navigate(['/', lang, 'account', 'password', 'forgot']);
     }
+  }
+
+  onBackFromForgot() {
+    this.selectedMethod.set('default');
+    this.backToLogin.emit();
   }
 
   onSwitchToRegister() {

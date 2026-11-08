@@ -28,35 +28,26 @@
         </div>
       </div>
       <form [formGroup]="report">
-        <cos-input [placeholder]="'COMPONENTS.ARGUMENT_REPORT_MODERATE.LABLE_REASON' | translate">
-          <div class="dropdown" cosDropdown>
-            <div class="selection">
-              <div class="selected_item">{{ 'TXT_REPORT_TYPES_' + (report.value.type | uppercase) | translate }}</div>
-              <cos-icon name="chevron-down" [size]="20"></cos-icon>
-            </div>
-            <div class="options">
-              @for (type of reportTypes; track type) {
-                <div class="option" (click)="selectReportType(type)" (keydown.enter)="selectReportType(type)" role="button" tabindex="0">
-                  {{ 'TXT_REPORT_TYPES_' + (type | uppercase) | translate }}
-                </div>
-              }
-            </div>
+        <cos-dropdown [placeholder]="'COMPONENTS.ARGUMENT_REPORT_MODERATE.LABLE_REASON' | translate">
+          <div id="report_reason" selection class="selected_item">{{ 'TXT_REPORT_TYPES_' + (report.value.type | uppercase) | translate }}</div>
+          <div id="report_reason_options" options role="listbox">
+            @for (type of reportTypes; track type) {
+              <div class="option" (click)="selectReportType(type)" (keydown.enter)="selectReportType(type)" role="option" tabindex="0" [attr.aria-selected]="report.value.type === type">
+                {{ 'TXT_REPORT_TYPES_' + (type | uppercase) | translate }}
+              </div>
+            }
           </div>
-        </cos-input>
+        </cos-dropdown>
 
-        <cos-input [placeholder]="'COMPONENTS.ARGUMENT_REPORT_MODERATE.PLACEHOLDER_REPORT_TEXT' | translate">
+        <cos-input
+          [placeholder]="'COMPONENTS.ARGUMENT_REPORT_MODERATE.PLACEHOLDER_REPORT_TEXT' | translate"
+          [hasError]="!!(report.controls['text'].errors?.['required'] && report.controls['text'].touched)"
+          [errorMessage]="'COMPONENTS.ARGUMENT_REPORT_MODERATE.ERROR_TEXT' | translate"
+        >
           <textarea id="report_text" formControlName="text"
             [class.error_input]="report.controls['text'].errors?.['required'] && report.controls['text'].touched"
             [placeholder]="'COMPONENTS.ARGUMENT_REPORT.PLACEHOLDER_REPORT_TEXT' | translate"
             maxlength="2048" rows="5"></textarea>
-          @if (report.controls['text'].errors?.['required'] && report.controls['text'].touched) {
-            <label for="report_text" class="error_label">
-              <cos-icon name="warning" [size]="16" color="#EF4025"></cos-icon>
-              <div class="error_text">
-                <span>{{ 'COMPONENTS.ARGUMENT_REPORT_MODERATE.ERROR_TEXT' | translate }}</span>
-              </div>
-            </label>
-          }
         </cos-input>
       </form>
       <div class="dialog_info_wrap">

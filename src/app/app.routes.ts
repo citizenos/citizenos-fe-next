@@ -1,4 +1,5 @@
-import { Routes, UrlSegment } from '@angular/router';
+import { inject } from '@angular/core';
+import { Router, Routes, UrlSegment } from '@angular/router';
 import { ShellComponent } from './core/components/shell/shell.component';
 import { languageResolver } from './core/resolvers/language.resolver';
 import { authGuard } from './core/guards/auth.guard';
@@ -17,7 +18,14 @@ export const routes: Routes = [
       }
       return null;
     },
-    redirectTo: (pos: { url: UrlSegment[] | string }) => `/en/${(Array.isArray(pos.url) ? pos.url.join('/') : pos.url).replace(/,/g, '/')}`
+    redirectTo: (pos) => {
+      const router = inject(Router);
+      const pathSegments = ['en', ...(Array.isArray(pos.url) ? pos.url.map(s => s.path) : [pos.url])];
+      return router.createUrlTree(pathSegments, {
+        queryParams: pos.queryParams,
+        fragment: pos.fragment ?? undefined
+      });
+    }
   },
   
   // The main layout wrapping all localized routes

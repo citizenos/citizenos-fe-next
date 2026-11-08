@@ -93,13 +93,15 @@ interface IdeaCommentWithParent extends IdeaComment {
                 </svg>
                 <span>{{ 'LNK_DIRECT_LINK' | translate }}</span>
               </button>
-              <button type="button" class="option" (click)="doArgumentReport(); $event.stopPropagation()">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="8" cy="8" r="5.5" fill="#2C3B47" stroke="#2C3B47" />
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M4.83552 4.12842L11.8714 11.1643C11.6598 11.4228 11.4228 11.6598 11.1643 11.8714L4.12842 4.83552C4.34 4.57697 4.57697 4.34 4.83552 4.12842Z" fill="white" />
-                </svg>
-                <span>{{ 'COMPONENTS.ARGUMENT.OPTION_REPORT' | translate }}</span>
-              </button>
+              @if (!argument().deletedAt) {
+                <button type="button" class="option" (click)="doArgumentReport(); $event.stopPropagation()">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="8" cy="8" r="5.5" fill="#2C3B47" stroke="#2C3B47" />
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.83552 4.12842L11.8714 11.1643C11.6598 11.4228 11.4228 11.6598 11.1643 11.8714L4.12842 4.83552C4.34 4.57697 4.57697 4.34 4.83552 4.12842Z" fill="white" />
+                  </svg>
+                  <span>{{ 'COMPONENTS.ARGUMENT.OPTION_REPORT' | translate }}</span>
+                </button>
+              }
               @if (isEdited()) {
                 <button type="button" class="option" (click)="showEdits.set(!showEdits()); $event.stopPropagation()">
                   <span>{{ 'VIEWS.TOPICS_TOPICID.ARGUMENT_LNK_VIEW_PREVIOUS_VERSIONS' | translate }}</span>
@@ -261,14 +263,16 @@ interface IdeaCommentWithParent extends IdeaComment {
         </svg>
         <span>{{ 'LNK_DIRECT_LINK' | translate }}</span>
       </button>
-      <div class="line_separator"></div>
-      <button type="button" class="option btn_report_reply" (click)="doShowReportOverlay(); mobileActions.set(false)">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="8" cy="8" r="5.5" fill="#2C3B47" stroke="#2C3B47" />
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M4.83552 4.12842L11.8714 11.1643C11.6598 11.4228 11.4228 11.6598 11.1643 11.8714L4.12842 4.83552C4.34 4.57697 4.57697 4.34 4.83552 4.12842Z" fill="white" />
-        </svg>
-        <span>{{ 'COMPONENTS.ARGUMENT.OPTION_REPORT' | translate }}</span>
-      </button>
+      @if (!argument().deletedAt) {
+        <div class="line_separator"></div>
+        <button type="button" class="option btn_report_reply" (click)="doShowReportOverlay(); mobileActions.set(false)">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="8" cy="8" r="5.5" fill="#2C3B47" stroke="#2C3B47" />
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M4.83552 4.12842L11.8714 11.1643C11.6598 11.4228 11.4228 11.6598 11.1643 11.8714L4.12842 4.83552C4.34 4.57697 4.57697 4.34 4.83552 4.12842Z" fill="white" />
+          </svg>
+          <span>{{ 'COMPONENTS.ARGUMENT.OPTION_REPORT' | translate }}</span>
+        </button>
+      }
       @if (isEdited()) {
         <div class="line_separator"></div>
         <button type="button" class="option" (click)="showEdits.set(!showEdits()); mobileActions.set(false)">
@@ -461,6 +465,7 @@ export class IdeaReplyComponent implements OnInit, AfterViewInit {
   }
 
   doArgumentReport() {
+    if (this.argument().deletedAt) return;
     this.dialog.open(IdeaReplyReportComponent, {
       data: {
         argument: this.argument(),

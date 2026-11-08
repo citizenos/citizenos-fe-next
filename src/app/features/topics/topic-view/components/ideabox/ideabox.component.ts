@@ -20,6 +20,7 @@ import { Idea, IdeaStatus } from '../../../../../core/interfaces/idea';
 import { CosDropdownDirective } from '../../../../../shared/directives/cos-dropdown.directive';
 import { TooltipComponent } from '../../../../../shared/components/tooltip/tooltip.component';
 import { IdeaReportComponent } from '../idea-report/idea-report.component';
+import { IdeaReportReasonComponent } from '../idea-report-reason/idea-report-reason.component';
 import { AddIdeaFolderComponent } from '../add-idea-folder/add-idea-folder.component';
 import { EditIdeaComponent } from '../edit-idea/edit-idea.component';
 
@@ -173,9 +174,20 @@ export class IdeaboxComponent {
   doIdeaReport() {
     this.dialogService.open(IdeaReportComponent, {
       data: {
-        ideaId: this.idea().id,
+        idea: this.idea(),
         topicId: this.topic().id,
         ideationId: this.ideation().id
+      }
+    });
+  }
+
+  reportReasonDialog() {
+    this.dialogService.open(IdeaReportReasonComponent, {
+      data: {
+        report: {
+          moderatedReasonText: this.idea().deletedReasonText || '',
+          moderatedReasonType: this.idea().deletedReasonType || ''
+        }
       }
     });
   }

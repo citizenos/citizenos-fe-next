@@ -105,4 +105,49 @@ describe('LoginFormComponent', () => {
 
     vi.unstubAllGlobals();
   });
+
+  it('should switch to forgot password view inside dialog when onForgotPassword() is called', () => {
+    fixture.componentRef.setInput('isDialog', true);
+    fixture.detectChanges();
+
+    const forgotSpy = vi.fn();
+    component.forgotPassword.subscribe(forgotSpy);
+
+    component.onForgotPassword();
+    fixture.detectChanges();
+
+    expect(forgotSpy).toHaveBeenCalled();
+    expect(component.selectedMethod()).toBe('forgot');
+    expect(fixture.nativeElement.querySelector('app-password-forgot')).toBeTruthy();
+  });
+
+  it('should return to default login view and emit backToLogin when onBackFromForgot() is called', () => {
+    fixture.componentRef.setInput('isDialog', true);
+    component.selectedMethod.set('forgot');
+    fixture.detectChanges();
+
+    const backSpy = vi.fn();
+    component.backToLogin.subscribe(backSpy);
+
+    component.onBackFromForgot();
+    fixture.detectChanges();
+
+    expect(component.selectedMethod()).toBe('default');
+    expect(backSpy).toHaveBeenCalled();
+  });
+
+  it('should switch to smartid and esteid in dialog mode and return to default on cancelled', () => {
+    fixture.componentRef.setInput('isDialog', true);
+    fixture.detectChanges();
+
+    component.selectMethod('smartid');
+    fixture.detectChanges();
+    expect(component.selectedMethod()).toBe('smartid');
+    expect(fixture.nativeElement.querySelector('app-smart-id')).toBeTruthy();
+
+    component.selectMethod('esteid');
+    fixture.detectChanges();
+    expect(component.selectedMethod()).toBe('esteid');
+    expect(fixture.nativeElement.querySelector('app-esteid')).toBeTruthy();
+  });
 });

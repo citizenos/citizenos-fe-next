@@ -33,6 +33,7 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
   private userStore = inject(UserStore);
 
   public readonly IDEA_REPORT_TYPES = {
+    abuse: 'abuse',
     obscene: 'obscene',
     spam: 'spam',
     hate: 'hate',
@@ -288,18 +289,26 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
       .pipe(map(res => res.data!));
   }
 
-  moderateIdea(data: { topicId: string; ideationId: string; ideaId: string; [key: string]: unknown }): Observable<unknown> {
-    const { topicId, ideationId, ideaId, ...body } = data;
-    const path = this.getAbsoluteUrlApi(`/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/moderate`, true);
-    return this.http.post<ApiResponse<unknown>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })
+  moderateIdea(data: { topicId: string; ideationId: string; ideaId: string; reportId: string; token?: string; report?: { type: string; text?: string }; type?: string; text?: string; [key: string]: unknown }): Observable<unknown> {
+    const headers: Record<string, string> = {};
+    if (data.token) {
+      headers['Authorization'] = `Bearer ${data.token}`;
+    }
+    const path = `${this.apiUrl}/api/topics/${data.topicId}/ideations/${data.ideationId}/ideas/${data.ideaId}/reports/${data.reportId}/moderate`;
+    const payload = data.report || { type: data.type, text: data.text };
+    return this.http.post<ApiResponse<unknown>>(path, payload, { headers, withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 
   getIdeaReport(params: { topicId: string; ideationId: string; ideaId: string; reportId: string; token?: string }): Observable<IdeaReportInterface> {
+    const headers: Record<string, string> = {};
     let httpParams = new HttpParams();
-    if (params.token) httpParams = httpParams.set('token', params.token);
-    const path = this.getAbsoluteUrlApi(`/topics/${params.topicId}/ideations/${params.ideationId}/ideas/${params.ideaId}/reports/${params.reportId}`, true);
-    return this.http.get<ApiResponse<IdeaReportInterface>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
+    if (params.token) {
+      headers['Authorization'] = `Bearer ${params.token}`;
+      httpParams = httpParams.set('token', params.token);
+    }
+    const path = `${this.apiUrl}/api/topics/${params.topicId}/ideations/${params.ideationId}/ideas/${params.ideaId}/reports/${params.reportId}`;
+    return this.http.get<ApiResponse<IdeaReportInterface>>(path, { headers, withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data!));
   }
 
@@ -415,11 +424,15 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
   }
 
   getIdeaCommentReport(params: { topicId: string; ideationId: string; ideaId: string; commentId: string; reportId: string; token?: string }): Observable<IdeaReportInterface> {
-     let httpParams = new HttpParams();
-     if (params.token) httpParams = httpParams.set('token', params.token);
-     const path = this.getAbsoluteUrlApi(`/topics/${params.topicId}/ideations/${params.ideationId}/ideas/${params.ideaId}/comments/${params.commentId}/reports/${params.reportId}`, true);
-     return this.http.get<ApiResponse<IdeaReportInterface>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
-       .pipe(map(res => res.data!));
+    const headers: Record<string, string> = {};
+    let httpParams = new HttpParams();
+    if (params.token) {
+      headers['Authorization'] = `Bearer ${params.token}`;
+      httpParams = httpParams.set('token', params.token);
+    }
+    const path = `${this.apiUrl}/api/topics/${params.topicId}/ideations/${params.ideationId}/ideas/${params.ideaId}/comments/${params.commentId}/reports/${params.reportId}`;
+    return this.http.get<ApiResponse<IdeaReportInterface>>(path, { headers, withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })
+      .pipe(map(res => res.data!));
   }
 
   saveIdeaComment(data: { topicId: string; ideationId: string; ideaId: string; [key: string]: ParamValue }): Observable<IdeaComment> {
@@ -456,10 +469,14 @@ export class TopicIdeationService extends ItemsListService<TopicIdeationParams, 
       .pipe(map(res => res.data!));
   }
 
-  moderateIdeaComment(data: { topicId: string; ideationId: string; ideaId: string; commentId: string; [key: string]: unknown }): Observable<unknown> {
-    const { topicId, ideationId, ideaId, commentId, ...body } = data;
-    const path = this.getAbsoluteUrlApi(`/topics/${topicId}/ideations/${ideationId}/ideas/${ideaId}/comments/${commentId}/moderate`, true);
-    return this.http.post<ApiResponse<unknown>>(path, body, { withCredentials: true, observe: 'body', responseType: 'json' })
+  moderateIdeaComment(data: { topicId: string; ideationId: string; ideaId: string; commentId: string; reportId: string; token?: string; report?: { type: string; text?: string }; type?: string; text?: string; [key: string]: unknown }): Observable<unknown> {
+    const headers: Record<string, string> = {};
+    if (data.token) {
+      headers['Authorization'] = `Bearer ${data.token}`;
+    }
+    const path = `${this.apiUrl}/api/topics/${data.topicId}/ideations/${data.ideationId}/ideas/${data.ideaId}/comments/${data.commentId}/reports/${data.reportId}/moderate`;
+    const payload = data.report || { type: data.type, text: data.text };
+    return this.http.post<ApiResponse<unknown>>(path, payload, { headers, withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
 

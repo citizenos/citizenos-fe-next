@@ -68,4 +68,25 @@ describe('PasswordForgotComponent', () => {
     expect(component.error()).toBe('User not found');
     expect(component.success()).toBeFalsy();
   });
+
+  it('should hide main heading in dialog mode and emit back on onBack()', () => {
+    expect(fixture.nativeElement.querySelector('.main_heading')).toBeTruthy();
+
+    fixture.componentRef.setInput('isDialog', true);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.main_heading')).toBeNull();
+    expect(fixture.nativeElement.querySelector('#password_forgot_wrap.dialog-mode')).toBeTruthy();
+
+    const backSpy = vi.fn();
+    component.back.subscribe(backSpy);
+    component.success.set(true);
+    component.error.set('Some error');
+
+    component.onBack();
+
+    expect(component.success()).toBe(false);
+    expect(component.error()).toBeNull();
+    expect(backSpy).toHaveBeenCalled();
+  });
 });

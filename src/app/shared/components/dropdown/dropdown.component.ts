@@ -113,6 +113,10 @@ import { IconComponent } from '../icon/icon.component';
       color: var(--color-text);
       line-height: 20px;
       font-weight: 400;
+      padding: 0;
+    }
+
+    .with_label .dropdown-value {
       padding: 14px 0px 5px;
     }
 

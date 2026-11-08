@@ -2,9 +2,11 @@ import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/cor
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DIALOG_DATA } from '../../../../../shared/dialog/dialog-tokens';
-import { DialogRef } from '../../../../../shared/dialog/dialog-ref';
+import { DialogRef, DialogCloseDirective } from '../../../../../shared/dialog/dialog-ref';
 import { TopicIdeationService } from '../../../../../core/services/topic-ideation.service';
+import { NotificationService } from '../../../../../core/services/notification.service';
 import { InitialsComponent } from '../../../../../shared/components/initials/initials.component';
+import { IconComponent } from '../../../../../shared/components/icon/icon.component';
 import { InputComponent } from '../../../../../shared/components/input/input.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
 import { IdeaComment } from '../../../../../core/interfaces/ideation';
@@ -22,9 +24,11 @@ export interface IdeaReplyReportData {
   imports: [
     TranslateModule,
     ReactiveFormsModule,
+    IconComponent,
     InitialsComponent,
     InputComponent,
-    DropdownComponent
+    DropdownComponent,
+    DialogCloseDirective
   ],
   templateUrl: './idea-reply-report.component.html',
   styleUrls: ['./idea-reply-report.component.scss'],
@@ -34,6 +38,7 @@ export class IdeaReplyReportComponent {
   public data = inject<IdeaReplyReportData>(DIALOG_DATA);
   private dialogRef = inject(DialogRef);
   private TopicIdeationService = inject(TopicIdeationService);
+  private notificationService = inject(NotificationService);
 
   reportTypes = Object.keys(this.TopicIdeationService.COMMENT_REPORT_TYPES);
   errors = signal<{ text?: string } | null>(null);
@@ -56,10 +61,12 @@ export class IdeaReplyReportComponent {
 
     this.TopicIdeationService.reportIdeaComment(this.report.value as { topicId: string; ideationId: string; ideaId: string; commentId: string; type: string; text: string }).subscribe({
       next: () => {
-        this.dialogRef.close();
+        this.notificationService.success('COMPONENTS.ARGUMENT_REPORT.MSG_REPORT_SENT');
+        this.dialogRef.close(true);
       },
       error: (res) => {
-        this.errors.set(res.errors);
+        this.errors.set(res?.errors || null);
+        this.notificationService.error('MSG_ERROR_REPORT_SEND_FAILED');
       },
     });
   }

@@ -1,4 +1,4 @@
-import { Component, inject, signal, output, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, input, signal, output, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
@@ -23,9 +23,15 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
   template: `
     <div id="login_wrap">
       <nav class="nav-back">
-        <cos-button variant="light" size="md" [routerLink]="['../']" icon="arrow-left" (click)="cancelMethod()">
-          <span translate="VIEWS.EST_ID_LOGIN.BTN_BACK"></span>
-        </cos-button>
+        @if (isDialog()) {
+          <cos-button variant="light" size="md" icon="arrow-left" (clicked)="cancelMethod()">
+            <span translate="VIEWS.EST_ID_LOGIN.BTN_BACK"></span>
+          </cos-button>
+        } @else {
+          <cos-button variant="light" size="md" [routerLink]="['../']" icon="arrow-left" (click)="cancelMethod()">
+            <span translate="VIEWS.EST_ID_LOGIN.BTN_BACK"></span>
+          </cos-button>
+        }
       </nav>
 
       <div class="esteid-login">
@@ -212,6 +218,7 @@ export class EstEidComponent implements OnDestroy {
   private router = inject(Router);
   userStore = inject(UserStore);
 
+  isDialog = input<boolean>(false);
   challengeID = signal<string | number | null>(null);
   isLoadingIdCard = signal(false);
   error = signal<string | null>(null);
