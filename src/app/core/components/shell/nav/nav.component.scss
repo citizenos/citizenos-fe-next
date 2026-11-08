@@ -567,18 +567,23 @@ $mobile-breakpoint: 560px;
 // ----------------------------------------
 // Mobile / Tablet Bottom Navigation Bar
 // ----------------------------------------
+body:has(#create_footer) #mobile_nav_wrap,
+body:has(#create_footer) #mobile_login {
+  display: none !important;
+}
+
 #mobile_login {
   position: fixed;
   bottom: 0;
   left: 0;
   display: flex;
   flex-direction: row;
-  padding: 0 16px;
+  padding: 0 16px env(safe-area-inset-bottom, 0px);
   gap: 8px;
   align-items: center;
   justify-content: space-evenly;
   background: var(--color-surfaces);
-  height: $mobile-bar-height;
+  height: calc(#{$mobile-bar-height} + env(safe-area-inset-bottom, 0px));
   width: 100%;
   box-sizing: border-box;
   border-radius: 16px 16px 0px 0px;
@@ -639,24 +644,61 @@ $mobile-breakpoint: 560px;
   position: fixed;
   bottom: 0;
   left: 0;
-  height: $mobile-bar-height;
+  height: calc(#{$mobile-bar-height} + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   width: 100%;
   box-sizing: border-box;
   z-index: 1000;
+  background-color: var(--color-surfaces);
   display: none;
   @media (max-width: $tablet-breakpoint) {
     display: block;
   }
 }
 
+.mobile_create_overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(44, 59, 71, 0.5);
+  z-index: 9999;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease-out;
+}
+
 .mobile_create_menu {
-  position: absolute;
-  bottom: calc(100% + 12px);
-  right: 16px;
+  position: fixed;
+  bottom: calc(#{$mobile-bar-height} + env(safe-area-inset-bottom, 0px));
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 10000;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
+  box-shadow: 0 -8px 24px rgba(44, 59, 71, 0.2);
+  border-radius: 16px 16px 0 0;
+  background: var(--color-surfaces);
+  animation: slideUp 0.25s ease-out;
   overflow: hidden;
+
+  @media (min-width: ($tablet-breakpoint + 1)) {
+    display: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .btn_medium_nav {

@@ -130,4 +130,33 @@ describe('CreateWizardShellComponent', () => {
     expect(component.getDownloadUrl()).toBe('http://api/dl/topic-1');
     expect(mockTopicService.getDownloadUrl).toHaveBeenCalledWith('topic-1');
   });
+
+  it('should disable continue button when isNextDisabled is true', () => {
+    fixture.componentRef.setInput('isNextDisabled', true);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    const btn = el.querySelector<HTMLButtonElement>('.btn_medium_submit');
+    expect(btn?.disabled).toBe(true);
+  });
+
+  it('should emit footerPublish and footerClose in edit mode', async () => {
+    fixture.componentRef.setInput('topic', { id: 'topic-1', status: 'inProgress' });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const publishSpy = vi.fn();
+    const closeSpy = vi.fn();
+    component.footerPublish.subscribe(publishSpy);
+    component.footerClose.subscribe(closeSpy);
+
+    const el: HTMLElement = fixture.nativeElement;
+    const closeBtn = el.querySelector<HTMLButtonElement>('.footer-left .btn_medium_submit_ghost');
+    closeBtn?.click();
+    expect(closeSpy).toHaveBeenCalled();
+
+    const buttons = el.querySelectorAll<HTMLButtonElement>('.footer-right .btn_medium_submit');
+    const publishBtn = buttons[buttons.length - 1];
+    publishBtn?.click();
+    expect(publishSpy).toHaveBeenCalled();
+  });
 });

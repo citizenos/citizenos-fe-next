@@ -86,3 +86,34 @@
   height: 1px;
   background: var(--color-border);
 }
+
+.mobile_create_menu .create_menu_container {
+  width: 100%;
+  border-radius: 16px 16px 0 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  padding: 16px;
+}
+
+@media (max-width: 768px) {
+  .mobile_create_menu .create_menu_container {
+    width: 100%;
+    border-radius: 16px 16px 0 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    padding: 16px 16px 20px;
+
+    .create_menu_heading {
+      padding: 8px 12px;
+      font-size: 15px;
+    }
+
+    .create_menu_item {
+      padding: 10px 12px;
+    }
+
+    .line_separator {
+      margin: 6px 12px;
+    }
+  }
+}

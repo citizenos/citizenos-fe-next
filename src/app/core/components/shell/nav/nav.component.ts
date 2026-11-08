@@ -70,7 +70,7 @@ import { AuthDialogService } from '../../../services/auth-dialog.service';
     <!-- Mobile/Tablet Bottom Nav -->
     @if (userStore.isAuthenticated()) {
       <div id="mobile_nav_wrap">
-        <div id="tablet_nav" [class.hidden]="showCreateMenu()">
+        <div id="tablet_nav">
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_DASHBOARD' | translate">
             <cos-icon name="home"></cos-icon>
           </a>
@@ -95,7 +95,7 @@ import { AuthDialogService } from '../../../services/auth-dialog.service';
           </a>
           <cos-activities-button></cos-activities-button>
         </div>
-        <div id="mobile_nav" [class.hidden]="showCreateMenu()">
+        <div id="mobile_nav">
           <a class="btn_medium_nav icon" [routerLink]="['/', translate.currentLang, 'dashboard']" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeNav()" [attr.aria-label]="'DEFAULT.NAV.LNK_DASHBOARD' | translate">
             <cos-icon name="home"></cos-icon>
           </a>
@@ -116,6 +116,7 @@ import { AuthDialogService } from '../../../services/auth-dialog.service';
         </div>
         @defer (when showCreateMenu()) {
           @if (showCreateMenu()) {
+            <div class="mobile_create_overlay" (click)="closeCreateMenu()" (keydown.enter)="closeCreateMenu()" tabindex="-1" role="presentation"></div>
             <div class="mobile_create_menu">
               <cos-create-menu (closeMenu)="closeCreateMenu()" />
             </div>

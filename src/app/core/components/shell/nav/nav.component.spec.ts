@@ -67,6 +67,12 @@ describe('NavComponent', () => {
     expect(component.showCreateMenu()).toBe(true);
   });
 
+  it('closeCreateMenu() should set showCreateMenu to false', () => {
+    component.showCreateMenu.set(true);
+    component.closeCreateMenu();
+    expect(component.showCreateMenu()).toBe(false);
+  });
+
   it('closeNav() should reset showNav and showCreateMenu to false', () => {
     component.showNav.set(true);
     component.showCreateMenu.set(true);
