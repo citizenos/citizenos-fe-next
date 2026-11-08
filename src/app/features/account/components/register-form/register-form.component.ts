@@ -240,7 +240,9 @@ export class RegisterFormComponent {
   }
 
   doLoginPartner(partnerId: string) {
-    const redirect = this.redirectSuccess() || this.route.snapshot.queryParamMap.get('redirectSuccess') || undefined;
+    const redirect = this.redirectSuccess()
+      || this.route.snapshot.queryParamMap.get('redirectSuccess')
+      || (typeof window !== 'undefined' && !window.location.pathname.includes('/account/login') && !window.location.pathname.includes('/account/signup') ? window.location.href : undefined);
     window.location.href = this.userService.getPartnerLoginUrl(partnerId, redirect);
   }
 

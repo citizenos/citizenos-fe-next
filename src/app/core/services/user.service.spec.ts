@@ -90,4 +90,55 @@ describe('UserService', () => {
     expect(req.request.body.get('file')).toBe(file);
     req.flush({ data: { imageUrl: 'some-url' } });
   });
+
+  describe('getPartnerLoginUrl', () => {
+    it('should convert relative redirectSuccess to absolute URL with origin', () => {
+      const url = service.getPartnerLoginUrl('google', '/en/topics/03099901-b668-45bc-b700-117565495c0c');
+      expect(url).toBe(
+        `https://dev.api.citizenos.com:3003/api/auth/google?redirectSuccess=${encodeURIComponent(window.location.origin + '/en/topics/03099901-b668-45bc-b700-117565495c0c')}`
+      );
+    });
+
+    it('should preserve absolute redirectSuccess', () => {
+      const target = 'https://dev.citizenos.com/en/topics/vote/create';
+      const url = service.getPartnerLoginUrl('facebook', target);
+      expect(url).toBe(
+        `https://dev.api.citizenos.com:3003/api/auth/facebook?redirectSuccess=${encodeURIComponent(target)}`
+      );
+    });
+
+    it('should fallback to current page URL when redirectSuccess is omitted on content pages', () => {
+      const originalLocation = window.location;
+      vi.stubGlobal('location', {
+        ...originalLocation,
+        origin: 'http://localhost:3000',
+        href: 'http://localhost:3000/en/topics/my-topic',
+        pathname: '/en/topics/my-topic'
+      });
+
+      const url = service.getPartnerLoginUrl('google');
+      expect(url).toBe(
+        `https://dev.api.citizenos.com:3003/api/auth/google?redirectSuccess=${encodeURIComponent('http://localhost:3000/en/topics/my-topic')}`
+      );
+
+      vi.unstubAllGlobals();
+    });
+
+    it('should fallback to root when on login or signup pages and redirectSuccess is omitted', () => {
+      const originalLocation = window.location;
+      vi.stubGlobal('location', {
+        ...originalLocation,
+        origin: 'http://localhost:3000',
+        href: 'http://localhost:3000/en/account/login',
+        pathname: '/en/account/login'
+      });
+
+      const url = service.getPartnerLoginUrl('google');
+      expect(url).toBe(
+        `https://dev.api.citizenos.com:3003/api/auth/google?redirectSuccess=${encodeURIComponent('http://localhost:3000/')}`
+      );
+
+      vi.unstubAllGlobals();
+    });
+  });
 });

@@ -94,13 +94,32 @@ describe('LoginFormComponent', () => {
     expect(switchSpy).toHaveBeenCalled();
   });
 
-  it('should navigate to partner login url', () => {
+  it('should navigate to partner login url with redirectSuccess from input if provided', () => {
     const originalLocation = window.location;
     vi.stubGlobal('location', { ...originalLocation, href: '' });
 
+    fixture.componentRef.setInput('redirectSuccess', '/en/topics/vote/create');
+    fixture.detectChanges();
+
     component.doLoginPartner('google');
 
-    expect(mockUserService.getPartnerLoginUrl).toHaveBeenCalledWith('google', undefined);
+    expect(mockUserService.getPartnerLoginUrl).toHaveBeenCalledWith('google', '/en/topics/vote/create');
+    expect(window.location.href).toBe('http://partner-login.url');
+
+    vi.unstubAllGlobals();
+  });
+
+  it('should navigate to partner login url with fallback to window.location.href when redirectSuccess is not provided', () => {
+    const originalLocation = window.location;
+    vi.stubGlobal('location', {
+      ...originalLocation,
+      href: 'http://localhost/en/topics/my-topic',
+      pathname: '/en/topics/my-topic'
+    });
+
+    component.doLoginPartner('facebook');
+
+    expect(mockUserService.getPartnerLoginUrl).toHaveBeenCalledWith('facebook', 'http://localhost/en/topics/my-topic');
     expect(window.location.href).toBe('http://partner-login.url');
 
     vi.unstubAllGlobals();

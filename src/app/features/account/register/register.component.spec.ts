@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RegisterComponent } from './register.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserStore } from '../../../core/state/user.store';
 import { UserService } from '../../../core/services/user.service';
 import { signal, NO_ERRORS_SCHEMA } from '@angular/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { provideRouter } from '@angular/router';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -141,5 +140,36 @@ describe('RegisterComponent', () => {
     component.selectedMethod.set('smartid');
     fixture.detectChanges();
     expect(component.selectedMethod()).toBe('smartid');
+  });
+
+  it('should navigate to partner login URL with query param redirectSuccess if available', () => {
+    const route = TestBed.inject(ActivatedRoute);
+    vi.spyOn(route.snapshot.queryParamMap, 'get').mockReturnValue('/en/topics/vote/create');
+
+    const originalLocation = window.location;
+    vi.stubGlobal('location', { ...originalLocation, href: '' });
+
+    component.doLoginPartner('google');
+
+    expect(mockUserService.getPartnerLoginUrl).toHaveBeenCalledWith('google', '/en/topics/vote/create');
+    expect(window.location.href).toBe('http://partner-login.url');
+
+    vi.unstubAllGlobals();
+  });
+
+  it('should navigate to partner login URL with fallback to undefined when on signup route without redirectSuccess', () => {
+    const originalLocation = window.location;
+    vi.stubGlobal('location', {
+      ...originalLocation,
+      href: 'http://localhost/en/account/signup',
+      pathname: '/en/account/signup'
+    });
+
+    component.doLoginPartner('google');
+
+    expect(mockUserService.getPartnerLoginUrl).toHaveBeenCalledWith('google', undefined);
+    expect(window.location.href).toBe('http://partner-login.url');
+
+    vi.unstubAllGlobals();
   });
 });

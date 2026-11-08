@@ -51,11 +51,25 @@ export class UserService {
   }
 
   getPartnerLoginUrl(partnerId: string, redirectSuccess?: string): string {
+    let target = redirectSuccess;
+    if (!target && typeof window !== 'undefined') {
+      const pathname = window.location.pathname;
+      if (!pathname.includes('/account/login') && !pathname.includes('/account/signup')) {
+        target = window.location.href;
+      } else {
+        target = `${window.location.origin}/`;
+      }
+    }
+
+    if (target && target.startsWith('/') && typeof window !== 'undefined') {
+      target = `${window.location.origin}${target}`;
+    }
+
     let url = `${this.apiUrl}/api/auth/${partnerId}`;
-    if (redirectSuccess) {
-      url += `?redirectSuccess=${encodeURIComponent(redirectSuccess)}`;
+    if (target) {
+      url += `?redirectSuccess=${encodeURIComponent(target)}`;
     } else {
-      url += `?redirectSuccess=${encodeURIComponent(window.location.origin + '/')}`;
+      url += `?redirectSuccess=${encodeURIComponent('/')}`;
     }
     return url;
   }

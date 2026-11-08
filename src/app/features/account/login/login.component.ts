@@ -293,7 +293,8 @@ export class LoginComponent {
   }
 
   doLoginPartner(partnerId: string) {
-    const redirectSuccess = this.route.snapshot.queryParamMap.get('redirectSuccess') || undefined;
+    const redirectSuccess = this.route.snapshot.queryParamMap.get('redirectSuccess')
+      || (typeof window !== 'undefined' && !window.location.pathname.includes('/account/login') && !window.location.pathname.includes('/account/signup') ? window.location.href : undefined);
     window.location.href = this.userService.getPartnerLoginUrl(partnerId, redirectSuccess);
   }
 
