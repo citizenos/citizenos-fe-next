@@ -11,7 +11,7 @@ import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
 import { TopicMemberGroupService, TopicMemberGroup } from '../../../../../core/services/topic-member-group.service';
-import { DialogService, DIALOG_DATA, DialogRef } from '../../../../../shared/dialog';
+import { DialogService, DIALOG_DATA, DialogRef, DialogCloseDirective } from '../../../../../shared/dialog';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { ToggleComponent } from '../../../../../shared/components/toggle/toggle.component';
 import { DropdownComponent } from '../../../../../shared/components/dropdown/dropdown.component';
@@ -36,7 +36,8 @@ export interface TopicSettingsData {
     DropdownComponent,
     IconComponent,
     A11yModule,
-    TooltipComponent
+    TooltipComponent,
+    DialogCloseDirective
   ],
   templateUrl: './topic-settings.component.html',
   styleUrls: ['./topic-settings.component.scss'],
@@ -113,34 +114,6 @@ export class TopicSettingsComponent implements OnInit {
     const hasPublicGroup = this.groups().some(g => g.visibility === 'public');
 
     return this.canDelete() && (t.visibility === this.VISIBILITY.private || !hasPublicGroup);
-  }
-
-  checkHashtag() {
-    let length = 0;
-    const str = this.topic().hashtag;
-    const hashtagMaxLength = 59;
-
-    if (str) {
-      length = str.length;
-      for (let i = 0; i < str.length; i++) {
-        const code = str.charCodeAt(i);
-        if (code > 0x7f && code <= 0x7ff) length++;
-        else if (code > 0x7ff && code <= 0xffff) length += 2;
-        if (code >= 0xDC00 && code <= 0xDFFF) i++; //trail surrogate
-      }
-    }
-
-    if ((hashtagMaxLength - length) < 0) {
-      this.errors.set({ ...this.errors(), hashtag: 'MSG_ERROR_40000_TOPIC_HASHTAG' });
-    } else if (this.errors()['hashtag']) {
-      const currentErrors = { ...this.errors() };
-      delete currentErrors['hashtag'];
-      this.errors.set(currentErrors);
-    }
-  }
-
-  doDeleteHashtag() {
-    this.topic.update(current => ({ ...current, hashtag: null }));
   }
 
   selectedReminderOption = computed(() => {

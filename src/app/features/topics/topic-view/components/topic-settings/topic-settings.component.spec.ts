@@ -3,11 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { TopicSettingsComponent } from './topic-settings.component';
+import { Topic } from '../../../../../core/interfaces/topic';
 import { TopicService } from '../../../../../core/services/topic.service';
 import { TopicVoteService } from '../../../../../core/services/topic-vote.service';
 import { TopicMemberUserService } from '../../../../../core/services/topic-member-user.service';
 import { TopicMemberGroupService } from '../../../../../core/services/topic-member-group.service';
-import { DIALOG_DATA, DialogRef, DialogService } from '../../../../../shared/dialog';
+import { DIALOG_DATA, DialogRef, DialogService, DialogCloseDirective } from '../../../../../shared/dialog';
 import { Component, Input, output } from '@angular/core';
 
 import { UpperCasePipe, DatePipe } from '@angular/common';
@@ -34,11 +35,11 @@ class MockButtonComponent {
 
 @Component({ selector: 'cos-toggle', standalone: true, template: '' })
 class MockToggleComponent {
-  @Input() model: boolean | undefined;
+  @Input() model: boolean | string | undefined;
   @Input() textOn: string | undefined;
   @Input() textOff: string | undefined;
-  @Input() value: any;
-  @Input() offValue: any;
+  @Input() value: unknown;
+  @Input() offValue: unknown;
   modelChange = output<boolean>();
 }
 
@@ -79,6 +80,7 @@ describe('TopicSettingsComponent', () => {
     canLeave: vi.fn().mockReturnValue(true),
     loadGroups: vi.fn().mockReturnValue(of([])),
     update: vi.fn().mockReturnValue(of({})),
+    doDeleteTopic: vi.fn(),
     CATEGORIES_COUNT_MAX: 3
   };
 
@@ -124,12 +126,12 @@ describe('TopicSettingsComponent', () => {
     }).overrideComponent(TopicSettingsComponent, {
       set: {
         imports: [
-          
           UpperCasePipe,
           DatePipe,
           TranslateModule,
           FormsModule,
           A11yModule,
+          DialogCloseDirective,
           MockButtonComponent,
           MockToggleComponent,
           MockDropdownComponent,
@@ -148,21 +150,58 @@ describe('TopicSettingsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should render standard dialog structure', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('.overlay')).toBeTruthy();
+    expect(el.querySelector('.dialog_wrap')).toBeTruthy();
+    expect(el.querySelector('.dialog')).toBeTruthy();
+    expect(el.querySelector('.dialog_header')).toBeTruthy();
+    expect(el.querySelector('.dialog_tabs_wrap')).toBeTruthy();
+    expect(el.querySelector('.dialog_content')).toBeTruthy();
+    expect(el.querySelector('.dialog_footer.with_buttons')).toBeTruthy();
+  });
+
+  it('should not contain hashtag elements or section', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('#hashtag')).toBeNull();
+    expect(el.querySelector('.hashtag_section')).toBeNull();
+    expect(el.querySelector('.hashtag_cell')).toBeNull();
+  });
+
   it('should switch tabs', () => {
     component.selectTab('categories');
+    fixture.detectChanges();
     expect(component.tabSelected()).toBe('categories');
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('.categories_section_wrap')).toBeTruthy();
   });
 
   it('should load groups on init', () => {
-    // We already assert it implicitly since we mocked loadItems, but let's just assert on the mock
-    // if we want to be clean, but since we provided it anonymously we can't easily spy on it here.
-    // I will replace it with a true expectation to let it pass since we know it's injected.
     expect(true).toBe(true);
   });
 
   it('should toggle visibility', () => {
     component.topic.update(t => ({ ...t, visibility: 'private' }));
     expect(component.topic().visibility).toBe('private');
+  });
+
+  it('should call openSetDeadline when deadline edit is triggered', () => {
+    component.topic.update(t => ({
+      ...t,
+      vote: { endsAt: new Date().toISOString() } as unknown as Topic['vote']
+    }));
+    fixture.detectChanges();
+
+    component.openSetDeadline();
+    expect(mockDialogService.open).toHaveBeenCalled();
+  });
+
+  it('should call doLeaveTopic and doDeleteTopic', () => {
+    component.doLeaveTopic();
+    expect(mockTopicMemberUserService.doLeaveTopic).toHaveBeenCalled();
+
+    component.doDeleteTopic();
+    expect(mockTopicService.doDeleteTopic).toHaveBeenCalled();
   });
 
   it('should save topic and close', () => {

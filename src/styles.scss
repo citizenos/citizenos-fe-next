@@ -901,6 +901,8 @@ label:has(input:focus-visible) .radio {
   left: 0;
   right: 0;
   width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
   max-height: calc(85dvh);
   max-height: calc(100vh - 64px);
   background-color: var(--color-surfaces);
@@ -973,11 +975,13 @@ label:has(input:focus-visible) .radio {
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    box-sizing: border-box;
     gap: 16px;
     background: transparent;
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
 
@@ -989,6 +993,7 @@ label:has(input:focus-visible) .radio {
     }
     .option {
       width: 100%;
+      box-sizing: border-box;
       display: flex;
       justify-content: flex-start;
       align-items: center;
