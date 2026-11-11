@@ -901,7 +901,10 @@ label:has(input:focus-visible) .radio {
   left: 0;
   right: 0;
   width: 100%;
+  max-height: calc(85dvh);
+  max-height: calc(100vh - 64px);
   background-color: var(--color-surfaces);
+  display: flex;
   flex-direction: column;
   padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
   z-index: 9999999;
@@ -926,11 +929,42 @@ label:has(input:focus-visible) .radio {
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
+    flex-shrink: 0;
+    width: 100%;
+
     span {
       font-size: 16px;
       font-style: normal;
       font-weight: 600;
       line-height: 24px; /* 150% */
+      color: var(--color-text-main);
+    }
+
+    #close_mobile,
+    .btn_small_close,
+    .close_btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+      color: var(--color-text-main);
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        color: inherit;
+        min-height: unset;
+        min-width: unset;
+        max-height: unset;
+      }
     }
   }
 
@@ -941,11 +975,17 @@ label:has(input:focus-visible) .radio {
     width: 100%;
     gap: 16px;
     background: transparent;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
 
     .line_separator {
       height: 1px;
       width: 100%;
       background: var(--color-border);
+      flex-shrink: 0;
     }
     .option {
       width: 100%;
@@ -957,10 +997,17 @@ label:has(input:focus-visible) .radio {
       border: none;
       color: var(--color-text-main);
       font-size: 14px;
-      padding: 0;
+      padding: 4px 0;
+      flex-shrink: 0;
+      cursor: pointer;
 
       .icon_wrap {
         display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
       }
     }
   }

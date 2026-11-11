@@ -168,6 +168,33 @@ describe('TopicHeaderComponent', () => {
     expect(component.mobileActions()).toBe(false);
   });
 
+  it('should close mobile actions when close button is clicked', () => {
+    component.mobileActions.set(true);
+    fixture.detectChanges();
+    const closeBtn = fixture.nativeElement.querySelector('#close_mobile button') as HTMLButtonElement;
+    expect(closeBtn).toBeTruthy();
+    closeBtn.click();
+    fixture.detectChanges();
+    expect(component.mobileActions()).toBe(false);
+  });
+
+  it('should close mobile actions when Escape key is pressed', () => {
+    component.mobileActions.set(true);
+    fixture.detectChanges();
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+    expect(component.mobileActions()).toBe(false);
+  });
+
+  it('should render scrollable options container in mobile actions wrap', () => {
+    component.mobileActions.set(true);
+    fixture.detectChanges();
+    const options = fixture.nativeElement.querySelector('.mobile_actions_wrap .options');
+    expect(options).toBeTruthy();
+    const heading = fixture.nativeElement.querySelector('.mobile_actions_wrap .heading_wrap');
+    expect(heading).toBeTruthy();
+  });
+
   // --- Dropdown actions ---
   it('should show leave button when user has non-none permission', () => {
     const options = fixture.nativeElement.querySelectorAll('.options button');

@@ -229,14 +229,14 @@
 </div>
 
 @if (mobileActions()) {
-  <div class="overlay" (click)="mobileActions.set(false)" (keydown.enter)="mobileActions.set(false)" tabindex="-1" role="presentation"></div>
+  <div class="overlay" (click)="mobileActions.set(false)" (keydown.enter)="mobileActions.set(false)" (keydown.escape)="mobileActions.set(false)" tabindex="-1" role="presentation"></div>
 }
 <div class="mobile_actions_wrap mobile_show" [class.show]="mobileActions()">
   <div class="heading_wrap">
     <span>{{ 'VIEWS.TOPICS_TOPICID.LBL_TOPIC_ACTIONS' | translate }}</span>
     <div id="close_mobile" class="mobile_show">
       <button type="button" class="btn_small_close icon" (click)="mobileActions.set(false)" [aria-label]="'BTN_CLOSE' | translate">
-        <cos-icon name="close"></cos-icon>
+        <cos-icon name="close" [size]="24"></cos-icon>
       </button>
     </div>
   </div>

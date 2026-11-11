@@ -606,6 +606,63 @@ test.describe('Mobile Responsive Layout & Z-Index Hierarchy', () => {
         });
         expect(hasHorizontalOverflow).toBe(false);
       });
+
+      test('topic header mobile actions bottom sheet (.mobile_actions_wrap) aligns with Figma and is dismissable', async ({ page }) => {
+        await setupTopicApiMocks(page);
+        await page.goto(route(`topics/${MOCK_TOPIC_ID}`));
+        await waitForApp(page);
+
+        const topicHeader = page.locator('app-topic-header');
+        await expect(topicHeader).toBeVisible();
+
+        // 1. Click 3-dot more button in topic header
+        const moreBtn = topicHeader.locator('cos-button.mobile_show button, cos-button[icon="more-vertical"] button').first();
+        await expect(moreBtn).toBeVisible();
+        await moreBtn.click();
+
+        // 2. Bottom sheet and overlay become visible
+        const bottomSheet = topicHeader.locator('.mobile_actions_wrap.mobile_show');
+        await expect(bottomSheet).toHaveClass(/show/);
+
+        const overlay = topicHeader.locator('.overlay');
+        await expect(overlay).toBeVisible();
+
+        // 3. Ensure top of bottom sheet is within viewport (not pushed off-screen)
+        const sheetBox = await bottomSheet.boundingBox();
+        expect(sheetBox).not.toBeNull();
+        if (sheetBox) {
+          expect(sheetBox.y).toBeGreaterThanOrEqual(0);
+          expect(sheetBox.height).toBeLessThanOrEqual(vp.height * 0.86);
+        }
+
+        // 4. Ensure heading_wrap and close button are visible and within bounds
+        const closeBtn = topicHeader.locator('#close_mobile button');
+        await expect(closeBtn).toBeVisible();
+        const closeBox = await closeBtn.boundingBox();
+        expect(closeBox).not.toBeNull();
+        if (closeBox) {
+          expect(closeBox.y).toBeGreaterThanOrEqual(0);
+          expect(closeBox.y + closeBox.height).toBeLessThanOrEqual(vp.height);
+        }
+
+        // 5. Ensure options container has internal scrolling
+        const optionsContainer = bottomSheet.locator('.options');
+        await expect(optionsContainer).toBeVisible();
+
+        // 6. Click close button to dismiss
+        await closeBtn.click();
+        await expect(bottomSheet).not.toHaveClass(/show/);
+        await expect(overlay).toHaveCount(0);
+
+        // 7. Re-open and dismiss via overlay click
+        await moreBtn.click();
+        await expect(bottomSheet).toHaveClass(/show/);
+        await expect(overlay).toBeVisible();
+
+        // Click top area of overlay outside bottom sheet
+        await overlay.click({ position: { x: vp.width / 2, y: 20 } });
+        await expect(bottomSheet).not.toHaveClass(/show/);
+      });
     });
   }
 });

@@ -1,4 +1,4 @@
-import { Component, output, inject, ChangeDetectionStrategy, computed, signal, model } from '@angular/core';
+import { Component, output, inject, ChangeDetectionStrategy, computed, signal, model, HostListener } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -61,5 +61,12 @@ export class TopicHeaderComponent {
 
   onReportTopic() {
     this.reportTopic.emit(this.topic());
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (this.mobileActions()) {
+      this.mobileActions.set(false);
+    }
   }
 }
