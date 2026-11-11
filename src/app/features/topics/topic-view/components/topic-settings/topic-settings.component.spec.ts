@@ -168,12 +168,26 @@ describe('TopicSettingsComponent', () => {
     expect(el.querySelector('.hashtag_cell')).toBeNull();
   });
 
-  it('should switch tabs', () => {
+  it('should switch tabs back and forth cleanly', () => {
     component.selectTab('categories');
     fixture.detectChanges();
     expect(component.tabSelected()).toBe('categories');
-    const el = fixture.nativeElement as HTMLElement;
+    let el = fixture.nativeElement as HTMLElement;
     expect(el.querySelector('.categories_section_wrap')).toBeTruthy();
+    expect(el.querySelector('.category_selection')).toBeTruthy();
+    expect(el.querySelector('.settings_section_wrap')).toBeNull();
+
+    component.selectTab('settings');
+    fixture.detectChanges();
+    expect(component.tabSelected()).toBe('settings');
+    el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('.categories_section_wrap')).toBeNull();
+    expect(el.querySelector('.settings_section_wrap')).toBeTruthy();
+  });
+
+  it('should update visibility with setTopicVisibility', () => {
+    component.setTopicVisibility('private');
+    expect(component.topic().visibility).toBe('private');
   });
 
   it('should load groups on init', () => {

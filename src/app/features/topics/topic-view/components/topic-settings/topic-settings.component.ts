@@ -107,6 +107,28 @@ export class TopicSettingsComponent implements OnInit {
 
   selectTab(tab: string) {
     this.tabSelected.set(tab);
+
+    setTimeout(() => {
+      const contentEl = document.querySelector('.dialog_content');
+      if (contentEl) {
+        contentEl.scrollTop = 0;
+      }
+      const panelEl = document.querySelector('.cos-dialog-panel');
+      if (panelEl) {
+        panelEl.scrollTop = 0;
+      }
+      try {
+        if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+          window.scrollTo(0, 0);
+        }
+      } catch {
+        // Safe fallback in test environments
+      }
+    });
+  }
+
+  setTopicVisibility(visibility: string) {
+    this.topic.update(current => ({ ...current, visibility }));
   }
 
   canChangeVisibility() {

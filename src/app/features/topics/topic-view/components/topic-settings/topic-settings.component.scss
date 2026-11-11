@@ -27,6 +27,16 @@
   .dialog_content {
     padding: 24px;
     background-color: var(--color-surfaces);
+    max-height: calc(85dvh - 140px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+
+    @include mixins.mobile {
+      padding: 16px;
+      max-height: calc(100dvh - 130px);
+    }
   }
 }
 
@@ -161,9 +171,31 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
     margin-top: 16px;
+    max-height: 360px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 6px;
 
     @include mixins.mobile {
       grid-template-columns: 1fr;
+      max-height: calc(100dvh - 280px);
+      min-height: 200px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: var(--color-surface-contrast, #f1f5f9);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-border, #cbd5e1);
+      border-radius: 4px;
+      &:hover {
+        background: var(--color-text-muted, #94a3b8);
+      }
     }
   }
 
