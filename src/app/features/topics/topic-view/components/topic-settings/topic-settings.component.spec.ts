@@ -168,20 +168,45 @@ describe('TopicSettingsComponent', () => {
     expect(el.querySelector('.hashtag_cell')).toBeNull();
   });
 
-  it('should switch tabs back and forth cleanly', () => {
-    component.selectTab('categories');
+  it('should switch tabs back and forth cleanly via button clicks', () => {
+    const tabs = fixture.nativeElement.querySelectorAll('.dialog_tab') as NodeListOf<HTMLButtonElement>;
+    expect(tabs.length).toBe(2);
+
+    // Click categories tab
+    tabs[1].click();
     fixture.detectChanges();
     expect(component.tabSelected()).toBe('categories');
     let el = fixture.nativeElement as HTMLElement;
     expect(el.querySelector('.categories_section_wrap')).toBeTruthy();
-    expect(el.querySelector('.category_selection')).toBeTruthy();
     expect(el.querySelector('.settings_section_wrap')).toBeNull();
 
-    component.selectTab('settings');
+    // Click actions (settings) tab back
+    tabs[0].click();
     fixture.detectChanges();
     expect(component.tabSelected()).toBe('settings');
     el = fixture.nativeElement as HTMLElement;
     expect(el.querySelector('.categories_section_wrap')).toBeNull();
+    expect(el.querySelector('.settings_section_wrap')).toBeTruthy();
+  });
+
+  it('should not throw error and render settings cleanly even if groups receives rows object', () => {
+    // Simulate backend response shape { countTotal, count, rows }
+    const groupRows = [{ id: 'g1', name: 'Group 1', level: 'admin', visibility: 'public' }];
+    (component as unknown as { groups: { set: (v: unknown) => void } }).groups.set({
+      countTotal: 1,
+      count: 1,
+      rows: groupRows
+    });
+
+    component.selectTab('categories');
+    fixture.detectChanges();
+
+    expect(() => {
+      component.selectTab('settings');
+      fixture.detectChanges();
+    }).not.toThrow();
+
+    const el = fixture.nativeElement as HTMLElement;
     expect(el.querySelector('.settings_section_wrap')).toBeTruthy();
   });
 

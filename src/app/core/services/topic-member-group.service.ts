@@ -35,10 +35,19 @@ export class TopicMemberGroupService {
   };
 
   loadItems(topicId: string): Observable<TopicMemberGroup[]> {
-    return this.http.get<ApiResponse<TopicMemberGroup[]>>(
+    return this.http.get<ApiResponse<{ rows?: TopicMemberGroup[]; count?: number; countTotal?: number } | TopicMemberGroup[]>>(
       this.getAbsoluteUrlApi(`/topics/${topicId}/members/groups`, true),
       { withCredentials: true }
-    ).pipe(map(res => res.data ?? []));
+    ).pipe(
+      map(res => {
+        const data = res?.data;
+        if (Array.isArray(data)) return data;
+        if (data && Array.isArray((data as { rows?: TopicMemberGroup[] }).rows)) {
+          return (data as { rows: TopicMemberGroup[] }).rows;
+        }
+        return [];
+      })
+    );
   }
 
   save(data: { topicId: string; groupId: string; level: string }): Observable<unknown> {

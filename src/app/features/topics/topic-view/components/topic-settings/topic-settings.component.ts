@@ -53,7 +53,10 @@ export class TopicSettingsComponent implements OnInit {
   private translate = inject(TranslateService);
   private dialog = inject(DialogService);
 
-  topic = signal<Topic>({ ...this.dialogData.topic });
+  topic = signal<Topic>({
+    ...this.dialogData.topic,
+    categories: Array.isArray(this.dialogData.topic?.categories) ? [...this.dialogData.topic.categories] : []
+  });
   groups = signal<TopicMemberGroup[]>([]);
   tabSelected = signal('settings');
   errors = signal<Record<string, string>>({});
@@ -84,8 +87,14 @@ export class TopicSettingsComponent implements OnInit {
         });
     }
 
-    this.topicMemberGroupService.loadItems(t.id).pipe(take(1)).subscribe((groups) => {
-      this.groups.set(groups);
+    this.topicMemberGroupService.loadItems(t.id).pipe(take(1)).subscribe({
+      next: (groups) => {
+        const list = Array.isArray(groups) ? groups : ((groups as { rows?: TopicMemberGroup[] })?.rows || []);
+        this.groups.set(list);
+      },
+      error: () => {
+        this.groups.set([]);
+      }
     });
   }
 
@@ -113,17 +122,6 @@ export class TopicSettingsComponent implements OnInit {
       if (contentEl) {
         contentEl.scrollTop = 0;
       }
-      const panelEl = document.querySelector('.cos-dialog-panel');
-      if (panelEl) {
-        panelEl.scrollTop = 0;
-      }
-      try {
-        if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
-          window.scrollTo(0, 0);
-        }
-      } catch {
-        // Safe fallback in test environments
-      }
     });
   }
 
@@ -133,7 +131,8 @@ export class TopicSettingsComponent implements OnInit {
 
   canChangeVisibility() {
     const t = this.topic();
-    const hasPublicGroup = this.groups().some(g => g.visibility === 'public');
+    const groups = Array.isArray(this.groups()) ? this.groups() : [];
+    const hasPublicGroup = groups.some(g => g.visibility === 'public');
 
     return this.canDelete() && (t.visibility === this.VISIBILITY.private || !hasPublicGroup);
   }
@@ -256,18 +255,22 @@ export class TopicSettingsComponent implements OnInit {
 
   addTopicCategory(category: string) {
     this.topic.update(t => {
-      if (t.categories.indexOf(category) === -1 && t.categories.length < this.topicService.CATEGORIES_COUNT_MAX) {
-        return { ...t, categories: [...t.categories, category] };
+      const categories = Array.isArray(t.categories) ? t.categories : [];
+      if (categories.indexOf(category) === -1 && categories.length < this.topicService.CATEGORIES_COUNT_MAX) {
+        return { ...t, categories: [...categories, category] };
       }
       return t;
     });
   }
 
   removeTopicCategory(category: string) {
-    this.topic.update(t => ({
-      ...t,
-      categories: t.categories.filter(c => c !== category)
-    }));
+    this.topic.update(t => {
+      const categories = Array.isArray(t.categories) ? t.categories : [];
+      return {
+        ...t,
+        categories: categories.filter(c => c !== category)
+      };
+    });
   }
 
   doSaveTopic() {
