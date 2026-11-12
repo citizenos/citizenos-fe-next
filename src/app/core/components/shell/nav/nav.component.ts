@@ -15,7 +15,6 @@ import { UiStateService } from '../../../services/ui-state.service';
 import { ConfigStore } from '../../../state/config.store';
 import { TourItemDirective } from '../../../../shared/directives/tour-item.directive';
 import { ActivitiesButtonComponent } from '../../../../shared/components/activities-button/activities-button.component';
-import { AuthDialogService } from '../../../services/auth-dialog.service';
 
 @Component({
   selector: 'cos-nav',
@@ -372,7 +371,6 @@ export class NavComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly authDialog = inject(AuthDialogService);
 
   lnkDonate = computed(() => {
     const links = this.configStore.links.donate();
@@ -430,12 +428,20 @@ export class NavComponent implements OnInit {
 
   doShowLogin() {
     this.closeNav();
-    this.authDialog.openLogin(this.router.url);
+    const queryParams: Record<string, string> = {};
+    if (this.router.url && !this.router.url.includes('/account/')) {
+      queryParams['redirectSuccess'] = this.router.url;
+    }
+    this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], { queryParams });
   }
 
   doShowRegister() {
     this.closeNav();
-    this.authDialog.openRegister(this.router.url);
+    const queryParams: Record<string, string> = {};
+    if (this.router.url && !this.router.url.includes('/account/')) {
+      queryParams['redirectSuccess'] = this.router.url;
+    }
+    this.router.navigate(['/', this.translate.currentLang, 'account', 'signup'], { queryParams });
   }
 
   toggleCreateMenu() {

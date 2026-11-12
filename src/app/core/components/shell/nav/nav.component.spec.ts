@@ -6,7 +6,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { NavComponent } from './nav.component';
 import { UserStore } from '../../../state/user.store';
 import { DialogService } from '../../../../shared/dialog';
-import { AuthDialogService } from '../../../services/auth-dialog.service';
+import { Router } from '@angular/router';
 
 @Component({ template: '', standalone: true })
 class EmptyComponent {}
@@ -16,13 +16,8 @@ describe('NavComponent', () => {
   let component: NavComponent;
   let userStoreMock: unknown;
   let dialogServiceMock: unknown;
-  let authDialogMock: { openLogin: ReturnType<typeof vi.fn>; openRegister: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
-    authDialogMock = {
-      openLogin: vi.fn(),
-      openRegister: vi.fn(),
-    };
     userStoreMock = {
       isAuthenticated: vi.fn().mockReturnValue(false),
       user: vi.fn().mockReturnValue(null),
@@ -37,8 +32,7 @@ describe('NavComponent', () => {
       providers: [
         provideRouter([{ path: '**', component: EmptyComponent }]),
         { provide: UserStore, useValue: userStoreMock },
-        { provide: DialogService, useValue: dialogServiceMock },
-        { provide: AuthDialogService, useValue: authDialogMock },
+        { provide: DialogService, useValue: dialogServiceMock }
       ]
     }).compileComponents();
 
@@ -96,18 +90,22 @@ describe('NavComponent', () => {
     expect(component.showNav()).toBe(false);
   });
 
-  it('doShowLogin() should close nav and open login dialog', () => {
+  it('doShowLogin() should close nav and navigate to account login view', () => {
+    const router = TestBed.inject(Router);
+    const navSpy = vi.spyOn(router, 'navigate');
     component.showNav.set(true);
     component.doShowLogin();
     expect(component.showNav()).toBe(false);
-    expect(authDialogMock.openLogin).toHaveBeenCalled();
+    expect(navSpy).toHaveBeenCalledWith(['/', 'en', 'account', 'login'], { queryParams: { redirectSuccess: '/' } });
   });
 
-  it('doShowRegister() should close nav and open register dialog', () => {
+  it('doShowRegister() should close nav and navigate to account signup view', () => {
+    const router = TestBed.inject(Router);
+    const navSpy = vi.spyOn(router, 'navigate');
     component.showNav.set(true);
     component.doShowRegister();
     expect(component.showNav()).toBe(false);
-    expect(authDialogMock.openRegister).toHaveBeenCalled();
+    expect(navSpy).toHaveBeenCalledWith(['/', 'en', 'account', 'signup'], { queryParams: { redirectSuccess: '/' } });
   });
 
   it('should toggle profile dropdown', () => {

@@ -1,0 +1,42 @@
+<div class="page_content unauthorized_page_wrap">
+  <div class="unauthorized_card">
+    <div class="illustration_wrap" aria-hidden="true">
+      <cos-icon name="lock-filled" [size]="48"></cos-icon>
+    </div>
+
+    <div class="status_badge">401</div>
+
+    <h1 class="main_heading">{{ 'VIEWS.401.HEADING_INSUFFICIENT_PERMISSIONS' | translate }}</h1>
+    
+    <p class="description">{{ 'VIEWS.401.DESCRIPTION_INSUFFICIENT_PERMISSIONS' | translate }}</p>
+
+    @if (!userStore.isAuthenticated()) {
+      <p class="recovery_hint">{{ 'VIEWS.401.HEADING_YOU_MAY_RECOVER' | translate }}</p>
+
+      <div class="actions_wrap">
+        <button type="button" class="btn_big_submit" (click)="openLogin()">
+          {{ 'VIEWS.401.BTN_LOGIN' | translate }}
+        </button>
+        <button type="button" class="btn_big_submit_ghost" (click)="openRegister()">
+          {{ 'DEFAULT.NAV.BTN_REGISTER' | translate }}
+        </button>
+      </div>
+    } @else {
+      <div class="actions_wrap">
+        <a class="btn_big_submit" [routerLink]="['/', translate.currentLang, 'my', 'topics']">
+          {{ 'DEFAULT.NAV.LNK_MY_TOPICS' | translate }}
+        </a>
+        <a class="btn_big_submit_ghost" [routerLink]="['/', translate.currentLang, 'public', 'topics']">
+          {{ 'DEFAULT.NAV.LNK_PUBLIC_TOPICS' | translate }}
+        </a>
+      </div>
+    }
+
+    <div class="back_wrap">
+      <a class="link_back" [routerLink]="['/', translate.currentLang]">
+        <cos-icon name="arrow-left" [size]="16"></cos-icon>
+        <span>{{ 'VIEWS.LOGIN.BTN_BACK' | translate }}</span>
+      </a>
+    </div>
+  </div>
+</div>

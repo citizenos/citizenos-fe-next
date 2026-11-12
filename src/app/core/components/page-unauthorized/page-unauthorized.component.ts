@@ -1,27 +1,35 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { AuthDialogService } from '../../services/auth-dialog.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { UserStore } from '../../state/user.store';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-unauthorized',
   standalone: true,
-  imports: [RouterLink, TranslateModule],
-  template: `
-    <div class="page_unauthorized">
-      <h2>401 - Unauthorized</h2>
-      <p>You are not authorized to access this page.</p>
-      <button type="button" class="btn_big_submit" (click)="openLogin()">{{ 'VIEWS.401.BTN_LOGIN' | translate }}</button>
-      <a routerLink="/dashboard">Go to Dashboard</a>
-    </div>
-  `,
+  imports: [RouterLink, TranslateModule, IconComponent],
+  templateUrl: './page-unauthorized.component.html',
+  styleUrl: './page-unauthorized.component.scss'
 })
 export class PageUnauthorizedComponent {
-  private authDialog = inject(AuthDialogService);
-  private router = inject(Router);
+  readonly userStore = inject(UserStore);
+  readonly translate = inject(TranslateService);
+  private readonly router = inject(Router);
 
   openLogin() {
-    this.authDialog.openLogin(this.router.url);
+    const queryParams: Record<string, string> = {};
+    if (this.router.url && !this.router.url.includes('/account/')) {
+      queryParams['redirectSuccess'] = this.router.url;
+    }
+    this.router.navigate(['/', this.translate.currentLang, 'account', 'login'], { queryParams });
+  }
+
+  openRegister() {
+    const queryParams: Record<string, string> = {};
+    if (this.router.url && !this.router.url.includes('/account/')) {
+      queryParams['redirectSuccess'] = this.router.url;
+    }
+    this.router.navigate(['/', this.translate.currentLang, 'account', 'signup'], { queryParams });
   }
 }
