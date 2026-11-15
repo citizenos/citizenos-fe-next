@@ -85,10 +85,7 @@ export class IdeaAttachmentService extends ItemsListService<IdeaAttachmentParams
   }
 
   private getAbsoluteUrlApi(path: string, forceAuthorized = false): string {
-    const isPublicPath = !forceAuthorized && (
-      path.includes('/attachments')
-    );
-    const prefix = (this.userStore.isAuthenticated() && !isPublicPath) ? '/api/users/self' : '/api';
+    const prefix = (this.userStore.isAuthenticated() || forceAuthorized) ? '/api/users/self' : '/api';
     return `${this.apiUrl}${prefix}${path}`;
   }
 }
