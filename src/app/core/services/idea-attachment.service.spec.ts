@@ -78,4 +78,20 @@ describe('IdeaAttachmentService', () => {
     expect(req.request.method).toBe('GET');
     req.flush({ status: { code: 20000, message: 'Success' }, data: { rows: [], count: 0 } });
   });
+
+  it('includes type in query params when provided', () => {
+    service.getItems({
+      topicId: 'topic1',
+      ideationId: 'ideation1',
+      ideaId: 'idea1',
+      type: 'image',
+      limit: 100,
+      page: 1,
+      offset: 0
+    }).subscribe();
+
+    const req = httpMock.expectOne((r) => r.url === 'http://localhost:3000/api/users/self/topics/topic1/ideations/ideation1/ideas/idea1/attachments');
+    expect(req.request.params.get('type')).toBe('image');
+    req.flush({ status: { code: 20000, message: 'Success' }, data: { rows: [], count: 0 } });
+  });
 });

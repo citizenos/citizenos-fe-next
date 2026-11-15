@@ -160,6 +160,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       topicId: this.topic().id,
       ideationId: idea.ideationId,
       ideaId: idea.id,
+      type: 'image',
       limit: 100,
       page: 1,
       offset: 0
@@ -547,6 +548,7 @@ export class EditIdeaComponent implements OnInit, OnDestroy {
       topicId,
       ideationId,
       ideaId,
+      type: 'image',
       limit: 100,
       page: 1,
       offset: 0

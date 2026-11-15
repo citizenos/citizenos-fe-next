@@ -11,6 +11,7 @@ export interface IdeaAttachmentParams extends ListParams {
   topicId: string;
   ideationId: string;
   ideaId: string;
+  type?: string;
 }
 
 @Service()
@@ -36,9 +37,13 @@ export class IdeaAttachmentService extends ItemsListService<IdeaAttachmentParams
   }
 
   override getItems(params: IdeaAttachmentParams): Observable<{ rows: Attachment[]; countTotal: number }> {
-    const httpParams = new HttpParams()
+    let httpParams = new HttpParams()
       .set('limit', String(params.limit))
       .set('offset', String(params.offset ?? 0));
+
+    if (params.type) {
+      httpParams = httpParams.set('type', params.type);
+    }
 
     const path = this.getAbsoluteUrlApi(`/topics/${params.topicId}/ideations/${params.ideationId}/ideas/${params.ideaId}/attachments`);
     return this.http.get<ApiResponse<{ rows: Attachment[]; count: number }>>(path, { withCredentials: true, params: httpParams, observe: 'body', responseType: 'json' })

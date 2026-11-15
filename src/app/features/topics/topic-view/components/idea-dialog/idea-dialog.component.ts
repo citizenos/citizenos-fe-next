@@ -141,11 +141,12 @@ export class IdeaDialogComponent implements OnInit {
       topicId: this.topic().id,
       ideationId: this.ideation().id,
       ideaId: idea.id,
+      type: 'image',
       limit: 100,
       offset: 0,
       page: 1
     }).pipe(
-      map(res => res.rows.filter(a => a.type === 'image')),
+      map(res => res.rows),
       catchError(() => of([]))
     );
 
