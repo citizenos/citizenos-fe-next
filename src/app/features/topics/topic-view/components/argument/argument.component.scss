@@ -2,6 +2,10 @@
 
 :host {
   display: contents;
+
+  &:has(.dropdown_active) {
+    z-index: 1000;
+  }
 }
 
 argument-reply {
@@ -13,6 +17,11 @@ argument-reply {
   display: flex;
   flex-direction: column;
   gap: 0;
+
+  &:has(.dropdown_active) {
+    z-index: 1000;
+    position: relative;
+  }
 
   &.highlight .argument_content_wrap {
     background-color: var(--color-yellow-100) !important;
@@ -27,6 +36,11 @@ argument-reply {
   width: 85%;
   max-width: 680px;
   gap: 16px;
+
+  &:has(.dropdown_active) {
+    z-index: 1000;
+    position: relative;
+  }
 
   @include mixins.tablet {
     width: 95%;
@@ -413,6 +427,10 @@ argument-reply {
       position: relative;
       width: 100%;
 
+      &:has(.dropdown_active) {
+        z-index: 1000;
+      }
+
       .reply_referer {
         height: 48px;
         width: 32px;
@@ -517,9 +535,14 @@ argument-reply {
 .dropdown {
   position: relative;
   
-  &.dropdown_active .options {
-    display: flex;
-    flex-direction: column;
+  &.dropdown_active {
+    z-index: 1000;
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+    }
   }
 
   .options {
@@ -531,7 +554,7 @@ argument-reply {
     border: 1px solid var(--color-border);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    z-index: 100;
+    z-index: 1000;
     min-width: 180px;
     padding: 8px 0;
 

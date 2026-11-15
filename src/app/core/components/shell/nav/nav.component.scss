@@ -290,6 +290,11 @@ $mobile-breakpoint: 560px;
   align-items: center;
   gap: 12px;
   cursor: pointer;
+  position: relative;
+
+  &:has(.open) {
+    z-index: 1100;
+  }
 
   &:hover { background: var(--color-surface-hover); }
 
@@ -323,6 +328,10 @@ $mobile-breakpoint: 560px;
 .profile_dropdown {
   position: relative;
 
+  &.open {
+    z-index: 1100;
+  }
+
   .profile_dropdown_trigger {
     display: flex;
     align-items: center;
@@ -343,24 +352,28 @@ $mobile-breakpoint: 560px;
 }
 
 .profile_dropdown_menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
+  position: fixed;
+  left: 16px;
+  margin-top: 8px;
   width: 220px; // Slightly wider for icons and email
   background: var(--color-surfaces);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   box-shadow: 0 12px 24px rgba(44, 59, 71, 0.15);
-  z-index: 1000; // Ensure it stays on top
+  z-index: 1100; // Ensure it stays on top
   box-sizing: border-box;
 
   @media (max-width: $tablet-breakpoint) {
-    position: fixed;
-    top: auto;
+    right: 16px;
+    left: auto;
+    width: 288px;
+    z-index: 1105;
+  }
+
+  @media (max-width: $mobile-breakpoint) {
     left: 16px;
     right: 16px;
     width: calc(100% - 32px);
-    z-index: 1005;
   }
 
   .separator {

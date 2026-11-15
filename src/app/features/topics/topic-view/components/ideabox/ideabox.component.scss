@@ -5,6 +5,11 @@
   display: flex;
   width: 100%;
 
+  &:has(.dropdown_active) {
+    z-index: 1000;
+    position: relative;
+  }
+
   @include mixins.mobile {
     width: 100%;
     justify-content: center;
@@ -16,6 +21,10 @@
   flex-direction: column;
   gap: t.$spacing-m;
   position: relative;
+
+  &:has(.dropdown_active) {
+    z-index: 1000;
+  }
   border-radius: 16px;
   padding: 20px;
   background-color: #FEF3CA;
@@ -402,9 +411,16 @@
     }
   }
 
+  .options {
+    z-index: 1000;
+  }
+
   &.dropdown_active {
+    z-index: 1000;
+
     .options {
       display: block;
+      z-index: 1000;
     }
   }
 }

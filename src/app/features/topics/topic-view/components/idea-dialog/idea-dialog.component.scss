@@ -417,6 +417,10 @@ app-edit-idea {
   width: 100%;
   align-items: center;
 
+  &:has(.dropdown_active) {
+    z-index: 1000;
+  }
+
   .name {
     display: flex;
     align-items: center;
@@ -504,6 +508,11 @@ app-edit-idea {
     display: flex;
     gap: figma.$spacing-sm;
     align-items: center;
+
+    &:has(.dropdown_active) {
+      z-index: 1000;
+      position: relative;
+    }
     .dropdown {
       background-color: unset;
     }
@@ -785,7 +794,7 @@ app-edit-idea {
 .replies_content_wrap {
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: visible;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -822,6 +831,10 @@ app-edit-idea {
     display: flex;
     position: relative;
 
+    &:has(.dropdown_active) {
+      z-index: 1000;
+    }
+
     .reply_referer {
       height: figma.$spacing-xxl;
       width: figma.$spacing-xl;
@@ -846,6 +859,15 @@ app-edit-idea {
 
 .dropdown {
   position: relative;
+
+  &.dropdown_active {
+    z-index: 1000;
+    .options {
+      display: block;
+      z-index: 1000;
+    }
+  }
+
   .options {
     display: none;
     position: absolute;
@@ -854,7 +876,7 @@ app-edit-idea {
     background: figma.$color-bg-surface;
     box-shadow: var(--shadow-lg);
     border-radius: figma.$border-radius-m;
-    z-index: 10;
+    z-index: 1000;
     padding: figma.$spacing-sm 0;
     min-width: 180px;
 
@@ -898,12 +920,6 @@ app-edit-idea {
       &.error_text {
         color: figma.$color-error;
       }
-    }
-  }
-
-  &.dropdown_active {
-    .options {
-      display: block;
     }
   }
 }
