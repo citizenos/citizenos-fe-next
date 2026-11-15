@@ -76,7 +76,7 @@ describe('SmartIdComponent', () => {
     component.smartIdForm.controls.pid.setValue('12345678901');
     await component.onSubmit();
     
-    expect((mockUserStore as { loginSmartIdInit: Mock }).loginSmartIdInit).toHaveBeenCalledWith('12345678901');
+    expect((mockUserStore as { loginSmartIdInit: Mock }).loginSmartIdInit).toHaveBeenCalledWith('12345678901', 'EE');
     expect(component.challengeID()).toBe(1234);
     
     await vi.advanceTimersByTimeAsync(3001);

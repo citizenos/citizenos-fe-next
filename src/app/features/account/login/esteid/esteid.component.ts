@@ -43,19 +43,30 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
           <div class="mobile-id-container">
             @if (!challengeID()) {
               <form [formGroup]="mobileIdForm" (ngSubmit)="onMobileSubmit()">
-                <cos-input
-                  [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PID' | translate"
-                  [hasError]="mobileIdForm.controls.pid.touched && mobileIdForm.controls.pid.invalid"
-                >
-                  <input type="text" formControlName="pid" [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PID' | translate">
-                </cos-input>
+                @if (error()) {
+                  <div class="error-banner" role="alert">
+                    <cos-icon name="close" [size]="16"></cos-icon>
+                    <span>{{ error() }}</span>
+                  </div>
+                }
 
-                <cos-input
-                  [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PHONE' | translate"
-                  [hasError]="mobileIdForm.controls.phoneNumber.touched && mobileIdForm.controls.phoneNumber.invalid"
-                >
-                  <input type="text" formControlName="phoneNumber" [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PHONE' | translate">
-                </cos-input>
+                <div class="input-group">
+                  <cos-input
+                    [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PID' | translate"
+                    [hasError]="mobileIdForm.controls.pid.touched && mobileIdForm.controls.pid.invalid"
+                  >
+                    <input type="text" formControlName="pid" inputmode="numeric" [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PID' | translate">
+                  </cos-input>
+                </div>
+
+                <div class="input-group">
+                  <cos-input
+                    [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PHONE' | translate"
+                    [hasError]="mobileIdForm.controls.phoneNumber.touched && mobileIdForm.controls.phoneNumber.invalid"
+                  >
+                    <input type="tel" formControlName="phoneNumber" [placeholder]="'MODALS.LOGIN_ESTEID_PLACEHOLDER_PHONE' | translate">
+                  </cos-input>
+                </div>
 
                 <div class="form-actions">
                   <cos-button
@@ -95,6 +106,12 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
           </div>
 
           <div class="id-card-container">
+            @if (error()) {
+              <div class="error-banner" role="alert">
+                <cos-icon name="close" [size]="16"></cos-icon>
+                <span>{{ error() }}</span>
+              </div>
+            }
             <div class="form-actions">
               <cos-button
                 variant="primary"
@@ -107,13 +124,6 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
             </div>
           </div>
         </div>
-
-        @if (error()) {
-          <div class="error-banner" role="alert">
-            <cos-icon name="close" [size]="16"></cos-icon>
-            <span>{{ error() }}</span>
-          </div>
-        }
       </div>
     </div>
   `,
@@ -121,7 +131,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
     #login_wrap {
       display: flex;
       flex-direction: column;
-      gap: 40px;
+      gap: 24px;
       padding: 0;
       width: 100%;
     }
@@ -130,7 +140,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
     }
 
     .esteid-login {
@@ -151,6 +161,18 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
       gap: 12px;
       padding-bottom: 8px;
       border-bottom: 1px solid var(--color-border);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .input-group {
+      position: relative;
+      width: 100%;
     }
 
     .method-icon-mid {
@@ -196,7 +218,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
     }
 
     .form-actions {
-      margin-top: 16px;
+      margin-top: 8px;
       cos-button {
         width: 100%;
       }

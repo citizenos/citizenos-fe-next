@@ -48,23 +48,44 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
               </div>
             }
 
-                <cos-input 
-                  [placeholder]="'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_PLACEHOLDER_PID' | translate"
-                  [hasError]="smartIdForm.controls.pid.touched && smartIdForm.controls.pid.invalid"
+            <div class="input-group">
+              <cos-input 
+                [placeholder]="'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_PLACEHOLDER_COUNTRY_CODE' | translate"
+                [hasError]="smartIdForm.controls.countryCode.touched && smartIdForm.controls.countryCode.invalid"
+              >
+                <input
+                  type="text"
+                  formControlName="countryCode"
+                  [maxlength]="2"
+                  [placeholder]="'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_PLACEHOLDER_COUNTRY_CODE' | translate"
                 >
-                  <input type="text" formControlName="pid" [placeholder]="'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_PLACEHOLDER_PID' | translate">
-                </cos-input>
+              </cos-input>
+            </div>
+
+            <div class="input-group">
+              <cos-input 
+                [placeholder]="'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_PLACEHOLDER_PID' | translate"
+                [hasError]="smartIdForm.controls.pid.touched && smartIdForm.controls.pid.invalid"
+              >
+                <input
+                  type="text"
+                  formControlName="pid"
+                  inputmode="numeric"
+                  [placeholder]="'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_PLACEHOLDER_PID' | translate"
+                >
+              </cos-input>
+            </div>
 
             <div class="form-actions">
-                <cos-button 
-                  type="submit" 
-                  variant="primary"
-                  size="lg"
-                  [isLoading]="userStore.isLoading()" 
-                  [isDisabled]="smartIdForm.invalid"
-                >
-                  {{ 'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_BTN_AUTHENTICATE_SID' | translate }}
-                </cos-button>
+              <cos-button 
+                type="submit" 
+                variant="primary"
+                size="lg"
+                [isLoading]="userStore.isLoading()" 
+                [isDisabled]="smartIdForm.invalid"
+              >
+                {{ 'COMPONENTS.LOGIN_SMART_ID_FORM.LOGIN_SMARTID_BTN_AUTHENTICATE_SID' | translate }}
+              </cos-button>
             </div>
           </form>
         } @else {
@@ -89,7 +110,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
     #login_wrap {
       display: flex;
       flex-direction: column;
-      gap: 40px;
+      gap: 24px;
       padding: 0;
       width: 100%;
     }
@@ -98,7 +119,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
     }
 
     .smartid-login {
@@ -120,6 +141,18 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
         margin: 0;
         color: var(--color-text);
       }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .input-group {
+      position: relative;
+      width: 100%;
     }
 
     .method-icon {
@@ -156,6 +189,7 @@ import { IconComponent } from '../../../../shared/components/icon/icon.component
     }
 
     .form-actions {
+      margin-top: 8px;
       cos-button {
         width: 100%;
       }
@@ -183,8 +217,17 @@ export class SmartIdComponent implements OnDestroy {
   private pollSubscription?: Subscription;
 
   smartIdForm = this.fb.group({
+    countryCode: ['EE', [Validators.required, Validators.pattern(/^[A-Z]{2}$/)]],
     pid: ['', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]]
   });
+
+  constructor() {
+    this.smartIdForm.get('countryCode')?.valueChanges.subscribe(value => {
+      if (value && value !== value.toUpperCase()) {
+        this.smartIdForm.get('countryCode')?.patchValue(value.toUpperCase(), { emitEvent: false });
+      }
+    });
+  }
 
   ngOnDestroy() {
     this.stopPolling();
@@ -192,10 +235,10 @@ export class SmartIdComponent implements OnDestroy {
 
   async onSubmit() {
     if (this.smartIdForm.valid) {
-      const pid = this.smartIdForm.value.pid;
+      const { pid, countryCode } = this.smartIdForm.getRawValue();
       this.error.set(null);
       try {
-        const rawRes = await this.userStore.loginSmartIdInit(pid!);
+        const rawRes = await this.userStore.loginSmartIdInit(pid!, countryCode || 'EE');
         const res = rawRes as { challengeID?: string; token?: string } | undefined;
         if (res?.challengeID && res?.token) {
           this.challengeID.set(res.challengeID);

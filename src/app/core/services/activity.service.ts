@@ -156,8 +156,31 @@ export class ActivityService {
   private processActivities(data: ActivityItem[]): ActivityGroup[] {
     const parsed: ActivityItem[] = [];
 
+    // 1. First, check if there is a View activity in this incoming batch.
+    // If so, update lastViewTime (which represents the time of the previous view).
+    data.forEach((activity: ActivityItem) => {
+      if (
+        activity.data?.type === 'View' &&
+        activity.data?.object &&
+        ((activity.data.object as ActivityObject)['@type'] === 'Activity' || (activity.data.object as ActivityObject)['type'] === 'Activity')
+      ) {
+        if (!this.lastViewTime || activity.updatedAt > this.lastViewTime) {
+          this.lastViewTime = activity.updatedAt;
+        }
+      }
+    });
+
     data.forEach((activity: ActivityItem) => {
       if (!activity.data) return;
+
+      // Filter out USER_VIEW_ACTIVITY from the list - it is only used for lastViewTime tracking
+      if (
+        activity.data.type === 'View' &&
+        activity.data.object &&
+        ((activity.data.object as ActivityObject)['@type'] === 'Activity' || (activity.data.object as ActivityObject)['type'] === 'Activity')
+      ) {
+        return;
+      }
 
       const obj = activity.data.object;
       const objFirst = Array.isArray(obj) ? obj[0] : obj;
@@ -211,12 +234,7 @@ export class ActivityService {
     const groups = this.activitiesToGroups(parsed);
     groups.forEach((group: ActivityGroup) => {
       group.values.forEach((activity: ActivityItem) => {
-        activity.isNew = !this.lastViewTime || activity.updatedAt > this.lastViewTime;
-        if (activity.data?.type === 'View') {
-          if (!this.lastViewTime || activity.updatedAt > this.lastViewTime) {
-            this.lastViewTime = activity.updatedAt;
-          }
-        }
+        activity.isNew = Boolean(!this.lastViewTime || activity.updatedAt > this.lastViewTime);
       });
     });
 
@@ -307,7 +325,7 @@ export class ActivityService {
     result.sort((a: ActivityGroup, b: ActivityGroup) => {
       const ta = a.values[0]?.updatedAt ?? '';
       const tb = b.values[0]?.updatedAt ?? '';
-      return ta < tb ? -1 : ta > tb ? 1 : 0;
+      return ta < tb ? 1 : ta > tb ? -1 : 0;
     });
     return result;
   }
