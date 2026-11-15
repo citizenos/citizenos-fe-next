@@ -3,7 +3,7 @@ import { ResolveFn, Router } from '@angular/router';
 import { ConfigStore } from '../state/config.store';
 
 // Define supported languages as in the legacy app
-export const SUPPORTED_LANGUAGES = ['en', 'et', 'ru', 'lv', 'lt']; // Add more if necessary
+export const SUPPORTED_LANGUAGES = ['en', 'et', 'ru', 'de', 'sk', 'lv', 'lt'];
 
 export const languageResolver: ResolveFn<string> = (route) => {
   const configStore = inject(ConfigStore);

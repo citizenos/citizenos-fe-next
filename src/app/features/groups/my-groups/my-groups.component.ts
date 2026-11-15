@@ -19,7 +19,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { UserStore } from '../../../core/state/user.store';
 import { countries } from '../../../core/constants/countries';
 import { languages } from '../../../core/constants/all-languages';
-import { SeoService } from '../../../core/services/seo.service';
+
 
 @Component({
   selector: 'cos-my-groups',
@@ -179,11 +179,7 @@ export class MyGroupsComponent {
   private groupService = inject(UserGroupService);
   private userStore = inject(UserStore);
   private translate = inject(TranslateService);
-  private seoService = inject(SeoService);
 
-  constructor() {
-    this.seoService.setPageTitle('VIEWS.MY_GROUPS.HEADER');
-  }
 
   get userLang() { return this.translate.currentLang; }
 

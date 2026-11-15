@@ -16,7 +16,7 @@ import { TourItemDirective } from '../../shared/directives/tour-item.directive';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { PageHeaderComponent } from '../../core/components/shell/page-header/page-header.component';
 import { CreateMenuComponent } from '../../shared/components/create-menu/create-menu.component';
-import { SeoService } from '../../core/services/seo.service';
+
 import { News } from '../../core/interfaces/news';
 
 @Component({
@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
   private publicGroupService = inject(PublicGroupService);
   private newsService = inject(NewsService);
   private uiState = inject(UiStateService);
-  private seoService = inject(SeoService);
+
 
     private platformId = inject(PLATFORM_ID);
   readonly wWidth = signal(1024);
@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
   readonly showCreate = signal(false);
 
   ngOnInit() {
-    this.seoService.setPageTitle('DEFAULT.NAV.LNK_DASHBOARD');
+
     if (isPlatformBrowser(this.platformId) && !localStorage.getItem('show-dashboard-tour')) {
       this.uiState.showOnboarding.set(true);
       localStorage.setItem('show-dashboard-tour', 'true');

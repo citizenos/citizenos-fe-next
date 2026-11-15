@@ -6,7 +6,7 @@ import { UserTopicService } from '../../../core/services/user-topic.service';
 import { of, BehaviorSubject } from 'rxjs';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { SeoService } from '../../../core/services/seo.service';
+
 import { TOPIC_STATUSES } from '../../../core/constants/topic.constants';
 
 const mockService = {
@@ -27,8 +27,7 @@ describe('MyTopicsComponent', () => {
       imports: [TranslateModule.forRoot()],
       providers: [
         provideRouter([]),
-        { provide: UserTopicService, useValue: mockService },
-        SeoService
+        { provide: UserTopicService, useValue: mockService }
       ],
     });
     injector = TestBed.inject(EnvironmentInjector);

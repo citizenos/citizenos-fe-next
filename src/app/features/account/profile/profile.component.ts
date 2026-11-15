@@ -20,7 +20,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 import { InitialsComponent } from '../../../shared/components/initials/initials.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { ImageEditorComponent } from '../../../shared/components/image-editor/image-editor.component';
-import { SeoService } from '../../../core/services/seo.service';
+
 
 type ProfileTab = 'profile' | 'notifications';
 
@@ -57,7 +57,7 @@ export class ProfileComponent implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
   dialog = inject(DialogService);
-  private seoService = inject(SeoService);
+
   private destroyRef = inject(DestroyRef);
   notificationParams = this.topicNotificationService.params;
 
@@ -102,7 +102,7 @@ export class ProfileComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.seoService.setPageTitle('VIEWS.ACCOUNT.HEADING');
+
     // Initialize form with user data
     const user = this.store.user();
     if (user) {

@@ -15,7 +15,7 @@ import { ListFilterToolbarComponent, FilterConfig } from '../../../shared/compon
 import { ActivitiesButtonComponent } from '../../../shared/components/activities-button/activities-button.component';
 import { PageListHeaderComponent } from '../../../shared/components/page-list-header/page-list-header.component';
 import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.constants';
-import { SeoService } from '../../../core/services/seo.service';
+
 import { countries } from '../../../core/constants/countries';
 import { languages } from '../../../core/constants/all-languages';
 
@@ -70,13 +70,13 @@ import { languages } from '../../../core/constants/all-languages';
 })
 export class PublicTopicsComponent {
   private topicService = inject(PublicTopicService);
-  private seoService = inject(SeoService);
+
 
   private sortedCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
   private sortedLanguages = [...languages].sort((a, b) => a.name.localeCompare(b.name));
 
   constructor() {
-    this.seoService.setPageTitle('COMPONENTS.PUBLIC_TOPICS.HEADER');
+
     effect(() => {
       this.debouncedSearch.value();
       this.applyFilters();

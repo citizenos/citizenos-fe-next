@@ -19,7 +19,7 @@ import { PageListHeaderComponent } from '../../../shared/components/page-list-he
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { CosDropdownDirective } from '../../../shared/directives/cos-dropdown.directive';
 import { TOPIC_STATUSES, TOPIC_CATEGORIES } from '../../../core/constants/topic.constants';
-import { SeoService } from '../../../core/services/seo.service';
+
 import { countries } from '../../../core/constants/countries';
 import { languages } from '../../../core/constants/all-languages';
 
@@ -162,13 +162,13 @@ import { languages } from '../../../core/constants/all-languages';
 export class MyTopicsComponent {
   translate = inject(TranslateService);
   private topicService = inject(UserTopicService);
-  private seoService = inject(SeoService);
+
 
   private sortedCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
   private sortedLanguages = [...languages].sort((a, b) => a.name.localeCompare(b.name));
 
   constructor() {
-    this.seoService.setPageTitle('VIEWS.MY_TOPICS.HEADER');
+
     effect(() => {
       this.debouncedSearch.value();
       this.applyFilters();

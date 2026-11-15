@@ -6,7 +6,7 @@ import { PublicTopicService } from '../../../core/services/public-topic.service'
 import { of, BehaviorSubject } from 'rxjs';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { SeoService } from '../../../core/services/seo.service';
+
 
 const mockService = {
   items$: of([]),
@@ -25,8 +25,7 @@ describe('PublicTopicsComponent', () => {
       imports: [TranslateModule.forRoot()],
       providers: [
         provideRouter([]),
-        { provide: PublicTopicService, useValue: mockService },
-        SeoService
+        { provide: PublicTopicService, useValue: mockService }
       ],
     });
     injector = TestBed.inject(EnvironmentInjector);
