@@ -141,7 +141,7 @@ export class TopicArgumentService extends ItemsListService<TopicArgumentParams, 
   }
 
   vote(data: { topicId: string; discussionId: string; commentId: string; value: number }): Observable<Argument['votes']> {
-    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}/votes`, true);
+    const path = this.getAbsoluteUrlApi(`/topics/${data.topicId}/discussions/${data.discussionId}/comments/${data.commentId}/votes`);
     return this.http.post<ApiResponse<Argument['votes']>>(path, { value: data.value }, { withCredentials: true, observe: 'body', responseType: 'json' })
       .pipe(map(res => res.data));
   }
